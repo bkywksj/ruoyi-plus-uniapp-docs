@@ -1,0 +1,23 @@
+/* 自定义样式 */
+:root {
+    --vp-c-brand-1: #8b5cf6;
+    --vp-c-brand-2: #7c3aed;
+    --vp-c-brand-3: #6d28d9;
+}
+
+/* 自定义容器样式 */
+.custom-block.tip {
+    border-color: var(--vp-c-brand-1);
+}
+
+/* 代码块样式 */
+.vp-code-group {
+    margin: 16px 0;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .VPNavBar .title {
+        font-size: 18px;
+    }
+}
