@@ -23,7 +23,7 @@ features:
     link: /backend/
   - icon: 💻
     title: 前端
-    details: Vue3 + Vite6 + Pnpn +Typescript + Pinia + Element Plus, 更规范的架构和组合, 飞一般的开发体验
+    details: Vue3 + Vite6 + Pnpm +Typescript + Pinia + Element Plus, 更规范的架构和组合, 飞一般的开发体验
     link: /frontend/
   - icon: 📱
     title: 移动端
