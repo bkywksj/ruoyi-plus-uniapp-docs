@@ -35,7 +35,6 @@ export default defineConfig({
         siteTitle: 'ruoyi-plus-uniapp',
 
         nav: [
-            { text: '首页', link: '/' },
             {
                 text: '后端',
                 link: '/backend/',
@@ -57,6 +56,7 @@ export default defineConfig({
                 activeMatch: '/practices/'
             },
             { text: '特性', link: '/changelog' },
+            { text: '视频', link: '/video' },
             { text: '演示', link: '/demo' }
         ],
 
