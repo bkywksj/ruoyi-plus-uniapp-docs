@@ -1,0 +1,44 @@
+MIT License
+
+Copyright (c) 2025 抓蛙师
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+----------------------------------------------------------------------
+
+专有组件许可证声明 / Proprietary License for Modified Components:
+
+本文档开源，但基于本文档的框架ruoyi-plus-uniapp全栈开发框架包含的修改和新增功能。
+所有修改、增强功能和附加组件的版权归属于：
+
+Copyright (c) 2025 湛江市麻章区湖光镇若依科技工作室. All rights reserved.
+
+修改和新增的专有组件受以下条款约束：
+1. 未经版权所有者明确书面许可，禁止重新分发、修改或使用这些专有组件
+2. 软件的专有部分为机密信息，不得向第三方披露
+3. 违反本许可证条款可能导致法律后果
+
+ruoyi-plus-uniapp授权咨询联系方式 / Contact for Licensing:
+- 电话/Phone: 19866579313
+- 微信/WeChat: 770492966
+- QQ: 770492966
+
+如需商业授权或技术支持，请通过上述方式联系我们。
+For commercial licensing or technical support, please contact us via the above channels.
