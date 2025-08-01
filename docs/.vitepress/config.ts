@@ -806,9 +806,6 @@ export default defineConfig({
 
         // 深色模式切换标题
         darkModeSwitchLabel: '主题',
-
-        // 语言切换
-        langMenuLabel: '多语言',
     },
 
     // Vite配置

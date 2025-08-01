@@ -19,7 +19,6 @@
 良好的架构设计是系统稳定性和可扩展性的保障。
 
 - [系统架构设计](/practices/system-architecture) - 整体系统架构设计原则
-- [微服务架构](/practices/microservices) - 微服务架构最佳实践
 - [数据库设计](/practices/database-design) - 数据库设计规范和优化
 - [缓存策略](/practices/cache-strategy) - 缓存使用策略和最佳实践
 - [分布式设计](/practices/distributed-design) - 分布式系统设计要点
@@ -50,7 +49,6 @@
 高效的部署运维流程确保系统稳定运行。
 
 - [DevOps最佳实践](/practices/devops-best-practices) - DevOps流程和工具使用
-- [容器化部署](/practices/containerization) - Docker和Kubernetes部署
 - [监控告警](/practices/monitoring-alerting) - 系统监控和告警机制
 - [日志管理](/practices/log-management) - 日志收集、分析和管理
 - [备份策略](/practices/backup-strategy) - 数据备份和恢复策略
