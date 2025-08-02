@@ -67,12 +67,11 @@ export default defineConfig({
                 {
                     text: '🚀 快速开始',
                     items: [
-                        { text: '概览', link: '/backend/' },
-                        { text: '快速开始', link: '/backend/getting-started' },
+                        { text: '项目简介', link: '/backend/' },
                         { text: '环境要求', link: '/backend/requirements' },
+                        { text: '快速启动', link: '/backend/getting-started' },
                         { text: '项目结构', link: '/backend/project-structure' },
-                        { text: '配置文件详解', link: '/backend/configuration' },
-                        { text: '数据库初始化', link: '/backend/database-init' }
+                        { text: '配置文件', link: '/backend/configuration' }
                     ]
                 },
                 {
@@ -323,7 +322,7 @@ export default defineConfig({
                         { text: '业务组件', link: '/frontend/components/business-components' },
                         { text: '图标系统', link: '/frontend/components/icon-system' },
                         { text: 'SvgIcon组件', link: '/frontend/components/svg-icon' },
-                        { text: '媒体库组件 (AMediaLibrary)', link: '/frontend/components/media-library' },
+                        { text: '媒体库组件 (AOssMediaManager)', link: '/frontend/components/oss-media-manager' },
                         { text: '选择标签 (ASelectionTags)', link: '/frontend/components/selection-tags' },
                         { text: '搜索表单 (ASearchForm)', link: '/frontend/components/search-form' },
                         { text: '表格工具栏 (TableToolbar)', link: '/frontend/components/table-toolbar' },
