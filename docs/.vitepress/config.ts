@@ -253,6 +253,7 @@ export default defineConfig({
                         { text: '项目简介', link: '/frontend/' },
                         { text: '快速启动', link: '/frontend/getting-started' },
                         { text: '项目结构', link: '/frontend/project-structure' },
+                        { text: '配置文件', link: '/frontend/configuration' }
                     ]
                 },
                 {
@@ -477,13 +478,10 @@ export default defineConfig({
                 {
                     text: '🚀 快速开始',
                     items: [
-                        { text: '概览', link: '/mobile/' },
-                        { text: '快速开始', link: '/mobile/getting-started' },
-                        { text: '环境搭建', link: '/mobile/environment-setup' },
+                        { text: '项目简介', link: '/mobile/' },
+                        { text: '快速启动', link: '/mobile/getting-started' },
                         { text: '项目结构', link: '/mobile/project-structure' },
-                        { text: '开发工具配置', link: '/mobile/development-tools' },
-                        { text: '配置文件详解', link: '/mobile/configuration' },
-                        { text: '技术栈介绍', link: '/mobile/tech-stack' }
+                        { text: '配置文件', link: '/mobile/configuration' }
                     ]
                 },
                 {
