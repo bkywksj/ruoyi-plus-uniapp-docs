@@ -1,0 +1,111 @@
+/**
+ * 移动端预览组件样式
+ * 兼容VitePress主题
+ */
+
+/* 主容器调整 */
+.VPDoc:has(.preview-frame-container) {
+    margin-right: 420px;
+}
+
+@media (max-width: 1200px) {
+    .VPDoc:has(.preview-frame-container) {
+        margin-right: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .VPDoc:has(.preview-frame-container) {
+        margin-right: 0;
+    }
+}
+
+/* 滚动条样式优化 */
+.preview-iframe::-webkit-scrollbar {
+    width: 2px;
+}
+
+.preview-iframe::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.preview-iframe::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 1px;
+}
+
+/* 加载状态 */
+.preview-iframe {
+    transition: opacity 0.3s ease;
+}
+
+.preview-iframe[src=""] {
+    opacity: 0.5;
+    background: #f8fafc;
+}
+
+/* 设备特定样式增强 */
+.device-iphone .screen-area {
+    border-radius: 22px;
+}
+
+.device-ipad .screen-area {
+    border-radius: 12px;
+}
+
+.device-android .screen-area {
+    border-radius: 8px;
+}
+
+/* 工具栏动画 */
+.preview-toolbar {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 设备切换动画 */
+.device-frame {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 响应式隐藏优化 */
+@media (max-width: 768px) {
+    .preview-frame-container {
+        display: none !important;
+    }
+}
+
+/* 高对比度模式支持 */
+@media (prefers-contrast: high) {
+    .device-btn, .action-btn {
+        border-width: 2px;
+    }
+
+    .device-frame {
+        border: 2px solid #000;
+    }
+}
+
+/* 减少动画模式 */
+@media (prefers-reduced-motion: reduce) {
+    .device-frame,
+    .preview-toolbar,
+    .device-btn,
+    .action-btn {
+        transition: none;
+    }
+
+    .preview-toolbar {
+        animation: none;
+    }
+}

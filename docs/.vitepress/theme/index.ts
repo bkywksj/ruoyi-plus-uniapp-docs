@@ -1,10 +1,18 @@
+// .vitepress/theme/index.ts
+import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
-import './style.css'
+import PreviewFrame from './components/PreviewFrame.vue'
 
 export default {
     extends: DefaultTheme,
+    Layout() {
+        return h(DefaultTheme.Layout, null, {
+            // 使用 doc-after slot，在文档内容之后显示预览组件
+            'doc-after': () => h(PreviewFrame)
+        })
+    },
     enhanceApp({ app }) {
-        // 注册全局组件
+        app.component('PreviewFrame', PreviewFrame)
     }
 } satisfies Theme

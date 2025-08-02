@@ -24,10 +24,12 @@ export default defineConfig({
         ['script', { async: '', src: 'https://hm.baidu.com/hm.js?c5543d0699fa3d232a032fd56c45b460' }],
         // 添加站点地图
         ['link', { rel: 'sitemap', href: '/sitemap.xml' }],
-        // 添加 PWA 支持
-        ['link', { rel: 'manifest', href: '/manifest.json' }],
-        ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
-        ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
+        ['meta', { name: 'mobile-web-app-capable', content: 'yes' }], // ✅ 使用现代标准
+        ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }], // ✅ 改进状态栏样式
+        // 可选：添加更完整的PWA支持
+        ['meta', { name: 'application-name', content: 'ruoyi-plus-uniapp-docs' }],
+        ['meta', { name: 'apple-mobile-web-app-title', content: 'ruoyi-docs' }],
+        ['link', { rel: 'apple-touch-icon', href: '/logo.png' }],
     ],
 
     themeConfig: {
@@ -810,6 +812,10 @@ export default defineConfig({
 
     // Vite配置
     vite: {
+        // 为组件预览功能配置
+        define: {
+            __COMPONENT_PREVIEW__: true
+        },
         plugins: [llmsPlugin() as any],
         build: {
             chunkSizeWarningLimit: 1600
