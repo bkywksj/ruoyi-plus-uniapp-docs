@@ -102,7 +102,7 @@ const closeQRCode = () => {
 // 监听页面变化
 watch(() => page.value.frontmatter, (frontmatter) => {
   showPreview.value = !!(frontmatter?.iframe && frontmatter?.url)
-  console.log('📱 预览状态:', showPreview.value, 'URL:', frontmatter?.url)
+  // console.log('📱 预览状态:', showPreview.value, 'URL:', frontmatter?.url)
 }, { immediate: true })
 </script>
 

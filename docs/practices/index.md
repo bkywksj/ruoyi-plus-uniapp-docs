@@ -1,7 +1,5 @@
 # 最佳实践
 
-# 最佳实践
-
 欢迎来到 ruoyi-plus-uniapp 最佳实践指南！这里汇集了项目开发、部署、运维等各个环节的最佳实践经验。
 
 ## 📋 开发规范
@@ -12,7 +10,6 @@
 - [命名规范](/practices/naming-conventions) - 项目中的命名约定
 - [注释规范](/practices/comment-standards) - 代码注释的标准格式
 - [Git使用规范](/practices/git-standards) - Git提交和分支管理规范
-- [代码审查规范](/practices/code-review) - 代码审查流程和标准
 
 ## 🏗️ 架构设计
 

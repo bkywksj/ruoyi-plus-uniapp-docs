@@ -1,34 +1,19 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus
+aside: false
+---
+
 # 🎯 项目演示
 
-体验 ruoyi-plus-uniapp 全栈开发框架的完整功能
+体验 ruoyi-plus-uniapp 全栈开发框架的演示功能
 
 ## 🌐 在线演示
 
-::: info 体验账号
-**管理员账号：** admin / admin123  
-**普通用户：** user / user123
-:::
-
-| 平台           | 地址                                      | 说明                       |
-|--------------|-----------------------------------------|--------------------------|
-| 💻 **后台管理**  | [立即体验](https://admin.ruoyi.plus)        | Vue3 + Element Plus 管理后台 |
-| 📱 **移动端H5** | [立即体验](https://mobile.ruoyi.plus)       | UniApp 跨平台应用             |
-| 🔗 **API文档** | [查看文档](https://api.ruoyi.plus/doc.html) | Swagger 接口文档             |
-
-## 📱 移动端预览
-
-<div style="text-align: center; margin: 2rem 0;">
-  <iframe 
-    src="https://uni.ruoyi.plus" 
-    width="375" 
-    height="667" 
-    frameborder="0"
-    style="border: 8px solid #000; border-radius: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);">
-  </iframe>
-  <p style="margin-top: 1rem; color: #666; font-size: 14px;">
-    移动端实时预览 | <a href="https://uni.ruoyi.plus" target="_blank">新窗口打开</a>
-  </p>
-</div>
+| 平台           | 地址                                           | 账密               | 说明                       |
+|--------------|----------------------------------------------|------------------|--------------------------|
+| 💻 **后台管理**  | [立即体验](http://ui.ruoyi.plus?tenantId=424410) | admin / admin123 | Vue3 + Element Plus 管理后台 |
+| 📱 **移动端H5** | [立即体验](http://uni.ruoyi.plus)                | admin / admin123 | UniApp 跨平台应用             |
 
 ## 🖼️ 功能截图
 
@@ -74,42 +59,12 @@
 
 [//]: # (:::)
 
-## 🚀 快速开始
-
-:::
-
-## 🛠️ 核心特性
-
-::: tip 🚀 现代技术栈
-
-- **后端：** Spring Boot 3 + MyBatis Plus + Sa-Token
-- **前端：** Vue 3 + TypeScript + Element Plus + UnoCSS
-- **移动端：** UniApp + Wd UI 组件库
-  :::
-
-::: tip 🏗️ 企业级功能
-
-- **多租户系统** - 完整的SaaS解决方案
-- **权限控制** - 细粒度的RBAC权限体系
-- **代码生成** - 智能化CRUD代码生成
-- **支付集成** - 微信、支付宝等多种支付方式
-  :::
-
-::: tip ⚡ 开发体验
-
-- **类型安全** - 前后端TypeScript全覆盖
-- **组件化** - 丰富的业务组件库
-- **工具完善** - 完整的开发工具链
-- **文档齐全** - 框架即文档理念
-  :::
-
-## 📞 技术支持
+## 💬 技术支持
 
 ::: warning 联系方式
 
 - **作者微信/QQ：** 770492966
 - **项目文档：** https://ruoyi.plus
-- **Gitee地址：** https://gitee.com/xxx/ruoyi-plus-uniapp
   :::
 
 ---
