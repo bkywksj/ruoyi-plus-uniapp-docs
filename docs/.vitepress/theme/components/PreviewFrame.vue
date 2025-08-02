@@ -84,12 +84,13 @@ const generateQRCode = async () => {
     // 清空之前的二维码
     qrcodeRef.value.innerHTML = ''
 
-    // 使用简单的二维码生成 API
+    // 显示本地二维码图片
     const qrImg = document.createElement('img')
-    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(previewUrl.value)}`
+    qrImg.src = '/uni.png'
     qrImg.alt = 'QR Code'
     qrImg.style.width = '200px'
     qrImg.style.height = '200px'
+    qrImg.style.objectFit = 'contain'
     qrcodeRef.value.appendChild(qrImg)
   }
 }
@@ -166,15 +167,15 @@ watch(() => page.value.frontmatter, (frontmatter) => {
 
 /* 分隔线 */
 .divider {
-  height: 1px;
-  background: #e2e8f0;
+  height: 3px;
+  background: #f1f5f9;
   width: 100%;
 }
 
 /* iframe 容器 */
 .iframe-container {
   width: 100%;
-  height: 640px;
+  height: 720px;
   background: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-top: none;
@@ -189,6 +190,19 @@ watch(() => page.value.frontmatter, (frontmatter) => {
   border: none;
   background: #ffffff;
   display: block;
+}
+
+/* 隐藏iframe内部滚动条 */
+.preview-iframe::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+.iframe-container::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 /* 二维码弹窗 */
@@ -275,7 +289,7 @@ watch(() => page.value.frontmatter, (frontmatter) => {
   }
 
   .iframe-container {
-    height: 580px;
+    height: 650px;
   }
 }
 
@@ -286,7 +300,7 @@ watch(() => page.value.frontmatter, (frontmatter) => {
   }
 
   .iframe-container {
-    height: 540px;
+    height: 620px;
   }
 }
 
@@ -317,7 +331,7 @@ watch(() => page.value.frontmatter, (frontmatter) => {
   }
 
   .divider {
-    background: #334155;
+    background: #f8fafc;
   }
 
   .iframe-container {
@@ -338,7 +352,7 @@ watch(() => page.value.frontmatter, (frontmatter) => {
   }
 
   .close-qr {
-    color: #6f9ee2;
+    color: #94a3b8;
   }
 
   .close-qr:hover {

@@ -1,6 +1,6 @@
 ---
 iframe: true
-url: https://uni.ruoyi.plus
+url: http://localhost:100
 ---
 
 # 特性
