@@ -37,7 +37,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 基础信息对比
 
-| 对比项      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp |
+| 对比项      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp |
 |----------|-----------|----------------|---------------------|
 | **维护组织** | 若依官方      | Dromara 开源组织   | 抓蛙师/若依工作室           |
 | **项目定位** | 经典快速开发框架  | 多租户权限管理系统      | 全栈统一开发平台            |
@@ -49,7 +49,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 技术栈对比
 
-| 技术栈             | RuoYi-Vue                     | RuoYi-Vue-Plus             | ⚡ RuoYi Plus UniApp              |
+| 技术栈             | RuoYi-Vue                     | RuoYi-Vue-Plus             | ⚡ RuoYi-Plus-UniApp              |
 |-----------------|-------------------------------|----------------------------|----------------------------------|
 | **后端**          | Spring Boot + Spring Security | Spring Boot + Sa-Token     | Spring Boot + Sa-Token           |
 | **Spring Boot** | 2.7.x                         | 3.2.x                      | 3.2.x                            |
@@ -67,7 +67,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ### 后端架构重构
 
-| 重构项目     | RuoYi-Vue     | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp                                                   |
+| 重构项目     | RuoYi-Vue     | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp                                                   |
 |----------|---------------|----------------|-----------------------------------------------------------------------|
 | **基础架构** | 传统架构          | 现代化架构          | ✅ 面向未来的现代化架构                                                          |
 | **查询增强** | MyBatis       | MyBatis-Plus   | ✅ PlusQuery+PlusLambdaQuery聚合查询  IBaseService接口+BaseServiceImpl减少样板代码 |
@@ -78,7 +78,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ### 前端架构重构
 
-| 重构项目     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp            |
+| 重构项目     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp            |
 |----------|-----------|----------------|--------------------------------|
 | **目录结构** | Vue2规范    | Vue3规范         | ✅ composables+layouts+stores统一 |
 | **组件命名** | 传统命名      | 现代命名           | ✅ 首字母大写驼峰+语义化                  |
@@ -91,7 +91,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ### 基础功能模块
 
-| 功能模块     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp   |
+| 功能模块     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp   |
 |----------|-----------|----------------|-----------------------|
 | **用户管理** | 基础功能      | 基础功能           | ✅ 基础功能+移动端用户绑定        |
 | **角色管理** | 基础权限      | 基础权限           | ✅ 基础权限+租户角色同步功能       |
@@ -102,7 +102,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ### 高级功能模块
 
-| 功能模块      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp  |
+| 功能模块      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp  |
 |-----------|-----------|----------------|----------------------|
 | **多租户**   | ❌ 不支持     | ✅ 完整支持         | ✅ SaaS多租户+数据隔离增强     |
 | **数据权限**  | ✅ 基础支持    | ✅ 增强支持         | ✅ 增强支持               |
@@ -115,7 +115,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ### 移动端功能对比
 
-| 移动端功能    | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp     |
+| 移动端功能    | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp     |
 |----------|-----------|----------------|-------------------------|
 | **H5支持** | ❌ 无       | ❌ 无            | ✅ 响应式增强                 |
 | **小程序**  | ❌ 无       | ❌ 无            | ✅ 微信+QQ+支付宝+京东+抖音       |
@@ -129,7 +129,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ### 代码质量与规范
 
-| 开发特性     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp |
+| 开发特性     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp |
 |----------|-----------|----------------|---------------------|
 | **代码注释** | 基础注释      | 基础注释           | ✅ 完整Javadoc规范+代码即文档 |
 | **命名规范** | 基础规范      | 改进规范           | ✅ 全栈统一命名+语义化+唯一性    |
@@ -139,7 +139,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ### 工具与钩子函数
 
-| 工具类型     | RuoYi-Vue | RuoYi-Vue-Plus    | ⚡ RuoYi Plus UniApp                    |
+| 工具类型     | RuoYi-Vue | RuoYi-Vue-Plus    | ⚡ RuoYi-Plus-UniApp                    |
 |----------|-----------|-------------------|----------------------------------------|
 | **工具函数** | utils工具类  | 增强工具类             | ✅ Composables组合函数重构+utils增强工具类         |
 | **请求封装** | axios封装   | 增强封装+加密解密         | ✅ useHttp钩子+加密解密                       |
@@ -154,7 +154,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ### 前端组件
 
-| 组件类型     | RuoYi-Vue  | RuoYi-Vue-Plus    | ⚡ RuoYi Plus UniApp                         |
+| 组件类型     | RuoYi-Vue  | RuoYi-Vue-Plus    | ⚡ RuoYi-Plus-UniApp                         |
 |----------|------------|-------------------|---------------------------------------------|
 | **表单组件** | Element UI | Element Plus      | ✅ A系列表单组件全套重构                               |
 | **上传组件** | 基础上传       | 基础上传              | ✅ AFormFileUpload+AFormImgUpload +素材管理+前端直传 |
@@ -165,7 +165,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ### 移动端组件
 
-| 组件类型         | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp         |
+| 组件类型         | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp         |
 |--------------|-----------|----------------|-----------------------------|
 | **UI组件库**    | ❌ 无       | ❌ 无            | ✅ WotUI完全重构+Vue3+TypeScript |
 | **图标组件**     | ❌ 无       | ❌ 无            | ✅ wd-iconify+wd-icon+400+图标 |
@@ -174,7 +174,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 国际化系统对比
 
-| 国际化功能     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp             |
+| 国际化功能     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp             |
 |-----------|-----------|----------------|---------------------------------|
 | **前端国际化** | 基础支持      | 增强支持           | ✅ useI18n钩子+智能提示+菜单国际化+按钮+消息国际化 |
 | **后端国际化** | ❌ 无       | 基础支持           | ✅ I18nMessageInterceptor+接口常量管理 |
@@ -183,7 +183,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 部署运维对比
 
-| 运维特性         | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp  |
+| 运维特性         | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp  |
 |--------------|-----------|----------------|----------------------|
 | **Docker支持** | 基础        | ✅ 完善配置         | ✅ 优化编排+远程调试          |
 | **容器化部署**    | 基础支持      | 完善支持           | ✅ 完美适配Docker容器化      |
@@ -191,7 +191,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 学习使用对比
 
-| 对比维度      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp |
+| 对比维度      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp |
 |-----------|-----------|----------------|---------------------|
 | **学习难度**  | ⭐⭐⭐ 简单    | ⭐⭐⭐⭐ 中等        | ⭐⭐⭐ 简单              |
 | **文档完整度** | ⭐⭐⭐⭐ 比较完整 | ⭐⭐⭐⭐ 比较完整      | ⭐⭐⭐⭐ 文档完善中+代码即文档    |
@@ -202,7 +202,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 性能与扩展性对比
 
-| 性能指标      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp       |
+| 性能指标      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp       |
 |-----------|-----------|----------------|---------------------------|
 | **后端性能**  | 一般        | 较好             | 较强                        |
 | **前端性能**  | Vue2性能    | Vue3性能         | Vue3性能+Vite优化             |
@@ -213,7 +213,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 安全特性对比
 
-| 安全功能     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp |
+| 安全功能     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp |
 |----------|-----------|----------------|---------------------|
 | **身份认证** | JWT       | Sa-Token       | Sa-Token增强          |
 | **数据加密** | ❌ 无       | 前后端加密          | 前后端加密+移动端加密         |
@@ -223,11 +223,11 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 许可证与生态对比
 
-| 项目       | RuoYi-Vue  | RuoYi-Vue-Plus | ⚡ RuoYi Plus UniApp |
+| 项目       | RuoYi-Vue  | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp |
 |----------|------------|----------------|---------------------|
 | **开源许可** | Apache 2.0 | MIT            | 闭源商业授权              |
 | **商业使用** | 完全免费       | 完全免费           | 需要授权许可              |
-| **技术支持** | 社区免费       | 社区+付费          | 专业技术支持              |
+| **技术支持** | 社区免费+付费课程  | 社区+付费课程        | 专业技术支持              |
 | **定制开发** | 第三方服务      | 第三方+官方         | 官方定制服务              |
 | **源码获取** | 完全开源       | 完全开源           | 授权后提供               |
 | **商业授权** | 不需要        | 不需要            | 必须授权                |
@@ -251,7 +251,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 | **中大型项目**     | 功能丰富、架构清晰、扩展性强              |
 | **微服务架构**     | 支持分布式、云原生、容器化               |
 
-### 🌟 RuoYi Plus UniApp 适用场景
+### 🌟 RuoYi-Plus-UniApp 适用场景
 
 | 场景类型           | 推荐理由                  |
 |----------------|-----------------------|
@@ -269,37 +269,37 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 - **RuoYi-Vue**: 稳定成熟的经典方案
 - **RuoYi-Vue-Plus**: 现代化的技术升级
-- **RuoYi Plus UniApp**: 面向未来的全栈统一方案
+- **RuoYi-Plus-UniApp**: 面向未来的全栈统一方案
 
 ### 选择决策因子
 
 #### 按预算和授权选择
 
 - **预算有限**: RuoYi-Vue-Plus（完全免费开源）
-- **商业项目**: RuoYi Plus UniApp（专业授权+技术支持）
+- **商业项目**: RuoYi-Plus-UniApp（专业授权+技术支持）
 
 #### 按开源需求选择
 
 - **需要开源**: RuoYi-Vue 或 RuoYi-Vue-Plus
-- **商业保护**: RuoYi Plus UniApp（闭源授权）
-- **定制需求**: RuoYi Plus UniApp（官方定制服务）
-- **只需Web端**: RuoYi-Vue 或 RuoYi-Vue-Plus 或 RuoYi Plus UniApp
-- **需要移动端**: RuoYi Plus UniApp
-- **多租户需求**: RuoYi-Vue-Plus 或 RuoYi Plus UniApp
-- **全平台覆盖**: RuoYi Plus UniApp
+- **商业保护**: RuoYi-Plus-UniApp（闭源授权）
+- **定制需求**: RuoYi-Plus-UniApp（官方定制服务）
+- **只需Web端**: RuoYi-Vue 或 RuoYi-Vue-Plus 或 RuoYi-Plus-UniApp
+- **需要移动端**: RuoYi-Plus-UniApp
+- **多租户需求**: RuoYi-Vue-Plus 或 RuoYi-Plus-UniApp
+- **全平台覆盖**: RuoYi-Plus-UniApp
 
 #### 按项目需求选择
 
 - **传统开发团队**: RuoYi-Vue
 - **现代化团队**: RuoYi-Vue-Plus
-- **全栈团队**: RuoYi Plus UniApp
+- **全栈团队**: RuoYi-Plus-UniApp
 
 #### 按开发体验选择
 
 - **快速上手**: RuoYi-Vue
 - **现代开发**: RuoYi-Vue-Plus
-- **极致体验**: RuoYi Plus UniApp
+- **极致体验**: RuoYi-Plus-UniApp
 
-RuoYi Plus UniApp 在保持 RuoYi-Vue-Plus 所有优势的基础上，通过深度重构实现了"代码即文档、全栈统一、开发友好"
+RuoYi-Plus-UniApp 在保持 RuoYi-Vue-Plus 所有优势的基础上，通过深度重构实现了"代码即文档、全栈统一、开发友好"
 的核心理念，是面向未来的全栈统一开发平台。**作为闭源商业框架，提供专业的技术支持和定制服务，适合对代码安全性和技术支持有高要求的商业项目。
 **
