@@ -250,13 +250,9 @@ export default defineConfig({
                 {
                     text: '🚀 快速开始',
                     items: [
-                        { text: '概览', link: '/frontend/' },
-                        { text: '快速开始', link: '/frontend/getting-started' },
-                        { text: '环境搭建', link: '/frontend/environment-setup' },
+                        { text: '项目简介', link: '/frontend/' },
+                        { text: '快速启动', link: '/frontend/getting-started' },
                         { text: '项目结构', link: '/frontend/project-structure' },
-                        { text: '开发规范', link: '/frontend/coding-standards' },
-                        { text: '构建配置', link: '/frontend/build-config' },
-                        { text: '技术栈选择', link: '/frontend/tech-stack' }
                     ]
                 },
                 {
