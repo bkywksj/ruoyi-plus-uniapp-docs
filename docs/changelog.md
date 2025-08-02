@@ -161,24 +161,24 @@
 - 全局统一类型命名规范，与后端保持一致 减少使用认知负担 如Bo Vo等
 - 请求响应类型统一使用 `R<T>`，减少冗余代码 ，分页类型统一使用 `R<PageResult<T>>`，减少冗余代码
 
-### 2.2 工具类与钩子函数重构
+### 2.2 工具类与组合函数函数重构
 
 #### Utils部分逻辑 重构为 Composables组合函数 发挥vue3的组合式API优势
 
 - 移除 utils/auth.ts，封装 useToken 到 composables
-- 移除 utils/permission.ts，改为 composables/useAuth 钩子
-- 移除 utils/theme.ts，改为 composables/useTheme 钩子
+- 移除 utils/permission.ts，改为 composables/useAuth 组合函数
+- 移除 utils/theme.ts，改为 composables/useTheme 组合函数
 - 移除 utils/i18n，改为 composables/useI18n，全局使用自定义 i18n
-- 移除animate.ts，改为 composables/useAnimation 钩子
-- 移除dict.ts，改为 composables/useDict 钩子
-- 移除request.ts，改为 composables/useHttp 钩子 使用http.get, http.post 等方法进行请求
-- 移除sse.ts，改为 composables/useSSE 钩子
-- 移除websocket.ts，改为 composables/useWS 钩子
-- 移除i18n.ts，改为 composables/useI18n 钩子
-- 移除auth.ts，改为 composables/useToken 钩子
-- 增加useTableHeight 钩子，优化表格高度计算
-- 增加useSelection 钩子，处理表格全选和取消全选
-- 增加useDownload 钩子，处理文件下载逻辑
+- 移除animate.ts，改为 composables/useAnimation 组合函数
+- 移除dict.ts，改为 composables/useDict 组合函数
+- 移除request.ts，改为 composables/useHttp 组合函数 使用http.get, http.post 等方法进行请求
+- 移除sse.ts，改为 composables/useSSE 组合函数
+- 移除websocket.ts，改为 composables/useWS 组合函数
+- 移除i18n.ts，改为 composables/useI18n 组合函数
+- 移除auth.ts，改为 composables/useToken 组合函数
+- 增加useTableHeight 组合函数，优化表格高度计算
+- 增加useSelection 组合函数，处理表格全选和取消全选
+- 增加useDownload 组合函数，处理文件下载逻辑
 
 #### 工具类功能增强
 
@@ -232,7 +232,7 @@
 #### 表格功能增强
 
 - 移除vxetable，vxetable 组件重构为 el-table 组件，实现跨页选择功能
-- 封装 useSelection 钩子处理表格全选和取消全选
+- 封装 useSelection 组合函数处理表格全选和取消全选
 - 增加 useTableHeight 优化表格显示效果，让分页组件保持固定位置
 
 ### 2.5 权限指令增强
@@ -265,7 +265,7 @@
 
 #### 前端国际化
 
-- 增强useI18n 钩子，增强t函数，实现智能提示
+- 增强useI18n 组合函数，增强t函数，实现智能提示
 - 前端实现菜单国际化，增加统一键名
 - 引入 ElementPlus 国际化资源，优化字体大小选择组件
 
@@ -301,7 +301,7 @@
 #### 目录结构重构
 
 - 重新调整插件目录结构，分拆插件分别维护
-- 复用前端 composables 目录下的部分钩子函数，优化移动端开发体验
+- 复用前端 composables 目录下的部分组合函数函数，优化移动端开发体验
 - 封装 pinia 的相关模块：dict、tabbar、user 等
 
 ### 3.2 网络请求与认证
@@ -321,12 +321,12 @@
 
 ### 3.3 组合式函数与工具类
 
-#### Composables 钩子函数
+#### Composables 组合函数函数
 
-- 复用前端 useDict、useAuth 等钩子函数
-- 增加移动端 usePayment 钩子，封装支付相关逻辑
-- 增加 useScroll 钩子，封装滚动相关逻辑
-- 增加 useTheme 钩子，封装主题相关逻辑
+- 复用前端 useDict、useAuth 等组合函数函数
+- 增加移动端 usePayment 组合函数，封装支付相关逻辑
+- 增加 useScroll 组合函数，封装滚动相关逻辑
+- 增加 useTheme 组合函数，封装主题相关逻辑
 
 #### 工具类函数增强
 
