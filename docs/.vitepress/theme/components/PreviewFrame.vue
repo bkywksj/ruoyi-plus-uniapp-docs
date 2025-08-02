@@ -25,6 +25,9 @@
       </div>
     </div>
 
+    <!-- 分隔线 -->
+    <div class="divider"></div>
+
     <!-- iframe 容器 -->
     <div class="iframe-container">
       <iframe
@@ -106,57 +109,24 @@ watch(() => page.value.frontmatter, (frontmatter) => {
 .demo-model {
   position: fixed;
   top: 80px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  right: 64px;
+  width: 360px;
   z-index: 1000;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-/* 响应式尺寸 */
-@media screen and (min-width: 1440px) {
-  .demo-model {
-    width: 360px;
-    height: calc(360px * 143.6 / 70.9 + 56px);
-    right: 64px;
-  }
-}
-
-@media screen and (min-width: 1280px) and (max-width: 1439px) {
-  .demo-model {
-    width: 310px;
-    height: calc(310px * 143.6 / 70.9 + 56px);
-    right: 48px;
-  }
-}
-
-@media screen and (max-width: 1279px) {
-  .demo-model {
-    width: 280px;
-    height: calc(280px * 143.6 / 70.9 + 56px);
-    right: 24px;
-  }
-}
-
-@media screen and (max-width: 768px) {
-  .demo-model {
-    display: none;
-  }
-}
-
 /* 顶部工具栏 */
 .toolbar {
-  height: 56px;
+  height: 48px;
   background: #ffffff;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px 8px 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 16px;
-  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .toolbar-title {
@@ -171,11 +141,11 @@ watch(() => page.value.frontmatter, (frontmatter) => {
 }
 
 .toolbar-btn {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border: none;
   background: transparent;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -185,7 +155,7 @@ watch(() => page.value.frontmatter, (frontmatter) => {
 }
 
 .toolbar-btn:hover {
-  background: #f8fafc;
+  background: #f1f5f9;
   color: #1e293b;
 }
 
@@ -194,20 +164,31 @@ watch(() => page.value.frontmatter, (frontmatter) => {
   color: #dc2626;
 }
 
+/* 分隔线 */
+.divider {
+  height: 1px;
+  background: #e2e8f0;
+  width: 100%;
+}
+
 /* iframe 容器 */
 .iframe-container {
-  flex: 1;
-  background: #f8fafc;
-  padding: 8px;
+  width: 100%;
+  height: 640px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
 .preview-iframe {
   width: 100%;
   height: 100%;
   border: none;
-  border-radius: 8px;
   background: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: block;
 }
 
 /* 二维码弹窗 */
@@ -286,13 +267,37 @@ watch(() => page.value.frontmatter, (frontmatter) => {
   border-radius: 6px;
 }
 
-/* 暗色主题 */
-@media (prefers-color-scheme: dark) {
+/* 响应式调整 */
+@media screen and (max-width: 1440px) {
   .demo-model {
-    background: #1e293b;
-    border-color: #334155;
+    right: 48px;
+    width: 320px;
   }
 
+  .iframe-container {
+    height: 580px;
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .demo-model {
+    right: 24px;
+    width: 300px;
+  }
+
+  .iframe-container {
+    height: 540px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .demo-model {
+    display: none;
+  }
+}
+
+/* 暗色主题 */
+@media (prefers-color-scheme: dark) {
   .toolbar {
     background: #1e293b;
     border-color: #334155;
@@ -311,8 +316,13 @@ watch(() => page.value.frontmatter, (frontmatter) => {
     color: #e2e8f0;
   }
 
-  .iframe-container {
+  .divider {
     background: #334155;
+  }
+
+  .iframe-container {
+    background: #1e293b;
+    border-color: #334155;
   }
 
   .preview-iframe {
@@ -328,7 +338,7 @@ watch(() => page.value.frontmatter, (frontmatter) => {
   }
 
   .close-qr {
-    color: #94a3b8;
+    color: #6f9ee2;
   }
 
   .close-qr:hover {
