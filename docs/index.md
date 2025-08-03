@@ -19,7 +19,7 @@ hero:
 features:
   - icon: 🚀
     title: 后端重大重构
-    details: 基于ruoyi-vue-plus地毯式重构，MyBatis增强查询，基础服务封装，多租户系统，权限控制，智能代码生成，主子表，支付集成，小程序/公众号集成
+    details: 基于ruoyi-vue-plus地毯式重构，MyBatis Plus增强查询，基础服务封装，多租户系统，权限控制，智能代码生成，主子表，支付集成，小程序/公众号集成
     link: /backend/
   - icon: 💻
     title: 前端全面升级
@@ -47,7 +47,7 @@ highlights:
     details: |
       **代码即文档** - 看代码即是看文档，完善的注释和命名规范
       **统一命名** - 接口路径、方法名、变量名语义化，快速定位
-      **增强查询** - PlusLambdaQuery、PlusQuery简化MyBatis查询
+      **增强查询** - PlusLambdaQuery、PlusQuery简化MyBatis Plus查询
       **权限完善** - 模块:表:操作三级权限标识符，精确控制
       **模块化** - 业务模块独立，便于维护和扩展
 

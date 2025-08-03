@@ -109,7 +109,7 @@ export default defineConfig({
                         { text: '邮件服务 (mail)', link: '/backend/common/mail' },
                         { text: '小程序集成 (miniapp)', link: '/backend/common/miniapp' },
                         { text: '公众号集成 (mp)', link: '/backend/common/mp' },
-                        { text: 'MyBatis增强 (mybatis)', link: '/backend/common/mybatis' },
+                        { text: 'MyBatisPlus增强 (mybatis)', link: '/backend/common/mybatis' },
                         { text: 'OSS存储 (oss)', link: '/backend/common/oss' },
                         { text: '支付集成 (pay)', link: '/backend/common/pay' },
                         { text: '限流组件 (ratelimiter)', link: '/backend/common/ratelimiter' },

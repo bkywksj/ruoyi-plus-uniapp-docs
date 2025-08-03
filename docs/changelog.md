@@ -1,4 +1,4 @@
-# Ruoyi Plus Uniapp新特性
+# Ruoyi-Plus-Uniapp新特性
 
 ### 核心理念
 

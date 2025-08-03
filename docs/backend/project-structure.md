@@ -89,7 +89,7 @@
 
 ### ⚡ **通用模块 (ruoyi-common)**
 
-- **基础设施**: core、web、mybatis 等核心功能
+- **基础设施**: core、web、mybatisplus 等核心功能
 - **中间件集成**: redis、oss、pay、sms 等服务组件
 - **安全保障**: security、encrypt、sensitive 等安全模块
 - **通讯机制**: sse、websocket 等实时通讯
