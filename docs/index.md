@@ -13,7 +13,10 @@ hero:
       text: 开始使用
       link: /backend/getting-started
     - theme: alt
-      text: 演示demo
+      text: 介绍视频
+      link: https://www.bilibili.com/video/BV1YrtMzvEaT/
+    - theme: alt
+      text: 演示
       link: /demo
 
 features:
