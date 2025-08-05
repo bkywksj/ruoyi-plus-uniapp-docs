@@ -1,5 +1,7 @@
 # Ruoyi-Plus-Uniapp新特性
 
+- **[📺新特性全面解析](https://www.bilibili.com/video/BV1YrtMzvEaT/)**
+
 ### 核心理念
 
 - **代码即文档** - 通过规范化命名和完善注释实现代码自解释
