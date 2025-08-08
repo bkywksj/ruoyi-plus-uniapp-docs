@@ -84,6 +84,7 @@ export default defineConfig({
                     text: '📦 公共模块 (ruoyi-common)',
                     collapsed: true,
                     items: [
+                        { text: '依赖版本管理 (bom)', link: '/backend/common/bom' },
                         { text: '核心模块 (core)', link: '/backend/common/core' },
                         { text: '文档生成 (doc)', link: '/backend/common/doc' },
                         { text: '数据加密 (encrypt)', link: '/backend/common/encrypt' },
