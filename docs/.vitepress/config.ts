@@ -82,10 +82,20 @@ export default defineConfig({
                 },
                 {
                     text: '📦 公共模块 (ruoyi-common)',
-                    collapsed: true,
+                    collapsed: false,
                     items: [
                         { text: '依赖版本管理 (bom)', link: '/backend/common/bom' },
-                        { text: '核心模块 (core)', link: '/backend/common/core' },
+                        {
+                            text: '核心模块 (core)',
+                            collapsed: true,
+                            items: [
+                                { text: '模块概览', link: '/backend/common/core/' },
+                                { text: '配置与常量', link: '/backend/common/core/config' },
+                                { text: '数据模型', link: '/backend/common/core/domain' },
+                                { text: '工具类与服务', link: '/backend/common/core/utils' },
+                                { text: '异常与验证', link: '/backend/common/core/exception' }
+                            ]
+                        },
                         { text: '文档生成 (doc)', link: '/backend/common/doc' },
                         { text: '数据加密 (encrypt)', link: '/backend/common/encrypt' },
                         { text: 'Excel处理 (excel)', link: '/backend/common/excel' },
