@@ -75,23 +75,9 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🏗️ 架构设计',
-                    items: [
-                        { text: '整体架构', link: '/backend/architecture/overview' },
-                        { text: '分层架构', link: '/backend/architecture/layered-architecture' },
-                        { text: '模块化设计', link: '/backend/architecture/modular-design' },
-                        { text: '设计模式', link: '/backend/architecture/design-patterns' },
-                        { text: '扩展机制', link: '/backend/architecture/extension-mechanism' }
-                    ]
-                },
-                {
                     text: '⚙️ 主应用 (ruoyi-admin)',
                     items: [
-                        { text: '启动配置', link: '/backend/admin/startup-config' },
-                        { text: '集成配置', link: '/backend/admin/integration-config' },
-                        { text: '环境配置', link: '/backend/admin/env-config' },
-                        { text: '打包部署', link: '/backend/admin/packaging' },
-                        { text: '性能调优', link: '/backend/admin/performance-tuning' }
+                        { text: '模块解析', link: '/backend/admin/module-resolution' }
                     ]
                 },
                 {
