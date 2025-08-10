@@ -1,4 +1,4 @@
-# ruoyi-admin 模块解析文档
+# ruoyi-admin 模块解析
 
 ## 1. 模块概述
 

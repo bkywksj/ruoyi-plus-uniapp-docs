@@ -90,10 +90,13 @@ export default defineConfig({
                             collapsed: true,
                             items: [
                                 { text: '模块概览', link: '/backend/common/core/' },
-                                { text: '配置与常量', link: '/backend/common/core/config' },
-                                { text: '数据模型', link: '/backend/common/core/domain' },
-                                { text: '工具类与服务', link: '/backend/common/core/utils' },
-                                { text: '异常与验证', link: '/backend/common/core/exception' }
+                                { text: '配置管理', link: '/backend/common/core/config' },
+                                { text: '数据模型与DTO', link: '/backend/common/core/domain' },
+                                { text: '工具类库', link: '/backend/common/core/utils' },
+                                { text: '异常处理', link: '/backend/common/core/exception' },
+                                { text: '参数校验', link: '/backend/common/core/validation' },
+                                { text: '字典枚举', link: '/backend/common/core/enums' },
+                                { text: '通用服务接口', link: '/backend/common/core/service' }
                             ]
                         },
                         { text: '文档生成 (doc)', link: '/backend/common/doc' },
