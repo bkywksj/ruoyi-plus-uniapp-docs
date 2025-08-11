@@ -89,7 +89,7 @@ export default defineConfig({
                             text: '核心模块 (core)',
                             collapsed: true,
                             items: [
-                                { text: '模块概览', link: '/backend/common/core/' },
+                                { text: '模块概览', link: '/backend/common/core' },
                                 { text: '配置管理', link: '/backend/common/core/config' },
                                 { text: '数据模型与DTO', link: '/backend/common/core/domain' },
                                 { text: '工具类库', link: '/backend/common/core/utils' },
@@ -105,8 +105,8 @@ export default defineConfig({
                             collapsed: false,
                             items: [
                                 { text: '概览与快速入门', link: '/backend/common/encrypt' },
-                                { text: '数据库字段加密', link: '/backend/common/database-encryption' },
-                                { text: 'API接口加密', link: '/backend/common/api-encryption' }
+                                { text: '数据库字段加密', link: '/backend/common/encrypt/database-encryption' },
+                                { text: 'API接口加密', link: '/backend/common/encrypt/api-encryption' }
                             ]
                         },
                         { text: 'Excel处理 (excel)', link: '/backend/common/excel' },
