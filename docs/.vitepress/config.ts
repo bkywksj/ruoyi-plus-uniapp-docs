@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress'
-import llmstxt from 'vitepress-plugin-llms'
+import llmsPlugin from 'vitepress-plugin-llms'
 
 export default defineConfig({
     title: 'ruoyi-plus-uniapp 开发文档',
@@ -817,9 +817,7 @@ export default defineConfig({
         define: {
             __COMPONENT_PREVIEW__: true
         },
-        plugins: [llmstxt({
-            domain: 'https://ruoyi.plus',
-        }),],
+        plugins: [llmsPlugin() as any],
         build: {
             chunkSizeWarningLimit: 1600
         },
