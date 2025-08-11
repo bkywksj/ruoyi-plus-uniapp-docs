@@ -100,7 +100,15 @@ export default defineConfig({
                             ]
                         },
                         { text: '文档生成 (doc)', link: '/backend/common/doc' },
-                        { text: '数据加密 (encrypt)', link: '/backend/common/encrypt' },
+                        {
+                            text: '数据加密 (Encryption)',
+                            collapsed: false,
+                            items: [
+                                { text: '概览与快速入门', link: '/backend/common/encrypt' },
+                                { text: '数据库字段加密', link: '/backend/common/database-encryption' },
+                                { text: 'API接口加密', link: '/backend/common/api-encryption' }
+                            ]
+                        },
                         { text: 'Excel处理 (excel)', link: '/backend/common/excel' },
                         { text: '幂等处理 (idempotent)', link: '/backend/common/idempotent' },
                         { text: '任务调度 (job)', link: '/backend/common/job' },
