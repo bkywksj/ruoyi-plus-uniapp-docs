@@ -181,5 +181,5 @@ public class UserController {
 
 ## 下一步
 
-- 查看 [数据库字段加密](./database-encryption.md) 了解详细的字段加密配置
-- 查看 [API接口加密](./api-encryption.md) 了解接口传输加密的实现
+- 查看 [数据库字段加密](./encrypt/database-encryption.md) 了解详细的字段加密配置
+- 查看 [API接口加密](./encrypt/api-encryption.md) 了解接口传输加密的实现
