@@ -817,16 +817,120 @@ export default defineConfig({
         define: {
             __COMPONENT_PREVIEW__: true
         },
-        plugins: [llmsPlugin() as any],
+        plugins: [
+            // llmsPlugin 配置
+            llmsPlugin({
+                // 基础配置
+                generateLLMsFullTxt: true,  // 生成完整的 llms-full.txt 文件
+                title: 'ruoyi-plus-uniapp 开发文档',  // 设置文档标题
+
+                // 文件过滤配置
+                ignoreFiles: [
+                    'node_modules/**',
+                    '.vitepress/**',
+                    'dist/**',
+                    '**/*.config.*',
+                    'package*.json',
+                    '.git/**',
+                    '.github/**',
+                    '.vscode/**',
+                    '**/*.md~',
+                    '**/.DS_Store'
+                ],
+
+                // 自定义模板变量
+                customTemplateVariables: {
+                    description: '全栈开发文档 - 后端、前端、移动端完整指南',
+                    version: '1.0.0',
+                    author: '若依工作室',
+                    website: 'https://ruoyi.plus'
+                },
+
+                // 自定义 llms.txt 模板
+                customLLMsTxtTemplate: `# {title}
+
+{description}
+
+## 文档结构
+
+本文档包含以下主要部分：
+
+### 🚀 后端开发
+- 快速开始和环境配置
+- 主应用模块详解  
+- 公共模块组件
+- 业务模块开发
+- 扩展模块使用
+- 核心功能详解
+- API接口文档
+- 开发指南
+- 部署运维
+
+### 🎨 前端开发
+- Vue3 + TypeScript 项目架构
+- 路由系统和状态管理
+- 组件系统和布局系统
+- 工具库和组合式函数
+- 样式系统和国际化
+- 构建部署
+
+### 📱 移动端开发
+- UniApp跨平台开发
+- 组件系统和API接口
+- 平台适配和性能优化
+- 调试测试和打包发布
+
+### 📋 最佳实践
+- 开发规范和架构设计
+- 性能优化和安全指南
+- 部署运维
+
+## 使用说明
+
+此文档为 LLM 友好格式，包含完整的技术文档内容，适用于：
+- AI 辅助开发
+- 技术问题咨询  
+- 代码生成和优化建议
+- 架构设计参考
+
+版本: {version}
+作者: {author}
+网站: {website}
+
+---
+
+以下是各模块的详细文档内容：
+
+`,
+
+                // 实验性功能：支持子目录
+                experimental: {
+                    depth: 1  // 在根目录和一级子目录生成 llms 文件
+                }
+            }) as any
+        ],
         build: {
-            chunkSizeWarningLimit: 1600
+            chunkSizeWarningLimit: 1600,
+            // 确保构建时正确处理文件编码
+            rollupOptions: {
+                output: {
+                    // 确保输出文件使用正确的编码
+                    charset: 'utf8'
+                } as any
+            }
         },
         optimizeDeps: {
             exclude: ['vitepress']
+        },
+        // 确保开发和构建时都能正确处理文件编码
+        server: {
+            fs: {
+                allow: ['..']
+            }
         }
     },
 
-    // Markdown配置
+    // Markdown配置 - 添加编码配置
     markdown: {
         lineNumbers: true,
         image: {
