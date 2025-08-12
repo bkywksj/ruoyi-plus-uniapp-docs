@@ -809,7 +809,10 @@ export default defineConfig({
         // 深色模式切换标题
         darkModeSwitchLabel: '主题',
     },
-
+    ignoreDeadLinks: [
+        // 忽略所有本地链接
+        /^http:\/\/localhost/,
+    ],
     // Vite配置
     vite: {
         // 为组件预览功能配置
