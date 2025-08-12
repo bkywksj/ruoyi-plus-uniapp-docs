@@ -62,7 +62,7 @@ pnpm install
 
 编辑 `env/.env` 配置文件：
 
-```env
+```text
 # 开发环境配置
 VITE_APP_ENV=development
 
