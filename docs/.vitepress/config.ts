@@ -10,7 +10,6 @@ export default defineConfig({
 
     head: [
         ['link', { rel: 'icon', href: '/favicon.ico' }],
-        ['meta', { charset: 'UTF-8' }],
         ['meta', { name: 'theme-color', content: '#8b5cf6' }], // 调整为紫色主题
         ['meta', { property: 'og:type', content: 'website' }],
         ['meta', { property: 'og:locale', content: 'zh-CN' }],
