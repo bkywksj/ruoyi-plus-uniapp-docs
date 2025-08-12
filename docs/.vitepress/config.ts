@@ -68,7 +68,6 @@ export default defineConfig({
                     text: '🚀 快速开始',
                     items: [
                         { text: '项目简介', link: '/backend/' },
-                        { text: '环境要求', link: '/backend/requirements' },
                         { text: '快速启动', link: '/backend/getting-started' },
                         { text: '项目结构', link: '/backend/project-structure' },
                         { text: '配置文件', link: '/backend/configuration' }

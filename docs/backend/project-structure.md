@@ -103,5 +103,5 @@
 
 ### 📊 **扩展模块 (ruoyi-extend)**
 
-- **系统监控**: MonitorAdmin
-- **任务调度**: SnailJobServer
+- **系统监控**: MonitorAdmin - 基于 Spring Boot Admin 的服务监控
+- **任务调度**: SnailJobServer - 分布式任务调度服务
