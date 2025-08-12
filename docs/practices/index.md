@@ -4,7 +4,7 @@
 
 ## 📋 llms
 
-文档提供了llms大模型文档提示生成
+文档提供了llms大模型文档提示生成（目前直接打开乱码，保存下来就显示正常了）
 
 - [llms.txt](https://ruoyi.plus/llms.txt)
 - [llms-full.txt](https://ruoyi.plus/llms-full.txt)
