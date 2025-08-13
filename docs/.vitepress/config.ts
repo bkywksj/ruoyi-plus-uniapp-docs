@@ -74,14 +74,14 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '⚙️ 主应用 (ruoyi-admin)',
+                    text: '主应用(ruoyi-admin)',
                     items: [
                         { text: '模块解析', link: '/backend/admin/module-resolution' }
                     ]
                 },
                 {
-                    text: '📦 公共模块 (ruoyi-common)',
-                    collapsed: false,
+                    text: '公共模块(ruoyi-common)',
+                    collapsed: true,
                     items: [
                         { text: '依赖版本管理 (bom)', link: '/backend/common/bom' },
                         {
@@ -134,7 +134,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🔧 业务模块 (ruoyi-modules)',
+                    text: '业务模块(ruoyi-modules)',
                     items: [
                         { text: '系统模块 (system)', link: '/backend/modules/system' },
                         { text: '代码生成 (generator)', link: '/backend/modules/generator' },
@@ -144,7 +144,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🎯 扩展模块 (ruoyi-extend)',
+                    text: '扩展模块(ruoyi-extend)',
                     items: [
                         { text: '监控管理 (monitor-admin)', link: '/backend/extend/monitor-admin' },
                         { text: '任务服务 (snailjob-server)', link: '/backend/extend/snailjob-server' },
