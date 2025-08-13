@@ -130,7 +130,7 @@ export default defineConfig({
                         { text: 'SSE推送 (sse)', link: '/backend/common/sse' },
                         { text: '多租户 (tenant)', link: '/backend/common/tenant' },
                         { text: 'Web组件 (web)', link: '/backend/common/web' },
-                        { text: 'WebSocket (websocket)', link: '/backend/common/websocket' }
+                        { text: '通讯 (websocket)', link: '/backend/common/websocket' }
                     ]
                 },
                 {
