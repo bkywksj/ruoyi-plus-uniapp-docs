@@ -10,6 +10,12 @@
     --vp-c-bg-sidebar: white;
 }
 
+/* 暗黑模式下的侧边栏背景 */
+.dark {
+    --vp-sidebar-bg-color: #161618;
+    --vp-c-bg-sidebar: #161618;
+}
+
 /* 自定义容器样式 */
 .custom-block.tip {
     border-color: var(--vp-c-brand-1);
