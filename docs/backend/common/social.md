@@ -145,7 +145,7 @@ justauth:
 | client-id | String | 是 | 应用ID/客户端ID |
 | client-secret | String | 是 | 应用密钥/客户端密钥 |
 | redirect-uri | String | 是 | 授权回调地址 |
-| scopes | List<String> | 否 | OAuth授权范围 |
+| scopes | List&lt;String&gt; | 否 | OAuth授权范围 |
 | agent-id | String | 否 | 企业微信应用ID |
 | server-url | String | 否 | 自建服务器地址（MaxKey/TopIAM/Gitea） |
 | alipay-public-key | String | 否 | 支付宝公钥 |
