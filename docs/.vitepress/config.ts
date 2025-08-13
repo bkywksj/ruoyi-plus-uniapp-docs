@@ -153,53 +153,6 @@ export default defineConfig({
                 },
 
                 {
-                    text: '🎨 核心功能详解',
-                    items: [
-                        { text: '用户权限管理', link: '/backend/features/user-permission' },
-                        { text: '多租户系统', link: '/backend/features/multi-tenant' },
-                        { text: '代码生成器', link: '/backend/features/code-generator' },
-                        { text: '文件存储', link: '/backend/features/file-storage' },
-                        { text: '缓存机制', link: '/backend/features/cache' },
-                        { text: '任务调度', link: '/backend/features/job-scheduling' },
-                        { text: '系统监控', link: '/backend/features/monitoring' },
-                        { text: '日志审计', link: '/backend/features/logging-audit' },
-                        { text: '数据字典', link: '/backend/features/data-dict' },
-                        { text: '参数配置', link: '/backend/features/param-config' },
-                        { text: '通知公告', link: '/backend/features/notification' },
-                        { text: '在线用户', link: '/backend/features/online-users' },
-                        { text: '服务监控', link: '/backend/features/service-monitor' },
-                        { text: 'Excel导入导出', link: '/backend/features/excel-operations' },
-                        { text: '支付集成', link: '/backend/features/payment-integration' },
-                        { text: '微信小程序', link: '/backend/features/wechat-miniapp' },
-                        { text: '微信公众号', link: '/backend/features/wechat-mp' }
-                    ]
-                },
-                {
-                    text: '📡 API 接口文档',
-                    collapsed: true,
-                    items: [
-                        { text: '接口规范', link: '/backend/api/specification' },
-                        { text: '认证接口', link: '/backend/api/auth-api' },
-                        { text: '用户管理接口', link: '/backend/api/user-api' },
-                        { text: '角色权限接口', link: '/backend/api/role-api' },
-                        { text: '部门管理接口', link: '/backend/api/dept-api' },
-                        { text: '岗位管理接口', link: '/backend/api/post-api' },
-                        { text: '菜单管理接口', link: '/backend/api/menu-api' },
-                        { text: '字典管理接口', link: '/backend/api/dict-api' },
-                        { text: '参数配置接口', link: '/backend/api/config-api' },
-                        { text: '通知公告接口', link: '/backend/api/notice-api' },
-                        { text: '文件上传接口', link: '/backend/api/upload-api' },
-                        { text: '代码生成接口', link: '/backend/api/generator-api' },
-                        { text: '系统监控接口', link: '/backend/api/monitor-api' },
-                        { text: '定时任务接口', link: '/backend/api/job-api' },
-                        { text: '系统日志接口', link: '/backend/api/log-api' },
-                        { text: '在线用户接口', link: '/backend/api/online-api' },
-                        { text: '租户管理接口', link: '/backend/api/tenant-api' },
-                        { text: '支付接口', link: '/backend/api/payment-api' },
-                        { text: '业务接口', link: '/backend/api/business-api' }
-                    ]
-                },
-                {
                     text: '👨‍💻 开发指南',
                     collapsed: true,
                     items: [
@@ -228,27 +181,6 @@ export default defineConfig({
                         { text: '性能优化', link: '/backend/development/performance' },
                         { text: '安全开发', link: '/backend/development/security' },
                         { text: '最佳实践', link: '/backend/development/best-practices' }
-                    ]
-                },
-                {
-                    text: '🚀 部署运维',
-                    collapsed: true,
-                    items: [
-                        { text: '部署概览', link: '/backend/deployment/overview' },
-                        { text: '环境准备', link: '/backend/deployment/environment-prep' },
-                        { text: '数据库部署', link: '/backend/deployment/database-deployment' },
-                        { text: '应用部署', link: '/backend/deployment/app-deployment' },
-                        { text: 'Docker部署', link: '/backend/deployment/docker-deployment' },
-                        { text: 'Docker Compose', link: '/backend/deployment/docker-compose' },
-                        { text: 'Nginx配置', link: '/backend/deployment/nginx-config' },
-                        { text: 'SSL证书配置', link: '/backend/deployment/ssl-certificate' },
-                        { text: '域名配置', link: '/backend/deployment/domain-config' },
-                        { text: '负载均衡', link: '/backend/deployment/load-balancing' },
-                        { text: '监控告警', link: '/backend/deployment/monitoring-alerting' },
-                        { text: '日志管理', link: '/backend/deployment/log-management' },
-                        { text: '安全配置', link: '/backend/deployment/security-config' },
-                        { text: '版本升级', link: '/backend/deployment/version-upgrade' },
-                        { text: '故障排查', link: '/backend/deployment/troubleshooting' }
                     ]
                 }
             ],
@@ -351,6 +283,26 @@ export default defineConfig({
                     ]
                 },
                 {
+                    text: '🎣 组合式函数 (composables)',
+                    collapsed: true,
+                    items: [
+                        { text: '组合式函数概览', link: '/frontend/composables/overview' },
+                        { text: 'useRequest', link: '/frontend/composables/use-request' },
+                        { text: 'useToken', link: '/frontend/composables/use-token' },
+                        { text: 'useAuth', link: '/frontend/composables/use-auth' },
+                        { text: 'useDict', link: '/frontend/composables/use-dict' },
+                        { text: 'useI18n', link: '/frontend/composables/use-i18n' },
+                        { text: 'useTheme', link: '/frontend/composables/use-theme' },
+                        { text: 'useTitle', link: '/frontend/composables/use-title' },
+                        { text: 'useTableHeight', link: '/frontend/composables/use-table-height' },
+                        { text: 'useSelection', link: '/frontend/composables/use-selection' },
+                        { text: 'useDownload', link: '/frontend/composables/use-download' },
+                        { text: 'useDialog', link: '/frontend/composables/use-dialog' },
+                        { text: 'useSSE', link: '/frontend/composables/use-sse' },
+                        { text: 'useWebSocket', link: '/frontend/composables/use-websocket' }
+                    ]
+                },
+                {
                     text: '🛠️ 工具库 (utils)',
                     collapsed: true,
                     items: [
@@ -378,26 +330,6 @@ export default defineConfig({
                         { text: '复制工具', link: '/frontend/utils/copy' },
                         { text: 'To工具类', link: '/frontend/utils/to' },
                         { text: 'Boolean工具', link: '/frontend/utils/boolean' }
-                    ]
-                },
-                {
-                    text: '🎣 组合式函数 (composables)',
-                    collapsed: true,
-                    items: [
-                        { text: '组合式函数概览', link: '/frontend/composables/overview' },
-                        { text: 'useRequest', link: '/frontend/composables/use-request' },
-                        { text: 'useToken', link: '/frontend/composables/use-token' },
-                        { text: 'useAuth', link: '/frontend/composables/use-auth' },
-                        { text: 'useDict', link: '/frontend/composables/use-dict' },
-                        { text: 'useI18n', link: '/frontend/composables/use-i18n' },
-                        { text: 'useTheme', link: '/frontend/composables/use-theme' },
-                        { text: 'useTitle', link: '/frontend/composables/use-title' },
-                        { text: 'useTableHeight', link: '/frontend/composables/use-table-height' },
-                        { text: 'useSelection', link: '/frontend/composables/use-selection' },
-                        { text: 'useDownload', link: '/frontend/composables/use-download' },
-                        { text: 'useDialog', link: '/frontend/composables/use-dialog' },
-                        { text: 'useSSE', link: '/frontend/composables/use-sse' },
-                        { text: 'useWebSocket', link: '/frontend/composables/use-websocket' }
                     ]
                 },
                 {
@@ -465,19 +397,6 @@ export default defineConfig({
                         { text: '动态翻译', link: '/frontend/i18n/dynamic-translation' },
                         { text: '国际化最佳实践', link: '/frontend/i18n/i18n-practices' }
                     ]
-                },
-                {
-                    text: '🚀 构建部署',
-                    items: [
-                        { text: '构建配置', link: '/frontend/build/build-config' },
-                        { text: '环境变量', link: '/frontend/build/environment-variables' },
-                        { text: '生产构建', link: '/frontend/build/production-build' },
-                        { text: '静态资源处理', link: '/frontend/build/static-assets' },
-                        { text: 'CDN配置', link: '/frontend/build/cdn-config' },
-                        { text: '部署到Nginx', link: '/frontend/build/nginx-deploy' },
-                        { text: '部署到Docker', link: '/frontend/build/docker-deploy' },
-                        { text: 'CI/CD流程', link: '/frontend/build/cicd' }
-                    ]
                 }
             ],
 
@@ -516,8 +435,6 @@ export default defineConfig({
                         { text: '系统接口', link: '/mobile/api/system' },
                         { text: '文件接口', link: '/mobile/api/file' },
                         { text: '支付接口', link: '/mobile/api/payment' },
-                        { text: '微信小程序接口', link: '/mobile/api/wechat' },
-                        { text: '错误处理', link: '/mobile/api/error-handling' }
                     ]
                 },
                 {
