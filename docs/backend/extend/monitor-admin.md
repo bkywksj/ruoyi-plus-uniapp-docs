@@ -165,33 +165,7 @@ notify:
 ### 6.1. 本地启动
 - 在 IDE 中找到 `MonitorAdmin.java` 类。
 - 直接运行其 `main` 方法即可启动。
-- 启动后，控制台会打印访问地址。访问 `http://localhost:9090/admin`，并使用 `application.yml` 中配置的用户名和密码登录。
-
-### 6.2. 打包与部署
-1.  在项目根目录下，执行 Maven 命令进行打包：
-    ```bash
-    mvn clean package -DskipTests
-    ```
-2.  命令执行成功后，会在 `ruoyi-extend/ruoyi-monitor-admin/target` 目录下生成 `ruoyi-monitor-admin.jar` 文件。
-3.  使用 `java -jar` 命令运行该 Jar 包：
-    ```bash
-    java -jar ruoyi-monitor-admin.jar
-    ```
-
-### 6.3. Docker 部署
-项目已提供 `Dockerfile`，可以方便地进行容器化部署。
-1.  **构建 Docker 镜像**:
-    ```bash
-    # 确保已先执行 mvn package 打包
-    # 在 ruoyi-extend/ruoyi-monitor-admin 目录下执行
-    docker build -t ruoyi-monitor-admin:latest .
-    ```
-2.  **运行 Docker 容器**:
-    ```bash
-    docker run -d -p 9090:9090 --name monitor-admin ruoyi-monitor-admin:latest
-    ```
-    - `-d`: 后台运行容器。
-    - `-p 9090:9090`: 将主机的 9090 端口映射到容器的 9090 端口。
+- 启动后，控制台会打印访问地址。访问 `http://localhost:9090/admin` ，并使用 `application.yml` 中配置的用户名和密码登录。
 
 ---
 

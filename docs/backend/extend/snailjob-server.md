@@ -129,52 +129,6 @@ spring.boot.admin.client:
 
 ---
 
-## 6. 部署与运行
-
-### 6.1. 环境准备
-- **数据库**: 需要一个正在运行的 MySQL 实例。
-- **创建数据库**: 手动创建一个名为 `ryplus_uni_snailjob` 的数据库（字符集推荐 `utf8mb4`）。SnailJob 服务端在首次启动时，会自动在该库中创建所需的表结构。
-
-### 6.2. 本地启动
-1.  修改 `src/main/resources/application-dev.yml` 文件，配置正确的数据库连接信息（URL, 用户名, 密码）。
-2.  在 IDE 中找到 `plus.ruoyi.snailjob.SnailJobServer.java` 类。
-3.  直接运行其 `main` 方法。
-4.  启动成功后，访问 `http://localhost:8800/snail-job` 即可打开 SnailJob 的管理后台。
-
-### 6.3. 打包与部署
-1.  在项目根目录下，执行 Maven 命令进行打包：
-    ```bash
-    mvn clean package -DskipTests
-    ```
-2.  打包完成后，会在 `ruoyi-extend/ruoyi-snailjob-server/target` 目录下生成 `ruoyi-snailjob-server.jar` 文件。
-3.  使用 `java -jar` 命令运行，并通过 `-Dspring.profiles.active=prod` 指定生产环境配置：
-    ```bash
-    java -jar -Dspring.profiles.active=prod ruoyi-snailjob-server.jar
-    ```
-
-### 6.4. Docker 部署
-项目已提供 `Dockerfile` 用于容器化部署。
-1.  **构建 Docker 镜像** (在 `ruoyi-extend/ruoyi-snailjob-server` 目录下执行):
-    ```bash
-    # 确保已先执行 mvn package 打包
-    docker build -t ruoyi-snailjob-server:latest .
-    ```
-2.  **运行 Docker 容器**:
-    ```bash
-    docker run -d \
-      -p 8800:8800 \
-      -p 17888:17888 \
-      -e "SPRING_PROFILES_ACTIVE=prod" \
-      --name snailjob-server \
-      ruoyi-snailjob-server:latest
-    ```
-    - `-p 8800:8800`: 映射 Web 管理后台端口。
-    - `-p 17888:17888`: 映射 RPC 通信端口，客户端需要访问此端口。
-    - `-e "SPRING_PROFILES_ACTIVE=prod"`: 设置环境变量以激活生产配置。
-    - **注意**: 在 Docker 环境中，需要确保容器可以访问到数据库。通常需要修改配置文件中的数据库 `url`，将其中的 `localhost` 改为数据库容器的名称或宿主机的 IP 地址。
-
----
-
 ## 7. 客户端接入指南
 
 对于需要执行分布式任务的微服务，可以作为 SnailJob Client 接入。
