@@ -88,13 +88,23 @@
 │
 ├── 📁 vite                         // 插件目录
 │
+├── 📄 .editorconfig                // 编辑器配置
+├── 📄 .eslintignore                // ESLint 忽略文件配置
+├── 📄 .eslintrc-auto-import.json   // ESLint 自动导入配置
 ├── 📄 .gitignore                   // Git 忽略文件配置
-├── 📄 eslint.config.mjs            // ESLint 配置
-├── 📄 package.json                 // 项目依赖配置
-├── 📄 pnpm-lock.yaml               // 依赖锁定文件
-├── 📄 prettier.config.js           // Prettier 配置
+├── 📄 .npmrc                       // npm 配置文件
+├── 📄 .prettierignore              // Prettier 忽略文件配置
+├── 📄 .prettierrc.js               // Prettier 格式化配置
+├── 📄 eslint.config.mjs            // ESLint 新版配置
+├── 📄 favicon.png                  // 网站图标
+├── 📄 index.html                   // HTML 入口文件
+├── 📄 manifest.config.ts           // 应用清单配置
+├── 📄 package.json                 // 项目依赖和脚本配置
+├── 📄 pages.config.ts              // 页面路由配置
+├── 📄 pnpm-lock.yaml               // pnpm 依赖锁定文件
+├── 📄 prettier.config.js           // Prettier 配置（备用）
 ├── 📄 README.md                    // 项目说明文档
 ├── 📄 tsconfig.json                // TypeScript 配置
-├── 📄 unocss.config.ts             // UnoCSS 配置
-└── 📄 vite.config.ts               // Vite 构建配置
+├── 📄 uno.config.ts                // UnoCSS 原子化 CSS 配置
+└── 📄 vite.config.ts               // Vite 构建工具配置
 ```
