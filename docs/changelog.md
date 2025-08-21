@@ -2,6 +2,11 @@
 
 - **[📺新特性全面解析](https://www.bilibili.com/video/BV1YrtMzvEaT/)**
 
+### 分支说明
+- master: 默认分支，多租户分支
+- workflow: 多租户工作流分支
+- single：移除所有多租户逻辑的分支
+
 ### 核心理念
 
 - **代码即文档** - 通过规范化命名和完善注释实现代码自解释
