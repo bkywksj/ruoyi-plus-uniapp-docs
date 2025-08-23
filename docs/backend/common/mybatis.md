@@ -189,7 +189,7 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, User, UserBo, U
 
     // 部门数据权限 - 只能查看本部门及下级部门数据
     @DataPermission({
-        @DataColumn(key = "deptName", value = "dept_id")
+        @DataColumn(key = "deptName", value = "create_dept")
     })
     @Override
     public List<UserVo> list(UserBo bo) {
@@ -414,7 +414,7 @@ public List<UserVo> searchUsers(UserSearchBo bo) {
 ```java
 // 在Service方法上添加数据权限注解
 @DataPermission({
-    @DataColumn(key = "deptName", value = "dept_id"),
+    @DataColumn(key = "deptName", value = "create_dept"),
     @DataColumn(key = "userName", value = "create_by")
 })
 public PageResult<UserVo> page(UserBo bo, PageQuery pageQuery) {
