@@ -166,7 +166,6 @@ export default defineConfig({
                             collapsed: true,
                             items: [
                                 { text: '模块概览', link: '/backend/modules/business' },
-                                { text: 'API接口 (api)', link: '/backend/modules/business/api' },
                                 { text: '基础服务 (base)', link: '/backend/modules/business/base' },
                                 { text: '商城模块 (mall)', link: '/backend/modules/business/mall' },
                                 { text: '任务调度 (job)', link: '/backend/modules/business/job' }
