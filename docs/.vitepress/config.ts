@@ -171,11 +171,7 @@ export default defineConfig({
                                 { text: '商城模块 (mall)', link: '/backend/modules/business/mall' },
                                 { text: '任务调度 (job)', link: '/backend/modules/business/job' }
                             ]
-                        },
-                        { text: '模块开发指南', link: '/backend/modules/development-guide' },
-                        { text: '自定义模块', link: '/backend/modules/custom-module' },
-                        { text: '模块开发指南', link: '/backend/modules/development-guide' },
-                        { text: '自定义模块', link: '/backend/modules/custom-module' }
+                        }
                     ]
                 },
                 {
