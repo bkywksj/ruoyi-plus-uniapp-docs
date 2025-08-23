@@ -182,8 +182,7 @@ export default defineConfig({
                     text: '扩展模块(ruoyi-extend)',
                     items: [
                         { text: '监控管理 (monitor-admin)', link: '/backend/extend/monitor-admin' },
-                        { text: '任务服务 (snailjob-server)', link: '/backend/extend/snailjob-server' },
-                        { text: '扩展开发指南', link: '/backend/extend/extension-development' }
+                        { text: '任务服务 (snailjob-server)', link: '/backend/extend/snailjob-server' }
                     ]
                 }
             ],
