@@ -17,8 +17,8 @@
 
 ### 推荐工具
 - **IDE**: IDEA / VS Code
-- **版本管理**: Git
-- **Node管理**: nvm (用于多版本管理)
+- **版本管理**: [Git](https://git-scm.com/downloads)
+- **Node管理**: [nvm (用于多版本管理)](https://github.com/coreybutler/nvm-windows)
 
 ## 🛠️ 环境准备
 
