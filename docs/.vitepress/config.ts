@@ -136,9 +136,44 @@ export default defineConfig({
                 {
                     text: '业务模块(ruoyi-modules)',
                     items: [
-                        { text: '系统模块 (system)', link: '/backend/modules/system' },
-                        { text: '代码生成 (generator)', link: '/backend/modules/generator' },
-                        { text: '业务模块 (business)', link: '/backend/modules/business' },
+                        {
+                            text: '系统模块 (system)',
+                            collapsed: true,
+                            items: [
+                                { text: '模块概览', link: '/backend/modules/system' },
+                                { text: '认证授权 (auth)', link: '/backend/modules/system/auth' },
+                                { text: '系统配置 (config)', link: '/backend/modules/system/config' },
+                                { text: '核心功能 (core)', link: '/backend/modules/system/core' },
+                                { text: '字典管理 (dict)', link: '/backend/modules/system/dict' },
+                                { text: '系统监控 (monitor)', link: '/backend/modules/system/monitor' },
+                                { text: 'OSS存储 (oss)', link: '/backend/modules/system/oss' },
+                                { text: '多租户 (tenant)', link: '/backend/modules/system/tenant' }
+                            ]
+                        },
+                        {
+                            text: '代码生成器 (Generator)',
+                            collapsed: true,
+                            items: [
+                                { text: '模块概览', link: '/backend/modules/generator' },
+                                { text: '快速开始', link: '/backend/modules/generator/quick-start' },
+                                { text: '表导入与配置', link: '/backend/modules/generator/table-management' },
+                                { text: '字段配置详解', link: '/backend/modules/generator/column-config' },
+                                { text: '模板类型详解', link: '/backend/modules/generator/template-types' }
+                            ]
+                        },
+                        {
+                            text: '业务模块 (business)',
+                            collapsed: true,
+                            items: [
+                                { text: '模块概览', link: '/backend/modules/business' },
+                                { text: 'API接口 (api)', link: '/backend/modules/business/api' },
+                                { text: '基础服务 (base)', link: '/backend/modules/business/base' },
+                                { text: '商城模块 (mall)', link: '/backend/modules/business/mall' },
+                                { text: '任务调度 (job)', link: '/backend/modules/business/job' }
+                            ]
+                        },
+                        { text: '模块开发指南', link: '/backend/modules/development-guide' },
+                        { text: '自定义模块', link: '/backend/modules/custom-module' },
                         { text: '模块开发指南', link: '/backend/modules/development-guide' },
                         { text: '自定义模块', link: '/backend/modules/custom-module' }
                     ]
