@@ -213,15 +213,14 @@ export default defineConfig({
                 {
                     text: '📦 状态管理 (stores)',
                     items: [
-                        { text: 'Pinia使用指南', link: '/frontend/stores/pinia-usage' },
+                        { text: '状态管理概览', link: '/frontend/stores/overview' },
                         { text: '用户状态 (user)', link: '/frontend/stores/user-store' },
                         { text: '权限状态 (permission)', link: '/frontend/stores/permission-store' },
-                        { text: '应用状态 (app)', link: '/frontend/stores/app-store' },
+                        { text: '应用状态 (state)', link: '/frontend/stores/state-store' },
                         { text: '主题状态 (theme)', link: '/frontend/stores/theme-store' },
                         { text: '标签视图 (tagsView)', link: '/frontend/stores/tags-view-store' },
                         { text: '字典状态 (dict)', link: '/frontend/stores/dict-store' },
-                        { text: '状态持久化', link: '/frontend/stores/state-persistence' },
-                        { text: '状态管理最佳实践', link: '/frontend/stores/best-practices' }
+                        { text: '通知状态 (notice)', link: '/frontend/stores/notice-store' }
                     ]
                 },
                 {
