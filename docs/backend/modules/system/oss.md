@@ -298,13 +298,13 @@ public boolean moveOss(Long directoryId, List<Long> ossIds)
 - **URL**: `GET /resource/oss/pageOss`
 - **权限**: `system:oss:query`
 - **参数**: SysOssBo + PageQuery
-- **响应**: PageResult<SysOssVo>
+- **响应**: `PageResult<SysOssVo>`
 
 #### 根据ID查询文件
 - **URL**: `GET /resource/oss/listOssByIds/{ossIds}`
 - **权限**: `system:oss:query`
 - **参数**: `ossIds`: Long[]
-- **响应**: List<SysOssVo>
+- **响应**: `List<SysOssVo>`
 
 #### 根据URL查询文件ID
 - **URL**: `GET /resource/oss/getOssByUrl`
@@ -317,7 +317,7 @@ public boolean moveOss(Long directoryId, List<Long> ossIds)
 - **URL**: `GET /resource/oss-directory/pageOssDirectorys`
 - **权限**: `system:ossDirectory:query`
 - **参数**: SysOssDirectoryBo + PageQuery
-- **响应**: PageResult<SysOssDirectoryVo>
+- **响应**: `PageResult<SysOssDirectoryVo>`
 
 #### 获取目录详情
 - **URL**: `GET /resource/oss-directory/getOssDirectory/{directoryId}`
@@ -355,7 +355,7 @@ public boolean moveOss(Long directoryId, List<Long> ossIds)
 - **URL**: `GET /resource/oss-directory/getOssDirectoryTreeOptions`
 - **权限**: `system:ossDirectory:query` 或 `system:oss:query`
 - **参数**: SysOssDirectoryBo
-- **响应**: List<Tree<Long>>
+- **响应**: `List<Tree<Long>>`
 
 ### 4.3 配置管理接口
 
@@ -363,7 +363,7 @@ public boolean moveOss(Long directoryId, List<Long> ossIds)
 - **URL**: `GET /resource/oss-config/pageOssConfigs`
 - **权限**: `system:ossConfig:query`
 - **参数**: SysOssConfigBo + PageQuery
-- **响应**: PageResult<SysOssConfigVo>
+- **响应**: `PageResult<SysOssConfigVo>`
 
 #### 获取配置详情
 - **URL**: `GET /resource/oss-config/getOssConfig/{ossConfigId}`
