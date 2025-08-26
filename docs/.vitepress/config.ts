@@ -205,15 +205,9 @@ export default defineConfig({
                 {
                     text: '🛣️ 路由系统 (router)',
                     items: [
-                        { text: '路由设计', link: '/frontend/router/router-design' },
-                        { text: '路由配置', link: '/frontend/router/router-config' },
-                        { text: '路由守卫', link: '/frontend/router/router-guards' },
-                        { text: '动态路由', link: '/frontend/router/dynamic-routes' },
-                        { text: '权限路由', link: '/frontend/router/permission-routes' },
-                        { text: '路由工具', link: '/frontend/router/router-utils' },
-                        { text: '面包屑导航', link: '/frontend/router/breadcrumb' },
-                        { text: '页面缓存', link: '/frontend/router/page-cache' },
-                        { text: '路由最佳实践', link: '/frontend/router/best-practices' }
+                        { text: '路由总览', link: '/frontend/router/overview' },
+                        { text: '路由配置与守卫', link: '/frontend/router/config-guards' },
+                        { text: '权限与动态路由', link: '/frontend/router/permission-dynamic' }
                     ]
                 },
                 {
