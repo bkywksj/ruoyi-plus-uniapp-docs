@@ -76,7 +76,7 @@ export default defineConfig({
                 {
                     text: '主应用(ruoyi-admin)',
                     items: [
-                        { text: '模块解析', link: '/backend/admin/module-resolution' }
+                        { text: '模块解析', link: '/backend/ruoyi-admin/module-resolution' }
                     ]
                 },
                 {
@@ -196,12 +196,10 @@ export default defineConfig({
                     text: '🏗️ 项目架构',
                     items: [
                         { text: '技术栈介绍', link: '/frontend/architecture/tech-stack' },
-                        { text: '目录结构详解', link: '/frontend/architecture/directory-structure' },
                         { text: '模块化设计', link: '/frontend/architecture/modular-design' },
                         { text: 'TypeScript配置', link: '/frontend/architecture/typescript-config' },
                         { text: '类型系统', link: '/frontend/architecture/type-system' },
-                        { text: '构建流程', link: '/frontend/architecture/build-process' },
-                        { text: '配置管理', link: '/frontend/architecture/config-management' }
+                        { text: 'Vite构建配置', link: '/frontend/architecture/vite-config' }
                     ]
                 },
                 {
