@@ -194,6 +194,7 @@ export default defineConfig({
                 },
                 {
                     text: '🏗️ 项目架构',
+                    collapsed: true,
                     items: [
                         { text: '技术栈介绍', link: '/frontend/architecture/tech-stack' },
                         { text: '模块化设计', link: '/frontend/architecture/modular-design' },
@@ -204,6 +205,7 @@ export default defineConfig({
                 },
                 {
                     text: '🛣️ 路由系统 (router)',
+                    collapsed: true,
                     items: [
                         { text: '路由总览', link: '/frontend/router/overview' },
                         { text: '路由配置与守卫', link: '/frontend/router/config-guards' },
@@ -212,6 +214,7 @@ export default defineConfig({
                 },
                 {
                     text: '📦 状态管理 (stores)',
+                    collapsed: true,
                     items: [
                         { text: '状态管理概览', link: '/frontend/stores/overview' },
                         { text: '用户状态 (user)', link: '/frontend/stores/user-store' },
@@ -224,22 +227,22 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🎨 布局系统 (layout)',
+                    text: '🎨 布局系统 (Layout)',
+                    collapsed: true,
                     items: [
                         { text: '布局概述', link: '/frontend/layout/layout-overview' },
-                        { text: '主布局 (Layout)', link: '/frontend/layout/main-layout' },
-                        { text: '侧边栏 (Sidebar)', link: '/frontend/layout/sidebar' },
-                        { text: '顶部导航 (Navbar)', link: '/frontend/layout/navbar' },
-                        { text: '标签视图 (TagsView)', link: '/frontend/layout/tags-view' },
-                        { text: '主内容区 (AppMain)', link: '/frontend/layout/app-main' },
-                        { text: '设置面板 (Settings)', link: '/frontend/layout/settings' },
-                        { text: '工具组件', link: '/frontend/layout/tools' },
-                        { text: '响应式布局', link: '/frontend/layout/responsive' },
-                        { text: '前台布局 (homeLayout)', link: '/frontend/layout/home-layout' }
+                        { text: '主布局(Layout)', link: '/frontend/layout/main-layout' },
+                        { text: '侧边栏(SideBar)', link: '/frontend/layout/sidebar' },
+                        { text: '顶部导航(NavBar)', link: '/frontend/layout/navbar' },
+                        { text: '标签视图(TagsView)', link: '/frontend/layout/tags-view' },
+                        { text: '主内容区(AppMain)', link: '/frontend/layout/app-main' },
+                        { text: '设置面板(Settings)', link: '/frontend/layout/settings' },
+                        { text: '前台布局 (HomeLayout)', link: '/frontend/layout/home-layout' }
                     ]
                 },
                 {
                     text: '🧩 组件系统 (components)',
+                    collapsed: true,
                     items: [
                         { text: '组件概览', link: '/frontend/components/overview' },
                         { text: '表单组件', link: '/frontend/components/form-components' },
@@ -256,6 +259,7 @@ export default defineConfig({
                 },
                 {
                     text: '📄 页面开发 (views)',
+                    collapsed: true,
                     items: [
                         { text: '页面开发指南', link: '/frontend/views/page-dev-guide' },
                         { text: '登录页面', link: '/frontend/views/login' },
@@ -322,6 +326,7 @@ export default defineConfig({
                 },
                 {
                     text: '📋 指令系统 (directives)',
+                    collapsed: true,
                     items: [
                         { text: '指令概览', link: '/frontend/directives/overview' },
                         { text: '权限指令 (v-auth)', link: '/frontend/directives/permission' },
@@ -331,6 +336,7 @@ export default defineConfig({
                 },
                 {
                     text: '🎨 样式系统 (styles)',
+                    collapsed: true,
                     items: [
                         { text: '样式架构', link: '/frontend/styles/style-architecture' },
                         { text: 'UnoCSS配置', link: '/frontend/styles/unocss-config' },
@@ -360,6 +366,7 @@ export default defineConfig({
                 },
                 {
                     text: '⚙️ 开发工具 (dev)',
+                    collapsed: true,
                     items: [
                         { text: '开发环境配置', link: '/frontend/dev/dev-config' },
                         { text: '构建配置详解', link: '/frontend/dev/build-config' },
@@ -375,6 +382,7 @@ export default defineConfig({
                 },
                 {
                     text: '🌍 国际化 (locales)',
+                    collapsed: true,
                     items: [
                         { text: '国际化配置', link: '/frontend/i18n/i18n-config' },
                         { text: '语言包管理', link: '/frontend/i18n/language-packs' },
