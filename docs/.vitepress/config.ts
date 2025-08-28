@@ -241,20 +241,101 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🧩 组件系统 (components)',
+                    text: '🧩 组件系统 (Components)',
                     collapsed: true,
                     items: [
+                        // 1. 概览和指南
                         { text: '组件概览', link: '/frontend/components/overview' },
-                        { text: '表单组件', link: '/frontend/components/form-components' },
-                        { text: '业务组件', link: '/frontend/components/business-components' },
-                        { text: '图标系统', link: '/frontend/components/icon-system' },
-                        { text: 'SvgIcon组件', link: '/frontend/components/svg-icon' },
-                        { text: '媒体库组件 (AOssMediaManager)', link: '/frontend/components/oss-media-manager' },
-                        { text: '选择标签 (ASelectionTags)', link: '/frontend/components/selection-tags' },
-                        { text: '搜索表单 (ASearchForm)', link: '/frontend/components/search-form' },
-                        { text: '表格工具栏 (TableToolbar)', link: '/frontend/components/table-toolbar' },
-                        { text: '页面背景 (APageBackground)', link: '/frontend/components/page-background' },
-                        { text: '自定义组件开发', link: '/frontend/components/custom-dev' }
+
+                        // 2. 基础组件
+                        {
+                            text: '基础组件',
+                            collapsed: false,
+                            items: [
+                                { text: '图标系统', link: '/frontend/components/basic/icon-system' },
+                                { text: 'Icon 图标', link: '/frontend/components/basic/icon' },
+                                { text: 'DictTag 字典标签', link: '/frontend/components/basic/dict-tag' },
+                            ]
+                        },
+
+                        // 3. 表单组件
+                        {
+                            text: '表单组件',
+                            collapsed: false,
+                            items: [
+                                { text: '表单组件概览', link: '/frontend/components/form/overview' },
+                                { text: 'AForm 表单容器', link: '/frontend/components/form/form' },
+                                { text: 'AFormCascader 级联选择', link: '/frontend/components/form/cascader' },
+                                { text: 'AFormCheckbox 复选框', link: '/frontend/components/form/checkbox' },
+                                { text: 'AFormDate 日期选择', link: '/frontend/components/form/date' },
+                                { text: 'AFormEditor 富文本编辑', link: '/frontend/components/form/editor' },
+                                { text: 'AFormFileUpload 文件上传', link: '/frontend/components/form/file-upload' },
+                                { text: 'AFormImgUpload 图片上传', link: '/frontend/components/form/img-upload' },
+                                { text: 'AFormInput 输入框', link: '/frontend/components/form/input' },
+                                { text: 'AFormRadio 单选框', link: '/frontend/components/form/radio' },
+                                { text: 'AFormSelect 选择器', link: '/frontend/components/form/select' },
+                                { text: 'AFormSwitch 开关', link: '/frontend/components/form/switch' },
+                                { text: 'AFormTreeSelect 树选择', link: '/frontend/components/form/tree-select' },
+                                { text: 'IconSelect 图标选择器', link: '/frontend/components/form/icon-select' },
+                            ]
+                        },
+
+                        // 4. 数据展示组件
+                        {
+                            text: '数据展示',
+                            collapsed: false,
+                            items: [
+                                { text: 'ADataCard 数据卡片', link: '/frontend/components/display/data-card' },
+                                { text: 'ADetailDialog 详情对话框', link: '/frontend/components/display/detail-dialog' },
+                                { text: 'TableToolbar 表格工具栏', link: '/frontend/components/display/table-toolbar' },
+                                { text: 'Pagination 分页', link: '/frontend/components/display/pagination' },
+                            ]
+                        },
+
+                        // 5. 反馈组件
+                        {
+                            text: '反馈组件',
+                            collapsed: false,
+                            items: [
+                                { text: 'ASearchForm 搜索表单', link: '/frontend/components/feedback/search-form' },
+                                { text: 'ASelectionTags 选择标签', link: '/frontend/components/feedback/selection-tags' },
+                            ]
+                        },
+
+                        // 6. 业务组件
+                        {
+                            text: '业务组件',
+                            collapsed: false,
+                            items: [
+                                { text: '业务组件概览', link: '/frontend/components/business/overview' },
+                                { text: 'AOssMediaManager 媒体库', link: '/frontend/components/business/oss-media-manager' },
+                                { text: 'ARecharge 充值组件', link: '/frontend/components/business/recharge' },
+                                { text: 'AImportExcel Excel 导入', link: '/frontend/components/business/import-excel' },
+                                { text: 'UserSelect 用户选择', link: '/frontend/components/business/user-select' },
+                            ]
+                        },
+
+                        // 7. 布局组件
+                        {
+                            text: '布局组件',
+                            collapsed: false,
+                            items: [
+                                { text: 'APageBackground 页面背景', link: '/frontend/components/layout/page-background' },
+                                { text: 'EnhancedIFrame 增强iframe', link: '/frontend/components/layout/enhanced-iframe' },
+                            ]
+                        },
+
+                        // 8. 开发指南
+                        {
+                            text: '开发指南',
+                            collapsed: false,
+                            items: [
+                                { text: '自定义组件开发', link: '/frontend/components/guide/custom-dev' },
+                                { text: '组件测试', link: '/frontend/components/guide/testing' },
+                                { text: '组件发布', link: '/frontend/components/guide/publishing' },
+                                { text: '最佳实践', link: '/frontend/components/guide/best-practices' },
+                            ]
+                        }
                     ]
                 },
                 {
