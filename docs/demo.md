@@ -10,6 +10,14 @@ aside: false
 
 ### **原价: ~~¥2580~~**   **限时优惠: ¥2000**
 
+## 🌐 在线演示
+
+| 平台           | 地址                                                                  | 账密               | 说明                       |
+|--------------|---------------------------------------------------------------------|------------------|--------------------------|
+| 💻 **后台管理**  | [立即体验](https://ui.ruoyi.plus/login?redirect=/index?tenantId=424410) | admin / admin123 | Vue3 + Element Plus 管理后台 |
+| 📱 **移动端H5** | [立即体验](http://uni.ruoyi.plus)                                       | admin / admin123 | UniApp 跨平台应用             |
+
+
 ## 💬 技术支持
 
 ::: warning 联系方式
@@ -18,12 +26,20 @@ aside: false
 - **项目文档：** https://ruoyi.plus
   :::
 
-## 🌐 在线演示
+### 📱 扫码关注
 
-| 平台           | 地址                                                                  | 账密               | 说明                       |
-|--------------|---------------------------------------------------------------------|------------------|--------------------------|
-| 💻 **后台管理**  | [立即体验](https://ui.ruoyi.plus/login?redirect=/index?tenantId=424410) | admin / admin123 | Vue3 + Element Plus 管理后台 |
-| 📱 **移动端H5** | [立即体验](http://uni.ruoyi.plus)                                       | admin / admin123 | UniApp 跨平台应用             |
+<div style="display: flex; gap: 30px; margin: 20px 0;">
+  <div>
+    <img src="/gzh.png" alt="微信公众号" width="200">
+    <p><strong>微信公众号</strong></p>
+    <p>获取最新技术资讯</p>
+  </div>
+  <div>
+    <img src="/wxq.png" alt="技术交流群" width="200">
+    <p><strong>技术交流群</strong></p>
+    <p>与开发者交流讨论</p>
+  </div>
+</div>
 
 ## 🖼️ 功能截图
 

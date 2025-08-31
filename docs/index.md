@@ -136,6 +136,29 @@ highlights:
 - 📧 **联系方式**: 770492966 (微信/QQ)
 - 🌐 **官网文档**: https://ruoyi.plus
 
+### 📱 扫码关注
+
+<div style="display: flex; gap: 30px; margin: 20px 0;">
+  <div>
+    <img src="/gzh.png" alt="微信公众号" width="200">
+    <p><strong>微信公众号</strong></p>
+    <p>获取最新技术资讯</p>
+  </div>
+  <div>
+    <img src="/wxq.png" alt="技术交流群" width="200">
+    <p><strong>技术交流群</strong></p>
+    <p>与开发者交流讨论</p>
+  </div>
+</div>
+
+---
+
+*扫描上方二维码，加入我们的技术社区*
+
+---
+
+*扫描上方二维码，加入我们的技术社区*
+
 ---
 
 <small>© 2025 抓蛙师 | 框架商用授权，详情咨询</small>
