@@ -1,9 +1,9 @@
 /* 自定义样式 */
 :root {
     /* 主题颜色变量 */
-    --vp-c-brand-1: #8b5cf6;
-    --vp-c-brand-2: #7c3aed;
-    --vp-c-brand-3: #6d28d9;
+    --vp-c-brand-1: #0B6EF0;
+    --vp-c-brand-2: #0C8AF2;
+    --vp-c-brand-3: #04AEF6;
 
     /* 侧边栏背景色变量 */
     --vp-sidebar-bg-color: white;
