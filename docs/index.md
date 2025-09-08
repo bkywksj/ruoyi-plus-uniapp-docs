@@ -145,7 +145,7 @@ highlights:
     <p>获取最新技术资讯</p>
   </div>
   <div>
-    <img src="/wxq.png" alt="技术交流群" width="200">
+    <img src="/wxq.jpg" alt="技术交流群" width="200">
     <p><strong>技术交流群</strong></p>
     <p>与开发者交流讨论</p>
   </div>
