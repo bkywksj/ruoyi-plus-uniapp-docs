@@ -13,3 +13,4 @@
 11. **[RuoYi-Vue-Plus登录优化：移除客户端管理，让认证更简洁高效](https://www.bilibili.com/video/BV1bieDz8Eej/)**
 12. **[【Spring Boot实战】企业级微信小程序登录系统！支持租户隔离+动态配置+多平台扩展](https://www.bilibili.com/video/BV1iKe9zmEUB/)**
 13. **[【RuoYi-Plus-UniApp实战】企业OA办公系统开发教程 - Vue3全栈开发完整指南（配合claude实战）](https://www.bilibili.com/video/BV1AJacz3EXG/)**
+13. **[移动端国际化+文件上传物理隔离和目录隔离+Forest HTTP客户端（内置完善示例地图API）简化前端动态路由为弹窗 优化字典数据维护](https://www.bilibili.com/video/BV1fTaozdE9b/)**
