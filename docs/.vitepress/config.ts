@@ -323,18 +323,6 @@ export default defineConfig({
                                 { text: 'APageBackground 页面背景', link: '/frontend/components/layout/page-background' },
                                 { text: 'EnhancedIFrame 增强iframe', link: '/frontend/components/layout/enhanced-iframe' },
                             ]
-                        },
-
-                        // 8. 开发指南
-                        {
-                            text: '开发指南',
-                            collapsed: false,
-                            items: [
-                                { text: '自定义组件开发', link: '/frontend/components/guide/custom-dev' },
-                                { text: '组件测试', link: '/frontend/components/guide/testing' },
-                                { text: '组件发布', link: '/frontend/components/guide/publishing' },
-                                { text: '最佳实践', link: '/frontend/components/guide/best-practices' },
-                            ]
                         }
                     ]
                 },
