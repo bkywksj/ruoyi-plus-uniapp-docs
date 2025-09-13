@@ -14,7 +14,12 @@
 │   │   └── 📁 system               // 系统相关接口
 │   │
 │   ├── 📁 components               // 全局组件
-│   │
+│   │   │   ├── 📁 auth       // 认证页面组件
+│   │   │   │   └── 📄 AuthModal.vue        // 认证模态框组件
+│   │   │   ├── 📁 tabbar           // 底部导航组件
+│   │   │   │   └── 📄 Home.vue     // 首页
+│   │   │   │   └── 📄 Menu.vue     // 菜单
+│   │   │   │   └── 📄 My.vue       // 我的
 │   ├── 📁 composables              // 组合式函数
 │   │   ├── 📄 useAuth.ts           // 权限相关组合函数
 │   │   ├── 📄 useDict.ts           // 字典相关组合函数
@@ -29,19 +34,13 @@
 │   │
 │   ├── 📁 pages                    // 页面文件
 │   │   ├── 📁 auth                 // 认证相关页面
-│   │   │   ├── 📁 components       // 认证页面组件
-│   │   │   │   └── 📄 AuthModal.vue        // 认证模态框组件
 │   │   │   ├── 📄 auth.vue         // 认证页面
 │   │   │   ├── 📄 login.vue        // 登录页面
 │   │   │   ├── 📄 phoneLogin.vue   // 手机登录页面
 │   │   │   ├── 📄 register.vue     // 注册页面
 │   │   │   └── 📄 smsVerify.vue    // 短信验证页面
 │   │   │
-│   │   ├── 📁 tabbar               // 底部导航页面
-│   │   │   ├── 📁 components       // 底部导航组件
-│   │   │   │   ├── 📄 index.vue    // 底部导航主组件
-│   │   │   │   ├── 📄 Menu.vue     // 菜单组件
-│   │   │   │   └── 📄 My.vue       // 我的页面组件
+│   │   ├── 📁 index               // 底部导航页面
 │   │   │   └── 📄 index.vue        // 底部导航入口
 │   │
 │   ├── 📁 static                   // 静态资源
