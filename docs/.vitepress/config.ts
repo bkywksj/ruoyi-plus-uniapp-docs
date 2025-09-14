@@ -327,40 +327,24 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📄 页面开发 (views)',
-                    collapsed: true,
-                    items: [
-                        { text: '页面开发指南', link: '/frontend/views/page-dev-guide' },
-                        { text: '登录页面', link: '/frontend/views/login' },
-                        { text: '注册页面', link: '/frontend/views/register' },
-                        { text: '首页仪表板', link: '/frontend/views/dashboard' },
-                        { text: '系统管理', link: '/frontend/views/system' },
-                        { text: '系统监控', link: '/frontend/views/monitor' },
-                        { text: '系统工具', link: '/frontend/views/tool' },
-                        { text: '日志管理', link: '/frontend/views/log' },
-                        { text: '错误页面 (401/404)', link: '/frontend/views/error-pages' },
-                        { text: '前台页面', link: '/frontend/views/home' },
-                        { text: '测试页面', link: '/frontend/views/test' }
-                    ]
-                },
-                {
                     text: '🎣 组合式函数 (composables)',
                     collapsed: true,
                     items: [
                         { text: '组合式函数概览', link: '/frontend/composables/overview' },
-                        { text: 'useRequest', link: '/frontend/composables/use-request' },
-                        { text: 'useToken', link: '/frontend/composables/use-token' },
+                        { text: 'useAnimation', link: '/frontend/composables/use-animation' },
                         { text: 'useAuth', link: '/frontend/composables/use-auth' },
-                        { text: 'useDict', link: '/frontend/composables/use-dict' },
-                        { text: 'useI18n', link: '/frontend/composables/use-i18n' },
-                        { text: 'useTheme', link: '/frontend/composables/use-theme' },
-                        { text: 'useTitle', link: '/frontend/composables/use-title' },
-                        { text: 'useTableHeight', link: '/frontend/composables/use-table-height' },
-                        { text: 'useSelection', link: '/frontend/composables/use-selection' },
-                        { text: 'useDownload', link: '/frontend/composables/use-download' },
                         { text: 'useDialog', link: '/frontend/composables/use-dialog' },
+                        { text: 'useDict', link: '/frontend/composables/use-dict' },
+                        { text: 'useDownload', link: '/frontend/composables/use-download' },
+                        { text: 'useHttp', link: '/frontend/composables/use-http' },
+                        { text: 'useI18n', link: '/frontend/composables/use-i18n' },
+                        { text: 'useResponsiveSpan', link: '/frontend/composables/use-responsive-span' },
+                        { text: 'useSelection', link: '/frontend/composables/use-selection' },
                         { text: 'useSSE', link: '/frontend/composables/use-sse' },
-                        { text: 'useWebSocket', link: '/frontend/composables/use-websocket' }
+                        { text: 'useTableHeight', link: '/frontend/composables/use-table-height' },
+                        { text: 'useTheme', link: '/frontend/composables/use-theme' },
+                        { text: 'useToken', link: '/frontend/composables/use-token' },
+                        { text: 'useWS', link: '/frontend/composables/use-websocket' }
                     ]
                 },
                 {
