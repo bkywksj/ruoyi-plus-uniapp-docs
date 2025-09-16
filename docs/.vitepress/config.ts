@@ -352,29 +352,22 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         { text: '工具函数概览', link: '/frontend/utils/utils-overview' },
-                        { text: 'HTTP请求', link: '/frontend/utils/http' },
-                        { text: '认证工具', link: '/frontend/utils/auth' },
                         { text: '字符串工具', link: '/frontend/utils/string' },
                         { text: '对象工具', link: '/frontend/utils/object' },
-                        { text: '数组工具', link: '/frontend/utils/array' },
                         { text: '日期工具', link: '/frontend/utils/date' },
                         { text: '格式化工具', link: '/frontend/utils/format' },
                         { text: '函数工具', link: '/frontend/utils/function' },
                         { text: '验证器', link: '/frontend/utils/validators' },
+                        { text: '布尔值工具', link: '/frontend/utils/boolean' },
                         { text: '加密工具', link: '/frontend/utils/crypto' },
                         { text: 'RSA加密', link: '/frontend/utils/rsa' },
-                        { text: '文件工具', link: '/frontend/utils/file' },
-                        { text: 'DOM工具', link: '/frontend/utils/dom' },
-                        { text: '类操作工具', link: '/frontend/utils/class' },
-                        { text: '滚动工具', link: '/frontend/utils/scroll' },
                         { text: '缓存工具', link: '/frontend/utils/cache' },
+                        { text: 'DOM类操作', link: '/frontend/utils/class' },
+                        { text: '滚动工具', link: '/frontend/utils/scroll' },
                         { text: '树形工具', link: '/frontend/utils/tree' },
-                        { text: '下载工具', link: '/frontend/utils/download' },
                         { text: '模态框工具', link: '/frontend/utils/modal' },
                         { text: '标签页工具', link: '/frontend/utils/tab' },
-                        { text: '复制工具', link: '/frontend/utils/copy' },
-                        { text: 'To工具类', link: '/frontend/utils/to' },
-                        { text: 'Boolean工具', link: '/frontend/utils/boolean' }
+                        { text: 'To工具类', link: '/frontend/utils/to' }
                     ]
                 },
                 {
