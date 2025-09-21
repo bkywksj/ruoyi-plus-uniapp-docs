@@ -219,9 +219,6 @@ export default defineConfig({
                         { text: '状态管理概览', link: '/frontend/stores/overview' },
                         { text: '用户状态 (user)', link: '/frontend/stores/user-store' },
                         { text: '权限状态 (permission)', link: '/frontend/stores/permission-store' },
-                        { text: '应用状态 (state)', link: '/frontend/stores/state-store' },
-                        { text: '主题状态 (theme)', link: '/frontend/stores/theme-store' },
-                        { text: '标签视图 (tagsView)', link: '/frontend/stores/tags-view-store' },
                         { text: '字典状态 (dict)', link: '/frontend/stores/dict-store' },
                         { text: '通知状态 (notice)', link: '/frontend/stores/notice-store' }
                     ]
@@ -331,20 +328,40 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         { text: '组合式函数概览', link: '/frontend/composables/overview' },
-                        { text: 'useAnimation', link: '/frontend/composables/use-animation' },
-                        { text: 'useAuth', link: '/frontend/composables/use-auth' },
-                        { text: 'useDialog', link: '/frontend/composables/use-dialog' },
-                        { text: 'useDict', link: '/frontend/composables/use-dict' },
-                        { text: 'useDownload', link: '/frontend/composables/use-download' },
-                        { text: 'useHttp', link: '/frontend/composables/use-http' },
-                        { text: 'useI18n', link: '/frontend/composables/use-i18n' },
-                        { text: 'useResponsiveSpan', link: '/frontend/composables/use-responsive-span' },
-                        { text: 'useSelection', link: '/frontend/composables/use-selection' },
-                        { text: 'useSSE', link: '/frontend/composables/use-sse' },
-                        { text: 'useTableHeight', link: '/frontend/composables/use-table-height' },
-                        { text: 'useTheme', link: '/frontend/composables/use-theme' },
-                        { text: 'useToken', link: '/frontend/composables/use-token' },
-                        { text: 'useWS', link: '/frontend/composables/use-websocket' }
+                        {
+                            text: '核心组合函数',
+                            collapsed: false,
+                            items: [
+                                { text: 'useAuth 认证管理', link: '/frontend/composables/use-auth' },
+                                { text: 'useDict 字典管理', link: '/frontend/composables/use-dict' },
+                                { text: 'useHttp 请求管理', link: '/frontend/composables/use-http' },
+                                { text: 'useToken 令牌管理', link: '/frontend/composables/use-token' },
+                                { text: 'useI18n 国际化', link: '/frontend/composables/use-i18n' }
+                            ]
+                        },
+                        {
+                            text: '界面组合函数',
+                            collapsed: false,
+                            items: [
+                                { text: 'useLayout 布局管理', link: '/frontend/composables/use-layout' },
+                                { text: 'useAnimation 动画效果', link: '/frontend/composables/use-animation' },
+                                { text: 'useDialog 对话框', link: '/frontend/composables/use-dialog' },
+                                { text: 'useTheme 主题管理', link: '/frontend/composables/use-theme' },
+                                { text: 'useResponsiveSpan 响应式', link: '/frontend/composables/use-responsive-span' },
+                                { text: 'useTableHeight 表格高度', link: '/frontend/composables/use-table-height' }
+                            ]
+                        },
+                        {
+                            text: '业务组合函数',
+                            collapsed: false,
+                            items: [
+                                { text: 'useSelection 选择管理', link: '/frontend/composables/use-selection' },
+                                { text: 'useDownload 下载管理', link: '/frontend/composables/use-download' },
+                                { text: 'usePrint 打印功能', link: '/frontend/composables/use-print' },
+                                { text: 'useSSE 服务端事件', link: '/frontend/composables/use-sse' },
+                                { text: 'useWS WebSocket通信', link: '/frontend/composables/use-websocket' }
+                            ]
+                        }
                     ]
                 },
                 {
@@ -449,11 +466,13 @@ export default defineConfig({
                         { text: '项目简介', link: '/mobile/' },
                         { text: '快速启动', link: '/mobile/getting-started' },
                         { text: '项目结构', link: '/mobile/project-structure' },
-                        { text: '配置文件', link: '/mobile/configuration' }
+                        { text: '配置文件', link: '/mobile/configuration' },
+                        { text: '开发规范', link: '/mobile/dev-standards' }
                     ]
                 },
                 {
                     text: '🏗️ UniApp基础',
+                    collapsed: true,
                     items: [
                         { text: 'UniApp概览', link: '/mobile/uniapp/overview' },
                         { text: '项目配置 (manifest.json)', link: '/mobile/uniapp/manifest-config' },
@@ -467,56 +486,289 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📡 API接口 (api)',
+                    text: '🧩 WD UI 组件库 (98组件)',
+                    collapsed: true,
                     items: [
-                        { text: 'API概览', link: '/mobile/api/overview' },
-                        { text: '接口配置', link: '/mobile/api/config' },
-                        { text: '认证接口', link: '/mobile/api/auth' },
-                        { text: '用户接口', link: '/mobile/api/user' },
-                        { text: '业务接口', link: '/mobile/api/business' },
-                        { text: '系统接口', link: '/mobile/api/system' },
-                        { text: '文件接口', link: '/mobile/api/file' },
-                        { text: '支付接口', link: '/mobile/api/payment' },
+                        { text: '组件库概览', link: '/mobile/wd/overview' },
+                        { text: '主题定制', link: '/mobile/styles/theme' },
+                        { text: '快速开始', link: '/mobile/wd/getting-started' },
+                        {
+                            text: '基础组件 (6个)',
+                            collapsed: false,
+                            items: [
+                                { text: 'Button 按钮', link: '/mobile/wd/basic/button' },
+                                { text: 'Icon 图标', link: '/mobile/wd/basic/icon' },
+                                { text: 'Text 文本', link: '/mobile/wd/basic/text' },
+                                { text: 'Transition 动画', link: '/mobile/wd/basic/transition' },
+                                { text: 'Resize 监听元素尺寸', link: '/mobile/wd/basic/resize' },
+                                { text: 'ConfigProvider 配置', link: '/mobile/wd/basic/config-provider' }
+                            ]
+                        },
+                        {
+                            text: '布局组件 (5个)',
+                            collapsed: false,
+                            items: [
+                                { text: 'Row-Col 行列布局', link: '/mobile/wd/layout/row-col' },
+                                { text: 'Grid 宫格', link: '/mobile/wd/layout/grid' },
+                                { text: 'Gap 间隙槽', link: '/mobile/wd/layout/gap' },
+                                { text: 'Divider 分割线', link: '/mobile/wd/layout/divider' },
+                                { text: 'Sticky 吸顶布局', link: '/mobile/wd/layout/sticky' }
+                            ]
+                        },
+                        {
+                            text: '导航组件 (9个)',
+                            collapsed: false,
+                            items: [
+                                { text: 'Navbar 导航栏', link: '/mobile/wd/navigation/navbar' },
+                                { text: 'Tabbar 标签栏', link: '/mobile/wd/navigation/tabbar' },
+                                { text: 'Tabs 标签页', link: '/mobile/wd/navigation/tabs' },
+                                { text: 'Segmented 分段器', link: '/mobile/wd/navigation/segmented' },
+                                { text: 'Sidebar 侧边栏', link: '/mobile/wd/navigation/sidebar' },
+                                { text: 'IndexBar 索引栏', link: '/mobile/wd/navigation/index-bar' },
+                                { text: 'Pagination 分页', link: '/mobile/wd/navigation/pagination' },
+                                { text: 'Paging 分页加载', link: '/mobile/wd/navigation/paging' },
+                                { text: 'Backtop 回到顶部', link: '/mobile/wd/navigation/backtop' }
+                            ]
+                        },
+                        {
+                            text: '表单组件 (22个)',
+                            collapsed: false,
+                            items: [
+                                { text: 'Input 输入框', link: '/mobile/wd/form/input' },
+                                { text: 'Textarea 文本域', link: '/mobile/wd/form/textarea' },
+                                { text: 'InputNumber 计数器', link: '/mobile/wd/form/input-number' },
+                                { text: 'PasswordInput 密码', link: '/mobile/wd/form/password-input' },
+                                { text: 'Search 搜索', link: '/mobile/wd/form/search' },
+                                { text: 'Checkbox 复选框', link: '/mobile/wd/form/checkbox' },
+                                { text: 'Radio 单选框', link: '/mobile/wd/form/radio' },
+                                { text: 'Switch 开关', link: '/mobile/wd/form/switch' },
+                                { text: 'Rate 评分', link: '/mobile/wd/form/rate' },
+                                { text: 'Slider 滑块', link: '/mobile/wd/form/slider' },
+                                { text: 'Picker 选择器', link: '/mobile/wd/form/picker' },
+                                { text: 'PickerView 选择器视图', link: '/mobile/wd/form/picker-view' },
+                                { text: 'ColPicker 多列选择器', link: '/mobile/wd/form/col-picker' },
+                                { text: 'SelectPicker 单复选', link: '/mobile/wd/form/select-picker' },
+                                { text: 'DatetimePicker 时间', link: '/mobile/wd/form/datetime-picker' },
+                                { text: 'DatetimePickerView', link: '/mobile/wd/form/datetime-picker-view' },
+                                { text: 'Calendar 日历', link: '/mobile/wd/form/calendar' },
+                                { text: 'CalendarView 日历板', link: '/mobile/wd/form/calendar-view' },
+                                { text: 'Upload 上传', link: '/mobile/wd/form/upload' },
+                                { text: 'Form 表单', link: '/mobile/wd/form/form' },
+                                { text: 'Signature 签名', link: '/mobile/wd/form/signature' },
+                                { text: 'Recorder 录音', link: '/mobile/wd/form/voice-recorder' }
+                            ]
+                        },
+                        {
+                            text: '展示组件 (11个)',
+                            collapsed: false,
+                            items: [
+                                { text: 'Cell 单元格', link: '/mobile/wd/display/cell' },
+                                { text: 'Badge 徽标', link: '/mobile/wd/display/badge' },
+                                { text: 'Tag 标签', link: '/mobile/wd/display/tag' },
+                                { text: 'Card 卡片', link: '/mobile/wd/display/card' },
+                                { text: 'Collapse 折叠面板', link: '/mobile/wd/display/collapse' },
+                                { text: 'Steps 步骤条', link: '/mobile/wd/display/steps' },
+                                { text: 'Table 表格', link: '/mobile/wd/display/table' },
+                                { text: 'Img 图片', link: '/mobile/wd/display/img' },
+                                { text: 'ImgCropper 图片裁剪', link: '/mobile/wd/display/img-cropper' },
+                                { text: 'Swiper 轮播图', link: '/mobile/wd/display/swiper' },
+                                { text: 'Skeleton 骨架屏', link: '/mobile/wd/display/skeleton' },
+                                { text: 'Curtain 幕帘', link: '/mobile/wd/display/curtain' },
+                                { text: 'Watermark 水印', link: '/mobile/wd/display/watermark' }
+                            ]
+                        },
+                        {
+                            text: '反馈组件 (23个)',
+                            collapsed: false,
+                            items: [
+                                { text: 'ActionSheet 上拉菜单', link: '/mobile/wd/feedback/action-sheet' },
+                                { text: 'Popup 弹出层', link: '/mobile/wd/feedback/popup' },
+                                { text: 'Overlay 遮罩层', link: '/mobile/wd/feedback/overlay' },
+                                { text: 'MessageBox 弹框', link: '/mobile/wd/feedback/message-box' },
+                                { text: 'Toast 轻提示', link: '/mobile/wd/feedback/toast' },
+                                { text: 'Notify 消息通知', link: '/mobile/wd/feedback/notify' },
+                                { text: 'Loading 加载指示器', link: '/mobile/wd/feedback/loading' },
+                                { text: 'Progress 进度条', link: '/mobile/wd/feedback/progress' },
+                                { text: 'Circle 环形进度条', link: '/mobile/wd/feedback/circle' },
+                                { text: 'Loadmore 加载更多', link: '/mobile/wd/feedback/loadmore' },
+                                { text: 'StatusTip 缺省提示', link: '/mobile/wd/feedback/status-tip' },
+                                { text: 'Tooltip 文字提示', link: '/mobile/wd/feedback/tooltip' },
+                                { text: 'Popover 气泡', link: '/mobile/wd/feedback/popover' },
+                                { text: 'DropMenu 下拉菜单', link: '/mobile/wd/feedback/drop-menu' },
+                                { text: 'FloatingPanel 浮动面板', link: '/mobile/wd/feedback/floating-panel' },
+                                { text: 'SwipeAction 滑动操作', link: '/mobile/wd/feedback/swipe-action' },
+                                { text: 'SortButton 排序按钮', link: '/mobile/wd/feedback/sort-button' },
+                                { text: 'NoticeBar 通知栏', link: '/mobile/wd/feedback/notice-bar' },
+                                { text: 'CountDown 倒计时', link: '/mobile/wd/feedback/count-down' },
+                                { text: 'CountTo 数字滚动', link: '/mobile/wd/feedback/count-to' },
+                                { text: 'Keyboard 虚拟键盘', link: '/mobile/wd/feedback/keyboard' },
+                                { text: 'NumberKeyboard 数字', link: '/mobile/wd/feedback/number-keyboard' },
+                                { text: 'Fab 悬浮按钮', link: '/mobile/wd/feedback/fab' }
+                            ]
+                        }
                     ]
                 },
                 {
-                    text: '🧩 组件系统 (components)',
+                    text: '📡 API接口 (api)',
+                    collapsed: true,
                     items: [
-                        { text: '组件概览', link: '/mobile/components/overview' },
-                        { text: 'Wd UI重构组件库', link: '/mobile/components/wd' },
-                        { text: '基础组件', link: '/mobile/components/basic' },
-                        { text: '表单组件', link: '/mobile/components/form' },
-                        { text: '展示组件', link: '/mobile/components/display' },
-                        { text: '导航组件', link: '/mobile/components/navigation' },
-                        { text: '反馈组件', link: '/mobile/components/feedback' },
-                        { text: '布局组件', link: '/mobile/components/layout' },
-                        { text: '业务组件', link: '/mobile/components/business' },
-                        { text: '图标组件', link: '/mobile/components/icons' },
-                        { text: '自定义组件开发', link: '/mobile/components/custom-dev' }
+                        { text: 'API概览', link: '/mobile/api/overview' },
+                        { text: '接口配置', link: '/mobile/api/config' },
+                        { text: 'HTTP请求封装', link: '/mobile/api/http' },
+                        {
+                            text: '系统接口',
+                            collapsed: false,
+                            items: [
+                                { text: '认证接口 (auth)', link: '/mobile/api/system/auth' },
+                                { text: '用户接口 (user)', link: '/mobile/api/system/user' },
+                                { text: '角色接口 (role)', link: '/mobile/api/system/role' },
+                                { text: '字典接口 (dict)', link: '/mobile/api/system/dict' },
+                                { text: '岗位接口 (post)', link: '/mobile/api/system/post' }
+                            ]
+                        },
+                        {
+                            text: '业务接口',
+                            collapsed: false,
+                            items: [
+                                { text: '首页接口 (home)', link: '/mobile/api/business/home' },
+                                { text: '电话接口 (phone)', link: '/mobile/api/business/phone' },
+                                { text: '广告接口 (ad)', link: '/mobile/api/business/ad' },
+                                { text: '商城接口 (mall)', link: '/mobile/api/business/mall' },
+                                { text: '订单接口 (order)', link: '/mobile/api/business/order' },
+                                { text: '商品接口 (goods)', link: '/mobile/api/business/goods' }
+                            ]
+                        },
+                        { text: '接口类型定义', link: '/mobile/api/types' },
+                        { text: '错误处理', link: '/mobile/api/error-handling' },
+                        { text: '请求拦截器', link: '/mobile/api/interceptors' }
                     ]
                 },
                 {
                     text: '🎣 组合式函数 (composables)',
+                    collapsed: true,
                     items: [
                         { text: '组合式函数概览', link: '/mobile/composables/overview' },
-                        { text: 'useAuth', link: '/mobile/composables/use-auth' },
-                        { text: 'useDict', link: '/mobile/composables/use-dict' },
-                        { text: 'useHttp', link: '/mobile/composables/use-http' },
-                        { text: 'useToken', link: '/mobile/composables/use-token' },
-                        { text: 'usePayment', link: '/mobile/composables/use-payment' },
-                        { text: 'useScroll', link: '/mobile/composables/use-scroll' },
-                        { text: 'useTheme', link: '/mobile/composables/use-theme' },
-                        { text: 'useToast', link: '/mobile/composables/use-toast' },
-                        { text: 'useModal', link: '/mobile/composables/use-modal' },
+                        { text: '自动导入配置', link: '/mobile/composables/auto-imports' },
+                        {
+                            text: '核心组合函数',
+                            collapsed: false,
+                            items: [
+                                { text: 'useAuth 认证管理', link: '/mobile/composables/use-auth' },
+                                { text: 'useDict 字典管理', link: '/mobile/composables/use-dict' },
+                                { text: 'useHttp 请求管理', link: '/mobile/composables/use-http' },
+                                { text: 'useToken 令牌管理', link: '/mobile/composables/use-token' },
+                                { text: 'useAppInit 应用初始化', link: '/mobile/composables/use-app-init' }
+                            ]
+                        },
+                        {
+                            text: '业务组合函数',
+                            collapsed: false,
+                            items: [
+                                { text: 'usePayment 支付处理', link: '/mobile/composables/use-payment' },
+                                { text: 'useShare 分享功能', link: '/mobile/composables/use-share' },
+                                { text: 'useScroll 滚动处理', link: '/mobile/composables/use-scroll' },
+                                { text: 'useEventBus 事件总线', link: '/mobile/composables/use-event-bus' },
+                                { text: 'useWebSocket 实时通信', link: '/mobile/composables/use-websocket' }
+                            ]
+                        },
+                        {
+                            text: '界面组合函数',
+                            collapsed: false,
+                            items: [
+                                { text: 'useTheme 主题管理', link: '/mobile/composables/use-theme' },
+                                { text: 'useI18n 国际化', link: '/mobile/composables/use-i18n' }
+                            ]
+                        },
                         { text: '自定义Hook开发', link: '/mobile/composables/custom-hooks' }
                     ]
                 },
                 {
+                    text: '🛠️ 工具库 (utils)',
+                    collapsed: true,
+                    items: [
+                        { text: '工具函数概览', link: '/mobile/utils/overview' },
+                        {
+                            text: '基础工具',
+                            collapsed: false,
+                            items: [
+                                { text: 'string 字符串工具', link: '/mobile/utils/string' },
+                                { text: 'boolean 布尔值工具', link: '/mobile/utils/boolean' },
+                                { text: 'function 函数工具', link: '/mobile/utils/function' },
+                                { text: 'date 日期工具', link: '/mobile/utils/date' },
+                                { text: 'validators 验证工具', link: '/mobile/utils/validators' }
+                            ]
+                        },
+                        {
+                            text: '业务工具',
+                            collapsed: false,
+                            items: [
+                                { text: 'cache 缓存工具', link: '/mobile/utils/cache' },
+                                { text: 'route 路由工具', link: '/mobile/utils/route' },
+                                { text: 'platform 平台工具', link: '/mobile/utils/platform' },
+                                { text: 'tenant 租户工具', link: '/mobile/utils/tenant' }
+                            ]
+                        },
+                        {
+                            text: '安全工具',
+                            collapsed: false,
+                            items: [
+                                { text: 'crypto 加密工具', link: '/mobile/utils/crypto' },
+                                { text: 'rsa RSA加密', link: '/mobile/utils/rsa' }
+                            ]
+                        },
+                        {
+                            text: '辅助工具',
+                            collapsed: false,
+                            items: [
+                                { text: 'to 异步处理', link: '/mobile/utils/to' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    text: '📄 页面开发 (pages)',
+                    collapsed: true,
+                    items: [
+                        { text: '页面开发指南', link: '/mobile/pages/development-guide' },
+                        { text: '页面生命周期', link: '/mobile/pages/lifecycle' },
+                        { text: '页面路由传参', link: '/mobile/pages/route-params' },
+                        {
+                            text: '主包页面',
+                            collapsed: false,
+                            items: [
+                                { text: '首页 (index)', link: '/mobile/pages/main/index' },
+                                { text: '个人中心 (my)', link: '/mobile/pages/main/my' },
+                                { text: '设置页面 (settings)', link: '/mobile/pages/main/settings' }
+                            ]
+                        },
+                        {
+                            text: '认证页面',
+                            collapsed: false,
+                            items: [
+                                { text: '统一认证 (auth)', link: '/mobile/pages/auth/auth' },
+                                { text: '账号登录 (login)', link: '/mobile/pages/auth/login' },
+                                { text: '手机登录 (phoneLogin)', link: '/mobile/pages/auth/phone-login' },
+                                { text: '用户注册 (register)', link: '/mobile/pages/auth/register' },
+                                { text: '短信验证 (smsVerify)', link: '/mobile/pages/auth/sms-verify' }
+                            ]
+                        },
+                        {
+                            text: '分包页面',
+                            collapsed: false,
+                            items: [
+                                { text: '分包管理', link: '/mobile/pages/subpackages/overview' },
+                                { text: '管理员页面 (admin)', link: '/mobile/pages/subpackages/admin' },
+                                { text: '业务页面扩展', link: '/mobile/pages/subpackages/business' }
+                            ]
+                        }
+                    ]
+                },
+                {
                     text: '🎨 布局系统 (layouts)',
+                    collapsed: true,
                     items: [
                         { text: '布局概述', link: '/mobile/layouts/overview' },
                         { text: '默认布局 (default)', link: '/mobile/layouts/default' },
-                        { text: 'Demo布局 (demo)', link: '/mobile/layouts/demo' },
                         { text: '导航栏配置', link: '/mobile/layouts/navbar' },
                         { text: '标签栏配置', link: '/mobile/layouts/tabbar' },
                         { text: '胶囊组件', link: '/mobile/layouts/capsule' },
@@ -524,70 +776,77 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📄 页面开发 (pages)',
+                    text: '🏪 状态管理 (stores)',
+                    collapsed: true,
                     items: [
-                        { text: '页面开发指南', link: '/mobile/pages/development-guide' },
-                        { text: '首页 (index)', link: '/mobile/pages/index' },
-                        { text: '登录页 (login)', link: '/mobile/pages/login' },
-                        { text: '用户中心 (user)', link: '/mobile/pages/user' },
-                        { text: '设置页面 (settings)', link: '/mobile/pages/settings' },
-                        { text: '业务页面', link: '/mobile/pages/business' },
-                        { text: '示例页面 (demo)', link: '/mobile/pages/demo' },
-                        { text: '分包页面管理', link: '/mobile/pages/subpackages' }
-                    ]
-                },
-                {
-                    text: '🛠️ 工具库 (utils)',
-                    items: [
-                        { text: '工具函数概览', link: '/mobile/utils/overview' },
-                        { text: 'HTTP请求工具', link: '/mobile/utils/http' },
-                        { text: '存储工具', link: '/mobile/utils/storage' },
-                        { text: '设备信息工具', link: '/mobile/utils/device' },
-                        { text: '位置服务工具', link: '/mobile/utils/location' },
-                        { text: '文件处理工具', link: '/mobile/utils/file' },
-                        { text: '图片处理工具', link: '/mobile/utils/image' },
-                        { text: '日期工具', link: '/mobile/utils/date' },
-                        { text: '格式化工具', link: '/mobile/utils/format' },
-                        { text: '验证工具', link: '/mobile/utils/validate' },
-                        { text: '加密工具', link: '/mobile/utils/crypto' },
-                        { text: '分享工具', link: '/mobile/utils/share' },
-                        { text: '权限工具', link: '/mobile/utils/permission' }
-                    ]
-                },
-                {
-                    text: '🔌 插件系统 (plugins)',
-                    items: [
-                        { text: '插件概览', link: '/mobile/plugins/overview' },
-                        { text: '网络请求插件', link: '/mobile/plugins/request' },
-                        { text: '权限管理插件', link: '/mobile/plugins/permission' },
-                        { text: '支付插件', link: '/mobile/plugins/payment' },
-                        { text: '分享插件', link: '/mobile/plugins/share' },
-                        { text: '推送插件', link: '/mobile/plugins/push' },
-                        { text: '统计插件', link: '/mobile/plugins/analytics' },
-                        { text: '地图插件', link: '/mobile/plugins/map' },
-                        { text: '相机插件', link: '/mobile/plugins/camera' },
-                        { text: '自定义插件开发', link: '/mobile/plugins/custom-dev' }
+                        { text: '状态管理概览', link: '/mobile/stores/overview' },
+                        { text: 'Pinia配置', link: '/mobile/stores/pinia-config' },
+                        { text: '用户状态 (user)', link: '/mobile/stores/user' },
+                        { text: '字典状态 (dict)', link: '/mobile/stores/dict' },
+                        { text: '标签栏状态 (tabbar)', link: '/mobile/stores/tabbar' },
+                        { text: '持久化存储', link: '/mobile/stores/persistence' }
                     ]
                 },
                 {
                     text: '🎨 样式系统 (styles)',
+                    collapsed: true,
                     items: [
                         { text: '样式概览', link: '/mobile/styles/overview' },
+                        { text: '样式架构设计', link: '/mobile/styles/architecture' },
                         { text: 'UnoCSS配置', link: '/mobile/styles/unocss' },
-                        { text: '全局样式', link: '/mobile/styles/global' },
+                        { text: '全局样式 (uni.scss)', link: '/mobile/styles/global' },
+                        { text: 'rpx单位使用', link: '/mobile/styles/rpx-units' },
                         { text: '主题定制', link: '/mobile/styles/theme' },
                         { text: '响应式设计', link: '/mobile/styles/responsive' },
                         { text: '组件样式', link: '/mobile/styles/components' },
-                        { text: '工具类', link: '/mobile/styles/utilities' },
-                        { text: '图标字体', link: '/mobile/styles/icon-fonts' },
                         { text: '样式最佳实践', link: '/mobile/styles/best-practices' }
                     ]
                 },
                 {
+                    text: '📝 类型定义 (types)',
+                    collapsed: true,
+                    items: [
+                        { text: '类型系统概览', link: '/mobile/types/overview' },
+                        { text: '全局类型 (global.d.ts)', link: '/mobile/types/global' },
+                        { text: 'HTTP类型 (http.d.ts)', link: '/mobile/types/http' },
+                        { text: '环境类型 (env.d.ts)', link: '/mobile/types/env' },
+                        { text: '组件类型 (components.d.ts)', link: '/mobile/types/components' },
+                        { text: '页面类型 (uni-pages.d.ts)', link: '/mobile/types/uni-pages' },
+                        { text: '静态资源类型', link: '/mobile/types/static-assets' },
+                        { text: '自动导入类型', link: '/mobile/types/auto-imports' },
+                        { text: '异步组件类型', link: '/mobile/types/async-components' }
+                    ]
+                },
+                {
+                    text: '🌍 国际化 (locales)',
+                    collapsed: true,
+                    items: [
+                        { text: '国际化配置', link: '/mobile/i18n/config' },
+                        { text: '语言包管理', link: '/mobile/i18n/language-packs' },
+                        { text: '中文语言包 (zh-CN)', link: '/mobile/i18n/zh-cn' },
+                        { text: '英文语言包 (en-US)', link: '/mobile/i18n/en-us' },
+                        { text: '动态语言切换', link: '/mobile/i18n/dynamic-switching' },
+                        { text: '国际化最佳实践', link: '/mobile/i18n/best-practices' }
+                    ]
+                },
+                {
+                    text: '📦 组件开发',
+                    collapsed: true,
+                    items: [
+                        { text: '自定义组件开发', link: '/mobile/components/custom-development' },
+                        { text: '组件封装规范', link: '/mobile/components/encapsulation-standards' },
+                        { text: '组件通信模式', link: '/mobile/components/communication-patterns' },
+                        { text: '组件生命周期', link: '/mobile/components/lifecycle' },
+                        { text: '组件测试', link: '/mobile/components/testing' }
+                    ]
+                },
+                {
                     text: '📱 平台适配',
+                    collapsed: true,
                     items: [
                         { text: '平台差异说明', link: '/mobile/platform/differences' },
-                        { text: 'H5适配', link: '/mobile/platform/h5' },
+                        { text: '条件编译使用', link: '/mobile/platform/conditional-compilation' },
+                        { text: 'H5端适配', link: '/mobile/platform/h5' },
                         { text: '微信小程序适配', link: '/mobile/platform/wechat' },
                         { text: '支付宝小程序适配', link: '/mobile/platform/alipay' },
                         { text: '百度小程序适配', link: '/mobile/platform/baidu' },
@@ -595,12 +854,12 @@ export default defineConfig({
                         { text: '抖音小程序适配', link: '/mobile/platform/toutiao' },
                         { text: 'Android App适配', link: '/mobile/platform/android' },
                         { text: 'iOS App适配', link: '/mobile/platform/ios' },
-                        { text: '鸿蒙适配', link: '/mobile/platform/harmony' },
-                        { text: '条件编译使用', link: '/mobile/platform/conditional' }
+                        { text: '鸿蒙适配', link: '/mobile/platform/harmony' }
                     ]
                 },
                 {
                     text: '⚡ 性能优化',
+                    collapsed: true,
                     items: [
                         { text: '性能优化概览', link: '/mobile/performance/overview' },
                         { text: '启动性能优化', link: '/mobile/performance/startup' },
@@ -608,10 +867,13 @@ export default defineConfig({
                         { text: '包体积优化', link: '/mobile/performance/bundle-size' },
                         { text: '图片优化', link: '/mobile/performance/image-optimization' },
                         { text: '分包加载优化', link: '/mobile/performance/subpackage' },
+                        { text: '内存优化', link: '/mobile/performance/memory' },
+                        { text: '网络优化', link: '/mobile/performance/network' }
                     ]
                 },
                 {
                     text: '🐛 调试与测试',
+                    collapsed: true,
                     items: [
                         { text: '调试工具使用', link: '/mobile/debug/tools' },
                         { text: '真机调试', link: '/mobile/debug/device' },
@@ -625,6 +887,7 @@ export default defineConfig({
                 },
                 {
                     text: '📦 打包发布',
+                    collapsed: true,
                     items: [
                         { text: '打包配置概览', link: '/mobile/build/overview' },
                         { text: '环境配置', link: '/mobile/build/environment' },
