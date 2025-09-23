@@ -12,11 +12,14 @@ aside: false
 
 ## 🌐 在线演示
 
-| 平台               | 地址                                                                  | 账密               | 说明                       |
-|------------------|---------------------------------------------------------------------|------------------|--------------------------|
-| 💻 **后台管理**      | [立即体验](https://ui.ruoyi.plus/login?redirect=/index?tenantId=424410) | admin / admin123 | Vue3 + Element Plus 管理后台 |
-| 📱 **移动端H5基础框架** | [立即体验](http://uni.ruoyi.plus/h5)                                    | admin / admin123 | UniApp 跨平台应用             |
-| 📱 **移动端H5组件演示** | [立即体验](http://uni.ruoyi.plus/demo)                                  | admin / admin123 | UniApp 跨平台应用             |
+| 平台               | 地址                                                                   | 账密                    | 说明                       |
+|------------------|----------------------------------------------------------------------|-----------------------|--------------------------|
+| 💻 **超管后台管理**    | [立即体验](https://ui.ruoyi.plus/login?redirect=/index?tenantId=000000)  | superadmin / admin123 | Vue3 + Element Plus 管理后台 |
+| 💻 **租户后台管理**    | [立即体验](https://ui.ruoyi.plus/login?redirect=/index?tenantId=424410)  | admin / admin123      | Vue3 + Element Plus 管理后台 |
+| 📱 **移动端H5基础框架** | [立即体验](http://uni.ruoyi.plus/h5)                                     | admin / admin123      | UniApp 跨平台应用             |
+| 📱 **移动端H5组件演示** | [立即体验](http://uni.ruoyi.plus/demo)                                   | admin / admin123      | UniApp 跨平台应用             |
+| 💻 **备用超管后台管理**  | [立即体验](https://ui2.ruoyi.plus/login?redirect=/index?tenantId=000000) | superadmin / admin123 | Vue3 + Element Plus 管理后台 |
+| 💻 **备用租户后台管理**  | [立即体验](https://ui2.ruoyi.plus/login?redirect=/index?tenantId=424410) | admin / admin123      | Vue3 + Element Plus 管理后台 |
 
 
 ## 💬 技术支持
