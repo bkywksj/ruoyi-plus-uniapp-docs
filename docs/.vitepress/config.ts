@@ -283,7 +283,10 @@ export default defineConfig({
                             collapsed: false,
                             items: [
                                 { text: 'ADataCard 数据卡片', link: '/frontend/components/display/data-card' },
-                                { text: 'ADetailDialog 详情对话框', link: '/frontend/components/display/detail-dialog' },
+                                {
+                                    text: 'ADetailDialog 详情对话框',
+                                    link: '/frontend/components/display/detail-dialog'
+                                },
                                 { text: 'TableToolbar 表格工具栏', link: '/frontend/components/display/table-toolbar' },
                                 { text: 'Pagination 分页', link: '/frontend/components/display/pagination' },
                             ]
@@ -295,7 +298,10 @@ export default defineConfig({
                             collapsed: false,
                             items: [
                                 { text: 'ASearchForm 搜索表单', link: '/frontend/components/feedback/search-form' },
-                                { text: 'ASelectionTags 选择标签', link: '/frontend/components/feedback/selection-tags' },
+                                {
+                                    text: 'ASelectionTags 选择标签',
+                                    link: '/frontend/components/feedback/selection-tags'
+                                },
                             ]
                         },
 
@@ -305,7 +311,10 @@ export default defineConfig({
                             collapsed: false,
                             items: [
                                 { text: '业务组件概览', link: '/frontend/components/business/overview' },
-                                { text: 'AOssMediaManager 媒体库', link: '/frontend/components/business/oss-media-manager' },
+                                {
+                                    text: 'AOssMediaManager 媒体库',
+                                    link: '/frontend/components/business/oss-media-manager'
+                                },
                                 { text: 'ARecharge 充值组件', link: '/frontend/components/business/recharge' },
                                 { text: 'AImportExcel Excel 导入', link: '/frontend/components/business/import-excel' },
                                 { text: 'UserSelect 用户选择', link: '/frontend/components/business/user-select' },
@@ -317,8 +326,14 @@ export default defineConfig({
                             text: '布局组件',
                             collapsed: false,
                             items: [
-                                { text: 'APageBackground 页面背景', link: '/frontend/components/layout/page-background' },
-                                { text: 'EnhancedIFrame 增强iframe', link: '/frontend/components/layout/enhanced-iframe' },
+                                {
+                                    text: 'APageBackground 页面背景',
+                                    link: '/frontend/components/layout/page-background'
+                                },
+                                {
+                                    text: 'IFrameContainer iframe容器',
+                                    link: '/frontend/components/layout/i-frame-container'
+                                },
                             ]
                         }
                     ]
@@ -391,25 +406,114 @@ export default defineConfig({
                     text: '📋 指令系统 (directives)',
                     collapsed: true,
                     items: [
-                        { text: '指令概览', link: '/frontend/directives/overview' },
-                        { text: '权限指令 (v-auth)', link: '/frontend/directives/permission' },
-                        { text: '复制指令 (v-copy)', link: '/frontend/directives/copy' },
-                        { text: '自定义指令开发', link: '/frontend/directives/custom' }
+                        { text: '权限指令', link: '/frontend/directives/permission' }
                     ]
                 },
                 {
                     text: '🎨 样式系统 (styles)',
                     collapsed: true,
                     items: [
-                        { text: '样式架构', link: '/frontend/styles/style-architecture' },
-                        { text: 'UnoCSS配置', link: '/frontend/styles/unocss-config' },
-                        { text: '全局样式', link: '/frontend/styles/global-styles' },
-                        { text: '主题系统', link: '/frontend/styles/theme-system' },
-                        { text: '响应式设计', link: '/frontend/styles/responsive' },
-                        { text: '动画系统', link: '/frontend/styles/animations' },
-                        { text: '组件样式', link: '/frontend/styles/component-styles' },
-                        { text: '工具类', link: '/frontend/styles/utility-classes' },
-                        { text: '样式最佳实践', link: '/frontend/styles/best-practices' }
+                        // 基础架构
+                        {
+                            text: '基础架构',
+                            items: [
+                                { text: '样式架构概述', link: '/frontend/styles/architecture/overview' },
+                                { text: 'SCSS架构', link: '/frontend/styles/architecture/scss-structure' },
+                                { text: '文件组织', link: '/frontend/styles/architecture/file-organization' }
+                            ]
+                        },
+
+                        // 原子化CSS
+                        {
+                            text: '原子化CSS',
+                            items: [
+                                { text: 'UnoCSS配置', link: '/frontend/styles/atomic/unocss-config' },
+                                { text: '快捷方式定义', link: '/frontend/styles/atomic/shortcuts' },
+                                { text: '自定义规则', link: '/frontend/styles/atomic/custom-rules' },
+                                { text: '工具类使用', link: '/frontend/styles/atomic/utility-classes' }
+                            ]
+                        },
+
+                        // 基础样式
+                        {
+                            text: '基础样式',
+                            items: [
+                                { text: '样式重置', link: '/frontend/styles/base/reset' },
+                                { text: '排版系统', link: '/frontend/styles/base/typography' },
+                                { text: '全局变量', link: '/frontend/styles/base/variables' },
+                                { text: 'Mixins工具', link: '/frontend/styles/base/mixins' }
+                            ]
+                        },
+
+                        // 主题系统
+                        {
+                            text: '主题系统',
+                            items: [
+                                { text: '主题概述', link: '/frontend/styles/theme/overview' },
+                                { text: '亮色主题', link: '/frontend/styles/theme/light-theme' },
+                                { text: '暗色主题', link: '/frontend/styles/theme/dark-theme' },
+                                { text: '主题切换', link: '/frontend/styles/theme/theme-switching' },
+                                { text: 'CSS变量系统', link: '/frontend/styles/theme/css-variables' }
+                            ]
+                        },
+
+                        // 组件样式
+                        {
+                            text: '组件样式',
+                            items: [
+                                { text: 'Element Plus覆盖', link: '/frontend/styles/components/element-plus' },
+                                { text: '按钮组件', link: '/frontend/styles/components/buttons' },
+                                { text: '布局组件', link: '/frontend/styles/components/layout' },
+                                { text: '自定义组件样式', link: '/frontend/styles/components/custom' }
+                            ]
+                        },
+
+                        // 动画系统
+                        {
+                            text: '动画系统',
+                            items: [
+                                { text: '动画概述', link: '/frontend/styles/animations/overview' },
+                                { text: '过渡动画', link: '/frontend/styles/animations/transitions' },
+                                { text: '关键帧动画', link: '/frontend/styles/animations/keyframes' },
+                                { text: '图标动画', link: '/frontend/styles/animations/icon-animations' },
+                                { text: '对话框动画', link: '/frontend/styles/animations/dialog-animations' }
+                            ]
+                        },
+
+                        // 响应式设计
+                        {
+                            text: '响应式设计',
+                            items: [
+                                { text: '断点系统', link: '/frontend/styles/responsive/breakpoints' },
+                                { text: '移动端适配', link: '/frontend/styles/responsive/mobile' },
+                                { text: '平板适配', link: '/frontend/styles/responsive/tablet' },
+                                { text: '响应式工具', link: '/frontend/styles/responsive/utilities' }
+                            ]
+                        },
+
+                        // 最佳实践
+                        {
+                            text: '最佳实践',
+                            items: [
+                                { text: '样式规范', link: '/frontend/styles/best-practices/conventions' },
+                                { text: '性能优化', link: '/frontend/styles/best-practices/performance' },
+                                { text: '维护指南', link: '/frontend/styles/best-practices/maintenance' },
+                                { text: '常见问题', link: '/frontend/styles/best-practices/troubleshooting' }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    text: '🎭 图标系统 (icons)',
+                    collapsed: true,
+                    items: [
+                        { text: '图标系统概述', link: '/frontend/icons/overview' },
+                        { text: 'Iconify配置', link: '/frontend/icons/iconify-config' },
+                        { text: 'Iconfont配置', link: '/frontend/icons/iconfont-config' },
+                        { text: '图标类型生成', link: '/frontend/icons/type-generation' },
+                        { text: '图标组件使用', link: '/frontend/icons/component-usage' },
+                        { text: '图标预设管理', link: '/frontend/icons/preset-management' },
+                        { text: '图标最佳实践', link: '/frontend/icons/best-practices' }
                     ]
                 },
                 {

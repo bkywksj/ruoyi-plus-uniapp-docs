@@ -1,6 +1,6 @@
-# EnhancedIFrame 增强iframe组件
+# IFrameContainer iframe容器组件
 
-用于嵌入外部页面的增强型iframe组件，支持响应式高度自适应和安全沙箱配置。
+用于嵌入外部页面的iframe容器组件，支持响应式高度自适应和优雅的样式设计。
 
 ## 基础用法
 
@@ -8,7 +8,7 @@
 
 ```vue
 <template>
-  <EnhancedIFrame src="https://example.com" />
+  <IFrameContainer src="https://example.com" />
 </template>
 ```
 
@@ -20,7 +20,7 @@
 <template>
   <div class="iframe-container">
     <h2 class="mb-4">产品文档</h2>
-    <EnhancedIFrame src="https://docs.example.com/product-guide" />
+    <IFrameContainer src="https://docs.example.com/product-guide" />
   </div>
 </template>
 ```
@@ -31,7 +31,7 @@
 
 ```vue
 <template>
-  <EnhancedIFrame src="/static/report.html" />
+  <IFrameContainer src="/static/report.html" />
 </template>
 ```
 
@@ -50,7 +50,7 @@
       width="80%"
       :before-close="handleClose"
     >
-      <EnhancedIFrame src="https://example.com/dashboard" />
+      <IFrameContainer src="https://example.com/dashboard" />
     </el-dialog>
   </div>
 </template>
@@ -73,12 +73,12 @@ const handleClose = (done) => {
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <div class="bg-white rounded-lg shadow-lg p-4">
       <h3 class="text-lg font-semibold mb-4">数据可视化</h3>
-      <EnhancedIFrame src="https://charts.example.com" />
+      <IFrameContainer src="https://charts.example.com" />
     </div>
     
     <div class="bg-white rounded-lg shadow-lg p-4">
       <h3 class="text-lg font-semibold mb-4">监控面板</h3>
-      <EnhancedIFrame src="https://monitor.example.com" />
+      <IFrameContainer src="https://monitor.example.com" />
     </div>
   </div>
 </template>
@@ -92,10 +92,10 @@ const handleClose = (done) => {
 |------|------|------|--------|--------|
 | src | iframe要加载的源地址 | `string` | — | — |
 
-### EnhancedIFrameProps 接口
+### IFrameContainerProps 接口
 
 ```typescript
-interface EnhancedIFrameProps {
+interface IFrameContainerProps {
   /**
    * iframe 要加载的源地址
    * 必填，必须是一个有效的 URL 字符串
@@ -108,33 +108,9 @@ interface EnhancedIFrameProps {
 
 - **自适应高度**：自动计算并设置合适的高度（视口高度 - 90px）
 - **响应式设计**：监听窗口大小变化，动态调整尺寸
-- **安全沙箱**：配置安全的沙箱权限，防止恶意脚本
 - **优雅样式**：提供美观的加载状态和边框样式
 - **内存优化**：组件卸载时自动清理事件监听器
-
-## 沙箱安全配置
-
-组件默认配置了以下沙箱权限：
-
-```html
-sandbox="allow-scripts allow-same-origin allow-forms allow-modals"
-```
-
-### 权限说明
-
-- `allow-scripts`：允许执行JavaScript脚本
-- `allow-same-origin`：允许同源策略访问
-- `allow-forms`：允许表单提交
-- `allow-modals`：允许弹出模态框
-
-### 其他可用权限
-
-如需更多权限，可以考虑以下选项（需要修改组件源码）：
-
-- `allow-popups`：允许弹出新窗口
-- `allow-popups-to-escape-sandbox`：允许弹出窗口逃脱沙箱
-- `allow-top-navigation`：允许顶级导航
-- `allow-downloads`：允许文件下载
+- **简洁设计**：专注于核心功能，保持组件轻量
 
 ## 样式说明
 
@@ -201,3 +177,17 @@ const calculateHeight = () => {
 ### 生命周期管理
 - `onMounted`：初始化高度计算和事件监听
 - `onUnmounted`：清理事件监听器，防止内存泄漏
+
+## 组件结构
+
+```vue
+<template>
+  <div class="relative w-full overflow-hidden bg-gray-100" :style="{ height: containerHeight }">
+    <iframe class="block w-full h-full border-none bg-white" :src="props.src" border="0" scrolling="auto" />
+  </div>
+</template>
+
+<script setup lang="ts" name="IFrameContainer">
+// 组件逻辑
+</script>
+```
