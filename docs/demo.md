@@ -46,45 +46,7 @@ aside: false
 
 ### 后台管理系统
 
-[//]: # ()
-
-[//]: # (::: details 点击查看更多截图)
-
-[//]: # (![仪表板]&#40;/images/admin/dashboard.png&#41;)
-
-[//]: # (*数据仪表板 - 实时监控系统状态*)
-
-[//]: # ()
-
-[//]: # (![用户管理]&#40;/images/admin/user-management.png&#41;)
-
-[//]: # (*用户管理 - 完整的权限控制体系*)
-
-[//]: # ()
-
-[//]: # (![代码生成]&#40;/images/admin/code-generator.png&#41;)
-
-[//]: # (*代码生成 - 一键生成CRUD代码*)
-
-[//]: # (:::)
-
-[//]: # ()
-
-[//]: # (### 移动端应用)
-
-[//]: # ()
-
-[//]: # (::: details 移动端界面展示)
-
-[//]: # (![首页]&#40;/images/mobile/home.png&#41;)
-
-[//]: # (![登录]&#40;/images/mobile/login.png&#41;)
-
-[//]: # (![用户中心]&#40;/images/mobile/user-center.png&#41;)
-
-[//]: # (*移动端主要界面展示*)
-
-[//]: # (:::)
+<ImagePreview src="/images/demo/1.png,/images/demo/2.png,/images/demo/3.png,/images/demo/4.png,/images/demo/5.png,/images/demo/6.png,/images/demo/7.png,/images/demo/8.png,/images/demo/9.png,/images/demo/10.png,/images/demo/1.png,/images/demo/11.png,/images/demo/12.png,/images/demo/13.png,/images/demo/14.png,/images/demo/15.png,/images/demo/16.png,/images/demo/17.png,/images/demo/18.png,/images/demo/19.png,/images/demo/20.png,/images/demo/21.png,/images/demo/22.png,/images/demo/23.png,/images/demo/24.png,/images/demo/25.png,/images/demo/26.png,/images/demo/27.png,/images/demo/28.png,/images/demo/29.png,/images/demo/30.png,/images/demo/31.png,/images/demo/32.png,/images/demo/33.png" width="100%" height="100%" style="margin-top: 20px"/>
 
 ---
 
