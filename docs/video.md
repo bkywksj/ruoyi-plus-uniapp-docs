@@ -14,3 +14,5 @@
 12. **[【Spring Boot实战】企业级微信小程序登录系统！支持租户隔离+动态配置+多平台扩展](https://www.bilibili.com/video/BV1iKe9zmEUB/)**
 13. **[【RuoYi-Plus-UniApp实战】企业OA办公系统开发教程 - Vue3全栈开发完整指南（配合claude实战）](https://www.bilibili.com/video/BV1AJacz3EXG/)**
 14. **[移动端国际化+文件上传物理隔离和目录隔离+Forest HTTP客户端（内置完善示例地图API）简化前端动态路由为弹窗 优化字典数据维护](https://www.bilibili.com/video/BV1fTaozdE9b/)**
+15. **[【全栈框架】5个月打磨！AI时代下的企业级开发神器，效率提升3倍成本降低70%｜ruoyi-plus-uniapp完整介绍](https://www.bilibili.com/video/BV1V3nAzNE2V/)**
+16. **[【ruoyi-plus-uniapp】支付模块使用教程 微信支付智能切换v2 v3](https://www.bilibili.com/video/BV14WJQz4E2x/)**
