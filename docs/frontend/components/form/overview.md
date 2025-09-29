@@ -356,6 +356,6 @@ const { isTablet } = useBreakpoint()
 
 部分组件有额外依赖：
 
-- **AFormEditor** - 依赖 `@tiptap/vue-3` 富文本编辑器
+- **AFormEditor** - 依赖 `@wangeditor/editor @wangeditor/editor-for-vue` 富文本编辑器
 - **AFormCascader** - 可选依赖 `element-china-area-data` 地区数据
 - **AFormFileUpload** / **AFormImgUpload** - 需要配置 OSS 上传服务

@@ -10,7 +10,7 @@ Ruoyi-Plus-Uniapp 前端是一个基于 Vue 3 + TypeScript 的现代化企业级
 - **CSS框架**: UnoCSS
 - **状态管理**: Pinia
 - **图标系统**: Iconify
-- **富文本编辑器**: UMO Editor (基于 Tiptap)
+- **富文本编辑器**: WangEditor
 
 ## 架构特色
 

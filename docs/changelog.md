@@ -244,7 +244,7 @@
   AFormCascader 级联选择
   AFormCheckbox 复选框
   AFormDate 日期选择
-  AFormEditor 富文本编辑器 富文本组件接入基于 tiptap 的 umo editor
+  AFormEditor 富文本编辑器 富文本组件接入基于WangEditor
   AFormFileUpload 文件上传
   AFormlmgUpload 图片上传
   AFormlnput 输入框

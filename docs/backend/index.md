@@ -158,7 +158,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 |----------|------------|-------------------|---------------------------------------------|
 | **表单组件** | Element UI | Element Plus      | ✅ A系列表单组件全套重构                               |
 | **上传组件** | 基础上传       | 基础上传              | ✅ AFormFileUpload+AFormImgUpload +素材管理+前端直传 |
-| **编辑器**  | Quill      | Quill             | ✅ AFormEditor(基于tiptap的umo)增强富文本            |
+| **编辑器**  | Quill      | Quill             | ✅ AFormEditor(基于WangEditor)增强富文本            |
 | **媒体库**  | ❌ 无        | 基础文件管理            | ✅ AOssMediaManager+目录管理+批量操作                |
 | **权限指令** | 基础指令       | 基础指令              | ✅ permi+role+admin等完整增强指令                   |
 | **图标组件** | 基础图标       | 基础图标 + iconify图标库 | ✅ Icon组件+类型提示+iconify海量图标库                  |
