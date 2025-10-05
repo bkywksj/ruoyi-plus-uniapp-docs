@@ -23,7 +23,7 @@
 
 - **缓存**: Redis 6.x / 7.x
   - ⚠️ **注意**: 禁止使用 Redis 7.4 版本
-  - 📥 [Windows Redis 下载地址](https://github.com/tporadowski/redis/releases)
+  - 📥 [Windows Redis 下载地址](https://github.com/redis-windows/redis-windows)
 
 - **构建工具**: Maven 3.6+
 
