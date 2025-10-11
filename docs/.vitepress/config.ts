@@ -418,7 +418,6 @@ export default defineConfig({
                             text: '基础架构',
                             items: [
                                 { text: '样式架构概述', link: '/frontend/styles/architecture/overview' },
-                                { text: 'SCSS架构', link: '/frontend/styles/architecture/scss-structure' },
                                 { text: '文件组织', link: '/frontend/styles/architecture/file-organization' }
                             ]
                         },
