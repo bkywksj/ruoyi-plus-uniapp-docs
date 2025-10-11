@@ -282,6 +282,381 @@ class CustomMessageHandler implements MessageHandler {
 webSocket.addMessageHandler(new CustomMessageHandler())
 ```
 
+## 🔧 消息处理管道
+
+### 消息类型枚举
+
+系统预定义了以下消息类型：
+
+```typescript
+export enum WSMessageType {
+  // 系统级消息
+  SYSTEM_NOTICE = 'system_notice',      // 系统通知
+
+  // AI 聊天消息
+  AI_CHAT_START = 'ai_chat_start',      // 开始生成
+  AI_CHAT_STREAM = 'ai_chat_stream',    // 流式响应
+  AI_CHAT_COMPLETE = 'ai_chat_complete',// 生成完成
+  AI_CHAT_ERROR = 'ai_chat_error',      // 生成错误
+
+  // 业务消息
+  CHAT_MESSAGE = 'chat_message',        // 聊天消息
+
+  // 技术消息
+  HEARTBEAT = 'heartbeat',              // 心跳
+  DEV_LOG = 'devLog'                    // 开发日志
+}
+```
+
+### 标准消息结构
+
+```typescript
+export interface WSMessage {
+  type: WSMessageType  // 消息类型
+  data: any           // 消息数据
+  timestamp: number   // 时间戳
+  id?: string        // 消息ID（可选）
+}
+```
+
+### 自定义消息处理器
+
+#### 实现 MessageHandler 接口
+
+```typescript
+import { MessageHandler, WSMessage, WSMessageType } from '@/composables/useWS'
+
+// 自定义聊天消息处理器
+export class ChatMessageHandler implements MessageHandler {
+  handle(message: WSMessage): boolean {
+    if (message.type === WSMessageType.CHAT_MESSAGE) {
+      const chatData = message.data
+
+      // 更新聊天数据
+      console.log('收到聊天消息:', chatData)
+
+      // 显示通知
+      ElNotification({
+        title: `来自 ${chatData.fromUsername}`,
+        message: chatData.content,
+        type: 'info'
+      })
+
+      // 阻止继续传播
+      return false
+    }
+
+    // 不是聊天消息，继续传播
+    return true
+  }
+}
+```
+
+#### 异步消息处理器
+
+```typescript
+export class AsyncMessageHandler implements MessageHandler {
+  async handle(message: WSMessage): Promise<boolean> {
+    if (message.type === WSMessageType.AI_CHAT_STREAM) {
+      // 异步处理AI流式消息
+      await this.processAiStream(message.data)
+      return false
+    }
+    return true
+  }
+
+  private async processAiStream(data: any) {
+    // 异步处理逻辑
+    await new Promise(resolve => setTimeout(resolve, 100))
+    console.log('AI流式消息处理完成:', data)
+  }
+}
+```
+
+### 消息处理管道
+
+```typescript
+import { MessagePipeline } from '@/composables/useWS'
+
+// 创建消息处理管道
+const pipeline = new MessagePipeline()
+
+// 添加处理器（按优先级顺序）
+pipeline.addHandler(new HeartbeatHandler())      // 1. 心跳处理
+pipeline.addHandler(new AiChatStreamHandler())   // 2. AI消息处理
+pipeline.addHandler(new SystemNoticeHandler())   // 3. 系统通知
+pipeline.addHandler(new ChatMessageHandler())    // 4. 聊天消息
+
+// 处理接收到的消息
+await pipeline.process(rawMessage)
+
+// 获取当前处理器列表
+const handlers = pipeline.getHandlers()
+console.log('当前处理器:', handlers)
+
+// 移除特定处理器
+pipeline.removeHandler(ChatMessageHandler)
+```
+
+### 内置消息处理器
+
+#### 1. SystemNoticeHandler
+
+处理系统通知消息，自动显示通知弹窗并存储到通知中心。
+
+```typescript
+// 自动处理系统通知
+// 消息格式:
+{
+  type: 'system_notice',
+  data: {
+    title: '系统通知',
+    content: '您有新的消息',
+    duration: 4000,
+    type: 'success'
+  }
+}
+```
+
+#### 2. AiChatStreamHandler
+
+处理AI聊天相关消息，支持流式响应。
+
+```typescript
+// AI聊天开始
+{
+  type: 'ai_chat_start',
+  data: {
+    sessionId: 'session-001',
+    messageId: 'msg-001'
+  }
+}
+
+// AI流式内容
+{
+  type: 'ai_chat_stream',
+  data: {
+    sessionId: 'session-001',
+    messageId: 'msg-001',
+    content: '这是AI回复的内容...',
+    finished: false
+  }
+}
+
+// AI生成完成
+{
+  type: 'ai_chat_complete',
+  data: {
+    sessionId: 'session-001',
+    messageId: 'msg-001',
+    finished: true,
+    tokenUsage: {
+      promptTokens: 10,
+      completionTokens: 50,
+      totalTokens: 60
+    }
+  }
+}
+```
+
+#### 3. HeartbeatHandler
+
+处理心跳消息，静默处理不显示给用户。
+
+```typescript
+// 心跳消息会被自动过滤
+{
+  type: 'heartbeat',
+  data: 'pong'
+}
+```
+
+## 🌐 全局 WebSocket 管理器
+
+### GlobalWebSocketManager
+
+提供应用级别的 WebSocket 连接管理，确保单例模式，避免重复连接。
+
+#### 初始化
+
+```typescript
+import { webSocket } from '@/composables/useWS'
+
+// 基本初始化（使用默认URL）
+webSocket.initialize()
+
+// 自定义URL初始化
+webSocket.initialize('wss://custom-server.com/ws')
+
+// 带配置选项初始化
+webSocket.initialize(undefined, {
+  maxRetries: 10,
+  baseDelay: 5,
+  heartbeatInterval: 20000
+})
+```
+
+#### 连接管理
+
+```typescript
+// 建立连接
+webSocket.connect()
+
+// 断开连接
+webSocket.disconnect()
+
+// 重新连接
+webSocket.reconnect()
+
+// 检查连接状态
+console.log('连接状态:', webSocket.status)        // 'OPEN' | 'CONNECTING' | 'CLOSED'
+console.log('是否已连接:', webSocket.isConnected) // true | false
+```
+
+#### 发送消息
+
+```typescript
+// 发送文本消息
+const success1 = webSocket.send('Hello')
+
+// 发送对象消息（自动JSON序列化）
+const success2 = webSocket.send({
+  type: 'chat',
+  message: 'Hello World'
+})
+
+// 检查发送结果
+if (!success1) {
+  console.log('发送失败，连接未建立')
+}
+```
+
+#### 自定义消息处理器
+
+```typescript
+import { webSocket, MessageHandler, WSMessage } from '@/composables/useWS'
+
+// 定义自定义处理器
+class OrderNotificationHandler implements MessageHandler {
+  handle(message: WSMessage): boolean {
+    if (message.type === 'order_notification') {
+      // 处理订单通知
+      ElNotification({
+        title: '订单通知',
+        message: message.data.content,
+        type: 'warning'
+      })
+      return false // 阻止继续传播
+    }
+    return true
+  }
+}
+
+// 添加到全局管理器
+webSocket.addMessageHandler(new OrderNotificationHandler())
+
+// 移除处理器
+webSocket.removeMessageHandler(OrderNotificationHandler)
+
+// 查看当前处理器列表
+const handlers = webSocket.getMessageHandlers()
+console.log('当前处理器:', handlers)
+```
+
+#### 销毁和重置
+
+```typescript
+// 完全销毁全局实例
+webSocket.destroy()
+
+// 销毁后可重新初始化
+webSocket.initialize()
+```
+
+### 全局管理器高级特性
+
+#### 1. 自动认证
+
+```typescript
+// 自动根据当前协议构建正确的WebSocket地址
+// HTTP  -> ws://
+// HTTPS -> wss://
+
+// 自动附加认证令牌
+// 原始: wss://api.example.com/ws
+// 实际: wss://api.example.com/ws?Authorization=Bearer%20your-token
+```
+
+#### 2. 状态检查
+
+```typescript
+// 检查系统配置
+const featureStore = useFeatureStore()
+if (!featureStore.features.websocketEnabled) {
+  console.log('系统未启用WebSocket功能')
+}
+
+// 检查用户登录状态
+if (!getAuthQuery()) {
+  console.log('用户未登录，跳过初始化')
+}
+```
+
+#### 3. 防重复初始化
+
+```typescript
+// 第一次调用：初始化
+webSocket.initialize()
+
+// 第二次调用：返回现有实例
+webSocket.initialize() // 直接返回，不会重复初始化
+
+// 正在初始化时：跳过
+// 确保多次调用不会造成问题
+```
+
+### 在应用中使用全局管理器
+
+#### App.vue 中初始化
+
+```vue
+<script setup>
+import { webSocket } from '@/composables/useWS'
+
+onMounted(() => {
+  // 应用启动时初始化全局WebSocket
+  webSocket.initialize()
+})
+
+onUnmounted(() => {
+  // 应用卸载时清理
+  webSocket.destroy()
+})
+</script>
+```
+
+#### 在任意组件中使用
+
+```vue
+<template>
+  <div>
+    <div>全局连接状态: {{ webSocket.status }}</div>
+    <el-button @click="sendGlobalMessage">发送消息</el-button>
+  </div>
+</template>
+
+<script setup>
+import { webSocket } from '@/composables/useWS'
+
+const sendGlobalMessage = () => {
+  webSocket.send({
+    type: 'chat',
+    message: '来自组件的消息'
+  })
+}
+</script>
+```
+
 ## ⚠️ 注意事项
 
 ### 系统配置检查
@@ -322,7 +697,7 @@ const sendSafeMessage = (message) => {
 const { reconnect, status } = useWS('ws://localhost:8080/websocket', {
   onError: (error) => {
     console.error('WebSocket 错误:', error)
-    
+
     // 5秒后尝试手动重连
     setTimeout(() => {
       if (status.value === 'CLOSED') {
@@ -332,3 +707,115 @@ const { reconnect, status } = useWS('ws://localhost:8080/websocket', {
   }
 })
 ```
+
+### 消息处理器顺序
+
+消息处理器按添加顺序依次执行，建议按以下优先级添加：
+
+1. **技术消息处理器**（如心跳）- 最高优先级
+2. **业务消息处理器**（如AI、聊天）
+3. **系统消息处理器**（如通知）
+4. **通用处理器**（兜底处理）
+
+### 处理器错误隔离
+
+单个处理器出错不会影响其他处理器：
+
+```typescript
+// 即使某个处理器抛出异常，消息管道会捕获并继续执行下一个处理器
+try {
+  const shouldContinue = await handler.handle(message)
+  if (!shouldContinue) break
+} catch (handlerError) {
+  console.error('处理器异常:', handlerError)
+  // 继续执行下一个处理器
+}
+```
+
+## 🎯 最佳实践
+
+### 1. 使用全局管理器
+
+对于应用级别的 WebSocket 连接，推荐使用全局管理器：
+
+```typescript
+// ✅ 推荐：使用全局管理器
+import { webSocket } from '@/composables/useWS'
+webSocket.initialize()
+
+// ❌ 不推荐：在多个组件中创建独立连接
+const ws1 = useWS('ws://localhost:8080/ws') // 组件1
+const ws2 = useWS('ws://localhost:8080/ws') // 组件2（重复连接）
+```
+
+### 2. 自定义消息处理
+
+对于特定业务逻辑，创建专门的消息处理器：
+
+```typescript
+// ✅ 推荐：创建专门的处理器
+class OrderHandler implements MessageHandler {
+  handle(message: WSMessage): boolean {
+    if (message.type === 'order') {
+      this.processOrder(message.data)
+      return false
+    }
+    return true
+  }
+}
+
+// ❌ 不推荐：在onMessage回调中处理所有逻辑
+onMessage: (data) => {
+  // 大量的if-else判断
+  if (data.type === 'order') { ... }
+  else if (data.type === 'chat') { ... }
+  // ...
+}
+```
+
+### 3. 合理配置重连参数
+
+根据业务场景调整重连策略：
+
+```typescript
+// 实时性要求高的场景（如聊天）
+useWS(url, {
+  maxRetries: 10,
+  baseDelay: 2  // 快速重连
+})
+
+// 普通场景
+useWS(url, {
+  maxRetries: 8,
+  baseDelay: 3  // 平衡的策略
+})
+
+// 后台服务
+useWS(url, {
+  maxRetries: 5,
+  baseDelay: 10 // 减少服务器压力
+})
+```
+
+### 4. 页面可见性优化
+
+```vue
+<script setup>
+import { useDocumentVisibility } from '@vueuse/core'
+import { webSocket } from '@/composables/useWS'
+
+const visibility = useDocumentVisibility()
+
+watch(visibility, (current) => {
+  if (current === 'visible') {
+    // 页面可见时确保连接
+    webSocket.connect()
+  } else if (current === 'hidden') {
+    // 页面隐藏时可选择断开连接节省资源
+    // webSocket.disconnect()
+  }
+})
+</script>
+```
+
+useWebSocket 为应用提供了强大而灵活的 WebSocket 通信能力，通过消息处理管道和全局管理器，轻松实现复杂的实时通信需求。
