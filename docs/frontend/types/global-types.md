@@ -12,16 +12,18 @@ declare type ComponentInternalInstance = ComponentInstance
 ```
 
 **使用场景**:
-```typescript
+```ts
 import { getCurrentInstance } from 'vue'
 
-const instance = getCurrentInstance() as ComponentInternalInstance
-console.log(instance.proxy)
+// 类型断言
+const instance = getCurrentInstance()
+const typedInstance: ComponentInternalInstance = instance!
+console.log(typedInstance.proxy)
 ```
 
 ### 2. API 响应类型
 
-#### Result<T>
+#### `Result<T>`
 
 统一 API 响应类型，Promise 元组格式。
 
@@ -45,7 +47,7 @@ if (err) {
 console.log('用户数据', data)  // data 类型为 UserVo | null
 ```
 
-#### PageResult<T>
+#### PageResult`<T>`
 
 分页响应数据结构。
 
@@ -84,7 +86,7 @@ if (!err && data) {
 }
 ```
 
-#### R<T>
+#### R`<T>`
 
 后端标准响应结构。
 
@@ -549,11 +551,5 @@ function renderField(field: FieldConfig) {
 4. **文档化**: 为全局类型添加详细注释说明用途
 5. **类型安全**: 优先使用具体类型，避免过度使用 any
 
-## 🔗 相关文档
-
-- [类型系统概览](./overview.md)
-- [API 类型](./api-types.md)
-- [组件类型](./component-types.md)
-- [工具类型](./utility-types.md)
 
 全局类型提供了统一的基础类型定义，简化了类型导入，提升了开发效率。

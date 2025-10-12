@@ -534,11 +534,6 @@ export default defineConfig({
                     text: '⚙️ 开发工具 (dev)',
                     collapsed: true,
                     items: [
-                        { text: '开发环境配置', link: '/frontend/dev/dev-config' },
-                        { text: '构建配置详解', link: '/frontend/dev/build-config' },
-                        { text: 'Vite配置优化', link: '/frontend/dev/vite-config' },
-                        { text: '代码质量工具', link: '/frontend/dev/code-quality' },
-                        { text: 'ESLint配置', link: '/frontend/dev/eslint-config' },
                         { text: 'Prettier配置', link: '/frontend/dev/prettier-config' },
                         { text: '调试技巧', link: '/frontend/dev/debugging' },
                         { text: '性能分析', link: '/frontend/dev/performance' },
