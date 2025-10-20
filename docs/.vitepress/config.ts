@@ -547,11 +547,7 @@ export default defineConfig({
                     items: [
                         { text: '国际化配置', link: '/frontend/i18n/i18n-config' },
                         { text: '语言包管理', link: '/frontend/i18n/language-packs' },
-                        { text: '菜单国际化', link: '/frontend/i18n/menu-i18n' },
-                        { text: '表单国际化', link: '/frontend/i18n/form-i18n' },
                         { text: '组件国际化', link: '/frontend/i18n/component-i18n' },
-                        { text: '日期国际化', link: '/frontend/i18n/date-i18n' },
-                        { text: '动态翻译', link: '/frontend/i18n/dynamic-translation' },
                         { text: '国际化最佳实践', link: '/frontend/i18n/i18n-practices' }
                     ]
                 }
