@@ -2,13 +2,6 @@
 
 欢迎来到 ruoyi-plus-uniapp 最佳实践指南！这里汇集了项目开发、部署、运维等各个环节的最佳实践经验。
 
-## 📋 llms
-
-文档提供了llms大模型文档提示生成（目前直接打开乱码，保存下来就显示正常了）
-
-- [llms.txt](https://ruoyi.plus/llms.txt)
-- [llms-full.txt](https://ruoyi.plus/llms-full.txt)
-
 ## 📋 开发规范
 
 规范的开发流程是项目成功的基础，包含编码规范、命名约定、代码审查等重要内容。

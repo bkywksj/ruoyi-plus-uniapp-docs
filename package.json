@@ -29,8 +29,7 @@
     "@types/node": "^24.1.0",
     "typescript": "^5.9.2",
     "unplugin-icons": "^22.2.0",
-    "vitepress": "^1.6.3",
-    "vitepress-plugin-llms": "^1.7.0"
+    "vitepress": "^1.6.3"
   },
   "engines": {
     "node": ">=18.0.0",
