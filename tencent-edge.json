@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "version": "1.0",
+  "name": "ruoyi-plus-uniapp-docs",
+  "routes": [
+    {
+      "path": "/*",
+      "origin": {
+        "type": "static",
+        "path": "/index.html"
+      },
+      "cache": {
+        "enable": true,
+        "ttl": 3600
+      }
+    }
+  ],
+  "errorPages": {
+    "404": "/index.html"
+  }
+}
