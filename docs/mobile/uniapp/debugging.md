@@ -754,9 +754,3 @@ onErrorCaptured((err, instance, info) => {
 - **Vue.js devtools**：Vue 调试工具
 - **JSON Viewer**：JSON 格式化查看
 - **Lighthouse**：性能分析
-
-## 相关文档
-
-- [UniApp概览](./overview.md) - 平台支持
-- [条件编译](./conditional.md) - 平台差异处理
-- [HBuilderX使用](./hbuilderx.md) - App 开发工具

@@ -62,8 +62,3 @@ http.get('/api/user', {
   tenant: true
 })
 ```
-
-## 相关文档
-
-- [类型系统概览](./overview.md)
-- [路由类型](./router-types.md)

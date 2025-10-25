@@ -402,8 +402,3 @@ export type LanguageType = typeof zh_CN
    - 使用小驼峰命名法（camelCase）
    - 父级菜单使用 `_self` 表示自身名称
 4. **动态参数**：支持在翻译文本中使用 `{param}` 占位符
-
-## 相关文档
-
-- [国际化配置](./i18n-config.md) - i18n 基础配置
-- [组件国际化](./component-i18n.md) - 在组件中使用语言包

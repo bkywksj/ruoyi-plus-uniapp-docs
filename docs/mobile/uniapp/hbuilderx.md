@@ -509,9 +509,3 @@ unpackage/
 - **eslint-js**：JavaScript 代码检查
 - **prettier**：代码格式化
 - **emmet**：HTML/CSS 快速编写
-
-## 相关文档
-
-- [UniApp概览](./overview.md) - uni-app 介绍
-- [调试工具](./debugging.md) - 多平台调试方法
-- [项目配置](./manifest-config.md) - App 配置说明

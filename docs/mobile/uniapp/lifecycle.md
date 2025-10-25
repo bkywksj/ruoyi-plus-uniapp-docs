@@ -927,9 +927,3 @@ onLoad(async (options) => {
 })
 </script>
 ```
-
-## 相关文档
-
-- [UniApp概览](./overview.md) - uni-app 基础介绍
-- [路由导航](./navigation.md) - 页面跳转
-- [页面配置 (pages.json)](./pages-config.md) - 页面配置

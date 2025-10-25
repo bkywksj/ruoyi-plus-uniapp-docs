@@ -795,8 +795,3 @@ if (prevPage?.$vm?.refreshData) {
 }
 uni.navigateBack()
 ```
-
-## 相关文档
-
-- [生命周期](./lifecycle.md) - 页面生命周期
-- [页面配置 (pages.json)](./pages-config.md) - 路由配置

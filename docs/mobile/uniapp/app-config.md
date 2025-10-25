@@ -573,9 +573,3 @@ console.log(theme.colorPrimary)
 - 清除缓存
 - 重启开发服务器
 - 小程序需要重新编译
-
-## 相关文档
-
-- [页面配置 (pages.json)](./pages-config.md) - 页面路由配置
-- [项目配置 (manifest.json)](./manifest-config.md) - 应用配置
-- [样式系统](../styles/overview.md) - 完整样式系统文档

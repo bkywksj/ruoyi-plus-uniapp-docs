@@ -45,7 +45,3 @@ export const useUserStore = defineStore('user', {
   }
 })
 ```
-
-## 相关文档
-
-- [类型系统概览](./overview.md)

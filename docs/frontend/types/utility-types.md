@@ -74,8 +74,3 @@ const userInfo: Pick<UserVo, 'id' | 'username'> = {
   username: 'admin'
 }
 ```
-
-## 相关文档
-
-- [类型系统概览](./overview.md)
-- [全局类型](./global-types.md)

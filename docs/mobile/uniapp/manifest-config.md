@@ -242,9 +242,3 @@ icons: {
 1. 登录微信公众平台：https://mp.weixin.qq.com/
 2. 开发 -> 开发管理 -> 开发设置
 3. 复制 AppID
-
-## 相关文档
-
-- [页面配置 (pages.json)](./pages-config.md) - 页面路由配置
-- [应用配置 (uni.scss)](./app-config.md) - 全局样式变量
-- [配置说明](../configuration.md) - 完整配置说明

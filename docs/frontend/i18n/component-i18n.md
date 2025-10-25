@@ -445,9 +445,3 @@ t('button.add')        // ✅ 正确
 t('button.query')      // ✅ 正确
 t('button.notExist')   // ⚠️ 编辑器警告（如果键不存在）
 ```
-
-## 相关文档
-
-- [国际化配置](./i18n-config.md) - i18n 基础配置
-- [语言包管理](./language-packs.md) - 语言包的组织和管理
-- [国际化最佳实践](./i18n-practices.md) - 国际化开发最佳实践

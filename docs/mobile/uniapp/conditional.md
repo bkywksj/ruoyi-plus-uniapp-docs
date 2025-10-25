@@ -725,9 +725,3 @@ console.log('H5 平台代码块')
 console.log('微信小程序代码块')
 // #endif
 ```
-
-## 相关文档
-
-- [UniApp概览](./overview.md) - 平台支持说明
-- [调试工具](./debugging.md) - 多平台调试
-- [项目配置](./manifest-config.md) - 平台配置

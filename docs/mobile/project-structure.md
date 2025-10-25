@@ -382,9 +382,3 @@ WotUI 组件库目录，经过 Vue 3 + TypeScript 重构的移动端组件库：
 ### 目录命名
 - 使用 kebab-case（短横线分隔），如 `pages-sub/`
 - 或使用 camelCase，如 `composables/`
-
-## 相关文档
-
-- [快速开始](./getting-started.md) - 项目快速上手指南
-- [开发规范](./dev-standards.md) - 代码开发规范
-- [配置说明](./configuration.md) - 详细配置说明

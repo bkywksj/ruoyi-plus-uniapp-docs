@@ -592,9 +592,3 @@ const t = (key: string) => {
   return import.meta.env.DEV ? key : vueI18n.t(key)
 }
 ```
-
-## 相关文档
-
-- [国际化配置](./i18n-config.md) - i18n 基础配置
-- [语言包管理](./language-packs.md) - 语言包的组织和管理
-- [组件国际化](./component-i18n.md) - 在组件中使用国际化

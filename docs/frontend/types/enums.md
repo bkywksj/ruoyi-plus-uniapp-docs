@@ -58,8 +58,3 @@ enum ComponentSize {
 1. **优先使用字符串枚举**: 便于调试和序列化
 2. **使用 const 对象**: 对于简单常量，使用 `as const`
 3. **类型安全**: 结合 TypeScript 类型系统使用
-
-## 相关文档
-
-- [类型系统概览](./overview.md)
-- [全局类型](./global-types.md)

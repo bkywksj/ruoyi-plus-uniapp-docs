@@ -739,7 +739,3 @@ pnpm dev:h5
 - [主题定制](../styles/theme.md) - 自定义主题
 - [基础组件](./basic/button.md) - 查看基础组件文档
 - [表单组件](./form/input.md) - 查看表单组件文档
-
-## 相关文档
-
-- [UniApp 概览](../uniapp/overview.md) - UniApp 基础知识
