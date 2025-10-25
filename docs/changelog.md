@@ -17,10 +17,19 @@
 
 ### 1.1 基础架构重构
 
+#### 四层架构设计
+
+- 采用标准**四层架构**：Controller → Service → DAO → Mapper，职责清晰分离
+- **Service层**：不继承任何基类，直接实现业务接口，保持轻量和灵活
+- **DAO层**：独立数据访问层，继承 `IBaseDao<Entity>` 接口，实现 `buildQueryWrapper()` 方法构建查询条件
+- **Mapper层**：只继承 `BaseMapper<Entity>`，专注SQL执行
+- 数据类型规范：DAO和Mapper层只返回Entity类型，Service层使用 `MapstructUtils.convert()` 进行BO/VO转换
+
 #### 查询增强组件
 
-- 新增 IBaseService 接口及实现类BaseServiceImpl，封装常见业务操作，支持泛型适配与反射优化，极致减少样板代码
 - 增强 MyBatis-Plus 查询功能，Query增强为PlusQuery，LambdaQuery增强为PlusLambdaQuery 支持聚合函数及条件自动处理
+- 查询条件统一在DAO层通过 `buildQueryWrapper(Bo)` 方法构建，自动处理null值判断
+- 支持精确匹配、模糊查询、时间范围查询等多种查询方式的灵活组合
 
 #### 响应结果封装
 
