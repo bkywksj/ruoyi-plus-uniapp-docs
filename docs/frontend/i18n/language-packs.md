@@ -407,4 +407,3 @@ export type LanguageType = typeof zh_CN
 
 - [国际化配置](./i18n-config.md) - i18n 基础配置
 - [组件国际化](./component-i18n.md) - 在组件中使用语言包
-- [菜单国际化](./menu-i18n.md) - 菜单系统的国际化

@@ -554,6 +554,5 @@ export interface AdQuery extends PageQuery {
 
 - [类型系统概览](./overview.md)
 - [全局类型](./global-types.md)
-- [HTTP 配置](../network/http-config.md)
 
 完整的 API 类型定义确保前后端数据交互的类型安全。

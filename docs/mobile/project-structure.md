@@ -387,5 +387,4 @@ WotUI 组件库目录，经过 Vue 3 + TypeScript 重构的移动端组件库：
 
 - [快速开始](./getting-started.md) - 项目快速上手指南
 - [开发规范](./dev-standards.md) - 代码开发规范
-- [构建部署](./build/build-config.md) - 项目构建和部署指南
 - [配置说明](./configuration.md) - 详细配置说明

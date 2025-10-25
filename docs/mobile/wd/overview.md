@@ -122,9 +122,9 @@ src/wd/
 |------|------|---------|------|
 | Row-Col | 行列布局 | 栅格系统 | [查看](./layout/row-col.md) |
 | Grid | 宫格 | 图标导航 | [查看](./layout/grid.md) |
-| Gap | 间隙槽 | 内容分隔 | [查看](./layout/gap.md) |
-| Divider | 分割线 | 内容分割 | [查看](./layout/divider.md) |
-| Sticky | 吸顶布局 | 导航吸顶 | [查看](./layout/sticky.md) |
+| Gap | 间隙槽 | 内容分隔 | - |
+| Divider | 分割线 | 内容分割 | - |
+| Sticky | 吸顶布局 | 导航吸顶 | - |
 
 ### 导航组件（9 个）
 
@@ -132,13 +132,13 @@ src/wd/
 |------|------|---------|------|
 | Navbar | 导航栏 | 页面标题 | [查看](./navigation/navbar.md) |
 | Tabbar | 标签栏 | 底部导航 | [查看](./navigation/tabbar.md) |
-| Tabs | 标签页 | 内容切换 | [查看](./navigation/tabs.md) |
-| Segmented | 分段器 | 选项切换 | [查看](./navigation/segmented.md) |
-| Sidebar | 侧边栏 | 侧边导航 | [查看](./navigation/sidebar.md) |
-| IndexBar | 索引栏 | 城市选择 | [查看](./navigation/index-bar.md) |
-| Pagination | 分页 | 数据分页 | [查看](./navigation/pagination.md) |
-| Paging | 分页加载 | 下拉加载 | [查看](./navigation/paging.md) |
-| Backtop | 回到顶部 | 快速返回 | [查看](./navigation/backtop.md) |
+| Tabs | 标签页 | 内容切换 | - |
+| Segmented | 分段器 | 选项切换 | - |
+| Sidebar | 侧边栏 | 侧边导航 | - |
+| IndexBar | 索引栏 | 城市选择 | - |
+| Pagination | 分页 | 数据分页 | - |
+| Paging | 分页加载 | 下拉加载 | - |
+| Backtop | 回到顶部 | 快速返回 | - |
 
 ### 表单组件（22 个）
 
@@ -151,67 +151,67 @@ src/wd/
 | Search | 搜索框 | 搜索功能 | [查看](./form/search.md) |
 | Checkbox | 复选框 | 多选 | [查看](./form/checkbox.md) |
 | Radio | 单选框 | 单选 | [查看](./form/radio.md) |
-| Switch | 开关 | 状态切换 | [查看](./form/switch.md) |
-| Rate | 评分 | 评价打分 | [查看](./form/rate.md) |
-| Slider | 滑块 | 范围选择 | [查看](./form/slider.md) |
-| Picker | 选择器 | 数据选择 | [查看](./form/picker.md) |
-| PickerView | 选择器视图 | 内嵌选择 | [查看](./form/picker-view.md) |
-| ColPicker | 多列选择器 | 级联选择 | [查看](./form/col-picker.md) |
-| SelectPicker | 单复选 | 列表选择 | [查看](./form/select-picker.md) |
-| DatetimePicker | 时间选择 | 日期时间 | [查看](./form/datetime-picker.md) |
-| DatetimePickerView | 时间视图 | 内嵌时间 | [查看](./form/datetime-picker-view.md) |
-| Calendar | 日历 | 日期选择 | [查看](./form/calendar.md) |
-| CalendarView | 日历板 | 日期范围 | [查看](./form/calendar-view.md) |
-| Upload | 上传 | 文件上传 | [查看](./form/upload.md) |
-| Form | 表单 | 表单容器 | [查看](./form/form.md) |
-| Signature | 签名 | 手写签名 | [查看](./form/signature.md) |
-| Recorder | 录音 | 语音录制 | [查看](./form/voice-recorder.md) |
+| Switch | 开关 | 状态切换 | - |
+| Rate | 评分 | 评价打分 | - |
+| Slider | 滑块 | 范围选择 | - |
+| Picker | 选择器 | 数据选择 | - |
+| PickerView | 选择器视图 | 内嵌选择 | - |
+| ColPicker | 多列选择器 | 级联选择 | - |
+| SelectPicker | 单复选 | 列表选择 | - |
+| DatetimePicker | 时间选择 | 日期时间 | - |
+| DatetimePickerView | 时间视图 | 内嵌时间 | - |
+| Calendar | 日历 | 日期选择 | - |
+| CalendarView | 日历板 | 日期范围 | - |
+| Upload | 上传 | 文件上传 | - |
+| Form | 表单 | 表单容器 | - |
+| Signature | 签名 | 手写签名 | - |
+| Recorder | 录音 | 语音录制 | - |
 
 ### 展示组件（13 个）
 
 | 组件 | 说明 | 常用场景 | 文档 |
 |------|------|---------|------|
 | Cell | 单元格 | 列表项 | [查看](./display/cell.md) |
-| Badge | 徽标 | 数量提示 | [查看](./display/badge.md) |
-| Tag | 标签 | 标记分类 | [查看](./display/tag.md) |
-| Card | 卡片 | 信息容器 | [查看](./display/card.md) |
-| Collapse | 折叠面板 | 内容折叠 | [查看](./display/collapse.md) |
-| Steps | 步骤条 | 流程展示 | [查看](./display/steps.md) |
-| Table | 表格 | 数据展示 | [查看](./display/table.md) |
-| Img | 图片 | 图片显示 | [查看](./display/img.md) |
-| ImgCropper | 图片裁剪 | 图片编辑 | [查看](./display/img-cropper.md) |
-| Swiper | 轮播图 | 图片轮播 | [查看](./display/swiper.md) |
-| Skeleton | 骨架屏 | 加载占位 | [查看](./display/skeleton.md) |
-| Curtain | 幕帘 | 引导页 | [查看](./display/curtain.md) |
-| Watermark | 水印 | 版权保护 | [查看](./display/watermark.md) |
+| Badge | 徽标 | 数量提示 | - |
+| Tag | 标签 | 标记分类 | - |
+| Card | 卡片 | 信息容器 | - |
+| Collapse | 折叠面板 | 内容折叠 | - |
+| Steps | 步骤条 | 流程展示 | - |
+| Table | 表格 | 数据展示 | - |
+| Img | 图片 | 图片显示 | - |
+| ImgCropper | 图片裁剪 | 图片编辑 | - |
+| Swiper | 轮播图 | 图片轮播 | - |
+| Skeleton | 骨架屏 | 加载占位 | - |
+| Curtain | 幕帘 | 引导页 | - |
+| Watermark | 水印 | 版权保护 | - |
 
 ### 反馈组件（23 个）
 
 | 组件 | 说明 | 常用场景 | 文档 |
 |------|------|---------|------|
-| ActionSheet | 上拉菜单 | 操作选择 | [查看](./feedback/action-sheet.md) |
-| Popup | 弹出层 | 内容弹出 | [查看](./feedback/popup.md) |
-| Overlay | 遮罩层 | 蒙层显示 | [查看](./feedback/overlay.md) |
-| MessageBox | 弹框 | 确认提示 | [查看](./feedback/message-box.md) |
-| Toast | 轻提示 | 消息提示 | [查看](./feedback/toast.md) |
-| Notify | 消息通知 | 顶部通知 | [查看](./feedback/notify.md) |
-| Loading | 加载指示器 | 加载状态 | [查看](./feedback/loading.md) |
-| Progress | 进度条 | 进度显示 | [查看](./feedback/progress.md) |
-| Circle | 环形进度条 | 圆形进度 | [查看](./feedback/circle.md) |
-| Loadmore | 加载更多 | 列表加载 | [查看](./feedback/loadmore.md) |
-| StatusTip | 缺省提示 | 空状态 | [查看](./feedback/status-tip.md) |
-| Tooltip | 文字提示 | 气泡提示 | [查看](./feedback/tooltip.md) |
-| Popover | 气泡 | 菜单气泡 | [查看](./feedback/popover.md) |
-| DropMenu | 下拉菜单 | 筛选菜单 | [查看](./feedback/drop-menu.md) |
-| FloatingPanel | 浮动面板 | 底部面板 | [查看](./feedback/floating-panel.md) |
-| SwipeAction | 滑动操作 | 滑动删除 | [查看](./feedback/swipe-action.md) |
-| SortButton | 排序按钮 | 排序切换 | [查看](./feedback/sort-button.md) |
-| NoticeBar | 通知栏 | 滚动通知 | [查看](./feedback/notice-bar.md) |
-| CountDown | 倒计时 | 限时活动 | [查看](./feedback/count-down.md) |
-| CountTo | 数字滚动 | 数字动画 | [查看](./feedback/count-to.md) |
-| Keyboard | 虚拟键盘 | 自定义键盘 | [查看](./feedback/keyboard.md) |
-| NumberKeyboard | 数字键盘 | 数字输入 | [查看](./feedback/number-keyboard.md) |
-| Fab | 悬浮按钮 | 快捷操作 | [查看](./feedback/fab.md) |
+| ActionSheet | 上拉菜单 | 操作选择 | - |
+| Popup | 弹出层 | 内容弹出 | - |
+| Overlay | 遮罩层 | 蒙层显示 | - |
+| MessageBox | 弹框 | 确认提示 | - |
+| Toast | 轻提示 | 消息提示 | - |
+| Notify | 消息通知 | 顶部通知 | - |
+| Loading | 加载指示器 | 加载状态 | - |
+| Progress | 进度条 | 进度显示 | - |
+| Circle | 环形进度条 | 圆形进度 | - |
+| Loadmore | 加载更多 | 列表加载 | - |
+| StatusTip | 缺省提示 | 空状态 | - |
+| Tooltip | 文字提示 | 气泡提示 | - |
+| Popover | 气泡 | 菜单气泡 | - |
+| DropMenu | 下拉菜单 | 筛选菜单 | - |
+| FloatingPanel | 浮动面板 | 底部面板 | - |
+| SwipeAction | 滑动操作 | 滑动删除 | - |
+| SortButton | 排序按钮 | 排序切换 | - |
+| NoticeBar | 通知栏 | 滚动通知 | - |
+| CountDown | 倒计时 | 限时活动 | - |
+| CountTo | 数字滚动 | 数字动画 | - |
+| Keyboard | 虚拟键盘 | 自定义键盘 | - |
+| NumberKeyboard | 数字键盘 | 数字输入 | - |
+| Fab | 悬浮按钮 | 快捷操作 | - |
 
 ## 安装配置
 
@@ -743,6 +743,3 @@ pnpm dev:h5
 ## 相关文档
 
 - [UniApp 概览](../uniapp/overview.md) - UniApp 基础知识
-- [样式系统](../styles/overview.md) - 样式架构设计
-- [组件开发](../components/custom-development.md) - 自定义组件开发
-- [类型系统](../types/overview.md) - TypeScript 类型定义

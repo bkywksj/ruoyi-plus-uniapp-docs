@@ -800,4 +800,3 @@ uni.navigateBack()
 
 - [生命周期](./lifecycle.md) - 页面生命周期
 - [页面配置 (pages.json)](./pages-config.md) - 路由配置
-- [状态管理](../state-management.md) - 全局状态管理
