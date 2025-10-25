@@ -5,7 +5,7 @@ export default defineConfig({
     description: '全栈开发文档 - 后端、前端、移动端完整指南',
     base: '/',
     lastUpdated: true,
-    cleanUrls: true,
+    cleanUrls: false,
 
     head: [
         ['link', { rel: 'icon', href: '/favicon.ico' }],
