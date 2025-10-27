@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev docs",
-    "build": "vitepress build docs",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 vitepress build docs",
     "preview": "vitepress preview docs",
     "preinstall": "npx only-allow pnpm"
   },
@@ -27,6 +27,7 @@
   "devDependencies": {
     "@iconify/json": "^2.2.364",
     "@types/node": "^24.1.0",
+    "cross-env": "^10.1.0",
     "typescript": "^5.9.2",
     "unplugin-icons": "^22.2.0",
     "vitepress": "^1.6.3"
