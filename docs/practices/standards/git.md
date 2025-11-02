@@ -1680,7 +1680,7 @@ git push origin v1.0.1
 
 **模式匹配:**
 
-```gitignore
+```bash
 # 忽略所有 .log 文件
 *.log
 
@@ -1706,7 +1706,7 @@ build/**
 
 #### 文档项目 .gitignore
 
-```gitignore
+```bash
 # 日志文件
 logs
 *.log
@@ -1751,7 +1751,7 @@ pnpm-lock.yaml
 
 #### 后端项目 .gitignore
 
-```gitignore
+```bash
 # Maven
 target/
 pom.xml.tag
@@ -1811,7 +1811,7 @@ application-dev.yml
 
 #### 前端项目 .gitignore
 
-```gitignore
+```bash
 # 依赖
 node_modules/
 .pnp
@@ -1867,7 +1867,7 @@ Thumbs.db
 
 #### 移动端项目 .gitignore
 
-```gitignore
+```bash
 # UniApp
 unpackage/
 .hbuilderx/
@@ -1911,7 +1911,7 @@ Thumbs.db
 
 **1. 分层管理**
 
-```gitignore
+```bash
 # ============================================
 # 依赖和包管理
 # ============================================
@@ -1952,7 +1952,7 @@ Thumbs.db
 
 **2. 使用注释**
 
-```gitignore
+```bash
 # 忽略所有日志文件，但保留日志目录
 logs/*
 !logs/.gitkeep
@@ -1976,7 +1976,7 @@ git config --global core.excludesfile ~/.gitignore_global
 
 **全局 .gitignore 内容:**
 
-```gitignore
+```bash
 # 操作系统
 .DS_Store
 .DS_Store?
