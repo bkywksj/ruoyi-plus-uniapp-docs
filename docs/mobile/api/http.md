@@ -664,12 +664,12 @@ export const uploadFile = (
 
 | 方法 | 说明 | 参数 | 返回值 |
 |------|------|------|--------|
-| get | GET请求 | `(url, params?, config?)` | `Promise<T>` |
-| post | POST请求 | `(url, data?, config?)` | `Promise<T>` |
-| put | PUT请求 | `(url, data?, config?)` | `Promise<T>` |
-| delete | DELETE请求 | `(url, config?)` | `Promise<T>` |
-| upload | 文件上传 | `(url, filePath, config?)` | `Promise<T>` |
-| download | 文件下载 | `(url, config?)` | `Promise<T>` |
+| get | GET请求 | `(url, params?, config?)` | `` `Promise<T>` `` |
+| post | POST请求 | `(url, data?, config?)` | `` `Promise<T>` `` |
+| put | PUT请求 | `(url, data?, config?)` | `` `Promise<T>` `` |
+| delete | DELETE请求 | `(url, config?)` | `` `Promise<T>` `` |
+| upload | 文件上传 | `(url, filePath, config?)` | `` `Promise<T>` `` |
+| download | 文件下载 | `(url, config?)` | `` `Promise<T>` `` |
 
 ### 配置选项
 

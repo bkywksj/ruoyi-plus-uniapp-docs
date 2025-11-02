@@ -222,7 +222,7 @@ RuoYi-Plus-UniApp后端采用经典的**三层架构**,自上而下分为:
 - 参数校验(@Validated)
 - 权限校验(@SaCheckPermission)
 - 调用Service层业务逻辑
-- 统一响应封装(R<T>)
+- 统一响应封装(`R<T>`)
 
 **规范:**
 ```java
@@ -272,7 +272,7 @@ public class SysUserController extends BaseController {
 - ✅ 使用构造函数注入依赖(@RequiredArgsConstructor)
 - ✅ 使用@Validated进行参数校验
 - ✅ 使用@SaCheckPermission进行权限校验
-- ✅ 统一使用R<T>返回响应
+- ✅ 统一使用`R<T>`返回响应
 - ❌ 不要在Controller中处理业务逻辑
 - ❌ 不要直接调用Mapper层
 
@@ -418,13 +418,13 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
 前端采用**MVVM架构**,分为:
 
-```
+```text
 ┌──────────────────────────────────────────┐
 │             View层 (视图层)                │
 │  - Vue组件                                │
 │  - 模板渲染                                │
 │  - 用户交互                                │
-│  示例: UserList.vue                       │
+│  示例: UserList                           │
 └──────────────────────────────────────────┘
                     ▼
 ┌──────────────────────────────────────────┐
@@ -440,7 +440,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 │  - API接口定义                             │
 │  - 类型定义(TypeScript)                   │
 │  - HTTP请求                                │
-│  示例: userApi.ts                         │
+│  - 示例: userApi.ts                       │
 └──────────────────────────────────────────┘
                     ▼
 ┌──────────────────────────────────────────┐
@@ -633,7 +633,7 @@ ruoyi-admin/
 **ruoyi-common-core (核心模块)**
 
 提供最基础的功能:
-- 统一响应(R<T>)
+- 统一响应(`R<T>`)
 - 异常定义
 - 工具类
 - 常量定义
@@ -724,7 +724,7 @@ plus-ui/                        # PC管理端
 │   │   ├── system/             # 系统管理页面
 │   │   ├── business/           # 业务页面
 │   │   └── ...
-│   ├── App.vue                 # 根组件
+│   ├── App                     # 根组件
 │   └── main.ts                 # 入口文件
 ├── public/                     # 公共资源
 ├── index.html                  # HTML模板
@@ -770,7 +770,7 @@ plus-uniapp/                    # UniApp移动端
 │   │   │   ├── wd-icon/
 │   │   │   └── ...
 │   │   └── index.ts            # 导出
-│   ├── App.vue                 # 根组件
+│   ├── App                     # 根组件
 │   └── main.ts                 # 入口文件
 ├── manifest.json               # 应用配置
 ├── pages.json                  # 页面路由配置
