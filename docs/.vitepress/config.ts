@@ -1014,7 +1014,6 @@ export default defineConfig({
                         { text: '数据库设计', link: '/practices/architecture/database' },
                         { text: '缓存策略', link: '/practices/architecture/cache' },
                         { text: '分布式设计', link: '/practices/architecture/distributed' },
-                        { text: '微服务架构', link: '/practices/architecture/microservices' },
                         { text: '多租户架构', link: '/practices/architecture/multi-tenant' }
                     ]
                 },
