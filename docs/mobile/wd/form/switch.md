@@ -92,7 +92,12 @@ const handleChange = ({ value }: { value: boolean }) => {
 - 点击开关会在两个值之间切换
 - change 事件在状态改变时触发
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:58
+**技术实现:**
+- 组件通过 `switchValue` 方法处理点击事件
+- 使用 `updateValue` 方法统一处理值更新和事件触发
+- 内置 0.3s 过渡动画实现平滑切换效果
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:58, 101-128, 156
 
 ### 禁用状态
 
@@ -1003,6 +1008,103 @@ type SwitchBeforeChange = (option: SwitchBeforeChangeOption) => void
 
 参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:36-46
 
+## 主题定制
+
+### CSS 变量
+
+Switch 组件提供了以下 CSS 变量用于主题定制:
+
+```scss
+// 开关尺寸
+--wd-switch-width: 96rpx;
+--wd-switch-height: 48rpx;
+--wd-switch-size: 48rpx;
+--wd-switch-circle-size: 40rpx;
+
+// 开关颜色
+--wd-switch-active-color: #1890ff;
+--wd-switch-inactive-color: #e5e6eb;
+--wd-switch-border-color: rgba(0, 0, 0, 0.1);
+
+// 阴影颜色
+--wd-switch-active-shadow-color: rgba(24, 144, 255, 0.4);
+--wd-switch-inactive-shadow-color: rgba(0, 0, 0, 0.1);
+```
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:142-210
+
+### 自定义主题示例
+
+```vue
+<template>
+  <view class="demo">
+    <view class="demo-title">自定义主题</view>
+
+    <!-- 紫色主题 -->
+    <view class="custom-theme purple-theme">
+      <wd-switch v-model="value1" />
+    </view>
+
+    <!-- 绿色主题 -->
+    <view class="custom-theme green-theme">
+      <wd-switch v-model="value2" />
+    </view>
+
+    <!-- 自定义尺寸主题 -->
+    <view class="custom-theme large-theme">
+      <wd-switch v-model="value3" />
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const value1 = ref(true)
+const value2 = ref(true)
+const value3 = ref(true)
+</script>
+
+<style lang="scss">
+.custom-theme {
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+  border-radius: 16rpx;
+}
+
+// 紫色主题
+.purple-theme {
+  --wd-switch-active-color: #9C27B0;
+  --wd-switch-active-shadow-color: rgba(156, 39, 176, 0.4);
+  background-color: #F3E5F5;
+}
+
+// 绿色主题
+.green-theme {
+  --wd-switch-active-color: #4CAF50;
+  --wd-switch-active-shadow-color: rgba(76, 175, 80, 0.4);
+  background-color: #E8F5E9;
+}
+
+// 大尺寸主题
+.large-theme {
+  --wd-switch-width: 120rpx;
+  --wd-switch-height: 60rpx;
+  --wd-switch-size: 60rpx;
+  --wd-switch-circle-size: 52rpx;
+  background-color: #FFF3E0;
+}
+</style>
+```
+
+**使用说明:**
+- 通过 CSS 变量实现主题定制
+- 可以针对不同场景定义不同主题
+- 支持单独定制尺寸、颜色、阴影等
+- 建议将主题变量统一管理
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:148-208
+
 ## 最佳实践
 
 ### 1. 合理使用 beforeChange
@@ -1188,21 +1290,85 @@ const handleBeforeChange = ({ value, resolve }) => {
 <wd-switch v-model="value" active-color="rgb(255, 71, 87)" />
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:5
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:5-6, 66-68
+
+### 4. 动画效果问题
+
+**问题原因:**
+- 期望自定义动画时长或效果
+
+**解决方案:**
+```vue
+<!-- 动画时长和效果由组件内部控制,固定为 0.3s ease-out -->
+<wd-switch v-model="value" />
+```
+
+**说明:**
+- 组件内置 0.3s 过渡动画
+- 圆形按钮使用 ease-out 缓动函数
+- 背景色变化同步进行
+- 不支持自定义动画时长
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:156, 178
+
+### 5. 禁用状态下的事件
+
+**问题原因:**
+- 期望禁用状态下仍触发事件
+
+**解决方案:**
+```vue
+<!-- 禁用状态下不会触发任何事件 -->
+<wd-switch v-model="value" disabled @change="handleChange" />
+```
+
+**说明:**
+- 禁用状态通过 opacity: 0.5 显示
+- 点击事件在方法开始处被拦截
+- 不会触发 change 或 update:modelValue 事件
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:110-111, 206-208
 
 ## 注意事项
 
 1. **值类型要求** - modelValue 类型必须与 activeValue 和 inactiveValue 匹配,不要混用不同类型
+
+   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:58, 61-64
+
 2. **初始值验证** - 组件会在挂载时验证初始值,无效值会自动设置为 inactiveValue
+
+   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:134-139
+
 3. **beforeChange 必须调用 resolve** - 如果设置了 beforeChange,必须调用 resolve,否则状态不会改变
+
+   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:116-128
+
 4. **禁用状态** - 禁用状态下开关不可点击,不会触发任何事件
+
+   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:110-111, 206-208
+
 5. **颜色格式** - activeColor 和 inactiveColor 支持所有 CSS 颜色格式
+
+   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:5-6
+
 6. **尺寸单位** - size 属性的单位为 rpx,会自动添加
+
+   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:5, 22
+
 7. **动画效果** - 组件内置 0.3s 的过渡动画,不可自定义
+
+   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:156, 178
+
 8. **事件触发** - change 事件在 beforeChange 验证通过后触发
+
+   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:101-104
+
 9. **异步处理** - beforeChange 支持异步操作,建议显示加载状态
+
 10. **性能优化** - 频繁切换时注意节流,避免过多的状态更新
+
 11. **无障碍访问** - 建议为开关添加描述性标签,提升可访问性
+
 12. **平台兼容** - 组件在 H5、小程序、App 等平台表现一致
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:1-211
+   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:24-30

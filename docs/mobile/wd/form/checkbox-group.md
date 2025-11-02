@@ -519,6 +519,87 @@ const options = [
 
 参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:262-263, 412-431
 
+### 子组件模式
+
+除了 options 模式,还可以使用 wd-checkbox 子组件模式,提供更灵活的自定义能力。
+
+```vue
+<template>
+  <view class="demo">
+    <view class="demo-title">子组件模式</view>
+
+    <wd-checkbox-group v-model="value">
+      <wd-checkbox value="apple">
+        <view class="custom-item">
+          <wd-icon name="apple" size="40" />
+          <text>苹果</text>
+        </view>
+      </wd-checkbox>
+
+      <wd-checkbox value="banana">
+        <view class="custom-item">
+          <wd-icon name="banana" size="40" />
+          <text>香蕉</text>
+        </view>
+      </wd-checkbox>
+
+      <wd-checkbox value="orange">
+        <view class="custom-item">
+          <wd-icon name="orange" size="40" />
+          <text>橙子</text>
+        </view>
+      </wd-checkbox>
+    </wd-checkbox-group>
+
+    <view class="demo-result">
+      已选择: {{ value.join(', ') }}
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const value = ref(['apple'])
+</script>
+
+<style lang="scss" scoped>
+.demo {
+  padding: 32rpx;
+
+  &-title {
+    margin-bottom: 24rpx;
+    font-size: 28rpx;
+    font-weight: 500;
+    color: #333;
+  }
+
+  &-result {
+    margin-top: 24rpx;
+    padding: 24rpx;
+    background: #F7F8FA;
+    border-radius: 8rpx;
+    font-size: 26rpx;
+    color: #666;
+  }
+}
+
+.custom-item {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+</style>
+```
+
+**使用说明:**
+- 子组件模式不需要 options 属性
+- 每个 wd-checkbox 可以完全自定义内容
+- 适合需要复杂布局的场景
+- wd-checkbox-group 会自动管理子组件状态
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:84-86, 167-169, 332, 572-579
+
 ## 高级用法
 
 ### 数量限制
@@ -838,7 +919,150 @@ const handleReset = () => {
 
 参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:268-289, 378-407
 
-由于 token 限制,我将精简后续部分,确保完成一个高质量的文档。让我继续完成剩余的重要部分。
+### 自定义插槽
+
+通过插槽实现完全自定义的选项内容。
+
+```vue
+<template>
+  <view class="demo">
+    <view class="demo-title">自定义插槽</view>
+
+    <wd-checkbox-group v-model="value" :options="options">
+      <!-- 自定义第一个选项 -->
+      <template #option-0="{ option, checked }">
+        <view class="product-item" :class="{ 'is-selected': checked }">
+          <image class="product-img" :src="option.image" />
+          <view class="product-info">
+            <view class="product-name">{{ option.label }}</view>
+            <view class="product-price">¥{{ option.price }}</view>
+          </view>
+          <wd-icon v-if="checked" name="check-circle-filled" color="#1890FF" size="40" />
+        </view>
+      </template>
+
+      <!-- 自定义第二个选项 -->
+      <template #option-1="{ option, checked }">
+        <view class="product-item" :class="{ 'is-selected': checked }">
+          <image class="product-img" :src="option.image" />
+          <view class="product-info">
+            <view class="product-name">{{ option.label }}</view>
+            <view class="product-price">¥{{ option.price }}</view>
+          </view>
+          <wd-icon v-if="checked" name="check-circle-filled" color="#1890FF" size="40" />
+        </view>
+      </template>
+
+      <!-- 自定义第三个选项 -->
+      <template #option-2="{ option, checked }">
+        <view class="product-item" :class="{ 'is-selected': checked }">
+          <image class="product-img" :src="option.image" />
+          <view class="product-info">
+            <view class="product-name">{{ option.label }}</view>
+            <view class="product-price">¥{{ option.price }}</view>
+          </view>
+          <wd-icon v-if="checked" name="check-circle-filled" color="#1890FF" size="40" />
+        </view>
+      </template>
+    </wd-checkbox-group>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const value = ref(['1'])
+
+const options = [
+  {
+    value: '1',
+    label: 'MacBook Pro',
+    price: 19999,
+    image: '/static/images/macbook.jpg',
+    useSlot: true,
+  },
+  {
+    value: '2',
+    label: 'iPad Pro',
+    price: 6999,
+    image: '/static/images/ipad.jpg',
+    useSlot: true,
+  },
+  {
+    value: '3',
+    label: 'AirPods Pro',
+    price: 1999,
+    image: '/static/images/airpods.jpg',
+    useSlot: true,
+  },
+]
+</script>
+
+<style lang="scss" scoped>
+.demo {
+  padding: 32rpx;
+
+  &-title {
+    margin-bottom: 24rpx;
+    font-size: 28rpx;
+    font-weight: 500;
+    color: #333;
+  }
+}
+
+.product-item {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  padding: 24rpx;
+  border: 2rpx solid #E5E5E5;
+  border-radius: 12rpx;
+  transition: all 0.3s;
+
+  &.is-selected {
+    border-color: #1890FF;
+    background-color: #F0F8FF;
+  }
+}
+
+.product-img {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 8rpx;
+  object-fit: cover;
+}
+
+.product-info {
+  flex: 1;
+}
+
+.product-name {
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.product-price {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #FF4757;
+}
+</style>
+```
+
+**技术实现:**
+- 在 options 中设置 `useSlot: true` 启用插槽
+- 插槽名默认为 `option-{index}`
+- 可通过 `slotName` 自定义插槽名称
+- 插槽提供 option、index、checked 三个参数
+
+**使用说明:**
+- 插槽适合需要复杂布局的场景
+- checked 参数可用于动态样式
+- 每个选项都可以有独立的插槽
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:70-81, 152-163, 219-222
 
 ## API
 
@@ -909,6 +1133,154 @@ options 数组中每项的配置:
 | customShapeClass | 自定义形状样式类名 | `string` | - |
 
 参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:212-232
+
+## 主题定制
+
+### CSS 变量
+
+CheckboxGroup 组件提供了以下 CSS 变量用于主题定制:
+
+```scss
+// 复选框组背景色
+--wd-checkbox-bg: #ffffff;
+
+// 复选框尺寸
+--wd-checkbox-size: 40rpx;
+--wd-checkbox-large-size: 48rpx;
+
+// 复选框边框
+--wd-checkbox-border-color: #dcdfe6;
+
+// 复选框选中状态
+--wd-checkbox-checked-color: #1890ff;
+--wd-checkbox-check-color: #ffffff;
+
+// 复选框文本
+--wd-checkbox-label-color: #323233;
+--wd-checkbox-label-fs: 28rpx;
+--wd-checkbox-large-label-fs: 32rpx;
+--wd-checkbox-label-margin: 16rpx;
+
+// 复选框间距
+--wd-checkbox-margin: 24rpx;
+
+// 按钮模式
+--wd-checkbox-button-min-width: 128rpx;
+--wd-checkbox-button-height: 64rpx;
+--wd-checkbox-button-font-size: 28rpx;
+--wd-checkbox-button-bg: #ffffff;
+--wd-checkbox-button-border: #dcdfe6;
+
+// 禁用状态
+--wd-checkbox-disabled-check-bg: #f5f7fa;
+--wd-checkbox-disabled-check-color: #c8c9cc;
+--wd-checkbox-disabled-label-color: #c8c9cc;
+--wd-checkbox-disabled-color: #f5f7fa;
+--wd-checkbox-button-disabled-border: #e1e3e6;
+```
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:657-937
+
+### 暗黑模式
+
+CheckboxGroup 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色主题:
+
+```vue
+<template>
+  <wd-config-provider theme="dark">
+    <wd-checkbox-group v-model="value" :options="options" />
+  </wd-config-provider>
+</template>
+```
+
+**暗黑模式样式:**
+- 复选框组背景色: `$-dark-background2`
+- 复选框背景: 透明
+- 复选框边框颜色: `$-checkbox-border-color`
+- 文本颜色: `$-dark-color`
+- 禁用状态颜色: `$-dark-color-gray`
+- 按钮模式背景: `$-dark-background`
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:663-732
+
+### 自定义主题示例
+
+```vue
+<template>
+  <view class="demo">
+    <view class="demo-title">自定义主题</view>
+
+    <!-- 紫色主题 -->
+    <view class="custom-theme purple-theme">
+      <wd-checkbox-group v-model="value1" :options="options" />
+    </view>
+
+    <!-- 绿色主题 -->
+    <view class="custom-theme green-theme">
+      <wd-checkbox-group v-model="value2" :options="options" />
+    </view>
+
+    <!-- 橙色按钮主题 -->
+    <view class="custom-theme orange-theme">
+      <wd-checkbox-group v-model="value3" :options="options" shape="button" />
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const value1 = ref(['1'])
+const value2 = ref(['1'])
+const value3 = ref(['1'])
+
+const options = [
+  { value: '1', label: '选项1' },
+  { value: '2', label: '选项2' },
+  { value: '3', label: '选项3' },
+]
+</script>
+
+<style lang="scss">
+.custom-theme {
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+  border-radius: 16rpx;
+}
+
+// 紫色主题
+.purple-theme {
+  --wd-checkbox-checked-color: #9C27B0;
+  --wd-checkbox-label-color: #6A1B9A;
+  background-color: #F3E5F5;
+}
+
+// 绿色主题
+.green-theme {
+  --wd-checkbox-checked-color: #4CAF50;
+  --wd-checkbox-label-color: #2E7D32;
+  --wd-checkbox-size: 48rpx;
+  --wd-checkbox-label-fs: 32rpx;
+  background-color: #E8F5E9;
+}
+
+// 橙色按钮主题
+.orange-theme {
+  --wd-checkbox-checked-color: #FF9800;
+  --wd-checkbox-button-height: 72rpx;
+  --wd-checkbox-button-font-size: 32rpx;
+  background-color: #FFF3E0;
+}
+</style>
+```
+
+**使用说明:**
+- 通过 CSS 变量实现主题定制
+- 可以针对不同场景定义不同主题
+- 支持单独定制尺寸、颜色、间距等
+- 暗黑模式由 ConfigProvider 统一控制
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:734-937
 
 ## 最佳实践
 
@@ -1017,6 +1389,8 @@ const options = [
 </script>
 ```
 
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:444-451, 528-552
+
 ### 2. min/max 不生效
 
 **问题原因:**
@@ -1034,6 +1408,8 @@ const value = ref(['1', '2'])  // 2 项,符合 min=2
   <wd-checkbox-group v-model="value" :options="options" :min="2" :max="4" />
 </template>
 ```
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:254-257, 635-654
 
 ### 3. 表单验证不生效
 
@@ -1060,6 +1436,51 @@ const rules = {
 }
 </script>
 ```
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:280-283, 391-407
+
+### 4. 按钮模式宽度问题
+
+**问题原因:**
+- item-width 设置不合理
+- 未考虑按钮内边距
+
+**解决方案:**
+```vue
+<!-- ✅ 正确: 按钮模式使用百分比 -->
+<wd-checkbox-group
+  v-model="value"
+  :options="options"
+  shape="button"
+  item-width="33.333%"
+/>
+```
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:501-522
+
+### 5. 字符串模式值格式错误
+
+**问题原因:**
+- 字符串格式不正确
+- 分隔符不匹配
+
+**解决方案:**
+```vue
+<!-- ✅ 正确: 使用默认逗号分隔 -->
+<script setup>
+const value = ref('1,2,3')  // 逗号分隔,无空格
+</script>
+
+<!-- ✅ 正确: 自定义分隔符 -->
+<script setup>
+const value = ref('1|2|3')
+</script>
+<template>
+  <wd-checkbox-group v-model="value" :options="options" separator="|" />
+</template>
+```
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:418-431, 540-552
 
 ## 注意事项
 
