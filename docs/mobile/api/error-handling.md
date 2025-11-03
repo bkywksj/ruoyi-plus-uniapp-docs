@@ -33,7 +33,7 @@ function to<T>(promise: Promise<T>): Promise<[Error | null, T | null]>
 ```
 
 **参数说明:**
-- `promise` (Promise<T>, 必填) - 要执行的 Promise 对象
+- `promise` (`Promise<T>`, 必填) - 要执行的 Promise 对象
 
 **返回值:**
 - `Promise<[Error | null, T | null]>` - 包含错误和数据的元组
@@ -232,7 +232,7 @@ function toValidate(formRef: Ref<any>): Promise<[Error | null, boolean]>
 ```
 
 **参数说明:**
-- `formRef` (Ref<any>, 必填) - 表单引用对象,通常是 wd-form 组件的 ref
+- `formRef` (`Ref<any>`, 必填) - 表单引用对象,通常是 wd-form 组件的 ref
 
 **返回值:**
 - `Promise<[Error | null, boolean]>` - 验证结果元组
