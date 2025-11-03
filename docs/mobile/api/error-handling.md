@@ -483,7 +483,7 @@ function toIf<T>(
 
 **参数说明:**
 - `condition` (boolean, 必填) - 执行条件,为 true 时执行 promise
-- `promise` (Promise<T> | Promise<[Error | null, T | null]>, 必填) - 要执行的 Promise,支持原始 Promise 和 to() 包装的 Promise
+- `promise` `(Promise<T> | Promise<[Error | null, T | null]>`, 必填) - 要执行的 Promise,支持原始 Promise 和 to() 包装的 Promise
 
 **返回值:**
 - `Promise<[Error | null, T | null]>` - 包含错误和数据的元组
