@@ -4,6 +4,7 @@ import DefaultTheme from 'vitepress/theme'
 import type { Theme } from 'vitepress'
 import PreviewFrame from './components/PreviewFrame.vue'
 import ImagePreview from './components/ImagePreview.vue'
+import APricingCard from './components/APricingCard.vue'
 import './style.css'
 
 export default {
@@ -17,5 +18,6 @@ export default {
     enhanceApp({ app }) {
         app.component('PreviewFrame', PreviewFrame)
         app.component('ImagePreview', ImagePreview)
+        app.component('APricingCard', APricingCard)
     }
 } satisfies Theme
