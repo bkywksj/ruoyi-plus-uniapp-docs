@@ -128,17 +128,114 @@ public class PayConfigManager {
 - **APP**: APP支付
 - **H5**: 手机网页支付
 
+#### API版本自动识别
+
+系统会根据配置自动选择使用微信支付 **v2** 或 **v3** API：
+
+- **v2 API**: 仅配置 `mchKey`（商户密钥）时自动使用 v2
+- **v3 API**: 配置了 `apiV3Key`、`certSerialNo` 和证书时自动使用 v3
+
 #### 配置要求
+
+**v2 API 配置（传统模式）**
 ```java
 // 必需配置
 String appId = "wx1234567890123456";
 String mchId = "1234567890";
-String mchKey = "your_wx_api_key";
+String mchKey = "your_wx_api_key";  // v2 商户密钥
 
-// 可选配置
-String certPath = "cert/apiclient_cert.p12";  // 退款需要
-String apiV3Key = "your_api_v3_key";          // API v3需要
+// 可选配置 - 退款需要
+String certPath = "cert/apiclient_cert.p12";
 ```
+
+**v3 API 配置（平台证书模式）⭐ 推荐**
+```java
+// 必需配置
+String appId = "wx1234567890123456";
+String mchId = "1234567890";
+String apiV3Key = "your_api_v3_key";          // v3 密钥
+String certSerialNo = "your_cert_serial_no";  // 证书序列号
+
+// 证书配置（支持多种方式）
+String certPath = "cert/apiclient_cert.pem";  // 商户证书
+String keyPath = "cert/apiclient_key.pem";    // 商户私钥
+
+// 平台证书路径（用于验证回调签名）
+String platformCertPath = "cert/wechatpay_platform.pem";
+```
+
+**v3 API 配置（公钥模式）⭐ 新功能**
+```java
+// 必需配置
+String appId = "wx1234567890123456";
+String mchId = "1234567890";
+String apiV3Key = "your_api_v3_key";
+String certSerialNo = "your_cert_serial_no";
+
+// 证书配置
+String certPath = "cert/apiclient_cert.pem";
+String keyPath = "cert/apiclient_key.pem";
+
+// 使用公钥文件（系统会自动识别）
+String platformCertPath = "cert/wechatpay_public_key.pem";
+// 或直接配置公钥内容
+String platformCertPath = "-----BEGIN PUBLIC KEY-----\nMIIBIj...\n-----END PUBLIC KEY-----";
+```
+
+#### 证书配置灵活性 🔧
+
+系统支持多种证书配置方式：
+
+**1. 文件路径模式**
+```java
+// Classpath 资源路径
+String certPath = "classpath:cert/apiclient_cert.pem";
+
+// 文件系统绝对路径
+String certPath = "/data/cert/apiclient_cert.pem";
+```
+
+**2. PEM 内容直接配置** ⭐ 推荐
+```java
+// 直接配置 PEM 格式证书内容（无需文件）
+String certPath = """
+-----BEGIN CERTIFICATE-----
+MIIFazCCBFOgAwIBAgISBKSq...
+-----END CERTIFICATE-----
+""";
+```
+
+**3. 开发/生产环境分离**
+```java
+// 开发环境证书
+String devCertPath = "cert/dev/apiclient_cert.pem";
+String devKeyPath = "cert/dev/apiclient_key.pem";
+String devPlatformCertPath = "cert/dev/wechatpay_platform.pem";
+
+// 生产环境证书
+String certPath = "cert/prod/apiclient_cert.pem";
+String keyPath = "cert/prod/apiclient_key.pem";
+String platformCertPath = "cert/prod/wechatpay_platform.pem";
+
+// 系统会根据 spring.profiles.active 自动选择
+```
+
+#### 公钥模式智能识别
+
+系统会自动识别是使用**平台证书**还是**公钥模式**：
+
+**识别依据：**
+1. **文件名检测**：包含 `public`、`pubkey`、`pub_key`、`publickey` 关键词
+2. **内容检测**：文件内容以 `-----BEGIN PUBLIC KEY-----` 开头
+
+**使用场景：**
+- ✅ 轻量级部署：公钥文件体积更小
+- ✅ 证书更新简化：公钥相对稳定，无需频繁更新
+- ✅ 安全性要求：满足基本的签名验证需求
+
+::: warning 注意
+公钥模式仅用于回调验证，不影响支付、退款等业务功能。如有条件，建议使用完整的平台证书模式。
+:::
 
 #### 使用示例
 
