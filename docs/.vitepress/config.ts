@@ -74,8 +74,13 @@ export default defineConfig({
                 },
                 {
                     text: '主应用(ruoyi-admin)',
+                    collapsed: true,
                     items: [
-                        { text: '模块解析', link: '/backend/ruoyi-admin/module-resolution' }
+                        { text: '主应用概览', link: '/backend/ruoyi-admin/overview' },
+                        { text: '模块解析', link: '/backend/ruoyi-admin/module-resolution' },
+                        { text: '启动流程', link: '/backend/ruoyi-admin/startup-process' },
+                        { text: '配置文件详解', link: '/backend/ruoyi-admin/configuration-detail' },
+                        { text: '环境切换', link: '/backend/ruoyi-admin/environment-switching' }
                     ]
                 },
                 {
@@ -112,14 +117,42 @@ export default defineConfig({
                         { text: '任务调度 (job)', link: '/backend/common/job' },
                         { text: 'JSON处理 (json)', link: '/backend/common/json' },
                         { text: '日志管理 (log)', link: '/backend/common/log' },
+                        { text: 'HTTP客户端 (http)', link: '/backend/common/http' },
+                        {
+                            text: 'LangChain4j AI集成 (langchain4j) ⭐',
+                            collapsed: false,
+                            items: [
+                                { text: '模块概览', link: '/backend/common/langchain4j' },
+                                { text: '快速开始', link: '/backend/common/langchain4j/quick-start' },
+                                { text: '模型工厂', link: '/backend/common/langchain4j/model-factory' },
+                                { text: '聊天服务', link: '/backend/common/langchain4j/chat-service' },
+                                { text: 'RAG检索增强', link: '/backend/common/langchain4j/rag' },
+                                { text: '向量存储', link: '/backend/common/langchain4j/vector-store' },
+                                { text: 'WebSocket流式对话', link: '/backend/common/langchain4j/websocket' }
+                            ]
+                        },
                         { text: '邮件服务 (mail)', link: '/backend/common/mail' },
+                        { text: '媒体处理 (media)', link: '/backend/common/media' },
                         { text: '小程序集成 (miniapp)', link: '/backend/common/miniapp' },
                         { text: '公众号集成 (mp)', link: '/backend/common/mp' },
                         { text: 'MyBatisPlus增强 (mybatis)', link: '/backend/common/mybatis' },
                         { text: 'OSS存储 (oss)', link: '/backend/common/oss' },
                         { text: '支付集成 (pay)', link: '/backend/common/pay' },
+                        { text: 'OpenAPI文档 (openapi)', link: '/backend/common/openapi' },
                         { text: '限流组件 (ratelimiter)', link: '/backend/common/ratelimiter' },
                         { text: 'Redis缓存 (redis)', link: '/backend/common/redis' },
+                        {
+                            text: 'RocketMQ消息队列 (rocketmq) ⭐',
+                            collapsed: false,
+                            items: [
+                                { text: '模块概览', link: '/backend/common/rocketmq' },
+                                { text: '快速开始', link: '/backend/common/rocketmq/quick-start' },
+                                { text: '消息发送', link: '/backend/common/rocketmq/send' },
+                                { text: '消息消费', link: '/backend/common/rocketmq/consume' },
+                                { text: '主题管理', link: '/backend/common/rocketmq/topic' },
+                                { text: '最佳实践', link: '/backend/common/rocketmq/best-practices' }
+                            ]
+                        },
                         { text: '权限认证 (satoken)', link: '/backend/common/satoken' },
                         { text: '安全防护 (security)', link: '/backend/common/security' },
                         { text: '脱敏处理 (sensitive)', link: '/backend/common/sensitive' },
@@ -128,6 +161,17 @@ export default defineConfig({
                         { text: '社交登录 (social)', link: '/backend/common/social' },
                         { text: 'SSE推送 (sse)', link: '/backend/common/sse' },
                         { text: '多租户 (tenant)', link: '/backend/common/tenant' },
+                        {
+                            text: '测试支持 (test)',
+                            collapsed: false,
+                            items: [
+                                { text: '模块概览', link: '/backend/common/test' },
+                                { text: '测试基础类', link: '/backend/common/test/base-classes' },
+                                { text: 'Service测试', link: '/backend/common/test/service-test' },
+                                { text: 'Controller测试', link: '/backend/common/test/controller-test' },
+                                { text: '测试数据工厂', link: '/backend/common/test/test-data-factory' }
+                            ]
+                        },
                         { text: 'Web组件 (web)', link: '/backend/common/web' },
                         { text: '通讯 (websocket)', link: '/backend/common/websocket' }
                     ]
@@ -174,9 +218,13 @@ export default defineConfig({
                 },
                 {
                     text: '扩展模块(ruoyi-extend)',
+                    collapsed: true,
                     items: [
+                        { text: '扩展模块概览', link: '/backend/extend/overview' },
                         { text: '监控管理 (monitor-admin)', link: '/backend/extend/monitor-admin' },
-                        { text: '任务服务 (snailjob-server)', link: '/backend/extend/snailjob-server' }
+                        { text: '任务服务 (snailjob-server)', link: '/backend/extend/snailjob-server' },
+                        { text: '扩展模块开发指南', link: '/backend/extend/development-guide' },
+                        { text: '第三方服务集成', link: '/backend/extend/third-party-integration' }
                     ]
                 }
             ],
@@ -999,38 +1047,51 @@ export default defineConfig({
                 {
                     text: '📋 开发规范',
                     items: [
+                        { text: '开发规范概览', link: '/practices/standards/overview' },
                         { text: '代码规范 ✅', link: '/practices/standards/coding' },
                         { text: 'API设计规范 ✅', link: '/practices/standards/api-design' },
                         { text: '命名规范', link: '/practices/standards/naming' },
                         { text: '注释规范', link: '/practices/standards/comment' },
                         { text: 'Git使用规范', link: '/practices/standards/git' },
-                        { text: '代码审查规范', link: '/practices/standards/code-review' }
+                        { text: '代码审查规范', link: '/practices/standards/code-review' },
+                        { text: '数据库规范', link: '/practices/standards/database' },
+                        { text: '前端开发规范', link: '/practices/standards/frontend' },
+                        { text: '移动端开发规范', link: '/practices/standards/mobile' }
                     ]
                 },
                 {
                     text: '🏗️ 架构设计',
                     items: [
+                        { text: '架构设计概览', link: '/practices/architecture/overview' },
                         { text: '系统架构设计', link: '/practices/architecture/system' },
                         { text: '数据库设计', link: '/practices/architecture/database' },
                         { text: '缓存策略', link: '/practices/architecture/cache' },
                         { text: '分布式设计', link: '/practices/architecture/distributed' },
-                        { text: '多租户架构', link: '/practices/architecture/multi-tenant' }
+                        { text: '多租户架构', link: '/practices/architecture/multi-tenant' },
+                        { text: '微服务架构', link: '/practices/architecture/microservices' },
+                        { text: 'API网关设计', link: '/practices/architecture/api-gateway' },
+                        { text: '领域驱动设计', link: '/practices/architecture/ddd' }
                     ]
                 },
                 {
                     text: '💻 后端开发',
                     items: [
+                        { text: '后端开发概览', link: '/practices/backend/overview' },
                         { text: 'Service层最佳实践', link: '/practices/backend/service-layer' },
                         { text: 'Controller层最佳实践', link: '/practices/backend/controller-layer' },
+                        { text: 'DAO层设计模式', link: '/practices/backend/dao-layer' },
                         { text: '数据访问层优化', link: '/practices/backend/data-access' },
                         { text: '事务管理策略', link: '/practices/backend/transaction' },
                         { text: '异常处理机制', link: '/practices/backend/exception-handling' },
-                        { text: '数据校验最佳实践', link: '/practices/backend/validation' }
+                        { text: '数据校验最佳实践', link: '/practices/backend/validation' },
+                        { text: '日志规范', link: '/practices/backend/logging' },
+                        { text: 'API版本管理', link: '/practices/backend/api-versioning' }
                     ]
                 },
                 {
                     text: '🔧 功能开发',
                     items: [
+                        { text: '功能开发概览', link: '/practices/features/overview' },
                         { text: '权限控制实现', link: '/practices/features/permission-control' },
                         { text: '数据权限设计', link: '/practices/features/data-permission' },
                         { text: '定时任务开发', link: '/practices/features/scheduled-jobs' },
@@ -1038,29 +1099,38 @@ export default defineConfig({
                         { text: '文件处理方案', link: '/practices/features/file-processing' },
                         { text: 'Excel操作优化', link: '/practices/features/excel-operations' },
                         { text: '第三方集成策略', link: '/practices/features/third-party-integration' },
-                        { text: '国际化实现方案', link: '/practices/features/i18n' }
+                        { text: '国际化实现方案', link: '/practices/features/i18n' },
+                        { text: '支付功能开发', link: '/practices/features/payment' },
+                        { text: '短信验证码', link: '/practices/features/sms-verification' },
+                        { text: '图片处理', link: '/practices/features/image-processing' }
                     ]
                 },
                 {
                     text: '🧪 测试策略',
                     items: [
+                        { text: '测试策略概览', link: '/practices/testing/overview' },
+                        { text: '测试基础类使用', link: '/practices/testing/base-classes' },
                         { text: '单元测试最佳实践', link: '/practices/testing/unit-testing' },
                         { text: '集成测试策略', link: '/practices/testing/integration-testing' },
                         { text: '自动化测试框架', link: '/practices/testing/automated-testing' },
                         { text: '测试数据管理', link: '/practices/testing/test-data' },
-                        { text: '性能测试指南', link: '/practices/testing/performance-testing' }
+                        { text: '性能测试指南', link: '/practices/testing/performance-testing' },
+                        { text: 'Mock与Stub技巧', link: '/practices/testing/mock-stub' },
+                        { text: '测试覆盖率管理', link: '/practices/testing/coverage' }
                     ]
                 },
                 {
                     text: '⚡ 性能优化',
                     items: [
+                        { text: '性能优化概览', link: '/practices/performance/overview' },
                         { text: '后端性能优化', link: '/practices/performance/backend' },
                         { text: '前端性能优化', link: '/practices/performance/frontend' },
                         { text: '移动端性能优化', link: '/practices/performance/mobile' },
                         { text: '数据库优化', link: '/practices/performance/database' },
                         { text: '缓存优化策略', link: '/practices/performance/cache' },
                         { text: '网络优化', link: '/practices/performance/network' },
-                        { text: 'JVM调优指南', link: '/practices/performance/jvm-tuning' }
+                        { text: 'JVM调优指南', link: '/practices/performance/jvm-tuning' },
+                        { text: '性能监控与分析', link: '/practices/performance/monitoring' }
                     ]
                 },
                 {
@@ -1073,49 +1143,74 @@ export default defineConfig({
                         { text: '前端安全', link: '/practices/security/frontend' },
                         { text: '移动端安全', link: '/practices/security/mobile' },
                         { text: '传输安全', link: '/practices/security/transport' },
-                        { text: '漏洞防护', link: '/practices/security/vulnerability' }
+                        { text: '漏洞防护', link: '/practices/security/vulnerability' },
+                        { text: '密码安全策略', link: '/practices/security/password' },
+                        { text: '安全审计与日志', link: '/practices/security/audit-logging' }
                     ]
                 },
                 {
                     text: '🛠️ 工程化',
                     items: [
+                        { text: '工程化概览', link: '/practices/engineering/overview' },
                         { text: '代码生成器使用', link: '/practices/engineering/code-generator' },
                         { text: '构建优化', link: '/practices/engineering/build-optimization' },
                         { text: 'CI/CD最佳实践', link: '/practices/engineering/cicd' },
                         { text: '代码质量管控', link: '/practices/engineering/code-quality' },
-                        { text: '技术债务管理', link: '/practices/engineering/technical-debt' }
+                        { text: '技术债务管理', link: '/practices/engineering/technical-debt' },
+                        { text: '版本管理策略', link: '/practices/engineering/version-control' },
+                        { text: '依赖管理', link: '/practices/engineering/dependency-management' }
                     ]
                 },
                 {
                     text: '🚀 部署运维',
                     items: [
+                        { text: '部署运维概览', link: '/practices/devops/overview' },
                         { text: 'Docker部署指南', link: '/practices/devops/docker-deploy' },
+                        { text: 'Kubernetes部署', link: '/practices/devops/k8s-deploy' },
                         { text: '容器化最佳实践', link: '/practices/devops/containerization' },
                         { text: '监控告警', link: '/practices/devops/monitoring' },
                         { text: '日志管理', link: '/practices/devops/logging' },
                         { text: '备份策略', link: '/practices/devops/backup' },
                         { text: '故障排查指南', link: '/practices/devops/troubleshooting' },
-                        { text: '灰度发布策略', link: '/practices/devops/canary-deployment' }
+                        { text: '灰度发布策略', link: '/practices/devops/canary-deployment' },
+                        { text: '高可用架构', link: '/practices/devops/high-availability' },
+                        { text: '自动化运维', link: '/practices/devops/automation' }
                     ]
                 },
                 {
                     text: '📊 数据管理',
                     items: [
+                        { text: '数据管理概览', link: '/practices/data/overview' },
                         { text: '数据库设计规范', link: '/practices/data/database-design' },
                         { text: '数据迁移策略', link: '/practices/data/data-migration' },
                         { text: '数据一致性保证', link: '/practices/data/data-consistency' },
                         { text: '大数据处理', link: '/practices/data/big-data' },
-                        { text: '数据备份恢复', link: '/practices/data/backup-recovery' }
+                        { text: '数据备份恢复', link: '/practices/data/backup-recovery' },
+                        { text: '数据脱敏处理', link: '/practices/data/data-masking' },
+                        { text: '数据归档策略', link: '/practices/data/data-archiving' }
                     ]
                 },
                 {
                     text: '🔄 团队协作',
                     items: [
+                        { text: '团队协作概览', link: '/practices/teamwork/overview' },
                         { text: '敏捷开发实践', link: '/practices/teamwork/agile' },
                         { text: '团队工作流程', link: '/practices/teamwork/workflow' },
                         { text: '知识管理', link: '/practices/teamwork/knowledge-management' },
                         { text: '技术分享机制', link: '/practices/teamwork/tech-sharing' },
-                        { text: '新人入职指南', link: '/practices/teamwork/onboarding' }
+                        { text: '新人入职指南', link: '/practices/teamwork/onboarding' },
+                        { text: '代码评审流程', link: '/practices/teamwork/code-review-process' },
+                        { text: '项目管理工具', link: '/practices/teamwork/project-management' }
+                    ]
+                },
+                {
+                    text: '🎓 学习资源',
+                    items: [
+                        { text: '学习路径推荐', link: '/practices/learning/roadmap' },
+                        { text: '技术栈选型', link: '/practices/learning/tech-stack' },
+                        { text: '常见问题FAQ', link: '/practices/learning/faq' },
+                        { text: '进阶学习指南', link: '/practices/learning/advanced' },
+                        { text: '项目实战案例', link: '/practices/learning/case-studies' }
                     ]
                 }
             ]
