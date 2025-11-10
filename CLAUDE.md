@@ -4,8 +4,7 @@
 >
 > 本文档为 AI 助手(Claude Code)提供项目上下文和开发规范,确保高质量、一致性的文档输出，回答时务必使用中文。
 >
-> **版本**: v1.0.0
-> **更新时间**: 2025-10-26
+
 > **作者**: 抓蛙师 (bkywksj)
 
 ---
@@ -16,6 +15,7 @@
 - [项目结构](#项目结构)
 - [开发规范](#开发规范)
 - [文档编写规范](#文档编写规范)
+- [文档编写流程](#文档编写流程)
 - [组件文档模板](#组件文档模板)
 - [常用命令](#常用命令)
 - [Git 工作流](#git-工作流)
@@ -105,7 +105,17 @@ ruoyi-plus-uniapp-docs/           # 文档项目根目录
 ```
 ruoyi-plus-uniapp/                # 源码项目根目录(上级目录)
 ├── ruoyi-plus-uniapp-docs/      # 本文档项目
-└── ruoyi-plus-uniapp/           # 源码项目
+├── ruoyi-plus-uniapp-workflow/  # ⭐ 源码参考项目(编写文档时参考)
+│   ├── plus-app/                # App 应用端
+│   ├── plus-ui/                 # 管理端前端
+│   ├── plus-uniapp/             # UniApp 移动端
+│   ├── plus-uniapp-demo/        # UniApp 示例项目
+│   ├── ruoyi-admin/             # 后端主模块
+│   ├── ruoyi-common/            # 后端通用模块
+│   ├── ruoyi-modules/           # 后端业务模块
+│   ├── ruoyi-extend/            # 后端扩展模块
+│   └── pom.xml                  # Maven 项目配置
+└── ruoyi-plus-uniapp/           # 旧源码项目(仅供参考)
     └── plus-uniapp/             # UniApp 移动端项目
         ├── src/
         │   ├── wd/              # WD UI 组件库源码
@@ -124,6 +134,10 @@ ruoyi-plus-uniapp/                # 源码项目根目录(上级目录)
         ├── pages.json           # 页面路由配置
         └── package.json         # 依赖配置
 ```
+
+**⚠️ 重要说明**:
+- **主要参考源码**: `ruoyi-plus-uniapp-workflow` 是最新的完整项目,编写文档时应主要参考此项目
+- **次要参考源码**: `ruoyi-plus-uniapp` 是早期项目,仅在 workflow 项目中找不到对应实现时参考
 
 ### WD UI 组件库分类
 
@@ -312,6 +326,7 @@ const handleClick = (event: Event) => {
 
 1. **必须基于源码**
    - 所有文档内容必须基于实际源码编写
+   - 优先参考 `ruoyi-plus-uniapp-workflow` 项目中的实现
    - 禁止编造不存在的功能或 API
    - 每个特性都要标注源码引用
 
@@ -330,6 +345,22 @@ const handleClick = (event: Event) => {
    - 包含 `<template>` 和 `<script>` 部分
    - 必要时添加 `<style>` 部分
    - 示例代码使用 `lang="ts"` 和 `setup`
+
+5. **⚠️ Markdown 标签规范(重要)**
+   - **绝对禁止**在非代码块区域写未闭合的 HTML 标签或泛型标签
+   - 如果必须在文本中写带尖括号的内容(如泛型 `R<String>`),必须用反引号包裹
+   - ✅ 正确: `R<String>` 或 `Promise<User>` 或 `Array<T>`
+   - ❌ 错误: R<String> 或 Promise<User> 或 Array<T>
+   - ✅ 正确: `<view>` 标签、`<template>` 标签
+   - ❌ 错误: <view> 标签、<template> 标签
+   - 原因: 未闭合的尖括号会被 Markdown 解析器当作 HTML 标签处理,导致渲染错误
+
+6. **⚠️ 禁止文档跳转链接(重要)**
+   - **绝对禁止**在文档中添加跳转到其他文档的链接
+   - **禁止**添加"相关文档"、"延伸阅读"、"参考链接"等章节
+   - **禁止**使用 Markdown 链接语法指向其他文档,如 `[按钮组件](./button.md)`
+   - ✅ 允许: 源码引用、外部资源链接(官方文档、API 文档等)
+   - ❌ 禁止: 项目内文档之间的跳转链接
 
 ### 文档结构模板
 
@@ -574,6 +605,161 @@ interface WdButtonProps {
 
 ---
 
+## 文档编写流程
+
+### ⚠️ 开始编写文档前必读
+
+**在开始编写任何文档之前,必须严格遵循以下流程:**
+
+#### 第一步: 查看项目进度表
+
+1. **打开进度表**
+   - 文件路径: `PROJECT_PROGRESS.md`
+   - 查看整体完成度和待完成任务
+
+2. **了解优先级**
+   - 🔴 HIGH PRIORITY: 紧急任务(本周完成)
+   - 🟡 MEDIUM PRIORITY: 重要任务(本月完成)
+   - 🟢 LOW PRIORITY: 持续优化任务
+
+3. **选择文档**
+   - 优先选择 HIGH PRIORITY 中的文档
+   - 查看文档当前状态(未开始/进行中/已完成)
+   - 确认文档路径和目标行数
+
+#### 第二步: 查找源码实现
+
+1. **定位源码目录**
+   - 主要参考: `D:\desktop\my\framework\ruoyi-plus-uniapp\ruoyi-plus-uniapp-workflow`
+   - 次要参考: `D:\desktop\my\framework\ruoyi-plus-uniapp\ruoyi-plus-uniapp`
+
+2. **根据文档类型找对应目录**
+   ```bash
+   # 后端文档 → workflow 项目
+   docs/backend/core/xxx.md → ruoyi-plus-uniapp-workflow/ruoyi-common/
+   docs/backend/modules/xxx.md → ruoyi-plus-uniapp-workflow/ruoyi-modules/
+   docs/backend/extend/xxx.md → ruoyi-plus-uniapp-workflow/ruoyi-extend/
+
+   # 前端文档 → workflow 项目
+   docs/frontend/xxx.md → ruoyi-plus-uniapp-workflow/plus-ui/
+
+   # 移动端文档 → workflow 项目
+   docs/mobile/xxx.md → ruoyi-plus-uniapp-workflow/plus-app/
+   docs/mobile/uniapp/xxx.md → ruoyi-plus-uniapp-workflow/plus-uniapp/
+
+   # WD 组件库 → 旧项目(已完成,无需参考)
+   docs/mobile/wd/xxx.md → ruoyi-plus-uniapp/plus-uniapp/src/wd/
+   ```
+
+3. **阅读源码**
+   - 使用 Read 工具阅读相关源码文件
+   - 使用 Glob 工具查找相关文件
+   - 使用 Grep 工具搜索关键代码
+   - 理解功能实现、API 定义、配置选项等
+
+#### 第三步: 编写文档
+
+1. **创建 Todo 清单**
+   - 使用 TodoWrite 工具创建任务清单
+   - 将文档分解为多个小任务
+   - 示例:
+     ```
+     - 阅读 xxx 源码
+     - 分析 API 接口
+     - 编写介绍章节
+     - 编写基本用法章节
+     - 编写 API 章节
+     - 编写最佳实践章节
+     - 编写常见问题章节
+     - 质量检查
+     ```
+
+2. **按模板编写**
+   - 严格遵守[文档结构模板](#文档结构模板)
+   - 添加源码引用(格式: `参考: 路径:行号`)
+   - 提供完整代码示例
+   - 注意 Markdown 标签规范(泛型必须用反引号包裹)
+   - 禁止添加文档跳转链接
+
+3. **质量标准**
+   - 核心文档: ≥ 1000 行
+   - 普通文档: ≥ 500 行
+   - 所有 API 都已文档化
+   - 所有示例都可运行
+   - 源码引用准确
+   - 无拼写错误
+   - 无未闭合标签
+
+#### 第四步: 更新进度表
+
+**⚠️ 这一步非常重要,完成文档后必须立即更新进度表!**
+
+1. **更新文档状态**
+   - 打开 `PROJECT_PROGRESS.md`
+   - 找到对应文档条目
+   - 更新状态: ⚠️ 或 🔄 → ✅
+   - 更新行数统计
+
+2. **更新优先级清单**
+   - 从待办清单中移除已完成项
+   - 勾选对应的 checkbox
+
+3. **更新整体统计**
+   - 更新顶部的"最后更新"时间
+   - 重新计算完成度百分比
+   - 更新各模块统计数据
+
+4. **示例**
+   ```markdown
+   # 完成前
+   - [ ] `docs/frontend/styles/theme-system.md` - 1 行 → 1000+ 行
+
+   # 完成后(在进度表中更新)
+   | Theme System | `docs/frontend/styles/theme-system.md` | ✅ 已完成 | 1,234 |
+
+   # 并更新顶部统计
+   > **最后更新**: 2025-11-10
+   > **整体完成度**: 84.0% (B+ 评分)  # 从 83.5% 更新
+   ```
+
+#### 第五步: 提交代码
+
+1. **查看变更**
+   ```bash
+   git status
+   git diff docs/xxx/xxx.md
+   ```
+
+2. **提交文档**
+   ```bash
+   git add docs/xxx/xxx.md PROJECT_PROGRESS.md
+   git commit -m "docs(模块): 完善 XXX 文档"
+   ```
+
+3. **推送**
+   ```bash
+   git push origin master
+   ```
+
+### 📋 快速检查清单
+
+在提交文档前,使用此清单检查:
+
+- [ ] 已查看 `PROJECT_PROGRESS.md` 进度表
+- [ ] 已选择优先级任务
+- [ ] 已查找并阅读源码实现
+- [ ] 已创建 Todo 清单并跟踪进度
+- [ ] 文档行数达到标准(核心 ≥1000 行,普通 ≥500 行)
+- [ ] 所有技术点都有源码引用
+- [ ] 所有代码示例都完整可运行
+- [ ] 所有泛型标签都用反引号包裹(如 `R<String>`)
+- [ ] 没有添加文档跳转链接
+- [ ] 已更新 `PROJECT_PROGRESS.md` 进度表
+- [ ] 已更新文档状态和完成度统计
+- [ ] 已提交代码并推送
+
+---
+
 ## 组件文档模板
 
 ### 参考示例
@@ -743,78 +929,198 @@ git log --oneline -10
 
 ### ⚠️ 重要约定
 
-1. **禁止编造内容**
-   - 所有文档必须基于真实源码
-   - 不要添加不存在的 Props/Events
-   - 不要描述未实现的功能
+#### 1. 禁止编造内容
 
-2. **必须添加源码引用**
-   - 每个技术点都要标注源码位置
-   - 格式: `参考: 路径:行号`
-   - 行号可以是单行或范围: `123` 或 `100-150`
+- 所有文档必须基于真实源码
+- 优先参考 `ruoyi-plus-uniapp-workflow` 项目
+- 不要添加不存在的 Props/Events
+- 不要描述未实现的功能
 
-3. **代码示例必须完整**
-   - 包含必要的导入
-   - 包含必要的类型定义
-   - 确保代码可以直接运行
+#### 2. 必须添加源码引用
 
-4. **文档不包含其他文档链接**
-   - 用户明确要求: "文档里面不用包含其他的文档链接"
-   - 不要添加相关文档、延伸阅读等链接
+- 每个技术点都要标注源码位置
+- 格式: `参考: 路径:行号`
+- 行号可以是单行或范围: `123` 或 `100-150`
+- 示例:
+  ```markdown
+  参考: ruoyi-plus-uniapp-workflow/plus-ui/src/components/Form/BasicForm.vue:156-178
+  ```
 
-5. **统一单位使用**
-   - 移动端统一使用 `rpx` 单位
-   - 示例: `size="32"` (自动转换为 32rpx)
-   - 或明确指定: `size="32rpx"`
+#### 3. 代码示例必须完整
+
+- 包含必要的导入
+- 包含必要的类型定义
+- 确保代码可以直接运行
+- 示例代码使用 `lang="ts"` 和 `setup`
+
+#### 4. ⚠️ Markdown 标签规范(重点强调)
+
+**这是最容易出错的地方,必须严格遵守!**
+
+- **绝对禁止**在非代码块区域写未闭合的 HTML 标签或泛型标签
+- 如果必须在文本中写带尖括号的内容,必须用反引号包裹
+
+**错误示例** ❌:
+```markdown
+返回值类型为 Promise<User>,包含用户信息
+使用 Array<T> 泛型定义数组类型
+<view> 标签用于布局
+```
+
+**正确示例** ✅:
+```markdown
+返回值类型为 `Promise<User>`,包含用户信息
+使用 `Array<T>` 泛型定义数组类型
+`<view>` 标签用于布局
+```
+
+**常见需要包裹的情况**:
+- 泛型类型: `Promise<T>`, `Array<User>`, `Ref<string>`, `R<List<User>>`
+- HTML/组件标签: `<view>`, `<template>`, `<div>`, `<wd-button>`
+- 比较符号: `a < b`, `x > y`
+
+#### 5. ⚠️ 禁止文档跳转链接(重点强调)
+
+**用户明确要求: "文档里面不用包含其他的文档链接"**
+
+- **绝对禁止**在文档中添加跳转到其他文档的链接
+- **禁止**添加"相关文档"、"延伸阅读"、"参考链接"等章节
+- **禁止**使用 Markdown 链接语法指向其他文档
+
+**错误示例** ❌:
+```markdown
+## 相关文档
+
+- [Button 按钮](./button.md)
+- [Icon 图标](../basic/icon.md)
+
+详见[表单组件文档](../form/form.md)
+```
+
+**正确示例** ✅:
+```markdown
+参考: ruoyi-plus-uniapp-workflow/plus-ui/src/components/Button/index.vue:123
+
+官方文档: https://element-plus.org/zh-CN/component/button.html
+```
+
+#### 6. 统一单位使用
+
+- 移动端统一使用 `rpx` 单位
+- 示例: `size="32"` (自动转换为 32rpx)
+- 或明确指定: `size="32rpx"`
+
+#### 7. ⚠️ 必须查看和更新进度表
+
+**在开始编写文档前**:
+- 必须先查看 `PROJECT_PROGRESS.md` 进度表
+- 选择优先级任务
+- 了解文档目标行数
+
+**完成文档后**:
+- 必须立即更新 `PROJECT_PROGRESS.md` 进度表
+- 更新文档状态和行数统计
+- 更新整体完成度
 
 ### 💡 最佳实践
 
-1. **编写文档前**
-   - 先完整阅读组件源码
-   - 理解所有功能和特性
-   - 查看已完成的文档示例
+#### 1. 编写文档前
 
-2. **编写文档时**
-   - 使用 TodoWrite 工具跟踪进度
-   - 一次完成一个组件
-   - 保持文档结构一致
+- **查看进度表**: 打开 `PROJECT_PROGRESS.md`,选择优先级任务
+- **查找源码**: 在 `ruoyi-plus-uniapp-workflow` 项目中找到对应实现
+- **阅读源码**: 完整阅读组件/模块源码,理解所有功能和特性
+- **参考示例**: 查看已完成的高质量文档示例
 
-3. **完成文档后**
-   - 检查文档行数 (≥1000 行)
-   - 检查源码引用完整性
-   - 检查代码示例正确性
-   - 更新 TodoWrite 状态
+#### 2. 编写文档时
+
+- **创建 Todo**: 使用 TodoWrite 工具跟踪进度
+- **遵守模板**: 严格按照文档结构模板编写
+- **添加引用**: 每个技术点都添加源码引用
+- **包裹标签**: 所有泛型、HTML标签用反引号包裹
+- **禁止链接**: 不添加文档跳转链接
+- **保持一致**: 保持文档结构和风格一致
+
+#### 3. 完成文档后
+
+- **质量检查**:
+  - ✓ 文档行数 (核心 ≥1000 行,普通 ≥500 行)
+  - ✓ 源码引用完整性
+  - ✓ 代码示例正确性
+  - ✓ 标签全部用反引号包裹
+  - ✓ 无文档跳转链接
+- **更新进度表**: 立即更新 `PROJECT_PROGRESS.md`
+- **更新 Todo**: 标记任务为完成
+- **提交代码**: 提交文档和进度表
 
 ### 🎯 工作流程示例
 
+**任务**: 完善前端主题系统文档 (`docs/frontend/styles/theme-system.md`)
+
+#### 流程:
+
 ```markdown
-1. 接收任务: "完善 Text 组件文档"
+1. 查看进度表:
+   - 打开 PROJECT_PROGRESS.md
+   - 找到任务: docs/frontend/styles/theme-system.md - 1 行 → 1000+ 行
+   - 优先级: 🔴 HIGH PRIORITY
+   - 状态: ⚠️ 紧急待完成
 
 2. 创建 Todo:
-   - 阅读 Text 组件源码
-   - 分析组件 API
-   - 编写文档
+   - 阅读 theme-system 源码实现
+   - 分析主题配置和切换逻辑
+   - 编写介绍章节
+   - 编写主题配置章节
+   - 编写主题切换章节
+   - 编写暗黑模式章节
+   - 编写 API 文档
+   - 编写最佳实践
+   - 编写常见问题
    - 质量检查
+   - 更新进度表
 
-3. 阅读源码:
-   - 打开 src/wd/components/wd-text/wd-text.vue
-   - 分析 Props、Events、Slots
+3. 查找源码:
+   - 在 ruoyi-plus-uniapp-workflow/plus-ui/src/ 中搜索主题相关代码
+   - 使用 Grep 搜索: theme、dark、css variables
+   - 找到主题配置文件、切换逻辑、CSS 变量定义
    - 记录关键代码位置
 
-4. 编写文档:
+4. 阅读源码:
+   - 阅读主题配置文件
+   - 分析主题切换逻辑
+   - 理解 CSS 变量体系
+   - 理解暗黑模式实现
+   - 记录所有 API 和配置项
+
+5. 编写文档:
    - 按照模板结构编写
-   - 添加代码示例
-   - 标注源码引用
+   - 添加完整代码示例
+   - 标注源码引用(如: ruoyi-plus-uniapp-workflow/plus-ui/src/theme/index.ts:45-67)
+   - 所有泛型用反引号包裹(如: `Ref<ThemeConfig>`)
+   - 不添加文档跳转链接
 
-5. 质量检查:
-   - 行数检查: ✓ 1200+ 行
-   - API 完整性: ✓ 所有 Props/Events 已文档化
-   - 示例完整性: ✓ 所有功能都有示例
-   - 源码引用: ✓ 每个技术点都有引用
+6. 质量检查:
+   - ✓ 行数检查: 1234 行 (目标 ≥1000 行)
+   - ✓ API 完整性: 所有配置项和方法已文档化
+   - ✓ 示例完整性: 所有功能都有示例
+   - ✓ 源码引用: 每个技术点都有引用
+   - ✓ 标签包裹: 所有泛型都用反引号包裹
+   - ✓ 无跳转链接: 没有文档间的链接
 
-6. 完成任务:
-   - 更新 Todo 状态为 completed
-   - 提交代码: git commit -m "docs(mobile): 完善 Text 组件文档"
+7. 更新进度表:
+   - 打开 PROJECT_PROGRESS.md
+   - 更新文档状态: ⚠️ → ✅
+   - 更新行数: 1 → 1,234
+   - 从待办清单移除: [x] docs/frontend/styles/theme-system.md
+   - 更新整体统计: 83.5% → 83.7%
+   - 更新最后更新时间
+
+8. 提交代码:
+   - git add docs/frontend/styles/theme-system.md PROJECT_PROGRESS.md
+   - git commit -m "docs(frontend): 完善主题系统文档"
+   - git push origin master
+
+9. 完成 Todo:
+   - 标记所有任务为 completed
 ```
 
 ### 📚 参考资源
@@ -828,6 +1134,17 @@ git log --oneline -10
 ---
 
 ## 更新日志
+
+### v1.1.0 (2025-11-10)
+
+- 🎯 添加[文档编写流程](#文档编写流程)章节
+- 📊 创建 PROJECT_PROGRESS.md 项目进度表
+- ⚠️ 强化 Markdown 标签规范(泛型必须用反引号包裹)
+- ⚠️ 强化禁止文档跳转链接规范
+- 📂 添加源码项目结构说明(workflow 项目为主要参考)
+- 📋 添加完整的文档编写流程和检查清单
+- 🔄 明确进度表更新流程
+- 💡 更新最佳实践和工作流程示例
 
 ### v1.0.0 (2025-10-26)
 
