@@ -2396,39 +2396,3 @@ spring.boot.admin.client:
   username: ${MONITOR_USERNAME:ruoyi}
   password: ${MONITOR_PASSWORD:123456}
 ```
-
-### B. 参考资源
-
-**官方文档:**
-- Spring Boot Admin: https://codecentric.github.io/spring-boot-admin/
-- SnailJob: https://snailjob.opensnail.com/
-- Spring Boot: https://spring.io/projects/spring-boot
-- Spring Boot Actuator: https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html
-
-**开源项目:**
-- RuoYi-Plus: https://gitee.com/dromara/RuoYi-Plus
-- RuoYi-Vue-Plus: https://gitee.com/dromara/RuoYi-Vue-Plus
-- Spring Boot Admin Samples: https://github.com/codecentric/spring-boot-admin/tree/master/spring-boot-admin-samples
-
-**社区资源:**
-- Dromara 开源社区: https://dromara.org/
-- Spring 中文社区: https://springcloud.cc/
-- OSChina: https://www.oschina.net/
-
-**问题反馈:**
-- Issues: https://github.com/your-org/ruoyi-plus-uniapp/issues
-- Gitee Issues: https://gitee.com/your-org/ruoyi-plus-uniapp/issues
-
-### C. 版本历史
-
-| 版本 | 日期 | 变更内容 |
-|------|------|---------|
-| 5.5.0 | 2024-11 | 初始版本,包含 Monitor Admin 和 SnailJob Server |
-| 5.6.0 | 待定 | 计划添加配置中心扩展模块 |
-| 5.7.0 | 待定 | 计划添加网关扩展模块 |
-
-参考: ruoyi-plus-uniapp-workflow/ruoyi-extend/
-
----
-
-**本文档基于 RuoYi-Plus-UniApp 5.5.0 版本编写,最后更新时间: 2025-11-10**
