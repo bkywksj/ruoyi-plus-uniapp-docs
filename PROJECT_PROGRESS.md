@@ -1,9 +1,9 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-11-11
-> **整体完成度**: 88.1% (B+ 评分)
+> **最后更新**: 2025-11-11 00:10
+> **整体完成度**: 87.8% (B+ 评分)
 > **总文档数**: 502 个
-> **总行数**: 179,282+ 行 (新增 8,907 行)
+> **总行数**: 186,500+ 行
 
 ---
 
@@ -26,11 +26,11 @@
 | 分类 | 总数 | 已完成 | 进行中 | 未开始 | 完成率 | 评分 |
 |------|------|--------|--------|--------|--------|------|
 | **WD 组件库** | 46 | 46 | 0 | 0 | **100%** | A+ |
-| **后端文档** | 60 | 60 | 0 | 0 | **100%** | A+ |
-| **UniApp 文档** | 9 | 9 | 0 | 0 | **100%** | A+ |
-| **前端文档** | 181 | 157 | 7 | 17 | **86.7%** | B+ |
+| **后端文档** | 60 | 59 | 1 | 0 | **98%** | A+ |
+| **UniApp 文档** | 9 | 8 | 1 | 0 | **89%** | A- |
+| **前端文档** | 181 | 160 | 7 | 14 | **88%** | B+ |
 | **移动端其他** | 206 | ~165 | 20 | ~21 | **~80%** | B+ |
-| **总计** | **502** | **437** | **27** | **38** | **88.1%** | **B+** |
+| **总计** | **502** | **437** | **29** | **36** | **87.6%** | **B+** |
 
 ---
 
@@ -120,9 +120,9 @@
 
 ## 后端文档进度
 
-### 完成状态: 100% (60/60) ✅ 全部完成！
+### 完成状态: 98% (59/60)
 
-#### ✅ 已完成 (60个)
+#### ✅ 已完成 (59个)
 
 **核心功能模块 (15个)**
 - `docs/backend/core/overview.md` - 2,156 行
@@ -185,38 +185,33 @@
 - `docs/backend/modules/system/client.md` - 1,478 行
 - `docs/backend/modules/system/app.md` - 1,401 行
 
-**业务模块 (3个)**
-- `docs/backend/modules/business/base.md` - 1,322 行 ✅ (新增 AI助手、数据访问层架构、高级功能等)
-- `docs/backend/modules/business/job.md` - 806 行 ✅
-- `docs/backend/modules/business/mall.md` - 734 行 ✅
-
-**代码生成器 (5个)**
-- `docs/backend/modules/generator/overview.md` - 1,330 行 ✅
-- `docs/backend/modules/generator/quick-start.md` - 1,524 行 ✅ (新增批量生成、同步数据库、高级技巧等)
-- `docs/backend/modules/generator/advanced-config.md` - 1,898 行 ✅
-- `docs/backend/modules/generator/column-config.md` - 817 行 ✅
-- `docs/backend/modules/generator/table-management.md` - 411 行 ✅
-- `docs/backend/modules/generator/template-types.md` - 725 行 ✅
+**代码生成器 (2个)**
+- `docs/backend/modules/generator/overview.md` - 1,330 行
+- `docs/backend/modules/generator/advanced-config.md` - 1,898 行
 
 **扩展模块 (1个)**
 - `docs/backend/extend/extension-development.md` - 2,434 行 ✅
+
+**业务模块 (1个)**
+- `docs/backend/modules/business.md` - 1,323 行 ✅
+
+#### 🔄 进行中 (1个)
+
+| 文档 | 路径 | 状态 | 行数 | 备注 |
+|------|------|------|------|------|
+| Generator 生成器 | `docs/backend/modules/generator/usage.md` | 🔄 进行中 | 204 | 需扩展至 1000+ 行 |
 
 ---
 
 ## 前端文档进度
 
-### 完成状态: 86.7% (157/181)
-
-#### ⚠️ 紧急待完成 (1个 - 仅 1 行)
-
-**组件总览 (1个)**
-- `docs/frontend/components/business-components.md` - 1 行 ⚠️
+### 完成状态: 88% (160/181)
 
 #### ✅ 架构文档已完成 (1个)
 
 | 文档 | 路径 | 状态 | 行数 |
 |------|------|------|------|
-| Directory Structure | `docs/frontend/architecture/directory-structure.md` | ✅ 已完成 | 2,226 |
+| Directory Structure | `docs/frontend/architecture/directory-structure.md` | ✅ 已完成 | 1,685 |
 
 #### ✅ 样式系统已完成 (9个)
 
@@ -229,29 +224,40 @@
 | Responsive Design | `docs/frontend/styles/responsive.md` | ✅ 已完成 | 1,705 |
 | Animations | `docs/frontend/styles/animations.md` | ✅ 已完成 | 1,398 |
 | Utility Classes | `docs/frontend/styles/utility-classes.md` | ✅ 已完成 | 1,727 |
-| Component Styles | `docs/frontend/styles/component-styles.md` | ✅ 已完成 | 1,245 |
-| Best Practices | `docs/frontend/styles/best-practices.md` | ✅ 已完成 | 1,615 |
+| Component Styles | `docs/frontend/styles/component-styles.md` | ✅ 已完成 | 1,204 |
+| Best Practices | `docs/frontend/styles/best-practices.md` | ✅ 已完成 | 2,122 |
 
-#### ✅ 组件文档已完成 (5个)
+#### ✅ 组件文档已完成 (6个)
 
 | 文档 | 路径 | 状态 | 行数 |
 |------|------|------|------|
-| Form Components | `docs/frontend/components/form-components.md` | ✅ 已完成 | 2,299 |
-| Custom Development | `docs/frontend/components/custom-dev.md` | ✅ 已完成 | 1,585 |
-| Selection Tags | `docs/frontend/components/selection-tags.md` | ✅ 已完成 | 1,000 |
-| Search Form | `docs/frontend/components/search-form.md` | ✅ 已完成 | 1,798 |
+| Form Components | `docs/frontend/components/form-components.md` | ✅ 已完成 | 2,146 |
+| Business Components | `docs/frontend/components/business-components.md` | ✅ 已完成 | 2,103 |
+| Search Form | `docs/frontend/components/search-form.md` | ✅ 已完成 | 1,509 |
+| Custom Development | `docs/frontend/components/custom-dev.md` | ✅ 已完成 | 1,474 |
 | Page Background | `docs/frontend/components/page-background.md` | ✅ 已完成 | 1,327 |
+| Selection Tags | `docs/frontend/components/selection-tags.md` | ✅ 已完成 | 1,252 |
 
-#### 🔄 需扩展 (4个 - 100-200 行)
+#### ✅ 架构文档扩展完成 (1个)
+
+| 文档 | 路径 | 状态 | 行数 |
+|------|------|------|------|
+| Architecture Overview | `docs/frontend/architecture/overview.md` | ✅ 已完成 | 1,695 |
+
+#### ✅ Composables 概览已完成 (1个)
+
+| 文档 | 路径 | 状态 | 行数 |
+|------|------|------|------|
+| Composables Overview | `docs/frontend/composables/overview.md` | ✅ 已完成 | 2,031 |
+
+#### 🔄 需扩展 (2个 - 100-200 行)
 
 | 文档 | 路径 | 行数 | 目标行数 |
 |------|------|------|----------|
-| Composables Overview | `docs/frontend/composables/overview.md` | 95 | 500+ |
 | Stores Overview | `docs/frontend/stores/overview.md` | 101 | 500+ |
 | I18n Config | `docs/frontend/i18n/config.md` | 106 | 400+ |
-| Architecture Overview | `docs/frontend/architecture/overview.md` | 152 | 800+ |
 
-#### ✅ 已完成 (148个)
+#### ✅ 已完成 (150个)
 
 包括组件库、工具函数、路由、状态管理、样式系统等核心文档。
 
@@ -259,9 +265,9 @@
 
 ## 移动端文档进度
 
-### UniApp 文档 (9个) - 100% 完成 ✅
+### UniApp 文档 (9个) - 89% 完成
 
-#### ✅ 已完成 (9个)
+#### ✅ 已完成 (8个)
 
 | 文档 | 路径 | 行数 | 状态 |
 |------|------|------|------|
@@ -273,7 +279,12 @@
 | API Proxy | `docs/mobile/uniapp/api-proxy.md` | 867 | ✅ |
 | Platform Differences | `docs/mobile/uniapp/platform-differences.md` | 1,023 | ✅ |
 | Best Practices | `docs/mobile/uniapp/best-practices.md` | 1,178 | ✅ |
-| Manifest Config | `docs/mobile/uniapp/manifest-config.md` | 1,563 | ✅ |
+
+#### 🔄 进行中 (1个)
+
+| 文档 | 路径 | 行数 | 备注 |
+|------|------|------|------|
+| Manifest Config | `docs/mobile/uniapp/manifest-config.md` | 244 | 需扩展至 800+ 行 |
 
 ### 其他移动端文档 (197个) - ~80% 完成
 
@@ -294,46 +305,46 @@
 #### 1. 后端扩展开发 (已完成 ✅)
 - [x] `docs/backend/extend/extension-development.md` - ✅ 已完成 2,434 行
 
-#### 2. 前端样式系统 (9个) - ✅ 全部完成
+#### 2. 前端样式系统 (9个) - ✅ 已完成
 - [x] `docs/frontend/styles/style-architecture.md` - ✅ 已完成 2,532 行
 - [x] `docs/frontend/styles/global-styles.md` - ✅ 已完成 1,720 行
 - [x] `docs/frontend/styles/theme-system.md` - ✅ 已完成 1,964 行
 - [x] `docs/frontend/styles/responsive.md` - ✅ 已完成 1,705 行
 - [x] `docs/frontend/styles/animations.md` - ✅ 已完成 1,398 行
 - [x] `docs/frontend/styles/utility-classes.md` - ✅ 已完成 1,727 行
-- [x] `docs/frontend/styles/component-styles.md` - ✅ 已完成 1,245 行
-- [x] `docs/frontend/styles/best-practices.md` - ✅ 已完成 1,615 行
+- [x] `docs/frontend/styles/component-styles.md` - ✅ 已完成 1,204 行
+- [x] `docs/frontend/styles/best-practices.md` - ✅ 已完成 2,122 行
 - [x] `docs/frontend/styles/unocss-config.md` - ✅ 已完成 1,664 行
 
-#### 3. 前端架构 (1个) - ✅ 已完成
-- [x] `docs/frontend/architecture/directory-structure.md` - ✅ 已完成 2,226 行
-
-#### 4. 前端组件总览 (6个)
-- [x] `docs/frontend/components/form-components.md` - ✅ 已完成 2,299 行
-- [ ] `docs/frontend/components/business-components.md` - 1 行 → 1000+ 行
-- [x] `docs/frontend/components/custom-dev.md` - ✅ 已完成 1,585 行
-- [x] `docs/frontend/components/search-form.md` - ✅ 已完成 1,798 行
-- [x] `docs/frontend/components/selection-tags.md` - ✅ 已完成 1,000 行
+#### 3. 前端组件总览 (6个) - ✅ 已全部完成
+- [x] `docs/frontend/components/form-components.md` - ✅ 已完成 2,146 行
+- [x] `docs/frontend/components/business-components.md` - ✅ 已完成 2,103 行
+- [x] `docs/frontend/components/search-form.md` - ✅ 已完成 1,509 行
+- [x] `docs/frontend/components/custom-dev.md` - ✅ 已完成 1,474 行
 - [x] `docs/frontend/components/page-background.md` - ✅ 已完成 1,327 行
+- [x] `docs/frontend/components/selection-tags.md` - ✅ 已完成 1,252 行
 
-**估计时间**: 25-35 小时 (已完成 29-30 小时)
+#### 4. 前端架构 (1个) - ✅ 已完成
+- [x] `docs/frontend/architecture/directory-structure.md` - ✅ 已完成 1,685 行
+
+**估计时间**: 26-35 小时 (所有 HIGH PRIORITY 任务已全部完成!)
 
 ### 🟡 MEDIUM PRIORITY (重要 - 本月完成)
 
-#### 1. 后端模块扩展 (已完成 ✅)
-- [x] `docs/backend/modules/business/base.md` - ✅ 已完成 1,322 行 (新增 955 行)
-- [x] `docs/backend/modules/generator/quick-start.md` - ✅ 已完成 1,524 行 (新增 1,109 行)
+#### 1. 后端模块扩展 (2个)
+- [x] `docs/backend/modules/business.md` - ✅ 已完成 1,323 行 (超目标 65%)
+- [ ] `docs/backend/modules/generator/usage.md` - 204 行 → 1000+ 行
 
 #### 2. 前端架构扩展 (4个)
-- [ ] `docs/frontend/architecture/overview.md` - 152 行 → 800+ 行
-- [ ] `docs/frontend/composables/overview.md` - 95 行 → 500+ 行
+- [x] `docs/frontend/architecture/overview.md` - ✅ 已完成 1,695 行
+- [x] `docs/frontend/composables/overview.md` - ✅ 已完成 2,031 行 (超目标 306%)
 - [ ] `docs/frontend/stores/overview.md` - 101 行 → 500+ 行
 - [ ] `docs/frontend/i18n/config.md` - 106 行 → 400+ 行
 
 #### 3. UniApp 配置扩展 (1个)
-- [x] `docs/mobile/uniapp/manifest-config.md` - ✅ 已完成 1,563 行
+- [ ] `docs/mobile/uniapp/manifest-config.md` - 244 行 → 800+ 行
 
-**估计时间**: 15-20 小时（已减少 15-20 小时）
+**估计时间**: 30-40 小时
 
 ### 🟢 LOW PRIORITY (持续优化)
 

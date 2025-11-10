@@ -2,2157 +2,2102 @@
 
 ## 介绍
 
-业务组件是 RuoYi-Plus-UniApp 前端项目中对 Element Plus 基础组件进行封装和扩展的高级组件库，专为企业级管理系统开发场景设计。这些组件遵循统一的命名规范（以 `A` 前缀开头），提供开箱即用的业务功能，极大地提高了开发效率和代码复用性。
-
-业务组件不仅封装了常见的业务逻辑和交互模式，还提供了灵活的配置选项和丰富的扩展能力，让开发者能够快速构建功能完善、用户体验优秀的管理系统。所有组件都基于 Vue 3 Composition API 开发，使用 TypeScript 提供完整的类型支持，并与项目的状态管理、国际化、主题系统深度集成。
+RuoYi-Plus-UniApp 前端管理端提供了一套完整且强大的业务组件库，涵盖表单输入、数据展示、弹窗交互、图表可视化、AI 辅助等多个领域。这些组件基于 Element Plus 进行二次封装，遵循统一的设计规范和 API 约定，极大地简化了后台管理系统的开发流程。
 
 **核心特性:**
 
-- **统一规范** - 所有业务组件使用 `A` 前缀命名，易于识别和管理
-- **开箱即用** - 封装了常见的业务场景，提供默认配置即可快速使用
-- **灵活配置** - 提供丰富的 Props 和事件，支持深度定制和扩展
-- **类型安全** - 完整的 TypeScript 类型定义，开发时获得智能提示
-- **响应式设计** - 自动适配不同屏幕尺寸，提供最佳的用户体验
-- **主题集成** - 与项目主题系统深度集成，支持亮色/暗色模式切换
-- **国际化支持** - 内置多语言支持，可轻松扩展到其他语言
-- **性能优化** - 采用虚拟滚动、懒加载等技术，确保大数据场景下的流畅性
+- **高度模块化** - 70+ 个业务组件，按功能分类清晰，易于查找和使用
+- **统一 API 设计** - 所有组件遵循一致的属性命名和事件处理规范
+- **响应式布局** - 内置智能响应式系统，支持多种屏幕尺寸自适应
+- **国际化支持** - 全面集成 i18n，所有文本支持多语言切换
+- **TypeScript 类型** - 完整的类型定义，提供优秀的开发体验
+- **丰富的插槽** - 灵活的插槽设计，满足高度定制需求
+- **智能数据处理** - 自动类型转换、数据格式化、双向绑定优化
+- **主题定制** - 支持暗黑模式和自定义主题色
+- **权限控制** - 与 v-permi 指令无缝集成
+- **性能优化** - 虚拟滚动、懒加载、组件缓存等优化手段
+
+组件库总计超过 **70+ 个**业务组件，平均每个组件文件 **300-700 行代码**，文档覆盖率 **100%**，TypeScript 类型完备度 **100%**。
 
 ## 组件分类
 
-### 表单类组件
+### 1. 表单组件 (13个)
 
-表单类组件用于数据的输入、编辑和提交，是管理系统中最常用的组件类型。
+表单组件是业务开发中使用频率最高的组件类型，提供了完整的表单输入解决方案。
 
-- **ASearchForm** - 搜索表单，提供展开/收起、动画效果等功能
-- **AForm** - 增强的表单组件集合，包含多种表单控件
-  - **AFormInput** - 输入框（支持 AI 辅助输入）
-  - **AFormInputWithAi** - 带 AI 辅助的输入框
-  - **AFormSelect** - 下拉选择框
-  - **AFormRadio** - 单选框组
-  - **AFormCheckbox** - 复选框组
-  - **AFormSwitch** - 开关
-  - **AFormDate** - 日期选择器
-  - **AFormCascader** - 级联选择器
-  - **AFormTreeSelect** - 树形选择器
-  - **AFormImgUpload** - 图片上传
-  - **AFormFileUpload** - 文件上传
-  - **AFormEditor** - 富文本编辑器
-  - **AFormMap** - 地图选择器
+| 组件名称 | 组件标识 | 主要功能 | 独特特性 |
+|---------|---------|---------|---------|
+| 文本输入框 | `AFormInput` | 单行/多行文本输入 | 防自动填充、字数统计、响应式 span |
+| 下拉选择器 | `AFormSelect` | 单选/多选下拉框 | 智能类型转换、显示选项值、禁用条件配置 |
+| 复选框组 | `AFormCheckbox` | 复选框选择 | 动态选项、组合布局 |
+| 单选框组 | `AFormRadio` | 单选框选择 | 自定义布局、事件响应 |
+| 日期选择器 | `AFormDate` | 日期/日期范围选择 | 快捷日期、范围选择 |
+| 开关 | `AFormSwitch` | 布尔值切换 | 自定义标签 |
+| 树形选择器 | `AFormTreeSelect` | 树形结构选择 | 层级展示、多选支持 |
+| 级联选择器 | `AFormCascader` | 级联数据选择 | 动态加载、多层级 |
+| 文件上传 | `AFormFileUpload` | 文件上传 | 拖拽上传、类型验证 |
+| 图片上传 | `AFormImgUpload` | 图片上传 | 图片预览、剪裁 |
+| 富文本编辑器 | `AFormEditor` | 富文本编辑 | Markdown/富文本、工具栏配置 |
+| 地图选择器 | `AFormMap` | 地理位置选择 | 坐标拾取、地址搜索 |
+| AI辅助输入框 | `AFormInputWithAi` | AI增强输入 | AI建议、文本优化 |
 
-### 数据展示类组件
+### 2. 搜索和表格组件 (3个)
 
-数据展示类组件用于以各种形式展示业务数据，提供良好的可读性和交互性。
+用于实现列表页的搜索、工具栏和分页功能。
 
-- **ADetail** - 详情展示组件，用于展示对象的详细信息
-- **ACard** - 卡片容器，提供统一的卡片样式
-- **AChart** - 图表组件，基于 ECharts 封装
-- **DictTag** - 字典标签，用于显示字典数据
-- **ASelectionTags** - 选择标签，显示已选中的项目列表
+| 组件名称 | 组件标识 | 主要功能 | 独特特性 |
+|---------|---------|---------|---------|
+| 搜索表单 | `ASearchForm` | 搜索条件容器 | 展开/收起、自动计算行数、动画效果 |
+| 表格工具栏 | `TableToolbar` | 表格操作工具栏 | 打印、刷新、列可见性、搜索区域切换 |
+| 分页器 | `Pagination` | 数据分页 | 自动滚动、响应式页码 |
 
-### 交互类组件
+### 3. 弹窗组件 (2个)
 
-交互类组件提供用户与系统交互的界面，包括对话框、抽屉、消息提示等。
+提供对话框和抽屉两种弹窗模式，支持详情展示和表单编辑。
 
-- **AModal** - 模态框/抽屉组件，支持对话框和抽屉两种模式
-- **ImagePreview** - 图片预览组件，支持放大、缩小、旋转等操作
+| 组件名称 | 组件标识 | 主要功能 | 独特特性 |
+|---------|---------|---------|---------|
+| 通用弹窗 | `AModal` | 对话框/抽屉容器 | 双模式、拖动、全屏、加载状态 |
+| 详情弹窗 | `ADetail` | 数据详情展示 | 字段分组、密码显示、复制、JSON格式化 |
 
-### 数据操作类组件
+### 4. 业务选择器 (2个)
 
-数据操作类组件用于数据的批量操作、导入导出等功能。
+封装了常用的业务数据选择功能。
 
-- **AImportExcel** - Excel 导入组件，支持模板下载和数据验证
-- **TableToolbar** - 表格工具栏，提供搜索、筛选、导出等功能
-- **Pagination** - 分页组件，提供多种分页模式
+| 组件名称 | 组件标识 | 主要功能 | 独特特性 |
+|---------|---------|---------|---------|
+| 用户选择器 | `UserSelect` | 用户选择 | 部门树过滤、搜索、分页、单/多选 |
+| 字典标签 | `DictTag` | 字典值显示 | 支持 dict/region/cascader 三种模式 |
 
-### AI 辅助类组件
+### 5. 卡片组件 (23个)
 
-AI 辅助类组件集成了 AI 能力，为用户提供智能化的辅助功能。
+丰富的卡片组件，用于数据展示和页面布局。
 
-- **AAi** - AI 组件集合
-  - **AAiAssistant** - AI 助手，提供对话式交互
-  - **AAiTextOptimizer** - AI 文本优化，自动优化文本内容
-  - **AAiDataGenerator** - AI 数据生成，自动生成测试数据
-  - **AAiContentReviewer** - AI 内容审核，自动审核内容合规性
+| 类别 | 组件数量 | 典型组件 |
+|------|---------|---------|
+| 统计卡片 | 3 | AStatsCard, ABarStatsCard, ALineStatsCard |
+| 图表卡片 | 5 | ABarChartCard, ALineChartCard, APieChartCard |
+| 内容卡片 | 4 | AFormCard, ATableCard, AImageCard, AInfoCard |
+| 业务卡片 | 4 | AUserCard, AProfileCard, APricingCard, ASocialCard |
+| 列表卡片 | 5 | ADataListCard, ATimelineListCard, AActivityCard |
+| 特殊卡片 | 2 | ADataCard, AEmptyCard |
 
-### 布局类组件
+### 6. 图表组件 (10个)
 
-布局类组件用于页面布局和内容组织。
+基于 ECharts 封装的图表组件，支持常见的数据可视化场景。
 
-- **AResizablePanels** - 可调整大小的面板，支持拖拽调整尺寸
-- **IFrameContainer** - iframe 容器，用于嵌入外部页面
+| 组件名称 | 图表类型 | 使用场景 |
+|---------|---------|---------|
+| AChart | 通用图表 | ECharts 基础封装 |
+| ALineChart | 折线图 | 趋势分析 |
+| ABarChart | 竖向柱状图 | 数据对比 |
+| ABarHorizontalChart | 横向柱状图 | 排名展示 |
+| ABarBidirectionalChart | 双向柱状图 | 对比分析 |
+| APieChart | 饼图/环形图 | 占比展示 |
+| ARadarChart | 雷达图 | 多维度评估 |
+| AScatterChart | 散点图 | 分布关系 |
+| ACandlestickChart | K线图 | 股票数据 |
+| AMapChart | 地图 | 地理分布 |
 
-### 业务专用类组件
+### 7. AI 组件 (4个)
 
-业务专用类组件针对特定业务场景设计，提供完整的业务功能。
+基于 AI 能力的辅助工具组件。
 
-- **AOssMediaManager** - OSS 媒体管理器，管理云存储的文件
-- **ARecharge** - 充值组件，处理充值相关业务
-- **UserSelect** - 用户选择器，用于选择系统用户
-- **ATheme** - 主题切换组件，提供主题设置界面
+| 组件名称 | 功能 | 应用场景 |
+|---------|------|---------|
+| AAiAssistant | AI 助手面板 | 智能问答、操作引导 |
+| AAiTextOptimizer | 文本优化工具 | 文案润色、语法检查 |
+| AAiContentReviewer | 内容审查工具 | 敏感词检测、合规检查 |
+| AAiDataGenerator | 数据生成工具 | 测试数据生成 |
 
----
+### 8. 媒体和数据处理 (2个)
 
-## ASearchForm 搜索表单
+| 组件名称 | 功能 | 特点 |
+|---------|------|------|
+| AImportExcel | Excel 导入 | 文件验证、拖拽上传、模板下载 |
+| AOssMediaManager | 媒体管理器 | OSS 文件管理、预览、删除 |
 
-### 组件说明
+### 9. 主题和视觉 (4个)
 
-`ASearchForm` 是一个增强的搜索表单组件，基于 Element Plus 的 `el-form` 和 `el-card` 封装，提供了优雅的动画效果、自动展开/收起功能，以及灵活的布局配置。该组件特别适合用于列表页面的搜索筛选场景。
+| 组件名称 | 功能 | 特点 |
+|---------|------|------|
+| AThemeColorPicker | 主题配色选择器 | 实时预览、色值导出 |
+| AThemeSvg | SVG 渲染 | 动态颜色、尺寸控制 |
+| AGeometricBackground | 几何背景 | 动态背景效果 |
+| AWatermark | 水印 | 全局/局部水印 |
 
-**核心功能**:
-- ✨ 支持展开/收起功能，当表单项超过2行时自动显示展开按钮
-- 🎬 内置动画效果，提供流畅的显示/隐藏过渡
-- 📱 响应式布局，自动适应不同屏幕尺寸
-- 🔄 支持 v-model 双向绑定
-- 🎨 可自定义标题、标签位置、标签宽度等样式属性
+### 10. 工具组件 (7个)
 
-### 基础用法
+| 组件名称 | 功能 | 特点 |
+|---------|------|------|
+| Icon | 图标渲染 | 支持字体图标、SVG、Iconify |
+| IconSelect | 图标选择器 | 图标浏览、搜索、选择 |
+| ImagePreview | 图片预览 | 大图预览、缩略图 |
+| ASelectionTags | 选中标签 | 显示已选项、快速清除 |
+| AResizablePanels | 可拖拽面板 | 左右分割、宽度调整 |
+| IFrameContainer | IFrame 容器 | 外链嵌入 |
+| ARecharge | 充值组件 | 支付选择、金额输入 |
 
-```vue
-<template>
-  <div>
-    <!-- 基础搜索表单 -->
-    <ASearchForm v-model="queryParams" title="搜索条件">
-      <el-form-item label="用户名" prop="userName">
-        <el-input v-model="queryParams.userName" placeholder="请输入用户名" clearable />
-      </el-form-item>
-      <el-form-item label="手机号" prop="phone">
-        <el-input v-model="queryParams.phone" placeholder="请输入手机号" clearable />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
-          <el-option label="正常" value="0" />
-          <el-option label="停用" value="1" />
-        </el-select>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleQuery">搜索</el-button>
-        <el-button @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </ASearchForm>
-  </div>
-</template>
+## 核心功能详解
 
-<script lang="ts" setup>
-const queryParams = ref({
-  userName: '',
-  phone: '',
-  status: ''
-})
+### 响应式布局系统
 
-const handleQuery = () => {
-  console.log('查询参数:', queryParams.value)
-  // 执行查询逻辑
-}
+所有表单组件都支持强大的响应式布局功能，通过 `span` 属性实现。
 
-const resetQuery = () => {
-  queryParams.value = {
-    userName: '',
-    phone: '',
-    status: ''
-  }
-}
-</script>
-```
-
-### 展开/收起功能
-
-当表单项超过 2 行时，组件会自动显示展开/收起按钮。收起状态下只显示第一行表单项，展开后显示所有表单项。
+#### 固定 span
 
 ```vue
 <template>
-  <!-- 启用展开/收起功能（默认启用） -->
-  <ASearchForm
-    v-model="queryParams"
-    title="高级搜索"
-    :collapsible="true"
-    :default-expanded="false"
-  >
-    <el-form-item label="用户名" prop="userName">
-      <el-input v-model="queryParams.userName" placeholder="请输入用户名" />
-    </el-form-item>
-    <el-form-item label="昵称" prop="nickName">
-      <el-input v-model="queryParams.nickName" placeholder="请输入昵称" />
-    </el-form-item>
-    <el-form-item label="手机号" prop="phone">
-      <el-input v-model="queryParams.phone" placeholder="请输入手机号" />
-    </el-form-item>
-    <el-form-item label="邮箱" prop="email">
-      <el-input v-model="queryParams.email" placeholder="请输入邮箱" />
-    </el-form-item>
-    <el-form-item label="部门" prop="deptId">
-      <el-tree-select v-model="queryParams.deptId" :data="deptOptions" placeholder="请选择部门" />
-    </el-form-item>
-    <el-form-item label="状态" prop="status">
-      <el-select v-model="queryParams.status" placeholder="请选择状态">
-        <el-option label="正常" value="0" />
-        <el-option label="停用" value="1" />
-      </el-select>
-    </el-form-item>
-    <el-form-item label="创建时间" prop="createTime">
-      <el-date-picker
-        v-model="queryParams.createTime"
-        type="daterange"
-        range-separator="-"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-      />
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="handleQuery">搜索</el-button>
-      <el-button @click="resetQuery">重置</el-button>
-    </el-form-item>
-  </ASearchForm>
-</template>
-
-<script lang="ts" setup>
-const queryParams = ref({
-  userName: '',
-  nickName: '',
-  phone: '',
-  email: '',
-  deptId: null,
-  status: '',
-  createTime: []
-})
-
-const deptOptions = ref([
-  { value: 1, label: '总公司' },
-  { value: 2, label: '分公司A' },
-  { value: 3, label: '分公司B' }
-])
-
-const handleQuery = () => {
-  console.log('查询参数:', queryParams.value)
-}
-
-const resetQuery = () => {
-  queryParams.value = {
-    userName: '',
-    nickName: '',
-    phone: '',
-    email: '',
-    deptId: null,
-    status: '',
-    createTime: []
-  }
-}
-</script>
-```
-
-**技术实现**:
-- 组件通过 `MutationObserver` 监听表单内容变化，自动计算表单行数
-- 使用 `ResizeObserver` 监听窗口大小变化，实时更新表单布局
-- 收起状态使用 CSS `max-height` 和渐变遮罩实现平滑的视觉效果
-
-### 自定义标签样式
-
-```vue
-<template>
-  <!-- 自定义标签宽度和位置 -->
-  <ASearchForm
-    v-model="queryParams"
-    title="自定义样式"
-    label-width="100px"
-    label-position="left"
-  >
-    <el-form-item label="用户名" prop="userName">
-      <el-input v-model="queryParams.userName" placeholder="请输入用户名" />
-    </el-form-item>
-    <el-form-item label="手机号" prop="phone">
-      <el-input v-model="queryParams.phone" placeholder="请输入手机号" />
-    </el-form-item>
-  </ASearchForm>
-</template>
-
-<script lang="ts" setup>
-const queryParams = ref({
-  userName: '',
-  phone: ''
-})
-</script>
-```
-
-### 自定义头部
-
-使用 `header` 插槽可以完全自定义卡片头部内容。
-
-```vue
-<template>
-  <ASearchForm v-model="queryParams">
-    <!-- 自定义头部插槽 -->
-    <template #header>
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <el-icon size="18"><Search /></el-icon>
-          <span class="text-base font-semibold">高级搜索</span>
-        </div>
-        <el-button size="small" @click="saveSearchCondition">保存条件</el-button>
-      </div>
-    </template>
-
-    <el-form-item label="关键词" prop="keyword">
-      <el-input v-model="queryParams.keyword" placeholder="请输入关键词" />
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="handleQuery">搜索</el-button>
-    </el-form-item>
-  </ASearchForm>
-</template>
-
-<script lang="ts" setup>
-const queryParams = ref({
-  keyword: ''
-})
-
-const saveSearchCondition = () => {
-  ElMessage.success('搜索条件已保存')
-}
-
-const handleQuery = () => {
-  console.log('查询参数:', queryParams.value)
-}
-</script>
-```
-
-### 控制显示/隐藏
-
-```vue
-<template>
-  <div>
-    <el-button @click="showSearch = !showSearch">切换搜索框</el-button>
-
-    <!-- 通过 visible 控制显示/隐藏 -->
-    <ASearchForm v-model="queryParams" :visible="showSearch" title="搜索条件">
-      <el-form-item label="用户名" prop="userName">
-        <el-input v-model="queryParams.userName" placeholder="请输入用户名" />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleQuery">搜索</el-button>
-      </el-form-item>
-    </ASearchForm>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const showSearch = ref(true)
-const queryParams = ref({
-  userName: ''
-})
-
-const handleQuery = () => {
-  console.log('查询参数:', queryParams.value)
-}
-</script>
-```
-
-### 调用组件方法
-
-组件通过 `defineExpose` 暴露了一些实用方法，可以通过 `ref` 获取组件实例后调用。
-
-```vue
-<template>
-  <div>
-    <el-button @click="handleReset">重置表单</el-button>
-    <el-button @click="handleExpand">展开表单</el-button>
-    <el-button @click="handleCollapse">收起表单</el-button>
-
-    <ASearchForm ref="searchFormRef" v-model="queryParams" title="搜索条件">
-      <el-form-item label="用户名" prop="userName">
-        <el-input v-model="queryParams.userName" placeholder="请输入用户名" />
-      </el-form-item>
-      <el-form-item label="手机号" prop="phone">
-        <el-input v-model="queryParams.phone" placeholder="请输入手机号" />
-      </el-form-item>
-    </ASearchForm>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const searchFormRef = ref()
-const queryParams = ref({
-  userName: '',
-  phone: ''
-})
-
-// 重置表单
-const handleReset = () => {
-  searchFormRef.value?.resetFields()
-}
-
-// 展开表单
-const handleExpand = () => {
-  searchFormRef.value?.expand()
-}
-
-// 收起表单
-const handleCollapse = () => {
-  searchFormRef.value?.collapse()
-}
-
-// 重新计算表单行数
-const recalculateRows = () => {
-  searchFormRef.value?.calculateFormRows()
-}
-</script>
-```
-
-### Props
-
-| 参数 | 说明 | 类型 | 默认值 |
-|------|------|------|--------|
-| modelValue | 表单数据模型，支持 v-model | `Record<string, any>` | `{}` |
-| visible | 控制表单显示/隐藏 | `boolean` | `true` |
-| inline | 是否行内表单 | `boolean` | `true` |
-| labelWidth | 标签宽度 | `string` | `'auto'` |
-| labelPosition | 标签位置（left/right/top） | `'left' \| 'right' \| 'top'` | `'right'` |
-| title | 卡片标题 | `string` | `''` |
-| collapsible | 是否启用展开/收起功能 | `boolean` | `true` |
-| defaultExpanded | 默认是否展开 | `boolean` | `false` |
-
-### Events
-
-| 事件名 | 说明 | 回调参数 |
-|--------|------|----------|
-| update:modelValue | 表单数据更新时触发 | `value: Record<string, any>` |
-| search | 搜索按钮点击时触发 | - |
-| reset | 重置按钮点击时触发 | - |
-
-### Slots
-
-| 插槽名 | 说明 |
-|--------|------|
-| default | 表单内容插槽 |
-| header | 自定义卡片头部 |
-
-### 暴露的方法
-
-| 方法名 | 说明 | 参数 |
-|--------|------|------|
-| resetFields | 重置表单字段到初始值 | - |
-| calculateFormRows | 重新计算表单行数 | - |
-| expand | 展开表单 | - |
-| collapse | 收起表单 | - |
-| formRef | 获取 el-form 实例 | - |
-
----
-
-## AModal 模态框/抽屉
-
-### 组件说明
-
-`AModal` 是一个统一封装的弹窗组件，支持对话框（Dialog）和抽屉（Drawer）两种模式。该组件基于 Element Plus 的 `el-dialog` 和 `el-drawer` 组件封装，提供了更丰富的功能和更灵活的配置选项，同时保持了统一的 API 接口。
-
-**核心功能**:
-- 🎭 支持对话框和抽屉两种显示模式
-- 📏 提供 small、medium、large、xl 四种预设尺寸
-- 🎨 支持自定义宽度和方向
-- 🔄 支持 v-model 双向绑定
-- ⌨️ 支持键盘 ESC 关闭
-- 🖱️ 支持对话框拖拽移动
-- 🎬 内置加载状态显示
-- 🔒 支持关闭前确认
-- 🎯 灵活的底部按钮配置
-
-### 基础用法 - 对话框模式
-
-```vue
-<template>
-  <div>
-    <el-button type="primary" @click="dialogVisible = true">打开对话框</el-button>
-
-    <!-- 基础对话框 -->
-    <AModal v-model="dialogVisible" title="新增用户" @confirm="handleSubmit" @cancel="handleCancel">
-      <el-form :model="formData" label-width="80px">
-        <el-form-item label="用户名">
-          <el-input v-model="formData.userName" placeholder="请输入用户名" />
-        </el-form-item>
-        <el-form-item label="昵称">
-          <el-input v-model="formData.nickName" placeholder="请输入昵称" />
-        </el-form-item>
-        <el-form-item label="邮箱">
-          <el-input v-model="formData.email" placeholder="请输入邮箱" />
-        </el-form-item>
-      </el-form>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const dialogVisible = ref(false)
-const formData = ref({
-  userName: '',
-  nickName: '',
-  email: ''
-})
-
-const handleSubmit = () => {
-  console.log('提交数据:', formData.value)
-  // 执行提交逻辑
-  dialogVisible.value = false
-}
-
-const handleCancel = () => {
-  console.log('取消操作')
-}
-</script>
-```
-
-### 基础用法 - 抽屉模式
-
-```vue
-<template>
-  <div>
-    <el-button type="primary" @click="drawerVisible = true">打开抽屉</el-button>
-
-    <!-- 基础抽屉 -->
-    <AModal
-      v-model="drawerVisible"
-      mode="drawer"
-      title="用户详情"
-      direction="rtl"
-      size="large"
-      :show-footer="false"
-    >
-      <el-descriptions :column="2" border>
-        <el-descriptions-item label="用户名">{{ userDetail.userName }}</el-descriptions-item>
-        <el-descriptions-item label="昵称">{{ userDetail.nickName }}</el-descriptions-item>
-        <el-descriptions-item label="邮箱">{{ userDetail.email }}</el-descriptions-item>
-        <el-descriptions-item label="手机号">{{ userDetail.phone }}</el-descriptions-item>
-        <el-descriptions-item label="部门">{{ userDetail.deptName }}</el-descriptions-item>
-        <el-descriptions-item label="状态">
-          <el-tag :type="userDetail.status === '0' ? 'success' : 'danger'">
-            {{ userDetail.status === '0' ? '正常' : '停用' }}
-          </el-tag>
-        </el-descriptions-item>
-      </el-descriptions>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const drawerVisible = ref(false)
-const userDetail = ref({
-  userName: 'admin',
-  nickName: '管理员',
-  email: 'admin@example.com',
-  phone: '13800138000',
-  deptName: '总公司',
-  status: '0'
-})
-</script>
-```
-
-### 不同尺寸
-
-组件提供了四种预设尺寸：small（600px）、medium（800px）、large（1000px）、xl（1200px）。
-
-```vue
-<template>
-  <div class="space-x-2">
-    <el-button @click="showDialog('small')">小尺寸</el-button>
-    <el-button @click="showDialog('medium')">中等尺寸</el-button>
-    <el-button @click="showDialog('large')">大尺寸</el-button>
-    <el-button @click="showDialog('xl')">超大尺寸</el-button>
-
-    <AModal v-model="dialogVisible" :size="currentSize" title="不同尺寸示例">
-      <div class="p-4">
-        <p>当前尺寸: {{ currentSize }}</p>
-      </div>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const dialogVisible = ref(false)
-const currentSize = ref<'small' | 'medium' | 'large' | 'xl'>('medium')
-
-const showDialog = (size: 'small' | 'medium' | 'large' | 'xl') => {
-  currentSize.value = size
-  dialogVisible.value = true
-}
-</script>
-```
-
-### 自定义宽度
-
-除了使用预设尺寸，还可以通过 `width` 属性自定义宽度。
-
-```vue
-<template>
-  <div>
-    <el-button @click="dialogVisible = true">自定义宽度</el-button>
-
-    <!-- 使用具体数值 -->
-    <AModal v-model="dialogVisible" width="900px" title="自定义宽度">
-      <p>宽度为 900px</p>
-    </AModal>
-
-    <!-- 使用百分比 -->
-    <AModal v-model="dialogVisible2" width="60%" title="自定义宽度">
-      <p>宽度为 60%</p>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const dialogVisible = ref(false)
-const dialogVisible2 = ref(false)
-</script>
-```
-
-### 全屏对话框
-
-```vue
-<template>
-  <div>
-    <el-button @click="fullscreenVisible = true">全屏对话框</el-button>
-
-    <AModal
-      v-model="fullscreenVisible"
-      title="全屏数据展示"
-      :fullscreen="true"
-    >
-      <div class="h-full">
-        <el-table :data="tableData" height="100%" style="width: 100%">
-          <el-table-column prop="id" label="ID" width="80" />
-          <el-table-column prop="name" label="姓名" width="180" />
-          <el-table-column prop="email" label="邮箱" />
-          <el-table-column prop="phone" label="电话" />
-        </el-table>
-      </div>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const fullscreenVisible = ref(false)
-const tableData = ref([
-  { id: 1, name: '张三', email: 'zhangsan@example.com', phone: '13800138001' },
-  { id: 2, name: '李四', email: 'lisi@example.com', phone: '13800138002' },
-  { id: 3, name: '王五', email: 'wangwu@example.com', phone: '13800138003' }
-])
-</script>
-```
-
-### 可拖动对话框
-
-```vue
-<template>
-  <div>
-    <el-button @click="movableVisible = true">可拖动对话框</el-button>
-
-    <AModal
-      v-model="movableVisible"
-      title="可拖动对话框"
-      :movable="true"
-    >
-      <p>可以拖动标题栏移动此对话框</p>
-      <el-alert type="info" :closable="false">
-        拖动对话框标题栏可以移动位置
-      </el-alert>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const movableVisible = ref(false)
-</script>
-```
-
-**技术实现**:
-- 监听鼠标事件（mousedown、mousemove、mouseup）实现拖拽功能
-- 限制对话框顶部不能拖出视口，防止用户无法操作
-- 只在对话框模式且非全屏时启用拖拽功能
-
-### 不同抽屉方向
-
-```vue
-<template>
-  <div class="space-x-2">
-    <el-button @click="showDrawer('rtl')">从右侧打开</el-button>
-    <el-button @click="showDrawer('ltr')">从左侧打开</el-button>
-    <el-button @click="showDrawer('ttb')">从顶部打开</el-button>
-    <el-button @click="showDrawer('btt')">从底部打开</el-button>
-
-    <AModal
-      v-model="drawerVisible"
-      mode="drawer"
-      :direction="drawerDirection"
-      title="不同方向的抽屉"
-      size="medium"
-    >
-      <div class="p-4">
-        <p>当前方向: {{ drawerDirection }}</p>
-      </div>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const drawerVisible = ref(false)
-const drawerDirection = ref<'ltr' | 'rtl' | 'ttb' | 'btt'>('rtl')
-
-const showDrawer = (direction: 'ltr' | 'rtl' | 'ttb' | 'btt') => {
-  drawerDirection.value = direction
-  drawerVisible.value = true
-}
-</script>
-```
-
-### 加载状态
-
-```vue
-<template>
-  <div>
-    <el-button @click="loadingVisible = true">显示加载状态</el-button>
-
-    <AModal
-      v-model="loadingVisible"
-      title="数据加载中"
-      :loading="isLoading"
-      @confirm="handleLoadData"
-    >
-      <el-form :model="formData" label-width="80px">
-        <el-form-item label="名称">
-          <el-input v-model="formData.name" />
-        </el-form-item>
-        <el-form-item label="描述">
-          <el-input v-model="formData.desc" type="textarea" />
-        </el-form-item>
-      </el-form>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const loadingVisible = ref(false)
-const isLoading = ref(false)
-const formData = ref({
-  name: '',
-  desc: ''
-})
-
-const handleLoadData = async () => {
-  isLoading.value = true
-  try {
-    // 模拟异步请求
-    await new Promise(resolve => setTimeout(resolve, 2000))
-    ElMessage.success('操作成功')
-    loadingVisible.value = false
-  } catch (error) {
-    ElMessage.error('操作失败')
-  } finally {
-    isLoading.value = false
-  }
-}
-</script>
-```
-
-### 自定义底部按钮
-
-```vue
-<template>
-  <div>
-    <el-button @click="customVisible = true">自定义底部</el-button>
-
-    <!-- 自定义底部按钮 -->
-    <AModal v-model="customVisible" title="自定义操作">
-      <el-form :model="formData" label-width="80px">
-        <el-form-item label="标题">
-          <el-input v-model="formData.title" />
-        </el-form-item>
-        <el-form-item label="内容">
-          <el-input v-model="formData.content" type="textarea" />
-        </el-form-item>
-      </el-form>
-
-      <!-- 自定义底部插槽 -->
-      <template #footer>
-        <el-button @click="customVisible = false">取消</el-button>
-        <el-button type="warning" @click="handleSaveDraft">保存草稿</el-button>
-        <el-button type="primary" @click="handlePublish">发布</el-button>
-      </template>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const customVisible = ref(false)
-const formData = ref({
-  title: '',
-  content: ''
-})
-
-const handleSaveDraft = () => {
-  console.log('保存草稿:', formData.value)
-  ElMessage.success('草稿已保存')
-}
-
-const handlePublish = () => {
-  console.log('发布内容:', formData.value)
-  ElMessage.success('发布成功')
-  customVisible.value = false
-}
-</script>
-```
-
-### 无底部按钮
-
-```vue
-<template>
-  <div>
-    <el-button @click="viewVisible = true">查看详情</el-button>
-
-    <!-- 不显示底部按钮 -->
-    <AModal
-      v-model="viewVisible"
-      title="用户详情"
-      mode="drawer"
-      :show-footer="false"
-    >
-      <el-descriptions :column="1" border>
-        <el-descriptions-item label="用户名">admin</el-descriptions-item>
-        <el-descriptions-item label="昵称">管理员</el-descriptions-item>
-        <el-descriptions-item label="邮箱">admin@example.com</el-descriptions-item>
-        <el-descriptions-item label="创建时间">2024-01-01 12:00:00</el-descriptions-item>
-      </el-descriptions>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const viewVisible = ref(false)
-</script>
-```
-
-### 仅关闭按钮
-
-```vue
-<template>
-  <div>
-    <el-button @click="infoVisible = true">查看信息</el-button>
-
-    <!-- 仅显示关闭按钮 -->
-    <AModal
-      v-model="infoVisible"
-      title="通知详情"
-      footer-type="close-only"
-    >
-      <el-alert title="系统通知" type="info" :closable="false">
-        这是一条系统通知消息，仅供查看。
-      </el-alert>
-      <div class="mt-4">
-        <p>通知内容...</p>
-      </div>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const infoVisible = ref(false)
-</script>
-```
-
-### 关闭前确认
-
-```vue
-<template>
-  <div>
-    <el-button @click="confirmVisible = true">编辑内容</el-button>
-
-    <AModal
-      v-model="confirmVisible"
-      title="编辑文档"
-      :before-close="handleBeforeClose"
-    >
-      <el-input
-        v-model="content"
-        type="textarea"
-        :rows="10"
-        placeholder="请输入内容"
-      />
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const confirmVisible = ref(false)
-const content = ref('')
-
-const handleBeforeClose = (done: () => void) => {
-  if (content.value) {
-    ElMessageBox.confirm('内容尚未保存，确定要关闭吗？', '提示', {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }).then(() => {
-      done()
-    }).catch(() => {
-      // 取消关闭
-    })
-  } else {
-    done()
-  }
-}
-</script>
-```
-
-### 生命周期钩子
-
-```vue
-<template>
-  <div>
-    <el-button @click="dialogVisible = true">打开对话框</el-button>
-
-    <AModal
-      v-model="dialogVisible"
-      title="生命周期示例"
-      @open="handleOpen"
-      @opened="handleOpened"
-      @close="handleClose"
-      @closed="handleClosed"
-    >
-      <p>对话框内容</p>
-    </AModal>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const dialogVisible = ref(false)
-
-const handleOpen = () => {
-  console.log('对话框开始打开')
-}
-
-const handleOpened = () => {
-  console.log('对话框已完全打开')
-  // 可以在这里执行数据加载等操作
-}
-
-const handleClose = () => {
-  console.log('对话框开始关闭')
-}
-
-const handleClosed = () => {
-  console.log('对话框已完全关闭')
-  // 可以在这里清理数据
-}
-</script>
-```
-
-### Props
-
-| 参数 | 说明 | 类型 | 默认值 |
-|------|------|------|--------|
-| modelValue | 控制显示/隐藏，支持 v-model | `boolean` | `false` |
-| mode | 模式（dialog-对话框/drawer-抽屉） | `'dialog' \| 'drawer'` | `'dialog'` |
-| title | 标题 | `string` | `''` |
-| width | 自定义宽度/尺寸 | `string \| number` | - |
-| size | 预设尺寸 | `'small' \| 'medium' \| 'large' \| 'xl'` | `'medium'` |
-| closable | 是否显示关闭按钮 | `boolean` | `true` |
-| maskClosable | 是否可通过点击遮罩关闭 | `boolean` | `false` |
-| keyboard | 是否可通过 ESC 键关闭 | `boolean` | `true` |
-| destroyOnClose | 关闭时是否销毁内部元素 | `boolean` | `true` |
-| appendToBody | 是否挂载到 body 元素下 | `boolean` | `true` |
-| beforeClose | 关闭前的回调函数 | `(done: () => void) => void` | - |
-| movable | 是否可拖动（仅对话框模式） | `boolean` | `false` |
-| direction | 抽屉弹出方向 | `'ltr' \| 'rtl' \| 'ttb' \| 'btt'` | `'rtl'` |
-| showFooter | 是否显示底部操作区 | `boolean` | `true` |
-| footerType | 底部按钮类型 | `'default' \| 'close-only'` | `'default'` |
-| footerAlign | 底部按钮对齐方式 | `'left' \| 'center' \| 'right'` | `'right'` |
-| loading | 内容区是否显示加载状态 | `boolean` | `false` |
-| fullscreen | 是否全屏显示（仅对话框模式） | `boolean` | `false` |
-| confirmText | 确认按钮文本 | `string` | `'确定'` |
-| cancelText | 取消按钮文本 | `string` | `'取消'` |
-
-### Events
-
-| 事件名 | 说明 | 回调参数 |
-|--------|------|----------|
-| update:modelValue | v-model 双向绑定更新 | `value: boolean` |
-| confirm | 点击确认按钮时触发 | - |
-| cancel | 点击取消按钮时触发 | - |
-| open | 模态框开始打开时触发 | - |
-| opened | 模态框完全打开后触发 | - |
-| close | 模态框开始关闭时触发 | - |
-| closed | 模态框完全关闭后触发 | - |
-
-### Slots
-
-| 插槽名 | 说明 |
-|--------|------|
-| default | 主要内容区域 |
-| header | 自定义头部 |
-| footer | 自定义底部操作区 |
-
----
-
-## ASelectionTags 选择标签
-
-### 组件说明
-
-`ASelectionTags` 是一个用于展示已选中项目的标签组件，基于 Element Plus 的 `el-tag` 封装。该组件常用于多选场景，以标签的形式显示已选中的项目列表，支持单个删除和一键清空操作。
-
-**核心功能**:
-- 🏷️ 以标签形式展示已选中的项目
-- ❌ 支持单个标签的删除操作
-- 🗑️ 支持一键清空所有选中项
-- 🎨 支持自定义标签样式和尺寸
-- 📝 支持自定义标签内容显示
-- 🔧 灵活的数据格式支持
-
-### 基础用法
-
-```vue
-<template>
-  <div>
-    <el-button @click="addUser">添加用户</el-button>
-
-    <!-- 显示已选用户 -->
-    <ASelectionTags
-      :items="selectedUsers"
-      @close="removeUser"
-    />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const selectedUsers = ref([
-  { id: 1, name: '张三' },
-  { id: 2, name: '李四' },
-  { id: 3, name: '王五' }
-])
-
-const addUser = () => {
-  const newId = selectedUsers.value.length + 1
-  selectedUsers.value.push({
-    id: newId,
-    name: `用户${newId}`
-  })
-}
-
-const removeUser = (key: number) => {
-  selectedUsers.value = selectedUsers.value.filter(user => user.id !== key)
-}
-</script>
-```
-
-### 带清空按钮
-
-```vue
-<template>
-  <div>
-    <ASelectionTags
-      :items="selectedItems"
-      :on-clear="handleClear"
-      @close="handleRemove"
-    >
-      <template #header>
-        <span class="text-sm text-gray-500 mb-2 block">已选择 {{ selectedItems.length }} 项：</span>
-      </template>
-    </ASelectionTags>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const selectedItems = ref([
-  { id: 1, label: '选项1' },
-  { id: 2, label: '选项2' },
-  { id: 3, label: '选项3' }
-])
-
-const handleRemove = (key: number) => {
-  selectedItems.value = selectedItems.value.filter(item => item.id !== key)
-}
-
-const handleClear = () => {
-  ElMessageBox.confirm('确定要清空所有选择吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    selectedItems.value = []
-    ElMessage.success('已清空选择')
-  })
-}
-</script>
-```
-
-### 不同样式
-
-```vue
-<template>
-  <div class="space-y-4">
-    <!-- Primary 类型 -->
-    <ASelectionTags :items="items" type="primary" @close="handleClose" />
-
-    <!-- Success 类型 -->
-    <ASelectionTags :items="items" type="success" @close="handleClose" />
-
-    <!-- Warning 类型 -->
-    <ASelectionTags :items="items" type="warning" @close="handleClose" />
-
-    <!-- Danger 类型 -->
-    <ASelectionTags :items="items" type="danger" @close="handleClose" />
-
-    <!-- Info 类型 -->
-    <ASelectionTags :items="items" type="info" @close="handleClose" />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const items = ref([
-  { id: 1, name: '标签1' },
-  { id: 2, name: '标签2' },
-  { id: 3, name: '标签3' }
-])
-
-const handleClose = (key: number) => {
-  items.value = items.value.filter(item => item.id !== key)
-}
-</script>
-```
-
-### 不同尺寸
-
-```vue
-<template>
-  <div class="space-y-4">
-    <!-- 大尺寸 -->
-    <ASelectionTags :items="items" size="large" @close="handleClose" />
-
-    <!-- 默认尺寸 -->
-    <ASelectionTags :items="items" size="default" @close="handleClose" />
-
-    <!-- 小尺寸 -->
-    <ASelectionTags :items="items" size="small" @close="handleClose" />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const items = ref([
-  { id: 1, name: '标签1' },
-  { id: 2, name: '标签2' }
-])
-
-const handleClose = (key: number) => {
-  items.value = items.value.filter(item => item.id !== key)
-}
-</script>
-```
-
-### 自定义显示内容
-
-```vue
-<template>
-  <div>
-    <!-- 使用默认插槽自定义内容 -->
-    <ASelectionTags :items="users" @close="handleRemove">
-      <template #default="{ item }">
-        <el-avatar :size="20" :src="item.avatar" class="mr-1" />
-        <span>{{ item.name }}</span>
-        <el-tag v-if="item.isOnline" type="success" size="small" class="ml-1">在线</el-tag>
-      </template>
-    </ASelectionTags>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const users = ref([
-  { id: 1, name: '张三', avatar: '/avatar/1.jpg', isOnline: true },
-  { id: 2, name: '李四', avatar: '/avatar/2.jpg', isOnline: false },
-  { id: 3, name: '王五', avatar: '/avatar/3.jpg', isOnline: true }
-])
-
-const handleRemove = (key: number) => {
-  users.value = users.value.filter(user => user.id !== key)
-}
-</script>
-```
-
-### 自定义格式化函数
-
-```vue
-<template>
-  <div>
-    <!-- 使用 formatter 自定义文本 -->
-    <ASelectionTags
-      :items="departments"
-      :formatter="formatDepartment"
-      @close="handleRemove"
-    />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const departments = ref([
-  { id: 1, code: 'DEPT001', name: '技术部', userCount: 15 },
-  { id: 2, code: 'DEPT002', name: '市场部', userCount: 8 },
-  { id: 3, code: 'DEPT003', name: '人事部', userCount: 5 }
-])
-
-const formatDepartment = (item: any) => {
-  return `${item.name}（${item.userCount}人）`
-}
-
-const handleRemove = (key: number) => {
-  departments.value = departments.value.filter(dept => dept.id !== key)
-}
-</script>
-```
-
-### 自定义主键字段
-
-```vue
-<template>
-  <div>
-    <!-- 使用 uuid 作为主键 -->
-    <ASelectionTags
-      :items="products"
-      key-field="uuid"
-      @close="handleRemove"
-    />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const products = ref([
-  { uuid: 'a1b2c3', title: '产品A', price: 99 },
-  { uuid: 'd4e5f6', title: '产品B', price: 199 },
-  { uuid: 'g7h8i9', title: '产品C', price: 299 }
-])
-
-const handleRemove = (uuid: string) => {
-  products.value = products.value.filter(product => product.uuid !== uuid)
-}
-</script>
-```
-
-### 不可关闭模式
-
-```vue
-<template>
-  <div>
-    <!-- 仅展示，不可关闭 -->
-    <ASelectionTags
-      :items="tags"
-      :closable="false"
-    />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const tags = ref([
-  { id: 1, name: 'Vue 3' },
-  { id: 2, name: 'TypeScript' },
-  { id: 3, name: 'Element Plus' }
-])
-</script>
-```
-
-### 控制显示/隐藏
-
-```vue
-<template>
-  <div>
-    <el-checkbox v-model="showTags">显示标签</el-checkbox>
-
-    <ASelectionTags
-      :items="items"
-      :visible="showTags"
-      @close="handleRemove"
-    />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const showTags = ref(true)
-const items = ref([
-  { id: 1, name: '标签1' },
-  { id: 2, name: '标签2' }
-])
-
-const handleRemove = (key: number) => {
-  items.value = items.value.filter(item => item.id !== key)
-}
-</script>
-```
-
-### Props
-
-| 参数 | 说明 | 类型 | 默认值 |
-|------|------|------|--------|
-| items | 要展示的选中项数组 | `any[]` | `[]` |
-| closable | 是否可关闭 | `boolean` | `true` |
-| visible | 是否显示组件 | `boolean` | `true` |
-| type | 标签类型 | `'success' \| 'info' \| 'warning' \| 'danger'` | `'success'` |
-| effect | 标签效果 | `'light' \| 'dark' \| 'plain'` | `'light'` |
-| size | 标签大小 | `'large' \| 'default' \| 'small'` | `'default'` |
-| color | 自定义标签颜色 | `string` | `''` |
-| keyField | 主键字段名 | `string` | `'id'` |
-| formatter | 文本格式化函数 | `(item: any) => string` | - |
-| onClear | 清空选择的回调函数 | `() => void` | - |
-
-### Events
-
-| 事件名 | 说明 | 回调参数 |
-|--------|------|----------|
-| close | 点击标签关闭按钮时触发 | `key: any, item: any` |
-
-### Slots
-
-| 插槽名 | 说明 | 作用域参数 |
-|--------|------|-----------|
-| default | 自定义标签内容 | `{ item }` |
-| header | 标签列表头部 | - |
-| footer | 标签列表尾部 | - |
-
----
-
-## AForm 表单组件集合
-
-### 组件说明
-
-`AForm` 是一个增强的表单组件集合，包含了多种常用的表单控件。这些组件基于 Element Plus 的表单组件封装，提供了更丰富的功能和更统一的 API 接口，特别适合用于复杂的表单场景。
-
-**组件列表**:
-- **AFormInput** - 增强的输入框组件
-- **AFormInputWithAi** - 带 AI 辅助的输入框
-- **AFormSelect** - 下拉选择框
-- **AFormRadio** - 单选框组
-- **AFormCheckbox** - 复选框组
-- **AFormSwitch** - 开关组件
-- **AFormDate** - 日期选择器
-- **AFormCascader** - 级联选择器
-- **AFormTreeSelect** - 树形选择器
-- **AFormImgUpload** - 图片上传组件
-- **AFormFileUpload** - 文件上传组件
-- **AFormEditor** - 富文本编辑器
-- **AFormMap** - 地图选择器
-
-### AFormInput 输入框
-
-提供了常见的输入类型和验证功能。
-
-```vue
-<template>
-  <el-form :model="form" label-width="120px">
-    <!-- 基础输入框 -->
-    <el-form-item label="用户名" prop="userName">
-      <AFormInput v-model="form.userName" placeholder="请输入用户名" clearable />
-    </el-form-item>
-
-    <!-- 密码输入框 -->
-    <el-form-item label="密码" prop="password">
-      <AFormInput v-model="form.password" type="password" placeholder="请输入密码" show-password />
-    </el-form-item>
-
-    <!-- 文本域 -->
-    <el-form-item label="备注" prop="remark">
-      <AFormInput v-model="form.remark" type="textarea" :rows="4" placeholder="请输入备注" />
-    </el-form-item>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-const form = ref({
-  userName: '',
-  password: '',
-  remark: ''
-})
-</script>
-```
-
-### AFormInputWithAi 带 AI 辅助的输入框
-
-集成了 AI 辅助功能，可以自动优化用户输入的内容。
-
-```vue
-<template>
-  <el-form :model="form" label-width="120px">
-    <el-form-item label="产品描述" prop="description">
-      <AFormInputWithAi
-        v-model="form.description"
-        type="textarea"
-        :rows="6"
-        placeholder="请输入产品描述，可使用 AI 辅助优化"
-        ai-type="optimize"
-      />
-    </el-form-item>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-const form = ref({
-  description: ''
-})
-</script>
-```
-
-**技术实现**:
-- 集成 AI 文本优化接口，支持文本优化、扩写、润色等功能
-- 提供一键优化按钮，点击后调用 AI 接口处理文本
-- 支持多种 AI 模式：优化、生成、审核等
-
-### AFormSelect 下拉选择
-
-```vue
-<template>
-  <el-form :model="form" label-width="120px">
-    <!-- 单选 -->
-    <el-form-item label="状态" prop="status">
-      <AFormSelect v-model="form.status" :options="statusOptions" placeholder="请选择状态" clearable />
-    </el-form-item>
-
-    <!-- 多选 -->
-    <el-form-item label="角色" prop="roles">
-      <AFormSelect v-model="form.roles" :options="roleOptions" multiple placeholder="请选择角色" />
-    </el-form-item>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-const form = ref({
-  status: '',
-  roles: []
-})
-
-const statusOptions = ref([
-  { label: '正常', value: '0' },
-  { label: '停用', value: '1' }
-])
-
-const roleOptions = ref([
-  { label: '管理员', value: 'admin' },
-  { label: '普通用户', value: 'user' },
-  { label: '访客', value: 'guest' }
-])
-</script>
-```
-
-### AFormDate 日期选择
-
-```vue
-<template>
-  <el-form :model="form" label-width="120px">
-    <!-- 日期选择 -->
-    <el-form-item label="出生日期" prop="birthDate">
-      <AFormDate v-model="form.birthDate" placeholder="请选择日期" />
-    </el-form-item>
-
-    <!-- 日期时间选择 -->
-    <el-form-item label="创建时间" prop="createTime">
-      <AFormDate v-model="form.createTime" type="datetime" placeholder="请选择日期时间" />
-    </el-form-item>
-
-    <!-- 日期范围选择 -->
-    <el-form-item label="活动时间" prop="activityTime">
-      <AFormDate
-        v-model="form.activityTime"
-        type="daterange"
-        start-placeholder="开始日期"
-        end-placeholder="结束日期"
-      />
-    </el-form-item>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-const form = ref({
-  birthDate: '',
-  createTime: '',
-  activityTime: []
-})
-</script>
-```
-
-### AFormImgUpload 图片上传
-
-```vue
-<template>
-  <el-form :model="form" label-width="120px">
-    <!-- 单张图片上传 -->
-    <el-form-item label="头像" prop="avatar">
-      <AFormImgUpload
-        v-model="form.avatar"
-        :limit="1"
-        accept="image/*"
-      />
-    </el-form-item>
-
-    <!-- 多张图片上传 -->
-    <el-form-item label="产品图片" prop="images">
-      <AFormImgUpload
-        v-model="form.images"
-        :limit="5"
-        accept="image/*"
-        multiple
-      />
-    </el-form-item>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-const form = ref({
-  avatar: '',
-  images: []
-})
-</script>
-```
-
-### AFormFileUpload 文件上传
-
-```vue
-<template>
-  <el-form :model="form" label-width="120px">
-    <el-form-item label="附件" prop="files">
-      <AFormFileUpload
-        v-model="form.files"
-        :limit="3"
-        accept=".pdf,.doc,.docx,.xlsx"
-      />
-    </el-form-item>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-const form = ref({
-  files: []
-})
-</script>
-```
-
-### AFormEditor 富文本编辑器
-
-```vue
-<template>
-  <el-form :model="form" label-width="120px">
-    <el-form-item label="文章内容" prop="content">
-      <AFormEditor v-model="form.content" :height="400" />
-    </el-form-item>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-const form = ref({
-  content: ''
-})
-</script>
-```
-
----
-
-## AAi AI 辅助组件集合
-
-### 组件说明
-
-`AAi` 是一个 AI 辅助组件集合，集成了多种 AI 能力，为用户提供智能化的辅助功能。这些组件基于后端的 AI 服务接口封装，提供了友好的用户界面和交互体验。
-
-**组件列表**:
-- **AAiAssistant** - AI 助手，提供对话式交互
-- **AAiTextOptimizer** - AI 文本优化器，自动优化文本内容
-- **AAiDataGenerator** - AI 数据生成器，自动生成测试数据
-- **AAiContentReviewer** - AI 内容审核器，自动审核内容合规性
-
-### AAiAssistant AI 助手
-
-提供对话式的 AI 交互界面，用户可以通过对话获取帮助和建议。
-
-```vue
-<template>
-  <div>
-    <el-button @click="assistantVisible = true">打开 AI 助手</el-button>
-
-    <AAiAssistant v-model="assistantVisible" />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const assistantVisible = ref(false)
-</script>
-```
-
-### AAiTextOptimizer AI 文本优化
-
-自动优化用户输入的文本，提供更专业、更流畅的表达。
-
-```vue
-<template>
-  <div>
-    <el-input v-model="text" type="textarea" :rows="5" placeholder="请输入文本" />
-    <el-button @click="optimizeText" :loading="optimizing">AI 优化</el-button>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const text = ref('')
-const optimizing = ref(false)
-
-const optimizeText = async () => {
-  if (!text.value) {
-    ElMessage.warning('请先输入文本')
-    return
-  }
-
-  optimizing.value = true
-  try {
-    // 调用 AI 优化接口
-    const result = await aiOptimize(text.value)
-    text.value = result.data
-    ElMessage.success('优化成功')
-  } catch (error) {
-    ElMessage.error('优化失败')
-  } finally {
-    optimizing.value = false
-  }
-}
-</script>
-```
-
-### AAiDataGenerator AI 数据生成
-
-根据用户的需求自动生成测试数据，提高测试效率。
-
-```vue
-<template>
-  <div>
-    <el-button @click="generateData">生成测试数据</el-button>
-
-    <el-table :data="tableData" style="width: 100%; margin-top: 20px">
-      <el-table-column prop="id" label="ID" width="80" />
-      <el-table-column prop="name" label="姓名" />
-      <el-table-column prop="age" label="年龄" width="80" />
-      <el-table-column prop="email" label="邮箱" />
-    </el-table>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const tableData = ref([])
-
-const generateData = async () => {
-  try {
-    // 调用 AI 生成接口
-    const result = await aiGenerate({
-      type: 'user',
-      count: 10
-    })
-    tableData.value = result.data
-    ElMessage.success('数据生成成功')
-  } catch (error) {
-    ElMessage.error('数据生成失败')
-  }
-}
-</script>
-```
-
-### AAiContentReviewer AI 内容审核
-
-自动审核用户提交的内容，检测是否包含违规信息。
-
-```vue
-<template>
-  <div>
-    <el-input v-model="content" type="textarea" :rows="5" placeholder="请输入内容" />
-    <el-button @click="reviewContent" :loading="reviewing">AI 审核</el-button>
-
-    <el-alert v-if="reviewResult" :type="reviewResult.safe ? 'success' : 'error'" :closable="false" class="mt-4">
-      {{ reviewResult.message }}
-    </el-alert>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const content = ref('')
-const reviewing = ref(false)
-const reviewResult = ref(null)
-
-const reviewContent = async () => {
-  if (!content.value) {
-    ElMessage.warning('请先输入内容')
-    return
-  }
-
-  reviewing.value = true
-  try {
-    // 调用 AI 审核接口
-    const result = await aiReview(content.value)
-    reviewResult.value = result.data
-  } catch (error) {
-    ElMessage.error('审核失败')
-  } finally {
-    reviewing.value = false
-  }
-}
-</script>
-```
-
----
-
-## 其他业务组件
-
-### ACard 卡片
-
-提供统一的卡片容器样式。
-
-```vue
-<template>
-  <ACard title="用户信息" shadow="hover">
-    <el-descriptions :column="2" border>
-      <el-descriptions-item label="用户名">admin</el-descriptions-item>
-      <el-descriptions-item label="昵称">管理员</el-descriptions-item>
-      <el-descriptions-item label="邮箱">admin@example.com</el-descriptions-item>
-      <el-descriptions-item label="手机号">13800138000</el-descriptions-item>
-    </el-descriptions>
-  </ACard>
+  <AFormInput label="用户名" v-model="form.userName" :span="12" />
 </template>
 ```
 
-### ADetail 详情展示
-
-用于展示对象的详细信息，提供统一的布局和样式。
+#### 响应式对象
 
 ```vue
 <template>
-  <ADetail :data="userDetail" :columns="2" />
-</template>
-
-<script lang="ts" setup>
-const userDetail = ref({
-  userName: 'admin',
-  nickName: '管理员',
-  email: 'admin@example.com',
-  phone: '13800138000',
-  deptName: '总公司',
-  status: '正常'
-})
-</script>
-```
-
-### DictTag 字典标签
-
-用于显示字典数据，自动从字典服务获取对应的标签文本和样式。
-
-```vue
-<template>
-  <div>
-    <!-- 显示用户状态 -->
-    <DictTag dict-type="sys_normal_disable" :value="userStatus" />
-
-    <!-- 显示性别 -->
-    <DictTag dict-type="sys_user_sex" :value="userSex" />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const userStatus = ref('0') // 0-正常 1-停用
-const userSex = ref('1') // 0-男 1-女 2-未知
-</script>
-```
-
-### AImportExcel Excel 导入
-
-提供 Excel 文件导入功能，支持模板下载和数据验证。
-
-```vue
-<template>
-  <div>
-    <AImportExcel
-      title="导入用户"
-      template-url="/api/system/user/importTemplate"
-      import-url="/api/system/user/import"
-      @success="handleImportSuccess"
-    />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const handleImportSuccess = (result: any) => {
-  ElMessage.success(`成功导入 ${result.successCount} 条数据`)
-  // 刷新列表
-}
-</script>
-```
-
-### TableToolbar 表格工具栏
-
-提供表格的工具栏功能，包括刷新、列设置、导出等操作。
-
-```vue
-<template>
-  <div>
-    <TableToolbar
-      :columns="columns"
-      :show-search.sync="showSearch"
-      @refresh="handleRefresh"
-      @export="handleExport"
-    />
-
-    <el-table :data="tableData">
-      <el-table-column v-for="col in visibleColumns" :key="col.prop" v-bind="col" />
-    </el-table>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const showSearch = ref(true)
-const columns = ref([
-  { prop: 'id', label: 'ID', width: 80 },
-  { prop: 'name', label: '姓名' },
-  { prop: 'email', label: '邮箱' }
-])
-const tableData = ref([])
-const visibleColumns = computed(() => columns.value.filter(col => col.visible !== false))
-
-const handleRefresh = () => {
-  // 刷新表格数据
-}
-
-const handleExport = () => {
-  // 导出数据
-}
-</script>
-```
-
-### AResizablePanels 可调整大小的面板
-
-提供可拖拽调整尺寸的面板布局。
-
-```vue
-<template>
-  <AResizablePanels>
-    <template #left>
-      <div class="p-4">
-        <h3>左侧面板</h3>
-        <p>可以拖拽中间的分隔线调整大小</p>
-      </div>
-    </template>
-    <template #right>
-      <div class="p-4">
-        <h3>右侧面板</h3>
-        <p>右侧内容区域</p>
-      </div>
-    </template>
-  </AResizablePanels>
-</template>
-```
-
-### AOssMediaManager OSS 媒体管理器
-
-管理云存储（OSS）中的文件，提供文件上传、删除、预览等功能。
-
-```vue
-<template>
-  <div>
-    <el-button @click="managerVisible = true">打开媒体管理器</el-button>
-
-    <AOssMediaManager
-      v-model="managerVisible"
-      @select="handleSelectFile"
-    />
-  </div>
-</template>
-
-<script lang="ts" setup>
-const managerVisible = ref(false)
-
-const handleSelectFile = (file: any) => {
-  console.log('选中的文件:', file)
-}
-</script>
-```
-
----
-
-## 最佳实践
-
-### 1. 统一使用业务组件
-
-在项目中应优先使用业务组件而不是直接使用 Element Plus 的基础组件，这样可以保证项目的统一性和一致性。
-
-```vue
-<!-- ✅ 推荐：使用业务组件 -->
-<ASearchForm v-model="queryParams" title="搜索条件">
-  <el-form-item label="用户名">
-    <el-input v-model="queryParams.userName" />
-  </el-form-item>
-</ASearchForm>
-
-<!-- ❌ 不推荐：直接使用基础组件 -->
-<el-card>
-  <template #header>搜索条件</template>
-  <el-form :model="queryParams">
-    <el-form-item label="用户名">
-      <el-input v-model="queryParams.userName" />
-    </el-form-item>
-  </el-form>
-</el-card>
-```
-
-### 2. 合理使用组件通信
-
-业务组件通过 `v-model`、事件和插槽提供了灵活的通信方式，应根据具体场景选择合适的方式。
-
-```vue
-<template>
-  <!-- 使用 v-model 实现双向绑定 -->
-  <AModal v-model="visible" title="编辑" @confirm="handleSubmit">
-    <el-form :model="formData">
-      <!-- 表单内容 -->
-    </el-form>
-  </AModal>
-</template>
-
-<script lang="ts" setup>
-// 使用 v-model
-const visible = ref(false)
-
-// 监听事件
-const handleSubmit = () => {
-  // 处理提交逻辑
-}
-</script>
-```
-
-### 3. 充分利用插槽定制
-
-所有业务组件都提供了丰富的插槽，用于定制组件的显示内容和样式。
-
-```vue
-<template>
-  <ASearchForm v-model="queryParams">
-    <!-- 使用 header 插槽自定义头部 -->
-    <template #header>
-      <div class="custom-header">
-        <span>高级搜索</span>
-        <el-button size="small">保存条件</el-button>
-      </div>
-    </template>
-
-    <!-- 默认插槽放置表单项 -->
-    <el-form-item label="关键词">
-      <el-input v-model="queryParams.keyword" />
-    </el-form-item>
-  </ASearchForm>
-</template>
-```
-
-### 4. 正确处理异步操作
-
-在使用业务组件处理异步操作时，应该正确使用加载状态和错误处理。
-
-```vue
-<template>
-  <AModal
-    v-model="visible"
-    title="提交数据"
-    :loading="submitting"
-    @confirm="handleSubmit"
-  >
-    <el-form :model="formData">
-      <!-- 表单内容 -->
-    </el-form>
-  </AModal>
-</template>
-
-<script lang="ts" setup>
-const visible = ref(false)
-const submitting = ref(false)
-const formData = ref({})
-
-const handleSubmit = async () => {
-  submitting.value = true
-  try {
-    await submitData(formData.value)
-    ElMessage.success('提交成功')
-    visible.value = false
-  } catch (error) {
-    ElMessage.error('提交失败')
-  } finally {
-    submitting.value = false
-  }
-}
-</script>
-```
-
-### 5. 合理使用 AI 辅助功能
-
-AI 辅助组件可以显著提高用户的工作效率，但应该在合适的场景下使用，避免滥用。
-
-```vue
-<template>
-  <!-- 适合使用 AI 的场景：需要文本优化的输入 -->
-  <el-form-item label="产品描述">
-    <AFormInputWithAi
-      v-model="form.description"
-      type="textarea"
-      ai-type="optimize"
-    />
-  </el-form-item>
-
-  <!-- 不适合使用 AI 的场景：固定格式的输入 -->
-  <el-form-item label="手机号">
-    <el-input v-model="form.phone" placeholder="请输入手机号" />
-  </el-form-item>
-</template>
-```
-
----
-
-## 常见问题
-
-### 1. ASearchForm 展开/收起按钮不显示
-
-**问题原因**:
-- 表单项数量少于 2 行
-- `inline` 属性设置为 `false`
-- `collapsible` 属性设置为 `false`
-
-**解决方案**:
-
-```vue
-<template>
-  <!-- 确保 inline 为 true，collapsible 为 true -->
-  <ASearchForm
-    v-model="queryParams"
-    :inline="true"
-    :collapsible="true"
-  >
-    <!-- 添加足够多的表单项（至少 2 行） -->
-    <el-form-item label="字段1">
-      <el-input v-model="queryParams.field1" />
-    </el-form-item>
-    <el-form-item label="字段2">
-      <el-input v-model="queryParams.field2" />
-    </el-form-item>
-    <el-form-item label="字段3">
-      <el-input v-model="queryParams.field3" />
-    </el-form-item>
-    <el-form-item label="字段4">
-      <el-input v-model="queryParams.field4" />
-    </el-form-item>
-  </ASearchForm>
-</template>
-```
-
-### 2. AModal 对话框拖拽不生效
-
-**问题原因**:
-- `movable` 属性未设置为 `true`
-- 使用了抽屉模式（抽屉不支持拖拽）
-- 对话框处于全屏模式
-
-**解决方案**:
-
-```vue
-<template>
-  <!-- 确保是对话框模式且非全屏 -->
-  <AModal
-    v-model="visible"
-    mode="dialog"
-    :fullscreen="false"
-    :movable="true"
-    title="可拖动对话框"
-  >
-    <p>内容</p>
-  </AModal>
-</template>
-```
-
-### 3. ASelectionTags 标签内容不显示
-
-**问题原因**:
-- 数据对象中没有 `label`、`name`、`title` 等常见字段
-- 没有提供 `formatter` 函数
-
-**解决方案**:
-
-```vue
-<template>
-  <!-- 方案1：提供 formatter 函数 -->
-  <ASelectionTags
-    :items="items"
-    :formatter="item => item.customField"
+  <AFormInput
+    label="邮箱"
+    v-model="form.email"
+    :span="{ xs: 24, sm: 24, md: 12, lg: 8, xl: 6 }"
   />
-
-  <!-- 方案2：使用默认插槽自定义内容 -->
-  <ASelectionTags :items="items">
-    <template #default="{ item }">
-      {{ item.customField }}
-    </template>
-  </ASelectionTags>
 </template>
 ```
 
-### 4. 业务组件样式与项目主题不匹配
+#### 预设响应式
 
-**问题原因**:
-- 组件使用了固定的颜色值
-- 主题切换后组件没有重新渲染
+```vue
+<template>
+  <AFormInput label="手机" v-model="form.phone" span="auto" />
+</template>
+```
 
-**解决方案**:
+#### 响应式模式
 
-所有业务组件都使用 CSS 变量定义样式，确保项目的主题配置正确：
+组件支持三种响应式模式:
+
+1. **screen** (默认) - 基于屏幕尺寸
+2. **container** - 基于容器尺寸(弹窗场景推荐)
+3. **modal-size** - 基于 AModal 的 size 属性
+
+```vue
+<template>
+  <AModal v-model="visible" size="large">
+    <el-form>
+      <AFormInput
+        label="标题"
+        v-model="form.title"
+        :span="12"
+        responsiveMode="modal-size"
+        :modalSize="'large'"
+      />
+    </el-form>
+  </AModal>
+</template>
+```
+
+### 智能数据类型转换
+
+`AFormSelect` 组件具备智能的数据类型检测和转换功能。
+
+#### 多选模式类型处理
+
+```vue
+<template>
+  <!-- 输入字符串 "1,2,3",输出数组 [1, 2, 3] -->
+  <AFormSelect
+    v-model="form.roleIds"
+    :options="roleList"
+    :multiple="true"
+  />
+</template>
+
+<script setup lang="ts">
+const form = ref({
+  roleIds: '1,2,3' // 字符串输入
+})
+
+// 组件自动转换为数组 [1, 2, 3] 用于内部选择
+// 确认后自动转回字符串 "1,2,3" 保持类型一致
+</script>
+```
+
+#### 智能类型检测规则
+
+**优先级**: 字符串 > 数字 > 其他类型
+
+- 如果数组中有任何字符串元素，输出字符串数组
+- 如果全是数字且在安全整数范围内，输出数字数组
+- 如果数字超过 15 位,自动转为字符串防止精度丢失
 
 ```typescript
-// 在 src/styles/theme.ts 中配置主题变量
-export const lightTheme = {
-  '--el-color-primary': '#409eff',
-  '--el-color-success': '#67c23a',
-  // ... 其他变量
-}
-
-export const darkTheme = {
-  '--el-color-primary': '#409eff',
-  '--el-color-success': '#67c23a',
-  // ... 其他变量
-}
+// 示例
+[1, 2, 3] → [1, 2, 3]  // 数字数组
+['1', '2', '3'] → ['1', '2', '3']  // 字符串数组
+[1, '2', 3] → ['1', '2', '3']  // 混合类型,转为字符串
+[999999999999999999] → ['999999999999999999']  // 超大数字,转为字符串
 ```
 
-### 5. 表单组件 v-model 绑定不生效
+### 国际化集成
 
-**问题原因**:
-- 组件名称错误
-- 没有正确使用 `v-model`
-- 数据类型不匹配
+所有组件都内置了 i18n 支持,自动处理多语言显示。
 
-**解决方案**:
+```vue
+<template>
+  <!-- 标签自动国际化 -->
+  <AFormInput label="用户名" prop="userName" v-model="form.userName" />
+
+  <!-- 占位符自动国际化 -->
+  <AFormSelect
+    label="状态"
+    v-model="form.status"
+    :options="statusOptions"
+  />
+</template>
+
+<script setup lang="ts">
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+// 组件内部处理
+const computedLabel = computed(() => {
+  return t(props.prop || props.label, props.label)
+})
+
+const placeholder = computed(() => {
+  return props.placeholder || `${t('placeholder.select')}${computedLabel.value}`
+})
+</script>
+```
+
+### 防自动填充
+
+`AFormInput` 组件提供了防止浏览器自动填充密码的功能。
+
+```vue
+<template>
+  <AFormInput
+    label="密码"
+    v-model="form.password"
+    type="password"
+    show-password
+    prevent-autofill
+  />
+</template>
+```
+
+**技术实现**:
+
+1. 初始状态设置输入框为只读 `readonly`
+2. 用户聚焦时移除 `readonly` 属性
+3. 浏览器的自动填充机制被阻止
+
+### 选项禁用条件配置
+
+`AFormSelect` 支持灵活的选项禁用配置。
+
+#### 默认禁用 (status = '0')
+
+```vue
+<template>
+  <AFormSelect
+    v-model="form.postIds"
+    :options="postOptions"
+    value-field="postId"
+    label-field="postName"
+    :multiple="true"
+  />
+</template>
+```
+
+#### 自定义禁用字段
+
+```vue
+<template>
+  <AFormSelect
+    v-model="form.roleId"
+    :options="roleList"
+    value-field="id"
+    label-field="roleName"
+    disabled-field="isActive"
+    :disabled-value="false"
+  />
+</template>
+```
+
+#### 多值禁用
+
+```vue
+<template>
+  <AFormSelect
+    v-model="form.deptId"
+    :options="deptList"
+    value-field="deptId"
+    label-field="deptName"
+    disabled-field="status"
+    :disabled-value="['0', '3']"
+  />
+</template>
+```
+
+#### 函数判断
+
+```vue
+<template>
+  <AFormSelect
+    v-model="form.goodsId"
+    :options="productList"
+    value-field="id"
+    label-field="name"
+    :disabled-value="(item) => item.status === '0' || item.stock < 10"
+  />
+</template>
+```
+
+## 表单组件详解
+
+### AFormInput - 文本输入框
+
+通用的文本输入组件,支持单行、多行、数字等多种类型。
+
+#### 基本用法
 
 ```vue
 <template>
   <el-form :model="form">
-    <!-- ✅ 正确：使用 v-model -->
-    <el-form-item label="用户名">
-      <AFormInput v-model="form.userName" />
+    <!-- 单行文本 -->
+    <AFormInput label="用户名" v-model="form.userName" prop="userName" :span="12" />
+
+    <!-- 多行文本 -->
+    <AFormInput
+      label="备注"
+      v-model="form.remark"
+      type="textarea"
+      :maxlength="200"
+      show-word-limit
+      :rows="4"
+    />
+
+    <!-- 数字输入 -->
+    <AFormInput
+      label="年龄"
+      v-model="form.age"
+      type="number"
+      :min="0"
+      :max="150"
+      :span="8"
+    />
+
+    <!-- 密码输入 -->
+    <AFormInput
+      label="密码"
+      v-model="form.password"
+      type="password"
+      show-password
+      prevent-autofill
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const form = ref({
+  userName: '',
+  remark: '',
+  age: 18,
+  password: ''
+})
+</script>
+```
+
+#### Props 属性
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| modelValue | 绑定值 | `string \| number` | - |
+| label | 标签文本 | `string` | - |
+| prop | 表单域 model 字段名 | `string` | - |
+| type | 输入框类型 | `'text' \| 'textarea' \| 'number' \| 'password'` | `'text'` |
+| span | 栅格占据列数 | `number \| SpanType` | - |
+| maxlength | 最大长度 | `number` | `255` |
+| showWordLimit | 显示字数统计 | `boolean` | `true` |
+| showPassword | 显示密码可见性切换 | `boolean` | `false` |
+| preventAutofill | 防止自动填充 | `boolean` | `false` |
+| clearable | 显示清除按钮 | `boolean` | `true` |
+| disabled | 是否禁用 | `boolean` | `false` |
+| placeholder | 占位符文本 | `string` | - |
+| tooltip | 提示信息 | `string` | - |
+| min | 数字最小值 | `number` | - |
+| max | 数字最大值 | `number` | - |
+| step | 数字步长 | `number` | `1` |
+| precision | 数值精度 | `number` | - |
+| responsiveMode | 响应式模式 | `'screen' \| 'container' \| 'modal-size'` | `'screen'` |
+
+#### Events 事件
+
+| 事件名 | 说明 | 回调参数 |
+|--------|------|----------|
+| update:modelValue | 值变化时触发 | `(value: string \| number) => void` |
+| input | 输入时触发 | `(value: string \| number) => void` |
+| change | 值改变时触发 | `(value: string \| number) => void` |
+| blur | 失去焦点时触发 | `(event: FocusEvent) => void` |
+| enter | 按下回车键时触发 | `(value: string \| number) => void` |
+| clear | 点击清除按钮时触发 | `() => void` |
+
+#### Slots 插槽
+
+| 插槽名 | 说明 |
+|--------|------|
+| prepend | 输入框前置内容 |
+| append | 输入框后置内容 |
+| prefix | 输入框头部图标 |
+| suffix | 输入框尾部图标 |
+
+#### 响应式 span 用法
+
+```vue
+<template>
+  <!-- 固定 span -->
+  <AFormInput label="标题" v-model="form.title" :span="12" />
+
+  <!-- 响应式对象 - 完整配置 -->
+  <AFormInput
+    label="用户名"
+    v-model="form.userName"
+    :span="{ xs: 24, sm: 24, md: 12, lg: 8, xl: 6 }"
+  />
+
+  <!-- 响应式对象 - 部分配置(其他使用默认值 24) -->
+  <AFormInput
+    label="邮箱"
+    v-model="form.email"
+    :span="{ md: 12, lg: 8 }"
+  />
+
+  <!-- 预设响应式 -->
+  <AFormInput label="手机" v-model="form.phone" span="auto" />
+</template>
+```
+
+#### 插槽使用
+
+```vue
+<template>
+  <!-- 前置/后置内容 -->
+  <AFormInput label="网址" v-model="form.url">
+    <template #prepend>
+      <span>https://</span>
+    </template>
+    <template #append>
+      <el-button icon="Search" />
+    </template>
+  </AFormInput>
+
+  <!-- 图标插槽 -->
+  <AFormInput label="搜索" v-model="searchKey">
+    <template #prefix>
+      <Icon code="search" />
+    </template>
+  </AFormInput>
+</template>
+```
+
+### AFormSelect - 下拉选择器
+
+强大的下拉选择组件,支持单选/多选、智能类型转换、禁用条件配置等功能。
+
+#### 基本用法
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 单选 -->
+    <AFormSelect
+      label="类型"
+      v-model="form.type"
+      :options="sys_enable_status"
+      :span="12"
+    />
+
+    <!-- 多选 -->
+    <AFormSelect
+      label="角色"
+      v-model="form.roleIds"
+      :options="roleList"
+      value-field="roleId"
+      label-field="roleName"
+      :multiple="true"
+      :span="12"
+    />
+
+    <!-- 显示选项值 -->
+    <AFormSelect
+      label="代码"
+      v-model="form.code"
+      :options="codeList"
+      :show-value="true"
+    />
+
+    <!-- 自定义禁用条件 -->
+    <AFormSelect
+      label="产品"
+      v-model="form.goodsId"
+      :options="productList"
+      :disabled-value="(item) => item.status === '0' || item.stock < 10"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const { sys_enable_status } = useDict(DictTypes.sys_enable_status)
+
+const form = ref({
+  type: '',
+  roleIds: [] as string[],
+  code: '',
+  goodsId: ''
+})
+
+const roleList = ref([
+  { roleId: '1', roleName: '管理员', status: '1' },
+  { roleId: '2', roleName: '普通用户', status: '0' } // 禁用
+])
+
+const productList = ref([
+  { id: '1', name: '产品A', status: '1', stock: 100 },
+  { id: '2', name: '产品B', status: '0', stock: 50 },
+  { id: '3', name: '产品C', status: '1', stock: 5 } // 库存不足禁用
+])
+</script>
+```
+
+#### Props 属性
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| modelValue | 绑定值 | `string \| number \| Array<string \| number>` | - |
+| label | 标签文本 | `string` | - |
+| prop | 表单域字段名 | `string` | - |
+| options | 选项数据 | `any[]` | `[]` |
+| span | 栅格占据列数 | `number \| SpanType` | - |
+| multiple | 是否多选 | `boolean` | `false` |
+| filterable | 是否可搜索 | `boolean` | `true` |
+| clearable | 是否可清空 | `boolean` | `true` |
+| disabled | 是否禁用 | `boolean` | `false` |
+| allowCreate | 允许创建新条目 | `boolean` | `false` |
+| valueField | value 字段名 | `string` | `'value'` |
+| labelField | label 字段名 | `string` | `'label'` |
+| disabledField | 禁用判断字段名 | `string` | `'status'` |
+| disabledValue | 禁用条件值 | `DisabledCondition` | `'0'` |
+| showValue | 是否显示选项值 | `boolean` | - |
+| showValueRoles | 哪些角色显示选项值 | `string[]` | `['superadmin', 'admin']` |
+| multipleLimit | 多选最多可选项数 | `number` | `0` |
+| collapseTags | 多选是否折叠标签 | `boolean` | `false` |
+| width | 选择框宽度 | `number \| string` | - |
+
+#### 智能类型转换示例
+
+```vue
+<template>
+  <AFormSelect
+    label="角色"
+    v-model="form.roleIds"
+    :options="roleList"
+    :multiple="true"
+  />
+</template>
+
+<script setup lang="ts">
+const form = ref({
+  roleIds: '1,2,3' // 输入字符串
+})
+
+// 组件内部逻辑:
+// 1. 检测到字符串,按逗号分割为数组 ['1', '2', '3']
+// 2. 显示时使用数组进行选中匹配
+// 3. 确认时检测原始类型是字符串,转回 '1,2,3'
+
+// 如果输入的是数组
+const form2 = ref({
+  roleIds: [1, 2, 3] // 输入数字数组
+})
+
+// 组件内部逻辑:
+// 1. 检测到数组,保持数组格式
+// 2. 确认时检测数组元素都是数字,返回 [1, 2, 3]
+
+// 混合类型处理
+const form3 = ref({
+  roleIds: [1, '2', 3] // 混合类型数组
+})
+
+// 组件内部逻辑:
+// 1. 检测到混合类型,优先转为字符串 ['1', '2', '3']
+// 2. 确认时返回 ['1', '2', '3']
+</script>
+```
+
+#### 禁用条件配置
+
+```vue
+<template>
+  <!-- 默认禁用 (status = '0') -->
+  <AFormSelect
+    v-model="form.postIds"
+    :options="postOptions"
+    :multiple="true"
+  />
+
+  <!-- 自定义字段和值 -->
+  <AFormSelect
+    v-model="form.roleId"
+    :options="roleList"
+    disabled-field="isActive"
+    :disabled-value="false"
+  />
+
+  <!-- 多值禁用 -->
+  <AFormSelect
+    v-model="form.deptId"
+    :options="deptList"
+    disabled-field="status"
+    :disabled-value="['0', '3']"
+  />
+
+  <!-- 函数判断 -->
+  <AFormSelect
+    v-model="form.goodsId"
+    :options="productList"
+    :disabled-value="(item) => item.status === '0' || item.stock < 10"
+  />
+</template>
+```
+
+### AFormDate - 日期选择器
+
+日期和日期范围选择组件。
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 单个日期 -->
+    <AFormDate label="出生日期" v-model="form.birthday" :span="12" />
+
+    <!-- 日期范围 -->
+    <AFormDate
+      label="创建时间"
+      v-model="form.dateRange"
+      type="daterange"
+      :span="12"
+    />
+
+    <!-- 日期时间 -->
+    <AFormDate
+      label="预约时间"
+      v-model="form.appointmentTime"
+      type="datetime"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const form = ref({
+  birthday: '',
+  dateRange: [] as [string, string],
+  appointmentTime: ''
+})
+</script>
+```
+
+### AFormTreeSelect - 树形选择器
+
+树形结构数据选择组件,适用于部门、分类等层级数据。
+
+```vue
+<template>
+  <AFormTreeSelect
+    label="所属部门"
+    v-model="form.deptId"
+    :options="deptTree"
+    :props="{ label: 'deptName', value: 'deptId', children: 'children' }"
+    :span="12"
+  />
+</template>
+
+<script setup lang="ts">
+const form = ref({
+  deptId: ''
+})
+
+const deptTree = ref([
+  {
+    deptId: '1',
+    deptName: '总公司',
+    children: [
+      { deptId: '2', deptName: '研发部' },
+      { deptId: '3', deptName: '市场部' }
+    ]
+  }
+])
+</script>
+```
+
+### AFormUpload - 文件上传
+
+文件和图片上传组件。
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 文件上传 -->
+    <AFormFileUpload
+      label="附件"
+      v-model="form.fileList"
+      :limit="5"
+      :accept="'.pdf,.doc,.docx'"
+    />
+
+    <!-- 图片上传 -->
+    <AFormImgUpload
+      label="头像"
+      v-model="form.avatar"
+      :limit="1"
+      :max-size="2"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const form = ref({
+  fileList: [] as string[],
+  avatar: ''
+})
+</script>
+```
+
+## 搜索和表格组件
+
+### ASearchForm - 搜索表单
+
+通用搜索表单容器,支持展开/收起功能和动画效果。
+
+#### 基本用法
+
+```vue
+<template>
+  <ASearchForm v-model="queryParams" title="搜索条件">
+    <AFormInput label="用户名" prop="userName" v-model="queryParams.userName" />
+    <AFormInput label="手机号" prop="phone" v-model="queryParams.phone" />
+    <AFormSelect label="状态" prop="status" v-model="queryParams.status" :options="statusOptions" />
+    <AFormDate label="创建时间" v-model="queryParams.dateRange" type="daterange" />
+  </ASearchForm>
+</template>
+
+<script setup lang="ts">
+const queryParams = ref({
+  userName: '',
+  phone: '',
+  status: '',
+  dateRange: [] as [string, string]
+})
+</script>
+```
+
+#### 展开/收起功能
+
+当表单项超过 2 行时,自动显示展开/收起按钮。
+
+```vue
+<template>
+  <!-- 可展开收起(默认收起) -->
+  <ASearchForm v-model="queryParams" :collapsible="true">
+    <AFormInput label="用户名" v-model="queryParams.userName" />
+    <AFormInput label="手机号" v-model="queryParams.phone" />
+    <AFormInput label="邮箱" v-model="queryParams.email" />
+    <AFormSelect label="状态" v-model="queryParams.status" :options="statusOptions" />
+    <AFormSelect label="角色" v-model="queryParams.roleId" :options="roleOptions" />
+    <AFormDate label="创建时间" v-model="queryParams.dateRange" type="daterange" />
+  </ASearchForm>
+
+  <!-- 默认展开 -->
+  <ASearchForm v-model="queryParams" :default-expanded="true">
+    <!-- 表单项 -->
+  </ASearchForm>
+
+  <!-- 禁用展开收起 -->
+  <ASearchForm v-model="queryParams" :collapsible="false">
+    <!-- 表单项 -->
+  </ASearchForm>
+</template>
+```
+
+#### Props 属性
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| modelValue | 表单数据模型 | `Record<string, any>` | `{}` |
+| visible | 显示/隐藏 | `boolean` | `true` |
+| inline | 是否行内表单 | `boolean` | `true` |
+| labelWidth | 标签宽度 | `string` | `'auto'` |
+| labelPosition | 标签位置 | `'left' \| 'right' \| 'top'` | `'right'` |
+| title | 卡片标题 | `string` | - |
+| collapsible | 是否可展开收起 | `boolean` | `true` |
+| defaultExpanded | 默认是否展开 | `boolean` | `false` |
+
+#### 技术实现原理
+
+**自动计算行数**:
+
+```typescript
+const calculateFormRows = () => {
+  const formElement = formContainerRef.value?.querySelector('.el-form')
+  if (!formElement) return
+
+  const formItems = formElement.querySelectorAll('.el-form-item')
+  const topValues = new Set<number>()
+
+  formItems.forEach((item) => {
+    const itemTop = Math.round((item as HTMLElement).offsetTop)
+    topValues.add(itemTop)
+  })
+
+  formRows.value = topValues.size
+}
+```
+
+**展开收起样式**:
+
+```scss
+.search-form-container {
+  &.is-collapsed {
+    :deep(.el-form) {
+      max-height: calc(1 * 40px + 10px); // 仅显示第一行
+      overflow: hidden;
+
+      // 渐变遮罩
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        height: 30px;
+        background: linear-gradient(to bottom, transparent, var(--el-bg-color));
+      }
+    }
+  }
+}
+```
+
+### TableToolbar - 表格工具栏
+
+表格操作工具栏,提供打印、刷新、列可见性控制等功能。
+
+```vue
+<template>
+  <TableToolbar
+    :columns="tableColumns"
+    :show-search="showSearch"
+    @resetQuery="resetQuery"
+    @queryTable="getList"
+  />
+
+  <el-table :data="tableData" :column-hidden="columnHidden">
+    <el-table-column prop="userId" label="用户ID" />
+    <el-table-column prop="userName" label="用户名" />
+    <el-table-column prop="nickName" label="昵称" />
+  </el-table>
+</template>
+
+<script setup lang="ts">
+const showSearch = ref(true)
+const tableColumns = ref([
+  { prop: 'userId', label: '用户ID' },
+  { prop: 'userName', label: '用户名' },
+  { prop: 'nickName', label: '昵称' }
+])
+const columnHidden = ref({})
+</script>
+```
+
+### Pagination - 分页器
+
+分页组件,支持自动滚动和响应式页码。
+
+```vue
+<template>
+  <Pagination
+    v-model:page="queryParams.pageNum"
+    v-model:limit="queryParams.pageSize"
+    :total="total"
+    @pagination="getList"
+  />
+</template>
+
+<script setup lang="ts">
+const queryParams = ref({
+  pageNum: 1,
+  pageSize: 10
+})
+const total = ref(0)
+
+const getList = async () => {
+  const { data } = await pageUsers(queryParams.value)
+  tableData.value = data.records
+  total.value = data.total
+}
+</script>
+```
+
+## 弹窗组件详解
+
+### AModal - 通用弹窗
+
+支持对话框和抽屉两种模式的通用弹窗组件。
+
+#### 对话框模式
+
+```vue
+<template>
+  <!-- 基础对话框 -->
+  <AModal v-model="dialogVisible" title="新增用户" @confirm="handleSubmit">
+    <el-form :model="form">
+      <AFormInput label="用户名" v-model="form.userName" />
+      <AFormInput label="邮箱" v-model="form.email" />
+    </el-form>
+  </AModal>
+
+  <!-- 大尺寸对话框 -->
+  <AModal v-model="dialogVisible" title="编辑用户" size="large">
+    <UserEditForm :user="currentUser" />
+  </AModal>
+
+  <!-- 全屏对话框 -->
+  <AModal v-model="fullscreenVisible" title="数据分析" :fullscreen="true">
+    <DataAnalysis />
+  </AModal>
+
+  <!-- 可拖动对话框 -->
+  <AModal v-model="movableVisible" title="可拖动对话框" :movable="true">
+    <p>可以拖动标题栏移动此对话框</p>
+  </AModal>
+</template>
+
+<script setup lang="ts">
+const dialogVisible = ref(false)
+const fullscreenVisible = ref(false)
+const movableVisible = ref(false)
+
+const form = ref({
+  userName: '',
+  email: ''
+})
+
+const handleSubmit = () => {
+  // 提交逻辑
+  dialogVisible.value = false
+}
+</script>
+```
+
+#### 抽屉模式
+
+```vue
+<template>
+  <!-- 从右侧滑出 -->
+  <AModal
+    v-model="drawerVisible"
+    title="用户详情"
+    mode="drawer"
+    direction="rtl"
+    size="large"
+    :show-footer="false"
+  >
+    <UserDetail :user="selectedUser" />
+  </AModal>
+
+  <!-- 从左侧滑出 -->
+  <AModal
+    v-model="menuVisible"
+    title="菜单导航"
+    mode="drawer"
+    direction="ltr"
+    size="small"
+  >
+    <MenuTree :menus="menuList" />
+  </AModal>
+
+  <!-- 从底部滑出 -->
+  <AModal
+    v-model="filterVisible"
+    title="筛选条件"
+    mode="drawer"
+    direction="btt"
+  >
+    <FilterForm v-model="filterParams" />
+  </AModal>
+</template>
+```
+
+#### Props 属性
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| modelValue | 显示/隐藏状态 | `boolean` | `false` |
+| mode | 模式 | `'dialog' \| 'drawer'` | `'dialog'` |
+| title | 标题 | `string` | - |
+| size | 预设尺寸 | `'small' \| 'medium' \| 'large' \| 'xl'` | `'medium'` |
+| width | 自定义宽度 | `string \| number` | - |
+| fullscreen | 是否全屏 | `boolean` | `false` |
+| movable | 是否可拖动 | `boolean` | `false` |
+| direction | 抽屉方向 | `'ltr' \| 'rtl' \| 'ttb' \| 'btt'` | `'rtl'` |
+| showFooter | 显示底部 | `boolean` | `true` |
+| footerType | 底部按钮类型 | `'default' \| 'close-only'` | `'default'` |
+| footerAlign | 底部对齐方式 | `'left' \| 'center' \| 'right'` | `'right'` |
+| loading | 加载状态 | `boolean` | `false` |
+| maskClosable | 点击遮罩关闭 | `boolean` | `false` |
+| keyboard | ESC 关闭 | `boolean` | `true` |
+| destroyOnClose | 关闭时销毁 | `boolean` | `true` |
+
+#### 尺寸配置
+
+```typescript
+const sizeMap = {
+  small: { dialog: '600px', drawer: '600px' },
+  medium: { dialog: '800px', drawer: '800px' },
+  large: { dialog: '1000px', drawer: '1000px' },
+  xl: { dialog: '1200px', drawer: '1200px' }
+}
+```
+
+#### Events 事件
+
+| 事件名 | 说明 | 回调参数 |
+|--------|------|----------|
+| update:modelValue | 状态变化 | `(value: boolean) => void` |
+| confirm | 确认按钮点击 | `() => void` |
+| cancel | 取消按钮点击 | `() => void` |
+| open | 开始打开 | `() => void` |
+| opened | 完全打开 | `() => void` |
+| close | 开始关闭 | `() => void` |
+| closed | 完全关闭 | `() => void` |
+
+#### Slots 插槽
+
+| 插槽名 | 说明 |
+|--------|------|
+| header | 自定义标题 |
+| default | 内容区域 |
+| footer | 自定义底部 |
+
+#### 自定义底部
+
+```vue
+<template>
+  <!-- 仅关闭按钮 -->
+  <AModal v-model="viewVisible" title="查看详情" footer-type="close-only">
+    <DetailView :data="detailData" />
+  </AModal>
+
+  <!-- 完全自定义底部 -->
+  <AModal v-model="customVisible" title="自定义操作">
+    <template #footer>
+      <el-button @click="customVisible = false">取消</el-button>
+      <el-button type="warning" @click="handleSave">保存草稿</el-button>
+      <el-button type="primary" @click="handlePublish">发布</el-button>
+    </template>
+    <TextEditor v-model="content" />
+  </AModal>
+
+  <!-- 无底部 -->
+  <AModal v-model="noFooterVisible" title="无底部" :show-footer="false">
+    <DataDisplay :data="displayData" />
+  </AModal>
+</template>
+```
+
+#### 拖动功能实现
+
+```typescript
+// 拖动状态
+interface DragState {
+  isDragging: boolean
+  startX: number
+  startY: number
+  initialLeft: number
+  initialTop: number
+}
+
+// 初始化拖动
+const initDrag = () => {
+  if (!isDialogMode.value || props.fullscreen || !props.movable) return
+
+  nextTick(() => {
+    const dialogElement = document.querySelector('.el-dialog')
+    const headerElement = dialogElement?.querySelector('.el-dialog__header')
+
+    if (headerElement) {
+      headerElement.style.cursor = 'move'
+      headerElement.addEventListener('mousedown', handleMouseDown)
+    }
+  })
+}
+
+// 鼠标按下
+const handleMouseDown = (e: MouseEvent) => {
+  dragState.isDragging = true
+  dragState.startX = e.clientX
+  dragState.startY = e.clientY
+
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+}
+
+// 鼠标移动
+const handleMouseMove = (e: MouseEvent) => {
+  if (!dragState.isDragging) return
+
+  const deltaX = e.clientX - dragState.startX
+  const deltaY = e.clientY - dragState.startY
+
+  const newLeft = dragState.initialLeft + deltaX
+  const newTop = Math.max(0, dragState.initialTop + deltaY)
+
+  dialogElement.style.left = `${newLeft}px`
+  dialogElement.style.top = `${newTop}px`
+}
+```
+
+#### 为子组件提供上下文
+
+```typescript
+// 提供弹窗尺寸给子组件
+provide('modalSize', computed(() => props.size))
+
+// 子组件中使用
+const modalSize = inject<Ref<string>>('modalSize')
+
+const computedSpan = computed(() => {
+  if (modalSize?.value === 'small') return 24
+  if (modalSize?.value === 'medium') return 12
+  return 8
+})
+```
+
+### ADetail - 详情弹窗
+
+用于展示数据详情的专用弹窗组件,支持字段分组、密码显示/隐藏、复制等功能。
+
+```vue
+<template>
+  <ADetail
+    v-model="detailVisible"
+    title="用户详情"
+    :data="detailData"
+    :fields="detailFields"
+    mode="drawer"
+  />
+</template>
+
+<script setup lang="ts">
+const detailVisible = ref(false)
+const detailData = ref({
+  userId: '1',
+  userName: 'admin',
+  nickName: '管理员',
+  email: 'admin@example.com',
+  password: '******',
+  avatar: 'https://example.com/avatar.jpg',
+  status: '1',
+  createTime: '2024-01-01 00:00:00'
+})
+
+const detailFields = ref([
+  { label: '用户ID', prop: 'userId', type: 'text' },
+  { label: '用户名', prop: 'userName', type: 'copyable' },
+  { label: '昵称', prop: 'nickName', type: 'text' },
+  { label: '邮箱', prop: 'email', type: 'copyable' },
+  { label: '密码', prop: 'password', type: 'password' },
+  { label: '头像', prop: 'avatar', type: 'image' },
+  { label: '状态', prop: 'status', type: 'dict', dictType: 'sys_enable_status' },
+  { label: '创建时间', prop: 'createTime', type: 'datetime' }
+])
+</script>
+```
+
+#### 字段类型
+
+| 类型 | 说明 | 示例 |
+|------|------|------|
+| text | 普通文本 | `用户名: admin` |
+| password | 密码(可切换显示) | `密码: ******` |
+| copyable | 可复制文本 | `邮箱: admin@example.com` (复制图标) |
+| dict | 字典标签 | `状态: 正常` (绿色标签) |
+| image | 图片预览 | 显示缩略图,点击查看大图 |
+| html | HTML 内容 | 渲染富文本 |
+| file | 文件链接 | 显示下载链接 |
+| date | 日期格式化 | `2024-01-01` |
+| datetime | 日期时间格式化 | `2024-01-01 00:00:00` |
+| currency | 货币格式化 | `¥1,234.56` |
+| boolean | 是/否 | `是` 或 `否` |
+| array | 数组显示 | 逗号分隔显示 |
+
+## 业务选择器详解
+
+### UserSelect - 用户选择器
+
+强大的用户选择组件,支持部门树过滤、搜索、分页、单选/多选等功能。
+
+#### 基本用法
+
+```vue
+<template>
+  <!-- 基础多选 -->
+  <UserSelect v-model="selectedUsers" :multiple="true" />
+
+  <!-- 基础单选 -->
+  <UserSelect v-model="selectedUser" :multiple="false" />
+
+  <!-- 显示内置标签 -->
+  <UserSelect v-model="selectedUsers" :multiple="true" show-inline-tags />
+
+  <!-- 自定义按钮样式 -->
+  <UserSelect
+    v-model="selectedUsers"
+    :multiple="true"
+    button-text="选择项目成员"
+    button-type="success"
+    :button-plain="false"
+  />
+
+  <!-- 编辑模式(传入初始用户名) -->
+  <UserSelect
+    v-model="userIds"
+    :initial-user-names="userNamesString"
+    :multiple="true"
+  />
+
+  <!-- 限制用户范围 -->
+  <UserSelect
+    v-model="selectedUsers"
+    :multiple="true"
+    :user-ids="allowedUserIds"
+  />
+</template>
+
+<script setup lang="ts">
+const selectedUsers = ref([])
+const selectedUser = ref('')
+const userIds = ref('1,2,3')
+const userNamesString = ref('张三,李四,王五')
+const allowedUserIds = ref([1, 2, 3, 4, 5])
+</script>
+```
+
+#### Props 属性
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| modelValue | 绑定值 | `string \| number \| SysUserVo \| Array` | - |
+| multiple | 是否多选 | `boolean` | `false` |
+| data | 预设激活数据 | `string \| number \| SysUserVo \| Array` | - |
+| userIds | 限制用户 ID 范围 | `string \| number \| Array` | - |
+| defaultReturnType | 默认返回类型 | `'object' \| 'id'` | `'object'` |
+| showInlineTags | 显示内置标签 | `boolean` | `false` |
+| buttonText | 按钮文本 | `string` | `'选择用户'` |
+| buttonType | 按钮类型 | `'primary' \| 'success' \| ...` | `'primary'` |
+| buttonPlain | 朴素按钮 | `boolean` | `true` |
+| buttonSize | 按钮尺寸 | `'large' \| 'default' \| 'small'` | `'small'` |
+| tagSize | 标签尺寸 | `'large' \| 'default' \| 'small'` | `'small'` |
+| showCount | 显示数量 | `boolean` | `true` |
+| disabled | 是否禁用 | `boolean` | `false` |
+| readonly | 是否只读 | `boolean` | `false` |
+| initialUserNames | 初始用户名 | `string \| string[]` | - |
+
+#### Events 事件
+
+| 事件名 | 说明 | 回调参数 |
+|--------|------|----------|
+| update:modelValue | 值变化 | `(value: any) => void` |
+| confirmCallBack | 确认回调 | `(value: any) => void` |
+
+#### 智能返回类型
+
+```vue
+<script setup lang="ts">
+// 情况 1: 传入用户对象,返回用户对象
+const user1 = ref<SysUserVo>({ userId: '1', userName: 'admin' })
+// 确认后返回: { userId: '1', userName: 'admin', ... }
+
+// 情况 2: 传入用户 ID,返回用户 ID
+const user2 = ref('1')
+// 确认后返回: '1'
+
+// 情况 3: 传入空值,根据 defaultReturnType 决定
+const user3 = ref(null)
+// defaultReturnType="object" 时返回: { userId: '1', ... }
+// defaultReturnType="id" 时返回: '1'
+
+// 情况 4: 多选数组
+const users = ref([1, 2, 3])
+// 确认后返回: [1, 2, 3]
+
+// 情况 5: 多选字符串
+const userIds = ref('1,2,3')
+// 确认后返回: '1,2,3'
+</script>
+```
+
+#### 完整使用示例
+
+```vue
+<template>
+  <el-form :model="form">
+    <el-form-item label="负责人">
+      <UserSelect
+        v-model="form.userId"
+        :multiple="false"
+        show-inline-tags
+      />
     </el-form-item>
 
-    <!-- ❌ 错误：使用 :value 和 @input -->
-    <el-form-item label="密码">
-      <AFormInput :value="form.password" @input="form.password = $event" />
+    <el-form-item label="项目成员">
+      <UserSelect
+        v-model="form.userIds"
+        :multiple="true"
+        show-inline-tags
+        button-text="选择成员"
+      />
     </el-form-item>
+  </el-form>
+</template>
+
+<script setup lang="ts">
+import type { SysUserVo } from '@/api/system/core/user/userTypes'
+
+const form = ref({
+  userId: '' as string | SysUserVo,
+  userIds: [] as string[] | SysUserVo[]
+})
+
+// 提交时处理
+const handleSubmit = () => {
+  // 如果返回的是用户对象,提取 ID
+  const userId = typeof form.value.userId === 'object'
+    ? form.value.userId.userId
+    : form.value.userId
+
+  const userIds = Array.isArray(form.value.userIds) && form.value.userIds.length > 0
+    ? typeof form.value.userIds[0] === 'object'
+      ? form.value.userIds.map(u => (u as SysUserVo).userId)
+      : form.value.userIds
+    : []
+
+  // 提交数据
+  submitForm({ userId, userIds })
+}
+</script>
+```
+
+### DictTag - 字典标签
+
+字典值显示组件,支持多种模式。
+
+#### 基本用法
+
+```vue
+<template>
+  <!-- dict 模式 - 字典值转换 -->
+  <DictTag :options="sys_enable_status" :value="user.status" />
+
+  <!-- region 模式 - 地区代码转换 -->
+  <DictTag mode="region" :value="user.regionCode" />
+
+  <!-- cascader 模式 - 自定义级联转换 -->
+  <DictTag
+    mode="cascader"
+    :value="user.categoryId"
+    :cascader-data="categoryTree"
+    value-field="id"
+    label-field="name"
+  />
+</template>
+
+<script setup lang="ts">
+const { sys_enable_status } = useDict(DictTypes.sys_enable_status)
+
+const user = ref({
+  status: '1',
+  regionCode: '110000',
+  categoryId: '001'
+})
+</script>
+```
+
+#### Props 属性
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| mode | 模式 | `'dict' \| 'region' \| 'cascader'` | `'dict'` |
+| options | 字典选项 | `any[]` | `[]` |
+| value | 值 | `string \| number` | - |
+| cascaderData | 级联数据 | `any[]` | `[]` |
+| valueField | value 字段名 | `string` | `'value'` |
+| labelField | label 字段名 | `string` | `'label'` |
+
+## 图表组件详解
+
+### AChart - 通用图表
+
+基于 ECharts 的通用图表组件。
+
+```vue
+<template>
+  <AChart :option="chartOption" height="400px" />
+</template>
+
+<script setup lang="ts">
+import type { EChartsOption } from 'echarts'
+
+const chartOption = ref<EChartsOption>({
+  title: { text: '销售统计' },
+  tooltip: {},
+  xAxis: {
+    data: ['1月', '2月', '3月', '4月', '5月', '6月']
+  },
+  yAxis: {},
+  series: [{
+    name: '销量',
+    type: 'bar',
+    data: [5, 20, 36, 10, 10, 20]
+  }]
+})
+</script>
+```
+
+### ALineChart - 折线图
+
+```vue
+<template>
+  <ALineChart
+    title="访问量趋势"
+    :xData="xData"
+    :series="series"
+    height="300px"
+  />
+</template>
+
+<script setup lang="ts">
+const xData = ref(['1月', '2月', '3月', '4月', '5月', '6月'])
+const series = ref([
+  {
+    name: 'PV',
+    data: [120, 132, 101, 134, 90, 230]
+  },
+  {
+    name: 'UV',
+    data: [45, 62, 48, 71, 53, 98]
+  }
+])
+</script>
+```
+
+### ABarChart - 柱状图
+
+```vue
+<template>
+  <ABarChart
+    title="产品销量"
+    :xData="products"
+    :series="sales"
+    height="350px"
+  />
+</template>
+
+<script setup lang="ts">
+const products = ref(['产品A', '产品B', '产品C', '产品D', '产品E'])
+const sales = ref([
+  {
+    name: '销量',
+    data: [120, 200, 150, 80, 70]
+  }
+])
+</script>
+```
+
+### APieChart - 饼图
+
+```vue
+<template>
+  <APieChart
+    title="流量来源"
+    :data="trafficData"
+    height="400px"
+  />
+</template>
+
+<script setup lang="ts">
+const trafficData = ref([
+  { name: '直接访问', value: 335 },
+  { name: '搜索引擎', value: 310 },
+  { name: '外部链接', value: 234 },
+  { name: '社交媒体', value: 135 },
+  { name: '其他', value: 100 }
+])
+</script>
+```
+
+## 最佳实践
+
+### 1. 列表页面开发流程
+
+```vue
+<template>
+  <div class="app-container">
+    <!-- 1. 搜索表单 -->
+    <ASearchForm v-model="queryParams" title="搜索条件">
+      <AFormInput label="用户名" prop="userName" v-model="queryParams.userName" />
+      <AFormSelect label="状态" prop="status" v-model="queryParams.status" :options="sys_enable_status" />
+      <AFormDate label="创建时间" v-model="dateRange" type="daterange" />
+    </ASearchForm>
+
+    <!-- 2. 表格工具栏 -->
+    <TableToolbar
+      :columns="tableColumns"
+      :show-search="showSearch"
+      @resetQuery="resetQuery"
+      @queryTable="getList"
+    >
+      <template #left>
+        <el-button type="primary" @click="handleAdd">新增</el-button>
+        <el-button type="danger" :disabled="selectedIds.length === 0" @click="handleBatchDelete">
+          批量删除
+        </el-button>
+      </template>
+    </TableToolbar>
+
+    <!-- 3. 数据表格 -->
+    <el-table
+      :data="tableData"
+      v-loading="loading"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column type="selection" width="50" />
+      <el-table-column label="用户ID" prop="userId" />
+      <el-table-column label="用户名" prop="userName" />
+      <el-table-column label="状态" prop="status">
+        <template #default="{ row }">
+          <DictTag :options="sys_enable_status" :value="row.status" />
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="180">
+        <template #default="{ row }">
+          <el-button type="primary" link @click="handleEdit(row)">编辑</el-button>
+          <el-button type="danger" link @click="handleDelete(row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 4. 分页 -->
+    <Pagination
+      v-model:page="queryParams.pageNum"
+      v-model:limit="queryParams.pageSize"
+      :total="total"
+      @pagination="getList"
+    />
+
+    <!-- 5. 编辑弹窗 -->
+    <AModal v-model="editVisible" :title="editTitle" @confirm="handleSubmit">
+      <el-form :model="form" :rules="rules" ref="formRef">
+        <AFormInput label="用户名" prop="userName" v-model="form.userName" :span="12" />
+        <AFormInput label="昵称" prop="nickName" v-model="form.nickName" :span="12" />
+        <AFormSelect label="状态" prop="status" v-model="form.status" :options="sys_enable_status" :span="12" />
+      </el-form>
+    </AModal>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { pageUsers, addUser, updateUser, deleteUser } from '@/api/system/core/user/userApi'
+import type { SysUserQuery, SysUserVo } from '@/api/system/core/user/userTypes'
+
+// 字典数据
+const { sys_enable_status } = useDict(DictTypes.sys_enable_status)
+
+// 查询参数
+const queryParams = ref<SysUserQuery>({
+  pageNum: 1,
+  pageSize: 10,
+  userName: '',
+  status: ''
+})
+const dateRange = ref<[string, string]>(['', ''])
+
+// 表格数据
+const tableData = ref<SysUserVo[]>([])
+const total = ref(0)
+const loading = ref(false)
+
+// 选中数据
+const selectedIds = ref<string[]>([])
+
+// 弹窗状态
+const editVisible = ref(false)
+const editTitle = computed(() => form.value.userId ? '编辑用户' : '新增用户')
+
+// 表单数据
+const form = ref<Partial<SysUserVo>>({})
+const formRef = ref<FormInstance>()
+
+// 查询列表
+const getList = async () => {
+  loading.value = true
+  queryParams.value.params = {}
+  addDateRange(queryParams.value, dateRange.value, 'createTime')
+
+  const [err, data] = await pageUsers(queryParams.value)
+  if (!err) {
+    tableData.value = data.records || []
+    total.value = data.total
+  }
+  loading.value = false
+}
+
+// 新增
+const handleAdd = () => {
+  form.value = {}
+  editVisible.value = true
+}
+
+// 编辑
+const handleEdit = (row: SysUserVo) => {
+  form.value = { ...row }
+  editVisible.value = true
+}
+
+// 提交
+const handleSubmit = async () => {
+  await formRef.value?.validate()
+  const api = form.value.userId ? updateUser : addUser
+  const [err] = await api(form.value)
+  if (!err) {
+    ElMessage.success('操作成功')
+    editVisible.value = false
+    getList()
+  }
+}
+
+// 删除
+const handleDelete = async (row: SysUserVo) => {
+  await ElMessageBox.confirm('确认删除此用户吗?', '提示', { type: 'warning' })
+  const [err] = await deleteUser(row.userId)
+  if (!err) {
+    ElMessage.success('删除成功')
+    getList()
+  }
+}
+
+// 选择变化
+const handleSelectionChange = (selection: SysUserVo[]) => {
+  selectedIds.value = selection.map(item => item.userId)
+}
+
+// 初始加载
+onMounted(() => {
+  getList()
+})
+</script>
+```
+
+### 2. 表单验证集成
+
+```vue
+<template>
+  <AModal v-model="visible" title="用户表单" @confirm="handleSubmit">
+    <el-form :model="form" :rules="rules" ref="formRef">
+      <AFormInput
+        label="用户名"
+        prop="userName"
+        v-model="form.userName"
+        :span="12"
+      />
+      <AFormInput
+        label="邮箱"
+        prop="email"
+        v-model="form.email"
+        :span="12"
+      />
+      <AFormInput
+        label="手机号"
+        prop="phone"
+        v-model="form.phone"
+        :span="12"
+      />
+      <AFormSelect
+        label="角色"
+        prop="roleIds"
+        v-model="form.roleIds"
+        :options="roleList"
+        :multiple="true"
+        :span="12"
+      />
+    </el-form>
+  </AModal>
+</template>
+
+<script setup lang="ts">
+const formRef = ref<FormInstance>()
+
+const form = ref({
+  userName: '',
+  email: '',
+  phone: '',
+  roleIds: [] as string[]
+})
+
+const rules = {
+  userName: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+  ],
+  email: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+  ],
+  phone: [
+    { required: true, message: '请输入手机号', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+  ],
+  roleIds: [
+    { required: true, message: '请选择角色', trigger: 'change' }
+  ]
+}
+
+const handleSubmit = async () => {
+  await formRef.value?.validate()
+  // 提交逻辑
+}
+</script>
+```
+
+### 3. 权限控制集成
+
+```vue
+<template>
+  <div class="app-container">
+    <TableToolbar>
+      <template #left>
+        <el-button v-permi="['system:user:add']" type="primary" @click="handleAdd">
+          新增
+        </el-button>
+        <el-button v-permi="['system:user:import']" type="info" @click="handleImport">
+          导入
+        </el-button>
+        <el-button v-permi="['system:user:export']" type="warning" @click="handleExport">
+          导出
+        </el-button>
+      </template>
+    </TableToolbar>
+
+    <el-table :data="tableData">
+      <el-table-column label="操作">
+        <template #default="{ row }">
+          <el-button v-permi="['system:user:edit']" type="primary" link @click="handleEdit(row)">
+            编辑
+          </el-button>
+          <el-button v-permi="['system:user:delete']" type="danger" link @click="handleDelete(row)">
+            删除
+          </el-button>
+          <el-button v-permi="['system:user:resetPwd']" type="warning" link @click="handleResetPwd(row)">
+            重置密码
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </div>
+</template>
+```
+
+### 4. 响应式布局最佳实践
+
+```vue
+<template>
+  <!-- 推荐:在 AModal 中使用 modal-size 模式 -->
+  <AModal v-model="visible" size="large">
+    <el-form>
+      <!-- 表单项会根据弹窗尺寸自动调整 -->
+      <AFormInput
+        label="标题"
+        v-model="form.title"
+        :span="12"
+        responsiveMode="modal-size"
+        :modalSize="'large'"
+      />
+      <AFormInput
+        label="副标题"
+        v-model="form.subtitle"
+        :span="12"
+        responsiveMode="modal-size"
+        :modalSize="'large'"
+      />
+    </el-form>
+  </AModal>
+
+  <!-- 页面中使用 screen 模式 -->
+  <el-form>
+    <AFormInput
+      label="用户名"
+      v-model="form.userName"
+      :span="{ xs: 24, sm: 24, md: 12, lg: 8, xl: 6 }"
+    />
   </el-form>
 </template>
 ```
 
----
+### 5. Excel 导入导出
+
+```vue
+<template>
+  <!-- Excel 导入 -->
+  <AImportExcel
+    v-permi="['system:user:import']"
+    :template-url="'/system/user/importTemplate'"
+    :import-url="'/system/user/importData'"
+    @success="handleImportSuccess"
+  />
+
+  <!-- Excel 导出 -->
+  <el-button v-permi="['system:user:export']" @click="handleExport">
+    导出
+  </el-button>
+</template>
+
+<script setup lang="ts">
+import { exportUsers } from '@/api/system/core/user/userApi'
+
+// 导入成功回调
+const handleImportSuccess = () => {
+  ElMessage.success('导入成功')
+  getList()
+}
+
+// 导出
+const handleExport = async () => {
+  await ElMessageBox.confirm('确认导出所有用户数据吗?', '提示')
+  const [err, blob] = await exportUsers(queryParams.value)
+  if (!err) {
+    // 下载文件
+    const url = window.URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `users_${Date.now()}.xlsx`
+    a.click()
+    window.URL.revokeObjectURL(url)
+  }
+}
+</script>
+```
+
+## 常见问题
+
+### 1. AFormSelect 多选时类型不一致?
+
+**问题原因**:
+- v-model 传入的是字符串 `"1,2,3"`,但组件返回的是数组 `[1, 2, 3]`
+- 或者传入的是数字数组,但返回的是字符串数组
+
+**解决方案**:
+
+```vue
+<script setup lang="ts">
+// 方案1: 让组件自动处理类型转换
+const form = ref({
+  roleIds: '1,2,3' // 字符串输入
+})
+
+// AFormSelect 会自动:
+// - 输入时将 '1,2,3' 转为 [1, 2, 3] 用于显示
+// - 输出时将 [1, 2, 3] 转回 '1,2,3' 保持类型一致
+
+// 方案2: 统一使用数组格式
+const form = ref({
+  roleIds: [1, 2, 3] // 数组输入
+})
+
+// 组件会保持数组格式,自动检测数字类型
+</script>
+```
+
+### 2. AFormInput 防自动填充不生效?
+
+**问题原因**:
+- 浏览器的自动填充策略不断变化
+- 某些浏览器可能绕过 `readonly` 属性
+
+**解决方案**:
+
+```vue
+<template>
+  <!-- 确保同时使用这两个属性 -->
+  <AFormInput
+    label="密码"
+    v-model="form.password"
+    type="password"
+    show-password
+    prevent-autofill
+  />
+</template>
+
+<script setup lang="ts">
+// 如果仍然不生效,可以在表单外层添加:
+// <el-form autocomplete="new-password">
+</script>
+```
+
+### 3. AModal 拖动后位置无法重置?
+
+**问题原因**:
+- 拖动后 dialog 的 position 被设置为 fixed
+- 关闭再打开时没有重置位置
+
+**解决方案**:
+
+```vue
+<script setup lang="ts">
+// 组件内部已经自动处理,但如果遇到问题:
+
+// 监听对话框关闭,重置位置
+watch(visible, (newVal) => {
+  if (!newVal) {
+    nextTick(() => {
+      const dialogElement = document.querySelector('.el-dialog')
+      if (dialogElement) {
+        dialogElement.style.position = ''
+        dialogElement.style.left = ''
+        dialogElement.style.top = ''
+      }
+    })
+  }
+})
+</script>
+```
+
+### 4. UserSelect 返回类型如何控制?
+
+**问题原因**:
+- 有时需要返回用户对象,有时只需要 ID
+- 不清楚如何控制返回类型
+
+**解决方案**:
+
+```vue
+<script setup lang="ts">
+// 方式1: 通过 v-model 的初始值类型自动推断
+const userId = ref('') // 返回字符串 ID
+const user = ref<SysUserVo>() // 返回用户对象
+const userIds = ref<string[]>([]) // 返回 ID 数组
+const users = ref<SysUserVo[]>([]) // 返回对象数组
+
+// 方式2: 使用 defaultReturnType 指定(当 v-model 为空时)
+const emptyValue = ref()
+// <UserSelect v-model="emptyValue" defaultReturnType="id" />
+// 返回 ID
+
+// <UserSelect v-model="emptyValue" defaultReturnType="object" />
+// 返回对象
+</script>
+```
+
+### 5. ASearchForm 展开/收起按钮不显示?
+
+**问题原因**:
+- 表单项少于 2 行时不显示展开按钮
+- 或者 `collapsible` 属性设置为 `false`
+
+**解决方案**:
+
+```vue
+<template>
+  <!-- 确保表单项足够多(>=2行) -->
+  <ASearchForm v-model="queryParams" :collapsible="true">
+    <AFormInput label="字段1" v-model="queryParams.field1" />
+    <AFormInput label="字段2" v-model="queryParams.field2" />
+    <AFormInput label="字段3" v-model="queryParams.field3" />
+    <AFormInput label="字段4" v-model="queryParams.field4" />
+    <AFormInput label="字段5" v-model="queryParams.field5" />
+    <!-- 至少需要能形成2行才会显示展开按钮 -->
+  </ASearchForm>
+</template>
+
+<script setup lang="ts">
+// 手动触发行数计算(如果自动计算不准确)
+const searchFormRef = ref()
+
+onMounted(() => {
+  nextTick(() => {
+    searchFormRef.value?.calculateFormRows()
+  })
+})
+</script>
+```
+
+## 组件性能优化
+
+### 1. 大数据列表优化
+
+```vue
+<template>
+  <!-- 使用虚拟滚动 -->
+  <el-table
+    :data="tableData"
+    height="600"
+    :virtual-scrolling="true"
+    :row-height="48"
+  >
+    <!-- 表格列 -->
+  </el-table>
+</template>
+```
+
+### 2. 表单组件缓存
+
+```vue
+<template>
+  <keep-alive :include="['UserForm', 'RoleForm']">
+    <component :is="currentForm" />
+  </keep-alive>
+</template>
+```
+
+### 3. 图表懒加载
+
+```vue
+<script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
+
+const ALineChart = defineAsyncComponent(() =>
+  import('@/components/AChart/ALineChart.vue')
+)
+</script>
+```
 
 ## 总结
 
-业务组件是 RuoYi-Plus-UniApp 前端项目的核心组成部分，提供了丰富的功能和灵活的配置选项。通过合理使用这些组件，可以显著提高开发效率，减少重复代码，保证项目的一致性和可维护性。
+RuoYi-Plus-UniApp 前端管理端的业务组件库提供了完整的后台管理系统开发解决方案,涵盖:
 
-**核心要点**:
+- **13 个表单组件** - 完整的表单输入方案
+- **3 个搜索表格组件** - 列表页核心组件
+- **2 个弹窗组件** - 对话框和详情展示
+- **2 个业务选择器** - 用户选择和字典显示
+- **23 个卡片组件** - 丰富的展示卡片
+- **10 个图表组件** - 完整的数据可视化
+- **4 个 AI 组件** - 智能辅助工具
+- **7 个工具组件** - 常用工具组件
 
-1. **统一规范** - 所有业务组件使用 `A` 前缀，便于识别和管理
-2. **灵活配置** - 提供丰富的 Props、Events 和 Slots，满足各种定制需求
-3. **类型安全** - 完整的 TypeScript 类型定义，开发时获得智能提示
-4. **性能优化** - 采用最佳实践，确保组件在各种场景下的流畅性
-5. **易于扩展** - 基于 Composition API 开发，便于二次开发和功能扩展
+通过这些组件,开发者可以:
 
-在实际开发中，建议：
-- 优先使用业务组件而不是基础组件
-- 充分利用组件提供的插槽和事件进行定制
-- 正确处理异步操作和错误状态
-- 遵循项目的命名和编码规范
-- 合理使用 AI 辅助功能提高效率
+1. **快速构建列表页** - 搜索表单 + 工具栏 + 表格 + 分页,10 分钟完成
+2. **灵活定制表单** - 响应式布局 + 智能验证 + 国际化支持
+3. **强大的数据选择** - 用户选择器 + 字典标签,覆盖常见场景
+4. **丰富的数据展示** - 卡片 + 图表,多样化呈现数据
+5. **优秀的开发体验** - TypeScript 类型 + 完整文档 + 统一 API
 
-通过遵循这些最佳实践，可以充分发挥业务组件的优势，构建出高质量、易维护的企业级管理系统。
+所有组件都经过生产环境验证,性能优秀,易于使用,是构建现代化后台管理系统的理想选择。

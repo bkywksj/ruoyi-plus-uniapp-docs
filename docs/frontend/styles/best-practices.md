@@ -1,189 +1,1393 @@
-# 样式最佳实践
+# 样式系统最佳实践
 
 ## 介绍
 
-本文档汇总了 RuoYi-Plus 前端项目中样式开发的最佳实践，涵盖样式组织、命名规范、性能优化、主题适配等方面。遵循这些实践可以提高代码质量、开发效率和项目可维护性。
+本文档汇总了 RuoYi-Plus-UniApp 前端项目样式系统的最佳实践,涵盖 SCSS 架构、UnoCSS 原子化、主题系统、性能优化、代码规范等方面。这些实践基于项目实际架构和真实开发经验总结而来,旨在帮助开发者编写高质量、可维护、高性能的样式代码。
 
-**核心价值：**
+**核心内容:**
 
-- **可维护性** - 清晰的组织结构和命名规范，便于长期维护
-- **可扩展性** - 模块化设计支持功能快速扩展
-- **高性能** - 优化技巧确保应用流畅运行
-- **团队协作** - 统一规范降低协作成本
-- **主题灵活** - 完善的主题系统支持多种视觉风格
+- **架构设计最佳实践** - SCSS 分层架构、模块化组织、命名规范
+- **原子化 CSS 实践** - UnoCSS 使用规范、预设配置、自定义扩展
+- **主题系统实践** - 暗黑模式适配、CSS 变量使用、动态切换
+- **响应式设计实践** - 移动优先、断点策略、Flex/Grid 布局
+- **性能优化实践** - CSS 性能优化、动画性能、打包优化
+- **代码规范实践** - 命名约定、代码组织、团队协作
+- **常见问题解决** - 实际开发中的典型问题和解决方案
 
-## 样式组织规范
+**适用场景:**
 
-### 7-1 架构模式
+本文档适用于以下开发场景:
 
-项目采用 7-1 架构模式组织样式文件：
+1. **新项目启动** - 参考架构设计和规范建立
+2. **代码重构** - 优化现有样式代码结构
+3. **主题开发** - 实现主题切换和暗黑模式
+4. **性能优化** - 解决样式性能问题
+5. **团队协作** - 统一样式开发规范
+6. **问题排查** - 解决常见样式问题
 
-```
-styles/
-├── abstracts/      # 1. 抽象层（不输出CSS）
-├── base/           # 2. 基础层（全局基础样式）
-├── components/     # 3. 组件层（组件样式）
-├── layout/         # 4. 布局层（布局结构）
-├── themes/         # 5. 主题层（主题变量）
-├── vendors/        # 6. 第三方层（库样式覆盖）
-└── main.scss       # 7. 主入口文件
-```
+---
 
-**各层职责：**
+## 架构设计最佳实践
 
-1. **抽象层** (`abstracts/`)
-   - 变量定义 (`_variables.scss`)
-   - 混合器 (`_mixins.scss`)
-   - 函数 (`_functions.scss`)
-   - 不生成任何CSS代码
+### 1. SCSS 分层架构
 
-2. **基础层** (`base/`)
-   - CSS重置 (`_reset.scss`)
-   - 排版规则 (`_typography.scss`)
-   - 全局基础样式
+项目采用 ITCSS (Inverted Triangle CSS) 分层架构,按照特异性从低到高组织样式代码。
 
-3. **组件层** (`components/`)
-   - 按钮样式 (`_buttons.scss`)
-   - 动画效果 (`_animations.scss`)
-   - 可复用组件样式
-
-4. **布局层** (`layout/`)
-   - 页面布局 (`_layout.scss`)
-   - 网格系统
-   - 容器样式
-
-5. **主题层** (`themes/`)
-   - 亮色主题 (`_light.scss`)
-   - 暗色主题 (`_dark.scss`)
-   - 主题CSS变量
-
-6. **第三方层** (`vendors/`)
-   - Element Plus覆盖 (`_element-plus.scss`)
-   - 其他第三方库样式
-
-7. **主入口** (`main.scss`)
-   - 按顺序导入所有模块
-   - 定义全局样式
-
-### 文件命名规范
-
-**SCSS 部分文件**：
+**目录结构:**
 
 ```scss
-// ✅ 推荐：使用下划线前缀
-_variables.scss
-_mixins.scss
-_buttons.scss
-
-// ❌ 避免：无前缀（会被编译为独立CSS文件）
-variables.scss
-mixins.scss
+src/assets/styles/
+├── abstracts/          # 抽象层(变量、混合器)
+│   ├── _variables.scss # 全局变量
+│   └── _mixins.scss    # 混合器函数
+├── themes/             # 主题层
+│   ├── _light.scss     # 亮色主题
+│   └── _dark.scss      # 暗黑主题
+├── base/               # 基础层
+│   ├── _reset.scss     # 样式重置
+│   └── _typography.scss # 排版样式
+├── layout/             # 布局层
+│   └── _layout.scss    # 布局样式
+├── components/         # 组件层
+│   ├── _buttons.scss   # 按钮组件
+│   └── _animations.scss # 动画组件
+└── vendors/            # 第三方覆盖
+    └── _element-plus.scss
 ```
 
-**普通 SCSS 文件**：
+**导入顺序(main.scss):**
 
 ```scss
-// ✅ 推荐：小写连字符
-main.scss
-theme-animation.scss
-
-// ❌ 避免：驼峰或下划线
-mainStyle.scss
-theme_animation.scss
-```
-
-### 导入顺序
-
-**严格遵循以下顺序导入**：
-
-```scss
-// 1. 外部库（最先）
+/* 1. 外部库 - 最先导入 */
 @use 'animate.css';
 @use 'element-plus/dist/index.css';
 
-// 2. 抽象层（提供变量和工具）
+/* 2. 抽象层 - 提供变量和工具 */
 @use './abstracts/variables' as *;
 @use './abstracts/mixins' as *;
 
-// 3. 主题层（定义CSS变量）
+/* 3. 主题系统 - 定义主题变量 */
 @use './themes/light';
 @use './themes/dark';
 
-// 4. 基础层（重置和基础样式）
+/* 4. 基础样式 - 重置和基础样式 */
 @use './base/reset';
 @use './base/typography';
 
-// 5. 布局层（布局结构）
+/* 5. 布局层 - 页面布局 */
 @use './layout/layout';
 
-// 6. 组件层（组件样式）
+/* 6. 组件样式 - 可复用组件 */
 @use './components/buttons';
 @use './components/animations';
 
-// 7. 第三方覆盖（最后，确保优先级）
+/* 7. 第三方库覆盖 - 最后导入 */
 @use './vendors/element-plus';
+
+/* 8. 主题切换动画 */
+@use './theme-animation';
 ```
 
-**为什么顺序重要？**
+**最佳实践要点:**
 
-- **层叠优先级** - 后导入的样式优先级更高
-- **变量可用性** - 确保变量在使用前已定义
-- **依赖关系** - 满足模块间的依赖需求
+1. **严格按顺序导入** - 确保样式优先级正确
+2. **使用 @use 代替 @import** - 避免命名冲突和重复导入
+3. **抽象层使用别名** - `as *` 允许直接使用变量和混合器
+4. **组件样式独立文件** - 便于维护和按需加载
+5. **第三方覆盖放最后** - 确保能覆盖第三方库样式
 
-## 命名规范
-
-### BEM 命名方法论
-
-项目推荐使用 BEM（Block Element Modifier）命名方法：
+**反例 - 错误的导入顺序:**
 
 ```scss
-// Block（块）
-.button { }
+// ❌ 错误示例
+@use './components/buttons';    // 组件在变量之前
+@use './abstracts/variables';   // 无法使用变量
 
-// Element（元素）
-.button__icon { }
-.button__text { }
-
-// Modifier（修饰符）
-.button--primary { }
-.button--large { }
-.button--disabled { }
+@use './vendors/element-plus';  // 第三方在前
+@use './base/reset';            // 重置在后,可能被覆盖
 ```
 
-**完整示例：**
+### 2. 模块化组织原则
+
+**单一职责原则:**
+
+每个 SCSS 文件只负责一个功能模块。
+
+```scss
+// ✅ 正确 - _buttons.scss 只包含按钮相关样式
+@mixin colorBtn($color) { /* ... */ }
+
+.pan-btn { /* ... */ }
+.custom-button { /* ... */ }
+
+// ❌ 错误 - 混杂多种功能
+@mixin colorBtn($color) { /* ... */ }
+.data-table { /* ... */ }  // 表格样式不应该在按钮文件中
+.modal-dialog { /* ... */ } // 对话框样式不应该在按钮文件中
+```
+
+**命名空间隔离:**
+
+使用 `@use` 模块系统防止命名冲突。
+
+```scss
+// _colors.scss
+$primary: #409eff;
+$success: #67c23a;
+
+// _sizes.scss
+$primary: 16px;  // 与 colors 模块的 primary 不冲突
+
+// main.scss
+@use './colors' as c;
+@use './sizes' as s;
+
+.button {
+  color: c.$primary;      // #409eff
+  font-size: s.$primary;  // 16px
+}
+```
+
+**文件大小控制:**
+
+单个 SCSS 文件不超过 300 行,超过则拆分。
+
+```scss
+// ❌ 单个文件过大
+// _components.scss (800行)
+.button { /* 100行 */ }
+.input { /* 150行 */ }
+.select { /* 200行 */ }
+.dialog { /* 350行 */ }
+
+// ✅ 按组件拆分
+// _button.scss (100行)
+// _input.scss (150行)
+// _select.scss (200行)
+// _dialog.scss (350行)
+```
+
+### 3. 变量命名规范
+
+**SCSS 变量命名:**
+
+使用 kebab-case,按用途分类。
+
+```scss
+// ✅ 正确的变量命名
+// 颜色变量
+$primary-color: #409eff;
+$success-color: #67c23a;
+$danger-color: #f56c6c;
+
+// 尺寸变量
+$base-sidebar-width: 240px;
+$header-height: 50px;
+
+// 断点变量
+$breakpoint-sm: 768px;
+$breakpoint-md: 992px;
+$breakpoint-lg: 1200px;
+
+// ❌ 错误的命名
+$blue: #409eff;        // 语义不明确
+$sidebarWidth: 240px;  // 使用了驼峰命名
+$BP_SM: 768px;         // 全大写不符合规范
+```
+
+**CSS 变量命名:**
+
+使用双连字符,体现层级关系。
+
+```scss
+:root {
+  // ✅ 正确的 CSS 变量命名
+  --color-primary: #409eff;
+  --color-text-primary: #303133;
+  --color-text-regular: #606266;
+
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+
+  --duration-fast: 0.15s;
+  --duration-normal: 0.3s;
+  --duration-slow: 0.6s;
+
+  // ❌ 错误的命名
+  --primary: #409eff;      // 缺少分类前缀
+  --text_color: #303133;   // 使用下划线
+  --Spacing-MD: 16px;      // 使用大写
+}
+```
+
+**Element Plus 变量覆盖:**
+
+使用 `--el-` 前缀覆盖 Element Plus 变量。
+
+```scss
+:root {
+  // ✅ 覆盖 Element Plus 组件高度
+  --el-component-size: 32px !important;
+
+  // ✅ 覆盖 Element Plus 圆角
+  --el-border-radius-base: 6px !important;
+  --el-border-radius-small: 8px !important;
+
+  // ✅ 覆盖 Element Plus 颜色
+  --el-color-primary: #409eff !important;
+}
+```
+
+### 4. 混合器设计原则
+
+**参数化设计:**
+
+混合器应该接收参数,提供灵活性。
+
+```scss
+// ✅ 正确 - 参数化混合器
+@mixin button-variant($bg-color, $text-color, $hover-scale: 1.05) {
+  background: $bg-color;
+  color: $text-color;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale($hover-scale);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+// 使用
+.btn-primary {
+  @include button-variant(#409eff, #fff);
+}
+
+.btn-success {
+  @include button-variant(#67c23a, #fff, 1.1);
+}
+
+// ❌ 错误 - 硬编码值
+@mixin button-blue {
+  background: #409eff;  // 只能用于蓝色按钮
+  color: #fff;
+}
+```
+
+**默认参数:**
+
+为参数提供合理的默认值。
+
+```scss
+// ✅ 提供默认参数
+@mixin card-style(
+  $padding: 16px,
+  $radius: 8px,
+  $shadow: 0 2px 8px rgba(0, 0, 0, 0.1)
+) {
+  padding: $padding;
+  border-radius: $radius;
+  box-shadow: $shadow;
+}
+
+// 使用时可以只传部分参数
+.card-small {
+  @include card-style($padding: 8px);  // 其他参数使用默认值
+}
+
+.card-large {
+  @include card-style(24px, 12px);  // 覆盖前两个参数
+}
+```
+
+**避免过度抽象:**
+
+不要为了复用而过度抽象。
+
+```scss
+// ❌ 过度抽象 - 只用一次的样式
+@mixin specific-header-style {
+  height: 60px;
+  background: linear-gradient(90deg, #409eff, #67c23a);
+  border-bottom: 2px solid #e4e7ed;
+}
+
+.page-header {
+  @include specific-header-style;  // 只在一个地方使用
+}
+
+// ✅ 直接编写
+.page-header {
+  height: 60px;
+  background: linear-gradient(90deg, #409eff, #67c23a);
+  border-bottom: 2px solid #e4e7ed;
+}
+```
+
+---
+
+## UnoCSS 原子化实践
+
+### 1. 优先使用 UnoCSS
+
+在 Vue 模板中,优先使用 UnoCSS 原子类而不是自定义样式。
+
+**优先级规则:**
+
+```
+UnoCSS 原子类 > SCSS 工具类 > 自定义样式
+```
+
+**示例对比:**
 
 ```vue
+<!-- ✅ 最佳 - 使用 UnoCSS -->
 <template>
-  <button class="search-form">
-    <i class="search-form__icon"></i>
-    <input class="search-form__input search-form__input--focused" />
-    <button class="search-form__button search-form__button--primary">
-      搜索
+  <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow-md">
+    <span class="text-lg font-semibold text-gray-800">标题</span>
+    <button class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600">
+      操作
     </button>
-  </button>
+  </div>
+</template>
+
+<!-- ⚠️ 次选 - 使用 SCSS 工具类 -->
+<template>
+  <div class="card-container">
+    <span class="title">标题</span>
+    <button class="btn-primary">操作</button>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.search-form {
-  display: flex;
-  gap: 8px;
+.card-container {
+  @apply flex items-center justify-between p-4 bg-white rounded-lg shadow-md;
+}
 
-  &__icon {
+.title {
+  @apply text-lg font-semibold text-gray-800;
+}
+
+.btn-primary {
+  @apply px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600;
+}
+</style>
+
+<!-- ❌ 避免 - 完全自定义 -->
+<template>
+  <div class="card-container">
+    <span class="title">标题</span>
+    <button class="btn-primary">操作</button>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.card-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.btn-primary {
+  padding: 8px 16px;
+  color: white;
+  background: #409eff;
+  border-radius: 4px;
+
+  &:hover {
+    background: #66b1ff;
+  }
+}
+</style>
+```
+
+### 2. UnoCSS 预设使用
+
+项目配置了 Wind 预设和 Icons 预设。
+
+**Wind 预设常用类:**
+
+```vue
+<template>
+  <!-- 布局 -->
+  <div class="flex flex-col items-center justify-center">
+    <!-- Flexbox 布局 -->
+  </div>
+
+  <div class="grid grid-cols-3 gap-4">
+    <!-- Grid 布局 -->
+  </div>
+
+  <!-- 间距 -->
+  <div class="p-4 m-2">          <!-- padding: 16px, margin: 8px -->
+    <div class="px-6 py-3">      <!-- padding: 24px 12px -->
+    </div>
+  </div>
+
+  <!-- 尺寸 -->
+  <div class="w-full h-screen">  <!-- width: 100%, height: 100vh -->
+    <div class="w-64 h-32">      <!-- width: 256px, height: 128px -->
+    </div>
+  </div>
+
+  <!-- 文字 -->
+  <p class="text-base font-normal text-gray-700">
+    普通文本
+  </p>
+
+  <h1 class="text-3xl font-bold text-blue-600">
+    标题文本
+  </h1>
+
+  <!-- 背景和边框 -->
+  <div class="bg-white border border-gray-200 rounded-lg">
+    卡片内容
+  </div>
+
+  <!-- 阴影 -->
+  <div class="shadow-sm hover:shadow-lg transition-shadow">
+    悬浮卡片
+  </div>
+</template>
+```
+
+**Icons 预设使用:**
+
+```vue
+<template>
+  <!-- 使用 Iconify 图标集 -->
+  <div class="i-carbon-user text-2xl" />          <!-- Carbon 图标 -->
+  <div class="i-mdi-home text-3xl text-blue-500" /> <!-- MDI 图标 -->
+  <div class="i-heroicons-solid-search" />        <!-- Heroicons 图标 -->
+</template>
+```
+
+### 3. 自定义配置扩展
+
+**主题色扩展:**
+
+项目扩展了 Element Plus 主题色。
+
+```typescript
+// uno.config.ts
+export default defineConfig({
+  theme: {
+    colors: {
+      primary: '#409eff',
+      success: '#67c23a',
+      warning: '#e6a23c',
+      danger: '#f56c6c',
+      info: '#909399',
+    }
+  }
+})
+```
+
+**使用自定义主题色:**
+
+```vue
+<template>
+  <!-- 文字颜色 -->
+  <span class="text-primary">主要文本</span>
+  <span class="text-success">成功文本</span>
+  <span class="text-danger">危险文本</span>
+
+  <!-- 背景颜色 -->
+  <div class="bg-primary text-white p-4">主要背景</div>
+  <div class="bg-success text-white p-4">成功背景</div>
+
+  <!-- 边框颜色 -->
+  <div class="border border-primary">主要边框</div>
+</template>
+```
+
+**快捷方式(Shortcuts):**
+
+定义常用样式组合。
+
+```typescript
+// uno.config.ts
+export default defineConfig({
+  shortcuts: {
+    'btn': 'px-4 py-2 rounded cursor-pointer transition-colors',
+    'btn-primary': 'btn bg-primary text-white hover:bg-blue-600',
+    'btn-success': 'btn bg-success text-white hover:bg-green-600',
+
+    'card': 'p-4 bg-white rounded-lg shadow-sm',
+    'input-base': 'px-3 py-2 border border-gray-300 rounded focus:border-primary',
+  }
+})
+```
+
+**使用快捷方式:**
+
+```vue
+<template>
+  <!-- 按钮 -->
+  <button class="btn-primary">确认</button>
+  <button class="btn-success">提交</button>
+
+  <!-- 卡片 -->
+  <div class="card">
+    <h3 class="text-lg font-semibold mb-2">卡片标题</h3>
+    <p class="text-gray-600">卡片内容</p>
+  </div>
+
+  <!-- 输入框 -->
+  <input class="input-base w-full" placeholder="请输入内容">
+</template>
+```
+
+### 4. UnoCSS 性能优化
+
+**类名提取规则:**
+
+UnoCSS 只会提取实际使用的类名。
+
+```vue
+<!-- ✅ 静态类名 - 会被提取 -->
+<div class="flex items-center p-4 bg-white">
+  静态内容
+</div>
+
+<!-- ✅ 动态类名 - 完整类名也会被提取 -->
+<div :class="isActive ? 'bg-blue-500' : 'bg-gray-200'">
+  动态背景
+</div>
+
+<!-- ❌ 字符串拼接 - 不会被提取 -->
+<div :class="'bg-' + color + '-500'">
+  <!-- 如果 color='blue',类名 'bg-blue-500' 不会生成 -->
+</div>
+
+<!-- ✅ 解决方案 - 使用完整类名 -->
+<div :class="{
+  'bg-blue-500': color === 'blue',
+  'bg-red-500': color === 'red',
+  'bg-green-500': color === 'green'
+}">
+  正确的动态类名
+</div>
+```
+
+**Safelist 配置:**
+
+需要动态生成的类名添加到 safelist。
+
+```typescript
+// uno.config.ts
+export default defineConfig({
+  safelist: [
+    // 动态背景色
+    'bg-blue-500',
+    'bg-red-500',
+    'bg-green-500',
+    'bg-yellow-500',
+
+    // 动态间距
+    ...Array.from({ length: 10 }, (_, i) => `p-${i}`),
+    ...Array.from({ length: 10 }, (_, i) => `m-${i}`),
+  ]
+})
+```
+
+**按需加载:**
+
+UnoCSS 自动按需生成 CSS,无需手动配置。
+
+```vue
+<!-- 只使用了 3 个类,只生成这 3 个类的 CSS -->
+<div class="flex items-center justify-center">
+  内容
+</div>
+
+<!-- 生成的 CSS (简化) -->
+<style>
+.flex { display: flex; }
+.items-center { align-items: center; }
+.justify-center { justify-content: center; }
+</style>
+```
+
+---
+
+## 主题系统最佳实践
+
+### 1. CSS 变量优先
+
+使用 CSS 变量实现主题切换,而不是 SCSS 变量。
+
+**对比:**
+
+```scss
+// ❌ 使用 SCSS 变量 - 无法运行时切换
+$bg-color: #ffffff;
+$text-color: #303133;
+
+.container {
+  background: $bg-color;
+  color: $text-color;
+}
+
+// ✅ 使用 CSS 变量 - 支持运行时切换
+:root {
+  --bg-color: #ffffff;
+  --text-color: #303133;
+}
+
+.dark {
+  --bg-color: #1a1a1a;
+  --text-color: #e5e5e5;
+}
+
+.container {
+  background: var(--bg-color);
+  color: var(--text-color);
+}
+```
+
+### 2. 语义化变量命名
+
+使用语义化命名,而不是颜色字面量。
+
+```scss
+// ❌ 字面量命名
+:root {
+  --white: #ffffff;
+  --black: #000000;
+  --gray-100: #f5f5f5;
+}
+
+.card {
+  background: var(--white);
+  color: var(--black);
+}
+
+// ✅ 语义化命名
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --text-primary: #303133;
+  --text-secondary: #606266;
+}
+
+.dark {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #2a2a2a;
+  --text-primary: #e5e5e5;
+  --text-secondary: #b0b0b0;
+}
+
+.card {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+```
+
+### 3. 分层变量系统
+
+建立三层变量系统:基础色 → 语义色 → 组件色。
+
+```scss
+:root {
+  /* 第一层:基础色板 */
+  --color-blue-500: #409eff;
+  --color-green-500: #67c23a;
+  --color-red-500: #f56c6c;
+  --color-gray-50: #f5f7fa;
+  --color-gray-900: #303133;
+
+  /* 第二层:语义颜色 */
+  --color-primary: var(--color-blue-500);
+  --color-success: var(--color-green-500);
+  --color-danger: var(--color-red-500);
+  --bg-base: var(--color-gray-50);
+  --text-base: var(--color-gray-900);
+
+  /* 第三层:组件颜色 */
+  --button-bg: var(--color-primary);
+  --card-bg: var(--bg-base);
+  --input-border: var(--color-gray-300);
+}
+
+.dark {
+  /* 只需修改第二层变量 */
+  --bg-base: #1a1a1a;
+  --text-base: #e5e5e5;
+
+  /* 第三层自动继承 */
+}
+```
+
+### 4. 主题切换动画
+
+使用 View Transition API 实现平滑切换。
+
+**基础实现:**
+
+```typescript
+// 检测浏览器支持
+if (document.startViewTransition) {
+  document.startViewTransition(() => {
+    // 切换主题类名
+    document.documentElement.classList.toggle('dark')
+  })
+} else {
+  // 不支持则直接切换
+  document.documentElement.classList.toggle('dark')
+}
+```
+
+**圆形扩散动画:**
+
+```typescript
+// utils/themeAnimation.ts
+export const toggleThemeWithAnimation = (event: MouseEvent, isDark: boolean) => {
+  const layout = useLayout()
+
+  // 获取点击位置
+  const x = event.clientX
+  const y = event.clientY
+
+  // 计算最大半径
+  const endRadius = Math.hypot(
+    Math.max(x, innerWidth - x),
+    Math.max(y, innerHeight - y)
+  )
+
+  // 设置 CSS 变量
+  const root = document.documentElement
+  root.style.setProperty('--theme-x', `${x}px`)
+  root.style.setProperty('--theme-y', `${y}px`)
+  root.style.setProperty('--theme-r', `${endRadius}px`)
+
+  // 执行动画
+  if (document.startViewTransition) {
+    document.startViewTransition(() => {
+      layout.toggleDark(!isDark)
+    })
+  } else {
+    layout.toggleDark(!isDark)
+  }
+}
+```
+
+**CSS 动画定义:**
+
+```scss
+// theme-animation.scss
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  clip-path: circle(0 at var(--theme-x) var(--theme-y));
+}
+
+.dark::view-transition-old(root) {
+  clip-path: circle(var(--theme-r) at var(--theme-x) var(--theme-y));
+  z-index: 1;
+}
+
+.dark::view-transition-new(root) {
+  clip-path: circle(0 at var(--theme-x) var(--theme-y));
+}
+```
+
+**使用示例:**
+
+```vue
+<template>
+  <el-switch
+    v-model="isDark"
+    @click="handleThemeSwitch"
+  />
+</template>
+
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useLayout } from '@/composables/useLayout'
+import { toggleThemeWithAnimation } from '@/utils/themeAnimation'
+
+const layout = useLayout()
+const isDark = computed(() => layout.isDark)
+
+const handleThemeSwitch = (event: MouseEvent) => {
+  toggleThemeWithAnimation(event, isDark.value)
+}
+</script>
+```
+
+### 5. Element Plus 主题集成
+
+**覆盖 Element Plus 变量:**
+
+```scss
+:root {
+  // 主色系
+  --el-color-primary: #409eff !important;
+  --el-color-success: #67c23a !important;
+  --el-color-warning: #e6a23c !important;
+  --el-color-danger: #f56c6c !important;
+  --el-color-info: #909399 !important;
+
+  // 组件尺寸
+  --el-component-size: 32px !important;
+
+  // 圆角
+  --el-border-radius-base: 6px !important;
+  --el-border-radius-small: 8px !important;
+}
+```
+
+**暗黑模式适配:**
+
+```scss
+.dark {
+  // Element Plus 会自动处理颜色深浅
+  // 只需覆盖特殊情况
+
+  --el-bg-color: #1a1a1a !important;
+  --el-text-color-primary: #e5e5e5 !important;
+
+  // 边框颜色
+  --el-border-color: rgba(255, 255, 255, 0.1) !important;
+}
+```
+
+---
+
+## 响应式设计最佳实践
+
+### 1. 移动优先策略
+
+从小屏幕开始设计,逐步增强大屏幕体验。
+
+```scss
+// ✅ 移动优先
+.container {
+  // 默认样式(移动端)
+  padding: 16px;
+  font-size: 14px;
+
+  // 平板及以上
+  @media (min-width: 768px) {
+    padding: 24px;
     font-size: 16px;
-    color: var(--text-secondary);
   }
 
-  &__input {
-    padding: 8px 12px;
-    border: 1px solid var(--border-color);
+  // 桌面端
+  @media (min-width: 1200px) {
+    padding: 32px;
+    font-size: 18px;
+  }
+}
 
-    &--focused {
-      border-color: var(--el-color-primary);
+// ❌ 桌面优先(不推荐)
+.container {
+  // 默认样式(桌面端)
+  padding: 32px;
+  font-size: 18px;
+
+  // 平板
+  @media (max-width: 1199px) {
+    padding: 24px;
+    font-size: 16px;
+  }
+
+  // 移动端
+  @media (max-width: 767px) {
+    padding: 16px;
+    font-size: 14px;
+  }
+}
+```
+
+### 2. 断点使用规范
+
+使用项目定义的标准断点。
+
+**标准断点:**
+
+```scss
+// abstracts/_variables.scss
+$sm: 768px;   // 平板
+$md: 992px;   // 小屏桌面
+$lg: 1200px;  // 大屏桌面
+$xl: 1920px;  // 超大屏
+```
+
+**respond-to 混合器:**
+
+```scss
+// 使用混合器
+.sidebar {
+  width: 240px;
+
+  @include respond-to('md') {
+    width: 200px;
+  }
+
+  @include respond-to('sm') {
+    width: 100%;
+  }
+}
+```
+
+**UnoCSS 响应式:**
+
+```vue
+<template>
+  <!-- 移动端单列,平板2列,桌面3列 -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div>项目 1</div>
+    <div>项目 2</div>
+    <div>项目 3</div>
+  </div>
+
+  <!-- 移动端隐藏,桌面显示 -->
+  <aside class="hidden lg:block">
+    侧边栏内容
+  </aside>
+
+  <!-- 响应式间距 -->
+  <div class="p-4 md:p-6 lg:p-8">
+    内容区域
+  </div>
+</template>
+```
+
+### 3. Flexbox 和 Grid 布局
+
+**Flexbox 适用场景:**
+
+- 一维布局(行或列)
+- 内容驱动的流式布局
+- 对齐和分布控制
+
+```vue
+<template>
+  <!-- 水平居中对齐 -->
+  <div class="flex items-center justify-center h-screen">
+    <div>居中内容</div>
+  </div>
+
+  <!-- 两端对齐 -->
+  <div class="flex justify-between items-center p-4">
+    <span>左侧</span>
+    <span>右侧</span>
+  </div>
+
+  <!-- 垂直堆叠 -->
+  <div class="flex flex-col gap-4">
+    <div>项目 1</div>
+    <div>项目 2</div>
+    <div>项目 3</div>
+  </div>
+</template>
+```
+
+**Grid 适用场景:**
+
+- 二维布局(行和列)
+- 结构化的网格系统
+- 复杂的对齐需求
+
+```vue
+<template>
+  <!-- 等宽列 -->
+  <div class="grid grid-cols-3 gap-4">
+    <div>列 1</div>
+    <div>列 2</div>
+    <div>列 3</div>
+  </div>
+
+  <!-- 响应式网格 -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div v-for="item in items" :key="item.id">
+      {{ item.name }}
+    </div>
+  </div>
+
+  <!-- 不等宽列 -->
+  <div class="grid grid-cols-12 gap-4">
+    <div class="col-span-8">主内容(8列)</div>
+    <div class="col-span-4">侧边栏(4列)</div>
+  </div>
+
+  <!-- 复杂网格 -->
+  <div class="grid grid-cols-3 grid-rows-3 gap-4">
+    <div class="col-span-2 row-span-2">大区域</div>
+    <div>小区域 1</div>
+    <div>小区域 2</div>
+    <div class="col-span-3">底部横条</div>
+  </div>
+</template>
+```
+
+### 4. 容器查询(未来方案)
+
+容器查询允许基于父容器尺寸应用样式。
+
+```scss
+// 容器查询 API(实验性)
+.card-container {
+  container-type: inline-size;
+  container-name: card;
+}
+
+.card-content {
+  padding: 1rem;
+
+  @container card (min-width: 400px) {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @container card (min-width: 600px) {
+    padding: 3rem;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+```
+
+---
+
+## 性能优化最佳实践
+
+### 1. CSS 选择器优化
+
+**避免深层嵌套:**
+
+```scss
+// ❌ 过深嵌套(性能差)
+.container {
+  .wrapper {
+    .content {
+      .item {
+        .title {
+          .text {
+            color: red;  // 6层嵌套
+          }
+        }
+      }
     }
+  }
+}
+
+// ✅ 扁平化(性能好)
+.container {
+  // 一级样式
+}
+
+.container-content {
+  // 二级样式
+}
+
+.container-item-title {
+  // 使用 BEM 命名,避免嵌套
+  color: red;
+}
+```
+
+**避免通配符选择器:**
+
+```scss
+// ❌ 性能差
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.container * {
+  box-sizing: border-box;
+}
+
+// ✅ 针对性重置
+html, body, div, p, h1, h2, h3 {
+  margin: 0;
+  padding: 0;
+}
+
+.container > * {
+  box-sizing: border-box;  // 只影响直接子元素
+}
+```
+
+**优先使用类选择器:**
+
+```scss
+// ❌ 标签选择器(性能差)
+div p span {
+  color: red;
+}
+
+// ❌ 属性选择器(性能差)
+[data-type="button"] {
+  padding: 10px;
+}
+
+// ✅ 类选择器(性能好)
+.text-content {
+  color: red;
+}
+
+.btn {
+  padding: 10px;
+}
+```
+
+### 2. 动画性能优化
+
+**使用 transform 代替 position:**
+
+```scss
+// ❌ 使用 position(触发 reflow)
+.move-item {
+  position: relative;
+  animation: movePosition 1s ease;
+}
+
+@keyframes movePosition {
+  from { left: 0; top: 0; }
+  to { left: 100px; top: 100px; }
+}
+
+// ✅ 使用 transform(仅触发 composite)
+.move-item {
+  animation: moveTransform 1s ease;
+}
+
+@keyframes moveTransform {
+  from { transform: translate(0, 0); }
+  to { transform: translate(100px, 100px); }
+}
+```
+
+**使用 will-change 提示:**
+
+```scss
+// 提前告知浏览器将要变化的属性
+.animated-element {
+  will-change: transform, opacity;
+  transition: transform 0.3s, opacity 0.3s;
+
+  &:hover {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+// ⚠️ 不要滥用 will-change
+// ❌ 错误 - 对所有元素使用
+* {
+  will-change: transform;  // 会消耗大量内存
+}
+
+// ✅ 正确 - 只对动画元素使用
+.dialog {
+  &.entering,
+  &.leaving {
+    will-change: transform, opacity;
+  }
+
+  &.entered {
+    will-change: auto;  // 动画结束后移除
+  }
+}
+```
+
+**GPU 加速:**
+
+```scss
+// 触发 GPU 加速的属性
+.gpu-accelerated {
+  // 3D transform
+  transform: translateZ(0);
+  transform: translate3d(0, 0, 0);
+
+  // 或者
+  will-change: transform;
+
+  // 或者
+  backface-visibility: hidden;
+}
+```
+
+### 3. 关键 CSS 内联
+
+将首屏关键样式内联到 HTML。
+
+```html
+<!-- index.html -->
+<head>
+  <!-- 内联关键 CSS -->
+  <style>
+    /* 首屏必需的最小样式 */
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .app-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-size: 24px;
+      color: #409eff;
+    }
+  </style>
+
+  <!-- 异步加载完整样式 -->
+  <link rel="preload" href="/assets/main.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+</head>
+```
+
+### 4. CSS 代码分割
+
+按路由分割 CSS 文件。
+
+```typescript
+// vite.config.ts
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'element-plus': ['element-plus'],
+          'vendor': ['vue', 'vue-router', 'pinia'],
+        },
+        // CSS 代码分割
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name.endsWith('.css')) {
+            return 'assets/css/[name]-[hash][extname]'
+          }
+          return 'assets/[name]-[hash][extname]'
+        }
+      }
+    },
+    // CSS 代码分割
+    cssCodeSplit: true,
+  }
+})
+```
+
+### 5. 移除未使用的 CSS
+
+使用 PurgeCSS 或 UnoCSS 自动移除未使用的样式。
+
+```typescript
+// UnoCSS 自动按需生成
+// uno.config.ts
+export default defineConfig({
+  // UnoCSS 只生成使用的类
+  // 无需手动配置 PurgeCSS
+})
+```
+
+---
+
+## 代码规范最佳实践
+
+### 1. BEM 命名约定
+
+使用 BEM (Block Element Modifier) 命名组件样式。
+
+**命名规则:**
+
+```
+.block {}                // 块
+.block__element {}       // 元素
+.block--modifier {}      // 修饰符
+.block__element--modifier {}  // 元素修饰符
+```
+
+**示例:**
+
+```vue
+<template>
+  <!-- 卡片组件 -->
+  <div class="card card--primary">
+    <div class="card__header">
+      <h3 class="card__title">卡片标题</h3>
+      <span class="card__subtitle card__subtitle--secondary">副标题</span>
+    </div>
+    <div class="card__body">
+      <p class="card__text">卡片内容</p>
+    </div>
+    <div class="card__footer">
+      <button class="card__button card__button--primary">操作</button>
+    </div>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.card {
+  // 块样式
+  background: white;
+  border-radius: 8px;
+
+  // 修饰符
+  &--primary {
+    border: 2px solid var(--el-color-primary);
+  }
+
+  &--success {
+    border: 2px solid var(--el-color-success);
+  }
+
+  // 元素
+  &__header {
+    padding: 16px;
+    border-bottom: 1px solid #e4e7ed;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: #909399;
+
+    &--secondary {
+      color: #c0c4cc;
+    }
+  }
+
+  &__body {
+    padding: 16px;
+  }
+
+  &__text {
+    line-height: 1.6;
+  }
+
+  &__footer {
+    padding: 16px;
+    text-align: right;
   }
 
   &__button {
     padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 
     &--primary {
       background: var(--el-color-primary);
@@ -194,1422 +1398,725 @@ theme_animation.scss
 </style>
 ```
 
-### 类名前缀
+### 2. 样式作用域
 
-**使用有意义的前缀区分不同类型：**
-
-```scss
-// ✅ 推荐
-.is-active      // 状态类
-.has-error      // 状态类
-.js-accordion   // JavaScript钩子
-.u-hidden       // 工具类
-.c-button       // 组件类
-
-// ❌ 避免
-.active
-.error
-.accordion
-.hidden
-.button
-```
-
-### 工具类命名
-
-**遵循原子化CSS思想：**
-
-```scss
-// 布局
-.flex { display: flex; }
-.flex-col { flex-direction: column; }
-.items-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-
-// 间距
-.m-0 { margin: 0; }
-.p-4 { padding: 16px; }
-.mt-2 { margin-top: 8px; }
-
-// 文本
-.text-center { text-align: center; }
-.text-ellipsis { /* 单行省略 */ }
-
-// 颜色
-.text-primary { color: var(--el-color-primary); }
-.bg-white { background-color: white; }
-```
-
-**使用 UnoCSS 工具类**：
-
-项目集成了 UnoCSS，优先使用内置工具类：
+优先使用 scoped 样式,避免全局污染。
 
 ```vue
-<template>
-  <!-- ✅ 推荐：使用 UnoCSS -->
-  <div class="flex items-center justify-between p-4 text-gray-700">
-    内容
-  </div>
+<!-- ✅ 使用 scoped -->
+<style lang="scss" scoped>
+.container {
+  padding: 20px;  // 只影响当前组件
+}
+</style>
 
-  <!-- ❌ 避免：自定义重复的工具类 -->
-  <div class="custom-flex custom-center custom-padding">
-    内容
-  </div>
-</template>
+<!-- ⚠️ 全局样式 - 谨慎使用 -->
+<style lang="scss">
+.global-container {
+  padding: 20px;  // 影响整个应用
+}
+</style>
+
+<!-- ✅ 混合使用 -->
+<style lang="scss" scoped>
+.component {
+  /* 组件样式 */
+}
+</style>
+
+<style lang="scss">
+/* 只在必要时添加全局样式 */
+.global-utility {
+  /* 全局工具类 */
+}
+</style>
 ```
 
-## SCSS 使用规范
+**深度选择器:**
 
-### @use 替代 @import
+```vue
+<style lang="scss" scoped>
+/* 修改子组件样式 */
+.my-component {
+  /* 当前组件样式 */
 
-**现代SCSS使用 @use 和 @forward**：
+  /* ✅ Vue 3 推荐写法 */
+  :deep(.child-component) {
+    color: red;
+  }
 
-```scss
-// ❌ 过时：@import
-@import './variables';
-@import './mixins';
+  /* ❌ 已废弃 */
+  ::v-deep .child-component {
+    color: red;
+  }
 
-// ✅ 推荐：@use
-@use './variables' as *;      // 使用所有成员
-@use './mixins' as m;          // 使用命名空间
-@use './functions';            // 显式命名空间
+  /* ❌ 已废弃 */
+  /deep/ .child-component {
+    color: red;
+  }
+}
+
+/* 修改插槽内容 */
+:slotted(.slot-content) {
+  font-weight: bold;
+}
+
+/* 全局选择器 */
+:global(.app-container) {
+  margin: 0 auto;
+}
+</style>
 ```
 
-**@use 的优势：**
+### 3. 注释规范
 
-- 命名空间隔离，避免变量冲突
-- 只加载一次，提高编译性能
-- 更清晰的依赖关系
-
-### 嵌套规范
-
-**限制嵌套层级**：
+为复杂样式添加注释。
 
 ```scss
-// ✅ 推荐：最多3层
+/**
+ * 卡片组件样式
+ * @description 提供统一的卡片样式,支持多种主题和尺寸
+ */
 .card {
-  padding: 16px;
-
-  &__header {
-    margin-bottom: 12px;
-
-    &__title {
-      font-size: 18px;
-      font-weight: 600;
-    }
-  }
-}
-
-// ❌ 避免：过深嵌套
-.page {
-  .container {
-    .content {
-      .card {
-        .header {
-          .title {
-            // 6层嵌套，难以维护
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-**使用 & 符号**：
-
-```scss
-.button {
-  background: white;
-
-  // ✅ 推荐：BEM修饰符
-  &--primary {
-    background: blue;
-  }
-
-  &:hover {
-    opacity: 0.9;
-  }
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-}
-```
-
-### 变量命名
-
-**使用语义化的变量名**：
-
-```scss
-// ✅ 推荐：语义化
-$color-primary: #409eff;
-$color-success: #67c23a;
-$color-danger: #f56c6c;
-$spacing-small: 8px;
-$spacing-medium: 16px;
-$duration-normal: 0.3s;
-
-// ❌ 避免：无意义
-$blue: #409eff;
-$green: #67c23a;
-$red: #f56c6c;
-$s: 8px;
-$m: 16px;
-$d: 0.3s;
-```
-
-**遵循命名约定**：
-
-```scss
-// 颜色: color-{语义}
-$color-primary
-$color-text
-$color-border
-
-// 尺寸: size-{类型}-{大小}
-$size-font-small
-$size-border-radius
-
-// 间距: spacing-{大小}
-$spacing-xs
-$spacing-sm
-$spacing-md
-
-// 时长: duration-{速度}
-$duration-fast
-$duration-normal
-$duration-slow
-```
-
-### 混合器使用
-
-**创建可复用的混合器**：
-
-```scss
-// ✅ 推荐：参数化混合器
-@mixin button-variant($bg, $color, $border) {
-  background-color: $bg;
-  color: $color;
-  border: 1px solid $border;
-
-  &:hover {
-    background-color: darken($bg, 10%);
-    border-color: darken($border, 10%);
-  }
-}
-
-// 使用
-.button-primary {
-  @include button-variant(#409eff, white, #409eff);
-}
-
-.button-success {
-  @include button-variant(#67c23a, white, #67c23a);
-}
-```
-
-**避免过度使用混合器**：
-
-```scss
-// ❌ 避免：简单属性不需要混合器
-@mixin red-text {
-  color: red;
-}
-
-// ✅ 推荐：使用变量或工具类
-$color-danger: red;
-
-.error-text {
-  color: $color-danger;
-}
-```
-
-## CSS 变量使用
-
-### 定义CSS变量
-
-**在 :root 中定义全局变量**：
-
-```scss
-:root {
-  // 颜色系统
-  --color-primary: #409eff;
-  --color-success: #67c23a;
-  --color-warning: #e6a23c;
-  --color-danger: #f56c6c;
-
-  // 文本颜色
-  --text-primary: #303133;
-  --text-regular: #606266;
-  --text-secondary: #909399;
-
-  // 背景层级
-  --bg-base: #ffffff;
-  --bg-level-1: #f5f7fa;
-  --bg-level-2: #ebeef5;
+  // 基础布局
+  display: flex;
+  flex-direction: column;
 
   // 间距系统
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 16px;
-  --spacing-lg: 24px;
-  --spacing-xl: 32px;
+  padding: var(--spacing-md);  // 16px
+  margin-bottom: var(--spacing-lg);  // 24px
 
-  // 圆角系统
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-round: 20px;
+  // 视觉样式
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);  // 8px
 
-  // 阴影系统
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.15);
+  // 阴影效果(仅在亮色主题显示)
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
-  // 动画时长
-  --duration-fast: 0.15s;
-  --duration-normal: 0.3s;
-  --duration-slow: 0.6s;
-
-  // Z-index层级
-  --z-dropdown: 1000;
-  --z-sticky: 1010;
-  --z-fixed: 1020;
-  --z-modal: 1050;
-  --z-popover: 2000;
-}
-```
-
-### 使用CSS变量
-
-**优先使用CSS变量**：
-
-```scss
-// ✅ 推荐：CSS变量（支持主题切换）
-.card {
-  background-color: var(--bg-level-1);
-  border: 1px solid var(--bg-level-2);
-  border-radius: var(--radius-md);
-  padding: var(--spacing-md);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--duration-normal) ease;
-
-  &:hover {
-    box-shadow: var(--shadow-md);
-  }
-}
-
-// ❌ 避免：硬编码值
-.card {
-  background-color: #f5f7fa;
-  border: 1px solid #ebeef5;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.3s ease;
-}
-```
-
-### CSS变量回退值
-
-**提供合理的回退值**：
-
-```scss
-.element {
-  // 单个回退值
-  color: var(--text-primary, #303133);
-
-  // 多层回退
-  background: var(--bg-custom, var(--bg-level-1, #f5f7fa));
-
-  // calc 计算
-  padding: calc(var(--spacing-md, 16px) * 2);
-}
-```
-
-### 动态CSS变量
-
-**使用 JavaScript 动态修改**：
-
-```vue
-<script lang="ts" setup>
-import { onMounted } from 'vue'
-
-onMounted(() => {
-  // 修改单个变量
-  document.documentElement.style.setProperty('--color-primary', '#FF0000')
-
-  // 批量修改
-  const theme = {
-    '--color-primary': '#FF0000',
-    '--color-success': '#00FF00',
-    '--color-warning': '#FFA500',
-  }
-
-  Object.entries(theme).forEach(([key, value]) => {
-    document.documentElement.style.setProperty(key, value)
-  })
-})
-</script>
-```
-
-## 响应式设计
-
-### 断点系统
-
-**使用统一的断点**：
-
-```scss
-// 定义断点变量
-$breakpoint-sm: 768px;
-$breakpoint-md: 992px;
-$breakpoint-lg: 1200px;
-$breakpoint-xl: 1920px;
-
-// 创建响应式混合器
-@mixin respond-to($breakpoint) {
-  @if $breakpoint == 'sm' {
-    @media (max-width: #{$breakpoint-sm}) {
-      @content;
-    }
-  }
-  @else if $breakpoint == 'md' {
-    @media (max-width: #{$breakpoint-md}) {
-      @content;
-    }
-  }
-  @else if $breakpoint == 'lg' {
-    @media (max-width: #{$breakpoint-lg}) {
-      @content;
-    }
-  }
-  @else if $breakpoint == 'xl' {
-    @media (max-width: #{$breakpoint-xl}) {
-      @content;
-    }
-  }
-}
-```
-
-**使用示例：**
-
-```scss
-.container {
-  padding: 32px;
-
-  @include respond-to('lg') {
-    padding: 24px;
-  }
-
-  @include respond-to('md') {
-    padding: 16px;
-  }
-
+  /* 响应式适配 */
   @include respond-to('sm') {
-    padding: 12px;
+    padding: var(--spacing-sm);  // 移动端减少内边距
+  }
+
+  /* 暗黑模式适配 */
+  .dark & {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);  // 增强阴影
   }
 }
+
+/**
+ * 主题修饰符
+ */
+.card--primary {
+  border-left: 4px solid var(--el-color-primary);  // 主题色左边框
+}
+
+// TODO: 添加更多主题变体
+// FIXME: 修复 Safari 中的圆角问题
 ```
 
-### Mobile First
+### 4. 样式组织顺序
 
-**优先考虑移动端**：
-
-```scss
-// ✅ 推荐：Mobile First
-.element {
-  // 移动端样式（基础）
-  font-size: 14px;
-  padding: 8px;
-
-  // 平板及以上
-  @media (min-width: 768px) {
-    font-size: 16px;
-    padding: 12px;
-  }
-
-  // 桌面端
-  @media (min-width: 1200px) {
-    font-size: 18px;
-    padding: 16px;
-  }
-}
-
-// ❌ 避免：Desktop First
-.element {
-  // 桌面端样式
-  font-size: 18px;
-  padding: 16px;
-
-  // 平板
-  @media (max-width: 1199px) {
-    font-size: 16px;
-    padding: 12px;
-  }
-
-  // 移动端
-  @media (max-width: 767px) {
-    font-size: 14px;
-    padding: 8px;
-  }
-}
-```
-
-### 响应式单位
-
-**合理使用相对单位**：
+按照固定顺序组织 CSS 属性。
 
 ```scss
-// ✅ 推荐：使用相对单位
-.card {
-  width: 100%;
-  max-width: 600px;
-  padding: 1rem;           // 相对于根字体
-  margin: 2em 0;           // 相对于当前字体
-  font-size: clamp(14px, 2vw, 18px); // 响应式字体
-}
-
-// ❌ 避免：全部使用固定单位
-.card {
-  width: 600px;
-  padding: 16px;
-  margin: 32px 0;
-  font-size: 16px;
-}
-```
-
-**单位选择指南**：
-
-- `px` - 边框、阴影等需要精确控制的属性
-- `rem` - 字体大小、间距（可全局缩放）
-- `em` - 相对于父元素的尺寸
-- `%` - 相对于父容器的百分比
-- `vw/vh` - 相对于视口的百分比
-- `clamp()` - 响应式数值范围
-
-### 容器查询
-
-**使用CSS容器查询（现代浏览器）**：
-
-```scss
-.card-container {
-  container-type: inline-size;
-  container-name: card;
-}
-
-.card {
-  padding: 12px;
-
-  @container card (min-width: 400px) {
-    padding: 16px;
-    display: flex;
-  }
-
-  @container card (min-width: 600px) {
-    padding: 24px;
-  }
-}
-```
-
-## 性能优化
-
-### 减少重排重绘
-
-**使用 transform 和 opacity**：
-
-```scss
-// ✅ 推荐：使用 transform（GPU加速）
 .element {
-  transform: translateX(0);
-  transition: transform 0.3s ease;
-
-  &.moved {
-    transform: translateX(100px);
-  }
-}
-
-// ❌ 避免：使用 left/top（触发重排）
-.element {
-  position: relative;
+  /* 1. 定位 */
+  position: absolute;
+  top: 0;
   left: 0;
-  transition: left 0.3s ease;
+  z-index: 10;
 
-  &.moved {
-    left: 100px;
-  }
-}
-```
-
-**优化动画属性**：
-
-```scss
-// ✅ 推荐：只动画化 transform 和 opacity
-.fade-slide {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
-
-  &.hidden {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-}
-
-// ❌ 避免：动画化触发重排的属性
-.fade-slide {
-  opacity: 1;
-  height: auto;
-  margin-top: 0;
-  transition:
-    opacity 0.3s ease,
-    height 0.3s ease,
-    margin-top 0.3s ease;
-}
-```
-
-### will-change
-
-**合理使用 will-change**：
-
-```scss
-// ✅ 推荐：交互前添加
-.button {
-  &:hover {
-    will-change: transform;
-    transform: scale(1.05);
-  }
-
-  &:active {
-    will-change: auto; // 交互后移除
-  }
-}
-
-// ❌ 避免：长期使用
-.button {
-  will-change: transform; // 持续占用资源
-  transform: scale(1);
-}
-```
-
-### 选择器优化
-
-**使用高效的选择器**：
-
-```scss
-// ✅ 推荐：类选择器
-.button { }
-.button-primary { }
-
-// ✅ 可以：子选择器
-.list > .item { }
-
-// ⚠️ 谨慎：后代选择器
-.container .item { }
-
-// ❌ 避免：过度限定
-div.container ul.list li.item span.text { }
-
-// ❌ 避免：通配符
-* { margin: 0; }
-```
-
-### 代码分割
-
-**按需加载样式**：
-
-```vue
-<template>
-  <div class="page">
-    <!-- 内容 -->
-  </div>
-</template>
-
-<script lang="ts" setup>
-// ✅ 推荐：组件级样式（自动按需）
-</script>
-
-<style lang="scss" scoped>
-// 组件样式
-.page {
-  // ...
-}
-</style>
-```
-
-### 压缩和优化
-
-**生产环境优化**：
-
-```typescript
-// vite.config.ts
-export default defineConfig({
-  css: {
-    preprocessorOptions: {
-      scss: {
-        // 自动导入全局样式
-        additionalData: `@use "@/assets/styles/abstracts/variables" as *;`,
-      },
-    },
-  },
-  build: {
-    // CSS 代码分割
-    cssCodeSplit: true,
-    // 压缩选项
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true, // 删除 console
-        drop_debugger: true, // 删除 debugger
-      },
-    },
-  },
-})
-```
-
-## 主题适配
-
-### 主题切换架构
-
-**使用 data 属性控制主题**：
-
-```typescript
-// useTheme.ts
-export function useTheme() {
-  const theme = ref<'light' | 'dark'>('light')
-
-  const toggleTheme = () => {
-    theme.value = theme.value === 'light' ? 'dark' : 'light'
-    document.documentElement.setAttribute('data-theme', theme.value)
-  }
-
-  return {
-    theme,
-    toggleTheme,
-  }
-}
-```
-
-**定义主题变量**：
-
-```scss
-// themes/_light.scss
-[data-theme='light'] {
-  --bg-base: #ffffff;
-  --bg-level-1: #f5f7fa;
-  --bg-level-2: #ebeef5;
-  --text-primary: #303133;
-  --text-regular: #606266;
-  --border-color: #dcdfe6;
-}
-
-// themes/_dark.scss
-[data-theme='dark'] {
-  --bg-base: #1a1a1a;
-  --bg-level-1: #242424;
-  --bg-level-2: #2e2e2e;
-  --text-primary: #e5e5e5;
-  --text-regular: #a8a8a8;
-  --border-color: #3e3e3e;
-}
-```
-
-### 主题过渡动画
-
-**平滑的主题切换**：
-
-```scss
-// theme-animation.scss
-* {
-  transition:
-    background-color 0.3s ease,
-    border-color 0.3s ease,
-    color 0.3s ease;
-}
-
-// 禁用某些元素的过渡
-.no-transition,
-.no-transition * {
-  transition: none !important;
-}
-```
-
-### 暗黑模式媒体查询
-
-**响应系统主题偏好**：
-
-```scss
-// 默认跟随系统
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --bg-base: #1a1a1a;
-    --text-primary: #e5e5e5;
-    // ... 暗黑模式变量
-  }
-}
-```
-
-### 组件主题适配
-
-**编写主题无关的组件**：
-
-```vue
-<template>
-  <div class="themed-card">
-    <h3 class="themed-card__title">标题</h3>
-    <p class="themed-card__content">内容</p>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-.themed-card {
-  // ✅ 推荐：使用CSS变量
-  background-color: var(--bg-level-1);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-
-  // ❌ 避免：硬编码颜色
-  // background-color: #ffffff;
-  // border: 1px solid #dcdfe6;
-  // color: #303133;
-
-  &__title {
-    color: var(--text-primary);
-    font-weight: 600;
-  }
-
-  &__content {
-    color: var(--text-regular);
-  }
-}
-</style>
-```
-
-## 代码复用
-
-### 抽取公共样式
-
-**识别重复代码**：
-
-```scss
-// ❌ 避免：重复代码
-.card-a {
+  /* 2. 盒模型 */
+  display: flex;
+  width: 100%;
+  height: 50px;
   padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+  margin: 20px;
+  border: 1px solid #ddd;
 
-.card-b {
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-// ✅ 推荐：使用混合器
-@mixin card-base {
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.card-a {
-  @include card-base;
-  background: white;
-}
-
-.card-b {
-  @include card-base;
-  background: #f5f5f5;
-}
-
-// ✅ 更好：使用基类
-.card-base {
-  padding: 16px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.card-a {
-  @extend .card-base;
-  background: white;
-}
-
-.card-b {
-  @extend .card-base;
-  background: #f5f5f5;
-}
-```
-
-### 组合而非继承
-
-**优先使用组合**：
-
-```vue
-<template>
-  <!-- ✅ 推荐：组合多个类 -->
-  <button class="btn btn-primary btn-large">
-    提交
-  </button>
-
-  <!-- ❌ 避免：单一类承担所有样式 -->
-  <button class="primary-large-button">
-    提交
-  </button>
-</template>
-
-<style lang="scss" scoped>
-// 基础按钮
-.btn {
-  padding: 8px 16px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-// 颜色变体
-.btn-primary {
-  background: var(--el-color-primary);
-  color: white;
-}
-
-.btn-success {
-  background: var(--el-color-success);
-  color: white;
-}
-
-// 尺寸变体
-.btn-large {
-  padding: 12px 24px;
+  /* 3. 排版 */
+  font-family: sans-serif;
   font-size: 16px;
-}
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  color: #333;
 
-.btn-small {
-  padding: 4px 8px;
-  font-size: 12px;
+  /* 4. 视觉效果 */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+
+  /* 5. 其他 */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  transform: translateX(0);
 }
-</style>
 ```
 
-### 工具类库
+### 5. 避免魔法数字
 
-**利用UnoCSS工具类**：
+使用变量代替硬编码的数字。
 
-```vue
-<template>
-  <!-- ✅ 推荐：使用工具类 -->
-  <div class="flex items-center justify-between p-4 bg-white rounded-lg">
-    <span class="text-lg font-semibold">标题</span>
-    <button class="px-4 py-2 bg-blue-500 text-white rounded">
-      操作
-    </button>
-  </div>
-
-  <!-- ❌ 避免：自定义重复样式 -->
-  <div class="custom-container">
-    <span class="custom-title">标题</span>
-    <button class="custom-button">操作</button>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-/* ❌ 重复的自定义样式 */
-.custom-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+```scss
+// ❌ 魔法数字
+.sidebar {
+  width: 240px;
+  top: 50px;
+  z-index: 1001;
   padding: 16px;
-  background: white;
   border-radius: 8px;
 }
 
-.custom-title {
-  font-size: 18px;
-  font-weight: 600;
+// ✅ 使用变量
+:root {
+  --sidebar-width: 240px;
+  --header-height: 50px;
+  --z-sidebar: 1001;
+  --spacing-md: 16px;
+  --radius-md: 8px;
 }
 
-.custom-button {
-  padding: 8px 16px;
-  background: #3b82f6;
-  color: white;
-  border-radius: 4px;
-}
-</style>
-```
-
-## 避免常见错误
-
-### 不要使用 !important
-
-```scss
-// ❌ 避免：滥用 !important
-.button {
-  color: red !important;
-  background: blue !important;
-}
-
-// ✅ 推荐：提高选择器优先级
-.page .button {
-  color: red;
-  background: blue;
-}
-
-// ✅ 更好：使用更具体的类名
-.button--danger {
-  color: red;
-  background: blue;
-}
-```
-
-**何时可以使用 !important**：
-
-- 覆盖第三方库样式（没有其他方法）
-- 工具类（确保总是生效）
-
-```scss
-// ✅ 可以：工具类
-.u-hidden {
-  display: none !important;
-}
-```
-
-### 避免过度嵌套
-
-```scss
-// ❌ 避免：超过3层嵌套
-.page {
-  .container {
-    .content {
-      .card {
-        .header {
-          .title {
-            // 太深了
-          }
-        }
-      }
-    }
-  }
-}
-
-// ✅ 推荐：扁平化
-.page-container {
-  // ...
-}
-
-.page-content {
-  // ...
-}
-
-.page-card {
-  // ...
-}
-
-.page-card__header {
-  // ...
-}
-
-.page-card__title {
-  // ...
-}
-```
-
-### 避免魔法数字
-
-```scss
-// ❌ 避免：硬编码数值
-.element {
-  padding: 23px;
-  margin-top: 47px;
-  z-index: 9999;
-}
-
-// ✅ 推荐：使用变量
-.element {
+.sidebar {
+  width: var(--sidebar-width);
+  top: var(--header-height);
+  z-index: var(--z-sidebar);
   padding: var(--spacing-md);
-  margin-top: calc(var(--spacing-md) * 3);
-  z-index: var(--z-modal);
+  border-radius: var(--radius-md);
 }
 ```
 
-### 避免样式污染
+---
 
-```vue
-<!-- ❌ 避免：全局样式污染 -->
-<style lang="scss">
-.title {
-  font-size: 24px; // 会影响所有 .title
-}
-</style>
+## 团队协作最佳实践
 
-<!-- ✅ 推荐：使用 scoped -->
-<style lang="scss" scoped>
-.title {
-  font-size: 24px; // 只影响当前组件
-}
-</style>
+### 1. 样式指南文档
 
-<!-- ✅ 更好：使用唯一类名 -->
-<style lang="scss" scoped>
-.user-profile__title {
-  font-size: 24px;
-}
-</style>
-```
+维护团队样式指南文档。
 
-### 避免冗余代码
+**内容包括:**
 
-```scss
-// ❌ 避免：冗余属性
-.element {
-  display: block;
-  display: flex; // 覆盖了上面的
-}
+- 颜色系统
+- 间距系统
+- 字体系统
+- 组件样式库
+- 命名规范
+- 最佳实践
 
-// ❌ 避免：无效属性
-.element {
-  display: inline;
-  width: 100px; // inline元素宽度无效
-}
+### 2. 代码审查要点
 
-// ❌ 避免：默认值
-.element {
-  position: static; // 默认值
-  display: block; // div默认就是block
-}
+样式代码审查检查清单:
 
-// ✅ 推荐：只写必要的
-.element {
-  display: flex;
-  width: 100px;
-}
-```
+**架构和组织:**
+- [ ] 样式文件是否按功能模块组织
+- [ ] 是否避免了不必要的全局样式
+- [ ] 是否使用了 scoped 样式
 
-## 工具和插件
+**性能:**
+- [ ] 是否避免了深层选择器嵌套
+- [ ] 动画是否使用了 transform 而不是 position
+- [ ] 是否合理使用了 will-change
 
-### VS Code 插件
+**命名和规范:**
+- [ ] 类名是否遵循 BEM 命名
+- [ ] CSS 变量命名是否语义化
+- [ ] 是否使用了项目定义的变量和混合器
 
-**推荐安装**：
+**响应式:**
+- [ ] 是否遵循移动优先原则
+- [ ] 是否使用了标准断点
+- [ ] 是否测试了不同屏幕尺寸
 
-1. **SCSS IntelliSense** - SCSS 智能提示
-2. **Stylelint** - 样式代码检查
-3. **PostCSS Language Support** - PostCSS 支持
-4. **Color Highlight** - 颜色高亮
-5. **CSS Peek** - 快速查看CSS定义
+**主题适配:**
+- [ ] 是否适配了暗黑模式
+- [ ] 是否使用了 CSS 变量而不是硬编码颜色
+- [ ] 是否考虑了主题切换动画
 
-### Stylelint 配置
+### 3. 样式 Lint 配置
 
-**安装和配置**：
-
-```bash
-pnpm add -D stylelint stylelint-config-standard-scss
-```
+配置 Stylelint 强制代码规范。
 
 ```javascript
 // .stylelintrc.js
 module.exports = {
   extends: [
     'stylelint-config-standard-scss',
+    'stylelint-config-recommended-vue',
   ],
   rules: {
-    'selector-class-pattern': '^[a-z][a-z0-9]*(-[a-z0-9]+)*(__[a-z0-9]+(-[a-z0-9]+)*)?(--[a-z0-9]+(-[a-z0-9]+)*)?$',
+    // 选择器嵌套最多3层
     'max-nesting-depth': 3,
-    'no-descending-specificity': null,
+
+    // 类名命名规范(BEM)
+    'selector-class-pattern': '^[a-z][a-z0-9]*(-[a-z0-9]+)*((__[a-z0-9]+(-[a-z0-9]+)*)?(--[a-z0-9]+(-[a-z0-9]+)*)?)?$',
+
+    // 颜色必须使用变量
+    'color-no-hex': true,
+
+    // 禁止重复选择器
+    'no-duplicate-selectors': true,
+
+    // 属性顺序
+    'order/properties-order': [
+      'position',
+      'top',
+      'right',
+      'bottom',
+      'left',
+      'z-index',
+      'display',
+      'width',
+      'height',
+      // ... 更多属性
+    ],
   },
 }
 ```
 
-### UnoCSS 配置
+### 4. 组件库开发规范
 
-**最大化工具类使用**：
-
-```typescript
-// uno.config.ts
-import { defineConfig, presetUno, presetAttributify } from 'unocss'
-
-export default defineConfig({
-  presets: [
-    presetUno(),
-    presetAttributify(),
-  ],
-  shortcuts: {
-    'btn': 'px-4 py-2 rounded cursor-pointer',
-    'btn-primary': 'btn bg-blue-500 text-white hover:bg-blue-600',
-    'card': 'bg-white rounded-lg shadow p-4',
-  },
-  theme: {
-    colors: {
-      primary: 'var(--el-color-primary)',
-      success: 'var(--el-color-success)',
-      warning: 'var(--el-color-warning)',
-      danger: 'var(--el-color-danger)',
-    },
-  },
-})
-```
-
-## 实际案例
-
-### 案例1：响应式卡片
-
-**需求**：创建一个响应式卡片组件，在不同屏幕尺寸下显示不同布局。
+开发可复用组件时的样式规范。
 
 ```vue
+<!-- 组件: Card.vue -->
 <template>
-  <div class="responsive-card">
-    <img class="responsive-card__image" :src="image" alt="">
-    <div class="responsive-card__content">
-      <h3 class="responsive-card__title">{{ title }}</h3>
-      <p class="responsive-card__description">{{ description }}</p>
-      <button class="responsive-card__action">查看详情</button>
+  <div :class="cardClass">
+    <div v-if="$slots.header" class="card__header">
+      <slot name="header" />
+    </div>
+    <div class="card__body">
+      <slot />
+    </div>
+    <div v-if="$slots.footer" class="card__footer">
+      <slot name="footer" />
     </div>
   </div>
 </template>
 
-<script lang="ts" setup>
-defineProps<{
-  image: string
-  title: string
-  description: string
-}>()
+<script setup lang="ts">
+import { computed } from 'vue'
+
+interface CardProps {
+  /** 卡片类型 */
+  type?: 'default' | 'primary' | 'success' | 'warning' | 'danger'
+  /** 是否显示阴影 */
+  shadow?: 'always' | 'hover' | 'never'
+  /** 是否可悬浮 */
+  hoverable?: boolean
+}
+
+const props = withDefaults(defineProps<CardProps>(), {
+  type: 'default',
+  shadow: 'always',
+  hoverable: false,
+})
+
+const cardClass = computed(() => [
+  'card',
+  `card--${props.type}`,
+  `card--shadow-${props.shadow}`,
+  {
+    'card--hoverable': props.hoverable,
+  },
+])
 </script>
 
 <style lang="scss" scoped>
-@use '@/assets/styles/abstracts/mixins' as *;
-@use '@/assets/styles/abstracts/variables' as *;
-
-.responsive-card {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--bg-level-1);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
+.card {
+  // 使用 CSS 变量便于主题定制
+  background: var(--card-bg, var(--bg-primary));
+  border: 1px solid var(--card-border, var(--border-color));
+  border-radius: var(--card-radius, var(--radius-md));
   overflow: hidden;
-  transition: box-shadow var(--duration-normal) ease;
+  transition: var(--duration-normal);
 
-  &:hover {
-    box-shadow: var(--shadow-md);
+  // 类型修饰符
+  &--primary {
+    border-color: var(--el-color-primary);
   }
 
-  // 平板横向及以上：横向布局
-  @include respond-to('md') {
-    flex-direction: row;
+  &--success {
+    border-color: var(--el-color-success);
   }
 
-  &__image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+  // 阴影修饰符
+  &--shadow-always {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
 
-    @include respond-to('md') {
-      width: 200px;
-      height: auto;
+  &--shadow-hover {
+    &:hover {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
     }
   }
 
-  &__content {
-    padding: var(--spacing-md);
-    flex: 1;
+  &--shadow-never {
+    box-shadow: none;
   }
 
-  &__title {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: var(--spacing-sm);
-
-    @include respond-to('lg') {
-      font-size: 20px;
-    }
-  }
-
-  &__description {
-    color: var(--text-regular);
-    margin-bottom: var(--spacing-md);
-    line-height: 1.6;
-  }
-
-  &__action {
-    @include button-base;
-    padding: var(--spacing-sm) var(--spacing-md);
-    background-color: var(--el-color-primary);
-    color: white;
+  // 可悬浮
+  &--hoverable {
+    cursor: pointer;
 
     &:hover {
-      opacity: 0.9;
+      transform: translateY(-2px);
     }
   }
+
+  // 子元素
+  &__header {
+    padding: var(--card-padding, 16px);
+    border-bottom: 1px solid var(--card-border, var(--border-color));
+  }
+
+  &__body {
+    padding: var(--card-padding, 16px);
+  }
+
+  &__footer {
+    padding: var(--card-padding, 16px);
+    border-top: 1px solid var(--card-border, var(--border-color));
+    background: var(--card-footer-bg, var(--bg-secondary));
+  }
+}
+
+// 暗黑模式适配
+.dark .card {
+  --card-bg: var(--bg-level-1);
+  --card-border: var(--bg-level-2);
+  --card-footer-bg: var(--bg-level-2);
+
+  &--shadow-always,
+  &--shadow-hover:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
 }
 </style>
 ```
 
-### 案例2：主题切换按钮
+---
 
-**需求**：创建一个带动画的主题切换按钮。
+## 常见问题和解决方案
 
-```vue
-<template>
-  <button
-    class="theme-toggle"
-    :class="{ 'theme-toggle--dark': isDark }"
-    @click="toggleTheme"
-  >
-    <transition name="icon-fade" mode="out-in">
-      <i v-if="isDark" key="moon" class="icon-moon">🌙</i>
-      <i v-else key="sun" class="icon-sun">☀️</i>
-    </transition>
-  </button>
-</template>
+### 1. 样式优先级冲突
 
-<script lang="ts" setup>
-import { computed } from 'vue'
-import { useTheme } from '@/composables/useTheme'
+**问题描述:**
 
-const { theme, toggleTheme } = useTheme()
-const isDark = computed(() => theme.value === 'dark')
-</script>
+Element Plus 样式被覆盖失败。
 
-<style lang="scss" scoped>
-.theme-toggle {
-  position: relative;
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-round);
-  background-color: var(--bg-level-2);
-  border: 1px solid var(--border-color);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition:
-    background-color var(--duration-normal) ease,
-    transform var(--duration-fast) ease;
+**原因分析:**
 
-  &:hover {
-    background-color: var(--bg-level-3);
-    transform: scale(1.05);
-  }
+- Element Plus 使用了较高的选择器特异性
+- 样式导入顺序不正确
+- 缺少 `!important`
 
-  &:active {
-    transform: scale(0.95);
-  }
+**解决方案:**
 
-  i {
-    font-size: 24px;
-    line-height: 1;
-  }
+```scss
+// ❌ 优先级不够
+.el-button {
+  background: red;
 }
 
-// 图标淡入淡出动画
-.icon-fade-enter-active,
-.icon-fade-leave-active {
-  transition: opacity var(--duration-fast) ease;
+// ✅ 增加特异性
+.custom-button.el-button {
+  background: red;
 }
 
-.icon-fade-enter-from,
-.icon-fade-leave-to {
-  opacity: 0;
+// ✅ 使用 deep 选择器
+:deep(.el-button) {
+  background: red;
 }
-</style>
+
+// ✅ 使用 !important (最后手段)
+.el-button {
+  background: red !important;
+}
+
+// ✅ 最佳 - 覆盖 CSS 变量
+:root {
+  --el-color-primary: red !important;
+}
 ```
 
-### 案例3：数据表格布局
+### 2. scoped 样式不生效
 
-**需求**：创建一个复杂的数据表格页面布局。
+**问题描述:**
+
+scoped 样式无法影响子组件。
+
+**原因分析:**
+
+Vue scoped 样式只影响当前组件根元素和其子元素,不影响子组件内部。
+
+**解决方案:**
 
 ```vue
+<!-- 父组件 -->
 <template>
-  <div class="table-page">
-    <!-- 搜索栏 -->
-    <div class="table-page__search search">
-      <div class="filter-container">
-        <div class="filter-item">
-          <el-input
-            v-model="keyword"
-            placeholder="搜索..."
-            clearable
-          />
-        </div>
-        <div class="filter-item">
-          <el-button type="primary" @click="handleSearch">
-            查询
-          </el-button>
-          <el-button @click="handleReset">
-            重置
-          </el-button>
-        </div>
-      </div>
-    </div>
-
-    <!-- 数据表格 -->
-    <div class="table-page__content panel">
-      <el-table :data="tableData" style="width: 100%">
-        <!-- 表格列 -->
-      </el-table>
-    </div>
+  <div class="parent">
+    <ChildComponent class="child" />
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const keyword = ref('')
-const tableData = ref([])
-
-const handleSearch = () => {
-  console.log('搜索:', keyword.value)
-}
-
-const handleReset = () => {
-  keyword.value = ''
-}
-</script>
-
 <style lang="scss" scoped>
-.table-page {
-  padding: var(--spacing-lg);
+/* ❌ 不生效 - 无法穿透到子组件内部 */
+.child .inner-element {
+  color: red;
+}
 
-  &__search {
-    margin-bottom: var(--spacing-md);
-  }
+/* ✅ 使用 deep 选择器 */
+.child :deep(.inner-element) {
+  color: red;
+}
 
-  &__content {
-    // panel 类已提供基础样式
-  }
+/* ✅ 或者为子组件根元素设置样式 */
+.child {
+  /* 可以设置子组件根元素的样式 */
+  border: 1px solid red;
 }
 </style>
 ```
+
+### 3. CSS 变量在 SCSS 中使用
+
+**问题描述:**
+
+在 SCSS 函数中使用 CSS 变量报错。
+
+**原因分析:**
+
+SCSS 编译时无法解析运行时的 CSS 变量。
+
+**解决方案:**
+
+```scss
+// ❌ SCSS 函数无法处理 CSS 变量
+@function darken-color($color) {
+  @return darken($color, 10%);
+}
+
+.button {
+  background: darken-color(var(--color-primary));  // 报错
+}
+
+// ✅ 使用 CSS calc() 和 filter
+.button {
+  background: var(--color-primary);
+
+  &:hover {
+    filter: brightness(0.9);  // 使用 CSS filter
+  }
+}
+
+// ✅ 或者在 CSS 中使用 color-mix
+.button {
+  background: var(--color-primary);
+
+  &:hover {
+    background: color-mix(in srgb, var(--color-primary) 90%, black);
+  }
+}
+
+// ✅ 或者定义衍生变量
+:root {
+  --color-primary: #409eff;
+  --color-primary-dark: #3a8fe7;  // 手动定义深色版本
+}
+
+.button {
+  background: var(--color-primary);
+
+  &:hover {
+    background: var(--color-primary-dark);
+  }
+}
+```
+
+### 4. 动画卡顿优化
+
+**问题描述:**
+
+过渡动画不流畅,出现卡顿。
+
+**原因分析:**
+
+- 动画触发了 reflow/repaint
+- 动画元素过多
+- 未使用 GPU 加速
+
+**解决方案:**
+
+```scss
+// ❌ 触发 reflow
+.slide-enter-active {
+  transition: width 0.3s, height 0.3s, left 0.3s, top 0.3s;
+}
+
+// ✅ 使用 transform(仅触发 composite)
+.slide-enter-active {
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.slide-enter-from {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-enter-to {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+// ✅ 添加 will-change 提示
+.slide-enter-active,
+.slide-leave-active {
+  will-change: transform, opacity;
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+// ✅ 动画结束后移除 will-change
+.slide-enter-to,
+.slide-leave-from {
+  will-change: auto;
+}
+
+// ✅ 启用 GPU 加速
+.animated-element {
+  transform: translateZ(0);  // 触发 3D 加速
+}
+```
+
+### 5. UnoCSS 类名不生效
+
+**问题描述:**
+
+动态生成的 UnoCSS 类名不起作用。
+
+**原因分析:**
+
+UnoCSS 无法识别字符串拼接的类名。
+
+**解决方案:**
+
+```vue
+<template>
+  <!-- ❌ 字符串拼接 - 类名不会生成 -->
+  <div :class="'text-' + color + '-500'">
+    文本
+  </div>
+
+  <!-- ✅ 完整类名 -->
+  <div :class="{
+    'text-blue-500': color === 'blue',
+    'text-red-500': color === 'red',
+    'text-green-500': color === 'green'
+  }">
+    文本
+  </div>
+
+  <!-- ✅ 或者使用 safelist -->
+  <div :class="`text-${color}-500`">
+    文本
+  </div>
+</template>
+
+<script setup lang="ts">
+// uno.config.ts 中添加 safelist
+export default defineConfig({
+  safelist: [
+    'text-blue-500',
+    'text-red-500',
+    'text-green-500',
+  ]
+})
+</script>
+```
+
+### 6. 主题切换闪烁
+
+**问题描述:**
+
+切换主题时出现短暂的白屏或闪烁。
+
+**原因分析:**
+
+- 主题类名应用延迟
+- 浏览器重新计算样式
+- 未使用过渡动画
+
+**解决方案:**
+
+```typescript
+// ✅ 使用 View Transition API
+const toggleTheme = () => {
+  if (!document.startViewTransition) {
+    // 不支持则直接切换
+    document.documentElement.classList.toggle('dark')
+    return
+  }
+
+  // 使用过渡动画
+  document.startViewTransition(() => {
+    document.documentElement.classList.toggle('dark')
+  })
+}
+
+// ✅ 或者在页面加载前应用主题
+// index.html
+<script>
+  // 在页面渲染前应用主题,避免闪烁
+  const theme = localStorage.getItem('theme')
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark')
+  }
+</script>
+
+// ✅ 使用 CSS 过渡
+:root {
+  --transition-theme: background-color 0.3s ease, color 0.3s ease;
+}
+
+* {
+  transition: var(--transition-theme);
+}
+```
+
+---
 
 ## 总结
 
-遵循本文档的最佳实践，可以：
+### 核心原则
 
-**提高代码质量**：
-- 统一的命名规范
-- 清晰的代码结构
-- 可维护的样式代码
+1. **架构优先** - 建立清晰的样式架构和分层
+2. **原子化优先** - 优先使用 UnoCSS,减少自定义样式
+3. **变量驱动** - 使用 CSS 变量实现主题和动态样式
+4. **移动优先** - 从小屏幕开始,逐步增强
+5. **性能至上** - 优化选择器、动画和加载策略
+6. **规范统一** - 遵循 BEM 命名和团队规范
 
-**提升开发效率**：
-- 复用混合器和工具类
-- 快速实现响应式设计
-- 高效的主题切换
+### 关键实践
 
-**优化应用性能**：
-- 减少重排重绘
-- 合理使用CSS变量
-- 优化选择器性能
+- 使用 SCSS 分层架构组织样式代码
+- 优先使用 UnoCSS 原子类而不是自定义样式
+- 使用 CSS 变量实现主题系统和暗黑模式
+- 遵循移动优先的响应式设计策略
+- 使用 transform 和 will-change 优化动画性能
+- 遵循 BEM 命名约定和团队编码规范
 
-**团队协作顺畅**：
-- 统一的开发规范
-- 清晰的文档说明
-- 易于理解的代码
+### 学习路径
 
-**核心原则**：
+1. **入门阶段** - 了解 SCSS 基础和 UnoCSS 使用
+2. **进阶阶段** - 掌握主题系统、响应式设计和性能优化
+3. **精通阶段** - 深入理解架构设计、代码规范和团队协作
 
-1. **保持简单** - 不过度设计，够用就好
-2. **追求复用** - 识别重复，抽取公共
-3. **注重性能** - 优化为先，体验至上
-4. **规范统一** - 团队协作，保持一致
-5. **持续优化** - 不断改进，追求卓越
+### 持续改进
 
-掌握这些最佳实践，将帮助你编写出高质量、高性能、易维护的样式代码。
+- 定期审查和优化样式代码
+- 关注 CSS 新特性和最佳实践
+- 收集团队反馈,持续更新规范
+- 建立样式组件库,提高复用性
+
+通过遵循这些最佳实践,可以构建高质量、可维护、高性能的样式系统,提升开发效率和用户体验。

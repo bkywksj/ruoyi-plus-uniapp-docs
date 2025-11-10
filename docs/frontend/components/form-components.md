@@ -1,349 +1,261 @@
-# 表单组件
+# 表单组件总览
 
 ## 介绍
 
-RuoYi-Plus 前端项目提供了一套完整的表单组件体系（AForm 系列），基于 Element Plus 进行深度封装，旨在简化表单开发流程，提供统一的表单交互体验。这套组件系统通过智能化的响应式布局、国际化支持、灵活的配置选项，大幅提升了表单开发效率和代码可维护性。
+RuoYi-Plus 前端项目提供了一套完整的表单组件体系,基于 Element Plus 进行二次封装,旨在简化表单开发、提供统一的交互体验和减少重复代码。这些组件以 `AForm` 为前缀命名,包含了输入、选择、上传、编辑器等各类表单控件,支持响应式布局、国际化、自动校验等功能。
 
-**核心特性：**
+**核心特性:**
 
-- **统一封装** - 基于 Element Plus 组件二次封装，提供一致的 API 设计和使用体验
-- **智能布局** - 内置响应式栅格系统，支持多种布局模式自动适配不同屏幕尺寸
-- **国际化支持** - 完整的 i18n 集成，自动翻译标签和占位符文本
-- **灵活配置** - 支持表单项包装控制，可独立使用或与表单容器配合
-- **类型安全** - 完整的 TypeScript 类型定义，提供准确的代码提示和类型检查
-- **字段映射** - 灵活的字段名称映射机制，适配各种数据结构
-- **禁用逻辑** - 强大的选项禁用功能，支持单值、数组和函数判断
-- **响应模式** - 三种响应式模式（屏幕/容器/模态框），适应不同使用场景
-- **扩展性强** - 丰富的插槽支持，满足各种自定义需求
-- **AI 增强** - 提供 AI 辅助输入组件，提升用户输入效率
+- **统一封装** - 所有表单组件基于 Element Plus 二次封装,提供一致的 API 设计
+- **响应式布局** - 支持基于屏幕尺寸、容器尺寸和模态框尺寸的智能响应式布局
+- **开箱即用** - 内置表单项容器 `el-form-item`,支持标签、校验、提示等功能
+- **国际化支持** - 集成 i18n,自动处理占位符和标签的多语言显示
+- **灵活配置** - 支持显示/隐藏表单项容器、自定义布局、插槽扩展等
+- **防自动填充** - 密码输入框支持防浏览器自动填充功能
+- **智能提示** - 支持 Tooltip 提示信息,帮助用户理解字段含义
+- **AI 增强** - 部分组件支持 AI 辅助输入,提升用户体验
 
-## 组件总览
+**组件分类:**
 
-### 基础输入组件
+表单组件体系包含 13 个核心组件:
 
-| 组件 | 说明 | 适用场景 |
-|------|------|----------|
-| `AFormInput` | 文本输入框 | 文本、文本域、数字、密码输入 |
-| `AFormSelect` | 下拉选择器 | 单选、多选，字典数据选择 |
-| `AFormCheckbox` | 复选框组 | 多项选择，权限配置 |
-| `AFormRadio` | 单选框组 | 互斥选项，状态切换 |
-| `AFormSwitch` | 开关 | 布尔值切换，启用禁用 |
-| `AFormDate` | 日期选择器 | 日期、时间、日期范围选择 |
+1. **基础输入** - AFormInput (文本、数字、密码、文本域)
+2. **选择器** - AFormSelect、AFormCascader、AFormTreeSelect
+3. **日期时间** - AFormDate
+4. **开关选择** - AFormRadio、AFormCheckbox、AFormSwitch
+5. **文件上传** - AFormFileUpload、AFormImgUpload
+6. **富文本编辑** - AFormEditor
+7. **地图选点** - AFormMap
+8. **AI 增强** - AFormInputWithAi
 
-### 高级选择组件
+**适用场景:**
 
-| 组件 | 说明 | 适用场景 |
-|------|------|----------|
-| `AFormCascader` | 级联选择器 | 多级关联数据选择，地址选择 |
-| `AFormTreeSelect` | 树形选择器 | 树状结构数据选择，部门选择 |
+- 数据录入表单(新增/编辑/详情)
+- 搜索筛选表单
+- 配置管理表单
+- 用户信息表单
+- 内容发布表单
 
-### 上传组件
+---
 
-| 组件 | 说明 | 适用场景 |
-|------|------|----------|
-| `AFormImgUpload` | 图片上传 | 图片文件上传，支持预览 |
-| `AFormFileUpload` | 文件上传 | 各类文件上传管理 |
+## 组件架构设计
 
-### 增强组件
+### 1. 设计理念
 
-| 组件 | 说明 | 适用场景 |
-|------|------|----------|
-| `AFormEditor` | 富文本编辑器 | 富文本内容编辑 |
-| `AFormMap` | 地图选择器 | 地理位置选择 |
-| `AFormInputWithAi` | AI 辅助输入 | AI 生成文本内容 |
+表单组件的设计遵循以下核心理念:
 
-## 通用属性
+**组件化与可复用性:**
 
-所有表单组件都继承以下通用属性：
+每个表单组件都是独立的、可复用的单元,可以在不同的表单场景中灵活使用。组件封装了常见的表单交互逻辑,开发者只需关注业务数据和校验规则。
 
-### 基础属性
+**渐进式增强:**
+
+- 基础层: Element Plus 原生组件
+- 封装层: AForm 系列组件(添加响应式、国际化等)
+- 业务层: 页面级表单组合
+
+**配置优于编码:**
+
+通过属性配置即可实现大部分功能,无需编写额外的模板代码。例如响应式布局只需配置 `span` 属性,无需手写媒体查询。
+
+### 2. 统一 Props 设计
+
+所有表单组件都遵循统一的 Props 命名规范:
+
+**核心属性:**
 
 ```typescript
-interface BaseFormProps {
-  /** 绑定值 */
-  modelValue?: any
+interface BaseFormComponentProps {
+  // 数据绑定
+  modelValue: any                      // v-model 绑定值
 
-  /** 表单标签文本 */
-  label?: string
+  // 表单项配置
+  label?: string                       // 标签文本
+  prop?: string                        // 表单域字段名
+  labelWidth?: number | string         // 标签宽度
 
-  /** 标签宽度 */
-  labelWidth?: number | string
+  // 布局配置
+  span?: SpanType                      // 栅格列数(响应式)
+  showFormItem?: boolean               // 是否显示 el-form-item 容器
 
-  /** 表单域字段名 */
-  prop?: string
+  // 交互配置
+  placeholder?: string                 // 占位符
+  disabled?: boolean                   // 是否禁用
+  clearable?: boolean                  // 是否可清除
+  size?: ComponentSize                 // 组件尺寸
 
-  /** 占位符文本 */
-  placeholder?: string
-
-  /** 是否禁用 */
-  disabled?: boolean
-
-  /** 组件尺寸 */
-  size?: '' | 'default' | 'small' | 'large'
-
-  /** 提示信息 */
-  tooltip?: string
-
-  /** 是否显示表单项包装 */
-  showFormItem?: boolean
+  // 辅助功能
+  tooltip?: string                     // 提示信息
+  responsiveMode?: ResponsiveMode      // 响应式模式
 }
 ```
 
-### 布局属性
+**响应式布局属性:**
 
 ```typescript
-interface LayoutProps {
-  /**
-   * 栅格占据的列数
-   * - 数字: 固定span值，如 12
-   * - 响应式对象: { xs: 24, sm: 24, md: 12, lg: 8, xl: 6 }
-   * - 预设字符串: 'auto' - 自动响应式布局
-   */
-  span?: number | ResponsiveSpan | 'auto'
+// 支持三种 span 配置方式
 
-  /**
-   * 响应式模式
-   * - 'screen': 基于屏幕尺寸（默认）
-   * - 'container': 基于容器尺寸（弹窗推荐）
-   * - 'modal-size': 基于 AModal 的 size 属性
-   */
-  responsiveMode?: 'screen' | 'container' | 'modal-size'
+// 1. 固定值
+span={12}
 
-  /** 模态框尺寸（配合 modal-size 模式） */
-  modalSize?: 'small' | 'medium' | 'large' | 'xl'
+// 2. 响应式对象
+span={{ xs: 24, sm: 24, md: 12, lg: 8, xl: 6 }}
+
+// 3. 预设值
+span="auto"  // 自动响应式: { xs: 24, sm: 24, md: 12, lg: 8, xl: 6 }
+```
+
+**响应式模式:**
+
+```typescript
+// 三种响应式模式
+
+// 1. 基于屏幕尺寸(默认)
+responsiveMode="screen"
+
+// 2. 基于容器尺寸
+responsiveMode="container"
+
+// 3. 基于模态框尺寸
+responsiveMode="modal-size"
+modalSize="medium"
+```
+
+### 3. 统一事件设计
+
+所有表单组件都支持以下标准事件:
+
+```typescript
+interface BaseFormComponentEmits {
+  // 数据更新事件
+  'update:modelValue': (value: any) => void
+
+  // 输入事件
+  'input': (value: any) => void
+
+  // 失焦事件
+  'blur': (event: FocusEvent) => void
+
+  // 值改变事件
+  'change': (value: any) => void
 }
 ```
 
-### 选项数据属性
+**事件触发时机:**
 
-具有选项列表的组件（Select、Checkbox、Radio 等）支持以下属性：
+- `update:modelValue`: 值变化时立即触发,用于 v-model 双向绑定
+- `input`: 用户输入时触发(实时)
+- `change`: 值确定变化时触发(失焦或选择完成)
+- `blur`: 失去焦点时触发
 
-```typescript
-interface OptionsProps {
-  /** 选项数据数组 */
-  options: any[]
+### 4. 插槽设计
 
-  /** value 字段名称，默认 'value' */
-  valueField?: string
+表单组件支持多种插槽用于自定义内容:
 
-  /** label 字段名称，默认 'label' */
-  labelField?: string
+```vue
+<AFormInput v-model="form.userName" label="用户名">
+  <!-- 前缀内容插槽 -->
+  <template #prepend>
+    <el-icon><User /></el-icon>
+  </template>
 
-  /** 禁用字段名称，默认 'status' */
-  disabledField?: string
+  <!-- 后缀内容插槽 -->
+  <template #append>
+    <el-button>搜索</el-button>
+  </template>
 
-  /** 禁用条件值，默认 '0' */
-  disabledValue?: string | number | boolean | Array<any> | ((item: any) => boolean)
+  <!-- 前缀图标插槽 -->
+  <template #prefix>
+    <el-icon><Search /></el-icon>
+  </template>
 
-  /** 是否使用选项自身的 disabled 属性 */
-  useItemDisabled?: boolean
-}
+  <!-- 后缀图标插槽 -->
+  <template #suffix>
+    <el-icon><Close /></el-icon>
+  </template>
+</AFormInput>
 ```
 
-## AFormInput 输入框
+---
 
-### 基本用法
+## 核心组件详解
 
-#### 文本输入
+### 1. AFormInput - 输入框组件
 
-最基础的文本输入框，用于单行文本输入。
+#### 组件说明
+
+`AFormInput` 是最常用的表单组件,支持文本、数字、密码、文本域等多种输入类型。基于 Element Plus 的 `el-input` 和 `el-input-number` 封装,提供了响应式布局、国际化、防自动填充等增强功能。
+
+#### 基础用法
+
+**文本输入:**
 
 ```vue
 <template>
   <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 基础文本输入 -->
-      <AFormInput
-        v-model="form.userName"
-        label="用户名"
-        prop="userName"
-        :span="12"
-        placeholder="请输入用户名"
-      />
+    <!-- 基础文本输入 -->
+    <AFormInput
+      v-model="form.userName"
+      label="用户名"
+      prop="userName"
+    />
 
-      <!-- 带字数限制的输入 -->
-      <AFormInput
-        v-model="form.nickName"
-        label="昵称"
-        prop="nickName"
-        :span="12"
-        :maxlength="20"
-        show-word-limit
-      />
-    </el-row>
+    <!-- 带清除按钮 -->
+    <AFormInput
+      v-model="form.nickName"
+      label="昵称"
+      prop="nickName"
+      :clearable="true"
+    />
+
+    <!-- 自定义占位符 -->
+    <AFormInput
+      v-model="form.email"
+      label="邮箱"
+      prop="email"
+      placeholder="请输入邮箱地址"
+    />
   </el-form>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { reactive } from 'vue'
 
 const form = reactive({
   userName: '',
-  nickName: ''
+  nickName: '',
+  email: ''
 })
 </script>
 ```
 
-**使用说明：**
-- `maxlength` 属性限制输入长度
-- `show-word-limit` 显示字数统计
-- 默认启用清除按钮，可通过 `clearable` 控制
-
-#### 文本域输入
-
-用于多行文本输入场景。
+**密码输入:**
 
 ```vue
 <template>
-  <el-form :model="form" label-width="100px">
-    <!-- 自适应高度文本域 -->
+  <el-form :model="form">
+    <!-- 基础密码输入 -->
     <AFormInput
-      v-model="form.remark"
-      label="备注"
-      prop="remark"
-      type="textarea"
-      :maxlength="200"
-      show-word-limit
-      :autosize="{ minRows: 3, maxRows: 10 }"
+      v-model="form.password"
+      label="密码"
+      prop="password"
+      type="password"
+      show-password
     />
 
-    <!-- 固定行数文本域 -->
+    <!-- 防自动填充密码 -->
     <AFormInput
-      v-model="form.description"
-      label="描述"
-      prop="description"
-      type="textarea"
-      :rows="5"
+      v-model="form.newPassword"
+      label="新密码"
+      prop="newPassword"
+      type="password"
+      show-password
+      prevent-autofill
     />
   </el-form>
 </template>
 
-<script lang="ts" setup>
-import { reactive } from 'vue'
-
-const form = reactive({
-  remark: '',
-  description: ''
-})
-</script>
-```
-
-**技术实现：**
-- `type="textarea"` 切换为文本域模式
-- `autosize` 属性支持高度自动调整
-- `rows` 属性设置固定行数
-- 自动高度和固定行数不能同时使用
-
-#### 数字输入
-
-专用于数字输入，支持步进器控制。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 基础数字输入 -->
-      <AFormInput
-        v-model="form.age"
-        label="年龄"
-        prop="age"
-        type="number"
-        :span="12"
-        :min="0"
-        :max="150"
-      />
-
-      <!-- 带精度控制的数字 -->
-      <AFormInput
-        v-model="form.price"
-        label="价格"
-        prop="price"
-        type="number"
-        :span="12"
-        :precision="2"
-        :step="0.1"
-      />
-
-      <!-- 只允许步长倍数 -->
-      <AFormInput
-        v-model="form.quantity"
-        label="数量"
-        prop="quantity"
-        type="number"
-        :span="12"
-        :step="5"
-        :step-strictly="true"
-      />
-
-      <!-- 控制按钮在右侧 -->
-      <AFormInput
-        v-model="form.count"
-        label="计数"
-        prop="count"
-        type="number"
-        :span="12"
-        controls-position="right"
-        :width="200"
-      />
-    </el-row>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive } from 'vue'
-
-const form = reactive({
-  age: 0,
-  price: 0,
-  quantity: 0,
-  count: 0
-})
-</script>
-```
-
-**配置项说明：**
-- `min` / `max`：设置数值范围
-- `step`：设置步进值，默认为 1
-- `step-strictly`：是否只能输入步长的倍数
-- `precision`：数值精度（小数位数）
-- `controls`：是否显示增减按钮，默认 true
-- `controls-position`：控制按钮位置，可选 '' 或 'right'
-
-#### 密码输入
-
-安全的密码输入框，支持显示/隐藏切换。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 基础密码输入 -->
-      <AFormInput
-        v-model="form.password"
-        label="密码"
-        prop="password"
-        type="password"
-        :span="12"
-        show-password
-      />
-
-      <!-- 防自动填充密码 -->
-      <AFormInput
-        v-model="form.newPassword"
-        label="新密码"
-        prop="newPassword"
-        type="password"
-        :span="12"
-        show-password
-        prevent-autofill
-      />
-    </el-row>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive } from 'vue'
-
+<script setup lang="ts">
 const form = reactive({
   password: '',
   newPassword: ''
@@ -351,308 +263,331 @@ const form = reactive({
 </script>
 ```
 
-**安全特性：**
-- `show-password` 显示密码可见性切换图标
-- `prevent-autofill` 防止浏览器自动填充密码
-- 防自动填充通过初始设置 readonly 实现，聚焦时移除
+**使用说明:**
 
-### 响应式布局
+- `show-password`: 显示密码可见性切换按钮
+- `prevent-autofill`: 防止浏览器自动填充密码,初始设置为只读,聚焦时移除只读
 
-#### 固定列数布局
-
-适用于桌面端固定布局场景。
+**文本域输入:**
 
 ```vue
 <template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 每行两列 -->
-      <AFormInput v-model="form.field1" label="字段1" prop="field1" :span="12" />
-      <AFormInput v-model="form.field2" label="字段2" prop="field2" :span="12" />
+  <el-form :model="form">
+    <!-- 基础文本域 -->
+    <AFormInput
+      v-model="form.description"
+      label="描述"
+      prop="description"
+      type="textarea"
+      :rows="3"
+    />
 
-      <!-- 每行三列 -->
-      <AFormInput v-model="form.field3" label="字段3" prop="field3" :span="8" />
-      <AFormInput v-model="form.field4" label="字段4" prop="field4" :span="8" />
-      <AFormInput v-model="form.field5" label="字段5" prop="field5" :span="8" />
+    <!-- 自适应高度文本域 -->
+    <AFormInput
+      v-model="form.content"
+      label="内容"
+      prop="content"
+      type="textarea"
+      :autosize="{ minRows: 2, maxRows: 10 }"
+    />
 
-      <!-- 独占一行 -->
-      <AFormInput v-model="form.field6" label="字段6" prop="field6" :span="24" type="textarea" />
+    <!-- 带字数统计 -->
+    <AFormInput
+      v-model="form.remark"
+      label="备注"
+      prop="remark"
+      type="textarea"
+      :maxlength="200"
+      show-word-limit
+    />
+  </el-form>
+</template>
+```
+
+**使用说明:**
+
+- `rows`: 固定文本域行数
+- `autosize`: 自适应高度配置
+- `maxlength` + `show-word-limit`: 显示字数统计
+
+**数字输入:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 基础数字输入 -->
+    <AFormInput
+      v-model="form.age"
+      label="年龄"
+      prop="age"
+      type="number"
+      :min="0"
+      :max="150"
+    />
+
+    <!-- 带步长的数字输入 -->
+    <AFormInput
+      v-model="form.price"
+      label="价格"
+      prop="price"
+      type="number"
+      :min="0"
+      :step="0.01"
+      :precision="2"
+    />
+
+    <!-- 严格步长 -->
+    <AFormInput
+      v-model="form.quantity"
+      label="数量"
+      prop="quantity"
+      type="number"
+      :min="1"
+      :step="5"
+      :step-strictly="true"
+    />
+
+    <!-- 右侧控制按钮 -->
+    <AFormInput
+      v-model="form.count"
+      label="计数"
+      prop="count"
+      type="number"
+      controls-position="right"
+    />
+  </el-form>
+</template>
+```
+
+**使用说明:**
+
+- `min` / `max`: 最小值/最大值
+- `step`: 步长
+- `precision`: 数值精度(小数位数)
+- `step-strictly`: 是否只能输入步长的倍数
+- `controls-position`: 控制按钮位置("" 或 "right")
+
+#### 响应式布局
+
+**固定 span:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <el-row :gutter="20">
+      <!-- 固定占据 12 列(50% 宽度) -->
+      <AFormInput
+        v-model="form.userName"
+        label="用户名"
+        :span="12"
+      />
+
+      <AFormInput
+        v-model="form.nickName"
+        label="昵称"
+        :span="12"
+      />
     </el-row>
   </el-form>
 </template>
 ```
 
-**布局说明：**
-- span 值总和为 24 时恰好占满一行
-- gutter 属性设置列间距
-- 通过 span 值灵活控制布局比例
-
-#### 响应式对象布局
-
-根据屏幕尺寸自动调整布局。
+**响应式 span:**
 
 ```vue
 <template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
+  <el-form :model="form">
+    <el-row :gutter="20">
       <!-- 完整响应式配置 -->
       <AFormInput
         v-model="form.userName"
         label="用户名"
-        prop="userName"
         :span="{ xs: 24, sm: 24, md: 12, lg: 8, xl: 6 }"
       />
 
-      <!-- 部分响应式配置（未指定的使用默认值 24） -->
+      <!-- 部分响应式配置(未指定的使用默认值 24) -->
       <AFormInput
         v-model="form.email"
         label="邮箱"
-        prop="email"
         :span="{ md: 12, lg: 8 }"
+      />
+
+      <!-- 预设响应式配置 -->
+      <AFormInput
+        v-model="form.phone"
+        label="电话"
+        span="auto"
       />
     </el-row>
   </el-form>
 </template>
 ```
 
-**断点说明：**
-- `xs`：<768px（手机）
-- `sm`：≥768px（平板竖屏）
-- `md`：≥992px（平板横屏）
-- `lg`：≥1200px（桌面）
-- `xl`：≥1920px（大屏）
+**响应式断点说明:**
 
-#### 预设响应式布局
+| 断点 | 尺寸 | 设备 |
+|------|------|------|
+| xs | <768px | 手机 |
+| sm | ≥768px | 平板竖屏 |
+| md | ≥992px | 平板横屏/小屏电脑 |
+| lg | ≥1200px | 普通电脑 |
+| xl | ≥1920px | 大屏电脑 |
 
-使用预设的响应式布局方案。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- auto 预设：自动响应式布局 -->
-      <AFormInput v-model="form.userName" label="用户名" prop="userName" span="auto" />
-      <AFormInput v-model="form.email" label="邮箱" prop="email" span="auto" />
-      <AFormInput v-model="form.phone" label="手机号" prop="phone" span="auto" />
-    </el-row>
-  </el-form>
-</template>
-```
-
-**auto 预设布局方案：**
-- 手机：单列（24）
-- 平板：双列（12）
-- 桌面：三列（8）
-- 大屏：四列（6）
-
-#### 弹窗场景布局
-
-在弹窗中使用容器响应式模式。
+**响应式模式:**
 
 ```vue
 <template>
-  <AModal v-model="visible" title="编辑用户" size="medium">
-    <el-form :model="form" label-width="100px">
-      <el-row :gutter="16">
-        <!-- 基于容器尺寸响应 -->
-        <AFormInput
-          v-model="form.userName"
-          label="用户名"
-          prop="userName"
-          span="auto"
-          responsive-mode="container"
-        />
+  <!-- 1. 基于屏幕尺寸(默认) -->
+  <AFormInput
+    v-model="form.userName"
+    :span="{ md: 12 }"
+    responsive-mode="screen"
+  />
 
-        <!-- 基于模态框 size 响应 -->
-        <AFormInput
-          v-model="form.email"
-          label="邮箱"
-          prop="email"
-          span="auto"
-          responsive-mode="modal-size"
-          modal-size="medium"
-        />
-      </el-row>
+  <!-- 2. 基于容器尺寸(弹窗场景推荐) -->
+  <el-dialog v-model="visible" width="800px">
+    <el-form :model="form">
+      <AFormInput
+        v-model="form.userName"
+        :span="{ md: 12 }"
+        responsive-mode="container"
+      />
+    </el-form>
+  </el-dialog>
+
+  <!-- 3. 基于 AModal 尺寸 -->
+  <AModal v-model="visible" size="medium">
+    <el-form :model="form">
+      <AFormInput
+        v-model="form.userName"
+        :span="{ md: 12 }"
+        responsive-mode="modal-size"
+        modal-size="medium"
+      />
     </el-form>
   </AModal>
 </template>
-
-<script lang="ts" setup>
-import { ref, reactive } from 'vue'
-
-const visible = ref(false)
-const form = reactive({
-  userName: '',
-  email: ''
-})
-</script>
 ```
 
-**响应式模式对比：**
-- `screen`：基于屏幕宽度，适用于全屏表单
-- `container`：基于容器宽度，适用于弹窗、侧边栏
-- `modal-size`：基于模态框尺寸属性，更精确的弹窗布局控制
-
-### 插槽支持
-
-#### 前置/后置内容
-
-在输入框前后添加内容。
+#### 插槽使用
 
 ```vue
 <template>
-  <el-form :model="form" label-width="100px">
-    <!-- 前置文本 -->
-    <AFormInput v-model="form.website" label="网址" prop="website">
-      <template #prepend>
-        https://
-      </template>
+  <el-form :model="form">
+    <!-- 前缀/后缀内容 -->
+    <AFormInput v-model="form.website" label="网站">
+      <template #prepend>https://</template>
+      <template #append>.com</template>
     </AFormInput>
 
-    <!-- 后置文本 -->
-    <AFormInput v-model="form.email" label="邮箱" prop="email">
-      <template #append>
-        @example.com
-      </template>
-    </AFormInput>
-
-    <!-- 前后置按钮 -->
-    <AFormInput v-model="form.searchKey" label="搜索" prop="searchKey">
-      <template #prepend>
-        <el-button :icon="Search" />
-      </template>
-      <template #append>
-        <el-button type="primary">搜索</el-button>
-      </template>
-    </AFormInput>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive } from 'vue'
-import { Search } from '@element-plus/icons-vue'
-
-const form = reactive({
-  website: '',
-  email: '',
-  searchKey: ''
-})
-</script>
-```
-
-#### 前缀/后缀图标
-
-在输入框内部添加图标。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <!-- 前缀图标 -->
-    <AFormInput v-model="form.userName" label="用户名" prop="userName">
+    <!-- 前缀/后缀图标 -->
+    <AFormInput v-model="form.search" label="搜索">
       <template #prefix>
-        <el-icon><User /></el-icon>
+        <el-icon><Search /></el-icon>
+      </template>
+      <template #suffix>
+        <el-icon><Close /></el-icon>
       </template>
     </AFormInput>
 
-    <!-- 后缀图标 -->
-    <AFormInput v-model="form.password" label="密码" prop="password" type="password">
-      <template #suffix>
-        <el-icon><Lock /></el-icon>
+    <!-- 后缀按钮 -->
+    <AFormInput v-model="form.code" label="验证码">
+      <template #append>
+        <el-button @click="sendCode">发送验证码</el-button>
       </template>
     </AFormInput>
   </el-form>
 </template>
-
-<script lang="ts" setup>
-import { reactive } from 'vue'
-import { User, Lock } from '@element-plus/icons-vue'
-
-const form = reactive({
-  userName: '',
-  password: ''
-})
-</script>
 ```
 
-### 独立使用
+#### 高级功能
 
-不使用表单项包装，独立使用输入框。
+**提示信息:**
 
 ```vue
 <template>
-  <div class="search-bar">
-    <!-- 搜索栏场景 -->
+  <el-form :model="form">
     <AFormInput
-      v-model="searchKey"
-      placeholder="请输入关键词"
-      :show-form-item="false"
-      @keyup.enter="handleSearch"
-    >
-      <template #append>
-        <el-button type="primary" @click="handleSearch">搜索</el-button>
-      </template>
-    </AFormInput>
-  </div>
+      v-model="form.userName"
+      label="用户名"
+      tooltip="用户名长度为 4-20 个字符,只能包含字母、数字和下划线"
+    />
+  </el-form>
 </template>
-
-<script lang="ts" setup>
-import { ref } from 'vue'
-
-const searchKey = ref('')
-
-const handleSearch = () => {
-  console.log('搜索:', searchKey.value)
-}
-</script>
 ```
 
-### AFormInput API
+**不含表单项容器:**
 
-#### Props
+```vue
+<template>
+  <!-- 用于搜索栏等不需要表单项容器的场景 -->
+  <AFormInput
+    v-model="queryParams.keyword"
+    placeholder="请输入关键词"
+    :show-form-item="false"
+  />
+</template>
+```
 
-| 属性 | 说明 | 类型 | 默认值 |
+**自定义标签宽度:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 单个组件自定义标签宽度 -->
+    <AFormInput
+      v-model="form.userName"
+      label="用户名"
+      label-width="120px"
+    />
+  </el-form>
+</template>
+```
+
+#### API
+
+**Props:**
+
+| 参数 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
-| modelValue | 绑定值 | `string \| number \| null \| undefined` | `undefined` |
-| label | 标签文本 | `string` | `''` |
-| labelWidth | 标签宽度 | `number \| string` | `undefined` |
-| placeholder | 占位符 | `string` | `''` |
-| prop | 表单域字段名 | `string` | `''` |
+| modelValue | 绑定值 | `string \| number` | - |
+| label | 标签文本 | `string` | - |
+| prop | 表单域字段名 | `string` | - |
 | type | 输入框类型 | `'text' \| 'textarea' \| 'number' \| 'password'` | `'text'` |
-| maxlength | 最大长度 | `number \| string` | `undefined` |
-| showWordLimit | 显示字数统计 | `boolean` | `true` |
-| showPassword | 显示密码切换按钮 | `boolean` | `false` |
-| showFormItem | 显示表单项包装 | `boolean` | `true` |
-| autosize | 文本域自适应高度 | `{ minRows?: number; maxRows?: number }` | `{ minRows: 2, maxRows: 30 }` |
-| rows | 文本域行数 | `number` | `3` |
-| disabled | 是否禁用 | `boolean` | `false` |
+| placeholder | 占位符 | `string` | 自动生成 |
+| span | 栅格列数 | `number \| ResponsiveSpan \| 'auto'` | - |
+| showFormItem | 是否显示表单项容器 | `boolean` | `true` |
 | clearable | 是否可清除 | `boolean` | `true` |
-| size | 组件尺寸 | `'' \| 'default' \| 'small' \| 'large'` | `''` |
-| span | 栅格列数 | `number \| ResponsiveSpan \| 'auto'` | `undefined` |
-| tooltip | 提示信息 | `string` | `''` |
-| width | 组件宽度（仅数字输入） | `number \| string` | `undefined` |
-| min | 最小值（数字输入） | `number` | `undefined` |
-| max | 最大值（数字输入） | `number` | `undefined` |
-| step | 步长（数字输入） | `number` | `1` |
-| stepStrictly | 只能输入步长倍数 | `boolean` | `false` |
-| precision | 数值精度（数字输入） | `number` | `undefined` |
-| controls | 显示增减按钮 | `boolean` | `true` |
-| controlsPosition | 控制按钮位置 | `'' \| 'right'` | `''` |
-| preventAutofill | 防止自动填充 | `boolean` | `false` |
-| responsiveMode | 响应式模式 | `'screen' \| 'container' \| 'modal-size'` | `'screen'` |
-| modalSize | 模态框尺寸 | `'small' \| 'medium' \| 'large' \| 'xl'` | `undefined` |
+| disabled | 是否禁用 | `boolean` | `false` |
+| maxlength | 最大长度 | `number` | `255` |
+| showWordLimit | 是否显示字数统计 | `boolean` | `false` |
+| showPassword | 是否显示密码切换按钮 | `boolean` | `false` |
+| preventAutofill | 防自动填充 | `boolean` | `false` |
+| tooltip | 提示信息 | `string` | - |
+| labelWidth | 标签宽度 | `string \| number` | - |
+| size | 组件尺寸 | `'large' \| 'default' \| 'small'` | - |
+| rows | 文本域行数 | `number` | `3` |
+| autosize | 文本域自适应高度 | `{ minRows?: number, maxRows?: number }` | `{ minRows: 2, maxRows: 30 }` |
+| min | 数字最小值 | `number` | - |
+| max | 数字最大值 | `number` | - |
+| step | 数字步长 | `number` | `1` |
+| stepStrictly | 是否只能输入步长倍数 | `boolean` | `false` |
+| precision | 数字精度 | `number` | - |
+| controls | 是否显示数字控制按钮 | `boolean` | `true` |
+| controlsPosition | 控制按钮位置 | `'' \| 'right'` | - |
 
-#### Events
+**Events:**
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
-| update:modelValue | 值变化时触发 | `(value: string \| number) => void` |
+| update:modelValue | 值更新时触发 | `(value: string \| number) => void` |
 | input | 输入时触发 | `(value: string \| number) => void` |
+| blur | 失焦时触发 | `(event: FocusEvent) => void` |
 | change | 值改变时触发 | `(value: string \| number) => void` |
-| blur | 失去焦点时触发 | `(event: FocusEvent) => void` |
 | enter | 按下回车时触发 | `(value: string \| number) => void` |
-| clear | 点击清除按钮时触发 | `() => void` |
+| clear | 清除时触发 | `() => void` |
 
-#### Slots
+**Slots:**
 
 | 插槽名 | 说明 |
 |--------|------|
@@ -661,974 +596,456 @@ const handleSearch = () => {
 | prefix | 输入框头部图标 |
 | suffix | 输入框尾部图标 |
 
-## AFormSelect 下拉选择器
+---
 
-### 基本用法
+### 2. AFormSelect - 下拉选择组件
 
-#### 基础选择
+#### 组件说明
 
-最基础的单选下拉框。
+`AFormSelect` 是下拉选择组件,基于 Element Plus 的 `el-select` 封装。支持单选、多选、搜索、远程搜索、自定义选项等功能。
 
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 字典数据选择 -->
-      <AFormSelect
-        v-model="form.status"
-        label="状态"
-        prop="status"
-        :span="12"
-        :options="statusOptions"
-      />
+#### 基础用法
 
-      <!-- 自定义字段映射 -->
-      <AFormSelect
-        v-model="form.userId"
-        label="用户"
-        prop="userId"
-        :span="12"
-        :options="userList"
-        value-field="id"
-        label-field="name"
-      />
-    </el-row>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import { useDict } from '@/hooks/useDict'
-
-const { sys_normal_disable } = useDict('sys_normal_disable')
-const statusOptions = sys_normal_disable
-
-const userList = ref([
-  { id: 1, name: '张三' },
-  { id: 2, name: '李四' },
-  { id: 3, name: '王五' }
-])
-
-const form = reactive({
-  status: '',
-  userId: ''
-})
-</script>
-```
-
-**使用说明：**
-- 默认使用 `value` 和 `label` 字段
-- 通过 `value-field` 和 `label-field` 自定义字段映射
-- 自动启用搜索过滤功能
-
-#### 多选模式
-
-支持选择多个选项。
+**单选:**
 
 ```vue
 <template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 基础多选 -->
-      <AFormSelect
-        v-model="form.roleIds"
-        label="角色"
-        prop="roleIds"
-        :span="12"
-        :options="roleList"
-        multiple
-        value-field="roleId"
-        label-field="roleName"
-      />
-
-      <!-- 限制选择数量 -->
-      <AFormSelect
-        v-model="form.permissions"
-        label="权限"
-        prop="permissions"
-        :span="12"
-        :options="permissionList"
-        multiple
-        :multiple-limit="3"
-      />
-
-      <!-- 折叠标签显示 -->
-      <AFormSelect
-        v-model="form.tags"
-        label="标签"
-        prop="tags"
-        :span="12"
-        :options="tagList"
-        multiple
-        collapse-tags
-        collapse-tags-tooltip
-      />
-    </el-row>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const roleList = ref([
-  { roleId: 1, roleName: '管理员' },
-  { roleId: 2, roleName: '普通用户' },
-  { roleId: 3, roleName: '访客' }
-])
-
-const permissionList = ref([
-  { label: '查看', value: 'view' },
-  { label: '编辑', value: 'edit' },
-  { label: '删除', value: 'delete' },
-  { label: '导出', value: 'export' }
-])
-
-const tagList = ref([
-  { label: 'Vue', value: 'vue' },
-  { label: 'React', value: 'react' },
-  { label: 'Angular', value: 'angular' }
-])
-
-const form = reactive({
-  roleIds: [],
-  permissions: [],
-  tags: []
-})
-</script>
-```
-
-**多选特性：**
-- `multiple` 启用多选模式
-- `multiple-limit` 限制可选数量，0 表示不限制
-- `collapse-tags` 折叠显示已选标签
-- `collapse-tags-tooltip` 鼠标悬停显示所有标签
-
-#### 可创建选项
-
-允许用户输入创建新选项。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
+  <el-form :model="form">
     <AFormSelect
-      v-model="form.tag"
-      label="标签"
-      prop="tag"
-      :span="12"
-      :options="tagOptions"
-      allow-create
-      filterable
+      v-model="form.status"
+      label="状态"
+      prop="status"
+      :options="statusOptions"
     />
   </el-form>
 </template>
 
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const tagOptions = ref([
-  { label: '前端', value: 'frontend' },
-  { label: '后端', value: 'backend' }
-])
-
+<script setup lang="ts">
 const form = reactive({
-  tag: ''
+  status: ''
 })
+
+const statusOptions = [
+  { label: '正常', value: '0' },
+  { label: '停用', value: '1' }
+]
 </script>
 ```
 
-### 选项禁用
-
-#### 状态字段禁用
-
-根据选项的状态字段禁用。
+**多选:**
 
 ```vue
 <template>
-  <el-form :model="form" label-width="100px">
-    <!-- 默认禁用条件（status === '0'） -->
+  <el-form :model="form">
     <AFormSelect
-      v-model="form.postId"
-      label="岗位"
-      prop="postId"
-      :span="12"
-      :options="postList"
-      value-field="postId"
-      label-field="postName"
-    />
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const postList = ref([
-  { postId: 1, postName: '总经理', status: '1' },
-  { postId: 2, postName: '项目经理', status: '0' }, // 被禁用
-  { postId: 3, postName: '开发工程师', status: '1' }
-])
-
-const form = reactive({
-  postId: ''
-})
-</script>
-```
-
-#### 自定义禁用字段
-
-指定不同的禁用字段和值。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <!-- 自定义禁用条件 -->
-    <AFormSelect
-      v-model="form.roleId"
+      v-model="form.roles"
       label="角色"
-      prop="roleId"
-      :span="12"
-      :options="roleList"
-      value-field="id"
-      label-field="roleName"
-      disabled-field="isActive"
-      :disabled-value="false"
+      prop="roles"
+      multiple
+      :options="roleOptions"
     />
   </el-form>
 </template>
 
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const roleList = ref([
-  { id: 1, roleName: '管理员', isActive: true },
-  { id: 2, roleName: '已停用角色', isActive: false }, // 被禁用
-  { id: 3, roleName: '访客', isActive: true }
-])
-
+<script setup lang="ts">
 const form = reactive({
-  roleId: ''
+  roles: [] as string[]
 })
+
+const roleOptions = [
+  { label: '管理员', value: 'admin' },
+  { label: '编辑', value: 'editor' },
+  { label: '访客', value: 'guest' }
+]
 </script>
 ```
 
-#### 多值禁用条件
-
-当字段值匹配多个值中的任意一个时禁用。
+**可搜索:**
 
 ```vue
 <template>
-  <el-form :model="form" label-width="100px">
+  <el-form :model="form">
     <AFormSelect
-      v-model="form.deptId"
-      label="部门"
-      prop="deptId"
-      :span="12"
-      :options="deptList"
-      value-field="deptId"
-      label-field="deptName"
-      disabled-field="status"
-      :disabled-value="['0', '3']"
+      v-model="form.city"
+      label="城市"
+      prop="city"
+      filterable
+      :options="cityOptions"
     />
   </el-form>
 </template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const deptList = ref([
-  { deptId: 1, deptName: '研发部', status: '1' },
-  { deptId: 2, deptName: '已关闭部门', status: '0' }, // 被禁用
-  { deptId: 3, deptName: '待审核部门', status: '3' }, // 被禁用
-  { deptId: 4, deptName: '市场部', status: '1' }
-])
-
-const form = reactive({
-  deptId: ''
-})
-</script>
 ```
 
-#### 函数判断禁用
-
-使用自定义函数进行复杂的禁用判断。
+**可清空:**
 
 ```vue
 <template>
-  <el-form :model="form" label-width="100px">
-    <AFormSelect
-      v-model="form.goodsId"
-      label="商品"
-      prop="goodsId"
-      :span="12"
-      :options="goodsList"
-      value-field="id"
-      label-field="name"
-      :disabled-value="(item) => item.status === '0' || item.stock < 10"
-    />
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const goodsList = ref([
-  { id: 1, name: '商品A', status: '1', stock: 100 },
-  { id: 2, name: '商品B（已下架）', status: '0', stock: 50 }, // 被禁用
-  { id: 3, name: '商品C（库存不足）', status: '1', stock: 5 }, // 被禁用
-  { id: 4, name: '商品D', status: '1', stock: 200 }
-])
-
-const form = reactive({
-  goodsId: ''
-})
-</script>
-```
-
-**禁用逻辑优先级：**
-1. 选项自身的 `disabled` 属性（`useItemDisabled` 为 true 时）
-2. `disabled-field` 和 `disabled-value` 的判断
-3. 如果都不满足，则不禁用
-
-### 显示选项值
-
-开发模式下显示选项的 value 值，便于调试。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <!-- 强制显示选项值 -->
-    <AFormSelect
-      v-model="form.code"
-      label="代码"
-      prop="code"
-      :span="12"
-      :options="codeList"
-      :show-value="true"
-    />
-
-    <!-- 强制不显示选项值 -->
-    <AFormSelect
-      v-model="form.name"
-      label="名称"
-      prop="name"
-      :span="12"
-      :options="nameList"
-      :show-value="false"
-    />
-
-    <!-- 自定义显示角色 -->
+  <el-form :model="form">
     <AFormSelect
       v-model="form.type"
       label="类型"
       prop="type"
-      :span="12"
-      :options="typeList"
-      :show-value-roles="['developer', 'tester']"
-    />
-  </el-form>
-</template>
-```
-
-**显示逻辑：**
-1. 优先使用 `show-value` 属性
-2. 其次使用全局布局配置
-3. 再根据用户角色判断（`show-value-roles`）
-4. 默认不显示
-
-### 前缀图标
-
-在选择器中添加前缀图标。
-
-```vue
-<template>
-  <el-form :model="loginForm" label-width="100px">
-    <AFormSelect
-      v-model="loginForm.tenantId"
-      label="租户"
-      prop="tenantId"
-      :options="tenantList"
-      value-field="tenantId"
-      label-field="companyName"
-    >
-      <template #prefix>
-        <Icon code="company" />
-      </template>
-    </AFormSelect>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const tenantList = ref([
-  { tenantId: '1', companyName: '公司A' },
-  { tenantId: '2', companyName: '公司B' }
-])
-
-const loginForm = reactive({
-  tenantId: ''
-})
-</script>
-```
-
-### AFormSelect API
-
-#### Props
-
-| 属性 | 说明 | 类型 | 默认值 |
-|------|------|------|--------|
-| modelValue | 绑定值 | `string \| number \| Array<string \| number>` | `undefined` |
-| label | 标签文本 | `string` | `''` |
-| labelWidth | 标签宽度 | `number \| string` | `undefined` |
-| placeholder | 占位符 | `string` | `''` |
-| prop | 表单域字段名 | `string` | `''` |
-| options | 选项数据 | `any[]` | `[]` |
-| valueField | value 字段名 | `string` | `'value'` |
-| labelField | label 字段名 | `string` | `'label'` |
-| disabledField | 禁用字段名 | `string` | `'status'` |
-| disabledValue | 禁用条件值 | `string \| number \| boolean \| any[] \| ((item: any) => boolean)` | `'0'` |
-| useItemDisabled | 使用选项自身 disabled 属性 | `boolean` | `true` |
-| showValue | 显示选项值 | `boolean` | `undefined` |
-| showValueRoles | 显示值的角色列表 | `string[]` | `['superadmin', 'admin']` |
-| multiple | 多选模式 | `boolean` | `false` |
-| multipleLimit | 多选数量限制 | `number` | `0` |
-| collapseTags | 折叠标签 | `boolean` | `false` |
-| collapseTagsTooltip | 折叠标签提示 | `boolean` | `false` |
-| filterable | 可搜索 | `boolean` | `true` |
-| allowCreate | 允许创建新选项 | `boolean` | `false` |
-| clearable | 可清除 | `boolean` | `true` |
-| disabled | 禁用 | `boolean` | `false` |
-| size | 组件尺寸 | `'' \| 'default' \| 'small' \| 'large'` | `''` |
-| span | 栅格列数 | `number \| ResponsiveSpan \| 'auto'` | `undefined` |
-| width | 组件宽度 | `number \| string` | `undefined` |
-| tooltip | 提示信息 | `string` | `''` |
-| showFormItem | 显示表单项包装 | `boolean` | `true` |
-| responsiveMode | 响应式模式 | `'screen' \| 'container' \| 'modal-size'` | `'screen'` |
-| modalSize | 模态框尺寸 | `'small' \| 'medium' \| 'large' \| 'xl'` | `undefined` |
-
-#### Events
-
-| 事件名 | 说明 | 回调参数 |
-|--------|------|----------|
-| update:modelValue | 值变化时触发 | `(value: string \| number \| any[]) => void` |
-| change | 值改变时触发 | `(value: string \| number \| any[]) => void` |
-| focus | 获得焦点时触发 | `() => void` |
-| clear | 点击清除按钮时触发 | `() => void` |
-| visible-change | 下拉框显隐状态改变时触发 | `(visible: boolean) => void` |
-| remove-tag | 多选模式下移除 tag 时触发 | `(tag: any) => void` |
-
-#### Slots
-
-| 插槽名 | 说明 |
-|--------|------|
-| prefix | 前缀图标 |
-| option | 自定义选项内容 |
-| empty | 空数据时的内容 |
-
-## AFormCheckbox 复选框
-
-### 基本用法
-
-#### 基础复选框组
-
-多项选择场景。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 基础复选框组 -->
-      <AFormCheckbox
-        v-model="form.hobbies"
-        label="爱好"
-        prop="hobbies"
-        :span="12"
-        :options="hobbyOptions"
-      />
-
-      <!-- 自定义字段映射 -->
-      <AFormCheckbox
-        v-model="form.roleIds"
-        label="角色"
-        prop="roleIds"
-        :span="12"
-        :options="roleList"
-        value-field="id"
-        label-field="name"
-      />
-    </el-row>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const hobbyOptions = ref([
-  { label: '篮球', value: '1' },
-  { label: '足球', value: '2' },
-  { label: '羽毛球', value: '3' }
-])
-
-const roleList = ref([
-  { id: 1, name: '管理员' },
-  { id: 2, name: '编辑' },
-  { id: 3, name: '访客' }
-])
-
-const form = reactive({
-  hobbies: '', // 逗号分隔的字符串
-  roleIds: []  // 数组格式
-})
-</script>
-```
-
-**数据格式：**
-- 默认返回逗号分隔的字符串，如 `'1,2,3'`
-- 设置 `return-array` 为 true 返回数组格式
-- 如果 `modelValue` 是数组，自动返回数组格式
-
-#### 按钮样式
-
-使用按钮样式的复选框。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <AFormCheckbox
-      v-model="form.permissions"
-      label="权限"
-      prop="permissions"
-      type="button"
-      :span="24"
-      :options="permissionOptions"
-    />
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const permissionOptions = ref([
-  { label: '查看', value: 'view' },
-  { label: '新增', value: 'add' },
-  { label: '编辑', value: 'edit' },
-  { label: '删除', value: 'delete' },
-  { label: '导出', value: 'export' }
-])
-
-const form = reactive({
-  permissions: ''
-})
-</script>
-```
-
-#### 数量限制
-
-限制可选择的数量范围。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <!-- 最少选择2个，最多选择5个 -->
-    <AFormCheckbox
-      v-model="form.tags"
-      label="标签"
-      prop="tags"
-      :span="24"
-      :options="tagOptions"
-      :min="2"
-      :max="5"
-    />
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const tagOptions = ref([
-  { label: 'Vue', value: 'vue' },
-  { label: 'React', value: 'react' },
-  { label: 'Angular', value: 'angular' },
-  { label: 'TypeScript', value: 'ts' },
-  { label: 'JavaScript', value: 'js' },
-  { label: 'CSS', value: 'css' }
-])
-
-const form = reactive({
-  tags: ''
-})
-</script>
-```
-
-#### 单个复选框
-
-用于单一的布尔值选择，如"记住密码"。
-
-```vue
-<template>
-  <el-form :model="loginForm">
-    <AFormCheckbox
-      v-model="loginForm.rememberMe"
-      :options="[{ label: '记住密码', value: true }]"
-      single-checkbox
-      :show-form-item="false"
-    />
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive } from 'vue'
-
-const loginForm = reactive({
-  rememberMe: false
-})
-</script>
-```
-
-### 选项禁用
-
-复选框组支持与 AFormSelect 相同的禁用逻辑。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <!-- 使用 disabled 属性禁用 -->
-    <AFormCheckbox
-      v-model="form.permissions1"
-      label="权限1"
-      prop="permissions1"
-      :span="24"
-      :options="[
-        { label: '查看', value: 'view' },
-        { label: '编辑（已禁用）', value: 'edit', disabled: true },
-        { label: '删除', value: 'delete' }
-      ]"
-    />
-
-    <!-- 使用状态字段禁用 -->
-    <AFormCheckbox
-      v-model="form.permissions2"
-      label="权限2"
-      prop="permissions2"
-      :span="24"
-      :options="permissionList"
-      disabled-field="status"
-      disabled-value="0"
-    />
-
-    <!-- 使用函数判断禁用 -->
-    <AFormCheckbox
-      v-model="form.features"
-      label="功能"
-      prop="features"
-      :span="24"
-      :options="featureList"
-      :disabled-value="(item) => !item.available"
-    />
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const permissionList = ref([
-  { label: '读取', value: 'read', status: '1' },
-  { label: '写入（已停用）', value: 'write', status: '0' },
-  { label: '执行', value: 'execute', status: '1' }
-])
-
-const featureList = ref([
-  { label: '功能A', value: 'a', available: true },
-  { label: '功能B（不可用）', value: 'b', available: false },
-  { label: '功能C', value: 'c', available: true }
-])
-
-const form = reactive({
-  permissions1: '',
-  permissions2: '',
-  features: ''
-})
-</script>
-```
-
-### AFormCheckbox API
-
-#### Props
-
-| 属性 | 说明 | 类型 | 默认值 |
-|------|------|------|--------|
-| modelValue | 绑定值 | `string \| Array<string \| number> \| boolean` | `''` |
-| label | 标签文本 | `string` | `''` |
-| labelWidth | 标签宽度 | `number \| string` | `undefined` |
-| prop | 表单域字段名 | `string` | `''` |
-| options | 选项数据 | `any[]` | `[]` |
-| valueField | value 字段名 | `string` | `'value'` |
-| labelField | label 字段名 | `string` | `'label'` |
-| disabledField | 禁用字段名 | `string` | `'status'` |
-| disabledValue | 禁用条件值 | `string \| number \| boolean \| any[] \| ((item: any) => boolean)` | `'0'` |
-| useItemDisabled | 使用选项自身 disabled 属性 | `boolean` | `true` |
-| type | 复选框类型 | `'checkbox' \| 'button'` | `'checkbox'` |
-| border | 是否显示边框 | `boolean` | `false` |
-| size | 组件尺寸 | `'' \| 'default' \| 'small' \| 'large'` | `''` |
-| disabled | 禁用 | `boolean` | `false` |
-| min | 最小勾选数量 | `number` | `undefined` |
-| max | 最大勾选数量 | `number` | `undefined` |
-| textColor | 选中时文字颜色 | `string` | `'#ffffff'` |
-| fill | 选中时填充色 | `string` | `'#409EFF'` |
-| returnArray | 返回数组格式 | `boolean` | `false` |
-| singleCheckbox | 单个复选框模式 | `boolean` | `false` |
-| span | 栅格列数 | `number \| ResponsiveSpan \| 'auto'` | `undefined` |
-| tooltip | 提示信息 | `string` | `''` |
-| showFormItem | 显示表单项包装 | `boolean` | `true` |
-| responsiveMode | 响应式模式 | `'screen' \| 'container' \| 'modal-size'` | `'screen'` |
-| modalSize | 模态框尺寸 | `'small' \| 'medium' \| 'large' \| 'xl'` | `undefined` |
-
-#### Events
-
-| 事件名 | 说明 | 回调参数 |
-|--------|------|----------|
-| update:modelValue | 值变化时触发 | `(value: string \| any[] \| boolean) => void` |
-| change | 值改变时触发 | `(value: string \| any[] \| boolean) => void` |
-
-## AFormRadio 单选框
-
-### 基本用法
-
-#### 基础单选框组
-
-互斥选项的单选场景。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 基础单选框组 -->
-      <AFormRadio
-        v-model="form.status"
-        label="状态"
-        prop="status"
-        :span="12"
-        :options="statusOptions"
-      />
-
-      <!-- 自定义字段映射 -->
-      <AFormRadio
-        v-model="form.gender"
-        label="性别"
-        prop="gender"
-        :span="12"
-        :options="genderList"
-        value-field="id"
-        label-field="name"
-      />
-    </el-row>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const statusOptions = ref([
-  { label: '启用', value: '1' },
-  { label: '禁用', value: '0' }
-])
-
-const genderList = ref([
-  { id: '1', name: '男' },
-  { id: '2', name: '女' }
-])
-
-const form = reactive({
-  status: '1',
-  gender: '1'
-})
-</script>
-```
-
-#### 按钮样式
-
-使用按钮样式的单选框。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <AFormRadio
-      v-model="form.type"
-      label="类型"
-      prop="type"
-      type="button"
-      :span="24"
+      clearable
       :options="typeOptions"
     />
   </el-form>
 </template>
+```
 
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
+#### 字典数据支持
 
-const typeOptions = ref([
-  { label: '全部', value: 'all' },
-  { label: '进行中', value: 'ongoing' },
-  { label: '已完成', value: 'completed' },
-  { label: '已取消', value: 'cancelled' }
-])
+**使用字典数据:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 通过 dict-type 自动加载字典数据 -->
+    <AFormSelect
+      v-model="form.status"
+      label="状态"
+      prop="status"
+      dict-type="sys_normal_disable"
+    />
+
+    <!-- 通过 options 手动传入选项 -->
+    <AFormSelect
+      v-model="form.gender"
+      label="性别"
+      prop="gender"
+      :options="dictStore.getDict('sys_user_sex')"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+import { useDictStore } from '@/stores/dict'
+
+const dictStore = useDictStore()
 
 const form = reactive({
-  type: 'all'
+  status: '',
+  gender: ''
 })
 </script>
 ```
 
-### AFormRadio API
+#### 远程搜索
 
-#### Props
+```vue
+<template>
+  <el-form :model="form">
+    <AFormSelect
+      v-model="form.userId"
+      label="用户"
+      prop="userId"
+      filterable
+      remote
+      :remote-method="remoteSearchUser"
+      :loading="loading"
+      :options="userOptions"
+    />
+  </el-form>
+</template>
 
-| 属性 | 说明 | 类型 | 默认值 |
+<script setup lang="ts">
+import { getUserList } from '@/api/system/user'
+
+const form = reactive({
+  userId: ''
+})
+
+const loading = ref(false)
+const userOptions = ref([])
+
+const remoteSearchUser = async (query: string) => {
+  if (query) {
+    loading.value = true
+    try {
+      const res = await getUserList({ userName: query })
+      userOptions.value = res.rows.map(user => ({
+        label: user.userName,
+        value: user.userId
+      }))
+    } finally {
+      loading.value = false
+    }
+  } else {
+    userOptions.value = []
+  }
+}
+</script>
+```
+
+#### 自定义选项模板
+
+```vue
+<template>
+  <el-form :model="form">
+    <AFormSelect
+      v-model="form.userId"
+      label="用户"
+      :options="userOptions"
+    >
+      <template #default="{ option }">
+        <div class="flex items-center">
+          <el-avatar :size="24" :src="option.avatar" class="mr-2" />
+          <span>{{ option.label }}</span>
+          <el-tag v-if="option.isAdmin" type="danger" size="small" class="ml-2">
+            管理员
+          </el-tag>
+        </div>
+      </template>
+    </AFormSelect>
+  </el-form>
+</template>
+```
+
+#### API
+
+**Props:**
+
+| 参数 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
-| modelValue | 绑定值 | `string \| number \| boolean` | `undefined` |
-| label | 标签文本 | `string` | `''` |
-| labelWidth | 标签宽度 | `number \| string` | `undefined` |
-| prop | 表单域字段名 | `string` | `''` |
-| options | 选项数据 | `any[]` | `[]` |
-| valueField | value 字段名 | `string` | `'value'` |
-| labelField | label 字段名 | `string` | `'label'` |
-| disabledField | 禁用字段名 | `string` | `'status'` |
-| disabledValue | 禁用条件值 | `string \| number \| boolean \| any[] \| ((item: any) => boolean)` | `'0'` |
-| useItemDisabled | 使用选项自身 disabled 属性 | `boolean` | `true` |
-| type | 单选框类型 | `'radio' \| 'button'` | `'radio'` |
-| border | 是否显示边框 | `boolean` | `false` |
-| size | 组件尺寸 | `'' \| 'default' \| 'small' \| 'large'` | `''` |
-| disabled | 禁用 | `boolean` | `false` |
-| textColor | 选中时文字颜色 | `string` | `'#ffffff'` |
-| fill | 选中时填充色 | `string` | `'#409EFF'` |
-| span | 栅格列数 | `number \| ResponsiveSpan \| 'auto'` | `undefined` |
-| tooltip | 提示信息 | `string` | `''` |
-| showFormItem | 显示表单项包装 | `boolean` | `true` |
-| responsiveMode | 响应式模式 | `'screen' \| 'container' \| 'modal-size'` | `'screen'` |
-| modalSize | 模态框尺寸 | `'small' \| 'medium' \| 'large' \| 'xl'` | `undefined` |
+| modelValue | 绑定值 | `string \| number \| array` | - |
+| label | 标签文本 | `string` | - |
+| prop | 表单域字段名 | `string` | - |
+| options | 选项数据 | `Array<{ label: string, value: any }>` | `[]` |
+| multiple | 是否多选 | `boolean` | `false` |
+| clearable | 是否可清空 | `boolean` | `true` |
+| filterable | 是否可搜索 | `boolean` | `false` |
+| remote | 是否远程搜索 | `boolean` | `false` |
+| remoteMethod | 远程搜索方法 | `(query: string) => void` | - |
+| loading | 是否加载中 | `boolean` | `false` |
+| dictType | 字典类型 | `string` | - |
+| span | 栅格列数 | `number \| ResponsiveSpan` | - |
 
-#### Events
+**Events:**
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
-| update:modelValue | 值变化时触发 | `(value: string \| number \| boolean) => void` |
-| change | 值改变时触发 | `(value: string \| number \| boolean) => void` |
+| update:modelValue | 值更新时触发 | `(value: any) => void` |
+| change | 值改变时触发 | `(value: any) => void` |
+| blur | 失焦时触发 | `(event: FocusEvent) => void` |
+| focus | 聚焦时触发 | `(event: FocusEvent) => void` |
+| clear | 清除时触发 | `() => void` |
 
-## AFormDate 日期选择器
+---
 
-### 基本用法
+### 3. AFormDate - 日期选择组件
 
-#### 日期选择
+#### 组件说明
 
-选择单个日期。
+`AFormDate` 是日期时间选择组件,基于 Element Plus 的 `el-date-picker` 封装。支持日期、日期范围、日期时间、日期时间范围等多种选择模式。
+
+#### 基础用法
+
+**日期选择:**
 
 ```vue
 <template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 基础日期选择 -->
-      <AFormDate
-        v-model="form.birthday"
-        label="生日"
-        prop="birthday"
-        :span="12"
-      />
+  <el-form :model="form">
+    <!-- 日期选择 -->
+    <AFormDate
+      v-model="form.birthday"
+      label="生日"
+      prop="birthday"
+      type="date"
+    />
 
-      <!-- 日期时间选择 -->
-      <AFormDate
-        v-model="form.appointmentTime"
-        label="预约时间"
-        prop="appointmentTime"
-        type="datetime"
-        :span="12"
-      />
-    </el-row>
+    <!-- 日期时间选择 -->
+    <AFormDate
+      v-model="form.createTime"
+      label="创建时间"
+      prop="createTime"
+      type="datetime"
+    />
+
+    <!-- 年份选择 -->
+    <AFormDate
+      v-model="form.year"
+      label="年份"
+      prop="year"
+      type="year"
+    />
+
+    <!-- 月份选择 -->
+    <AFormDate
+      v-model="form.month"
+      label="月份"
+      prop="month"
+      type="month"
+    />
   </el-form>
 </template>
 
-<script lang="ts" setup>
-import { reactive } from 'vue'
-
+<script setup lang="ts">
 const form = reactive({
   birthday: '',
-  appointmentTime: ''
+  createTime: '',
+  year: '',
+  month: ''
 })
 </script>
 ```
 
-#### 日期范围选择
-
-选择日期范围。
+**日期范围选择:**
 
 ```vue
 <template>
-  <el-form :model="queryParams" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 日期范围 -->
-      <AFormDate
-        v-model="queryParams.dateRange"
-        label="日期范围"
-        prop="dateRange"
-        type="daterange"
-        :span="12"
-      />
+  <el-form :model="form">
+    <!-- 日期范围 -->
+    <AFormDate
+      v-model="form.dateRange"
+      label="日期范围"
+      type="daterange"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期"
+    />
 
-      <!-- 日期时间范围 -->
-      <AFormDate
-        v-model="queryParams.datetimeRange"
-        label="时间范围"
-        prop="datetimeRange"
-        type="datetimerange"
-        :span="12"
-      />
-    </el-row>
+    <!-- 日期时间范围 -->
+    <AFormDate
+      v-model="form.datetimeRange"
+      label="时间范围"
+      type="datetimerange"
+      start-placeholder="开始时间"
+      end-placeholder="结束时间"
+    />
+
+    <!-- 月份范围 -->
+    <AFormDate
+      v-model="form.monthRange"
+      label="月份范围"
+      type="monthrange"
+    />
   </el-form>
 </template>
 
-<script lang="ts" setup>
-import { reactive } from 'vue'
-
-const queryParams = reactive({
+<script setup lang="ts">
+const form = reactive({
   dateRange: [],
-  datetimeRange: []
+  datetimeRange: [],
+  monthRange: []
 })
+</script>
+```
+
+#### 日期格式化
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 自定义显示格式 -->
+    <AFormDate
+      v-model="form.date"
+      label="日期"
+      format="YYYY年MM月DD日"
+      value-format="YYYY-MM-DD"
+    />
+
+    <!-- 日期时间格式 -->
+    <AFormDate
+      v-model="form.datetime"
+      label="日期时间"
+      type="datetime"
+      format="YYYY-MM-DD HH:mm:ss"
+      value-format="YYYY-MM-DD HH:mm:ss"
+    />
+  </el-form>
+</template>
+```
+
+**格式说明:**
+
+- `format`: 显示在输入框中的格式
+- `value-format`: v-model 绑定值的格式
+
+**常用格式:**
+
+| 格式 | 说明 | 示例 |
+|------|------|------|
+| YYYY | 四位年份 | 2024 |
+| MM | 两位月份 | 01-12 |
+| DD | 两位日期 | 01-31 |
+| HH | 24小时制小时 | 00-23 |
+| mm | 分钟 | 00-59 |
+| ss | 秒 | 00-59 |
+
+#### 日期限制
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 禁用今天之前的日期 -->
+    <AFormDate
+      v-model="form.futureDate"
+      label="未来日期"
+      :disabled-date="disablePastDate"
+    />
+
+    <!-- 禁用今天之后的日期 -->
+    <AFormDate
+      v-model="form.pastDate"
+      label="过去日期"
+      :disabled-date="disableFutureDate"
+    />
+
+    <!-- 限制日期范围 -->
+    <AFormDate
+      v-model="form.rangeDate"
+      label="范围日期"
+      :disabled-date="disableDateRange"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const form = reactive({
+  futureDate: '',
+  pastDate: '',
+  rangeDate: ''
+})
+
+// 禁用今天之前的日期
+const disablePastDate = (time: Date) => {
+  return time.getTime() < Date.now() - 24 * 60 * 60 * 1000
+}
+
+// 禁用今天之后的日期
+const disableFutureDate = (time: Date) => {
+  return time.getTime() > Date.now()
+}
+
+// 限制日期范围(最近 30 天)
+const disableDateRange = (time: Date) => {
+  const now = Date.now()
+  const thirtyDaysAgo = now - 30 * 24 * 60 * 60 * 1000
+  return time.getTime() < thirtyDaysAgo || time.getTime() > now
+}
 </script>
 ```
 
 #### 快捷选项
 
-提供常用的快捷日期选择。
-
 ```vue
 <template>
-  <el-form :model="queryParams" label-width="100px">
+  <el-form :model="form">
     <AFormDate
-      v-model="queryParams.date"
-      label="日期"
-      prop="date"
+      v-model="form.dateRange"
+      label="日期范围"
       type="daterange"
-      :span="12"
-      :shortcuts="dateShortcuts"
+      :shortcuts="shortcuts"
     />
   </el-form>
 </template>
 
-<script lang="ts" setup>
-import { reactive } from 'vue'
-
-const dateShortcuts = [
-  {
-    text: '今天',
-    value: () => {
-      const today = new Date()
-      return [today, today]
-    }
-  },
+<script setup lang="ts">
+const shortcuts = [
   {
     text: '最近一周',
     value: () => {
       const end = new Date()
       const start = new Date()
-      start.setDate(start.getDate() - 7)
+      start.setTime(start.getTime() - 7 * 24 * 60 * 60 * 1000)
       return [start, end]
     }
   },
@@ -1637,7 +1054,7 @@ const dateShortcuts = [
     value: () => {
       const end = new Date()
       const start = new Date()
-      start.setMonth(start.getMonth() - 1)
+      start.setTime(start.getTime() - 30 * 24 * 60 * 60 * 1000)
       return [start, end]
     }
   },
@@ -1646,333 +1063,721 @@ const dateShortcuts = [
     value: () => {
       const end = new Date()
       const start = new Date()
-      start.setMonth(start.getMonth() - 3)
+      start.setTime(start.getTime() - 90 * 24 * 60 * 60 * 1000)
       return [start, end]
     }
   }
 ]
-
-const queryParams = reactive({
-  date: []
-})
 </script>
 ```
 
-### AFormDate API
+---
 
-#### Props
+### 4. AFormRadio - 单选框组件
 
-| 属性 | 说明 | 类型 | 默认值 |
-|------|------|------|--------|
-| modelValue | 绑定值 | `string \| number \| any[]` | `undefined` |
-| label | 标签文本 | `string` | `''` |
-| labelWidth | 标签宽度 | `number \| string` | `undefined` |
-| placeholder | 占位符 | `string` | `''` |
-| prop | 表单域字段名 | `string` | `''` |
-| type | 日期类型 | `'date' \| 'datetime' \| 'daterange' \| 'datetimerange' \| 'week' \| 'month' \| 'year'` | `'date'` |
-| format | 显示格式 | `string` | `undefined` |
-| valueFormat | 值格式 | `string` | `undefined` |
-| width | 组件宽度 | `number \| string` | `240` |
-| disabled | 禁用 | `boolean` | `false` |
-| readonly | 只读 | `boolean` | `false` |
-| editable | 可输入 | `boolean` | `true` |
-| clearable | 可清除 | `boolean` | `true` |
-| size | 组件尺寸 | `'' \| 'default' \| 'small' \| 'large'` | `''` |
-| span | 栅格列数 | `number \| ResponsiveSpan \| 'auto'` | `undefined` |
-| tooltip | 提示信息 | `string` | `''` |
-| startPlaceholder | 开始日期占位符 | `string` | `'开始日期'` |
-| endPlaceholder | 结束日期占位符 | `string` | `'结束日期'` |
-| rangeSeparator | 范围分隔符 | `string` | `'-'` |
-| shortcuts | 快捷选项 | `DateShortcut[]` | `undefined` |
-| disabledDate | 禁用日期函数 | `(date: Date) => boolean` | `undefined` |
-| defaultValue | 默认显示日期 | `Date` | `undefined` |
-| defaultTime | 默认时间 | `Date \| [Date, Date]` | `undefined` |
-| unlinkPanels | 取消面板联动 | `boolean` | `false` |
-| showFormItem | 显示表单项包装 | `boolean` | `true` |
-| responsiveMode | 响应式模式 | `'screen' \| 'container' \| 'modal-size'` | `'screen'` |
-| modalSize | 模态框尺寸 | `'small' \| 'medium' \| 'large' \| 'xl'` | `undefined` |
+#### 组件说明
 
-#### Events
+`AFormRadio` 是单选框组件,基于 Element Plus 的 `el-radio-group` 封装。支持按钮样式、禁用选项、字典数据等功能。
 
-| 事件名 | 说明 | 回调参数 |
-|--------|------|----------|
-| update:modelValue | 值变化时触发 | `(value: string \| number \| any[]) => void` |
-| change | 值改变时触发 | `(value: string \| number \| any[]) => void` |
-| blur | 失去焦点时触发 | `() => void` |
-| focus | 获得焦点时触发 | `() => void` |
-| calendar-change | 日历改变时触发 | `(value: [Date, Date]) => void` |
-| panel-change | 面板改变时触发 | `(value: Date, mode: string) => void` |
-| visible-change | 显隐状态改变时触发 | `(visible: boolean) => void` |
-
-## AFormSwitch 开关
-
-### 基本用法
-
-用于布尔值的开关切换。
+#### 基础用法
 
 ```vue
 <template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 基础开关 -->
-      <AFormSwitch
-        v-model="form.enabled"
-        label="启用状态"
-        prop="enabled"
-        :span="12"
-      />
+  <el-form :model="form">
+    <!-- 基础单选 -->
+    <AFormRadio
+      v-model="form.gender"
+      label="性别"
+      prop="gender"
+      :options="genderOptions"
+    />
 
-      <!-- 自定义文本 -->
-      <AFormSwitch
-        v-model="form.showDetail"
-        label="显示详情"
-        prop="showDetail"
-        :span="12"
-        active-text="显示"
-        inactive-text="隐藏"
-      />
-    </el-row>
+    <!-- 按钮样式 -->
+    <AFormRadio
+      v-model="form.type"
+      label="类型"
+      prop="type"
+      button
+      :options="typeOptions"
+    />
+
+    <!-- 使用字典数据 -->
+    <AFormRadio
+      v-model="form.status"
+      label="状态"
+      prop="status"
+      dict-type="sys_normal_disable"
+    />
   </el-form>
 </template>
 
-<script lang="ts" setup>
-import { reactive } from 'vue'
+<script setup lang="ts">
+const form = reactive({
+  gender: '1',
+  type: '1',
+  status: '0'
+})
 
+const genderOptions = [
+  { label: '男', value: '1' },
+  { label: '女', value: '2' }
+]
+
+const typeOptions = [
+  { label: '类型一', value: '1' },
+  { label: '类型二', value: '2' },
+  { label: '类型三', value: '3' }
+]
+</script>
+```
+
+---
+
+### 5. AFormCheckbox - 复选框组件
+
+#### 组件说明
+
+`AFormCheckbox` 是复选框组件,基于 Element Plus 的 `el-checkbox-group` 封装。支持全选、限制选择数量、按钮样式等功能。
+
+#### 基础用法
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 基础复选 -->
+    <AFormCheckbox
+      v-model="form.hobbies"
+      label="爱好"
+      prop="hobbies"
+      :options="hobbyOptions"
+    />
+
+    <!-- 按钮样式 -->
+    <AFormCheckbox
+      v-model="form.permissions"
+      label="权限"
+      prop="permissions"
+      button
+      :options="permissionOptions"
+    />
+
+    <!-- 限制选择数量 -->
+    <AFormCheckbox
+      v-model="form.skills"
+      label="技能"
+      prop="skills"
+      :min="1"
+      :max="3"
+      :options="skillOptions"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const form = reactive({
+  hobbies: [] as string[],
+  permissions: [] as string[],
+  skills: [] as string[]
+})
+
+const hobbyOptions = [
+  { label: '阅读', value: 'reading' },
+  { label: '运动', value: 'sports' },
+  { label: '音乐', value: 'music' },
+  { label: '旅行', value: 'travel' }
+]
+
+const permissionOptions = [
+  { label: '查看', value: 'view' },
+  { label: '新增', value: 'create' },
+  { label: '编辑', value: 'edit' },
+  { label: '删除', value: 'delete' }
+]
+
+const skillOptions = [
+  { label: 'Vue', value: 'vue' },
+  { label: 'React', value: 'react' },
+  { label: 'Angular', value: 'angular' },
+  { label: 'Node.js', value: 'nodejs' }
+]
+</script>
+```
+
+---
+
+### 6. AFormSwitch - 开关组件
+
+#### 组件说明
+
+`AFormSwitch` 是开关组件,基于 Element Plus 的 `el-switch` 封装。常用于启用/禁用、显示/隐藏等二元状态切换。
+
+#### 基础用法
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 基础开关 -->
+    <AFormSwitch
+      v-model="form.enabled"
+      label="启用状态"
+      prop="enabled"
+    />
+
+    <!-- 自定义文字 -->
+    <AFormSwitch
+      v-model="form.visible"
+      label="是否显示"
+      prop="visible"
+      active-text="显示"
+      inactive-text="隐藏"
+    />
+
+    <!-- 自定义值 -->
+    <AFormSwitch
+      v-model="form.status"
+      label="状态"
+      prop="status"
+      active-value="1"
+      inactive-value="0"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
 const form = reactive({
   enabled: true,
-  showDetail: false
+  visible: false,
+  status: '0'
 })
 </script>
 ```
+
+---
+
+### 7. AFormCascader - 级联选择组件
+
+#### 组件说明
+
+`AFormCascader` 是级联选择组件,基于 Element Plus 的 `el-cascader` 封装。适用于省市区选择、部门选择等层级数据选择场景。
+
+#### 基础用法
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 基础级联 -->
+    <AFormCascader
+      v-model="form.region"
+      label="地区"
+      prop="region"
+      :options="regionOptions"
+    />
+
+    <!-- 可搜索 -->
+    <AFormCascader
+      v-model="form.dept"
+      label="部门"
+      prop="dept"
+      filterable
+      :options="deptOptions"
+    />
+
+    <!-- 仅显示最后一级 -->
+    <AFormCascader
+      v-model="form.category"
+      label="分类"
+      prop="category"
+      :show-all-levels="false"
+      :options="categoryOptions"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const form = reactive({
+  region: [],
+  dept: [],
+  category: []
+})
+
+const regionOptions = [
+  {
+    label: '浙江省',
+    value: 'zhejiang',
+    children: [
+      {
+        label: '杭州市',
+        value: 'hangzhou',
+        children: [
+          { label: '西湖区', value: 'xihu' },
+          { label: '上城区', value: 'shangcheng' }
+        ]
+      }
+    ]
+  }
+]
+</script>
+```
+
+---
+
+### 8. AFormTreeSelect - 树形选择组件
+
+#### 组件说明
+
+`AFormTreeSelect` 是树形选择组件,基于 Element Plus 的 `el-tree-select` 封装。适用于部门选择、菜单选择等树形结构数据选择。
+
+#### 基础用法
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 基础树形选择 -->
+    <AFormTreeSelect
+      v-model="form.deptId"
+      label="部门"
+      prop="deptId"
+      :data="deptTree"
+      node-key="id"
+      :props="{ label: 'name', children: 'children' }"
+    />
+
+    <!-- 可搜索 -->
+    <AFormTreeSelect
+      v-model="form.menuId"
+      label="菜单"
+      prop="menuId"
+      filterable
+      :data="menuTree"
+    />
+
+    <!-- 多选 -->
+    <AFormTreeSelect
+      v-model="form.roleIds"
+      label="角色"
+      prop="roleIds"
+      multiple
+      :data="roleTree"
+    />
+  </el-form>
+</template>
+```
+
+---
+
+### 9. AFormFileUpload - 文件上传组件
+
+#### 组件说明
+
+`AFormFileUpload` 是文件上传组件,支持多文件上传、拖拽上传、文件类型限制、文件大小限制等功能。
+
+#### 基础用法
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 基础文件上传 -->
+    <AFormFileUpload
+      v-model="form.file"
+      label="附件"
+      prop="file"
+    />
+
+    <!-- 多文件上传 -->
+    <AFormFileUpload
+      v-model="form.files"
+      label="多个附件"
+      prop="files"
+      multiple
+      :limit="5"
+    />
+
+    <!-- 限制文件类型 -->
+    <AFormFileUpload
+      v-model="form.document"
+      label="文档"
+      prop="document"
+      accept=".pdf,.doc,.docx"
+    />
+
+    <!-- 限制文件大小 -->
+    <AFormFileUpload
+      v-model="form.attachment"
+      label="附件"
+      prop="attachment"
+      :file-size="10"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const form = reactive({
+  file: '',
+  files: [],
+  document: '',
+  attachment: ''
+})
+</script>
+```
+
+---
+
+### 10. AFormImgUpload - 图片上传组件
+
+#### 组件说明
+
+`AFormImgUpload` 是图片上传组件,支持图片预览、裁剪、多图上传等功能。
+
+#### 基础用法
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 单图上传 -->
+    <AFormImgUpload
+      v-model="form.avatar"
+      label="头像"
+      prop="avatar"
+    />
+
+    <!-- 多图上传 -->
+    <AFormImgUpload
+      v-model="form.images"
+      label="相册"
+      prop="images"
+      multiple
+      :limit="9"
+    />
+
+    <!-- 限制图片尺寸 -->
+    <AFormImgUpload
+      v-model="form.banner"
+      label="横幅图"
+      prop="banner"
+      :width="1920"
+      :height="500"
+    />
+  </el-form>
+</template>
+```
+
+---
+
+### 11. AFormEditor - 富文本编辑器组件
+
+#### 组件说明
+
+`AFormEditor` 是富文本编辑器组件,适用于文章内容、公告内容等富文本编辑场景。
+
+#### 基础用法
+
+```vue
+<template>
+  <el-form :model="form">
+    <AFormEditor
+      v-model="form.content"
+      label="内容"
+      prop="content"
+      :height="400"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const form = reactive({
+  content: ''
+})
+</script>
+```
+
+---
+
+### 12. AFormMap - 地图选点组件
+
+#### 组件说明
+
+`AFormMap` 是地图选点组件,用于选择地理位置坐标。
+
+#### 基础用法
+
+```vue
+<template>
+  <el-form :model="form">
+    <AFormMap
+      v-model="form.location"
+      label="地址"
+      prop="location"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const form = reactive({
+  location: { lng: 120.153576, lat: 30.287459 }
+})
+</script>
+```
+
+---
+
+### 13. AFormInputWithAi - AI 增强输入组件
+
+#### 组件说明
+
+`AFormInputWithAi` 是 AI 增强输入组件,集成 AI 辅助功能,帮助用户快速生成文本内容。
+
+#### 基础用法
+
+```vue
+<template>
+  <el-form :model="form">
+    <AFormInputWithAi
+      v-model="form.description"
+      label="描述"
+      prop="description"
+      type="textarea"
+      ai-prompt="请根据关键词生成产品描述"
+    />
+  </el-form>
+</template>
+```
+
+---
 
 ## 最佳实践
 
-### 1. 搜索表单场景
+### 1. 表单布局设计
 
-搜索栏中的表单项不需要响应式布局。
+**栅格布局:**
 
 ```vue
 <template>
-  <el-form :model="queryParams" :inline="true">
-    <!-- 不设置 span，横向排列 -->
+  <el-form :model="form" label-width="100px">
+    <el-row :gutter="20">
+      <!-- 两列布局 -->
+      <AFormInput v-model="form.userName" label="用户名" :span="12" />
+      <AFormInput v-model="form.nickName" label="昵称" :span="12" />
+
+      <!-- 三列布局 -->
+      <AFormInput v-model="form.phone" label="电话" :span="8" />
+      <AFormInput v-model="form.email" label="邮箱" :span="8" />
+      <AFormSelect v-model="form.gender" label="性别" :span="8" :options="genderOptions" />
+
+      <!-- 全宽布局 -->
+      <AFormInput v-model="form.address" label="地址" :span="24" />
+    </el-row>
+  </el-form>
+</template>
+```
+
+**响应式布局:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <el-row :gutter="20">
+      <!-- 手机:1列, 平板:2列, 桌面:3列 -->
+      <AFormInput
+        v-model="form.field1"
+        :span="{ xs: 24, sm: 12, md: 8 }"
+      />
+      <AFormInput
+        v-model="form.field2"
+        :span="{ xs: 24, sm: 12, md: 8 }"
+      />
+      <AFormInput
+        v-model="form.field3"
+        :span="{ xs: 24, sm: 24, md: 8 }"
+      />
+    </el-row>
+  </el-form>
+</template>
+```
+
+### 2. 表单校验
+
+**基础校验:**
+
+```vue
+<template>
+  <el-form :model="form" :rules="rules" ref="formRef">
     <AFormInput
-      v-model="queryParams.userName"
+      v-model="form.userName"
       label="用户名"
       prop="userName"
-      placeholder="请输入用户名"
-      @keyup.enter="handleQuery"
     />
 
-    <AFormSelect
-      v-model="queryParams.status"
-      label="状态"
-      prop="status"
-      :options="statusOptions"
-      @change="handleQuery"
+    <AFormInput
+      v-model="form.email"
+      label="邮箱"
+      prop="email"
     />
 
-    <AFormDate
-      v-model="queryParams.dateRange"
-      label="创建时间"
-      prop="dateRange"
-      type="daterange"
-      @change="handleQuery"
+    <AFormInput
+      v-model="form.phone"
+      label="电话"
+      prop="phone"
     />
-
-    <el-form-item>
-      <el-button type="primary" @click="handleQuery">查询</el-button>
-      <el-button @click="handleReset">重置</el-button>
-    </el-form-item>
-  </el-form>
-</template>
-```
-
-### 2. 编辑表单场景
-
-编辑表单需要响应式布局，适配不同屏幕。
-
-```vue
-<template>
-  <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 使用 auto 预设自动响应式 -->
-      <AFormInput v-model="form.userName" label="用户名" prop="userName" span="auto" />
-      <AFormInput v-model="form.nickName" label="昵称" prop="nickName" span="auto" />
-      <AFormSelect v-model="form.gender" label="性别" prop="gender" :options="genderOptions" span="auto" />
-      <AFormInput v-model="form.phone" label="手机号" prop="phone" span="auto" />
-      <AFormInput v-model="form.email" label="邮箱" prop="email" span="auto" />
-      <AFormCheckbox v-model="form.roleIds" label="角色" prop="roleIds" :options="roleList" :span="24" />
-      <AFormInput v-model="form.remark" label="备注" prop="remark" type="textarea" :span="24" />
-    </el-row>
-  </el-form>
-</template>
-```
-
-### 3. 弹窗表单场景
-
-弹窗表单使用容器响应式模式。
-
-```vue
-<template>
-  <AModal v-model="visible" title="新增用户" size="large">
-    <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-      <el-row :gutter="16">
-        <!-- 使用 container 模式，基于弹窗宽度响应 -->
-        <AFormInput
-          v-model="form.userName"
-          label="用户名"
-          prop="userName"
-          span="auto"
-          responsive-mode="container"
-        />
-        <!-- 其他字段... -->
-      </el-row>
-    </el-form>
-
-    <template #footer>
-      <el-button @click="visible = false">取消</el-button>
-      <el-button type="primary" @click="handleSubmit">确定</el-button>
-    </template>
-  </AModal>
-</template>
-```
-
-### 4. 字典数据使用
-
-结合字典 Hook 使用。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <AFormSelect
-        v-model="form.status"
-        label="状态"
-        prop="status"
-        :span="12"
-        :options="sys_normal_disable"
-      />
-
-      <AFormSelect
-        v-model="form.userType"
-        label="用户类型"
-        prop="userType"
-        :span="12"
-        :options="sys_user_type"
-      />
-    </el-row>
   </el-form>
 </template>
 
-<script lang="ts" setup>
-import { reactive } from 'vue'
-import { useDict } from '@/hooks/useDict'
+<script setup lang="ts">
+import type { FormInstance, FormRules } from 'element-plus'
 
-const { sys_normal_disable, sys_user_type } = useDict('sys_normal_disable', 'sys_user_type')
+const formRef = ref<FormInstance>()
 
 const form = reactive({
-  status: '',
-  userType: ''
-})
-</script>
-```
-
-### 5. 动态禁用控制
-
-根据条件动态禁用表单项。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <AFormRadio
-        v-model="form.type"
-        label="类型"
-        prop="type"
-        :span="12"
-        :options="typeOptions"
-        @change="handleTypeChange"
-      />
-
-      <!-- 根据类型动态禁用 -->
-      <AFormInput
-        v-model="form.code"
-        label="编码"
-        prop="code"
-        :span="12"
-        :disabled="form.type !== 'custom'"
-      />
-
-      <AFormSelect
-        v-model="form.categoryId"
-        label="分类"
-        prop="categoryId"
-        :span="12"
-        :options="categoryList"
-        :disabled="form.type === 'system'"
-      />
-    </el-row>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive } from 'vue'
-
-const typeOptions = [
-  { label: '系统', value: 'system' },
-  { label: '自定义', value: 'custom' }
-]
-
-const form = reactive({
-  type: 'system',
-  code: '',
-  categoryId: ''
+  userName: '',
+  email: '',
+  phone: ''
 })
 
-const handleTypeChange = (value: string) => {
-  if (value === 'system') {
-    form.code = 'SYS_'
-  } else {
-    form.code = ''
-  }
+const rules: FormRules = {
+  userName: [
+    { required: true, message: '请输入用户名', trigger: 'blur' },
+    { min: 4, max: 20, message: '长度在 4 到 20 个字符', trigger: 'blur' }
+  ],
+  email: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
+  ],
+  phone: [
+    { required: true, message: '请输入电话', trigger: 'blur' },
+    { pattern: /^1[3-9]\d{9}$/, message: '请输入正确的手机号', trigger: 'blur' }
+  ]
+}
+
+// 提交表单
+const handleSubmit = async () => {
+  await formRef.value?.validate()
+  // 提交逻辑
 }
 </script>
 ```
 
-## 常见问题
+**自定义校验:**
 
-### 1. 如何处理表单验证？
+```vue
+<script setup lang="ts">
+// 自定义密码校验
+const validatePassword = (rule: any, value: any, callback: any) => {
+  if (!value) {
+    callback(new Error('请输入密码'))
+  } else if (value.length < 6) {
+    callback(new Error('密码长度不能少于 6 位'))
+  } else if (!/[A-Za-z]/.test(value) || !/\d/.test(value)) {
+    callback(new Error('密码必须包含字母和数字'))
+  } else {
+    callback()
+  }
+}
 
-表单组件的 `prop` 属性用于表单验证。
+// 确认密码校验
+const validateConfirmPassword = (rule: any, value: any, callback: any) => {
+  if (value !== form.password) {
+    callback(new Error('两次输入密码不一致'))
+  } else {
+    callback()
+  }
+}
+
+const rules = {
+  password: [
+    { required: true, validator: validatePassword, trigger: 'blur' }
+  ],
+  confirmPassword: [
+    { required: true, validator: validateConfirmPassword, trigger: 'blur' }
+  ]
+}
+</script>
+```
+
+### 3. 表单联动
+
+**选项联动:**
 
 ```vue
 <template>
-  <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-    <el-row :gutter="16">
-      <AFormInput
-        v-model="form.userName"
-        label="用户名"
-        prop="userName"
-        :span="12"
-      />
+  <el-form :model="form">
+    <!-- 省份选择 -->
+    <AFormSelect
+      v-model="form.provinceId"
+      label="省份"
+      :options="provinceOptions"
+      @change="handleProvinceChange"
+    />
 
-      <AFormInput
-        v-model="form.email"
-        label="邮箱"
-        prop="email"
-        :span="12"
-      />
-    </el-row>
-
-    <el-form-item>
-      <el-button type="primary" @click="handleSubmit">提交</el-button>
-    </el-form-item>
+    <!-- 城市选择(根据省份动态加载) -->
+    <AFormSelect
+      v-model="form.cityId"
+      label="城市"
+      :options="cityOptions"
+      :disabled="!form.provinceId"
+    />
   </el-form>
 </template>
 
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { FormInstance, FormRules } from 'element-plus'
+<script setup lang="ts">
+const form = reactive({
+  provinceId: '',
+  cityId: ''
+})
+
+const provinceOptions = ref([])
+const cityOptions = ref([])
+
+const handleProvinceChange = async (provinceId: string) => {
+  // 重置城市选择
+  form.cityId = ''
+  // 加载城市列表
+  cityOptions.value = await getCityList(provinceId)
+}
+</script>
+```
+
+**显示/隐藏联动:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <AFormRadio
+      v-model="form.type"
+      label="类型"
+      :options="typeOptions"
+    />
+
+    <!-- 根据类型显示不同的字段 -->
+    <AFormInput
+      v-if="form.type === '1'"
+      v-model="form.option1"
+      label="选项1"
+    />
+
+    <AFormInput
+      v-if="form.type === '2'"
+      v-model="form.option2"
+      label="选项2"
+    />
+  </el-form>
+</template>
+```
+
+### 4. 表单重置和回显
+
+**表单重置:**
+
+```vue
+<template>
+  <el-form :model="form" ref="formRef">
+    <AFormInput v-model="form.userName" label="用户名" prop="userName" />
+    <AFormInput v-model="form.email" label="邮箱" prop="email" />
+
+    <el-button @click="handleReset">重置</el-button>
+  </el-form>
+</template>
+
+<script setup lang="ts">
+import type { FormInstance } from 'element-plus'
 
 const formRef = ref<FormInstance>()
 
@@ -1981,319 +1786,361 @@ const form = reactive({
   email: ''
 })
 
-const rules: FormRules = {
-  userName: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }
-  ],
-  email: [
-    { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur' }
-  ]
-}
-
-const handleSubmit = async () => {
-  if (!formRef.value) return
-  await formRef.value.validate((valid) => {
-    if (valid) {
-      console.log('表单验证通过', form)
-      // 提交表单数据
-    }
-  })
-}
-</script>
-```
-
-### 2. 如何实现表单项联动？
-
-通过监听值的变化实现联动效果。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <el-row :gutter="16">
-      <!-- 省份选择 -->
-      <AFormSelect
-        v-model="form.provinceId"
-        label="省份"
-        prop="provinceId"
-        :span="12"
-        :options="provinceList"
-        @change="handleProvinceChange"
-      />
-
-      <!-- 城市选择（根据省份联动） -->
-      <AFormSelect
-        v-model="form.cityId"
-        label="城市"
-        prop="cityId"
-        :span="12"
-        :options="cityList"
-        :disabled="!form.provinceId"
-      />
-    </el-row>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const provinceList = ref([
-  { value: '1', label: '广东省' },
-  { value: '2', label: '浙江省' }
-])
-
-const cityList = ref<any[]>([])
-
-const form = reactive({
-  provinceId: '',
-  cityId: ''
-})
-
-const handleProvinceChange = (value: string) => {
-  // 清空城市选择
-  form.cityId = ''
-
-  // 加载对应省份的城市列表
-  if (value === '1') {
-    cityList.value = [
-      { value: '101', label: '广州市' },
-      { value: '102', label: '深圳市' }
-    ]
-  } else if (value === '2') {
-    cityList.value = [
-      { value: '201', label: '杭州市' },
-      { value: '202', label: '宁波市' }
-    ]
-  }
-}
-</script>
-```
-
-### 3. 如何处理多选值的类型问题？
-
-多选组件支持字符串和数组两种格式。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <!-- 返回逗号分隔的字符串 -->
-    <AFormCheckbox
-      v-model="form.hobbies"
-      label="爱好"
-      prop="hobbies"
-      :span="24"
-      :options="hobbyOptions"
-    />
-
-    <!-- 返回数组格式 -->
-    <AFormCheckbox
-      v-model="form.permissions"
-      label="权限"
-      prop="permissions"
-      :span="24"
-      :options="permissionOptions"
-      return-array
-    />
-
-    <!-- 自动判断（modelValue 是数组则返回数组） -->
-    <AFormSelect
-      v-model="form.roleIds"
-      label="角色"
-      prop="roleIds"
-      :span="24"
-      :options="roleList"
-      multiple
-    />
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-
-const hobbyOptions = ref([
-  { label: '篮球', value: '1' },
-  { label: '足球', value: '2' }
-])
-
-const permissionOptions = ref([
-  { label: '查看', value: 'view' },
-  { label: '编辑', value: 'edit' }
-])
-
-const roleList = ref([
-  { value: 1, label: '管理员' },
-  { value: 2, label: '编辑' }
-])
-
-const form = reactive({
-  hobbies: '',      // 字符串: "1,2"
-  permissions: [],  // 数组: ['view', 'edit']
-  roleIds: []       // 数组: [1, 2]
-})
-</script>
-```
-
-### 4. 如何自定义表单项宽度？
-
-不同场景的宽度控制方法。
-
-```vue
-<template>
-  <el-form :model="form" label-width="100px">
-    <!-- 方式1: 通过 span 控制（推荐） -->
-    <el-row :gutter="16">
-      <AFormInput v-model="form.field1" label="字段1" prop="field1" :span="12" />
-      <AFormInput v-model="form.field2" label="字段2" prop="field2" :span="8" />
-    </el-row>
-
-    <!-- 方式2: 通过 width 属性控制（数字输入框、选择器） -->
-    <AFormInput
-      v-model="form.age"
-      label="年龄"
-      prop="age"
-      type="number"
-      :width="200"
-    />
-
-    <AFormSelect
-      v-model="form.status"
-      label="状态"
-      prop="status"
-      :options="statusOptions"
-      :width="300"
-    />
-
-    <!-- 方式3: 通过 CSS 控制 -->
-    <AFormDate
-      v-model="form.date"
-      label="日期"
-      prop="date"
-      class="custom-width"
-    />
-  </el-form>
-</template>
-
-<style scoped>
-.custom-width {
-  width: 280px;
-}
-</style>
-```
-
-### 5. 如何实现表单重置？
-
-使用 Element Plus 的表单重置方法。
-
-```vue
-<template>
-  <el-form :model="form" ref="formRef" label-width="100px">
-    <el-row :gutter="16">
-      <AFormInput v-model="form.userName" label="用户名" prop="userName" :span="12" />
-      <AFormSelect v-model="form.status" label="状态" prop="status" :options="statusOptions" :span="12" />
-    </el-row>
-
-    <el-form-item>
-      <el-button type="primary" @click="handleSubmit">提交</el-button>
-      <el-button @click="handleReset">重置</el-button>
-    </el-form-item>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import type { FormInstance } from 'element-plus'
-
-const formRef = ref<FormInstance>()
-
-const form = reactive({
-  userName: '',
-  status: ''
-})
-
+// 重置表单
 const handleReset = () => {
   formRef.value?.resetFields()
 }
 </script>
 ```
 
-### 6. 如何在搜索栏中快速触发查询？
-
-监听输入框回车和选择器变化事件。
+**表单回显:**
 
 ```vue
-<template>
-  <el-form :model="queryParams" :inline="true">
-    <!-- 输入框回车触发 -->
-    <AFormInput
-      v-model="queryParams.userName"
-      label="用户名"
-      placeholder="请输入用户名"
-      @keyup.enter="handleQuery"
-    />
+<script setup lang="ts">
+import { getUserInfo } from '@/api/system/user'
 
-    <!-- 选择器变化触发 -->
-    <AFormSelect
-      v-model="queryParams.status"
-      label="状态"
-      :options="statusOptions"
-      @change="handleQuery"
-    />
-
-    <!-- 日期选择器变化触发 -->
-    <AFormDate
-      v-model="queryParams.dateRange"
-      label="创建时间"
-      type="daterange"
-      @change="handleQuery"
-    />
-
-    <el-form-item>
-      <el-button type="primary" @click="handleQuery">查询</el-button>
-      <el-button @click="handleReset">重置</el-button>
-    </el-form-item>
-  </el-form>
-</template>
-
-<script lang="ts" setup>
-import { reactive } from 'vue'
-
-const queryParams = reactive({
+const form = reactive({
+  userId: '',
   userName: '',
-  status: '',
-  dateRange: []
+  email: '',
+  phone: ''
 })
 
-const handleQuery = () => {
-  console.log('查询参数:', queryParams)
-  // 调用查询接口
-}
-
-const handleReset = () => {
-  queryParams.userName = ''
-  queryParams.status = ''
-  queryParams.dateRange = []
-  handleQuery()
+// 编辑时回显数据
+const handleEdit = async (userId: string) => {
+  const data = await getUserInfo(userId)
+  // 使用 Object.assign 回显数据
+  Object.assign(form, data)
 }
 </script>
 ```
 
+### 5. 性能优化
+
+**按需加载组件:**
+
+```typescript
+// 异步加载富文本编辑器
+const AFormEditor = defineAsyncComponent(() =>
+  import('@/components/AForm/AFormEditor.vue')
+)
+```
+
+**大表单分步加载:**
+
+```vue
+<template>
+  <el-steps :active="currentStep">
+    <el-step title="基本信息" />
+    <el-step title="详细信息" />
+    <el-step title="附加信息" />
+  </el-steps>
+
+  <!-- 步骤 1 -->
+  <el-form v-if="currentStep === 0" :model="form">
+    <AFormInput v-model="form.userName" label="用户名" />
+    <AFormInput v-model="form.email" label="邮箱" />
+  </el-form>
+
+  <!-- 步骤 2 -->
+  <el-form v-if="currentStep === 1" :model="form">
+    <AFormInput v-model="form.address" label="地址" />
+    <AFormInput v-model="form.company" label="公司" />
+  </el-form>
+
+  <!-- 步骤 3 -->
+  <el-form v-if="currentStep === 2" :model="form">
+    <AFormImgUpload v-model="form.avatar" label="头像" />
+    <AFormFileUpload v-model="form.attachment" label="附件" />
+  </el-form>
+</template>
+```
+
+---
+
+## 常见问题
+
+### 1. 表单项不显示
+
+**问题描述:**
+
+使用表单组件后,页面上不显示任何内容。
+
+**原因分析:**
+
+- 没有设置 `span` 属性且没有包裹在 `el-row` 中
+- `showFormItem` 设置为 `false` 但没有提供布局容器
+- 组件导入路径错误
+
+**解决方案:**
+
+```vue
+<!-- ❌ 错误:没有 span 且没有 el-row -->
+<el-form :model="form">
+  <AFormInput v-model="form.userName" label="用户名" />
+</el-form>
+
+<!-- ✅ 正确:添加 span 或 el-row -->
+<el-form :model="form">
+  <el-row :gutter="20">
+    <AFormInput v-model="form.userName" label="用户名" :span="24" />
+  </el-row>
+</el-form>
+
+<!-- ✅ 或者:不使用 span -->
+<el-form :model="form">
+  <AFormInput v-model="form.userName" label="用户名" :show-form-item="true" />
+</el-form>
+```
+
+### 2. 响应式布局不生效
+
+**问题描述:**
+
+设置了响应式 `span`,但在不同屏幕尺寸下没有变化。
+
+**原因分析:**
+
+- 响应式模式设置错误
+- 在弹窗中使用了 `screen` 模式
+- 父容器宽度限制导致断点判断错误
+
+**解决方案:**
+
+```vue
+<!-- ❌ 错误:弹窗中使用 screen 模式 -->
+<el-dialog v-model="visible">
+  <AFormInput
+    v-model="form.userName"
+    :span="{ md: 12 }"
+    responsive-mode="screen"
+  />
+</el-dialog>
+
+<!-- ✅ 正确:弹窗中使用 container 或 modal-size 模式 -->
+<el-dialog v-model="visible" width="800px">
+  <AFormInput
+    v-model="form.userName"
+    :span="{ md: 12 }"
+    responsive-mode="container"
+  />
+</el-dialog>
+
+<!-- ✅ 或者:使用 AModal -->
+<AModal v-model="visible" size="medium">
+  <AFormInput
+    v-model="form.userName"
+    :span="{ md: 12 }"
+    responsive-mode="modal-size"
+    modal-size="medium"
+  />
+</AModal>
+```
+
+### 3. v-model 双向绑定失效
+
+**问题描述:**
+
+修改表单值后,界面不更新或者界面修改后数据不更新。
+
+**原因分析:**
+
+- 使用了普通对象而不是响应式对象
+- 属性名拼写错误
+- 嵌套对象没有响应式
+
+**解决方案:**
+
+```vue
+<script setup lang="ts">
+// ❌ 错误:普通对象
+let form = {
+  userName: ''
+}
+
+// ✅ 正确:使用 reactive
+const form = reactive({
+  userName: ''
+})
+
+// ✅ 或者:使用 ref
+const userName = ref('')
+
+// ❌ 错误:嵌套对象不响应式
+const form = reactive({
+  user: {
+    name: ''  // 这个对象本身不是响应式的
+  }
+})
+
+// ✅ 正确:使用 toRef 或完整响应式
+const form = reactive({
+  user: reactive({
+    name: ''
+  })
+})
+</script>
+```
+
+### 4. 表单校验不触发
+
+**问题描述:**
+
+设置了校验规则,但提交时不进行校验。
+
+**原因分析:**
+
+- `prop` 属性未设置或与 `rules` 中的键名不匹配
+- 没有调用 `validate` 方法
+- 校验规则配置错误
+
+**解决方案:**
+
+```vue
+<template>
+  <el-form :model="form" :rules="rules" ref="formRef">
+    <!-- ❌ 错误:没有 prop -->
+    <AFormInput v-model="form.userName" label="用户名" />
+
+    <!-- ✅ 正确:添加 prop -->
+    <AFormInput v-model="form.userName" label="用户名" prop="userName" />
+
+    <el-button @click="handleSubmit">提交</el-button>
+  </el-form>
+</template>
+
+<script setup lang="ts">
+import type { FormInstance, FormRules } from 'element-plus'
+
+const formRef = ref<FormInstance>()
+
+const form = reactive({
+  userName: ''
+})
+
+const rules: FormRules = {
+  // ✅ 键名必须与 prop 一致
+  userName: [
+    { required: true, message: '请输入用户名', trigger: 'blur' }
+  ]
+}
+
+const handleSubmit = async () => {
+  // ✅ 提交前进行校验
+  try {
+    await formRef.value?.validate()
+    // 校验通过,提交数据
+    console.log('提交数据:', form)
+  } catch (error) {
+    // 校验失败
+    console.error('校验失败')
+  }
+}
+</script>
+```
+
+### 5. 密码被浏览器自动填充
+
+**问题描述:**
+
+密码输入框被浏览器自动填充,影响用户体验。
+
+**原因分析:**
+
+浏览器的自动填充功能会记住密码并自动填入。
+
+**解决方案:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- ✅ 使用 prevent-autofill 属性 -->
+    <AFormInput
+      v-model="form.password"
+      label="密码"
+      prop="password"
+      type="password"
+      show-password
+      prevent-autofill
+    />
+
+    <!-- ✅ 或者添加假的密码框(隐藏) -->
+    <input type="password" style="display:none" />
+    <AFormInput
+      v-model="form.password"
+      label="密码"
+      type="password"
+      show-password
+    />
+  </el-form>
+</template>
+```
+
+### 6. 下拉选择选项不显示
+
+**问题描述:**
+
+AFormSelect 组件下拉列表为空或选项不显示。
+
+**原因分析:**
+
+- `options` 数据格式错误
+- 选项的 `label` 和 `value` 字段名不匹配
+- 异步数据未正确加载
+
+**解决方案:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- ❌ 错误:数据格式不正确 -->
+    <AFormSelect
+      v-model="form.status"
+      :options="['选项1', '选项2']"
+    />
+
+    <!-- ✅ 正确:使用对象数组 -->
+    <AFormSelect
+      v-model="form.status"
+      :options="[
+        { label: '选项1', value: '1' },
+        { label: '选项2', value: '2' }
+      ]"
+    />
+
+    <!-- ✅ 或者:使用字典数据 -->
+    <AFormSelect
+      v-model="form.status"
+      dict-type="sys_normal_disable"
+    />
+  </el-form>
+</template>
+```
+
+---
+
 ## 总结
 
-RuoYi-Plus 的表单组件体系提供了完整的表单解决方案，通过统一的 API 设计和灵活的配置选项，大幅简化了表单开发流程。
+### 核心优势
 
-**核心优势：**
+1. **统一封装** - 基于 Element Plus 二次封装,API 设计一致
+2. **响应式布局** - 支持多种响应式模式,适应不同场景
+3. **开箱即用** - 内置表单项容器,自动处理标签、校验、提示
+4. **功能丰富** - 支持字典数据、国际化、AI 增强等高级功能
+5. **灵活扩展** - 支持插槽、自定义模板、事件监听等扩展方式
 
-1. **开发效率高** - 减少重复代码，统一表单交互逻辑
-2. **响应式友好** - 内置多种响应式布局方案，自动适配设备
-3. **类型安全** - 完整的 TypeScript 支持，减少运行时错误
-4. **扩展性强** - 丰富的插槽和事件，满足各种定制需求
-5. **国际化完善** - 自动翻译标签和占位符，支持多语言
+### 使用建议
 
-**使用建议：**
+1. **合理使用响应式** - 根据场景选择合适的响应式模式
+2. **统一表单校验** - 使用 FormRules 统一管理校验规则
+3. **优化大表单** - 使用分步表单、按需加载减少性能开销
+4. **规范属性配置** - 保持 prop、label 等属性命名一致性
+5. **注重用户体验** - 合理使用提示信息、防自动填充等功能
 
-- 搜索栏不设置 `span`，使用行内布局
-- 编辑表单使用 `span="auto"` 实现自动响应式
-- 弹窗表单使用 `responsive-mode="container"` 适配弹窗尺寸
-- 多选组件根据后端要求选择字符串或数组格式
-- 合理使用禁用条件和字段映射功能，减少数据转换代码
+### 学习路径
+
+1. **基础阶段** - 掌握常用表单组件的基本用法
+2. **进阶阶段** - 学习响应式布局、表单校验、联动等功能
+3. **高级阶段** - 了解组件设计原理、性能优化、自定义扩展
+
+通过合理使用表单组件体系,可以大幅提升表单开发效率,减少重复代码,提供一致的用户体验。

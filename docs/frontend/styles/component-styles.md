@@ -2,98 +2,30 @@
 
 ## 介绍
 
-组件样式系统是 RuoYi-Plus 前端项目的核心样式架构之一，负责定义和管理所有组件的外观和交互效果。本系统采用 SCSS 预处理器，结合现代 CSS 特性，提供了高度可复用、易于维护的样式解决方案。
+RuoYi-Plus-UniApp 前端项目的组件样式系统提供了一套统一的组件样式规范和实现,确保所有UI组件保持一致的视觉风格和交互体验。组件样式基于模块化设计,支持主题切换、响应式适配和自定义扩展。
 
-**核心特性：**
+**核心特性:**
 
-- **模块化设计** - 采用 7-1 架构模式，样式代码清晰分层
-- **高度复用** - 通过 SCSS 混合器和 CSS 变量实现样式复用
-- **主题支持** - 完整的亮色/暗色主题切换能力
-- **动画丰富** - 内置多种过渡动画和交互效果
-- **响应式** - 完善的断点系统支持多设备适配
-- **Element Plus 集成** - 深度定制 Element Plus 组件样式
+- **按钮样式系统** - 提供多种按钮样式和交互效果,包括彩色按钮、动画按钮等
+- **过渡动画系统** - 统一的过渡动画效果,包括淡入淡出、位移、缩放等
+- **组件动画** - 对话框、菜单、徽章等组件的专属动画
+- **图标动画** - 丰富的图标悬停动画效果
+- **主题集成** - 所有组件样式与主题系统无缝集成
+- **可复用混合宏** - 提供混合宏简化组件样式编写
 
-## 样式系统架构
+## 按钮组件样式
 
-### 目录结构
+### colorBtn 混合宏
 
-项目样式文件位于 `src/assets/styles/` 目录下，采用分层架构：
+`colorBtn` 混合宏用于快速创建带有特定颜色主题的按钮,提供统一的悬停效果。
 
-```
-src/assets/styles/
-├── abstracts/              # 抽象层
-│   ├── _variables.scss     # SCSS 变量定义
-│   ├── _mixins.scss        # 混合器函数集
-│   └── exports.module.scss # 导出模块
-├── base/                   # 基础层
-│   ├── _reset.scss         # CSS 重置样式
-│   └── _typography.scss    # 排版样式
-├── components/             # 组件层
-│   ├── _buttons.scss       # 按钮样式
-│   └── _animations.scss    # 动画样式
-├── layout/                 # 布局层
-│   └── _layout.scss        # 布局样式
-├── themes/                 # 主题层
-│   ├── _light.scss         # 亮色主题
-│   └── _dark.scss          # 暗色主题
-├── vendors/                # 第三方层
-│   └── _element-plus.scss  # Element Plus 覆盖
-├── main.scss               # 主样式入口
-└── theme-animation.scss    # 主题切换动画
-```
-
-### 样式导入顺序
-
-主样式文件 `main.scss` 按照特定顺序导入各个模块，确保样式优先级正确：
-
-```scss
-/* 1. 外部库 */
-@use 'animate.css';
-@use 'element-plus/dist/index.css';
-
-/* 2. 抽象层 */
-@use './abstracts/variables' as *;
-@use './abstracts/mixins' as *;
-
-/* 3. 主题系统 */
-@use './themes/light';
-@use './themes/dark';
-
-/* 4. 基础样式 */
-@use './base/reset';
-@use './base/typography';
-
-/* 5. 布局层 */
-@use './layout/layout';
-
-/* 6. 组件样式 */
-@use './components/buttons';
-@use './components/animations';
-
-/* 7. 第三方库样式覆盖 */
-@use './vendors/element-plus';
-
-/* 8. 主题切换动画 */
-@use './theme-animation';
-```
-
-**导入顺序说明：**
-
-1. **外部库优先** - 确保第三方样式先加载
-2. **抽象层次之** - 变量和混合器供后续模块使用
-3. **主题定义在前** - CSS 变量需要在使用前定义
-4. **基础到复杂** - 从基础样式逐步到组件样式
-5. **覆盖样式最后** - 确保自定义样式优先级最高
-
-## 按钮样式系统
-
-### 颜色按钮
-
-项目提供了多种主题色按钮，通过混合器统一管理样式：
+#### 混合宏定义
 
 ```scss
 /**
- * 颜色按钮混合器
+ * 颜色按钮混合宏
+ * 根据传入的颜色参数创建一个带有该背景色的按钮
+ * 鼠标悬停时会变成白色背景，传入的颜色作为文字和边框颜色
  * @param {Color} $color - 按钮的主题颜色
  */
 @mixin colorBtn($color) {
@@ -110,11 +42,18 @@ src/assets/styles/
 }
 ```
 
-**可用颜色按钮类：**
+**设计理念:**
+- 默认状态: 使用传入颜色作为背景色
+- 悬停状态: 背景变为白色,颜色作为文字和边框色
+- 伪元素支持: 可配合 `:before` 和 `:after` 创建边框动画
+
+#### 预定义按钮样式
+
+项目提供了7种预定义的彩色按钮样式:
 
 ```scss
 .blue-btn {
-  @include colorBtn($blue);        // 蓝色 #324157
+  @include colorBtn($blue);        // 蓝色按钮 #324157
 }
 
 .light-blue-btn {
@@ -122,15 +61,15 @@ src/assets/styles/
 }
 
 .red-btn {
-  @include colorBtn($red);         // 红色 #c03639
+  @include colorBtn($red);         // 红色按钮 #c03639
 }
 
 .pink-btn {
-  @include colorBtn($pink);        // 粉色 #e65d6e
+  @include colorBtn($pink);        // 粉色按钮 #e65d6e
 }
 
 .green-btn {
-  @include colorBtn($green);       // 绿色 #30b08f
+  @include colorBtn($green);       // 绿色按钮 #30b08f
 }
 
 .tiffany-btn {
@@ -138,15 +77,46 @@ src/assets/styles/
 }
 
 .yellow-btn {
-  @include colorBtn($yellow);      // 黄色 #fec171
+  @include colorBtn($yellow);      // 黄色按钮 #fec171
 }
 ```
 
-### Pan 按钮
+#### 使用示例
 
-Pan 按钮是一种带有动画边框效果的按钮样式：
+```vue
+<template>
+  <div class="button-group">
+    <button class="pan-btn blue-btn">蓝色按钮</button>
+    <button class="pan-btn light-blue-btn">浅蓝色按钮</button>
+    <button class="pan-btn red-btn">红色按钮</button>
+    <button class="pan-btn pink-btn">粉色按钮</button>
+    <button class="pan-btn green-btn">绿色按钮</button>
+    <button class="pan-btn tiffany-btn">蒂芙尼蓝按钮</button>
+    <button class="pan-btn yellow-btn">黄色按钮</button>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.button-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+</style>
+```
+
+### pan-btn 动画按钮
+
+`pan-btn` 是一个带有上下边框动画效果的按钮基础类,提供独特的交互体验。
+
+#### 样式定义
 
 ```scss
+/**
+ * 基础按钮样式类
+ * 定义了所有按钮的共同样式属性和悬停效果
+ * 包含独特的上下边框动画效果
+ */
 .pan-btn {
   font-size: 14px;
   color: #fff;
@@ -168,7 +138,7 @@ Pan 按钮是一种带有动画边框效果的按钮样式：
     }
   }
 
-  // 上边框线
+  // 上边框线伪元素
   &:before,
   &:after {
     content: '';
@@ -180,7 +150,7 @@ Pan 按钮是一种带有动画边框效果的按钮样式：
     transition: 400ms ease all;
   }
 
-  // 下边框线
+  // 下边框线伪元素
   &::after {
     right: inherit;
     top: inherit;
@@ -190,49 +160,72 @@ Pan 按钮是一种带有动画边框效果的按钮样式：
 }
 ```
 
-**使用示例：**
+#### 动画原理
+
+1. **初始状态**:
+   - 按钮显示背景色
+   - 上下伪元素宽度为0(不可见)
+
+2. **悬停状态**:
+   - 背景变为白色
+   - 上边框从右向左展开
+   - 下边框从左向右展开
+   - 形成动态边框效果
+
+3. **时间曲线**:
+   - 背景过渡: 600ms
+   - 边框展开: 600ms
+   - 使用 `ease` 缓动函数
+
+#### 使用示例
 
 ```vue
 <template>
-  <div class="button-demo">
-    <!-- 颜色按钮 -->
-    <button class="blue-btn pan-btn">蓝色按钮</button>
-    <button class="green-btn pan-btn">绿色按钮</button>
-    <button class="red-btn pan-btn">红色按钮</button>
+  <div class="demo-container">
+    <button class="pan-btn blue-btn">
+      悬停查看动画效果
+    </button>
 
-    <!-- 自定义按钮 -->
-    <button class="custom-button">自定义按钮</button>
+    <button class="pan-btn green-btn" @click="handleClick">
+      点击执行操作
+    </button>
   </div>
 </template>
 
+<script lang="ts" setup>
+const handleClick = () => {
+  console.log('按钮被点击')
+}
+</script>
+
 <style lang="scss" scoped>
-.button-demo {
+.demo-container {
+  padding: 40px;
+  background: var(--bg-level-1);
   display: flex;
-  gap: 12px;
-  padding: 20px;
+  gap: 20px;
 }
 </style>
 ```
 
-**动画效果说明：**
+### custom-button 简洁按钮
 
-1. **初始状态** - 按钮显示背景色，边框线宽度为 0
-2. **悬停触发** - 背景变为白色，文字变为主题色
-3. **边框展开** - 上下边框线从 0 宽度扩展到 100%
-4. **过渡平滑** - 600ms 的缓动过渡效果
+`custom-button` 提供更简单的按钮样式,不带动画效果,适用于需要简洁风格的场景。
 
-### 自定义按钮
-
-简单的无动画按钮样式：
+#### 样式定义
 
 ```scss
+/**
+ * 自定义按钮基础样式
+ * 提供更简单的按钮样式，不带动画效果
+ */
 .custom-button {
   display: inline-block;
   line-height: 1;
   white-space: nowrap;
   cursor: pointer;
   background: #fff;
-  color: #fff;
+  color: #606266;
   -webkit-appearance: none;
   text-align: center;
   box-sizing: border-box;
@@ -241,16 +234,93 @@ Pan 按钮是一种带有动画边框效果的按钮样式：
   padding: 10px 15px;
   font-size: 14px;
   border-radius: 4px;
+  border: 1px solid #dcdfe6;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: var(--primary-color);
+    border-color: var(--primary-color-light);
+    background: var(--primary-color-lighter);
+  }
+
+  &:active {
+    color: var(--primary-color-active);
+    border-color: var(--primary-color-active);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 }
 ```
 
-## 动画样式系统
+#### 使用场景
 
-### 全局过渡动画
+- 表单提交按钮
+- 工具栏按钮
+- 对话框操作按钮
+- 简洁风格的界面
 
-#### 淡入淡出
+#### 使用示例
 
-最基础的淡入淡出效果，适用于简单的显示/隐藏场景：
+```vue
+<template>
+  <div class="toolbar">
+    <button class="custom-button">新增</button>
+    <button class="custom-button">编辑</button>
+    <button class="custom-button">删除</button>
+    <button class="custom-button" disabled>禁用</button>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.toolbar {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  background: var(--bg-level-1);
+  border-radius: 4px;
+}
+</style>
+```
+
+### 自定义按钮样式
+
+基于混合宏创建自定义按钮:
+
+```scss
+// 创建紫色按钮
+.purple-btn {
+  @include colorBtn(#9c27b0);
+}
+
+// 创建橙色按钮
+.orange-btn {
+  @include colorBtn(#ff9800);
+}
+
+// 创建渐变按钮
+.gradient-btn {
+  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 14px 36px;
+  border-radius: 8px;
+  border: none;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+}
+```
+
+## 过渡动画
+
+### fade 淡入淡出
+
+基础的淡入淡出效果,适用于大多数元素的显示/隐藏:
 
 ```scss
 .fade-enter-active,
@@ -264,33 +334,32 @@ Pan 按钮是一种带有动画边框效果的按钮样式：
 }
 ```
 
-**使用示例：**
+**使用示例:**
 
 ```vue
 <template>
   <transition name="fade">
     <div v-if="visible" class="content">
-      淡入淡出内容
+      淡入淡出的内容
     </div>
   </transition>
+
+  <button @click="visible = !visible">切换显示</button>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
 
 const visible = ref(true)
-
-const toggle = () => {
-  visible.value = !visible.value
-}
 </script>
 ```
 
-#### 淡入淡出 + 位移
+### fade-transform 淡入淡出+位移
 
-结合透明度和位移变换的过渡效果：
+结合淡入淡出和水平位移的过渡效果:
 
 ```scss
+.fade-transform-move,
 .fade-transform-leave-active,
 .fade-transform-enter-active {
   transition: all var(--duration-slow);
@@ -307,14 +376,49 @@ const toggle = () => {
 }
 ```
 
-**使用场景：**
-- 侧边栏展开/收起
-- 内容区域切换
-- 导航菜单过渡
+**动画特点:**
+- 进入: 从左侧30px淡入
+- 离开: 向右侧30px淡出
+- 时长: 0.6s (慢速)
 
-#### 面包屑导航过渡
+**使用示例:**
 
-专门为面包屑导航设计的过渡效果：
+```vue
+<template>
+  <transition name="fade-transform">
+    <div v-if="show" class="message">
+      <el-icon><InfoFilled /></el-icon>
+      <span>这是一条提示消息</span>
+    </div>
+  </transition>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const show = ref(true)
+
+setTimeout(() => {
+  show.value = false
+}, 3000)
+</script>
+
+<style lang="scss" scoped>
+.message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--bg-level-1);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+</style>
+```
+
+### breadcrumb 面包屑动画
+
+专为面包屑导航设计的过渡效果:
 
 ```scss
 .breadcrumb-enter-active,
@@ -337,19 +441,88 @@ const toggle = () => {
 }
 ```
 
-**特点：**
-- 支持列表项位置变化动画
-- 离开时使用绝对定位避免布局抖动
-- 较小的位移距离（20px）更加细腻
+**设计说明:**
+- 新项进入时从右侧20px淡入
+- 旧项离开时向右侧20px淡出
+- 使用绝对定位避免布局抖动
+- 支持列表项移动动画
 
-### 对话框动画
+**使用示例:**
 
-现代化的对话框缩放动画效果：
+```vue
+<template>
+  <div class="breadcrumb-container">
+    <transition-group name="breadcrumb" tag="div" class="breadcrumb-list">
+      <span
+        v-for="(item, index) in breadcrumbs"
+        :key="item.path"
+        class="breadcrumb-item"
+      >
+        <span @click="handleClick(item)">{{ item.title }}</span>
+        <span v-if="index < breadcrumbs.length - 1" class="separator">/</span>
+      </span>
+    </transition-group>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+interface Breadcrumb {
+  path: string
+  title: string
+}
+
+const breadcrumbs = ref<Breadcrumb[]>([
+  { path: '/', title: '首页' },
+  { path: '/system', title: '系统管理' },
+  { path: '/system/user', title: '用户管理' }
+])
+
+const handleClick = (item: Breadcrumb) => {
+  const index = breadcrumbs.value.findIndex(b => b.path === item.path)
+  breadcrumbs.value = breadcrumbs.value.slice(0, index + 1)
+}
+</script>
+
+<style lang="scss" scoped>
+.breadcrumb-list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumb-item {
+  cursor: pointer;
+  color: var(--text-color-regular);
+
+  &:last-child {
+    color: var(--text-color-primary);
+    font-weight: 500;
+  }
+
+  .separator {
+    margin: 0 8px;
+    color: var(--text-color-placeholder);
+  }
+}
+</style>
+```
+
+## 对话框动画
+
+### 现代化缩放效果
+
+对话框使用现代化的缩放动画,提供流畅的打开/关闭体验:
 
 ```scss
 .dialog-fade-enter-active {
   .el-dialog:not(.is-draggable) {
     animation: dialog-open 0.2s cubic-bezier(0.32, 0.14, 0.15, 0.86);
+
+    .el-select__selected-item {
+      display: inline-block;
+    }
   }
 }
 
@@ -366,6 +539,7 @@ const toggle = () => {
     opacity: 0;
     transform: scale(0.2);
   }
+
   100% {
     opacity: 1;
     transform: scale(1);
@@ -377,45 +551,235 @@ const toggle = () => {
     opacity: 1;
     transform: scale(1);
   }
+
   100% {
     opacity: 0;
     transform: scale(0.2);
   }
 }
-```
 
-**动画特点：**
-- **打开动画** - 从 20% 缩放到 100%，配合淡入
-- **关闭动画** - 从 100% 缩放到 20%，配合淡出
-- **缓动函数** - 使用三次贝塞尔曲线实现弹性效果
-- **时长控制** - 打开 0.2s，关闭 0.5s
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
 
-### 图标动画
-
-#### 抖动动画
-
-```scss
-@keyframes shake {
-  0% { transform: rotate(0); }
-  25% { transform: rotate(-5deg); }
-  50% { transform: rotate(5deg); }
-  75% { transform: rotate(-5deg); }
-  100% { transform: rotate(0); }
-}
-
-.icon-hover-shake {
-  &:hover {
-    animation: shake 0.5s ease-in-out;
+  100% {
+    opacity: 0;
   }
 }
 ```
 
-#### 旋转动画
+**动画特点:**
+- 打开: 从0.2倍缩放到正常大小,同时淡入
+- 关闭: 从正常大小缩放到0.2倍,同时淡出
+- 使用三次贝塞尔曲线实现流畅效果
+- 遮罩层独立淡出动画
+
+**使用示例:**
+
+```vue
+<template>
+  <el-dialog
+    v-model="dialogVisible"
+    title="提示"
+    width="500px"
+    :before-close="handleClose"
+  >
+    <div class="dialog-content">
+      <p>这是一个使用现代化缩放动画的对话框</p>
+      <p>打开和关闭时会有流畅的缩放效果</p>
+    </div>
+
+    <template #footer>
+      <el-button @click="dialogVisible = false">取消</el-button>
+      <el-button type="primary" @click="handleConfirm">确定</el-button>
+    </template>
+  </el-dialog>
+
+  <el-button type="primary" @click="dialogVisible = true">
+    打开对话框
+  </el-button>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const dialogVisible = ref(false)
+
+const handleClose = (done: () => void) => {
+  // 关闭前的确认逻辑
+  done()
+}
+
+const handleConfirm = () => {
+  dialogVisible.value = false
+  // 确认操作
+}
+</script>
+
+<style lang="scss" scoped>
+.dialog-content {
+  padding: 20px 0;
+
+  p {
+    margin-bottom: 12px;
+    color: var(--text-color-regular);
+    line-height: 1.6;
+  }
+}
+</style>
+```
+
+## 菜单动画
+
+### 菜单展开/收起
+
+```scss
+.el-menu.el-menu--inline {
+  transition: max-height 0.26s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.el-sub-menu__title,
+.el-menu-item {
+  transition: background-color 0s !important;
+}
+```
+
+**优化说明:**
+- 使用 `max-height` 过渡实现平滑展开
+- 使用 `cubic-bezier` 曲线优化动画曲线
+- 禁用菜单项背景色过渡,提升性能
+
+## 图标动画
+
+### 关键帧动画定义
+
+项目提供了多种图标动画关键帧:
+
+#### shake 抖动动画
+
+```scss
+@keyframes shake {
+  0% {
+    transform: rotate(0);
+  }
+
+  25% {
+    transform: rotate(-5deg);
+  }
+
+  50% {
+    transform: rotate(5deg);
+  }
+
+  75% {
+    transform: rotate(-5deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+```
+
+#### rotate180 旋转动画
 
 ```scss
 @keyframes rotate180 {
-  0% { transform: rotate(0); }
-  100% { transform: rotate(180deg); }
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(180deg);
+  }
+}
+```
+
+#### moveUp 上下移动动画
+
+```scss
+@keyframes moveUp {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-3px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+```
+
+#### expand 放大动画
+
+```scss
+@keyframes expand {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+```
+
+#### shrink 缩小动画
+
+```scss
+@keyframes shrink {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(0.9);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+```
+
+#### breathing 呼吸动画
+
+```scss
+@keyframes breathing {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+
+  100% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+}
+```
+
+### 图标悬停动画类
+
+预定义的图标悬停动画类,可直接应用于图标元素:
+
+```scss
+.icon-hover-shake {
+  &:hover {
+    animation: shake 0.5s ease-in-out;
+  }
 }
 
 .icon-hover-rotate180 {
@@ -425,31 +789,11 @@ const toggle = () => {
     animation: rotate180 0.4s cubic-bezier(0.4, 0, 0.6, 1);
   }
 }
-```
-
-#### 上下移动动画
-
-```scss
-@keyframes moveUp {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-  100% { transform: translateY(0); }
-}
 
 .icon-hover-moveUp {
   &:hover {
     animation: moveUp 0.4s ease-in-out;
   }
-}
-```
-
-#### 放大缩小动画
-
-```scss
-@keyframes expand {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
 }
 
 .icon-hover-expand {
@@ -458,34 +802,9 @@ const toggle = () => {
   }
 }
 
-@keyframes shrink {
-  0% { transform: scale(1); }
-  50% { transform: scale(0.9); }
-  100% { transform: scale(1); }
-}
-
 .icon-hover-shrink {
   &:hover {
     animation: shrink 0.6s ease-in-out;
-  }
-}
-```
-
-#### 呼吸动画
-
-```scss
-@keyframes breathing {
-  0% {
-    opacity: 0.4;
-    transform: scale(0.9);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-  100% {
-    opacity: 0.4;
-    transform: scale(0.9);
   }
 }
 
@@ -494,49 +813,67 @@ const toggle = () => {
 }
 ```
 
-**图标动画使用示例：**
+### 使用示例
 
 ```vue
 <template>
   <div class="icon-demo">
-    <!-- 抖动图标 -->
-    <i class="icon-hover-shake">🔔</i>
+    <el-icon class="icon-hover-shake" :size="24">
+      <Bell />
+    </el-icon>
 
-    <!-- 旋转图标 -->
-    <i class="icon-hover-rotate180">⚙️</i>
+    <el-icon class="icon-hover-rotate180" :size="24">
+      <RefreshRight />
+    </el-icon>
 
-    <!-- 上下移动 -->
-    <i class="icon-hover-moveUp">⬆️</i>
+    <el-icon class="icon-hover-moveUp" :size="24">
+      <Upload />
+    </el-icon>
 
-    <!-- 放大 -->
-    <i class="icon-hover-expand">🔍</i>
+    <el-icon class="icon-hover-expand" :size="24">
+      <Search />
+    </el-icon>
 
-    <!-- 缩小 -->
-    <i class="icon-hover-shrink">📦</i>
+    <el-icon class="icon-hover-shrink" :size="24">
+      <Close />
+    </el-icon>
 
-    <!-- 呼吸动画（持续） -->
-    <i class="icon-hover-breathing">💡</i>
+    <el-icon class="icon-hover-breathing" :size="24">
+      <Loading />
+    </el-icon>
   </div>
 </template>
+
+<script lang="ts" setup>
+import { Bell, RefreshRight, Upload, Search, Close, Loading } from '@element-plus/icons-vue'
+</script>
 
 <style lang="scss" scoped>
 .icon-demo {
   display: flex;
-  gap: 24px;
-  padding: 20px;
-  font-size: 32px;
+  gap: 32px;
+  padding: 40px;
+  background: var(--bg-level-1);
+  border-radius: 8px;
 
-  i {
+  .el-icon {
     cursor: pointer;
-    user-select: none;
+    color: var(--text-color-primary);
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: var(--primary-color);
+    }
   }
 }
 </style>
 ```
 
-### 徽章呼吸动画
+## 徽章动画
 
-用于消息提示等需要引起注意的场景：
+### breathe 呼吸动画
+
+用于徽章的呼吸效果,吸引用户注意:
 
 ```scss
 @keyframes breathe {
@@ -544,10 +881,12 @@ const toggle = () => {
     opacity: 0.7;
     transform: scale(1);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.1);
   }
+
   100% {
     opacity: 0.7;
     transform: scale(1);
@@ -555,19 +894,29 @@ const toggle = () => {
 }
 ```
 
-**使用示例：**
+**使用示例:**
 
 ```vue
 <template>
   <div class="badge-demo">
     <el-badge :value="12" class="item">
-      <el-button>消息</el-button>
+      <el-button>评论</el-button>
+    </el-badge>
+
+    <el-badge :value="3" class="item breathing-badge">
+      <el-button>新消息</el-button>
     </el-badge>
   </div>
 </template>
 
 <style lang="scss" scoped>
-.item {
+.badge-demo {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.breathing-badge {
   :deep(.el-badge__content) {
     animation: breathe 2s ease-in-out infinite;
   }
@@ -575,671 +924,281 @@ const toggle = () => {
 </style>
 ```
 
-## 卡片样式系统
+## 组件样式最佳实践
 
-### 卡片混合器
-
-提供统一的卡片样式，支持主题切换和悬停效果：
+### 1. 使用混合宏创建一致的组件
 
 ```scss
-@mixin card-style {
-  background-color: var(--bg-level-1);
-  border: 1px solid var(--bg-level-2);
-  border-radius: var(--radius-md) !important;
-  transition: box-shadow var(--duration-normal) ease;
-
-  &:hover {
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  }
-}
-```
-
-**使用示例：**
-
-```vue
-<template>
-  <div class="card-container">
-    <div class="custom-card">
-      <h3>卡片标题</h3>
-      <p>卡片内容...</p>
-    </div>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-@use '@/assets/styles/abstracts/mixins' as *;
-
-.custom-card {
-  @include card-style;
-  padding: 20px;
-  margin-bottom: 16px;
-}
-</style>
-```
-
-### 内置卡片样式类
-
-```scss
-/* 搜索面板样式 */
-.panel,
-.search {
-  @include card-style;
-  margin-bottom: 12px;
-  padding: 12px;
-}
-
-/* 组件容器样式 */
-.components-container {
-  margin: 30px 50px;
-  position: relative;
-}
-```
-
-**使用场景：**
-- `.panel` - 数据展示面板
-- `.search` - 搜索条件面板
-- `.components-container` - 页面组件容器
-
-## 布局样式组件
-
-### 侧边栏样式
-
-```scss
-aside {
-  background: #eef1f6;
-  padding: 8px 24px;
-  margin-bottom: 20px;
-  border-radius: var(--radius-sm);
-  display: block;
-  line-height: 32px;
-  font-size: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-               Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-               sans-serif;
-  color: #2c3e50;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  a {
-    color: #337ab7;
-    cursor: pointer;
-
-    &:hover {
-      color: rgb(32, 160, 255);
-    }
-  }
-}
-```
-
-### 子导航栏
-
-```scss
-.sub-navbar {
-  height: 50px;
-  line-height: 50px;
-  position: relative;
-  width: 100%;
-  text-align: right;
-  padding-right: 20px;
-  transition: var(--duration-slow) ease position;
-  background: linear-gradient(90deg,
-    rgba(32, 182, 249, 1) 0%,
-    rgba(33, 120, 241, 1) 100%
-  );
-
-  .subtitle {
-    font-size: 20px;
-    color: #fff;
-  }
-
-  &.draft {
-    background: #d0d0d0;
-  }
-
-  &.deleted {
-    background: #d0d0d0;
-  }
-}
-```
-
-### 筛选容器
-
-```scss
-.filter-container {
-  padding-bottom: 10px;
-
-  .filter-item {
-    display: inline-block;
-    vertical-align: middle;
-    margin-bottom: 10px;
-  }
-}
-```
-
-**使用示例：**
-
-```vue
-<template>
-  <div class="page-container">
-    <!-- 子导航栏 -->
-    <div class="sub-navbar">
-      <span class="subtitle">页面标题</span>
-    </div>
-
-    <!-- 筛选容器 -->
-    <div class="filter-container">
-      <div class="filter-item">
-        <el-input v-model="keyword" placeholder="搜索..." />
-      </div>
-      <div class="filter-item">
-        <el-button type="primary">查询</el-button>
-      </div>
-    </div>
-
-    <!-- 内容区域 -->
-    <div class="panel">
-      内容区域
-    </div>
-  </div>
-</template>
-```
-
-## 文本样式工具类
-
-### 单行省略
-
-```scss
-.lines1 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-```
-
-### 多行省略
-
-```scss
-// 两行省略
-.lines2 {
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-// 三行省略
-.lines3 {
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
-```
-
-**使用示例：**
-
-```vue
-<template>
-  <div class="text-demo">
-    <!-- 单行省略 -->
-    <div class="lines1" style="width: 200px">
-      这是一段很长的文本，超出部分会被省略号代替
-    </div>
-
-    <!-- 两行省略 -->
-    <div class="lines2" style="width: 200px">
-      这是一段很长的文本，超出两行的部分会被省略号代替，
-      这样可以保持页面布局的整洁美观
-    </div>
-
-    <!-- 三行省略 -->
-    <div class="lines3" style="width: 200px">
-      这是一段更长的文本内容，可以显示三行文本，
-      超出三行的部分会被省略号代替，
-      适用于需要显示更多内容但又要控制高度的场景，
-      比如文章摘要、商品描述等
-    </div>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-.text-demo {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 20px;
-
-  > div {
-    padding: 12px;
-    background: #f5f5f5;
-    border-radius: 4px;
-  }
-}
-</style>
-```
-
-**注意事项：**
-- 单行省略优先使用 UnoCSS 的 `text-ellipsis` 类
-- 多行省略依赖 WebKit 内核，Firefox 和旧版浏览器可能不支持
-- 必须设置固定宽度或最大宽度才能生效
-
-## 链接样式
-
-### 链接类型样式
-
-```scss
-.link-type,
-.link-type:focus {
-  color: #337ab7;
-  cursor: pointer;
-
-  &:hover {
-    color: rgb(32, 160, 255);
-  }
-}
-```
-
-**使用示例：**
-
-```vue
-<template>
-  <div class="link-demo">
-    <span class="link-type" @click="handleClick">
-      点击链接
-    </span>
-  </div>
-</template>
-
-<script lang="ts" setup>
-const handleClick = () => {
-  console.log('链接被点击')
-}
-</script>
-```
-
-## 主题适配
-
-### CSS 变量系统
-
-组件样式大量使用 CSS 变量，确保主题切换的平滑过渡：
-
-```scss
-:root {
-  // 动画时长
-  --duration-normal: 0.3s;
-  --duration-slow: 0.6s;
-
-  // Z-index层级
-  --z-sidebar: 1001;
-  --z-header: 9;
-  --z-mask: 999;
-  --z-modal: 1050;
-
-  // 侧边栏尺寸
-  --sidebar-collapsed-width: 54px;
-
-  // 边框圆角
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-round: 20px;
-
-  // 组件高度
-  --el-component-custom-height: 32px !important;
-  --el-component-size: var(--el-component-custom-height) !important;
-
-  // 动态圆角
-  --custom-radius: 12px;
-  --el-border-radius-base: calc(var(--custom-radius) / 3 + 2px) !important;
-}
-```
-
-### 背景层级系统
-
-使用 5 层背景色系统实现视觉层次：
-
-- `--bg-base` - 基础背景色（最底层）
-- `--bg-level-1` - 一级背景色（卡片、面板）
-- `--bg-level-2` - 二级背景色（输入框、按钮）
-- `--bg-level-3` - 三级背景色（悬停状态）
-- `--bg-level-4` - 四级背景色（激活状态）
-
-**使用示例：**
-
-```vue
-<template>
-  <div class="themed-component">
-    <div class="card">
-      卡片内容
-    </div>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-.themed-component {
-  background-color: var(--bg-base);
-  padding: 20px;
-
-  .card {
-    background-color: var(--bg-level-1);
-    border: 1px solid var(--bg-level-2);
-    padding: 16px;
-    border-radius: var(--radius-md);
-
-    &:hover {
-      background-color: var(--bg-level-3);
-    }
-  }
-}
-</style>
-```
-
-## SCSS 混合器复用
-
-### 清除浮动
-
-```scss
-@mixin clearfix {
-  &:after {
-    content: '';
-    display: table;
-    clear: both;
-  }
-}
-
-// 使用
-.container {
-  @include clearfix;
-}
-```
-
-### 自定义滚动条
-
-```scss
-@mixin scrollbar {
-  &::-webkit-scrollbar-track-piece {
-    background: #d3dce6;
-  }
-
-  &::-webkit-scrollbar {
-    width: 6px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #99a9bf;
-    border-radius: var(--radius-round);
-  }
-}
-
-// 使用
-.scrollable-element {
-  @include scrollbar;
-}
-```
-
-### 按钮基础样式
-
-```scss
-@mixin button-base {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
+// 定义卡片混合宏
+@mixin card-base {
+  background: var(--bg-level-1);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
-  cursor: pointer;
-  transition: all var(--duration-normal) ease;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all var(--duration-normal);
 
-  &:disabled {
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+}
+
+// 应用到不同组件
+.info-card {
+  @include card-base;
+}
+
+.user-card {
+  @include card-base;
+  display: flex;
+  align-items: center;
+}
+```
+
+### 2. 结合主题变量
+
+```scss
+.themed-button {
+  background: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  transition: all var(--duration-normal);
+
+  &:hover {
+    background: var(--primary-color-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(var(--primary-color), 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+```
+
+### 3. 响应式组件样式
+
+```scss
+.responsive-card {
+  padding: 12px;
+  font-size: 14px;
+
+  @media (min-width: $sm) {
+    padding: 16px;
+  }
+
+  @media (min-width: $md) {
+    padding: 20px;
+    font-size: 16px;
+  }
+
+  @media (min-width: $lg) {
+    padding: 24px;
+  }
+}
+```
+
+### 4. 组件状态管理
+
+```scss
+.stateful-component {
+  // 默认状态
+  background: var(--bg-level-1);
+  border: 1px solid var(--border-color);
+
+  // 悬停状态
+  &:hover {
+    border-color: var(--primary-color-light);
+  }
+
+  // 激活状态
+  &.is-active {
+    background: var(--primary-color-light);
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+  }
+
+  // 禁用状态
+  &.is-disabled {
     opacity: 0.6;
     cursor: not-allowed;
-  }
-}
-```
-
-**综合使用示例：**
-
-```vue
-<template>
-  <div class="custom-component">
-    <div class="scrollable-content">
-      <!-- 长内容 -->
-    </div>
-    <button class="custom-btn">提交</button>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-@use '@/assets/styles/abstracts/mixins' as *;
-
-.custom-component {
-  @include clearfix;
-
-  .scrollable-content {
-    @include scrollbar;
-    max-height: 300px;
-    overflow-y: auto;
+    pointer-events: none;
   }
 
-  .custom-btn {
-    @include button-base;
-    padding: 8px 16px;
-    background-color: var(--el-color-primary);
-    color: white;
+  // 加载状态
+  &.is-loading {
+    position: relative;
+    color: transparent;
 
-    &:hover {
-      opacity: 0.9;
+    &::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--primary-color);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
     }
   }
 }
-</style>
-```
 
-## Element Plus 样式覆盖
-
-### 菜单动画优化
-
-```scss
-/* 菜单展开动画 */
-.el-menu.el-menu--inline {
-  transition: max-height 0.26s cubic-bezier(0.4, 0, 0.2, 1) !important;
-}
-
-/* 菜单项悬停优化 */
-.el-sub-menu__title,
-.el-menu-item {
-  transition: background-color 0s !important;
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 ```
 
-### 对话框宽度修复
+### 5. 动画性能优化
 
 ```scss
-.dialog-fade-enter-active {
-  .el-dialog:not(.is-draggable) {
-    // 修复 el-dialog 动画后宽度不自适应问题
-    .el-select__selected-item {
-      display: inline-block;
-    }
+.optimized-animation {
+  // 使用 transform 而不是 position
+  transform: translateX(0);
+  transition: transform var(--duration-normal);
+  will-change: transform;  // 提示浏览器优化
+
+  &:hover {
+    transform: translateX(10px);
+  }
+
+  // 动画完成后移除 will-change
+  &:not(:hover) {
+    will-change: auto;
   }
 }
 ```
 
 ## 常见问题
 
-### 1. 样式不生效
+### 1. 按钮动画不流畅?
 
-**问题**：组件样式没有按预期显示
+**问题原因:**
+- 使用了 `left`/`top` 等触发回流的属性
+- 动画时间过长或过短
+- 未使用硬件加速
 
-**可能原因**：
-- 样式导入顺序不正确
-- CSS 选择器优先级不够
-- scoped 样式隔离导致无法覆盖子组件
-
-**解决方案**：
-
-```vue
-<style lang="scss" scoped>
-/* 使用 :deep() 穿透 scoped */
-:deep(.el-button) {
-  border-radius: var(--radius-md);
-}
-
-/* 或者使用全局样式 */
-</style>
-
-<style lang="scss">
-/* 全局样式（不加 scoped） */
-.el-button {
-  border-radius: var(--radius-md);
-}
-</style>
-```
-
-### 2. 动画卡顿
-
-**问题**：过渡动画不流畅，出现卡顿
-
-**原因**：
-- 动画属性触发了重排（reflow）
-- 动画时长设置不合理
-- 硬件加速未开启
-
-**解决方案**：
+**解决方案:**
 
 ```scss
-.smooth-animation {
-  /* 使用 transform 代替 left/top */
-  transition: transform var(--duration-normal) ease;
+/* ❌ 不推荐 - 触发回流 */
+.button {
+  &:hover {
+    left: 10px;
+  }
+}
 
-  /* 开启硬件加速 */
+/* ✅ 推荐 - 使用 transform */
+.button {
+  transition: transform 0.3s ease;
   will-change: transform;
 
-  /* 使用合理的缓动函数 */
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  &:hover {
+    transform: translateX(10px);
+  }
 }
 ```
 
-### 3. 主题切换闪烁
+### 2. 对话框动画卡顿?
 
-**问题**：切换主题时页面出现闪烁
+**问题原因:**
+- 同时动画化多个属性
+- 遮罩层和对话框动画冲突
 
-**原因**：
-- CSS 变量过渡未设置
-- 组件重新渲染导致
-
-**解决方案**：
+**解决方案:**
 
 ```scss
-/* 为元素添加过渡 */
-.themed-element {
-  transition: background-color var(--duration-normal) ease,
-              color var(--duration-normal) ease,
-              border-color var(--duration-normal) ease;
+/* ✅ 分离遮罩和对话框动画 */
+.dialog-mask {
+  animation: fade-out 0.2s linear;  // 快速淡出
+}
+
+.dialog-content {
+  animation: dialog-close 0.5s;  // 稍慢的缩放
 }
 ```
 
-### 4. 混合器找不到
+### 3. 图标动画重复触发?
 
-**问题**：使用混合器时提示未定义
+**问题原因:**
+- 鼠标快速移入移出
+- 动画未完成就重新触发
 
-**原因**：
-- 未导入 mixins 模块
-- 导入路径不正确
+**解决方案:**
 
-**解决方案**：
+```scss
+.icon {
+  animation: none;  // 重置动画
 
-```vue
-<style lang="scss" scoped>
-/* 方式1：使用 @use 导入 */
-@use '@/assets/styles/abstracts/mixins' as *;
+  &:hover {
+    animation: shake 0.5s ease-in-out;
+    animation-fill-mode: both;  // 保持结束状态
+  }
 
-.my-component {
-  @include card-style;
+  // 防止快速重复触发
+  &:not(:hover) {
+    animation: none;
+  }
 }
-
-/* 方式2：使用别名 */
-@use '@/assets/styles/abstracts/mixins' as m;
-
-.my-component {
-  @include m.card-style;
-}
-</style>
 ```
 
-### 5. 文本省略无效
+### 4. 过渡动画不生效?
 
-**问题**：多行文本省略不生效
+**问题原因:**
+- 未设置过渡属性
+- display 属性变化
+- 初始值和结束值相同
 
-**原因**：
-- 未设置固定宽度
-- 浏览器不支持 `-webkit-line-clamp`
-
-**解决方案**：
+**解决方案:**
 
 ```vue
 <template>
-  <div class="text-container">
-    <div class="lines2" style="max-width: 300px">
-      长文本内容...
-    </div>
-  </div>
+  <!-- ❌ 错误 - display 变化无过渡 -->
+  <div v-show="visible" class="content">内容</div>
+
+  <!-- ✅ 正确 - 使用 transition 组件 -->
+  <transition name="fade">
+    <div v-if="visible" class="content">内容</div>
+  </transition>
 </template>
 
 <style lang="scss" scoped>
-.lines2 {
-  display: -webkit-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  word-break: break-all; /* 确保长单词换行 */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
 }
-</style>
-```
 
-### 6. 响应式布局问题
-
-**问题**：在不同设备上显示效果不一致
-
-**原因**：
-- 未使用响应式断点
-- 固定尺寸导致布局僵硬
-
-**解决方案**：
-
-```vue
-<style lang="scss" scoped>
-@use '@/assets/styles/abstracts/mixins' as *;
-@use '@/assets/styles/abstracts/variables' as *;
-
-.responsive-component {
-  padding: 20px;
-
-  /* 平板及以下 */
-  @include respond-to('md') {
-    padding: 12px;
-  }
-
-  /* 手机 */
-  @include respond-to('sm') {
-    padding: 8px;
-  }
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
 ```
 
 ## 总结
 
-RuoYi-Plus 的组件样式系统提供了完整的样式解决方案，通过模块化架构、SCSS 混合器和 CSS 变量，实现了高度可复用和可维护的样式代码。
+RuoYi-Plus-UniApp 的组件样式系统提供了完整的组件样式解决方案:
 
-**核心要点：**
+### 核心优势
 
-1. **遵循导入顺序** - 确保样式优先级正确
-2. **使用混合器复用** - 避免重复代码
-3. **CSS 变量主题** - 支持动态主题切换
-4. **性能优化** - 使用 transform 和硬件加速
-5. **响应式设计** - 利用断点混合器适配多设备
+1. **统一的按钮系统** - colorBtn混合宏、pan-btn动画按钮、custom-button简洁按钮
+2. **丰富的过渡动画** - fade、fade-transform、breadcrumb等多种过渡效果
+3. **现代化对话框动画** - 流畅的缩放动画,提升用户体验
+4. **多样的图标动画** - 6种预定义动画效果,增强交互反馈
+5. **性能优化** - 使用transform、合理使用will-change、避免回流
+6. **主题集成** - 所有组件样式支持主题切换
 
-掌握这些样式组件和技巧，可以大大提高开发效率，构建出美观且性能优秀的用户界面。
+### 开发建议
+
+1. **优先使用混合宏** - 复用通用组件样式,保持一致性
+2. **性能第一** - 使用transform代替position,避免触发回流
+3. **主题集成** - 使用CSS变量支持主题切换
+4. **适度动画** - 动画时长控制在0.2-0.6s之间
+5. **响应式考虑** - 移动端简化或禁用复杂动画
+6. **语义化类名** - 使用BEM命名规范,提高可维护性
+
+通过合理使用组件样式系统,可以快速构建交互流畅、视觉统一的用户界面组件。
