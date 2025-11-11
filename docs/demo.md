@@ -118,9 +118,9 @@ aside: false
 
 ## 🖼️ 功能截图
 
-### 后台管理系统
+<ImagePreview src="/images/demo/01.登录.png,/images/demo/02.忘记密码.png,/images/demo/03.首页.png,/images/demo/04.布局设置.png,/images/demo/05.新增商品.png,/images/demo/06.账号绑定.png,/images/demo/07.商品详情.png,/images/demo/09.素材库.png,/images/demo/10.广告配置.png,/images/demo/11.平台配置.png,/images/demo/12.发货管理.png,/images/demo/13.支付配置.png,/images/demo/16.用户管理.png,/images/demo/17.角色管理.png,/images/demo/18.菜单管理.png,/images/demo/19.部门管理.png,/images/demo/20.岗位管理.png,/images/demo/21.字典管理.png,/images/demo/22.修改字典.png,/images/demo/23.参数设置.png,/images/demo/24.通知公告.png,/images/demo/25.富文本.png,/images/demo/26.公告推送.png,/images/demo/27.操作日志.png,/images/demo/28.登录日志.png,/images/demo/29.文件管理.png,/images/demo/30.租户管理.png,/images/demo/31.租户套餐.png,/images/demo/32.在线用户.png,/images/demo/33.缓存监控.png,/images/demo/34.admin监控.png,/images/demo/35.调度中心.png,/images/demo/36.代码生成.png,/images/demo/37.代码生成编辑.png,/images/demo/38.单表 主子表 树表.png" width="100%" height="100%" style="margin-top: 20px" />
 
-<ImagePreview src="/images/demo/1.png,/images/demo/2.png,/images/demo/3.png,/images/demo/4.png,/images/demo/5.png,/images/demo/6.png,/images/demo/7.png,/images/demo/8.png,/images/demo/9.png,/images/demo/10.png,/images/demo/1.png,/images/demo/11.png,/images/demo/12.png,/images/demo/13.png,/images/demo/14.png,/images/demo/15.png,/images/demo/16.png,/images/demo/17.png,/images/demo/18.png,/images/demo/19.png,/images/demo/20.png,/images/demo/21.png,/images/demo/22.png,/images/demo/23.png,/images/demo/24.png,/images/demo/25.png,/images/demo/26.png,/images/demo/27.png,/images/demo/28.png,/images/demo/29.png,/images/demo/30.png,/images/demo/31.png,/images/demo/32.png,/images/demo/33.png" width="100%" height="100%" style="margin-top: 20px"/>
+
 
 ---
 
