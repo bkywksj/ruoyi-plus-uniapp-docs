@@ -571,11 +571,8 @@ public R<Long> addAd(@Validated(AddGroup.class) @RequestBody AdBo bo) {
 3. **参数校验** - 使用注解进行参数验证
 4. **防重复提交** - 写操作使用 @RepeatSubmit
 5. **操作日志** - 写操作使用 @Log 记录
-6. **统一返回值** - 使用 R<T> 封装结果
+6. **统一返回值** - 使用 `R<T>` 封装结果
 7. **RESTful规范** - 使用合适的HTTP方法
 8. **异常处理** - 不捕获异常,让全局处理器统一处理
 
 遵循这些原则,可以编写出清晰、规范、易维护的 Controller 层代码。
-
----
-*参考: [Service层最佳实践](./service-layer.md) | [数据校验最佳实践](./validation.md) | [异常处理机制](./exception-handling.md)*

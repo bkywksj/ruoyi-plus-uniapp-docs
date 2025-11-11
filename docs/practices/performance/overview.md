@@ -243,20 +243,20 @@ console.log(`耗时: ${end - start}ms`)
 - 渐进式优化
 - 用户感知优先
 
-## 📚 优化文档导航
+## 📚 性能优化领域
 
 ### 分层优化指南
 
-| 文档 | 说明 | 关键技术 |
+| 优化领域 | 说明 | 关键技术 |
 |-----|------|---------|
-| [后端性能优化](./backend.md) | 缓存、线程池、批处理 | Caffeine, Redis, HikariCP, 虚拟线程 |
-| [前端性能优化](./frontend.md) | 构建、懒加载、压缩 | Vite, UnoCSS, Gzip, Tree-shaking |
-| [移动端性能优化](./mobile.md) | 分包、图片、样式 | uni-app, bundle-optimizer, UnoCSS |
-| [数据库优化](./database.md) | 索引、SQL、分页 | MySQL, MyBatis-Plus, 批处理 |
-| [缓存优化策略](./cache.md) | 多层缓存、预热、穿透 | Caffeine, Redis, Redisson |
-| [网络优化](./network.md) | 压缩、CDN、HTTP/2 | Gzip, Brotli, Nginx |
-| [JVM调优指南](./jvm-tuning.md) | 内存、GC、线程 | G1GC, ZGC, JVM参数 |
-| [性能监控与分析](./monitoring.md) | APM、日志、指标 | Spring Boot Actuator, Prometheus |
+| 后端性能优化 | 缓存、线程池、批处理 | Caffeine, Redis, HikariCP, 虚拟线程 |
+| 前端性能优化 | 构建、懒加载、压缩 | Vite, UnoCSS, Gzip, Tree-shaking |
+| 移动端性能优化 | 分包、图片、样式 | uni-app, bundle-optimizer, UnoCSS |
+| 数据库优化 | 索引、SQL、分页 | MySQL, MyBatis-Plus, 批处理 |
+| 缓存优化策略 | 多层缓存、预热、穿透 | Caffeine, Redis, Redisson |
+| 网络优化 | 压缩、CDN、HTTP/2 | Gzip, Brotli, Nginx |
+| JVM调优指南 | 内存、GC、线程 | G1GC, ZGC, JVM参数 |
+| 性能监控与分析 | APM、日志、指标 | Spring Boot Actuator, Prometheus |
 
 ## 🛠️ 快速开始
 
