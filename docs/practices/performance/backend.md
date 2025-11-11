@@ -60,7 +60,7 @@
 
 **配置代码**:
 
-```java:ruoyi-common/ruoyi-common-redis/src/main/java/plus/ruoyi/common/redis/config/RedisAutoConfiguration.java
+```java
 @Bean
 public CacheManager cacheManager() {
     SimpleCacheManager cacheManager = new SimpleCacheManager();
@@ -99,7 +99,7 @@ public CacheManager cacheManager() {
 
 **配置文件**: `ruoyi-admin/src/main/resources/application-dev.yml`
 
-```yaml:ruoyi-admin/src/main/resources/application-dev.yml {85-108}
+```yaml {85-108}
 redisson:
   # 缓存key前缀
   keyPrefix: ${app.id}
@@ -242,7 +242,7 @@ public UserVo getCurrentUser() {
 
 **配置文件**: `ruoyi-admin/src/main/resources/application-dev.yml`
 
-```yaml:ruoyi-admin/src/main/resources/application-dev.yml {85-99}
+```yaml {85-99}
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -411,7 +411,7 @@ public class AdServiceImpl implements IAdService {
 
 **配置文件**: `ruoyi-admin/src/main/resources/application.yml`
 
-```yaml:ruoyi-admin/src/main/resources/application.yml
+```yaml
 spring:
   # ⭐ 启用虚拟线程 (JDK21+)
   threads:

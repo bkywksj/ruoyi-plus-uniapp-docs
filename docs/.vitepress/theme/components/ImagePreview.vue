@@ -190,6 +190,14 @@ const props = defineProps({
   gap: {
     type: Number,
     default: 4
+  },
+  /**
+   * 图片填充模式
+   */
+  objectFit: {
+    type: String,
+    default: 'cover',
+    validator: (value) => ['contain', 'cover', 'fill', 'none', 'scale-down'].includes(value)
   }
 })
 
@@ -261,9 +269,9 @@ const imageStyle = computed(() => {
   return {
     width,
     height,
-    objectFit: 'cover',
+    objectFit: props.objectFit,
     borderRadius: '5px',
-    backgroundColor: '#ebeef5',
+    backgroundColor: '#ffffff',
     boxShadow: '0 0 5px 1px #ccc',
     cursor: 'pointer',
     transition: props.hoverEffect ? 'transform 0.3s ease' : 'none'

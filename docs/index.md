@@ -195,16 +195,21 @@ highlights:
 
 ### 📱 扫码关注
 
-<div style="display: flex; gap: 30px; margin: 20px 0;">
-  <div>
-    <img src="/gzh.png" alt="微信公众号" width="200">
-    <p><strong>微信公众号</strong></p>
-    <p>获取最新技术资讯</p>
+<div style="display: flex; gap: 30px; margin: 20px 0; flex-wrap: wrap; align-items: flex-start;">
+  <div style="text-align: center;">
+    <ImagePreview src="/gzh.png" :width="240" :height="320" object-fit="contain" />
+    <p style="margin-top: 10px;"><strong>微信公众号</strong></p>
+    <p style="margin-top: 5px; color: #666;">获取最新技术资讯</p>
   </div>
-  <div>
-    <img src="/wxq.jpg" alt="技术交流群" width="200">
-    <p><strong>技术交流群</strong></p>
-    <p>与开发者交流讨论</p>
+  <div style="text-align: center;">
+    <ImagePreview src="/wxq.jpg" :width="240" :height="320" object-fit="contain" />
+    <p style="margin-top: 10px;"><strong>技术交流群</strong></p>
+    <p style="margin-top: 5px; color: #666;">与开发者交流讨论</p>
+  </div>
+  <div style="text-align: center;">
+    <ImagePreview src="/软著.png" :width="240" :height="320" object-fit="contain" />
+    <p style="margin-top: 10px;"><strong>软件著作权</strong></p>
+    <p style="margin-top: 5px; color: #666;">国家版权局认证</p>
   </div>
 </div>
 
@@ -213,5 +218,9 @@ highlights:
 *扫描上方二维码，加入我们的技术社区*
 
 ---
+
+::: warning 软件著作权声明
+本框架受《中华人民共和国著作权法》保护，已获得国家版权局软件著作权登记证书。未经授权不得使用，授权后可用于商业项目开发，但严禁对框架本身进行二次销售或扩散传播。
+:::
 
 <small>© 2025 抓蛙师 | 框架商用授权，详情咨询</small>

@@ -747,7 +747,7 @@ ruoyi-modules/ruoyi-generator/src/main/resources/vm/
 
 常用的模板变量：
 
-```velocity
+```java
 ${packageName}       ## 包名: plus.ruoyi.business.demo
 ${moduleName}        ## 模块名: demo
 ${businessName}      ## 业务名: demoUser
@@ -764,7 +764,7 @@ ${pkColumn}          ## 主键字段
 
 #### 自定义Controller模板示例
 
-```velocity
+```java
 package ${packageName}.${moduleName}.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
@@ -1376,7 +1376,7 @@ public class DemoUserServiceImpl implements IDemoUserService {
 
 #### 步骤1: 创建模板文件
 
-```velocity
+```java
 ## src/main/resources/vm/custom/controller.java.vm
 package ${packageName}.${moduleName}.controller;
 
