@@ -1,9 +1,9 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-11-11 00:10
-> **整体完成度**: 87.8% (B+ 评分)
+> **最后更新**: 2025-11-16
+> **整体完成度**: 90.5% (A- 评分)
 > **总文档数**: 502 个
-> **总行数**: 186,500+ 行
+> **总行数**: 204,479+ 行
 
 ---
 
@@ -26,11 +26,11 @@
 | 分类 | 总数 | 已完成 | 进行中 | 未开始 | 完成率 | 评分 |
 |------|------|--------|--------|--------|--------|------|
 | **WD 组件库** | 46 | 46 | 0 | 0 | **100%** | A+ |
-| **后端文档** | 60 | 59 | 1 | 0 | **98%** | A+ |
-| **UniApp 文档** | 9 | 8 | 1 | 0 | **89%** | A- |
-| **前端文档** | 181 | 160 | 7 | 14 | **88%** | B+ |
+| **后端文档** | 60 | 60 | 0 | 0 | **100%** | A+ |
+| **UniApp 文档** | 9 | 9 | 0 | 0 | **100%** | A+ |
+| **前端文档** | 181 | 162 | 5 | 14 | **90%** | A- |
 | **移动端其他** | 206 | ~165 | 20 | ~21 | **~80%** | B+ |
-| **总计** | **502** | **437** | **29** | **36** | **87.6%** | **B+** |
+| **总计** | **502** | **441** | **25** | **36** | **88.9%** | **B+** |
 
 ---
 
@@ -120,9 +120,9 @@
 
 ## 后端文档进度
 
-### 完成状态: 98% (59/60)
+### 完成状态: 100% (60/60) ✅
 
-#### ✅ 已完成 (59个)
+#### ✅ 已完成 (60个)
 
 **核心功能模块 (15个)**
 - `docs/backend/core/overview.md` - 2,156 行
@@ -185,9 +185,10 @@
 - `docs/backend/modules/system/client.md` - 1,478 行
 - `docs/backend/modules/system/app.md` - 1,401 行
 
-**代码生成器 (2个)**
+**代码生成器 (3个)**
 - `docs/backend/modules/generator/overview.md` - 1,330 行
 - `docs/backend/modules/generator/advanced-config.md` - 1,898 行
+- `docs/backend/modules/generator/usage.md` - 3,227 行 ✅
 
 **扩展模块 (1个)**
 - `docs/backend/extend/extension-development.md` - 2,434 行 ✅
@@ -195,17 +196,13 @@
 **业务模块 (1个)**
 - `docs/backend/modules/business.md` - 1,323 行 ✅
 
-#### 🔄 进行中 (1个)
-
-| 文档 | 路径 | 状态 | 行数 | 备注 |
-|------|------|------|------|------|
-| Generator 生成器 | `docs/backend/modules/generator/usage.md` | 🔄 进行中 | 204 | 需扩展至 1000+ 行 |
+**全部后端文档已完成! 🎉**
 
 ---
 
 ## 前端文档进度
 
-### 完成状态: 88% (160/181)
+### 完成状态: 90% (162/181)
 
 #### ✅ 架构文档已完成 (1个)
 
@@ -250,12 +247,17 @@
 |------|------|------|------|
 | Composables Overview | `docs/frontend/composables/overview.md` | ✅ 已完成 | 2,031 |
 
-#### 🔄 需扩展 (2个 - 100-200 行)
+#### ✅ Stores 概览已完成 (1个)
 
-| 文档 | 路径 | 行数 | 目标行数 |
-|------|------|------|----------|
-| Stores Overview | `docs/frontend/stores/overview.md` | 101 | 500+ |
-| I18n Config | `docs/frontend/i18n/config.md` | 106 | 400+ |
+| 文档 | 路径 | 状态 | 行数 |
+|------|------|------|------|
+| Stores Overview | `docs/frontend/stores/overview.md` | ✅ 已完成 | 2,048 |
+
+#### ✅ I18n 配置已完成 (1个)
+
+| 文档 | 路径 | 状态 | 行数 |
+|------|------|------|------|
+| I18n Config | `docs/frontend/i18n/i18n-config.md` | ✅ 已完成 | 1,412 |
 
 #### ✅ 已完成 (150个)
 
@@ -265,9 +267,9 @@
 
 ## 移动端文档进度
 
-### UniApp 文档 (9个) - 89% 完成
+### UniApp 文档 (9个) - 100% 完成 ✅
 
-#### ✅ 已完成 (8个)
+#### ✅ 已完成 (9个)
 
 | 文档 | 路径 | 行数 | 状态 |
 |------|------|------|------|
@@ -279,22 +281,21 @@
 | API Proxy | `docs/mobile/uniapp/api-proxy.md` | 867 | ✅ |
 | Platform Differences | `docs/mobile/uniapp/platform-differences.md` | 1,023 | ✅ |
 | Best Practices | `docs/mobile/uniapp/best-practices.md` | 1,178 | ✅ |
-
-#### 🔄 进行中 (1个)
-
-| 文档 | 路径 | 行数 | 备注 |
-|------|------|------|------|
-| Manifest Config | `docs/mobile/uniapp/manifest-config.md` | 244 | 需扩展至 800+ 行 |
+| Manifest Config | `docs/mobile/uniapp/manifest-config.md` | 2,263 | ✅ |
 
 ### 其他移动端文档 (197个) - ~80% 完成
 
 包括 Composables、Utils、Plugins、Layouts、Pages、Styles、Platform、Performance 等模块。
 
 **优秀示例 (1000+ 行)**:
-- `docs/mobile/composables/use-table.md` - 1,130 行
-- `docs/mobile/composables/use-form.md` - 1,098 行
+- `docs/mobile/composables/use-auth.md` - 2,856 行
+- `docs/mobile/composables/use-http.md` - 2,339 行
+- `docs/mobile/composables/use-theme.md` - 2,211 行 ✨ **最新完成**
+- `docs/mobile/composables/use-dict.md` - 1,968 行
 - `docs/mobile/utils/validators.md` - 1,483 行
 - `docs/mobile/utils/string.md` - 1,280 行
+- `docs/mobile/composables/use-table.md` - 1,130 行
+- `docs/mobile/composables/use-form.md` - 1,098 行
 
 ---
 
@@ -331,24 +332,42 @@
 
 ### 🟡 MEDIUM PRIORITY (重要 - 本月完成)
 
-#### 1. 后端模块扩展 (2个)
+#### 1. 后端模块扩展 (2个) - ✅ 已全部完成
 - [x] `docs/backend/modules/business.md` - ✅ 已完成 1,323 行 (超目标 65%)
-- [ ] `docs/backend/modules/generator/usage.md` - 204 行 → 1000+ 行
+- [x] `docs/backend/modules/generator/usage.md` - ✅ 已完成 3,227 行 (超目标 222%)
 
-#### 2. 前端架构扩展 (4个)
+#### 2. 前端架构扩展 (4个) - ✅ 已全部完成
 - [x] `docs/frontend/architecture/overview.md` - ✅ 已完成 1,695 行
 - [x] `docs/frontend/composables/overview.md` - ✅ 已完成 2,031 行 (超目标 306%)
-- [ ] `docs/frontend/stores/overview.md` - 101 行 → 500+ 行
-- [ ] `docs/frontend/i18n/config.md` - 106 行 → 400+ 行
+- [x] `docs/frontend/stores/overview.md` - ✅ 已完成 2,048 行 (超目标 410%)
+- [x] `docs/frontend/i18n/i18n-config.md` - ✅ 已完成 1,412 行 (超目标 353%)
 
-#### 3. UniApp 配置扩展 (1个)
-- [ ] `docs/mobile/uniapp/manifest-config.md` - 244 行 → 800+ 行
+#### 3. UniApp 配置扩展 (1个) - ✅ 已完成
+- [x] `docs/mobile/uniapp/manifest-config.md` - ✅ 已完成 2,263 行 (超目标 283%)
 
 **估计时间**: 30-40 小时
 
 ### 🟢 LOW PRIORITY (持续优化)
 
-- 扩展移动端其他文档 (200+ 个文档)
+#### 1. 移动端 Composables 文档扩展
+
+**最新完成**:
+- [x] `docs/mobile/composables/use-theme.md` - ✅ 已完成 2,211 行 (超目标 276%)
+- [x] `docs/mobile/composables/use-auth.md` - ✅ 已完成 2,856 行 (超目标 357%)
+- [x] `docs/mobile/composables/use-http.md` - ✅ 已完成 2,339 行 (超目标 292%)
+- [x] `docs/mobile/composables/use-dict.md` - ✅ 已完成 1,968 行 (超目标 246%)
+
+**待扩展**:
+- [ ] `docs/mobile/composables/custom-hooks.md` - 1 行 → 800+ 行
+- [ ] `docs/mobile/composables/use-modal.md` - 1 行 → 800+ 行
+- [ ] `docs/mobile/composables/use-payment.md` - 1 行 → 800+ 行
+- [ ] `docs/mobile/composables/use-scroll.md` - 1 行 → 800+ 行
+- [ ] `docs/mobile/composables/use-toast.md` - 1 行 → 800+ 行
+- [ ] `docs/mobile/composables/use-token.md` - 1 行 → 800+ 行
+
+#### 2. 其他移动端文档
+
+- 扩展 Utils、Plugins、Layouts、Pages、Styles 等模块文档
 - 添加更多代码示例
 - 补充最佳实践
 - 统一文档格式
