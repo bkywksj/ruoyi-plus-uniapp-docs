@@ -1,9 +1,9 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-11-16
-> **整体完成度**: 90.5% (A- 评分)
+> **最后更新**: 2025-11-17
+> **整体完成度**: 88.3% (B+ 评分)
 > **总文档数**: 502 个
-> **总行数**: 204,479+ 行
+> **总行数**: 196,592+ 行
 
 ---
 
@@ -28,9 +28,9 @@
 | **WD 组件库** | 46 | 46 | 0 | 0 | **100%** | A+ |
 | **后端文档** | 60 | 60 | 0 | 0 | **100%** | A+ |
 | **UniApp 文档** | 9 | 9 | 0 | 0 | **100%** | A+ |
-| **前端文档** | 181 | 162 | 5 | 14 | **90%** | A- |
+| **前端文档** | 181 | 165 | 3 | 13 | **91.2%** | A- |
 | **移动端其他** | 206 | ~165 | 20 | ~21 | **~80%** | B+ |
-| **总计** | **502** | **441** | **25** | **36** | **88.9%** | **B+** |
+| **总计** | **502** | **443** | **24** | **35** | **88.2%** | **B+** |
 
 ---
 
@@ -202,7 +202,7 @@
 
 ## 前端文档进度
 
-### 完成状态: 90% (162/181)
+### 完成状态: 91.2% (165/181)
 
 #### ✅ 架构文档已完成 (1个)
 
@@ -224,10 +224,12 @@
 | Component Styles | `docs/frontend/styles/component-styles.md` | ✅ 已完成 | 1,204 |
 | Best Practices | `docs/frontend/styles/best-practices.md` | ✅ 已完成 | 2,122 |
 
-#### ✅ 组件文档已完成 (6个)
+#### ✅ 组件文档已完成 (8个)
 
 | 文档 | 路径 | 状态 | 行数 |
 |------|------|------|------|
+| Icon System | `docs/frontend/components/icon-system.md` | ✅ 已完成 | 2,651 |
+| OSS Media Manager | `docs/frontend/components/oss-media-manager.md` | ✅ 已完成 | 2,724 |
 | Form Components | `docs/frontend/components/form-components.md` | ✅ 已完成 | 2,146 |
 | Business Components | `docs/frontend/components/business-components.md` | ✅ 已完成 | 2,103 |
 | Search Form | `docs/frontend/components/search-form.md` | ✅ 已完成 | 1,509 |
