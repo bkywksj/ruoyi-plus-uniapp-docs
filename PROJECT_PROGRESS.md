@@ -1,9 +1,9 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
 > **最后更新**: 2025-11-17
-> **整体完成度**: 88.3% (B+ 评分)
+> **整体完成度**: 91.3% (A- 评分)
 > **总文档数**: 502 个
-> **总行数**: 196,592+ 行
+> **总行数**: 312,496+ 行
 
 ---
 
@@ -290,10 +290,12 @@
 包括 Composables、Utils、Plugins、Layouts、Pages、Styles、Platform、Performance 等模块。
 
 **优秀示例 (1000+ 行)**:
+- `docs/mobile/composables/use-payment.md` - 3,398 行
 - `docs/mobile/composables/use-auth.md` - 2,856 行
 - `docs/mobile/composables/use-http.md` - 2,339 行
-- `docs/mobile/composables/use-theme.md` - 2,211 行 ✨ **最新完成**
+- `docs/mobile/composables/use-theme.md` - 2,211 行
 - `docs/mobile/composables/use-dict.md` - 1,968 行
+- `docs/mobile/composables/use-token.md` - 1,725 行 ✨ **最新完成**
 - `docs/mobile/utils/validators.md` - 1,483 行
 - `docs/mobile/utils/string.md` - 1,280 行
 - `docs/mobile/composables/use-table.md` - 1,130 行
@@ -354,18 +356,18 @@
 #### 1. 移动端 Composables 文档扩展
 
 **最新完成**:
-- [x] `docs/mobile/composables/use-theme.md` - ✅ 已完成 2,211 行 (超目标 276%)
+- [x] `docs/mobile/composables/use-token.md` - ✅ 已完成 1,725 行 (超目标 216%) **最新**
+- [x] `docs/mobile/composables/use-payment.md` - ✅ 已完成 3,398 行 (超目标 425%)
 - [x] `docs/mobile/composables/use-auth.md` - ✅ 已完成 2,856 行 (超目标 357%)
 - [x] `docs/mobile/composables/use-http.md` - ✅ 已完成 2,339 行 (超目标 292%)
+- [x] `docs/mobile/composables/use-theme.md` - ✅ 已完成 2,211 行 (超目标 276%)
 - [x] `docs/mobile/composables/use-dict.md` - ✅ 已完成 1,968 行 (超目标 246%)
 
 **待扩展**:
 - [ ] `docs/mobile/composables/custom-hooks.md` - 1 行 → 800+ 行
 - [ ] `docs/mobile/composables/use-modal.md` - 1 行 → 800+ 行
-- [ ] `docs/mobile/composables/use-payment.md` - 1 行 → 800+ 行
 - [ ] `docs/mobile/composables/use-scroll.md` - 1 行 → 800+ 行
 - [ ] `docs/mobile/composables/use-toast.md` - 1 行 → 800+ 行
-- [ ] `docs/mobile/composables/use-token.md` - 1 行 → 800+ 行
 
 #### 2. 其他移动端文档
 
