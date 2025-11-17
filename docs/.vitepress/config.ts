@@ -750,41 +750,6 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📡 API接口 (api)',
-                    collapsed: true,
-                    items: [
-                        { text: 'API概览', link: '/mobile/api/overview' },
-                        { text: '接口配置', link: '/mobile/api/config' },
-                        { text: 'HTTP请求封装', link: '/mobile/api/http' },
-                        {
-                            text: '系统接口',
-                            collapsed: false,
-                            items: [
-                                { text: '认证接口 (auth)', link: '/mobile/api/system/auth' },
-                                { text: '用户接口 (user)', link: '/mobile/api/system/user' },
-                                { text: '角色接口 (role)', link: '/mobile/api/system/role' },
-                                { text: '字典接口 (dict)', link: '/mobile/api/system/dict' },
-                                { text: '岗位接口 (post)', link: '/mobile/api/system/post' }
-                            ]
-                        },
-                        {
-                            text: '业务接口',
-                            collapsed: false,
-                            items: [
-                                { text: '首页接口 (home)', link: '/mobile/api/business/home' },
-                                { text: '电话接口 (phone)', link: '/mobile/api/business/phone' },
-                                { text: '广告接口 (ad)', link: '/mobile/api/business/ad' },
-                                { text: '商城接口 (mall)', link: '/mobile/api/business/mall' },
-                                { text: '订单接口 (order)', link: '/mobile/api/business/order' },
-                                { text: '商品接口 (goods)', link: '/mobile/api/business/goods' }
-                            ]
-                        },
-                        { text: '接口类型定义', link: '/mobile/api/types' },
-                        { text: '错误处理', link: '/mobile/api/error-handling' },
-                        { text: '请求拦截器', link: '/mobile/api/interceptors' }
-                    ]
-                },
-                {
                     text: '🎣 组合式函数 (composables)',
                     collapsed: true,
                     items: [
