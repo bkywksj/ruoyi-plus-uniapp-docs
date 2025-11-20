@@ -1,9 +1,9 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-11-18
-> **整体完成度**: 92.0% (A- 评分)
+> **最后更新**: 2025-11-20
+> **整体完成度**: 92.5% (A- 评分)
 > **总文档数**: 502 个
-> **总行数**: 330,100+ 行
+> **总行数**: 337,700+ 行
 
 ---
 
@@ -28,9 +28,9 @@
 | **WD 组件库** | 46 | 46 | 0 | 0 | **100%** | A+ |
 | **后端文档** | 60 | 60 | 0 | 0 | **100%** | A+ |
 | **UniApp 文档** | 9 | 9 | 0 | 0 | **100%** | A+ |
-| **前端文档** | 181 | 165 | 3 | 13 | **91.2%** | A- |
+| **前端文档** | 181 | 170 | 0 | 11 | **93.9%** | A |
 | **移动端其他** | 206 | ~165 | 20 | ~21 | **~80%** | B+ |
-| **总计** | **502** | **443** | **24** | **35** | **88.2%** | **B+** |
+| **总计** | **502** | **448** | **19** | **35** | **89.2%** | **B+** |
 
 ---
 
@@ -202,7 +202,7 @@
 
 ## 前端文档进度
 
-### 完成状态: 91.2% (165/181)
+### 完成状态: 93.9% (170/181)
 
 #### ✅ 架构文档已完成 (1个)
 
@@ -210,7 +210,7 @@
 |------|------|------|------|
 | Directory Structure | `docs/frontend/architecture/directory-structure.md` | ✅ 已完成 | 1,685 |
 
-#### ✅ 样式系统已完成 (9个)
+#### ✅ 样式系统已完成 (12个)
 
 | 文档 | 路径 | 状态 | 行数 |
 |------|------|------|------|
@@ -223,6 +223,9 @@
 | Utility Classes | `docs/frontend/styles/utility-classes.md` | ✅ 已完成 | 1,727 |
 | Component Styles | `docs/frontend/styles/component-styles.md` | ✅ 已完成 | 1,204 |
 | Best Practices | `docs/frontend/styles/best-practices.md` | ✅ 已完成 | 2,122 |
+| Components Layout | `docs/frontend/styles/components/layout.md` | ✅ 已完成 | 1,384 |
+| Responsive Tablet | `docs/frontend/styles/responsive/tablet.md` | ✅ 已完成 | 1,246 |
+| Animations Transitions | `docs/frontend/styles/animations/transitions.md` | ✅ 已完成 | 2,118 |
 
 #### ✅ 组件文档已完成 (8个)
 
@@ -261,7 +264,14 @@
 |------|------|------|------|
 | I18n Config | `docs/frontend/i18n/i18n-config.md` | ✅ 已完成 | 1,412 |
 
-#### ✅ 已完成 (150个)
+#### ✅ 类型定义已完成 (2个)
+
+| 文档 | 路径 | 状态 | 行数 |
+|------|------|------|------|
+| Utility Types | `docs/frontend/types/utility-types.md` | ✅ 已完成 | 1,303 |
+| Router Types | `docs/frontend/types/router-types.md` | ✅ 已完成 | 1,516 |
+
+#### ✅ 已完成 (155个)
 
 包括组件库、工具函数、路由、状态管理、样式系统等核心文档。
 
