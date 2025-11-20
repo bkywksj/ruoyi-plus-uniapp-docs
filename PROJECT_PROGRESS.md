@@ -1,9 +1,9 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
 > **最后更新**: 2025-11-20
-> **整体完成度**: 91.4% (A- 评分)
+> **整体完成度**: 91.5% (A- 评分)
 > **总文档数**: 502 个
-> **总行数**: 360,000+ 行
+> **总行数**: 362,000+ 行
 
 ---
 
@@ -326,10 +326,11 @@
 - `docs/mobile/composables/use-websocket.md` - 3,598 行
 - `docs/mobile/composables/use-payment.md` - 3,398 行
 - `docs/mobile/composables/custom-hooks.md` - 3,363 行
-- `docs/mobile/utils/validate.md` - 2,969 行 ✨ **最新完成**
+- `docs/mobile/utils/validate.md` - 2,969 行
 - `docs/mobile/composables/use-auth.md` - 2,856 行
 - `docs/mobile/utils/date.md` - 2,791 行
 - `docs/mobile/composables/use-toast.md` - 2,689 行
+- `docs/mobile/utils/overview.md` - 2,578 行 ✨ **最新完成**
 - `docs/mobile/composables/use-http.md` - 2,339 行
 - `docs/mobile/composables/use-theme.md` - 2,211 行
 - `docs/mobile/composables/use-dict.md` - 1,968 行
