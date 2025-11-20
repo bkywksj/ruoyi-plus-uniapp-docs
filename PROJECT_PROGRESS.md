@@ -1,9 +1,9 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
 > **最后更新**: 2025-11-20
-> **整体完成度**: 91.5% (A- 评分)
+> **整体完成度**: 91.7% (A- 评分)
 > **总文档数**: 502 个
-> **总行数**: 362,000+ 行
+> **总行数**: 367,000+ 行
 
 ---
 
@@ -29,8 +29,8 @@
 | **后端文档** | 60 | 60 | 0 | 0 | **100%** | A+ |
 | **UniApp 文档** | 9 | 9 | 0 | 0 | **100%** | A+ |
 | **前端文档** | 181 | 181 | 0 | 0 | **100%** | A+ |
-| **移动端其他** | 206 | ~165 | 20 | ~21 | **~80%** | B+ |
-| **总计** | **502** | **459** | **18** | **25** | **91.4%** | **A-** |
+| **移动端其他** | 206 | ~167 | 18 | ~21 | **~81%** | B+ |
+| **总计** | **502** | **461** | **18** | **23** | **91.7%** | **A-** |
 
 ---
 
@@ -318,9 +318,9 @@
 | Best Practices | `docs/mobile/uniapp/best-practices.md` | 1,178 | ✅ |
 | Manifest Config | `docs/mobile/uniapp/manifest-config.md` | 2,263 | ✅ |
 
-### 其他移动端文档 (197个) - ~80% 完成
+### 其他移动端文档 (197个) - ~81% 完成
 
-包括 Composables、Utils、Plugins、Layouts、Pages、Styles、Platform、Performance 等模块。
+包括 Composables、Utils、Plugins、Layouts、Pages、Styles、Platform、Performance、Components 等模块。
 
 **优秀示例 (1000+ 行)**:
 - `docs/mobile/composables/use-websocket.md` - 3,598 行
@@ -329,12 +329,15 @@
 - `docs/mobile/utils/validate.md` - 2,969 行
 - `docs/mobile/composables/use-auth.md` - 2,856 行
 - `docs/mobile/utils/date.md` - 2,791 行
+- `docs/mobile/components/overview.md` - 2,729 行
 - `docs/mobile/composables/use-toast.md` - 2,689 行
-- `docs/mobile/utils/overview.md` - 2,578 行 ✨ **最新完成**
+- `docs/mobile/utils/overview.md` - 2,578 行
 - `docs/mobile/composables/use-http.md` - 2,339 行
 - `docs/mobile/composables/use-theme.md` - 2,211 行
+- `docs/mobile/styles/overview.md` - 2,176 行 ✨ **最新完成**
 - `docs/mobile/composables/use-dict.md` - 1,968 行
 - `docs/mobile/utils/storage.md` - 1,914 行
+- `docs/mobile/layouts/overview.md` - 1,853 行
 - `docs/mobile/composables/use-modal.md` - 1,774 行
 - `docs/mobile/composables/use-token.md` - 1,725 行
 - `docs/mobile/utils/validators.md` - 1,483 行
