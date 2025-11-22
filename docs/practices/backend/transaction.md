@@ -962,3 +962,391 @@ public void operationWithTimeout() {
     // 10秒超时,避免长时间死锁
 }
 ```
+
+## 事务监控与调优
+
+### 事务监控
+
+#### 开启事务日志
+
+在 `application.yml` 中配置事务日志:
+
+```yaml
+# Spring 事务日志
+logging:
+  level:
+    org.springframework.jdbc.datasource.DataSourceTransactionManager: DEBUG
+    org.springframework.transaction: DEBUG
+```
+
+日志输出示例:
+
+```
+Creating new transaction with name [xxx.service.impl.UserServiceImpl.createUser]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT,timeout_-1,readOnly_false
+Acquired Connection [HikariProxyConnection@123456] for JDBC transaction
+Switching JDBC Connection [HikariProxyConnection@123456] to manual commit
+Initiating transaction commit
+Committing JDBC transaction on Connection [HikariProxyConnection@123456]
+Releasing JDBC Connection [HikariProxyConnection@123456] after transaction
+```
+
+#### 事务监控指标
+
+```java
+import org.springframework.boot.actuate.metrics.CounterService;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.support.TransactionSynchronizationAdapter;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+@Component
+public class TransactionMonitor {
+
+    /**
+     * 监控事务执行
+     */
+    public void monitorTransaction(String txName) {
+        if (TransactionSynchronizationManager.isActualTransactionActive()) {
+            long startTime = System.currentTimeMillis();
+
+            TransactionSynchronizationManager.registerSynchronization(
+                new TransactionSynchronizationAdapter() {
+                    @Override
+                    public void afterCompletion(int status) {
+                        long duration = System.currentTimeMillis() - startTime;
+
+                        if (status == STATUS_COMMITTED) {
+                            log.info("事务提交成功: {}, 耗时: {}ms", txName, duration);
+                        } else if (status == STATUS_ROLLED_BACK) {
+                            log.warn("事务回滚: {}, 耗时: {}ms", txName, duration);
+                        }
+
+                        // 记录慢事务
+                        if (duration > 1000) {
+                            log.warn("慢事务警告: {}, 耗时: {}ms", txName, duration);
+                        }
+                    }
+                }
+            );
+        }
+    }
+}
+
+// 使用监控
+@Service
+public class UserServiceImpl {
+
+    @Autowired
+    private TransactionMonitor transactionMonitor;
+
+    @Transactional(rollbackFor = Exception.class)
+    public void createUser(UserBo bo) {
+        transactionMonitor.monitorTransaction("createUser");
+
+        // 业务逻辑
+        userDao.insert(MapstructUtils.convert(bo, User.class));
+    }
+}
+```
+
+### 性能优化
+
+#### 1. 批量操作优化
+
+```java
+@Service
+public class BatchOptimizationServiceImpl {
+
+    /**
+     * 错误: 每次循环一个事务
+     */
+    public void batchInsertWrong(List<DataBo> dataList) {
+        for (DataBo data : dataList) {
+            insertOne(data);  // 每次都开启新事务
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void insertOne(DataBo data) {
+        dataDao.insert(MapstructUtils.convert(data, Data.class));
+    }
+
+    /**
+     * 正确: 批量插入一个事务
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void batchInsertRight(List<DataBo> dataList) {
+        // 使用 MyBatis-Plus 批量插入
+        List<Data> list = MapstructUtils.convertList(dataList, Data.class);
+        dataDao.batchInsert(list);
+    }
+
+    /**
+     * 最优: 分批插入,控制事务大小
+     */
+    public void batchInsertBest(List<DataBo> dataList) {
+        // 每 1000 条一批
+        List<List<DataBo>> batches = ListUtil.partition(dataList, 1000);
+
+        for (List<DataBo> batch : batches) {
+            batchInsertOneBatch(batch);
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void batchInsertOneBatch(List<DataBo> batch) {
+        List<Data> list = MapstructUtils.convertList(batch, Data.class);
+        dataDao.batchInsert(list);
+    }
+}
+```
+
+#### 2. 读写分离优化
+
+```java
+import com.baomidou.dynamic.datasource.annotation.DS;
+
+@Service
+public class ReadWriteSplitServiceImpl {
+
+    /**
+     * 写操作 - 主库
+     */
+    @DS("master")
+    @Transactional(rollbackFor = Exception.class)
+    public void writeOperation(DataBo bo) {
+        dataDao.insert(MapstructUtils.convert(bo, Data.class));
+    }
+
+    /**
+     * 读操作 - 从库
+     */
+    @DS("slave")
+    @Transactional(readOnly = true)
+    public DataVo readOperation(Long id) {
+        return MapstructUtils.convert(dataDao.getById(id), DataVo.class);
+    }
+
+    /**
+     * 读写混合 - 必须全部使用主库
+     */
+    @DS("master")
+    @Transactional(rollbackFor = Exception.class)
+    public void mixedOperation(DataBo bo) {
+        // 查询
+        Data existing = dataDao.getById(bo.getId());
+
+        // 更新
+        existing.setName(bo.getName());
+        dataDao.updateById(existing);
+    }
+}
+```
+
+#### 3. 连接池优化
+
+```yaml
+# HikariCP 连接池配置
+spring:
+  datasource:
+    hikari:
+      # 最小空闲连接数
+      minimum-idle: 10
+      # 最大连接池大小
+      maximum-pool-size: 50
+      # 连接超时时间(毫秒)
+      connection-timeout: 30000
+      # 空闲连接最大存活时间(毫秒)
+      idle-timeout: 600000
+      # 连接最大生命周期(毫秒)
+      max-lifetime: 1800000
+      # 连接测试查询
+      connection-test-query: SELECT 1
+      # 自动提交
+      auto-commit: false
+```
+
+#### 4. 缓存优化
+
+```java
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
+
+@Service
+public class CacheOptimizationServiceImpl {
+
+    /**
+     * 查询缓存 - 减少数据库事务
+     */
+    @Cacheable(value = "user", key = "#id")
+    @Transactional(readOnly = true)
+    public UserVo getUser(Long id) {
+        return MapstructUtils.convert(userDao.getById(id), UserVo.class);
+    }
+
+    /**
+     * 更新时清除缓存
+     */
+    @CacheEvict(value = "user", key = "#bo.id")
+    @Transactional(rollbackFor = Exception.class)
+    public void updateUser(UserBo bo) {
+        User user = MapstructUtils.convert(bo, User.class);
+        userDao.updateById(user);
+    }
+}
+```
+
+### 事务调优建议
+
+#### 1. 减少事务持有时间
+
+```java
+@Service
+public class TransactionOptimizationServiceImpl {
+
+    /**
+     * 错误: 事务中包含远程调用
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void createOrderWrong(OrderBo bo) {
+        // 创建订单
+        Order order = orderDao.insert(MapstructUtils.convert(bo, Order.class));
+
+        // 远程调用支付服务(耗时操作)
+        paymentClient.createPayment(order.getOrderNo(), bo.getAmount());  // 可能很慢
+
+        // 更新订单状态
+        order.setStatus("PAID");
+        orderDao.updateById(order);
+    }
+
+    /**
+     * 正确: 事务外执行远程调用
+     */
+    public void createOrderRight(OrderBo bo) {
+        // 事务内创建订单
+        Order order = createOrderInTransaction(bo);
+
+        // 事务外调用支付服务
+        PaymentVo payment = paymentClient.createPayment(order.getOrderNo(), bo.getAmount());
+
+        // 事务内更新订单
+        updateOrderStatus(order.getOrderId(), "PAID");
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    private Order createOrderInTransaction(OrderBo bo) {
+        Order order = MapstructUtils.convert(bo, Order.class);
+        orderDao.insert(order);
+        return order;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    private void updateOrderStatus(Long orderId, String status) {
+        Order order = new Order();
+        order.setOrderId(orderId);
+        order.setStatus(status);
+        orderDao.updateById(order);
+    }
+}
+```
+
+#### 2. 避免大事务
+
+```java
+/**
+ * 错误: 一个大事务处理所有数据
+ */
+@Transactional(rollbackFor = Exception.class)
+public void processBigData(List<DataBo> dataList) {
+    for (DataBo data : dataList) {
+        // 复杂处理
+        complexProcess(data);
+    }
+}
+
+/**
+ * 正确: 分批处理
+ */
+public void processBigData(List<DataBo> dataList) {
+    // 每 100 条一批
+    List<List<DataBo>> batches = ListUtil.partition(dataList, 100);
+
+    for (List<DataBo> batch : batches) {
+        processBatch(batch);
+    }
+}
+
+@Transactional(rollbackFor = Exception.class)
+public void processBatch(List<DataBo> batch) {
+    for (DataBo data : batch) {
+        complexProcess(data);
+    }
+}
+```
+
+#### 3. 合理设置超时
+
+```java
+/**
+ * 短事务: 5秒超时
+ */
+@Transactional(timeout = 5, rollbackFor = Exception.class)
+public void shortTransaction() {
+    // 简单操作
+}
+
+/**
+ * 中等事务: 30秒超时
+ */
+@Transactional(timeout = 30, rollbackFor = Exception.class)
+public void normalTransaction() {
+    // 普通业务操作
+}
+
+/**
+ * 长事务: 5分钟超时
+ */
+@Transactional(timeout = 300, rollbackFor = Exception.class)
+public void longTransaction() {
+    // 批量数据处理
+}
+```
+
+#### 4. 使用只读事务
+
+```java
+/**
+ * 查询统计 - 使用只读事务
+ */
+@Transactional(readOnly = true)
+public StatisticsVo getStatistics(QueryBo bo) {
+    // 只读事务,数据库不需要维护写锁
+    // 提高查询性能
+    List<Data> dataList = dataDao.list(buildQueryWrapper(bo));
+    return buildStatistics(dataList);
+}
+```
+
+## 总结
+
+RuoYi-Plus 框架提供了完善的事务管理机制,通过 Spring 的声明式和编程式事务管理,实现了灵活、强大的事务控制能力。
+
+**核心要点:**
+
+1. **声明式事务** - 使用 `@Transactional` 注解,简洁易用,适合大多数场景
+2. **编程式事务** - 使用 `TransactionTemplate` 或 `PlatformTransactionManager`,适合需要精细控制的场景
+3. **传播行为** - 7 种传播行为满足不同业务需求,合理选择避免事务嵌套问题
+4. **隔离级别** - 4 种标准隔离级别,平衡并发性能和数据一致性
+5. **异常回滚** - 必须配置 `rollbackFor = Exception.class`,确保所有异常都回滚
+6. **性能优化** - 减少事务持有时间、避免大事务、使用批量操作和只读事务
+
+**最佳实践:**
+
+- 事务方法必须是 public,避免同类内部调用
+- 明确指定 rollbackFor,不依赖默认行为
+- 控制事务粒度,避免过大或过小
+- 合理使用传播行为,独立日志使用 REQUIRES_NEW
+- 设置合理的超时时间,防止死锁和长时间等待
+- 监控事务执行,及时发现和优化慢事务
+
+通过遵循这些最佳实践,可以构建高性能、高可靠的事务管理体系,确保数据的一致性和完整性。
