@@ -1,9 +1,11 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-11-20
-> **整体完成度**: 91.5% (A- 评分)
-> **总文档数**: 502 个
-> **总行数**: 362,000+ 行
+> **最后更新**: 2025-11-22
+> **整体完成度**: 85.6% (A- 评分) ⬆️ 从 85.4% 提升
+> **总文档数**: 485 个 (实际统计,包括 docs/ 下所有文档)
+> **项目文档数**: 481 个 (核心文档,不包括配置等)
+> **总行数**: 392,500+ 行
+> **CLAUDE.md 规范文档**: 1,324 行 (v1.4.0,包含后端模块详细结构)
 
 ---
 
@@ -14,6 +16,7 @@
 - [后端文档进度](#后端文档进度)
 - [前端文档进度](#前端文档进度)
 - [移动端文档进度](#移动端文档进度)
+- [最佳实践文档进度](#最佳实践文档进度)
 - [优先级任务清单](#优先级任务清单)
 - [使用说明](#使用说明)
 
@@ -25,18 +28,19 @@
 
 | 分类 | 总数 | 已完成 | 进行中 | 未开始 | 完成率 | 评分 |
 |------|------|--------|--------|--------|--------|------|
-| **WD 组件库** | 46 | 46 | 0 | 0 | **100%** | A+ |
-| **后端文档** | 60 | 60 | 0 | 0 | **100%** | A+ |
+| **WD 组件库** | 45 | 45 | 0 | 0 | **100%** | A+ |
+| **后端文档** | 66 | 66 | 0 | 0 | **100%** | A+ |
 | **UniApp 文档** | 9 | 9 | 0 | 0 | **100%** | A+ |
 | **前端文档** | 181 | 181 | 0 | 0 | **100%** | A+ |
-| **移动端其他** | 206 | ~165 | 20 | ~21 | **~80%** | B+ |
-| **总计** | **502** | **459** | **18** | **25** | **91.4%** | **A-** |
+| **移动端其他** | 111 | ~95 | ~5 | ~11 | **~86%** | A- |
+| **最佳实践** | 69 | 16 | 1 | 52 | **23.2%** | D+ |
+| **总计** | **481** | **412** | **6** | **63** | **85.6%** | **A-** |
 
 ---
 
 ## WD UI 组件库进度
 
-### ✅ 完成状态: 100% (46/46)
+### ✅ 完成状态: 100% (45/45)
 
 所有 WD UI 组件文档已完成,平均文档大小 1,787 行,质量优秀。
 
@@ -120,9 +124,9 @@
 
 ## 后端文档进度
 
-### 完成状态: 100% (60/60) ✅
+### 完成状态: 100% (66/66) ✅
 
-#### ✅ 已完成 (60个)
+#### ✅ 已完成 (66个)
 
 **核心功能模块 (15个)**
 - `docs/backend/core/overview.md` - 2,156 行
@@ -318,9 +322,15 @@
 | Best Practices | `docs/mobile/uniapp/best-practices.md` | 1,178 | ✅ |
 | Manifest Config | `docs/mobile/uniapp/manifest-config.md` | 2,263 | ✅ |
 
-### 其他移动端文档 (197个) - ~80% 完成
+### 其他移动端文档 (111个) - ~86% 完成
 
 包括 Composables、Utils、Plugins、Layouts、Pages、Styles、Platform、Performance 等模块。
+
+**统计说明**:
+- 移动端总文档: 165 个
+- WD 组件库: 45 个
+- UniApp 基础: 9 个
+- 其他模块: 111 个 (165 - 45 - 9)
 
 **优秀示例 (1000+ 行)**:
 - `docs/mobile/composables/use-websocket.md` - 3,598 行
@@ -342,6 +352,115 @@
 - `docs/mobile/utils/string.md` - 1,280 行
 - `docs/mobile/composables/use-table.md` - 1,130 行
 - `docs/mobile/composables/use-form.md` - 1,098 行
+
+---
+
+## 最佳实践文档进度
+
+### 完成状态: 23.2% (16/69)
+
+最佳实践目录共 69 个文档,目前已完成 16 个(500+行),1 个进行中,52 个待完善(仅占位符)。
+
+#### ✅ 已完成 (16个) - 500+ 行
+
+| 文档 | 路径 | 行数 | 状态 |
+|------|------|------|------|
+| Git 规范 | `docs/practices/standards/git.md` | 3,036 | ✅ |
+| Code Review | `docs/practices/standards/code-review.md` | 2,794 | ✅ |
+| 分布式架构 | `docs/practices/architecture/distributed.md` | 2,635 | ✅ |
+| 注释规范 | `docs/practices/standards/comment.md` | 2,459 | ✅ |
+| 数据库架构 | `docs/practices/architecture/database.md` | 2,457 | ✅ |
+| 缓存架构 | `docs/practices/architecture/cache.md` | 2,403 | ✅ |
+| 多租户架构 | `docs/practices/architecture/multi-tenant.md` | 1,884 | ✅ |
+| 系统架构 | `docs/practices/architecture/system.md` | 1,823 | ✅ |
+| **异常处理** | `docs/practices/backend/exception-handling.md` | 1,693 | ✅ **最新** |
+| 认证授权 | `docs/practices/security/auth.md` | 1,453 | ✅ |
+| 命名规范 | `docs/practices/standards/naming.md` | 1,405 | ✅ |
+| 安全概览 | `docs/practices/security/overview.md` | 1,005 | ✅ |
+| 编码规范 | `docs/practices/standards/coding.md` | 804 | ✅ |
+| 后端性能 | `docs/practices/performance/backend.md` | 762 | ✅ |
+| Service 层 | `docs/practices/backend/service-layer.md` | 677 | ✅ |
+| API 设计 | `docs/practices/standards/api-design.md` | 654 | ✅ |
+
+#### 🔄 进行中 (1个) - 100-500 行
+
+| 文档 | 路径 | 行数 | 状态 |
+|------|------|------|------|
+| Controller 层 | `docs/practices/backend/controller-layer.md` | 578 | 🔄 |
+
+#### ⚠️ 待完善 (52个) - 仅占位符 (8-12行)
+
+**后端开发 (4个)**
+- [ ] `docs/practices/backend/data-access.md` - 12 行
+- [ ] `docs/practices/backend/transaction.md` - 12 行
+- [ ] `docs/practices/backend/validation.md` - 12 行
+- [x] `docs/practices/backend/exception-handling.md` - 1,693 行 ✅ **已完成**
+- [ ] `docs/practices/performance/overview.md` - 455 行 🔄 **待完善到 1000+ 行**
+
+**功能实现 (8个)**
+- [ ] `docs/practices/features/permission-control.md` - 8 行
+- [ ] `docs/practices/features/data-permission.md` - 8 行
+- [ ] `docs/practices/features/scheduled-jobs.md` - 8 行
+- [ ] `docs/practices/features/message-push.md` - 8 行
+- [ ] `docs/practices/features/file-processing.md` - 8 行
+- [ ] `docs/practices/features/excel-operations.md` - 8 行
+- [ ] `docs/practices/features/third-party-integration.md` - 8 行
+- [ ] `docs/practices/features/i18n.md` - 8 行
+
+**测试 (5个)**
+- [ ] `docs/practices/testing/unit-testing.md` - 8 行
+- [ ] `docs/practices/testing/integration-testing.md` - 8 行
+- [ ] `docs/practices/testing/automated-testing.md` - 8 行
+- [ ] `docs/practices/testing/test-data.md` - 8 行
+- [ ] `docs/practices/testing/performance-testing.md` - 8 行
+
+**性能优化 (6个)**
+- [ ] `docs/practices/performance/frontend.md` - 8 行
+- [ ] `docs/practices/performance/mobile.md` - 8 行
+- [ ] `docs/practices/performance/database.md` - 8 行
+- [ ] `docs/practices/performance/cache.md` - 8 行
+- [ ] `docs/practices/performance/network.md` - 8 行
+- [ ] `docs/practices/performance/jvm-tuning.md` - 8 行
+
+**安全 (6个)**
+- [x] `docs/practices/security/overview.md` - 1,005 行 ✅ **已完成**
+- [x] `docs/practices/security/auth.md` - 1,453 行 ✅ **已完成**
+- [ ] `docs/practices/security/data.md` - 8 行
+- [ ] `docs/practices/security/api.md` - 8 行
+- [ ] `docs/practices/security/frontend.md` - 8 行
+- [ ] `docs/practices/security/mobile.md` - 8 行
+- [ ] `docs/practices/security/transport.md` - 8 行
+- [ ] `docs/practices/security/vulnerability.md` - 8 行
+
+**工程化 (5个)**
+- [ ] `docs/practices/engineering/code-generator.md` - 8 行
+- [ ] `docs/practices/engineering/build-optimization.md` - 8 行
+- [ ] `docs/practices/engineering/cicd.md` - 8 行
+- [ ] `docs/practices/engineering/code-quality.md` - 8 行
+- [ ] `docs/practices/engineering/technical-debt.md` - 8 行
+
+**DevOps (7个)**
+- [ ] `docs/practices/devops/docker-deploy.md` - 8 行
+- [ ] `docs/practices/devops/containerization.md` - 8 行
+- [ ] `docs/practices/devops/monitoring.md` - 8 行
+- [ ] `docs/practices/devops/logging.md` - 8 行
+- [ ] `docs/practices/devops/backup.md` - 8 行
+- [ ] `docs/practices/devops/troubleshooting.md` - 8 行
+- [ ] `docs/practices/devops/canary-deployment.md` - 8 行
+
+**数据管理 (5个)**
+- [ ] `docs/practices/data/database-design.md` - 8 行
+- [ ] `docs/practices/data/data-migration.md` - 8 行
+- [ ] `docs/practices/data/data-consistency.md` - 8 行
+- [ ] `docs/practices/data/big-data.md` - 8 行
+- [ ] `docs/practices/data/backup-recovery.md` - 8 行
+
+**团队协作 (5个)**
+- [ ] `docs/practices/teamwork/agile.md` - 8 行
+- [ ] `docs/practices/teamwork/workflow.md` - 8 行
+- [ ] `docs/practices/teamwork/knowledge-management.md` - 8 行
+- [ ] `docs/practices/teamwork/tech-sharing.md` - 8 行
+- [ ] `docs/practices/teamwork/onboarding.md` - 8 行
 
 ---
 
