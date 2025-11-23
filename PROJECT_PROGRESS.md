@@ -1,10 +1,10 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
 > **最后更新**: 2025-11-23
-> **整体完成度**: 87.9% (A- 评分) ⬆️ 从 87.7% 提升
+> **整体完成度**: 88.1% (A- 评分) ⬆️ 从 87.9% 提升
 > **总文档数**: 485 个 (实际统计,包括 docs/ 下所有文档)
 > **项目文档数**: 481 个 (核心文档,不包括配置等)
-> **总行数**: 409,815+ 行 (新增文件处理文档 2,121 行)
+> **总行数**: 411,450+ 行 (新增移动端安全文档 1,635 行)
 > **CLAUDE.md 规范文档**: 1,324 行 (v1.4.0,包含后端模块详细结构)
 
 ---
@@ -33,8 +33,8 @@
 | **UniApp 文档** | 9 | 9 | 0 | 0 | **100%** | A+ |
 | **前端文档** | 181 | 181 | 0 | 0 | **100%** | A+ |
 | **移动端其他** | 111 | ~95 | ~5 | ~11 | **~86%** | A- |
-| **最佳实践** | 69 | 27 | 1 | 41 | **39.1%** | D+ |
-| **总计** | **481** | **421** | **6** | **54** | **87.5%** | **A-** |
+| **最佳实践** | 69 | 28 | 1 | 40 | **40.6%** | D+ |
+| **总计** | **481** | **422** | **6** | **53** | **87.7%** | **A-** |
 
 ---
 
@@ -357,11 +357,11 @@
 
 ## 最佳实践文档进度
 
-### 完成状态: 39.1% (27/69)
+### 完成状态: 40.6% (28/69)
 
-最佳实践目录共 69 个文档,目前已完成 27 个(500+行),1 个进行中,41 个待完善(仅占位符)。
+最佳实践目录共 69 个文档,目前已完成 28 个(500+行),1 个进行中,40 个待完善(仅占位符)。
 
-#### ✅ 已完成 (27个) - 500+ 行
+#### ✅ 已完成 (28个) - 500+ 行
 
 | 文档 | 路径 | 行数 | 状态 |
 |------|------|------|------|
@@ -372,7 +372,8 @@
 | 数据库架构 | `docs/practices/architecture/database.md` | 2,457 | ✅ |
 | 缓存架构 | `docs/practices/architecture/cache.md` | 2,403 | ✅ |
 | 数据安全 | `docs/practices/security/data.md` | 2,419 | ✅ |
-| API 安全 | `docs/practices/security/api.md` | 1,978 | ✅ **最新** |
+| API 安全 | `docs/practices/security/api.md` | 1,978 | ✅ |
+| 移动端安全 | `docs/practices/security/mobile.md` | 1,635 | ✅ **最新** |
 | 多租户架构 | `docs/practices/architecture/multi-tenant.md` | 1,884 | ✅ |
 | 系统架构 | `docs/practices/architecture/system.md` | 1,823 | ✅ |
 | 异常处理 | `docs/practices/backend/exception-handling.md` | 1,692 | ✅ |
@@ -438,7 +439,7 @@
 - [x] `docs/practices/security/data.md` - 2,419 行 ✅ **已完成**
 - [x] `docs/practices/security/api.md` - 1,978 行 ✅ **已完成**
 - [x] `docs/practices/security/frontend.md` - 1,834 行 ✅ **已完成**
-- [ ] `docs/practices/security/mobile.md` - 8 行
+- [x] `docs/practices/security/mobile.md` - 1,635 行 ✅ **已完成**
 - [ ] `docs/practices/security/transport.md` - 8 行
 - [ ] `docs/practices/security/vulnerability.md` - 8 行
 
