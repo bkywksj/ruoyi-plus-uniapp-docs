@@ -1,10 +1,10 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-11-22
-> **整体完成度**: 85.9% (A- 评分) ⬆️ 从 85.6% 提升
+> **最后更新**: 2025-11-23
+> **整体完成度**: 86.3% (A- 评分) ⬆️ 从 86.1% 提升
 > **总文档数**: 485 个 (实际统计,包括 docs/ 下所有文档)
 > **项目文档数**: 481 个 (核心文档,不包括配置等)
-> **总行数**: 393,882+ 行 (新增数据访问层文档 1,382 行)
+> **总行数**: 398,231+ 行 (新增异常处理文档 1,692 行 + 参数校验文档 1,497 行)
 > **CLAUDE.md 规范文档**: 1,324 行 (v1.4.0,包含后端模块详细结构)
 
 ---
@@ -33,8 +33,8 @@
 | **UniApp 文档** | 9 | 9 | 0 | 0 | **100%** | A+ |
 | **前端文档** | 181 | 181 | 0 | 0 | **100%** | A+ |
 | **移动端其他** | 111 | ~95 | ~5 | ~11 | **~86%** | A- |
-| **最佳实践** | 69 | 18 | 1 | 50 | **26.1%** | D+ |
-| **总计** | **481** | **414** | **6** | **61** | **86.1%** | **A-** |
+| **最佳实践** | 69 | 19 | 1 | 49 | **27.5%** | D+ |
+| **总计** | **481** | **415** | **6** | **60** | **86.3%** | **A-** |
 
 ---
 
@@ -357,11 +357,11 @@
 
 ## 最佳实践文档进度
 
-### 完成状态: 26.1% (18/69)
+### 完成状态: 27.5% (19/69)
 
-最佳实践目录共 69 个文档,目前已完成 18 个(500+行),1 个进行中,50 个待完善(仅占位符)。
+最佳实践目录共 69 个文档,目前已完成 19 个(500+行),1 个进行中,49 个待完善(仅占位符)。
 
-#### ✅ 已完成 (18个) - 500+ 行
+#### ✅ 已完成 (19个) - 500+ 行
 
 | 文档 | 路径 | 行数 | 状态 |
 |------|------|------|------|
@@ -373,11 +373,12 @@
 | 缓存架构 | `docs/practices/architecture/cache.md` | 2,403 | ✅ |
 | 多租户架构 | `docs/practices/architecture/multi-tenant.md` | 1,884 | ✅ |
 | 系统架构 | `docs/practices/architecture/system.md` | 1,823 | ✅ |
-| 异常处理 | `docs/practices/backend/exception-handling.md` | 1,693 | ✅ |
+| 异常处理 | `docs/practices/backend/exception-handling.md` | 1,692 | ✅ |
+| **参数校验** | `docs/practices/backend/validation.md` | 1,497 | ✅ **最新** |
 | 认证授权 | `docs/practices/security/auth.md` | 1,453 | ✅ |
 | 命名规范 | `docs/practices/standards/naming.md` | 1,405 | ✅ |
 | 数据访问 | `docs/practices/backend/data-access.md` | 1,382 | ✅ |
-| **事务管理** | `docs/practices/backend/transaction.md` | 1,352 | ✅ **最新** |
+| 事务管理 | `docs/practices/backend/transaction.md` | 1,352 | ✅ |
 | 安全概览 | `docs/practices/security/overview.md` | 1,005 | ✅ |
 | 编码规范 | `docs/practices/standards/coding.md` | 804 | ✅ |
 | 后端性能 | `docs/practices/performance/backend.md` | 762 | ✅ |
@@ -390,13 +391,13 @@
 |------|------|------|------|
 | Controller 层 | `docs/practices/backend/controller-layer.md` | 578 | 🔄 |
 
-#### ⚠️ 待完善 (50个) - 仅占位符 (8-12行)
+#### ⚠️ 待完善 (49个) - 仅占位符 (8-12行)
 
-**后端开发 (1个)**
-- [ ] `docs/practices/backend/validation.md` - 12 行
+**后端开发 (已全部完成 ✅)**
+- [x] `docs/practices/backend/validation.md` - 1,497 行 ✅ **已完成**
 - [x] `docs/practices/backend/data-access.md` - 1,382 行 ✅ **已完成**
 - [x] `docs/practices/backend/transaction.md` - 1,352 行 ✅ **已完成**
-- [x] `docs/practices/backend/exception-handling.md` - 1,693 行 ✅ **已完成**
+- [x] `docs/practices/backend/exception-handling.md` - 1,692 行 ✅ **已完成**
 - [ ] `docs/practices/performance/overview.md` - 455 行 🔄 **待完善到 1000+ 行**
 
 **功能实现 (8个)**
