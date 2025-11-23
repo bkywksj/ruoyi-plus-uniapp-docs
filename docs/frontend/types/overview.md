@@ -121,7 +121,7 @@ src/types/
 
 API 交互类型定义了前后端数据交互的标准格式,确保类型安全和一致性。
 
-#### Result<T> - 统一响应格式
+#### `Result<T>` - 统一响应格式
 
 所有 API 请求都返回 `Result<T>` 类型,使用 await-to-js 模式处理错误。
 
@@ -156,7 +156,7 @@ if (!err && data) {
 - 类型安全 - TypeScript 自动推导数据类型
 - 代码简洁 - 避免 try-catch 嵌套
 
-#### R<T> - 标准 API 响应
+#### `R<T>` - 标准 API 响应
 
 后端返回的标准响应结构,包含状态码、消息和数据。
 
@@ -181,7 +181,7 @@ declare interface R<T = any> {
 - 需要直接访问状态码和消息时
 - 自定义错误处理逻辑
 
-#### PageResult<T> - 分页响应
+#### `PageResult<T>` - 分页响应
 
 标准化的分页数据结构,与后端 PageResult 保持一致。
 
