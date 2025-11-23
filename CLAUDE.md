@@ -103,37 +103,114 @@ ruoyi-plus-uniapp-docs/           # 文档项目根目录
 ### 源码项目结构
 
 ```
-ruoyi-plus-uniapp/                # 源码项目根目录(上级目录)
-├── ruoyi-plus-uniapp-docs/      # 本文档项目
-├── ruoyi-plus-uniapp-workflow/  # ⭐ 源码参考项目(编写文档时参考)
-│   ├── plus-app/                # App 应用端
-│   ├── plus-ui/                 # 管理端前端
-│   ├── plus-uniapp/             # UniApp 移动端
-│   ├── plus-uniapp-demo/        # UniApp 示例项目
-│   ├── ruoyi-admin/             # 后端主模块
-│   ├── ruoyi-common/            # 后端通用模块
-│   ├── ruoyi-modules/           # 后端业务模块
-│   ├── ruoyi-extend/            # 后端扩展模块
-│   └── pom.xml                  # Maven 项目配置
-└── ruoyi-plus-uniapp/           # 旧源码项目(仅供参考)
-    └── plus-uniapp/             # UniApp 移动端项目
+ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
+├── ruoyi-plus-uniapp-docs/          # 本文档项目
+├── ruoyi-plus-uniapp-workflow/      # ⭐ 源码参考项目(编写文档时参考)
+│   ├── plus-app/                    # App 应用端
+│   ├── plus-ui/                     # 管理端前端
+│   ├── plus-uniapp/                 # UniApp 移动端
+│   ├── plus-uniapp-demo/            # UniApp 示例项目
+│   ├── ruoyi-admin/                 # 后端主模块(启动入口)
+│   ├── ruoyi-common/                # 后端通用模块(31个子模块)
+│   ├── ruoyi-modules/               # 后端业务模块(5个子模块)
+│   ├── ruoyi-extend/                # 后端扩展模块(2个子模块)
+│   ├── script/                      # 脚本文件
+│   └── pom.xml                      # Maven 项目配置
+└── ruoyi-plus-uniapp/               # 旧源码项目(仅供参考)
+    └── plus-uniapp/                 # UniApp 移动端项目
         ├── src/
-        │   ├── wd/              # WD UI 组件库源码
-        │   │   ├── components/  # 组件实现
-        │   │   │   ├── wd-button/
-        │   │   │   │   └── wd-button.vue
-        │   │   │   ├── wd-icon/
-        │   │   │   │   └── wd-icon.vue
-        │   │   │   └── ...
-        │   │   └── index.ts     # 组件导出
-        │   ├── pages/           # 页面
-        │   ├── stores/          # Pinia 状态管理
-        │   ├── composables/     # 组合式函数
-        │   └── utils/           # 工具函数
-        ├── manifest.json        # 应用配置
-        ├── pages.json           # 页面路由配置
-        └── package.json         # 依赖配置
+        │   ├── wd/                  # WD UI 组件库源码
+        │   │   ├── components/      # 组件实现
+        │   │   └── index.ts         # 组件导出
+        │   ├── pages/               # 页面
+        │   ├── stores/              # Pinia 状态管理
+        │   ├── composables/         # 组合式函数
+        │   └── utils/               # 工具函数
+        ├── manifest.json            # 应用配置
+        ├── pages.json               # 页面路由配置
+        └── package.json             # 依赖配置
 ```
+
+### 后端模块详细结构
+
+#### ruoyi-common 通用模块 (31个子模块)
+
+| 模块名称 | 说明 |
+|---------|------|
+| `ruoyi-common-bom` | 依赖版本管理(BOM) |
+| `ruoyi-common-core` | 核心工具类、基础配置 |
+| `ruoyi-common-doc` | 接口文档配置(SpringDoc) |
+| `ruoyi-common-encrypt` | 数据加密模块 |
+| `ruoyi-common-excel` | Excel导入导出(FastExcel) |
+| `ruoyi-common-http` | HTTP客户端(Forest) |
+| `ruoyi-common-idempotent` | 幂等性处理 |
+| `ruoyi-common-job` | 定时任务(SnailJob) |
+| `ruoyi-common-json` | JSON序列化配置 |
+| `ruoyi-common-langchain4j` | AI大模型集成(LangChain4j) |
+| `ruoyi-common-log` | 日志处理模块 |
+| `ruoyi-common-mail` | 邮件发送模块 |
+| `ruoyi-common-media` | 媒体文件处理 |
+| `ruoyi-common-miniapp` | 微信小程序模块 |
+| `ruoyi-common-mp` | 微信公众号模块 |
+| `ruoyi-common-mybatis` | MyBatis-Plus配置 |
+| `ruoyi-common-openapi` | OpenAPI接口规范 |
+| `ruoyi-common-oss` | 对象存储(AWS S3兼容) |
+| `ruoyi-common-pay` | 支付模块(含4个子模块) |
+| `ruoyi-common-ratelimiter` | 限流模块 |
+| `ruoyi-common-redis` | Redis缓存模块(Redisson) |
+| `ruoyi-common-rocketmq` | 消息队列(RocketMQ) |
+| `ruoyi-common-satoken` | Sa-Token认证配置 |
+| `ruoyi-common-security` | 安全模块 |
+| `ruoyi-common-sensitive` | 数据脱敏模块 |
+| `ruoyi-common-serialMap` | 序列化映射工具 |
+| `ruoyi-common-sms` | 短信模块(SMS4J) |
+| `ruoyi-common-social` | 社交登录(JustAuth) |
+| `ruoyi-common-sse` | SSE服务端推送 |
+| `ruoyi-common-tenant` | 多租户模块 |
+| `ruoyi-common-test` | 测试工具模块 |
+| `ruoyi-common-web` | Web通用配置 |
+| `ruoyi-common-websocket` | WebSocket模块 |
+
+#### ruoyi-common-pay 支付子模块
+
+| 模块名称 | 说明 |
+|---------|------|
+| `ruoyi-common-pay-core` | 支付核心抽象 |
+| `ruoyi-common-pay-alipay` | 支付宝支付 |
+| `ruoyi-common-pay-wechat` | 微信支付 |
+| `ruoyi-common-pay-balance` | 余额支付 |
+
+#### ruoyi-modules 业务模块 (5个子模块)
+
+| 模块名称 | 说明 |
+|---------|------|
+| `ruoyi-system` | 系统管理模块(用户、角色、菜单等) |
+| `ruoyi-generator` | 代码生成器模块 |
+| `ruoyi-workflow` | 工作流模块(Warm-Flow) |
+| `ruoyi-business` | 业务扩展模块 |
+| `ruoyi-mall` | 商城模块 |
+
+#### ruoyi-extend 扩展模块 (2个子模块)
+
+| 模块名称 | 说明 |
+|---------|------|
+| `ruoyi-monitor-admin` | Spring Boot Admin监控 |
+| `ruoyi-snailjob-server` | SnailJob任务调度服务端 |
+
+### 后端技术栈版本
+
+| 技术 | 版本 |
+|------|------|
+| Java | 21 |
+| Spring Boot | 3.5.6 |
+| MyBatis-Plus | 3.5.14 |
+| Sa-Token | 1.44.0 |
+| Redisson | 3.51.0 |
+| Hutool | 5.8.40 |
+| Warm-Flow | 1.8.1 |
+| SnailJob | 1.8.0 |
+| LangChain4j | 0.35.0 |
+| WxJava | 4.7.6.B |
 
 **⚠️ 重要说明**:
 - **主要参考源码**: `ruoyi-plus-uniapp-workflow` 是最新的完整项目,编写文档时应主要参考此项目
@@ -1192,6 +1269,15 @@ git log --oneline -10
 ---
 
 ## 更新日志
+
+### v1.4.0 (2025-11-22)
+
+- 📦 更新后端模块详细结构(31个通用模块、5个业务模块、2个扩展模块)
+- 📋 新增 ruoyi-common 所有子模块说明表格
+- 📋 新增 ruoyi-common-pay 支付子模块说明
+- 📋 新增 ruoyi-modules 业务模块说明
+- 📋 新增 ruoyi-extend 扩展模块说明
+- 🔧 新增后端技术栈版本表(Java 21、Spring Boot 3.5.6等)
 
 ### v1.3.0 (2025-11-10)
 
