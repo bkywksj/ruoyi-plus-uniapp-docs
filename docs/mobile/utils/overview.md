@@ -815,7 +815,7 @@ dateAdd(date, 'year', 1)    // Date('2025-01-15')
 
 #### 4.1 核心 API
 
-**cache.set<T>(key, value, expireSeconds?)** - 设置缓存
+`cache.set<T>(key, value, expireSeconds?)` - 设置缓存
 
 ```typescript
 import { cache } from '@/utils/cache'
@@ -837,7 +837,7 @@ cache.set('userInfo', {
 cache.set('tags', ['Vue', 'React', 'Angular'])
 ```
 
-**cache.get<T>(key)** - 获取缓存
+`cache.get<T>(key)` - 获取缓存
 
 ```typescript
 import { cache } from '@/utils/cache'
