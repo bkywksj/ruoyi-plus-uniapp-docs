@@ -1,10 +1,10 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
 > **最后更新**: 2025-11-23
-> **整体完成度**: 86.3% (A- 评分) ⬆️ 从 86.1% 提升
+> **整体完成度**: 87.1% (A- 评分) ⬆️ 从 86.7% 提升
 > **总文档数**: 485 个 (实际统计,包括 docs/ 下所有文档)
 > **项目文档数**: 481 个 (核心文档,不包括配置等)
-> **总行数**: 398,231+ 行 (新增异常处理文档 1,692 行 + 参数校验文档 1,497 行)
+> **总行数**: 402,907+ 行 (新增数据权限文档 1,174 行)
 > **CLAUDE.md 规范文档**: 1,324 行 (v1.4.0,包含后端模块详细结构)
 
 ---
@@ -33,8 +33,8 @@
 | **UniApp 文档** | 9 | 9 | 0 | 0 | **100%** | A+ |
 | **前端文档** | 181 | 181 | 0 | 0 | **100%** | A+ |
 | **移动端其他** | 111 | ~95 | ~5 | ~11 | **~86%** | A- |
-| **最佳实践** | 69 | 19 | 1 | 49 | **27.5%** | D+ |
-| **总计** | **481** | **415** | **6** | **60** | **86.3%** | **A-** |
+| **最佳实践** | 69 | 23 | 1 | 45 | **33.3%** | D+ |
+| **总计** | **481** | **419** | **6** | **56** | **87.1%** | **A-** |
 
 ---
 
@@ -357,11 +357,11 @@
 
 ## 最佳实践文档进度
 
-### 完成状态: 27.5% (19/69)
+### 完成状态: 33.3% (23/69)
 
-最佳实践目录共 69 个文档,目前已完成 19 个(500+行),1 个进行中,49 个待完善(仅占位符)。
+最佳实践目录共 69 个文档,目前已完成 23 个(500+行),1 个进行中,45 个待完善(仅占位符)。
 
-#### ✅ 已完成 (19个) - 500+ 行
+#### ✅ 已完成 (23个) - 500+ 行
 
 | 文档 | 路径 | 行数 | 状态 |
 |------|------|------|------|
@@ -371,10 +371,13 @@
 | 注释规范 | `docs/practices/standards/comment.md` | 2,459 | ✅ |
 | 数据库架构 | `docs/practices/architecture/database.md` | 2,457 | ✅ |
 | 缓存架构 | `docs/practices/architecture/cache.md` | 2,403 | ✅ |
+| 数据安全 | `docs/practices/security/data.md` | 2,419 | ✅ |
 | 多租户架构 | `docs/practices/architecture/multi-tenant.md` | 1,884 | ✅ |
 | 系统架构 | `docs/practices/architecture/system.md` | 1,823 | ✅ |
 | 异常处理 | `docs/practices/backend/exception-handling.md` | 1,692 | ✅ |
-| **参数校验** | `docs/practices/backend/validation.md` | 1,497 | ✅ **最新** |
+| **数据权限** | `docs/practices/features/data-permission.md` | 1,174 | ✅ **最新** |
+| 权限控制 | `docs/practices/features/permission-control.md` | 1,083 | ✅ |
+| 参数校验 | `docs/practices/backend/validation.md` | 1,497 | ✅ |
 | 认证授权 | `docs/practices/security/auth.md` | 1,453 | ✅ |
 | 命名规范 | `docs/practices/standards/naming.md` | 1,405 | ✅ |
 | 数据访问 | `docs/practices/backend/data-access.md` | 1,382 | ✅ |
@@ -391,7 +394,7 @@
 |------|------|------|------|
 | Controller 层 | `docs/practices/backend/controller-layer.md` | 578 | 🔄 |
 
-#### ⚠️ 待完善 (49个) - 仅占位符 (8-12行)
+#### ⚠️ 待完善 (45个) - 仅占位符 (8-12行)
 
 **后端开发 (已全部完成 ✅)**
 - [x] `docs/practices/backend/validation.md` - 1,497 行 ✅ **已完成**
@@ -400,9 +403,9 @@
 - [x] `docs/practices/backend/exception-handling.md` - 1,692 行 ✅ **已完成**
 - [ ] `docs/practices/performance/overview.md` - 455 行 🔄 **待完善到 1000+ 行**
 
-**功能实现 (8个)**
-- [ ] `docs/practices/features/permission-control.md` - 8 行
-- [ ] `docs/practices/features/data-permission.md` - 8 行
+**功能实现 (6个)**
+- [x] `docs/practices/features/permission-control.md` - 1,083 行 ✅ **已完成**
+- [x] `docs/practices/features/data-permission.md` - 1,174 行 ✅ **已完成**
 - [ ] `docs/practices/features/scheduled-jobs.md` - 8 行
 - [ ] `docs/practices/features/message-push.md` - 8 行
 - [ ] `docs/practices/features/file-processing.md` - 8 行
@@ -428,7 +431,7 @@
 **安全 (6个)**
 - [x] `docs/practices/security/overview.md` - 1,005 行 ✅ **已完成**
 - [x] `docs/practices/security/auth.md` - 1,453 行 ✅ **已完成**
-- [ ] `docs/practices/security/data.md` - 8 行
+- [x] `docs/practices/security/data.md` - 2,419 行 ✅ **已完成**
 - [ ] `docs/practices/security/api.md` - 8 行
 - [ ] `docs/practices/security/frontend.md` - 8 行
 - [ ] `docs/practices/security/mobile.md` - 8 行
