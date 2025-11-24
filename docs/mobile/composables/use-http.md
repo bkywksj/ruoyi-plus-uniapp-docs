@@ -1241,7 +1241,7 @@ const ErrorMsg = {
   TIMEOUT: '请求超时，请稍后重试',
   REPEAT_SUBMIT: '数据正在处理，请勿重复提交',
   DECRYPT_FAILED: '响应数据解密失败',
-  SESSION_EXPIRED: '未登录或登陆已过期~',
+  SESSION_EXPIRED: '未登录或登录已过期~',
   REQUEST_CANCELED: '请求已取消',
   INIT_TIMEOUT: '应用初始化超时，请重试',
   UNKNOWN: '网络错误',
@@ -1304,7 +1304,7 @@ const handleRequest = async () => {
 
 1. 调用 `useUserStore().logoutUser()` 清除用户信息
 2. 跳转到登录页,并携带当前页面路径作为 `redirect` 参数
-3. 显示"未登录或登陆已过期"提示
+3. 显示"未登录或登录已过期"提示
 4. 防止重复显示登录提示
 
 ```typescript

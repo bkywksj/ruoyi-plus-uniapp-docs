@@ -663,7 +663,7 @@ const ErrorMsg = {
   TIMEOUT: '请求超时，请稍后重试',
   REPEAT_SUBMIT: '数据正在处理，请勿重复提交',
   DECRYPT_FAILED: '响应数据解密失败',
-  SESSION_EXPIRED: '未登录或登陆已过期~',
+  SESSION_EXPIRED: '未登录或登录已过期~',
   REQUEST_CANCELED: '请求已取消',
   INIT_TIMEOUT: '应用初始化超时，请重试',
   UNKNOWN: '网络错误',
@@ -710,7 +710,7 @@ const fetchData = async () => {
 1. 调用 `userStore.logoutUser()` 清除本地登录状态
 2. 获取当前页面路径作为重定向参数
 3. 跳转到登录页面 `/pages/auth/login?redirect=${currentPath}`
-4. 显示"未登录或登陆已过期~"提示（除非设置了 `noMsgError`）
+4. 显示"未登录或登录已过期~"提示（除非设置了 `noMsgError`）
 
 ```typescript
 // 会话过期处理逻辑
@@ -1282,7 +1282,7 @@ const refreshConfig = async () => {
 
 ## 常见问题
 
-### 1. 请求报 "未登录或登陆已过期" 但实际已登录
+### 1. 请求报 "未登录或登录已过期" 但实际已登录
 
 **问题原因：**
 - Token 已过期但本地未清除

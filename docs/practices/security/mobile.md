@@ -899,8 +899,8 @@ const handleResponse = <T>(
 
   if (code === 401) {
     handleUnauthorized()
-    toast.error('未登录或登陆已过期~')
-    throw new Error('未登录或登陆已过期~')
+    toast.error('未登录或登录已过期~')
+    throw new Error('未登录或登录已过期~')
   }
 
   // ... 其他处理
