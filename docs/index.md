@@ -32,13 +32,24 @@ features:
     title: 移动端最佳实践
     details: UniApp + Wd UI重构组件库，跨平台适配，组件示例完善齐全，优雅开发体验，支持微信小程序、H5、App全端覆盖
     link: /mobile/
+  - icon: 🤖
+    title: AI 能力集成 (NEW)
+    details: LangChain4j 企业级集成，支持 OpenAI、Claude、DeepSeek、通义千问，流式聊天，RAG 检索增强，WebSocket 实时对话
+    link: /backend/common/langchain4j
+  - icon: 📡
+    title: 物联网通信 (NEW)
+    details: MQTT 客户端集成 (mica-mqtt)，RocketMQ 消息队列，支持设备管理、实时数据采集、异步解耦、削峰填谷
+    link: /backend/common/mqtt
+  - icon: 🎨
+    title: 多媒体处理 (NEW)
+    details: 海报生成引擎，GIF 动图合成，火山引擎 TTS 语音合成，多音色支持，流式音频生成
   - icon: ⚡
     title: 最佳实践
     details: 开发规范指南，容器化集群部署，性能优化策略，监控告警体系，代码风格统一，架构扩展预留
     link: /practices/
   - icon: 🛠️
     title: 框架特性
-    details: 全面重构亮点，最新技术栈选择，模块化企业级设计，版本更新记录，技术架构演进
+    details: 全面重构亮点，最新技术栈选择，模块化企业级设计，版本更新记录，技术架构演进，2025年最新集成
     link: /changelog
   - icon: 🔧
     title: 视频教程
@@ -71,6 +82,15 @@ highlights:
       **安全防护** - 权限认证、数据脱敏、防重提交、限流
       **支付集成** - wxjava + 支付宝SDK，支持微信v2/v3智能切换、公钥模式等
       **小程序、公众号集成** - 已接入多平台小程序，公众号等，开箱即用
+
+  - title: 🚀 2025年最新集成
+    details: |
+      **AI能力** - LangChain4j 集成 OpenAI/Claude/DeepSeek/通义千问，流式聊天、RAG检索增强
+      **物联网通信** - MQTT 客户端 (mica-mqtt)，支持设备管理、实时数据采集
+      **消息队列** - RocketMQ 集成，异步解耦、削峰填谷、最终一致性
+      **多媒体处理** - 海报生成引擎、GIF合成、火山引擎TTS语音合成
+      **HTTP客户端** - Forest 声明式客户端，请求拦截、重试、负载均衡
+      **智能开发** - Claude Code上下文工程，AI辅助开发体验升级
 ---
 
 ## 🌟 为什么选择 ruoyi-plus-uniapp？

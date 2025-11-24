@@ -818,18 +818,1081 @@ curl -X POST监控中心的通知测试接口
 
 ---
 
+## 高级监控特性
+
+### 1. 自定义健康检查
+
+**实现自定义健康检查器:**
+
+```java
+@Component
+public class DatabaseHealthIndicator implements HealthIndicator {
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Override
+    public Health health() {
+        try (Connection conn = dataSource.getConnection()) {
+            // 检查数据库连接
+            if (conn.isValid(3)) {
+                // 查询数据库版本
+                String version = conn.getMetaData().getDatabaseProductVersion();
+                return Health.up()
+                    .withDetail("database", "MySQL")
+                    .withDetail("version", version)
+                    .withDetail("status", "连接正常")
+                    .build();
+            }
+        } catch (Exception e) {
+            return Health.down()
+                .withDetail("error", e.getMessage())
+                .build();
+        }
+        return Health.down().build();
+    }
+}
+```
+
+**Redis健康检查:**
+
+```java
+@Component
+@RequiredArgsConstructor
+public class RedisHealthIndicator implements HealthIndicator {
+
+    private final RedissonClient redissonClient;
+
+    @Override
+    public Health health() {
+        try {
+            // 检查Redis连接
+            redissonClient.getKeys().count();
+
+            // 获取Redis信息
+            String version = redissonClient.getConfig()
+                .getCodec().getClass().getSimpleName();
+
+            return Health.up()
+                .withDetail("redis", "Redisson")
+                .withDetail("codec", version)
+                .withDetail("status", "连接正常")
+                .build();
+        } catch (Exception e) {
+            return Health.down()
+                .withException(e)
+                .build();
+        }
+    }
+}
+```
+
+**磁盘空间健康检查:**
+
+```java
+@Component
+public class DiskSpaceHealthIndicator implements HealthIndicator {
+
+    private static final long THRESHOLD = 1024 * 1024 * 1024; // 1GB
+
+    @Override
+    public Health health() {
+        File file = new File(".");
+        long freeSpace = file.getFreeSpace();
+        long totalSpace = file.getTotalSpace();
+        long usableSpace = file.getUsableSpace();
+
+        if (usableSpace < THRESHOLD) {
+            return Health.down()
+                .withDetail("free", formatSize(freeSpace))
+                .withDetail("total", formatSize(totalSpace))
+                .withDetail("usable", formatSize(usableSpace))
+                .withDetail("threshold", formatSize(THRESHOLD))
+                .withDetail("message", "磁盘空间不足")
+                .build();
+        }
+
+        return Health.up()
+            .withDetail("free", formatSize(freeSpace))
+            .withDetail("total", formatSize(totalSpace))
+            .withDetail("usable", formatSize(usableSpace))
+            .build();
+    }
+
+    private String formatSize(long size) {
+        return String.format("%.2f GB", size / (1024.0 * 1024.0 * 1024.0));
+    }
+}
+```
+
+### 2. 监控数据导出
+
+**导出Prometheus格式指标:**
+
+```yaml
+# 添加依赖
+management:
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+```
+
+**访问Prometheus端点:**
+
+```bash
+curl http://localhost:5500/actuator/prometheus
+```
+
+**输出示例:**
+
+```
+# HELP jvm_memory_used_bytes The amount of used memory
+# TYPE jvm_memory_used_bytes gauge
+jvm_memory_used_bytes{area="heap",id="PS Eden Space",} 1.2345678E8
+jvm_memory_used_bytes{area="heap",id="PS Old Gen",} 2.3456789E8
+
+# HELP http_server_requests_seconds
+# TYPE http_server_requests_seconds summary
+http_server_requests_seconds_count{method="GET",uri="/api/user",status="200",} 150
+http_server_requests_seconds_sum{method="GET",uri="/api/user",status="200",} 1.234
+```
+
+### 3. 集成Grafana可视化
+
+**Prometheus配置:**
+
+```yaml
+# prometheus.yml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'ruoyi-plus'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['localhost:5500']
+        labels:
+          application: 'ruoyi-plus-app'
+```
+
+**Grafana Dashboard配置:**
+
+```json
+{
+  "dashboard": {
+    "title": "RuoYi-Plus 应用监控",
+    "panels": [
+      {
+        "title": "JVM内存使用",
+        "targets": [
+          {
+            "expr": "jvm_memory_used_bytes{application=\"ruoyi-plus-app\"}"
+          }
+        ]
+      },
+      {
+        "title": "HTTP请求QPS",
+        "targets": [
+          {
+            "expr": "rate(http_server_requests_seconds_count[1m])"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### 4. 分布式追踪
+
+**集成Micrometer Tracing:**
+
+```yaml
+# 配置追踪
+management:
+  tracing:
+    sampling:
+      probability: 1.0  # 采样率100%
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+```
+
+**自定义Span:**
+
+```java
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final Tracer tracer;
+
+    public User getUser(Long userId) {
+        Span span = tracer.nextSpan().name("getUserById");
+        try (Tracer.SpanInScope ws = tracer.withSpan(span.start())) {
+            span.tag("user.id", userId.toString());
+
+            // 业务逻辑
+            User user = userRepository.findById(userId);
+
+            span.tag("user.name", user.getUsername());
+            span.event("user.found");
+
+            return user;
+        } finally {
+            span.end();
+        }
+    }
+}
+```
+
+---
+
+## 监控告警策略
+
+### 1. 分级告警规则
+
+**告警级别定义:**
+
+| 级别 | 说明 | 通知方式 | 响应时间 |
+|------|------|---------|---------|
+| P0 | 紧急故障 | 电话+短信+钉钉 | 5分钟内 |
+| P1 | 严重故障 | 短信+钉钉+邮件 | 15分钟内 |
+| P2 | 重要告警 | 钉钉+邮件 | 30分钟内 |
+| P3 | 一般告警 | 邮件 | 1小时内 |
+| P4 | 提示信息 | 日志记录 | 无要求 |
+
+**告警规则配置:**
+
+```yaml
+# 自定义告警配置
+alerting:
+  rules:
+    # P0 - 服务完全不可用
+    - name: service-down
+      level: P0
+      condition: "status == 'DOWN'"
+      channels: [phone, sms, dingtalk]
+
+    # P1 - 内存使用率过高
+    - name: high-memory
+      level: P1
+      condition: "jvm.memory.used / jvm.memory.max > 0.9"
+      duration: 5m
+      channels: [sms, dingtalk, email]
+
+    # P2 - 响应时间过长
+    - name: slow-response
+      level: P2
+      condition: "http.server.requests.avg > 3000"
+      duration: 5m
+      channels: [dingtalk, email]
+
+    # P3 - 错误率上升
+    - name: error-rate
+      level: P3
+      condition: "error.rate > 0.01"
+      duration: 10m
+      channels: [email]
+```
+
+### 2. 告警收敛
+
+**防止告警风暴:**
+
+```java
+@Component
+@RequiredArgsConstructor
+public class AlertManager {
+
+    private final Map<String, AlertRecord> recentAlerts = new ConcurrentHashMap<>();
+
+    /**
+     * 发送告警,带收敛逻辑
+     *
+     * @param alert 告警信息
+     */
+    public void sendAlert(Alert alert) {
+        String key = alert.getType() + ":" + alert.getInstance();
+        AlertRecord record = recentAlerts.get(key);
+
+        // 检查是否在静默期内
+        if (record != null && record.isInSilencePeriod()) {
+            log.info("告警被收敛: {}", alert);
+            record.incrementCount();
+            return;
+        }
+
+        // 发送告警
+        doSendAlert(alert);
+
+        // 记录告警
+        AlertRecord newRecord = new AlertRecord(alert);
+        newRecord.setSilenceUntil(
+            LocalDateTime.now().plusMinutes(getSilenceMinutes(alert.getLevel()))
+        );
+        recentAlerts.put(key, newRecord);
+    }
+
+    /**
+     * 获取静默时间
+     */
+    private int getSilenceMinutes(AlertLevel level) {
+        return switch (level) {
+            case P0 -> 5;   // P0告警5分钟内不重复
+            case P1 -> 10;  // P1告警10分钟内不重复
+            case P2 -> 30;  // P2告警30分钟内不重复
+            case P3 -> 60;  // P3告警1小时内不重复
+            default -> 120;
+        };
+    }
+}
+```
+
+### 3. 告警通知模板
+
+**钉钉告警模板优化:**
+
+```java
+public class DingTalkAlertTemplate {
+
+    /**
+     * 构建丰富的告警消息
+     */
+    public static String buildAlertMessage(Alert alert) {
+        StringBuilder sb = new StringBuilder();
+
+        // 标题 - 使用emoji增强可读性
+        String emoji = getEmoji(alert.getLevel());
+        sb.append("## ").append(emoji).append(" ").append(alert.getTitle()).append("\n\n");
+
+        // 告警级别
+        sb.append("**告警级别:** ").append(alert.getLevel()).append("\n\n");
+
+        // 应用信息
+        sb.append("**应用名称:** ").append(alert.getApplicationName()).append("\n\n");
+        sb.append("**实例ID:** ").append(alert.getInstanceId()).append("\n\n");
+
+        // 告警详情
+        sb.append("**告警内容:** \n\n");
+        sb.append("```\n");
+        sb.append(alert.getDetail());
+        sb.append("\n```\n\n");
+
+        // 当前指标
+        if (alert.getMetrics() != null) {
+            sb.append("**当前指标:**\n\n");
+            alert.getMetrics().forEach((key, value) -> {
+                sb.append("- ").append(key).append(": ").append(value).append("\n");
+            });
+            sb.append("\n");
+        }
+
+        // 建议操作
+        if (alert.getSuggestions() != null && !alert.getSuggestions().isEmpty()) {
+            sb.append("**建议操作:**\n\n");
+            alert.getSuggestions().forEach(suggestion -> {
+                sb.append("1. ").append(suggestion).append("\n");
+            });
+            sb.append("\n");
+        }
+
+        // 时间戳
+        sb.append("**告警时间:** ").append(DateUtils.getTime()).append("\n\n");
+
+        // 快速操作链接
+        sb.append("**快速操作:**\n\n");
+        sb.append("[查看详情](").append(alert.getDetailUrl()).append(") | ");
+        sb.append("[查看日志](").append(alert.getLogUrl()).append(")");
+
+        return sb.toString();
+    }
+
+    private static String getEmoji(AlertLevel level) {
+        return switch (level) {
+            case P0 -> "🚨";  // 紧急
+            case P1 -> "⚠️";  // 严重
+            case P2 -> "⚡";  // 重要
+            case P3 -> "ℹ️";  // 一般
+            default -> "📝";
+        };
+    }
+}
+```
+
+---
+
+## 监控数据分析
+
+### 1. 性能趋势分析
+
+**收集历史数据:**
+
+```java
+@Service
+@RequiredArgsConstructor
+public class MetricsAnalyzer {
+
+    private final MeterRegistry meterRegistry;
+    private final MetricsRepository metricsRepository;
+
+    /**
+     * 定时收集性能指标
+     */
+    @Scheduled(fixedRate = 60000) // 每分钟执行
+    public void collectMetrics() {
+        MetricsSnapshot snapshot = new MetricsSnapshot();
+        snapshot.setTimestamp(LocalDateTime.now());
+
+        // JVM内存
+        snapshot.setHeapUsed(getGaugeValue("jvm.memory.used", "area", "heap"));
+        snapshot.setHeapMax(getGaugeValue("jvm.memory.max", "area", "heap"));
+
+        // GC统计
+        snapshot.setGcCount(getCounterValue("jvm.gc.pause"));
+        snapshot.setGcTime(getTimerTotal("jvm.gc.pause"));
+
+        // HTTP请求
+        snapshot.setRequestCount(getCounterValue("http.server.requests"));
+        snapshot.setAvgResponseTime(getTimerMean("http.server.requests"));
+
+        // 数据库连接池
+        snapshot.setActiveConnections(getGaugeValue("hikaricp.connections.active"));
+        snapshot.setIdleConnections(getGaugeValue("hikaricp.connections.idle"));
+
+        // 保存到数据库
+        metricsRepository.save(snapshot);
+    }
+
+    /**
+     * 分析性能趋势
+     */
+    public PerformanceTrend analyzeTrend(Duration duration) {
+        LocalDateTime startTime = LocalDateTime.now().minus(duration);
+        List<MetricsSnapshot> snapshots = metricsRepository
+            .findByTimestampAfter(startTime);
+
+        PerformanceTrend trend = new PerformanceTrend();
+
+        // 计算平均值
+        trend.setAvgHeapUsage(snapshots.stream()
+            .mapToDouble(s -> s.getHeapUsed() * 100.0 / s.getHeapMax())
+            .average()
+            .orElse(0));
+
+        // 计算峰值
+        trend.setPeakHeapUsage(snapshots.stream()
+            .mapToDouble(s -> s.getHeapUsed() * 100.0 / s.getHeapMax())
+            .max()
+            .orElse(0));
+
+        // 响应时间趋势
+        trend.setResponseTimeTrend(snapshots.stream()
+            .collect(Collectors.groupingBy(
+                s -> s.getTimestamp().truncatedTo(ChronoUnit.HOURS),
+                Collectors.averagingDouble(MetricsSnapshot::getAvgResponseTime)
+            )));
+
+        return trend;
+    }
+
+    private double getGaugeValue(String name, String... tags) {
+        Gauge gauge = meterRegistry.find(name).tags(tags).gauge();
+        return gauge != null ? gauge.value() : 0;
+    }
+
+    private double getCounterValue(String name) {
+        Counter counter = meterRegistry.find(name).counter();
+        return counter != null ? counter.count() : 0;
+    }
+
+    private double getTimerMean(String name) {
+        Timer timer = meterRegistry.find(name).timer();
+        return timer != null ? timer.mean(TimeUnit.MILLISECONDS) : 0;
+    }
+}
+```
+
+### 2. 异常模式识别
+
+**识别异常行为:**
+
+```java
+@Service
+public class AnomalyDetector {
+
+    /**
+     * 使用移动平均和标准差检测异常
+     */
+    public boolean detectAnomaly(String metricName, double currentValue) {
+        // 获取历史数据
+        List<Double> history = getHistoricalValues(metricName, Duration.ofHours(24));
+
+        if (history.size() < 10) {
+            return false; // 数据不足
+        }
+
+        // 计算均值和标准差
+        double mean = history.stream()
+            .mapToDouble(Double::doubleValue)
+            .average()
+            .orElse(0);
+
+        double variance = history.stream()
+            .mapToDouble(v -> Math.pow(v - mean, 2))
+            .average()
+            .orElse(0);
+
+        double stdDev = Math.sqrt(variance);
+
+        // 3-sigma规则: 超过3个标准差认为是异常
+        double threshold = 3.0;
+        boolean isAnomaly = Math.abs(currentValue - mean) > threshold * stdDev;
+
+        if (isAnomaly) {
+            log.warn("检测到异常: metric={}, current={}, mean={}, stdDev={}",
+                metricName, currentValue, mean, stdDev);
+        }
+
+        return isAnomaly;
+    }
+
+    /**
+     * 检测突增/突降
+     */
+    public boolean detectSpike(String metricName, double currentValue) {
+        // 获取最近的值
+        List<Double> recent = getHistoricalValues(metricName, Duration.ofMinutes(5));
+
+        if (recent.isEmpty()) {
+            return false;
+        }
+
+        double lastValue = recent.get(recent.size() - 1);
+        double changeRate = Math.abs((currentValue - lastValue) / lastValue);
+
+        // 变化率超过50%认为是突变
+        return changeRate > 0.5;
+    }
+}
+```
+
+### 3. 容量规划
+
+**基于监控数据的容量规划:**
+
+```java
+@Service
+@RequiredArgsConstructor
+public class CapacityPlanner {
+
+    private final MetricsRepository metricsRepository;
+
+    /**
+     * 预测未来资源需求
+     */
+    public CapacityForecast forecast(Duration period) {
+        // 获取历史数据
+        LocalDateTime startTime = LocalDateTime.now().minus(Duration.ofDays(30));
+        List<MetricsSnapshot> snapshots = metricsRepository
+            .findByTimestampAfter(startTime);
+
+        // 线性回归预测
+        double[] time = new double[snapshots.size()];
+        double[] memory = new double[snapshots.size()];
+
+        for (int i = 0; i < snapshots.size(); i++) {
+            time[i] = i;
+            memory[i] = snapshots.get(i).getHeapUsed();
+        }
+
+        LinearRegression regression = new LinearRegression(time, memory);
+
+        // 预测未来7天
+        int futureDays = 7;
+        double[] futureMemory = new double[futureDays];
+        for (int i = 0; i < futureDays; i++) {
+            futureMemory[i] = regression.predict(snapshots.size() + i * 24);
+        }
+
+        CapacityForecast forecast = new CapacityForecast();
+        forecast.setCurrentUsage(snapshots.get(snapshots.size() - 1).getHeapUsed());
+        forecast.setPredictedUsage(futureMemory);
+        forecast.setGrowthRate(regression.slope());
+
+        // 计算建议
+        if (regression.slope() > 0) {
+            long daysUntilFull = calculateDaysUntilFull(
+                forecast.getCurrentUsage(),
+                snapshots.get(0).getHeapMax(),
+                regression.slope()
+            );
+
+            if (daysUntilFull < 30) {
+                forecast.setRecommendation(
+                    "建议在" + daysUntilFull + "天内扩容"
+                );
+            }
+        }
+
+        return forecast;
+    }
+
+    private long calculateDaysUntilFull(double current, double max, double growthRate) {
+        if (growthRate <= 0) {
+            return Long.MAX_VALUE;
+        }
+        return (long) ((max - current) / (growthRate * 24));
+    }
+}
+```
+
+---
+
+## 监控集成实践
+
+### 1. Docker容器监控
+
+**Dockerfile健康检查:**
+
+```dockerfile
+FROM openjdk:21-jdk
+
+# 添加应用
+COPY target/ruoyi-admin.jar /app/app.jar
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+  CMD curl -f http://localhost:5500/actuator/health || exit 1
+
+# 启动应用
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+```
+
+**docker-compose监控配置:**
+
+```yaml
+services:
+  app:
+    image: ruoyi-plus:latest
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5500/actuator/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '1.0'
+          memory: 1G
+```
+
+### 2. Kubernetes监控
+
+**K8s Probe配置:**
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ruoyi-plus
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+      - name: app
+        image: ruoyi-plus:latest
+        ports:
+        - containerPort: 5500
+
+        # 存活探针
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 5500
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+        # 就绪探针
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 5500
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+        # 启动探针
+        startupProbe:
+          httpGet:
+            path: /actuator/health
+            port: 5500
+          initialDelaySeconds: 0
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 30
+```
+
+**ServiceMonitor for Prometheus:**
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ruoyi-plus-monitor
+spec:
+  selector:
+    matchLabels:
+      app: ruoyi-plus
+  endpoints:
+  - port: http
+    path: /actuator/prometheus
+    interval: 15s
+```
+
+### 3. 日志聚合
+
+**Logstash集成:**
+
+```yaml
+# logback-spring.xml
+<appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+    <destination>localhost:5000</destination>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+        <customFields>{"app_name":"ruoyi-plus"}</customFields>
+    </encoder>
+</appender>
+```
+
+**ELK Stack配置:**
+
+```yaml
+# docker-compose.yml
+services:
+  elasticsearch:
+    image: elasticsearch:8.11.0
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+
+  logstash:
+    image: logstash:8.11.0
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    ports:
+      - "5000:5000"
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: kibana:8.11.0
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+```
+
+---
+
+## 故障诊断手册
+
+### 1. 内存问题诊断
+
+**问题: 内存持续增长**
+
+**诊断步骤:**
+
+```bash
+# 1. 查看内存使用情况
+curl http://localhost:5500/actuator/metrics/jvm.memory.used
+
+# 2. 查看GC情况
+curl http://localhost:5500/actuator/metrics/jvm.gc.pause
+
+# 3. 下载堆转储
+curl -O http://localhost:5500/actuator/heapdump
+
+# 4. 使用MAT或JProfiler分析heapdump文件
+```
+
+**常见原因和解决方案:**
+
+| 原因 | 症状 | 解决方案 |
+|------|------|---------|
+| 内存泄漏 | Old Gen持续增长 | 分析heapdump,找出泄漏对象 |
+| 缓存过大 | 缓存占用大量内存 | 设置缓存过期时间和大小限制 |
+| 大对象 | 频繁Full GC | 优化大对象使用,分批处理 |
+| 线程泄漏 | 线程数持续增长 | 检查线程池配置,修复未关闭的线程 |
+
+**监控脚本:**
+
+```java
+@Scheduled(fixedRate = 300000) // 每5分钟检查
+public void checkMemoryLeak() {
+    // 获取堆内存使用率
+    double heapUsage = getHeapUsagePercentage();
+
+    if (heapUsage > 85) {
+        // 触发GC
+        System.gc();
+
+        // 等待GC完成
+        Thread.sleep(5000);
+
+        // 再次检查
+        double newHeapUsage = getHeapUsagePercentage();
+
+        if (newHeapUsage > 80) {
+            // 可能存在内存泄漏
+            log.error("疑似内存泄漏: GC后内存使用率仍为 {}%", newHeapUsage);
+
+            // 生成堆转储
+            generateHeapDump();
+
+            // 发送告警
+            sendAlert("内存泄漏告警", "堆内存使用率: " + newHeapUsage + "%");
+        }
+    }
+}
+```
+
+### 2. CPU问题诊断
+
+**问题: CPU使用率过高**
+
+**诊断步骤:**
+
+```bash
+# 1. 查看线程转储
+curl http://localhost:5500/actuator/threaddump > threaddump.txt
+
+# 2. 找出占用CPU最高的线程
+top -H -p <pid>
+
+# 3. 转换线程ID为16进制
+printf "%x\n" <thread-id>
+
+# 4. 在线程转储中查找对应线程
+grep -A 50 <hex-thread-id> threaddump.txt
+```
+
+**CPU使用率监控:**
+
+```java
+@Component
+public class CpuMonitor {
+
+    private final OperatingSystemMXBean osBean =
+        ManagementFactory.getOperatingSystemMXBean();
+
+    @Scheduled(fixedRate = 60000)
+    public void monitorCpu() {
+        if (osBean instanceof com.sun.management.OperatingSystemMXBean sunOsBean) {
+            double cpuUsage = sunOsBean.getProcessCpuLoad() * 100;
+
+            if (cpuUsage > 80) {
+                log.warn("CPU使用率过高: {}%", cpuUsage);
+
+                // 获取线程转储
+                ThreadInfo[] threads = ManagementFactory.getThreadMXBean()
+                    .dumpAllThreads(true, true);
+
+                // 找出占用CPU最高的线程
+                Arrays.stream(threads)
+                    .sorted(Comparator.comparing(
+                        t -> ManagementFactory.getThreadMXBean()
+                            .getThreadCpuTime(t.getThreadId()))
+                        .reversed())
+                    .limit(5)
+                    .forEach(thread -> {
+                        log.warn("高CPU线程: {} - {}",
+                            thread.getThreadName(),
+                            thread.getThreadState());
+                    });
+            }
+        }
+    }
+}
+```
+
+### 3. 数据库连接问题
+
+**问题: 数据库连接池耗尽**
+
+**监控连接池:**
+
+```bash
+# 查看活跃连接数
+curl http://localhost:5500/actuator/metrics/hikaricp.connections.active
+
+# 查看等待线程数
+curl http://localhost:5500/actuator/metrics/hikaricp.connections.pending
+
+# 查看连接超时次数
+curl http://localhost:5500/actuator/metrics/hikaricp.connections.timeout
+```
+
+**连接池监控:**
+
+```java
+@Component
+@RequiredArgsConstructor
+public class ConnectionPoolMonitor {
+
+    private final HikariDataSource dataSource;
+
+    @Scheduled(fixedRate = 30000)
+    public void monitorConnectionPool() {
+        HikariPoolMXBean poolBean = dataSource.getHikariPoolMXBean();
+
+        int activeConnections = poolBean.getActiveConnections();
+        int idleConnections = poolBean.getIdleConnections();
+        int totalConnections = poolBean.getTotalConnections();
+        int threadsAwaitingConnection = poolBean.getThreadsAwaitingConnection();
+
+        log.info("连接池状态: active={}, idle={}, total={}, waiting={}",
+            activeConnections, idleConnections, totalConnections, threadsAwaitingConnection);
+
+        // 检查告警条件
+        if (threadsAwaitingConnection > 0) {
+            log.warn("有 {} 个线程等待数据库连接", threadsAwaitingConnection);
+        }
+
+        double usage = (double) activeConnections / totalConnections * 100;
+        if (usage > 90) {
+            log.error("数据库连接池使用率过高: {}%", usage);
+            sendAlert("连接池告警", "使用率: " + usage + "%");
+        }
+    }
+}
+```
+
+---
+
+## 监控最佳实践总结
+
+### 1. 监控指标选择
+
+**核心指标 (Golden Signals):**
+
+1. **延迟 (Latency)** - 请求响应时间
+   - P50, P95, P99分位值
+   - 平均响应时间
+   - 最大响应时间
+
+2. **流量 (Traffic)** - 系统负载
+   - QPS (每秒请求数)
+   - 并发连接数
+   - 网络带宽
+
+3. **错误 (Errors)** - 错误率
+   - HTTP 4xx/5xx错误率
+   - 业务异常率
+   - 系统错误数
+
+4. **饱和度 (Saturation)** - 资源使用率
+   - CPU使用率
+   - 内存使用率
+   - 磁盘IO
+   - 网络IO
+
+**业务指标:**
+
+- 用户活跃数
+- 订单数量
+- 支付成功率
+- 关键业务操作耗时
+
+### 2. 监控告警原则
+
+**DO (应该做的):**
+
+- ✅ 为关键指标设置告警
+- ✅ 使用多级告警机制
+- ✅ 实施告警收敛避免告警风暴
+- ✅ 提供告警处理手册
+- ✅ 定期回顾和优化告警规则
+- ✅ 告警消息包含足够的上下文信息
+- ✅ 建立值班制度和升级机制
+
+**DON'T (不应该做的):**
+
+- ❌ 为所有指标设置告警(会产生噪音)
+- ❌ 设置过于敏感的阈值(导致误报)
+- ❌ 忽略告警(降低团队对告警的重视)
+- ❌ 没有告警处理流程
+- ❌ 告警信息不完整
+- ❌ 告警通知所有人(应该分级分组)
+
+### 3. 监控系统演进
+
+**第一阶段: 基础监控**
+- Spring Boot Admin
+- Actuator健康检查
+- 基本的邮件告警
+
+**第二阶段: 完善监控**
+- 集成Prometheus + Grafana
+- 多渠道告警(钉钉、短信)
+- 日志聚合(ELK)
+
+**第三阶段: 智能监控**
+- 分布式追踪(Zipkin/Skywalking)
+- 异常检测和预测
+- 自动化故障诊断
+- APM性能监控
+
+**第四阶段: 全链路可观测**
+- Metrics + Logs + Traces三位一体
+- 业务监控和技术监控融合
+- AIOps智能运维
+
+### 4. 监控数据保留
+
+**数据分级保留策略:**
+
+| 数据类型 | 采集频率 | 保留时间 | 降采样策略 |
+|---------|---------|---------|-----------|
+| 实时监控 | 15秒 | 24小时 | 无 |
+| 小时级 | 1分钟 | 7天 | 5分钟平均值 |
+| 天级 | 5分钟 | 30天 | 1小时平均值 |
+| 月级 | 1小时 | 1年 | 1天平均值 |
+| 年级 | 1天 | 永久 | 1周平均值 |
+
+---
+
 ## 总结
 
 系统监控是保障应用稳定运行的关键。通过本文档介绍的最佳实践:
 
 1. **完整监控体系** - Spring Boot Admin + Actuator 全方位监控
-2. **实时告警** - 邮件、钉钉等多渠道告警通知
-3. **日志追踪** - 操作日志和登录日志完整记录
-4. **性能分析** - JVM、HTTP、数据库等关键指标监控
-5. **安全加固** - 访问控制和认证保护
+2. **实时告警** - 邮件、钉钉等多渠道告警通知,支持告警分级和收敛
+3. **日志追踪** - 操作日志和登录日志完整记录,集成ELK实现日志聚合
+4. **性能分析** - JVM、HTTP、数据库等关键指标监控,支持趋势分析和容量规划
+5. **安全加固** - 访问控制和认证保护,确保监控系统安全
+6. **故障诊断** - 提供完整的故障诊断手册和自动化诊断工具
+7. **容器化支持** - Docker和Kubernetes环境下的监控集成
+8. **智能运维** - 异常检测、预测分析、自动化告警
 
 建议在实际使用中:
-- 建立完善的监控告警机制
-- 定期检查监控数据和告警规则
-- 及时处理告警信息
-- 定期分析性能数据优化系统
+- 建立完善的监控告警机制,做到"可观测"
+- 定期检查监控数据和告警规则,持续优化
+- 及时处理告警信息,建立值班和升级机制
+- 定期分析性能数据优化系统,做好容量规划
+- 构建监控知识库,积累故障处理经验
+- 推进监控系统演进,逐步实现智能化运维

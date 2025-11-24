@@ -1,9 +1,9 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-11-20
-> **整体完成度**: 91.7% (A- 评分)
+> **最后更新**: 2025-11-24
+> **整体完成度**: 93.9% (A- 评分)
 > **总文档数**: 502 个
-> **总行数**: 367,000+ 行
+> **总行数**: 388,905+ 行
 
 ---
 
@@ -357,11 +357,11 @@
 
 ## 最佳实践文档进度
 
-### 完成状态: 42.0% (29/69)
+### 完成状态: 60.9% (42/69)
 
-最佳实践目录共 69 个文档,目前已完成 29 个(500+行),1 个进行中,39 个待完善(仅占位符)。
+最佳实践目录共 69 个文档,目前已完成 42 个(500+行),1 个进行中,26 个待完善(仅占位符)。
 
-#### ✅ 已完成 (29个) - 500+ 行
+#### ✅ 已完成 (42个) - 500+ 行
 
 | 文档 | 路径 | 行数 | 状态 |
 |------|------|------|------|
@@ -380,7 +380,9 @@
 | **定时任务** | `docs/practices/features/scheduled-jobs.md` | 1,190 | ✅ |
 | **消息推送** | `docs/practices/features/message-push.md` | 1,619 | ✅ |
 | **文件处理** | `docs/practices/features/file-processing.md` | 2,121 | ✅ |
-| **Excel操作** | `docs/practices/features/excel-operations.md` | 1,656 | ✅ **最新** |
+| **Excel操作** | `docs/practices/features/excel-operations.md` | 1,656 | ✅ |
+| **第三方集成** | `docs/practices/features/third-party-integration.md` | 1,897 | ✅ |
+| **国际化(i18n)** | `docs/practices/features/i18n.md` | 1,742 | ✅ **最新** |
 | 数据权限 | `docs/practices/features/data-permission.md` | 1,174 | ✅ |
 | 权限控制 | `docs/practices/features/permission-control.md` | 1,083 | ✅ |
 | 参数校验 | `docs/practices/backend/validation.md` | 1,497 | ✅ |
@@ -393,6 +395,16 @@
 | 后端性能 | `docs/practices/performance/backend.md` | 762 | ✅ |
 | Service 层 | `docs/practices/backend/service-layer.md` | 677 | ✅ |
 | API 设计 | `docs/practices/standards/api-design.md` | 654 | ✅ |
+| **集成测试** | `docs/practices/testing/integration-testing.md` | 1,224 | ✅ |
+| **数据库性能优化** | `docs/practices/performance/database.md` | 1,059 | ✅ |
+| **缓存性能优化** | `docs/practices/performance/cache.md` | 2,547 | ✅ |
+| **前端性能优化** | `docs/practices/performance/frontend.md` | 2,469 | ✅ |
+| **移动端性能优化** | `docs/practices/performance/mobile.md` | 1,805 | ✅ |
+| **网络性能优化** | `docs/practices/performance/network.md` | 3,171 | ✅ |
+| **系统监控** | `docs/practices/devops/monitoring.md` | 1,898 | ✅ |
+| **日志管理** | `docs/practices/devops/logging.md` | 1,236 | ✅ |
+| **容器化** | `docs/practices/devops/containerization.md` | 2,585 | ✅ |
+| **Docker部署** | `docs/practices/devops/docker-deploy.md` | 1,120 | ✅ **最新** 🆕 |
 
 #### 🔄 进行中 (1个) - 100-500 行
 
@@ -409,30 +421,30 @@
 - [x] `docs/practices/backend/exception-handling.md` - 1,692 行 ✅ **已完成**
 - [ ] `docs/practices/performance/overview.md` - 455 行 🔄 **待完善到 1000+ 行**
 
-**功能实现 (6个)**
+**功能实现 (8个)**
 - [x] `docs/practices/features/permission-control.md` - 1,083 行 ✅ **已完成**
 - [x] `docs/practices/features/data-permission.md` - 1,174 行 ✅ **已完成**
 - [x] `docs/practices/features/scheduled-jobs.md` - 1,190 行 ✅ **已完成**
 - [x] `docs/practices/features/message-push.md` - 1,619 行 ✅ **已完成**
 - [x] `docs/practices/features/file-processing.md` - 2,121 行 ✅ **已完成**
-- [ ] `docs/practices/features/excel-operations.md` - 8 行
-- [ ] `docs/practices/features/third-party-integration.md` - 8 行
-- [ ] `docs/practices/features/i18n.md` - 8 行
+- [x] `docs/practices/features/excel-operations.md` - 1,656 行 ✅ **已完成**
+- [x] `docs/practices/features/third-party-integration.md` - 1,897 行 ✅ **已完成**
+- [x] `docs/practices/features/i18n.md` - 1,742 行 ✅ **已完成** 🆕
 
 **测试 (5个)**
-- [ ] `docs/practices/testing/unit-testing.md` - 8 行
-- [ ] `docs/practices/testing/integration-testing.md` - 8 行
+- [x] `docs/practices/testing/unit-testing.md` - 1,617 行 ✅ **已完成**
+- [x] `docs/practices/testing/integration-testing.md` - 1,224 行 ✅ **已完成** 🆕
 - [ ] `docs/practices/testing/automated-testing.md` - 8 行
 - [ ] `docs/practices/testing/test-data.md` - 8 行
 - [ ] `docs/practices/testing/performance-testing.md` - 8 行
 
-**性能优化 (6个)**
-- [ ] `docs/practices/performance/frontend.md` - 8 行
-- [ ] `docs/practices/performance/mobile.md` - 8 行
-- [ ] `docs/practices/performance/database.md` - 8 行
-- [ ] `docs/practices/performance/cache.md` - 8 行
-- [ ] `docs/practices/performance/network.md` - 8 行
-- [ ] `docs/practices/performance/jvm-tuning.md` - 8 行
+**性能优化 (6个) - ✅ 已全部完成**
+- [x] `docs/practices/performance/frontend.md` - 2,469 行 ✅ **已完成**
+- [x] `docs/practices/performance/mobile.md` - 1,805 行 ✅ **已完成**
+- [x] `docs/practices/performance/database.md` - 1,059 行 ✅ **已完成**
+- [x] `docs/practices/performance/cache.md` - 2,547 行 ✅ **已完成**
+- [x] `docs/practices/performance/network.md` - 3,171 行 ✅ **已完成**
+- [x] `docs/practices/performance/jvm-tuning.md` - 1,957 行 ✅ **已完成** 🆕
 
 **安全 (6个)**
 - [x] `docs/practices/security/overview.md` - 1,005 行 ✅ **已完成**
@@ -451,11 +463,11 @@
 - [ ] `docs/practices/engineering/code-quality.md` - 8 行
 - [ ] `docs/practices/engineering/technical-debt.md` - 8 行
 
-**DevOps (7个)**
-- [ ] `docs/practices/devops/docker-deploy.md` - 8 行
-- [ ] `docs/practices/devops/containerization.md` - 8 行
-- [ ] `docs/practices/devops/monitoring.md` - 8 行
-- [ ] `docs/practices/devops/logging.md` - 8 行
+**DevOps (7个) - ✅ 已完成 4/7 (57.1%)**
+- [x] `docs/practices/devops/docker-deploy.md` - 1,120 行 ✅ **已完成** 🆕
+- [x] `docs/practices/devops/containerization.md` - 2,585 行 ✅ **已完成**
+- [x] `docs/practices/devops/monitoring.md` - 1,898 行 ✅ **已完成**
+- [x] `docs/practices/devops/logging.md` - 1,236 行 ✅ **已完成**
 - [ ] `docs/practices/devops/backup.md` - 8 行
 - [ ] `docs/practices/devops/troubleshooting.md` - 8 行
 - [ ] `docs/practices/devops/canary-deployment.md` - 8 行
