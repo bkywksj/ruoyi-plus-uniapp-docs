@@ -1,9 +1,9 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
 > **最后更新**: 2025-11-24
-> **整体完成度**: 93.9% (A- 评分)
+> **整体完成度**: 94.0% (A- 评分)
 > **总文档数**: 502 个
-> **总行数**: 388,905+ 行
+> **总行数**: 390,495+ 行
 
 ---
 
@@ -357,11 +357,11 @@
 
 ## 最佳实践文档进度
 
-### 完成状态: 60.9% (42/69)
+### 完成状态: 62.3% (43/69)
 
-最佳实践目录共 69 个文档,目前已完成 42 个(500+行),1 个进行中,26 个待完善(仅占位符)。
+最佳实践目录共 69 个文档,目前已完成 43 个(500+行),1 个进行中,25 个待完善(仅占位符)。
 
-#### ✅ 已完成 (42个) - 500+ 行
+#### ✅ 已完成 (43个) - 500+ 行
 
 | 文档 | 路径 | 行数 | 状态 |
 |------|------|------|------|
@@ -404,7 +404,8 @@
 | **系统监控** | `docs/practices/devops/monitoring.md` | 1,898 | ✅ |
 | **日志管理** | `docs/practices/devops/logging.md` | 1,236 | ✅ |
 | **容器化** | `docs/practices/devops/containerization.md` | 2,585 | ✅ |
-| **Docker部署** | `docs/practices/devops/docker-deploy.md` | 1,120 | ✅ **最新** 🆕 |
+| **Docker部署** | `docs/practices/devops/docker-deploy.md` | 1,120 | ✅ |
+| **数据备份** | `docs/practices/devops/backup.md` | 1,590 | ✅ **最新** 🆕 |
 
 #### 🔄 进行中 (1个) - 100-500 行
 
@@ -463,12 +464,12 @@
 - [ ] `docs/practices/engineering/code-quality.md` - 8 行
 - [ ] `docs/practices/engineering/technical-debt.md` - 8 行
 
-**DevOps (7个) - ✅ 已完成 4/7 (57.1%)**
-- [x] `docs/practices/devops/docker-deploy.md` - 1,120 行 ✅ **已完成** 🆕
+**DevOps (7个) - ✅ 已完成 5/7 (71.4%)**
+- [x] `docs/practices/devops/docker-deploy.md` - 1,120 行 ✅ **已完成**
 - [x] `docs/practices/devops/containerization.md` - 2,585 行 ✅ **已完成**
 - [x] `docs/practices/devops/monitoring.md` - 1,898 行 ✅ **已完成**
 - [x] `docs/practices/devops/logging.md` - 1,236 行 ✅ **已完成**
-- [ ] `docs/practices/devops/backup.md` - 8 行
+- [x] `docs/practices/devops/backup.md` - 1,590 行 ✅ **已完成** 🆕
 - [ ] `docs/practices/devops/troubleshooting.md` - 8 行
 - [ ] `docs/practices/devops/canary-deployment.md` - 8 行
 

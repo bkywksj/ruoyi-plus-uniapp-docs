@@ -4,7 +4,7 @@ export default defineConfig({
     title: 'ruoyi-plus-uniapp 开发文档',
     description: '全栈开发文档 - 后端、前端、移动端完整指南',
     base: '/',
-    lastUpdated: true,
+    lastUpdated: false,
     cleanUrls: false,
 
     head: [
@@ -1297,9 +1297,8 @@ export default defineConfig({
 
     // 自定义配置
     transformPageData(pageData) {
-
-        // 为每个页面添加最后更新时间
-        pageData.frontmatter.lastUpdated = pageData.frontmatter.lastUpdated ?? true
+        // 禁用最后更新时间以避免构建时大量 git log 调用
+        pageData.frontmatter.lastUpdated = false
 
         return pageData
     }

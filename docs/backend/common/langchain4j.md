@@ -207,7 +207,7 @@ ws.onmessage = (event) => {
 | 方法 | 说明 |
 |------|------|
 | `chat(ChatRequest)` | 普通对话,返回完整响应 |
-| `chatStream(ChatRequest)` | 流式对话,返回 Flux<String> |
+| `chatStream(ChatRequest)` | 流式对话,返回 `Flux<String>` |
 | `clearHistory(sessionId)` | 清除会话历史 |
 | `getHistory(sessionId)` | 获取会话历史消息 |
 
