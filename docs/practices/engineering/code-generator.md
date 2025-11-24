@@ -303,7 +303,7 @@ gen:
 
 ### Velocity 模板语法
 
-```velocity
+```java
 ## 变量替换
 ${tableName}                ## 表名
 ${className}                ## 类名
@@ -341,7 +341,7 @@ ${datetime}                 ## 当前时间
 
 在 `src/main/resources/vm/java/` 下创建新模板:
 
-```velocity
+```java
 // custom.java.vm
 package ${packageName};
 
