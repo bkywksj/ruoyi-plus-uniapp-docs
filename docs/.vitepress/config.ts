@@ -1275,7 +1275,24 @@ export default defineConfig({
             __COMPONENT_PREVIEW__: true
         },
         build: {
-            chunkSizeWarningLimit: 2000
+            chunkSizeWarningLimit: 2000,
+            // 代码分割优化，减少单个chunk大小
+            rollupOptions: {
+                output: {
+                    manualChunks(id) {
+                        // 将 node_modules 中的依赖分割
+                        if (id.includes('node_modules')) {
+                            if (id.includes('vue')) {
+                                return 'vue-vendor'
+                            }
+                            if (id.includes('@vueuse')) {
+                                return 'vueuse-vendor'
+                            }
+                            return 'vendor'
+                        }
+                    }
+                }
+            }
         },
         optimizeDeps: {
             exclude: ['vitepress']
