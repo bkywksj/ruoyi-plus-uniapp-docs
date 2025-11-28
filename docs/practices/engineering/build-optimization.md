@@ -792,7 +792,7 @@ export default (env: any) => {
 ```
 
 **环境变量配置:**
-```env
+```bash
 # .env.production
 VITE_BUILD_COMPRESS=gzip,brotli
 ```
@@ -1110,7 +1110,7 @@ env/
 ```
 
 **示例配置:**
-```env
+```bash
 # .env.production
 NODE_ENV=production
 

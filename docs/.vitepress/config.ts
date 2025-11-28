@@ -1275,7 +1275,7 @@ export default defineConfig({
             __COMPONENT_PREVIEW__: true
         },
         build: {
-            chunkSizeWarningLimit: 1600
+            chunkSizeWarningLimit: 2000
         },
         optimizeDeps: {
             exclude: ['vitepress']

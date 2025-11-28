@@ -349,7 +349,7 @@ echo "Docker MySQL备份完成: ${BACKUP_FILE}"
 
 **Redis 配置 (redis.conf):**
 
-```conf
+```ini
 # RDB持久化配置
 save 900 1        # 900秒内至少1个key变化
 save 300 10       # 300秒内至少10个key变化
@@ -409,7 +409,7 @@ find "${BACKUP_DIR}" -name "dump_*.rdb.gz" -mtime +7 -delete
 
 **Redis 配置:**
 
-```conf
+```ini
 # 开启AOF
 appendonly yes
 appendfilename "appendonly.aof"
