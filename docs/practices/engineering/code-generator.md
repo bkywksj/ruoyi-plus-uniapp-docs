@@ -727,6 +727,316 @@ const { sys_user_sex } = proxy.useDict('sys_user_sex');
 
 ---
 
+## 技术实现
+
+### 核心处理流程
+
+代码生成器的核心流程分为以下几个阶段:
+
+#### 1. 表导入阶段
+
+**流程说明:**
+
+```java
+// GenTableServiceImpl.importGenTables()
+1. 从数据库读取表结构元数据
+2. 调用 GenUtils.initTable() 初始化表信息
+   - 设置类名(驼峰转换)
+   - 设置业务名(去除表前缀)
+   - 设置功能名(清理注释)
+3. 查询列信息并调用 GenUtils.initColumnField() 初始化
+   - 推断Java类型
+   - 推断HTML控件类型
+   - 设置增删改查权限
+4. 保存到 sys_gen_table 和 sys_gen_table_column
+```
+
+**智能推断规则:**
+
+| 推断类型 | 规则 | 示例 |
+|---------|------|------|
+| **Java类型** | varchar → String | VARCHAR(50) → String |
+| | bigint → Long | BIGINT → Long |
+| | int → Integer | INT → Integer |
+| | decimal(m,n) → BigDecimal | DECIMAL(10,2) → BigDecimal |
+| | datetime → Date | DATETIME → Date |
+| **HTML控件** | 字段后缀 _status → radio | user_status → 单选框 |
+| | 字段后缀 _type → select | user_type → 下拉框 |
+| | 字段后缀 _name → input + LIKE | user_name → 输入框(模糊查询) |
+| | 字段后缀 _image → imageUpload | user_image → 图片上传 |
+| | 字段后缀 _file → fileUpload | file_path → 文件上传 |
+| | 字段后缀 _content → editor | article_content → 富文本 |
+| | 字段长度 > 500 → textarea | VARCHAR(1000) → 文本域 |
+| | 字段前缀 is_ → select + 布尔字典 | is_enabled → 下拉框 |
+| **查询方式** | name字段 → LIKE | 模糊查询 |
+| | time字段 → BETWEEN | 范围查询 |
+| | 其他字段 → EQ | 等值查询 |
+
+#### 2. 代码生成阶段
+
+**流程说明:**
+
+```java
+// GenTableServiceImpl.generatorCode()
+1. 查询表配置和列配置
+2. 设置扩展信息(树表/主子表)
+3. 初始化 Velocity 模板引擎
+4. 准备模板上下文(VelocityContext)
+   - 设置基础变量(类名、包名、作者等)
+   - 设置列信息
+   - 设置导入包列表
+   - 设置字典数据
+5. 获取模板列表(根据模板类型)
+6. 逐个渲染模板并生成文件
+7. 自动导入菜单SQL(可选)
+```
+
+**模板上下文变量:**
+
+| 变量名 | 说明 | 示例值 |
+|--------|------|--------|
+| tableName | 表名 | sys_user |
+| ClassName | 类名(首字母大写) | SysUser |
+| className | 类名(首字母小写) | sysUser |
+| BusinessName | 业务名(首字母大写) | User |
+| businessName | 业务名(首字母小写) | user |
+| moduleName | 模块名 | system |
+| packageName | 包名 | plus.ruoyi.system |
+| author | 作者 | 抓蛙师 |
+| datetime | 当前日期 | 2025-11-25 |
+| functionName | 功能名 | 用户管理 |
+| columns | 列集合 | `List<GenTableColumn>` |
+| pkColumn | 主键列 | GenTableColumn |
+| importList | 导入包列表 | `Set<String>` |
+| dicts | 字典类型列表 | 'sys_user_sex', 'sys_normal_disable' |
+| permissionPrefix | 权限前缀 | system:user |
+
+#### 3. 模板渲染阶段
+
+**Velocity 模板引擎:**
+
+```java
+// VelocityUtils.prepareContext()
+VelocityContext context = new VelocityContext();
+context.put("tableName", "sys_user");
+context.put("ClassName", "SysUser");
+context.put("columns", columns);
+
+// 渲染模板
+Template tpl = Velocity.getTemplate("vm/java/domain.java.vm");
+StringWriter sw = new StringWriter();
+tpl.merge(context, sw);
+String code = sw.toString();
+```
+
+**模板示例 (domain.java.vm):**
+
+```java
+package ${packageName}.domain;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+import lombok.Data;
+
+/**
+ * ${functionName}对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+@Data
+public class ${ClassName} {
+
+#foreach ($column in $columns)
+#if(!$column.isSuperColumn())
+    /** $column.columnComment */
+    private $column.javaType $column.javaField;
+
+#end
+#end
+}
+```
+
+### 字段处理策略
+
+#### 字段类型映射表
+
+| 数据库类型 | Java类型 | TypeScript类型 | HTML控件 | 说明 |
+|-----------|---------|---------------|----------|------|
+| varchar(n) | String | string | input | 字符串 |
+| text | String | string | textarea | 长文本 |
+| int | Integer | number | input/numberInput | 整数 |
+| bigint | Long | number | input/numberInput | 长整数 |
+| decimal(m,n) | BigDecimal | number | numberInput | 精确小数 |
+| datetime | Date | string | datetime | 日期时间 |
+| tinyint(1) | Boolean | boolean | radio/select | 布尔值 |
+
+#### 字段权限矩阵
+
+| 字段类型 | 插入 | 编辑 | 列表 | 查询 | 必填 | 说明 |
+|---------|------|------|------|------|------|------|
+| 主键字段 | ❌ | ❌ | ✅ | ❌ | ✅ | 自动生成,不允许手动输入 |
+| 普通字段 | ✅ | ✅ | ✅ | ✅ | ❌ | 常规业务字段 |
+| create_time | ❌ | ❌ | ✅ | ❌ | ❌ | 系统自动填充 |
+| update_time | ❌ | ❌ | ❌ | ❌ | ❌ | 系统自动更新 |
+| create_by | ❌ | ❌ | ❌ | ❌ | ❌ | 系统自动填充 |
+| update_by | ❌ | ❌ | ❌ | ❌ | ❌ | 系统自动填充 |
+| is_deleted | ❌ | ❌ | ❌ | ❌ | ❌ | 逻辑删除标记 |
+| tenant_id | ❌ | ❌ | ❌ | ❌ | ❌ | 租户ID,自动填充 |
+| version | ❌ | ❌ | ❌ | ❌ | ❌ | 乐观锁版本号 |
+| remark | ✅ | ✅ | ❌ | ❌ | ❌ | 备注字段,不在列表显示 |
+
+### 文件生成路径规则
+
+#### 后端文件路径
+
+```bash
+# 基础路径
+{projectRoot}/ruoyi-modules/{backendModuleName}/src/
+
+# 各层路径
+main/java/{packageName}/domain/{ClassName}.java              # 实体类
+main/java/{packageName}/domain/bo/{ClassName}Bo.java        # 业务对象
+main/java/{packageName}/domain/vo/{ClassName}Vo.java        # 视图对象
+main/java/{packageName}/controller/{ClassName}Controller.java
+main/java/{packageName}/service/I{ClassName}Service.java
+main/java/{packageName}/service/impl/{ClassName}ServiceImpl.java
+main/java/{packageName}/dao/I{ClassName}Dao.java
+main/java/{packageName}/dao/impl/{ClassName}DaoImpl.java
+main/java/{packageName}/mapper/{ClassName}Mapper.java
+main/resources/mapper/{moduleName}/{ClassName}Mapper.xml
+```
+
+**示例:**
+
+```bash
+# 配置: packageName=plus.ruoyi.business.base, className=Ad
+ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/domain/Ad.java
+ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/domain/bo/AdBo.java
+ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/domain/vo/AdVo.java
+ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/controller/AdController.java
+ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/service/IAdService.java
+ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/service/impl/AdServiceImpl.java
+ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/dao/IAdDao.java
+ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/dao/impl/AdDaoImpl.java
+ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/mapper/AdMapper.java
+ruoyi-modules/ruoyi-business/src/main/resources/mapper/base/AdMapper.xml
+```
+
+#### 前端文件路径
+
+```bash
+# 基础路径
+{projectRoot}/{frontendRootDir}/src/
+
+# 各层路径
+api/{frontendPath}/{businessName}/{businessName}Api.ts      # API接口
+api/{frontendPath}/{businessName}/{businessName}Types.ts    # 类型定义
+views/{frontendPath}/{businessName}/{businessName}.vue      # 列表页面
+
+# 特殊页面
+views/{frontendPath}/{businessName}/{businessName}Tree.vue  # 树表页面
+views/{frontendPath}/{businessName}/{SubClassName}Child.vue # 子表组件
+```
+
+**路径生成规则:**
+
+```bash
+# 包名: plus.ruoyi.business.base
+# 跳过前两级域名(plus.ruoyi),提取剩余部分
+# 结果: business/base
+
+# 示例: businessName=ad
+plus-ui/src/api/business/base/ad/adApi.ts
+plus-ui/src/api/business/base/ad/adTypes.ts
+plus-ui/src/views/business/base/ad/ad.vue
+```
+
+#### SQL文件路径
+
+```bash
+# 菜单SQL
+{projectRoot}/script/sql/menu/{moduleName}_{subModule}_{businessName}_menu.sql
+
+# 示例
+# packageName: plus.ruoyi.business.base
+# businessName: ad
+# 结果: business_base_ad_menu.sql
+
+script/sql/menu/business_base_ad_menu.sql
+```
+
+### 自动导入菜单
+
+**菜单SQL生成示例:**
+
+```sql
+-- 菜单: 广告管理
+INSERT INTO sys_menu VALUES(
+  1860604959000000001,           -- 菜单ID
+  '广告管理',                     -- 菜单名称
+  3,                             -- 父菜单ID
+  1,                             -- 显示顺序
+  'base/ad',                     -- 路由地址
+  '',                            -- 组件路径(空表示自动匹配)
+  1,                             -- 菜单类型(1=目录 2=菜单 3=按钮)
+  'info',                        -- 菜单图标
+  0,                             -- 是否外链
+  0,                             -- 缓存
+  0,                             -- 隐藏
+  'base:ad:view',                -- 权限标识
+  NOW(),                         -- 创建时间
+  NULL,                          -- 备注
+  0                              -- 删除标志
+);
+
+-- 按钮: 广告查询
+INSERT INTO sys_menu VALUES(1860604959000000002, '广告查询', 1860604959000000001, 1, '', '', 3, '', 0, 0, 0, 'base:ad:query', NOW(), NULL, 0);
+
+-- 按钮: 广告新增
+INSERT INTO sys_menu VALUES(1860604959000000003, '广告新增', 1860604959000000001, 2, '', '', 3, '', 0, 0, 0, 'base:ad:add', NOW(), NULL, 0);
+
+-- 按钮: 广告修改
+INSERT INTO sys_menu VALUES(1860604959000000004, '广告修改', 1860604959000000001, 3, '', '', 3, '', 0, 0, 0, 'base:ad:edit', NOW(), NULL, 0);
+
+-- 按钮: 广告删除
+INSERT INTO sys_menu VALUES(1860604959000000005, '广告删除', 1860604959000000001, 4, '', '', 3, '', 0, 0, 0, 'base:ad:remove', NOW(), NULL, 0);
+
+-- 按钮: 广告导出
+INSERT INTO sys_menu VALUES(1860604959000000006, '广告导出', 1860604959000000001, 5, '', '', 3, '', 0, 0, 0, 'base:ad:export', NOW(), NULL, 0);
+```
+
+**自动导入逻辑:**
+
+```java
+// GenTableServiceImpl.autoImportMenuSql()
+// 判断条件:
+1. 配置开启自动导入(autoImportMenu = 1)
+2. 生成方式为自定义路径(genType = 1)
+3. 生成路径为当前项目
+4. 菜单不存在(防止重复导入)
+
+// 执行流程:
+1. 渲染菜单SQL模板
+2. 提取INSERT语句
+3. 通过JdbcTemplate执行SQL
+4. 事务管理(失败自动回滚)
+```
+
+**防重复导入机制:**
+
+```java
+// 检查主菜单权限是否存在
+String mainPerms = moduleName + ":" + businessName + ":view";
+if (menuService.existsByPerms(mainPerms)) {
+    log.info("菜单已存在，跳过: {}", mainPerms);
+    return "菜单已存在，跳过导入";
+}
+```
+
+---
+
 ## 总结
 
 代码生成器是提升开发效率的利器，通过本文档介绍的最佳实践:

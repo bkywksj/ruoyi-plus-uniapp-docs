@@ -43,6 +43,10 @@ features:
   - icon: 🎨
     title: 多媒体处理 (NEW)
     details: 海报生成引擎，GIF 动图合成，火山引擎 TTS 语音合成，多音色支持，流式音频生成
+  - icon: 🖼️
+    title: 页面设计器 (NEW)
+    details: 可视化拖拽设计，30+组件库，AI智能生成，实时预览，一键生成Vue代码，支持页面/弹窗/抽屉三种模式
+    link: /frontend/tools/page-designer
   - icon: ⚡
     title: 最佳实践
     details: 开发规范指南，容器化集群部署，性能优化策略，监控告警体系，代码风格统一，架构扩展预留
@@ -89,7 +93,7 @@ highlights:
       **物联网通信** - MQTT 客户端 (mica-mqtt)，支持设备管理、实时数据采集
       **消息队列** - RocketMQ 集成，异步解耦、削峰填谷、最终一致性
       **多媒体处理** - 海报生成引擎、GIF合成、火山引擎TTS语音合成
-      **HTTP客户端** - Forest 声明式客户端，请求拦截、重试、负载均衡
+      **页面设计器** - 可视化拖拽设计、30+组件、AI智能生成、一键代码导出
       **智能开发** - Claude Code上下文工程，AI辅助开发体验升级
 ---
 

@@ -589,6 +589,13 @@ export default defineConfig({
                     ]
                 },
                 {
+                    text: '🖼️ 低代码工具 (tools)',
+                    collapsed: true,
+                    items: [
+                        { text: '页面设计器', link: '/frontend/tools/page-designer' }
+                    ]
+                },
+                {
                     text: '🌍 国际化 (locales)',
                     collapsed: true,
                     items: [
