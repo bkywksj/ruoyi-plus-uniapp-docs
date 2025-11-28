@@ -1266,6 +1266,10 @@ export default defineConfig({
         },
         optimizeDeps: {
             exclude: ['vitepress']
+        },
+        ssr: {
+            // 修复 mark.js 在 SSR 环境下的模块解析问题
+            noExternal: ['mark.js']
         }
     },
 
