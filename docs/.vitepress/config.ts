@@ -1077,21 +1077,7 @@ export default defineConfig({
                         { text: '图片处理', link: '/practices/features/image-processing' }
                     ]
                 },
-                {
-                    text: '🧪 测试策略',
-                    items: [
-                        { text: '测试策略概览', link: '/practices/testing/overview' },
-                        { text: '测试基础类使用', link: '/practices/testing/base-classes' },
-                        { text: '单元测试最佳实践', link: '/practices/testing/unit-testing' },
-                        { text: '集成测试策略', link: '/practices/testing/integration-testing' },
-                        { text: '自动化测试框架', link: '/practices/testing/automated-testing' },
-                        { text: '测试数据管理', link: '/practices/testing/test-data' },
-                        { text: '性能测试指南', link: '/practices/testing/performance-testing' },
-                        { text: 'Mock与Stub技巧', link: '/practices/testing/mock-stub' },
-                        { text: '测试覆盖率管理', link: '/practices/testing/coverage' }
-                    ]
-                },
-                {
+                                {
                     text: '⚡ 性能优化',
                     items: [
                         { text: '性能优化概览', link: '/practices/performance/overview' },
@@ -1128,8 +1114,7 @@ export default defineConfig({
                         { text: '构建优化', link: '/practices/engineering/build-optimization' },
                         { text: 'CI/CD最佳实践', link: '/practices/engineering/cicd' },
                         { text: '代码质量管控', link: '/practices/engineering/code-quality' },
-                        { text: '技术债务管理', link: '/practices/engineering/technical-debt' },
-                        { text: '版本管理策略', link: '/practices/engineering/version-control' },
+                                                { text: '版本管理策略', link: '/practices/engineering/version-control' },
                         { text: '依赖管理', link: '/practices/engineering/dependency-management' }
                     ]
                 },
@@ -1144,8 +1129,7 @@ export default defineConfig({
                         { text: '日志管理', link: '/practices/devops/logging' },
                         { text: '备份策略', link: '/practices/devops/backup' },
                         { text: '故障排查指南', link: '/practices/devops/troubleshooting' },
-                        { text: '灰度发布策略', link: '/practices/devops/canary-deployment' },
-                        { text: '高可用架构', link: '/practices/devops/high-availability' },
+                                                { text: '高可用架构', link: '/practices/devops/high-availability' },
                         { text: '自动化运维', link: '/practices/devops/automation' }
                     ]
                 },
@@ -1156,26 +1140,12 @@ export default defineConfig({
                         { text: '数据库设计规范', link: '/practices/data/database-design' },
                         { text: '数据迁移策略', link: '/practices/data/data-migration' },
                         { text: '数据一致性保证', link: '/practices/data/data-consistency' },
-                        { text: '大数据处理', link: '/practices/data/big-data' },
-                        { text: '数据备份恢复', link: '/practices/data/backup-recovery' },
+                                                { text: '数据备份恢复', link: '/practices/data/backup-recovery' },
                         { text: '数据脱敏处理', link: '/practices/data/data-masking' },
                         { text: '数据归档策略', link: '/practices/data/data-archiving' }
                     ]
                 },
-                {
-                    text: '🔄 团队协作',
-                    items: [
-                        { text: '团队协作概览', link: '/practices/teamwork/overview' },
-                        { text: '敏捷开发实践', link: '/practices/teamwork/agile' },
-                        { text: '团队工作流程', link: '/practices/teamwork/workflow' },
-                        { text: '知识管理', link: '/practices/teamwork/knowledge-management' },
-                        { text: '技术分享机制', link: '/practices/teamwork/tech-sharing' },
-                        { text: '新人入职指南', link: '/practices/teamwork/onboarding' },
-                        { text: '代码评审流程', link: '/practices/teamwork/code-review-process' },
-                        { text: '项目管理工具', link: '/practices/teamwork/project-management' }
-                    ]
-                },
-                {
+                                {
                     text: '🎓 学习资源',
                     items: [
                         { text: '学习路径推荐', link: '/practices/learning/roadmap' },

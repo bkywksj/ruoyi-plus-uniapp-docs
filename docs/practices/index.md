@@ -10,14 +10,12 @@
 | 🏗️ 架构设计 | 5 | 0 | 5 | 0% |
 | 💻 后端开发 | 6 | 0 | 6 | 0% |
 | 🔧 功能开发 | 8 | 0 | 8 | 0% |
-| 🧪 测试策略 | 5 | 0 | 5 | 0% |
 | ⚡ 性能优化 | 7 | 0 | 7 | 0% |
 | 🔒 安全指南 | 8 | 0 | 8 | 0% |
-| 🛠️ 工程化 | 5 | 0 | 5 | 0% |
-| 🚀 部署运维 | 7 | 0 | 7 | 0% |
-| 📊 数据管理 | 5 | 0 | 5 | 0% |
-| 🔄 团队协作 | 5 | 0 | 5 | 0% |
-| **总计** | **67** | **2** | **65** | **3%** |
+| 🛠️ 工程化 | 4 | 0 | 4 | 0% |
+| 🚀 部署运维 | 6 | 0 | 6 | 0% |
+| 📊 数据管理 | 4 | 0 | 4 | 0% |
+| **总计** | **54** | **2** | **52** | **4%** |
 
 ## 📋 开发规范
 
@@ -60,14 +58,6 @@
 - 📝 [第三方集成策略](/practices/features/third-party-integration) - 第三方服务集成
 - 📝 [国际化实现方案](/practices/features/i18n) - 多语言支持
 
-## 🧪 测试策略
-
-- 📝 [单元测试最佳实践](/practices/testing/unit-testing) - 单元测试规范
-- 📝 [集成测试策略](/practices/testing/integration-testing) - 集成测试方法
-- 📝 [自动化测试框架](/practices/testing/automated-testing) - 自动化测试工具
-- 📝 [测试数据管理](/practices/testing/test-data) - 测试数据准备
-- 📝 [性能测试指南](/practices/testing/performance-testing) - 性能测试方案
-
 ## ⚡ 性能优化
 
 性能优化是提升用户体验的关键环节。
@@ -99,7 +89,6 @@
 - 📝 [构建优化](/practices/engineering/build-optimization) - 构建性能优化
 - 📝 [CI/CD最佳实践](/practices/engineering/cicd) - 持续集成部署
 - 📝 [代码质量管控](/practices/engineering/code-quality) - 代码质量工具
-- 📝 [技术债务管理](/practices/engineering/technical-debt) - 技术债务处理
 
 ## 🚀 部署运维
 
@@ -111,23 +100,13 @@
 - 📝 [日志管理](/practices/devops/logging) - 日志收集、分析和管理
 - 📝 [备份策略](/practices/devops/backup) - 数据备份和恢复策略
 - 📝 [故障排查指南](/practices/devops/troubleshooting) - 常见问题排查
-- 📝 [灰度发布策略](/practices/devops/canary-deployment) - 灰度发布实践
 
 ## 📊 数据管理
 
 - 📝 [数据库设计规范](/practices/data/database-design) - 数据库设计标准
 - 📝 [数据迁移策略](/practices/data/data-migration) - 数据迁移方案
 - 📝 [数据一致性保证](/practices/data/data-consistency) - 分布式一致性
-- 📝 [大数据处理](/practices/data/big-data) - 大数据处理方案
 - 📝 [数据备份恢复](/practices/data/backup-recovery) - 数据备份恢复
-
-## 🔄 团队协作
-
-- 📝 [敏捷开发实践](/practices/teamwork/agile) - 敏捷开发流程
-- 📝 [团队工作流程](/practices/teamwork/workflow) - 团队协作流程
-- 📝 [知识管理](/practices/teamwork/knowledge-management) - 知识沉淀和分享
-- 📝 [技术分享机制](/practices/teamwork/tech-sharing) - 技术分享会
-- 📝 [新人入职指南](/practices/teamwork/onboarding) - 新人培训流程
 
 ---
 
