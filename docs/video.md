@@ -2,7 +2,9 @@
 
 ### Claude Code AI开发课程
 **[AI编程时代来临 - 为什么你需要Claude Code](https://www.bilibili.com/video/BV1DDySBqE2h)**
+
 **[你的 AI 可能白用了！为什么你的 Claude Code 总是"失忆"？90% 的人不知道的项目管理致命错误！！！](https://www.bilibili.com/video/BV1Y6CTBnEUD)**
+
 **[Claude Code Skills 实战教程 - 打造专属AI编程知识库](https://www.bilibili.com/video/BV1WmSKBEEtt/)**
 
 ### ruoyi-plus-uniapp简单入门实战课程- OA系统开发课程
