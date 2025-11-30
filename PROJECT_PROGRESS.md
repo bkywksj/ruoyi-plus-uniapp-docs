@@ -1,9 +1,10 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-11-25
-> **整体完成度**: 78.6% (B+ 评分)
-> **总文档数**: 69 个(最佳实践)
-> **总行数**: 413,746+ 行
+> **最后更新**: 2025-11-29
+> **整体完成度**: 60.7% (C+ 评分) - 按500+行标准
+> **总文档数**: 475 个
+> **总行数**: 459,980+ 行
+> **已完成文档**: 286 个 (≥500行)
 
 ---
 
@@ -24,14 +25,16 @@
 
 ### 各模块完成度对比
 
-| 分类 | 总数 | 已完成 | 进行中 | 未开始 | 完成率 | 评分 |
-|------|------|--------|--------|--------|--------|------|
-| **WD 组件库** | 45 | 45 | 0 | 0 | **100%** | A+ |
-| **后端文档** | 66 | 66 | 0 | 0 | **100%** | A+ |
-| **UniApp 文档** | 9 | 9 | 0 | 0 | **100%** | A+ |
-| **前端文档** | 181 | 181 | 0 | 0 | **100%** | A+ |
-| **移动端其他** | 206 | ~167 | 18 | ~21 | **~81%** | B+ |
-| **总计** | **502** | **461** | **18** | **23** | **91.7%** | **A-** |
+| 分类 | 总数 | 已完成(≥500行) | 待完善(<500行) | 完成率 | 评分 |
+|------|------|----------------|----------------|--------|------|
+| **WD 组件库** | 45 | 45 | 0 | **100%** | A+ |
+| **后端文档** | 68 | 37 | 31 | **54.4%** | D+ |
+| **前端文档** | 182 | 97 | 85 | **53.3%** | D+ |
+| **移动端文档** | 165 | 100 | 65 | **60.6%** | C- |
+| **最佳实践** | 56 | 52 | 4 | **92.9%** | A |
+| **总计** | **475** | **286** | **189** | **60.2%** | **C+** |
+
+**说明**: 完成标准为文档行数 ≥ 500 行
 
 ---
 
@@ -357,9 +360,9 @@
 
 ## 最佳实践文档进度
 
-### 完成状态: 78.6% (56/69)
+### 完成状态: 92.9% (52/56)
 
-最佳实践目录共 69 个文档,目前已完成 56 个(500+行),0 个进行中,13 个待完善(仅占位符)。
+最佳实践目录共 56 个文档,目前已完成 52 个(≥500行),4 个待完善(占位符或index文件)。
 
 #### ✅ 已完成 (56个) - 500+ 行
 
@@ -427,79 +430,15 @@
 |------|------|------|------|
 | Controller 层 | `docs/practices/backend/controller-layer.md` | 578 | 🔄 |
 
-#### ⚠️ 待完善 (13个) - 仅占位符 (8-12行)
+#### ⚠️ 待完善 (4个) - 仅占位符或index文件
 
-**后端开发 (已全部完成 ✅)**
-- [x] `docs/practices/backend/validation.md` - 1,497 行 ✅ **已完成**
-- [x] `docs/practices/backend/data-access.md` - 1,382 行 ✅ **已完成**
-- [x] `docs/practices/backend/transaction.md` - 1,352 行 ✅ **已完成**
-- [x] `docs/practices/backend/exception-handling.md` - 1,692 行 ✅ **已完成**
-- [ ] `docs/practices/performance/overview.md` - 455 行 🔄 **待完善到 1000+ 行**
-
-**功能实现 (8个)**
-- [x] `docs/practices/features/permission-control.md` - 1,083 行 ✅ **已完成**
-- [x] `docs/practices/features/data-permission.md` - 1,174 行 ✅ **已完成**
-- [x] `docs/practices/features/scheduled-jobs.md` - 1,190 行 ✅ **已完成**
-- [x] `docs/practices/features/message-push.md` - 1,619 行 ✅ **已完成**
-- [x] `docs/practices/features/file-processing.md` - 2,121 行 ✅ **已完成**
-- [x] `docs/practices/features/excel-operations.md` - 1,656 行 ✅ **已完成**
-- [x] `docs/practices/features/third-party-integration.md` - 1,897 行 ✅ **已完成**
-- [x] `docs/practices/features/i18n.md` - 1,742 行 ✅ **已完成** 🆕
-
-**测试 (5个) - ✅ 已全部完成 5/5 (100%)** 🎉
-- [x] `docs/practices/testing/unit-testing.md` - 1,617 行 ✅ **已完成**
-- [x] `docs/practices/testing/integration-testing.md` - 1,224 行 ✅ **已完成**
-- [x] `docs/practices/testing/automated-testing.md` - 2,933 行 ✅ **已完成**
-- [x] `docs/practices/testing/test-data.md` - 1,802 行 ✅ **已完成**
-- [x] `docs/practices/testing/performance-testing.md` - 1,690 行 ✅ **已完成** 🆕
-
-**性能优化 (6个) - ✅ 已全部完成**
-- [x] `docs/practices/performance/frontend.md` - 2,469 行 ✅ **已完成**
-- [x] `docs/practices/performance/mobile.md` - 1,805 行 ✅ **已完成**
-- [x] `docs/practices/performance/database.md` - 1,059 行 ✅ **已完成**
-- [x] `docs/practices/performance/cache.md` - 2,547 行 ✅ **已完成**
-- [x] `docs/practices/performance/network.md` - 3,171 行 ✅ **已完成**
-- [x] `docs/practices/performance/jvm-tuning.md` - 1,957 行 ✅ **已完成** 🆕
-
-**安全 (8个) - ✅ 已全部完成 8/8 (100%)** 🎉
-- [x] `docs/practices/security/overview.md` - 1,005 行 ✅ **已完成**
-- [x] `docs/practices/security/auth.md` - 1,453 行 ✅ **已完成**
-- [x] `docs/practices/security/data.md` - 2,419 行 ✅ **已完成**
-- [x] `docs/practices/security/api.md` - 1,978 行 ✅ **已完成**
-- [x] `docs/practices/security/frontend.md` - 1,834 行 ✅ **已完成**
-- [x] `docs/practices/security/mobile.md` - 1,635 行 ✅ **已完成**
-- [x] `docs/practices/security/vulnerability.md` - 2,475 行 ✅ **已完成** 🆕
-- [x] `docs/practices/security/transport.md` - 1,350 行 ✅ **已完成**
-
-**工程化 (5个) - ✅ 已全部完成 5/5 (100%)** 🎉
-- [x] `docs/practices/engineering/code-generator.md` - 1,054 行 ✅ **已完成**
-- [x] `docs/practices/engineering/build-optimization.md` - 2,460 行 ✅ **已完成**
-- [x] `docs/practices/engineering/cicd.md` - 1,941 行 ✅ **已完成**
-- [x] `docs/practices/engineering/code-quality.md` - 1,972 行 ✅ **已完成**
-- [x] `docs/practices/engineering/technical-debt.md` - 1,894 行 ✅ **已完成** 🆕
-
-**DevOps (7个) - ✅ 已全部完成 7/7 (100%)** 🎉
-- [x] `docs/practices/devops/containerization.md` - 2,585 行 ✅ **已完成**
-- [x] `docs/practices/devops/canary-deployment.md` - 2,446 行 ✅ **已完成** 🆕
-- [x] `docs/practices/devops/troubleshooting.md` - 2,100 行 ✅ **已完成**
-- [x] `docs/practices/devops/monitoring.md` - 1,898 行 ✅ **已完成**
-- [x] `docs/practices/devops/backup.md` - 1,590 行 ✅ **已完成**
-- [x] `docs/practices/devops/logging.md` - 1,236 行 ✅ **已完成**
-- [x] `docs/practices/devops/docker-deploy.md` - 1,120 行 ✅ **已完成**
-
-**数据管理 (5个) - 1/5 完成 (20%)**
-- [x] `docs/practices/data/database-design.md` - 1,595 行 ✅ **已完成** 🆕
+**数据管理 (3个占位符)**
 - [ ] `docs/practices/data/data-migration.md` - 8 行
 - [ ] `docs/practices/data/data-consistency.md` - 8 行
-- [ ] `docs/practices/data/big-data.md` - 8 行
 - [ ] `docs/practices/data/backup-recovery.md` - 8 行
 
-**团队协作 (5个)**
-- [ ] `docs/practices/teamwork/agile.md` - 8 行
-- [ ] `docs/practices/teamwork/workflow.md` - 8 行
-- [ ] `docs/practices/teamwork/knowledge-management.md` - 8 行
-- [ ] `docs/practices/teamwork/tech-sharing.md` - 8 行
-- [ ] `docs/practices/teamwork/onboarding.md` - 8 行
+**其他**
+- [ ] `docs/practices/index.md` - 175 行 (目录索引文件)
 
 ---
 

@@ -1110,6 +1110,7 @@ export default defineConfig({
                     text: '🛠️ 工程化',
                     items: [
                         { text: '工程化概览', link: '/practices/engineering/overview' },
+                        { text: 'Claude Code Skills ⭐', link: '/practices/engineering/claude-code-skills' },
                         { text: '代码生成器使用', link: '/practices/engineering/code-generator' },
                         { text: '构建优化', link: '/practices/engineering/build-optimization' },
                         { text: 'CI/CD最佳实践', link: '/practices/engineering/cicd' },

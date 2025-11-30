@@ -1,7 +1,9 @@
 # 📺 视频教程
 
-### claudcode AI开发课程
+### Claude Code AI开发课程
 **[AI编程时代来临 - 为什么你需要Claude Code](https://www.bilibili.com/video/BV1DDySBqE2h)**
+**[你的 AI 可能白用了！为什么你的 Claude Code 总是"失忆"？90% 的人不知道的项目管理致命错误！！！](https://www.bilibili.com/video/BV1Y6CTBnEUD)**
+**[Claude Code Skills 实战教程 - 打造专属AI编程知识库](https://www.bilibili.com/video/BV1WmSKBEEtt/)**
 
 ### ruoyi-plus-uniapp简单入门实战课程- OA系统开发课程
 **[【RuoYi-Plus-UniApp实战】企业OA办公系统开发教程 - Vue3全栈开发完整指南（配合claude实战）](https://www.bilibili.com/video/BV1AJacz3EXG)**
@@ -34,3 +36,5 @@
 25. **[【ruoyi-plus-uniapp】serialmap序列化模块增强-通用字段映射 私有库签名映射 国际化映射 昵称头像部门等映射](https://www.bilibili.com/video/BV1PSsSz8ED6)**
 26. **[【ruoyi-plus-uniapp】langchain4j智能AI模块实现AI助手Websocket流式会话助手功能](https://www.bilibili.com/video/BV112sSzhEmt)**
 27. **[【ruoyi-plus-uniapp】Ai组件/组合函数实现润色扩写优化、模拟数据生成、审核、翻译功能](https://www.bilibili.com/video/BV1kVyCBBEH5)**
+28. **[Vue3+TS实现页面设计器全流程：拖拽交互、状态管理、代码生成、AI集成](https://www.bilibili.com/video/BV191SjB8ES1/)**
+
