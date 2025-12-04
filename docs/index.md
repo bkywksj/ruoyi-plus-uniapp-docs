@@ -226,6 +226,11 @@ highlights:
     <p style="margin-top: 5px; color: #666;">获取最新技术资讯</p>
   </div>
   <div style="text-align: center;">
+    <ImagePreview src="/wx.jpg" :width="240" :height="320" object-fit="contain" />
+    <p style="margin-top: 10px;"><strong>微信联系</strong></p>
+    <p style="margin-top: 5px; color: #666;">一对一技术咨询</p>
+  </div>
+  <div style="text-align: center;">
     <ImagePreview src="/wxq.jpg" :width="240" :height="320" object-fit="contain" />
     <p style="margin-top: 10px;"><strong>技术交流群</strong></p>
     <p style="margin-top: 5px; color: #666;">与开发者交流讨论</p>
