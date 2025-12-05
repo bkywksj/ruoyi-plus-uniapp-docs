@@ -1800,7 +1800,7 @@ jobs:
       - uses: actions/checkout@v4
 
       # 设置Java环境
-      - name: Setup Java 21
+      - name: Setup Java 17+
         uses: actions/setup-java@v4
         with:
           java-version: '21'

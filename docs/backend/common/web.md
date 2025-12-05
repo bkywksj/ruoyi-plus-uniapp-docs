@@ -289,5 +289,5 @@ public class CustomInterceptor implements HandlerInterceptor {
 1. **XSS过滤器**: 仅对POST、PUT、PATCH等修改请求生效
 2. **验证码**: 所有验证码实例都是懒加载，首次使用时才创建
 3. **SSE连接**: IO异常处理中特别处理了SSE连接中断情况
-4. **虚拟线程**: 需要JDK 21+且开启虚拟线程特性
+4. **虚拟线程**: 需要JDK 17+且开启虚拟线程特性 (JDK 21+ 支持更完善)
 5. **内存管理**: 拦截器使用ThreadLocal，注意及时清理避免内存泄漏

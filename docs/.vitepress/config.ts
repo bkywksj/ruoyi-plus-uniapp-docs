@@ -76,9 +76,7 @@ export default defineConfig({
                     text: '主应用(ruoyi-admin)',
                     collapsed: true,
                     items: [
-                        { text: '主应用概览', link: '/backend/ruoyi-admin/overview' },
                         { text: '模块解析', link: '/backend/ruoyi-admin/module-resolution' },
-                        { text: '启动流程', link: '/backend/ruoyi-admin/startup-process' },
                         { text: '配置文件详解', link: '/backend/ruoyi-admin/configuration-detail' },
                         { text: '环境切换', link: '/backend/ruoyi-admin/environment-switching' }
                     ]

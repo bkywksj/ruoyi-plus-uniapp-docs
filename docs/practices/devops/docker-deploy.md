@@ -863,7 +863,7 @@ environment:
 |------|------|--------|
 | `-Xms` | 初始堆大小 | 与-Xmx相同 |
 | `-Xmx` | 最大堆大小 | 物理内存的50-70% |
-| `-XX:+UseZGC` | 使用ZGC | JDK 21推荐 |
+| `-XX:+UseZGC` | 使用ZGC | JDK 17+推荐 (JDK 21更佳) |
 | `-XX:MaxGCPauseMillis` | 最大GC暂停时间 | 50-200ms |
 
 ### 连接池优化

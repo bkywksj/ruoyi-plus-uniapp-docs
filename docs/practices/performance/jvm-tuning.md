@@ -21,9 +21,9 @@ JVM(Java Virtual Machine)性能调优是提升 Java 应用性能的关键环节�
 
 ### 技术栈环境
 
-项目基于 Spring Boot 3.5.6 + Java 21,支持虚拟线程和现代化 GC 算法:
+项目基于 Spring Boot 3.5.6 + Java 17+,支持虚拟线程和现代化 GC 算法:
 
-- **Java 版本**: Java 21 (LTS)
+- **Java 版本**: Java 17+ (推荐 Java 21 LTS)
 - **Spring Boot**: 3.5.6
 - **Web 容器**: Undertow (高性能 NIO 容器)
 - **数据库连接池**: HikariCP
@@ -1175,7 +1175,7 @@ for (int i = 0; i < 10000; i++) {
 }
 executor.shutdown();
 
-// ✅ 使用虚拟线程 (JDK 21+)
+// ✅ 使用虚拟线程 (JDK 17+, 推荐 JDK 21)
 ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 ```
 
@@ -1939,7 +1939,7 @@ JVM 性能调优是一个系统工程,需要:
 **5. 持续优化** - 根据业务发展不断调整
 
 **核心要点**:
-- 使用 Java 21 + ZGC,享受现代化 GC 红利
+- 使用 Java 17+ (推荐 Java 21) + ZGC,享受现代化 GC 红利
 - 堆内存设置为物理内存 50-75%
 - -Xms 和 -Xmx 设置相同
 - 新生代设置为堆的 1/3 到 1/2

@@ -1116,7 +1116,7 @@ public abstract class BaseDaoImpl<M extends BaseMapperPlus<T, V>, T, V>
 
 ### 虚拟线程优化
 
-JDK 21 引入的虚拟线程 (Project Loom) 可显著提升 I/O 密集型应用的并发能力:
+JDK 17+ 虚拟线程 (Project Loom) 可显著提升 I/O 密集型应用的并发能力:
 
 **启用虚拟线程**:
 
@@ -1125,7 +1125,7 @@ JDK 21 引入的虚拟线程 (Project Loom) 可显著提升 I/O 密集型应用�
 spring:
   threads:
     virtual:
-      enabled: true  # 仅 JDK 21+ 可用
+      enabled: true  # JDK 17+ 可用 (JDK 21 支持更好)
 ```
 
 **线程池配置**:

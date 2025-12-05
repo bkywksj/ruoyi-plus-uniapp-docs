@@ -255,7 +255,7 @@ Maven构建插件定义了编译、测试、打包的行为:
 
 | 插件 | 功能 | 关键配置 |
 |------|------|----------|
-| `maven-compiler-plugin` | Java源码编译 | JDK 21、注解处理器、参数保留 |
+| `maven-compiler-plugin` | Java源码编译 | JDK 17+、注解处理器、参数保留 |
 | `maven-surefire-plugin` | 单元测试执行 | UTF-8编码、环境标签过滤 |
 | `flatten-maven-plugin` | 版本号扁平化 | 支持 `${revision}` 变量 |
 
@@ -309,7 +309,7 @@ variables:
 # 构建阶段
 build:backend:
   stage: build
-  image: bellsoft/liberica-openjdk-rocky:21
+  image: bellsoft/liberica-openjdk-rocky:17
   cache:
     paths:
       - .m2/repository/
@@ -323,7 +323,7 @@ build:backend:
 # 测试阶段
 test:backend:
   stage: test
-  image: bellsoft/liberica-openjdk-rocky:21
+  image: bellsoft/liberica-openjdk-rocky:17
   cache:
     paths:
       - .m2/repository/
@@ -337,7 +337,7 @@ test:backend:
 # 打包阶段
 package:backend:
   stage: package
-  image: bellsoft/liberica-openjdk-rocky:21
+  image: bellsoft/liberica-openjdk-rocky:17
   cache:
     paths:
       - .m2/repository/
@@ -439,11 +439,11 @@ build:frontend:
 
 ### Dockerfile 配置
 
-后端应用使用 Liberica JDK 21 作为基础镜像:
+后端应用使用 Liberica JDK 17+ 作为基础镜像:
 
 ```dockerfile
 # ruoyi-admin/Dockerfile
-FROM bellsoft/liberica-openjdk-rocky:21.0.8-cds
+FROM bellsoft/liberica-openjdk-rocky:17.0.8-cds
 
 LABEL maintainer="抓蛙师"
 
@@ -493,7 +493,7 @@ ENTRYPOINT ["sh", "-c", "cd /ruoyi/server && exec java \
 
 | 配置项 | 说明 | 推荐值 |
 |--------|------|--------|
-| `FROM bellsoft/liberica-openjdk-rocky:21.0.8-cds` | 基础镜像 | Liberica JDK 21 + CDS加速 |
+| `FROM bellsoft/liberica-openjdk-rocky:17.0.8-cds` | 基础镜像 | Liberica JDK 17+ + CDS加速 |
 | `WORKDIR /ruoyi/server` | 工作目录 | 统一应用路径 |
 | `SERVER_PORT` | 应用端口 | 8080(默认)，可通过环境变量覆盖 |
 | `SNAIL_PORT` | SnailJob端口 | 28080，定时任务通信 |
@@ -536,7 +536,7 @@ docker rm ryplus_test
 ```dockerfile
 # Dockerfile-multistage
 # 第一阶段: 构建
-FROM bellsoft/liberica-openjdk-rocky:21 AS builder
+FROM bellsoft/liberica-openjdk-rocky:17 AS builder
 
 WORKDIR /build
 
@@ -551,7 +551,7 @@ COPY ruoyi-extend ruoyi-extend
 RUN ./mvnw clean package -Pprod -DskipTests
 
 # 第二阶段: 运行
-FROM bellsoft/liberica-openjdk-rocky:21.0.8-cds
+FROM bellsoft/liberica-openjdk-rocky:17.0.8-cds
 
 LABEL maintainer="抓蛙师"
 
@@ -994,7 +994,7 @@ stages:
 # 后端构建
 build:backend:
   stage: build
-  image: bellsoft/liberica-openjdk-rocky:21
+  image: bellsoft/liberica-openjdk-rocky:17
   cache:
     key: maven-cache
     paths:
@@ -1036,7 +1036,7 @@ build:frontend:
 # 单元测试
 test:unit:
   stage: test
-  image: bellsoft/liberica-openjdk-rocky:21
+  image: bellsoft/liberica-openjdk-rocky:17
   cache:
     key: maven-cache
     paths:
@@ -1079,7 +1079,7 @@ package:docker:
   script:
     - echo "Packaging Docker image..."
     # 构建后端JAR
-    - docker run --rm -v $PWD:/workspace -w /workspace bellsoft/liberica-openjdk-rocky:21 mvn clean package -Pprod -DskipTests
+    - docker run --rm -v $PWD:/workspace -w /workspace bellsoft/liberica-openjdk-rocky:17 mvn clean package -Pprod -DskipTests
     # 构建Docker镜像
     - cd ruoyi-admin
     - docker build -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG} .
@@ -1215,7 +1215,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK 17+
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
@@ -1272,7 +1272,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up JDK 21
+      - name: Set up JDK 17+
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}

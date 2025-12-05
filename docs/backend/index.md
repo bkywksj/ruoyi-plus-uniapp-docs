@@ -53,7 +53,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 |-----------------|-------------------------------|----------------------------|----------------------------------|
 | **后端**          | Spring Boot + Spring Security | Spring Boot + Sa-Token     | Spring Boot + Sa-Token           |
 | **Spring Boot** | 2.7.x                         | 3.2.x                      | 3.2.x                            |
-| **Java**        | JDK 8+                        | JDK 17+                    | JDK 21+                          |
+| **Java**        | JDK 8+                        | JDK 17+                    | JDK 17+                          |
 | **ORM**         | MyBatis                       | MyBatis-Plus               | MyBatis-Plus增强                   |
 | **缓存**          | Redis                         | Redis + Redisson           | Redis + Redisson                 |
 | **前端**          | Vue 2 + Element UI            | Vue 3 + Element Plus       | Vue 3 + Element Plus重构           |

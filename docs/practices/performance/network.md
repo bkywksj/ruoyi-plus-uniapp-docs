@@ -11,7 +11,7 @@
 - **多级缓存** - Caffeine 本地缓存(30秒过期,1000条目) + Redis 远程缓存的组合策略,大幅降低网络请求
 - **连接池优化** - Redisson 连接池配置(Master/Slave 各32-64连接),数据库连接池,HTTP 客户端连接池全面优化
 - **防重复提交** - 前端5秒防抖、移动端500毫秒防抖,基于 Redis 分布式锁确保幂等性
-- **虚拟线程支持** - Java 21+ 虚拟线程支持,Undertow 配置(IO线程8个,Worker线程256个),支持高并发请求处理
+- **虚拟线程支持** - Java 17+ 虚拟线程支持,Undertow 配置(IO线程8个,Worker线程256个),支持高并发请求处理
 - **请求链路追踪** - 统一的请求ID生成(格式:yyyyMMddHHmmssSSS),支持全链路日志追踪
 - **长连接管理** - WebSocket 和 SSE 服务端推送优化,支持跨域、消息处理器注册、自动重连
 - **请求优化** - 请求拦截器、响应处理、错误处理、数据加解密、国际化支持、请求取消支持
@@ -320,7 +320,7 @@ public class RedisAutoConfiguration {
         // 4. Lua脚本缓存
         config.setUseScriptCache(true);
 
-        // 5. 虚拟线程支持 (Java 21+)
+        // 5. 虚拟线程支持 (Java 17+)
         if (Thread.ofVirtual() != null) {
             config.setExecutor(Executors.newThreadPerTaskExecutor(
                 Thread.ofVirtual().name("redisson-virtual-", 0).factory()
@@ -729,7 +729,7 @@ public class UndertowConfiguration {
             );
         });
 
-        // 2. 虚拟线程支持 (Java 21+)
+        // 2. 虚拟线程支持 (Java 17+)
         factory.addBuilderCustomizers(builder -> {
             if (Thread.ofVirtual() != null) {
                 builder.setWorkerExecutor(
@@ -768,7 +768,7 @@ server:
       io: 8                          # IO线程数(建议每CPU核心一个)
       worker: 256                    # 阻塞任务线程池(256个线程)
 
-# 虚拟线程支持 (Java 21+)
+# 虚拟线程支持 (Java 17+)
 spring:
   threads:
     virtual:
@@ -780,7 +780,7 @@ spring:
 - **IO 线程**: 处理网络IO操作,建议设置为 CPU 核心数
 - **Worker 线程**: 处理业务逻辑,256个线程支持高并发
 - **直接内存**: 使用堆外内存,减少GC压力
-- **虚拟线程**: Java 21+ 支持,可支持数百万并发连接
+- **虚拟线程**: Java 17+ 支持,可支持数百万并发连接
 
 **性能对比:**
 

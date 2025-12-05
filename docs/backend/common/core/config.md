@@ -555,7 +555,7 @@ public class ConfigurationChangeListener {
 
 ### 2. 虚拟线程使用
 
-- **JDK版本**: 需要 JDK 21 或更高版本
+- **JDK版本**: 需要 JDK 17 或更高版本 (JDK 21 支持更完善，推荐使用)
 - **适用场景**: IO 密集型任务，不适合 CPU 密集型
 - **注意事项**: 避免使用 ThreadLocal，可能影响性能
 

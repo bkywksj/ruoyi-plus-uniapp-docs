@@ -48,7 +48,7 @@
 │              ▼                ▼                ▼                            │
 │   ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐            │
 │   │  应用容器1 (5500)│ │  应用容器2 (5501)│ │ 监控容器 (9090)  │            │
-│   │ Java 21 + ZGC   │ │ Java 21 + ZGC   │ │  Spring Boot     │            │
+│   │ Java 17+ + ZGC   │ │ Java 17+ + ZGC   │ │  Spring Boot     │            │
 │   │ Virtual Threads │ │ Virtual Threads │ │     Admin        │            │
 │   └────────┬─────────┘ └────────┬─────────┘ └────────┬─────────┘            │
 │            │                    │                    │                      │
@@ -220,7 +220,7 @@ ENTRYPOINT ["sh", "-c", "cd /ruoyi/server && exec java \
 | 工作目录 | `/ruoyi/server` | 统一路径,便于维护 |
 | 环境变量 | 所有配置项外部化 | 支持不同环境灵活配置 |
 | 端口暴露 | EXPOSE 声明使用的端口 | 文档化端口用途 |
-| JVM 参数 | `-XX:+UseZGC` | Java 21 推荐 ZGC 低延迟 |
+| JVM 参数 | `-XX:+UseZGC` | Java 17+ 推荐 (JDK 21 更佳) ZGC 低延迟 |
 | 堆转储 | `-XX:+HeapDumpOnOutOfMemoryError` | OOM 时自动生成分析文件 |
 | Shell 形式 | `sh -c` 执行命令 | 支持环境变量替换和信号传递 |
 
@@ -1888,7 +1888,7 @@ JAVA_OPTS: >-
 | `-XX:MetaspaceSize` | 元空间初始大小 | 256m |
 | `-XX:MaxMetaspaceSize` | 元空间最大大小 | 512m |
 | `-XX:MaxDirectMemorySize` | 直接内存大小 | 512m |
-| `-XX:+UseZGC` | 使用 ZGC | Java 21 推荐 |
+| `-XX:+UseZGC` | 使用 ZGC | Java 17+ 推荐 (JDK 21 更佳) |
 | `-XX:MaxGCPauseMillis` | 最大 GC 暂停时间 | 50-200ms |
 | `-XX:+HeapDumpOnOutOfMemoryError` | OOM 时生成堆转储 | 必须开启 |
 
