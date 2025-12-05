@@ -141,12 +141,9 @@ export default defineConfig({
                             text: 'RocketMQ消息队列 (rocketmq) ⭐',
                             collapsed: false,
                             items: [
-                                { text: '模块概览', link: '/backend/common/rocketmq' },
                                 { text: '快速开始', link: '/backend/common/rocketmq/quick-start' },
-                                { text: '消息发送', link: '/backend/common/rocketmq/send' },
-                                { text: '消息消费', link: '/backend/common/rocketmq/consume' },
-                                { text: '主题管理', link: '/backend/common/rocketmq/topic' },
-                                { text: '最佳实践', link: '/backend/common/rocketmq/best-practices' }
+                                { text: '消息生产', link: '/backend/common/rocketmq/producer' },
+                                { text: '消息消费', link: '/backend/common/rocketmq/consumer' }
                             ]
                         },
                         { text: '权限认证 (satoken)', link: '/backend/common/satoken' },
@@ -161,10 +158,8 @@ export default defineConfig({
                             text: '测试支持 (test)',
                             collapsed: false,
                             items: [
-                                { text: '模块概览', link: '/backend/common/test' },
+                                { text: '快速开始', link: '/backend/common/test/quick-start' },
                                 { text: '测试基础类', link: '/backend/common/test/base-classes' },
-                                { text: 'Service测试', link: '/backend/common/test/service-test' },
-                                { text: 'Controller测试', link: '/backend/common/test/controller-test' },
                                 { text: '测试数据工厂', link: '/backend/common/test/test-data-factory' }
                             ]
                         },
@@ -216,11 +211,8 @@ export default defineConfig({
                     text: '扩展模块(ruoyi-extend)',
                     collapsed: true,
                     items: [
-                        { text: '扩展模块概览', link: '/backend/extend/overview' },
                         { text: '监控管理 (monitor-admin)', link: '/backend/extend/monitor-admin' },
-                        { text: '任务服务 (snailjob-server)', link: '/backend/extend/snailjob-server' },
-                        { text: '扩展模块开发指南', link: '/backend/extend/development-guide' },
-                        { text: '第三方服务集成', link: '/backend/extend/third-party-integration' }
+                        { text: '任务服务 (snailjob-server)', link: '/backend/extend/snailjob-server' }
                     ]
                 }
             ],
