@@ -1,9 +1,9 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-11-29
-> **整体完成度**: 60.7% (C+ 评分) - 按500+行标准
-> **总文档数**: 475 个
-> **总行数**: 459,980+ 行
+> **最后更新**: 2025-12-05
+> **整体完成度**: 62.3% (C+ 评分) - 按500+行标准
+> **总文档数**: 458 个 (已清理 17 个占位符/重复文档)
+> **总行数**: 455,700+ 行
 > **已完成文档**: 286 个 (≥500行)
 
 ---
@@ -30,9 +30,9 @@
 | **WD 组件库** | 45 | 45 | 0 | **100%** | A+ |
 | **后端文档** | 68 | 37 | 31 | **54.4%** | D+ |
 | **前端文档** | 182 | 97 | 85 | **53.3%** | D+ |
-| **移动端文档** | 165 | 100 | 65 | **60.6%** | C- |
-| **最佳实践** | 56 | 52 | 4 | **92.9%** | A |
-| **总计** | **475** | **286** | **189** | **60.2%** | **C+** |
+| **移动端文档** | 156 | 100 | 56 | **64.1%** | C |
+| **最佳实践** | 53 | 52 | 1 | **98.1%** | A+ |
+| **总计** | **458** | **286** | **172** | **62.4%** | **C+** |
 
 **说明**: 完成标准为文档行数 ≥ 500 行
 
@@ -322,15 +322,20 @@
 | Best Practices | `docs/mobile/uniapp/best-practices.md` | 1,178 | ✅ |
 | Manifest Config | `docs/mobile/uniapp/manifest-config.md` | 2,263 | ✅ |
 
-### 其他移动端文档 (197个) - ~81% 完成
+### 其他移动端文档 - 已完成核心文档
 
 包括 Composables、Utils、Plugins、Layouts、Pages、Styles、Platform、Performance、Components 等模块。
 
 **统计说明**:
-- 移动端总文档: 165 个
+- 移动端总文档: 156 个 (已清理 9 个占位符)
 - WD 组件库: 45 个
 - UniApp 基础: 9 个
-- 其他模块: 111 个 (165 - 45 - 9)
+- 其他模块: 102 个 (156 - 45 - 9)
+
+**已清理占位符 (9个)** ✅:
+- ~~移动端平台占位符~~ - 7 个 (android, ios, baidu, qq, toutiao, harmony, conditional)
+- ~~移动端构建占位符~~ - 5 个 (alipay-deploy, app-cloud-build, app-offline-build, store-publish, version-management)
+- ~~重复 Composables~~ - 2 个 (useAuth.md, useHttp.md)
 
 **优秀示例 (1000+ 行)**:
 - `docs/mobile/composables/use-websocket.md` - 3,598 行
@@ -430,15 +435,15 @@
 |------|------|------|------|
 | Controller 层 | `docs/practices/backend/controller-layer.md` | 578 | 🔄 |
 
-#### ⚠️ 待完善 (4个) - 仅占位符或index文件
-
-**数据管理 (3个占位符)**
-- [ ] `docs/practices/data/data-migration.md` - 8 行
-- [ ] `docs/practices/data/data-consistency.md` - 8 行
-- [ ] `docs/practices/data/backup-recovery.md` - 8 行
+#### ⚠️ 待完善 (1个) - 仅 index 文件
 
 **其他**
 - [ ] `docs/practices/index.md` - 175 行 (目录索引文件)
+
+**已清理占位符 (3个)** ✅
+- ~~`docs/practices/data/data-migration.md`~~ - 已删除
+- ~~`docs/practices/data/data-consistency.md`~~ - 已删除
+- ~~`docs/practices/data/backup-recovery.md`~~ - 已删除
 
 ---
 
@@ -608,6 +613,38 @@
 3. Validators (Utils) - 1,483 行
 4. String Utils - 1,280 行
 5. Lifecycle (UniApp) - 1,234 行
+
+---
+
+## 📝 更新日志
+
+### 2025-12-05 - 文档清理
+
+**清理统计**:
+- 删除占位符文档: 15 个
+- 删除重复文档: 2 个
+- 总计清理: 17 个文档
+
+**清理详情**:
+
+1. **移动端平台占位符** (7个):
+   - android.md, ios.md, baidu.md, qq.md, toutiao.md, harmony.md, conditional.md
+
+2. **移动端构建占位符** (5个):
+   - alipay-deploy.md, app-cloud-build.md, app-offline-build.md, store-publish.md, version-management.md
+
+3. **最佳实践占位符** (3个):
+   - data-migration.md, data-consistency.md, backup-recovery.md
+
+4. **重复 Composables 文档** (2个):
+   - useAuth.md (保留 use-auth.md)
+   - useHttp.md (保留 use-http.md)
+
+**清理后效果**:
+- 文档总数: 475 → 458 (-17)
+- 整体完成度: 60.2% → 62.4% (+2.2%)
+- 移动端完成度: 60.6% → 64.1% (+3.5%)
+- 最佳实践完成度: 92.9% → 98.1% (+5.2%)
 
 ---
 
