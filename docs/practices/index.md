@@ -67,7 +67,6 @@
 - 📝 [移动端性能优化](/practices/performance/mobile) - 移动端应用性能优化
 - 📝 [数据库优化](/practices/performance/database) - 数据库查询和存储优化
 - 📝 [缓存优化策略](/practices/performance/cache) - 缓存使用和优化
-- 📝 [网络优化](/practices/performance/network) - 网络传输和CDN优化
 - 📝 [JVM调优指南](/practices/performance/jvm-tuning) - JVM参数调优
 
 ## 🔒 安全指南

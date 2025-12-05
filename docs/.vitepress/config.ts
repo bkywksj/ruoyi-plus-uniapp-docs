@@ -1022,15 +1022,11 @@ export default defineConfig({
                 {
                     text: '🏗️ 架构设计',
                     items: [
-                        { text: '架构设计概览', link: '/practices/architecture/overview' },
                         { text: '系统架构设计', link: '/practices/architecture/system' },
                         { text: '数据库设计', link: '/practices/architecture/database' },
                         { text: '缓存策略', link: '/practices/architecture/cache' },
                         { text: '分布式设计', link: '/practices/architecture/distributed' },
-                        { text: '多租户架构', link: '/practices/architecture/multi-tenant' },
-                        { text: '微服务架构', link: '/practices/architecture/microservices' },
-                        { text: 'API网关设计', link: '/practices/architecture/api-gateway' },
-                        { text: '领域驱动设计', link: '/practices/architecture/ddd' }
+                        { text: '多租户架构', link: '/practices/architecture/multi-tenant' }
                     ]
                 },
                 {
@@ -1051,7 +1047,6 @@ export default defineConfig({
                 {
                     text: '🔧 功能开发',
                     items: [
-                        { text: '功能开发概览', link: '/practices/features/overview' },
                         { text: '权限控制实现', link: '/practices/features/permission-control' },
                         { text: '数据权限设计', link: '/practices/features/data-permission' },
                         { text: '定时任务开发', link: '/practices/features/scheduled-jobs' },
@@ -1059,13 +1054,10 @@ export default defineConfig({
                         { text: '文件处理方案', link: '/practices/features/file-processing' },
                         { text: 'Excel操作优化', link: '/practices/features/excel-operations' },
                         { text: '第三方集成策略', link: '/practices/features/third-party-integration' },
-                        { text: '国际化实现方案', link: '/practices/features/i18n' },
-                        { text: '支付功能开发', link: '/practices/features/payment' },
-                        { text: '短信验证码', link: '/practices/features/sms-verification' },
-                        { text: '图片处理', link: '/practices/features/image-processing' }
+                        { text: '国际化实现方案', link: '/practices/features/i18n' }
                     ]
                 },
-                                {
+                {
                     text: '⚡ 性能优化',
                     items: [
                         { text: '性能优化概览', link: '/practices/performance/overview' },
@@ -1074,9 +1066,7 @@ export default defineConfig({
                         { text: '移动端性能优化', link: '/practices/performance/mobile' },
                         { text: '数据库优化', link: '/practices/performance/database' },
                         { text: '缓存优化策略', link: '/practices/performance/cache' },
-                        { text: '网络优化', link: '/practices/performance/network' },
-                        { text: 'JVM调优指南', link: '/practices/performance/jvm-tuning' },
-                        { text: '性能监控与分析', link: '/practices/performance/monitoring' }
+                        { text: 'JVM调优指南', link: '/practices/performance/jvm-tuning' }
                     ]
                 },
                 {
@@ -1097,51 +1087,28 @@ export default defineConfig({
                 {
                     text: '🛠️ 工程化',
                     items: [
-                        { text: '工程化概览', link: '/practices/engineering/overview' },
                         { text: 'Claude Code Skills ⭐', link: '/practices/engineering/claude-code-skills' },
                         { text: '代码生成器使用', link: '/practices/engineering/code-generator' },
                         { text: '构建优化', link: '/practices/engineering/build-optimization' },
                         { text: 'CI/CD最佳实践', link: '/practices/engineering/cicd' },
-                        { text: '代码质量管控', link: '/practices/engineering/code-quality' },
-                                                { text: '版本管理策略', link: '/practices/engineering/version-control' },
-                        { text: '依赖管理', link: '/practices/engineering/dependency-management' }
+                        { text: '代码质量管控', link: '/practices/engineering/code-quality' }
                     ]
                 },
                 {
                     text: '🚀 部署运维',
                     items: [
-                        { text: '部署运维概览', link: '/practices/devops/overview' },
                         { text: 'Docker部署指南', link: '/practices/devops/docker-deploy' },
-                        { text: 'Kubernetes部署', link: '/practices/devops/k8s-deploy' },
                         { text: '容器化最佳实践', link: '/practices/devops/containerization' },
                         { text: '监控告警', link: '/practices/devops/monitoring' },
                         { text: '日志管理', link: '/practices/devops/logging' },
                         { text: '备份策略', link: '/practices/devops/backup' },
-                        { text: '故障排查指南', link: '/practices/devops/troubleshooting' },
-                                                { text: '高可用架构', link: '/practices/devops/high-availability' },
-                        { text: '自动化运维', link: '/practices/devops/automation' }
+                        { text: '故障排查指南', link: '/practices/devops/troubleshooting' }
                     ]
                 },
                 {
                     text: '📊 数据管理',
                     items: [
-                        { text: '数据管理概览', link: '/practices/data/overview' },
-                        { text: '数据库设计规范', link: '/practices/data/database-design' },
-                        { text: '数据迁移策略', link: '/practices/data/data-migration' },
-                        { text: '数据一致性保证', link: '/practices/data/data-consistency' },
-                                                { text: '数据备份恢复', link: '/practices/data/backup-recovery' },
-                        { text: '数据脱敏处理', link: '/practices/data/data-masking' },
-                        { text: '数据归档策略', link: '/practices/data/data-archiving' }
-                    ]
-                },
-                                {
-                    text: '🎓 学习资源',
-                    items: [
-                        { text: '学习路径推荐', link: '/practices/learning/roadmap' },
-                        { text: '技术栈选型', link: '/practices/learning/tech-stack' },
-                        { text: '常见问题FAQ', link: '/practices/learning/faq' },
-                        { text: '进阶学习指南', link: '/practices/learning/advanced' },
-                        { text: '项目实战案例', link: '/practices/learning/case-studies' }
+                        { text: '数据库设计规范', link: '/practices/data/database-design' }
                     ]
                 }
             ]
