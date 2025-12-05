@@ -97,7 +97,7 @@ export default defineManifestConfig({
   name: VITE_APP_TITLE,                        // 应用名称
   appid: VITE_UNI_APPID,                      // uni-app应用ID
   description: 'ryplus-uni',                  // 应用描述
-  versionName: '5.4.0',                       // 版本名称
+  versionName: '5.x.x',                       // 版本名称
   versionCode: '100',                         // 版本号
   transformPx: false,                         // 是否转换px单位
   locale: 'zh-Hans',                          // 默认语言

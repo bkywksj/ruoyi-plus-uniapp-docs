@@ -7,7 +7,7 @@ ruoyi-common-bom 是common通用模块的统一依赖管理模块，负责定义
 
 - **GroupId**: `plus.ruoyi`
 - **ArtifactId**: `ruoyi-common-bom`
-- **当前版本**: `5.4.0`
+- **当前版本**: `5.x.x`
 - **打包方式**: `pom`
 
 ## 2. BOM 架构设计
@@ -17,7 +17,7 @@ ruoyi-common-bom 是common通用模块的统一依赖管理模块，负责定义
 ```xml
 
 <properties>
-    <revision>5.4.0</revision>
+    <revision>5.x.x</revision>
 </properties>
 ```
 
