@@ -19,7 +19,7 @@
 - **数据库**: 
   - **MySQL 8.0+** (推荐)
   - Oracle >= 12c
-  - PostgreSQL 13/14/15
+  - PostgreSQL >=13
   - SQL Server 2017/2019
 
 - **缓存**: Redis 6.x / 7.x
