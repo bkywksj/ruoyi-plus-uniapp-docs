@@ -1201,7 +1201,29 @@ export default defineConfig({
             __COMPONENT_PREVIEW__: true
         },
         build: {
-            chunkSizeWarningLimit: 3000
+            chunkSizeWarningLimit: 3000,
+            // 优化构建性能，减少内存占用
+            minify: 'esbuild',
+            target: 'esnext',
+            rollupOptions: {
+                output: {
+                    // 手动分块策略，避免单个chunk过大
+                    manualChunks(id) {
+                        if (id.includes('node_modules')) {
+                            // Vue相关
+                            if (id.includes('vue') || id.includes('@vue')) {
+                                return 'vue-vendor'
+                            }
+                            // VueUse
+                            if (id.includes('@vueuse')) {
+                                return 'vueuse-vendor'
+                            }
+                            // 其他第三方库
+                            return 'vendor'
+                        }
+                    }
+                }
+            }
         },
         optimizeDeps: {
             exclude: ['vitepress']

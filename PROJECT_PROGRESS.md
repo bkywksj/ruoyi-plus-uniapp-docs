@@ -1,10 +1,10 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-12-14
-> **整体完成度**: 66.8% (C+ 评分) - 按500+行标准
+> **最后更新**: 2025-12-15
+> **整体完成度**: 67.9% (C+ 评分) - 按500+行标准
 > **总文档数**: 489 个 (已清理 17 个占位符/重复文档)
-> **总行数**: 510,000+ 行
-> **已完成文档**: 327 个 (≥500行)
+> **总行数**: 517,000+ 行
+> **已完成文档**: 332 个 (≥500行)
 
 ---
 
@@ -30,9 +30,9 @@
 | **WD 组件库** | 51 | 51 | 0 | **100%** | A+ |
 | **后端文档** | 71 | 41 | 30 | **57.7%** | D+ |
 | **前端文档** | 182 | 97 | 85 | **53.3%** | D+ |
-| **移动端文档** | 181 | 133 | 48 | **73.5%** | C+ |
+| **移动端文档** | 181 | 138 | 43 | **76.2%** | C+ |
 | **最佳实践** | 53 | 52 | 1 | **98.1%** | A+ |
-| **总计** | **489** | **327** | **162** | **66.8%** | **C+** |
+| **总计** | **489** | **332** | **157** | **67.9%** | **C+** |
 
 **说明**: 完成标准为文档行数 ≥ 500 行
 
@@ -362,30 +362,33 @@
 - `docs/mobile/utils/overview.md` - 2,578 行
 - `docs/mobile/utils/http.md` - 2,431 行
 - `docs/mobile/composables/use-http.md` - 2,339 行
-- `docs/mobile/styles/best-practices.md` - 2,223 行 ✨ **最新**
+- `docs/mobile/styles/best-practices.md` - 2,223 行
 - `docs/mobile/composables/use-theme.md` - 2,211 行
-- `docs/mobile/styles/responsive.md` - 2,206 行 ✨ **最新**
+- `docs/mobile/styles/responsive.md` - 2,206 行
 - `docs/mobile/styles/overview.md` - 2,176 行
-- `docs/mobile/wd/display/curtain.md` - 2,079 行 ✨ **新增组件**
+- `docs/mobile/wd/display/curtain.md` - 2,079 行
 - `docs/mobile/composables/use-dict.md` - 1,968 行
 - `docs/mobile/utils/storage.md` - 1,914 行
 - `docs/mobile/layouts/overview.md` - 1,853 行
 - `docs/mobile/utils/crypto.md` - 1,838 行
 - `docs/mobile/utils/device.md` - 1,793 行
 - `docs/mobile/composables/use-modal.md` - 1,774 行
-- `docs/mobile/styles/icon-fonts.md` - 1,731 行 ✨ **最新**
+- `docs/mobile/styles/icon-fonts.md` - 1,731 行
 - `docs/mobile/composables/use-token.md` - 1,725 行
-- `docs/mobile/styles/components.md` - 1,670 行 ✨ **最新**
+- `docs/mobile/styles/components.md` - 1,670 行
+- `docs/mobile/layouts/navbar.md` - 1,657 行 ✨ **最新**
 - `docs/mobile/utils/validators.md` - 1,483 行
 - `docs/mobile/composables/use-scroll.md` - 1,406 行
 - `docs/mobile/styles/theme.md` - 1,373 行
-- `docs/mobile/styles/global.md` - 1,329 行 ✨ **最新**
+- `docs/mobile/layouts/capsule.md` - 1,353 行 ✨ **最新**
+- `docs/mobile/styles/global.md` - 1,329 行
 - `docs/mobile/utils/string.md` - 1,280 行
+- `docs/mobile/layouts/tabbar.md` - 1,224 行 ✨ **最新**
 - `docs/mobile/styles/unocss.md` - 1,190 行
-- `docs/mobile/project-structure.md` - 1,132 行 ✨ **最新**
+- `docs/mobile/project-structure.md` - 1,132 行
 - `docs/mobile/composables/use-table.md` - 1,130 行
 - `docs/mobile/composables/use-form.md` - 1,098 行
-- `docs/mobile/getting-started.md` - 1,010 行 ✨ **最新**
+- `docs/mobile/getting-started.md` - 1,010 行
 
 ---
 
