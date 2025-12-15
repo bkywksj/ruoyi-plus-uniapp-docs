@@ -1,10 +1,10 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-12-05
-> **整体完成度**: 62.8% (C+ 评分) - 按500+行标准
-> **总文档数**: 460 个 (已清理 17 个占位符/重复文档)
-> **总行数**: 463,135+ 行
-> **已完成文档**: 289 个 (≥500行)
+> **最后更新**: 2025-12-14
+> **整体完成度**: 66.8% (C+ 评分) - 按500+行标准
+> **总文档数**: 489 个 (已清理 17 个占位符/重复文档)
+> **总行数**: 510,000+ 行
+> **已完成文档**: 327 个 (≥500行)
 
 ---
 
@@ -27,12 +27,12 @@
 
 | 分类 | 总数 | 已完成(≥500行) | 待完善(<500行) | 完成率 | 评分 |
 |------|------|----------------|----------------|--------|------|
-| **WD 组件库** | 45 | 45 | 0 | **100%** | A+ |
-| **后端文档** | 70 | 40 | 30 | **57.1%** | D+ |
+| **WD 组件库** | 51 | 51 | 0 | **100%** | A+ |
+| **后端文档** | 71 | 41 | 30 | **57.7%** | D+ |
 | **前端文档** | 182 | 97 | 85 | **53.3%** | D+ |
-| **移动端文档** | 156 | 100 | 56 | **64.1%** | C |
+| **移动端文档** | 181 | 133 | 48 | **73.5%** | C+ |
 | **最佳实践** | 53 | 52 | 1 | **98.1%** | A+ |
-| **总计** | **460** | **289** | **171** | **62.8%** | **C+** |
+| **总计** | **489** | **327** | **162** | **66.8%** | **C+** |
 
 **说明**: 完成标准为文档行数 ≥ 500 行
 
@@ -40,9 +40,9 @@
 
 ## WD UI 组件库进度
 
-### ✅ 完成状态: 100% (45/45)
+### ✅ 完成状态: 100% (51/51)
 
-所有 WD UI 组件文档已完成,平均文档大小 1,787 行,质量优秀。
+所有 WD UI 组件文档已完成,平均文档大小 1,700+ 行,质量优秀。
 
 #### 基础组件 (6/6) ✅
 
@@ -97,36 +97,42 @@
 | Search 搜索 | `docs/mobile/wd/form/search.md` | ✅ 已完成 | 1,789 |
 | Form 表单 | `docs/mobile/wd/form/form.md` | ✅ 已完成 | 2,345 |
 
-#### 展示组件 (7/7) ✅
+#### 展示组件 (13/13) ✅
 
 | 组件 | 文档路径 | 状态 | 行数 |
 |------|---------|------|------|
 | Tag 标签 | `docs/mobile/wd/display/tag.md` | ✅ 已完成 | 1,456 |
-| Badge 徽标 | `docs/mobile/wd/display/badge.md` | ✅ 已完成 | 1,567 |
+| Badge 徽标 | `docs/mobile/wd/display/badge.md` | ✅ 已完成 | 1,879 |
 | Progress 进度条 | `docs/mobile/wd/display/progress.md` | ✅ 已完成 | 1,678 |
 | Image 图片 | `docs/mobile/wd/display/image.md` | ✅ 已完成 | 1,834 |
-| Swiper 轮播 | `docs/mobile/wd/display/swiper.md` | ✅ 已完成 | 1,923 |
+| Swiper 轮播 | `docs/mobile/wd/display/swiper.md` | ✅ 已完成 | 2,268 |
 | Collapse 折叠面板 | `docs/mobile/wd/display/collapse.md` | ✅ 已完成 | 1,789 |
 | NoticeBar 通知栏 | `docs/mobile/wd/display/notice-bar.md` | ✅ 已完成 | 1,645 |
+| Skeleton 骨架屏 | `docs/mobile/wd/display/skeleton.md` | ✅ 已完成 | 2,609 |
+| ImgCropper 图片裁剪 | `docs/mobile/wd/display/img-cropper.md` | ✅ 已完成 | 1,004 |
+| Curtain 幕帘 | `docs/mobile/wd/display/curtain.md` | ✅ 已完成 | 2,079 |
+| Table 表格 | `docs/mobile/wd/display/table.md` | ✅ 已完成 | 836 |
+| Watermark 水印 | `docs/mobile/wd/display/watermark.md` | ✅ 已完成 | 988 |
 
-#### 反馈组件 (6/6) ✅
+#### 反馈组件 (7/7) ✅
 
 | 组件 | 文档路径 | 状态 | 行数 |
 |------|---------|------|------|
 | Toast 轻提示 | `docs/mobile/wd/feedback/toast.md` | ✅ 已完成 | 1,856 |
 | Loading 加载 | `docs/mobile/wd/feedback/loading.md` | ✅ 已完成 | 2,535 |
 | Modal 模态框 | `docs/mobile/wd/feedback/modal.md` | ✅ 已完成 | 2,123 |
-| ActionSheet 动作面板 | `docs/mobile/wd/feedback/action-sheet.md` | ✅ 已完成 | 1,923 |
-| Popup 弹出层 | `docs/mobile/wd/feedback/popup.md` | ✅ 已完成 | 2,067 |
+| ActionSheet 动作面板 | `docs/mobile/wd/feedback/action-sheet.md` | ✅ 已完成 | 1,803 |
+| Popup 弹出层 | `docs/mobile/wd/feedback/popup.md` | ✅ 已完成 | 1,982 |
 | SwipeAction 滑动操作 | `docs/mobile/wd/feedback/swipe-action.md` | ✅ 已完成 | 1,789 |
+| Overlay 遮罩层 | `docs/mobile/wd/feedback/overlay.md` | ✅ 已完成 | 1,727 |
 
 ---
 
 ## 后端文档进度
 
-### 完成状态: 100% (68/68) ✅
+### 完成状态: 100% (69/69) ✅
 
-#### ✅ 已完成 (68个)
+#### ✅ 已完成 (69个)
 
 **核心功能模块 (15个)**
 - `docs/backend/core/overview.md` - 2,156 行
@@ -145,7 +151,7 @@
 - `docs/backend/core/monitor.md` - 1,378 行
 - `docs/backend/core/scheduler.md` - 1,523 行
 
-**通用功能模块 (21个)**
+**通用功能模块 (22个)**
 - `docs/backend/common/utils.md` - 1,280 行
 - `docs/backend/common/exception.md` - 1,156 行
 - `docs/backend/common/response.md` - 1,089 行
@@ -165,8 +171,9 @@
 - `docs/backend/common/redis.md` - 1,267 行
 - `docs/backend/common/web.md` - 1,345 行
 - `docs/backend/common/http.md` - 2,091 行
-- `docs/backend/common/media.md` - 2,879 行 ✨ **最新完成**
+- `docs/backend/common/media.md` - 2,879 行
 - `docs/backend/common/openapi.md` - 2,465 行
+- `docs/backend/common/rocketmq.md` - 1,516 行 ✨ **最新完成**
 
 **系统模块 (22个)**
 - `docs/backend/modules/system/user.md` - 1,923 行
@@ -315,7 +322,7 @@
 
 | 文档 | 路径 | 行数 | 状态 |
 |------|------|------|------|
-| Overview | `docs/mobile/uniapp/overview.md` | 856 | ✅ |
+| Overview | `docs/mobile/uniapp/overview.md` | 898 | ✅ |
 | Lifecycle | `docs/mobile/uniapp/lifecycle.md` | 1,234 | ✅ |
 | Navigation | `docs/mobile/uniapp/navigation.md` | 1,089 | ✅ |
 | Pages Config | `docs/mobile/uniapp/pages-config.md` | 978 | ✅ |
@@ -330,10 +337,10 @@
 包括 Composables、Utils、Plugins、Layouts、Pages、Styles、Platform、Performance、Components 等模块。
 
 **统计说明**:
-- 移动端总文档: 156 个 (已清理 9 个占位符)
-- WD 组件库: 45 个
+- 移动端总文档: 181 个 (已清理 9 个占位符)
+- WD 组件库: 51 个
 - UniApp 基础: 9 个
-- 其他模块: 102 个 (156 - 45 - 9)
+- 其他模块: 121 个 (181 - 51 - 9)
 
 **已清理占位符 (9个)** ✅:
 - ~~移动端平台占位符~~ - 7 个 (android, ios, baidu, qq, toutiao, harmony, conditional)
@@ -344,25 +351,41 @@
 - `docs/mobile/composables/use-websocket.md` - 3,598 行
 - `docs/mobile/composables/use-payment.md` - 3,398 行
 - `docs/mobile/composables/custom-hooks.md` - 3,363 行
+- `docs/mobile/pages/login.md` - 3,239 行
+- `docs/mobile/utils/file.md` - 2,965 行
 - `docs/mobile/utils/validate.md` - 2,969 行
 - `docs/mobile/composables/use-auth.md` - 2,856 行
 - `docs/mobile/utils/date.md` - 2,791 行
 - `docs/mobile/components/overview.md` - 2,729 行
 - `docs/mobile/composables/use-toast.md` - 2,689 行
+- `docs/mobile/utils/format.md` - 2,636 行
 - `docs/mobile/utils/overview.md` - 2,578 行
+- `docs/mobile/utils/http.md` - 2,431 行
 - `docs/mobile/composables/use-http.md` - 2,339 行
+- `docs/mobile/styles/best-practices.md` - 2,223 行 ✨ **最新**
 - `docs/mobile/composables/use-theme.md` - 2,211 行
-- `docs/mobile/styles/overview.md` - 2,176 行 ✨ **最新完成**
+- `docs/mobile/styles/responsive.md` - 2,206 行 ✨ **最新**
+- `docs/mobile/styles/overview.md` - 2,176 行
+- `docs/mobile/wd/display/curtain.md` - 2,079 行 ✨ **新增组件**
 - `docs/mobile/composables/use-dict.md` - 1,968 行
 - `docs/mobile/utils/storage.md` - 1,914 行
 - `docs/mobile/layouts/overview.md` - 1,853 行
+- `docs/mobile/utils/crypto.md` - 1,838 行
+- `docs/mobile/utils/device.md` - 1,793 行
 - `docs/mobile/composables/use-modal.md` - 1,774 行
+- `docs/mobile/styles/icon-fonts.md` - 1,731 行 ✨ **最新**
 - `docs/mobile/composables/use-token.md` - 1,725 行
+- `docs/mobile/styles/components.md` - 1,670 行 ✨ **最新**
 - `docs/mobile/utils/validators.md` - 1,483 行
 - `docs/mobile/composables/use-scroll.md` - 1,406 行
+- `docs/mobile/styles/theme.md` - 1,373 行
+- `docs/mobile/styles/global.md` - 1,329 行 ✨ **最新**
 - `docs/mobile/utils/string.md` - 1,280 行
+- `docs/mobile/styles/unocss.md` - 1,190 行
+- `docs/mobile/project-structure.md` - 1,132 行 ✨ **最新**
 - `docs/mobile/composables/use-table.md` - 1,130 行
 - `docs/mobile/composables/use-form.md` - 1,098 行
+- `docs/mobile/getting-started.md` - 1,010 行 ✨ **最新**
 
 ---
 

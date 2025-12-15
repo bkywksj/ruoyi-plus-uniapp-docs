@@ -466,7 +466,7 @@ const imageList = ref([
 <template>
   <view class="demo">
     <wd-swiper
-      :list="imageList}
+      :list="imageList"
       height="300"
       :display-multiple-items="2"
       previous-margin="32"
@@ -914,7 +914,7 @@ const currentImage = ref(0)
 const handlePreview = () => {
   uni.previewImage({
     urls: productImages.value,
-    current: currentImages.value[currentImage.value]
+    current: productImages.value[currentImage.value]
   })
 }
 </script>
@@ -975,7 +975,136 @@ const handlePreview = () => {
 - 点击大图预览
 - 当前图片缩略图高亮显示
 
-### 案例3: 短视频播放
+### 案例3: 图片画廊
+
+支持缩略图联动的图片画廊:
+
+```vue
+<template>
+  <view class="gallery-page">
+    <!-- 主图轮播 -->
+    <wd-swiper
+      v-model:current="currentIndex"
+      :list="galleryImages"
+      height="600"
+      :autoplay="false"
+      :indicator="false"
+      image-mode="aspectFit"
+      @click="handlePreview"
+    />
+
+    <!-- 缩略图列表 -->
+    <scroll-view
+      scroll-x
+      :scroll-into-view="`thumb-${currentIndex}`"
+      class="thumbnail-scroll"
+    >
+      <view class="thumbnail-container">
+        <view
+          v-for="(img, index) in galleryImages"
+          :id="`thumb-${index}`"
+          :key="index"
+          :class="['thumb-item', { active: currentIndex === index }]"
+          @click="currentIndex = index"
+        >
+          <image :src="img" class="thumb-image" mode="aspectFill" />
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 图片计数 -->
+    <view class="gallery-counter">
+      <text class="counter-text">{{ currentIndex + 1 }} / {{ galleryImages.length }}</text>
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const galleryImages = ref([
+  'https://unpkg.com/wot-design-uni-assets/redpanda.jpg',
+  'https://unpkg.com/wot-design-uni-assets/elephant.jpg',
+  'https://unpkg.com/wot-design-uni-assets/panda.jpg',
+  'https://unpkg.com/wot-design-uni-assets/bear.jpg',
+  'https://unpkg.com/wot-design-uni-assets/tiger.jpg'
+])
+
+const currentIndex = ref(0)
+
+// 预览大图
+const handlePreview = () => {
+  uni.previewImage({
+    urls: galleryImages.value,
+    current: galleryImages.value[currentIndex.value]
+  })
+}
+</script>
+
+<style lang="scss" scoped>
+.gallery-page {
+  position: relative;
+  background: #000;
+}
+
+.thumbnail-scroll {
+  width: 100%;
+  white-space: nowrap;
+  padding: 24rpx 0;
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.thumbnail-container {
+  display: inline-flex;
+  padding: 0 24rpx;
+  gap: 16rpx;
+}
+
+.thumb-item {
+  flex-shrink: 0;
+  width: 120rpx;
+  height: 120rpx;
+  border: 4rpx solid transparent;
+  border-radius: 8rpx;
+  overflow: hidden;
+  opacity: 0.6;
+  transition: all 0.3s ease;
+
+  &.active {
+    border-color: #fff;
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+.thumb-image {
+  width: 100%;
+  height: 100%;
+}
+
+.gallery-counter {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8rpx 24rpx;
+  border-radius: 32rpx;
+}
+
+.counter-text {
+  color: #fff;
+  font-size: 24rpx;
+}
+</style>
+```
+
+**实现要点:**
+- 主图和缩略图通过 `v-model:current` 双向绑定
+- 缩略图使用 `scroll-into-view` 自动滚动到当前项
+- 关闭自动播放,用户手动控制
+- 点击主图预览大图
+
+### 案例4: 短视频播放
 
 类似抖音的短视频上下滑动:
 
@@ -1180,7 +1309,11 @@ const handleShare = () => {
 | `custom-class` | 自定义根节点样式类 | `string` | `''` |
 | `custom-indicator-class` | 自定义指示器类名 | `string` | `''` |
 | `custom-image-class` | 自定义图片类名 | `string` | `''` |
+| `custom-prev-image-class` | 自定义上一个图片类名 | `string` | `''` |
+| `custom-next-image-class` | 自定义下一个图片类名 | `string` | `''` |
 | `custom-item-class` | 自定义swiper子项类名 | `string` | `''` |
+| `custom-prev-class` | 自定义上一个子项类名 | `string` | `''` |
+| `custom-next-class` | 自定义下一个子项类名 | `string` | `''` |
 | `custom-text-class` | 自定义文字标题类名 | `string` | `''` |
 | `custom-text-style` | 自定义文字标题样式 | `string` | `''` |
 
@@ -1188,21 +1321,33 @@ const handleShare = () => {
 
 ```typescript
 /**
+ * 资源类型
+ */
+type SwiperItemType = 'image' | 'video'
+
+/**
  * 轮播项接口
  */
 interface SwiperList {
+  /** 允许任意额外属性 */
   [key: string]: any
 
   /** 图片、视频等资源地址 */
   value?: string
-  /** 视频资源的封面 */
+  /** 视频资源的封面图片 */
   poster?: string
   /** 资源文件类型,可选值:'image' | 'video' */
-  type?: 'image' | 'video'
-  /** 标题文字 */
+  type?: SwiperItemType
+  /** 标题文字,显示在轮播项右上角 */
   text?: string
 }
 ```
+
+**类型说明:**
+- 当 `list` 为字符串数组时,组件会自动根据 URL 后缀判断类型
+- 当 `list` 为对象数组时,可以通过 `type` 字段明确指定资源类型
+- `poster` 仅对视频类型有效,用于设置视频封面
+- `text` 会显示在轮播项的右上角位置
 
 ### IndicatorPositionType 类型
 
@@ -1255,9 +1400,24 @@ type EasingType =
 指示器配置对象:
 
 ```typescript
+/**
+ * 指示器类型
+ * dots - 点状指示器
+ * dots-bar - 条状指示器(激活项拉伸为条形)
+ * fraction - 分式指示器(显示 1/3 格式)
+ */
+type SwiperIndicatorType = 'dots' | 'dots-bar' | 'fraction'
+
+/**
+ * 轮播导航组件属性接口
+ */
 interface WdSwiperNavProps {
+  /** 自定义根节点样式 */
+  customStyle?: string
+  /** 自定义根节点样式类 */
+  customClass?: string
   /** 指示器类型 */
-  type?: 'dots' | 'dots-bar' | 'fraction'
+  type?: SwiperIndicatorType
   /** 当前轮播在哪一项(下标) */
   current?: number
   /** 总共的项数 */
@@ -1266,11 +1426,77 @@ interface WdSwiperNavProps {
   direction?: 'horizontal' | 'vertical'
   /** 指示器位置 */
   indicatorPosition?: IndicatorPositionType
-  /** 小于这个数字不会显示导航器 */
+  /** 小于这个数字不会显示导航器,默认2 */
   minShowNum?: number
   /** 是否显示两侧的控制按钮 */
   showControls?: boolean
 }
+```
+
+**配置示例:**
+
+```typescript
+// 点状指示器(默认)
+:indicator="{ type: 'dots' }"
+
+// 条状指示器
+:indicator="{ type: 'dots-bar' }"
+
+// 分式指示器 + 显示控制按钮
+:indicator="{ type: 'fraction', showControls: true }"
+
+// 隐藏指示器
+:indicator="false"
+
+// 设置最小显示数量
+:indicator="{ minShowNum: 3 }"
+```
+
+### DirectionType 类型
+
+```typescript
+/**
+ * 轮播滑动方向
+ * horizontal - 水平方向(默认)
+ * vertical - 垂直方向
+ */
+type DirectionType = 'horizontal' | 'vertical'
+```
+
+### AdjustHeightType 类型
+
+```typescript
+/**
+ * 高度调整类型(仅支付宝小程序支持)
+ * first - 第一个滑块的高度
+ * current - 实时的当前滑块高度
+ * highest - 高度最大的滑块(默认)
+ * none - 不根据滑块调整高度
+ */
+type AdjustHeightType = 'first' | 'current' | 'highest' | 'none'
+```
+
+### ImageMode 类型
+
+```typescript
+/**
+ * 图片裁剪、缩放模式
+ */
+type ImageMode =
+  | 'scaleToFill'    // 不保持纵横比缩放,使图片完全适应
+  | 'aspectFit'      // 保持纵横比缩放,使图片长边能完全显示
+  | 'aspectFill'     // 保持纵横比缩放,使图片短边能完全显示(默认)
+  | 'widthFix'       // 宽度不变,高度自动变化
+  | 'heightFix'      // 高度不变,宽度自动变化
+  | 'top'            // 不缩放,只显示顶部区域
+  | 'bottom'         // 不缩放,只显示底部区域
+  | 'center'         // 不缩放,只显示中间区域
+  | 'left'           // 不缩放,只显示左边区域
+  | 'right'          // 不缩放,只显示右边区域
+  | 'top left'       // 不缩放,只显示左上区域
+  | 'top right'      // 不缩放,只显示右上区域
+  | 'bottom left'    // 不缩放,只显示左下区域
+  | 'bottom right'   // 不缩放,只显示右下区域
 ```
 
 ## 主题定制
@@ -1280,59 +1506,164 @@ interface WdSwiperNavProps {
 组件提供了以下 CSS 变量用于主题定制:
 
 ```scss
-// Swiper 轮播
-$-swiper-radius: 8rpx;                      // 轮播圆角
-$-swiper-item-padding: 0;                   // 轮播项内边距
-$-swiper-item-text-color: #fff;             // 文字颜色
-$-swiper-item-text-fs: 28rpx;               // 文字大小
+// Swiper 轮播容器
+--wot-swiper-radius: 16rpx;                    // 轮播圆角
+--wot-swiper-item-padding: 0;                  // 轮播项内边距
+--wot-swiper-item-text-color: #ffffff;         // 文字颜色
+--wot-swiper-item-text-fs: 28rpx;              // 文字大小
 
-// 指示器
-$-swiper-nav-dot-size: 12rpx;               // 点的大小
-$-swiper-nav-dot-color: rgba(255, 255, 255, 0.5);        // 点的颜色
-$-swiper-nav-dot-active-color: #fff;        // 激活点的颜色
-$-swiper-nav-dots-bar-active-width: 32rpx;  // 条状激活宽度
+// 指示器点
+--wot-swiper-nav-dot-size: 12rpx;              // 点的大小
+--wot-swiper-nav-dot-color: rgba(255, 255, 255, 0.5);  // 点的颜色
+--wot-swiper-nav-dot-active-color: #ffffff;    // 激活点的颜色
+--wot-swiper-nav-dots-bar-active-width: 40rpx; // 条状激活宽度
 
 // 分式指示器
-$-swiper-nav-fraction-height: 48rpx;        // 分式高度
-$-swiper-nav-fraction-bg-color: rgba(0, 0, 0, 0.5);  // 分式背景色
-$-swiper-nav-fraction-color: #fff;          // 分式文字颜色
-$-swiper-nav-fraction-font-size: 24rpx;     // 分式字体大小
+--wot-swiper-nav-fraction-height: 48rpx;       // 分式高度
+--wot-swiper-nav-fraction-bg-color: rgba(0, 0, 0, 0.3);  // 分式背景色
+--wot-swiper-nav-fraction-color: #ffffff;      // 分式文字颜色
+--wot-swiper-nav-fraction-font-size: 24rpx;    // 分式字体大小
 
 // 控制按钮
-$-swiper-nav-btn-size: 64rpx;               // 按钮大小
-$-swiper-nav-btn-bg-color: rgba(255, 255, 255, 0.8);  // 按钮背景色
-$-swiper-nav-btn-color: #333;               // 按钮图标颜色
+--wot-swiper-nav-btn-size: 48rpx;              // 按钮大小
+--wot-swiper-nav-btn-bg-color: rgba(0, 0, 0, 0.3);  // 按钮背景色
+--wot-swiper-nav-btn-color: #ffffff;           // 按钮图标颜色
 ```
 
 ### 暗黑模式
 
-组件会自动适配暗黑模式,无需额外配置。
+组件会自动适配暗黑模式,无需额外配置。在暗黑模式下,组件会自动调整颜色以保持良好的视觉效果。
 
-### 自定义样式
+### 自定义样式示例
 
-```scss
-// 自定义指示器样式
-:deep(.custom-indicator) {
-  .wd-swiper-nav__item--dots {
-    width: 16rpx;
-    height: 16rpx;
-    background: rgba(0, 0, 0, 0.3);
+#### 自定义指示器颜色
 
-    &.is-active {
-      background: #1890ff;
+```vue
+<template>
+  <view class="custom-swiper">
+    <wd-swiper
+      :list="imageList"
+      height="350"
+      custom-indicator-class="my-indicator"
+    />
+  </view>
+</template>
+
+<style lang="scss" scoped>
+.custom-swiper {
+  // 自定义指示器颜色
+  :deep(.my-indicator) {
+    .wd-swiper-nav__item--dots {
+      width: 16rpx;
+      height: 16rpx;
+      background: rgba(0, 0, 0, 0.3);
+
+      &.is-active {
+        background: #1890ff;
+      }
     }
   }
 }
+</style>
+```
 
-// 自定义图片样式
-:deep(.custom-image) {
-  border-radius: 16rpx;
-  transform: scale(0.95);
-  transition: transform 0.3s ease;
+#### 自定义图片圆角
 
-  &:active {
-    transform: scale(1);
+```vue
+<template>
+  <view class="custom-swiper">
+    <wd-swiper
+      :list="imageList"
+      height="350"
+      custom-image-class="rounded-image"
+    />
+  </view>
+</template>
+
+<style lang="scss" scoped>
+.custom-swiper {
+  :deep(.rounded-image) {
+    border-radius: 24rpx;
+    overflow: hidden;
   }
+}
+</style>
+```
+
+#### 卡片缩放效果
+
+```vue
+<template>
+  <view class="card-swiper">
+    <wd-swiper
+      :list="imageList"
+      height="400"
+      previous-margin="60"
+      next-margin="60"
+      custom-item-class="swiper-item"
+      custom-prev-class="prev-item"
+      custom-next-class="next-item"
+    />
+  </view>
+</template>
+
+<style lang="scss" scoped>
+.card-swiper {
+  :deep(.swiper-item) {
+    transition: transform 0.3s ease;
+  }
+
+  :deep(.prev-item),
+  :deep(.next-item) {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+}
+</style>
+```
+
+#### 自定义分式指示器
+
+```vue
+<template>
+  <view class="fraction-swiper">
+    <wd-swiper
+      :list="imageList"
+      height="350"
+      :indicator="{ type: 'fraction' }"
+      indicator-position="bottom-right"
+      custom-indicator-class="custom-fraction"
+    />
+  </view>
+</template>
+
+<style lang="scss" scoped>
+.fraction-swiper {
+  :deep(.custom-fraction) {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 8rpx 24rpx;
+    border-radius: 8rpx;
+    font-weight: bold;
+  }
+}
+</style>
+```
+
+#### 全局主题配置
+
+```scss
+// 在全局样式文件中配置
+page {
+  // 主色调指示器
+  --wot-swiper-nav-dot-active-color: #1890ff;
+  --wot-swiper-nav-dot-color: rgba(24, 144, 255, 0.3);
+
+  // 更大的圆角
+  --wot-swiper-radius: 24rpx;
+
+  // 更大的指示器
+  --wot-swiper-nav-dot-size: 16rpx;
+  --wot-swiper-nav-dots-bar-active-width: 48rpx;
 }
 ```
 
@@ -1357,10 +1688,15 @@ $-swiper-nav-btn-color: #333;               // 按钮图标颜色
 
 <!-- ❌ 高度过小导致图片变形 -->
 <wd-swiper
-  :list="banners}
+  :list="banners"
   height="200"
 />
 ```
+
+**高度设置建议:**
+- 首页 Banner: 通常为 `375rpx` - `750rpx`
+- 商品图片: 建议使用 `750rpx`(1:1 比例)
+- 全屏视频: 使用 `100vh`
 
 ### 2. 优化自动播放间隔
 
@@ -1375,7 +1711,7 @@ $-swiper-nav-btn-color: #333;               // 按钮图标颜色
 
 <!-- ✅ 重要内容可适当延长 -->
 <wd-swiper
-  :list="promotions}
+  :list="promotions"
   :interval="6000"
 />
 
@@ -1385,6 +1721,11 @@ $-swiper-nav-btn-color: #333;               // 按钮图标颜色
   :interval="1000"
 />
 ```
+
+**间隔时间建议:**
+- 广告 Banner: 3000-5000ms
+- 产品展示: 4000-6000ms
+- 文字较多: 6000-8000ms
 
 ### 3. 视频轮播注意事项
 
@@ -1407,6 +1748,12 @@ $-swiper-nav-btn-color: #333;               // 按钮图标颜色
   :autoplay="true"
 />
 ```
+
+**视频轮播建议:**
+- 关闭自动轮播,让用户控制观看节奏
+- 开启 `stop-previous-video` 避免多个视频同时播放
+- 首次加载时可使用 `muted` 静音以允许自动播放
+- 提供封面图 `poster` 优化首屏加载体验
 
 ### 4. 正确使用指示器
 
@@ -1431,6 +1778,112 @@ $-swiper-nav-btn-color: #333;               // 按钮图标颜色
   :indicator="false"
 />
 ```
+
+**指示器选择建议:**
+- 3-5 项: 点状指示器 `dots`
+- 5-10 项: 条状指示器 `dots-bar`
+- 10+ 项: 分式指示器 `fraction`
+- 全屏视频: 隐藏指示器或使用自定义
+
+### 5. 图片加载优化
+
+优化图片加载体验:
+
+```vue
+<template>
+  <wd-swiper
+    :list="optimizedList"
+    height="350"
+    image-mode="aspectFill"
+  />
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+// ✅ 使用合适尺寸的图片
+const optimizedList = ref([
+  'https://cdn.example.com/banner1@750w.jpg',  // 2x 屏幕宽度
+  'https://cdn.example.com/banner2@750w.jpg',
+  'https://cdn.example.com/banner3@750w.jpg'
+])
+
+// ✅ 使用 CDN 并开启图片压缩
+// 图片宽度建议: 750px - 1500px (适配不同设备)
+</script>
+```
+
+**图片优化建议:**
+- 使用适当分辨率的图片(750px - 1500px 宽)
+- 优先使用 WebP 格式
+- 使用 CDN 加速
+- 开启懒加载(首屏外的图片)
+
+### 6. 无障碍支持
+
+提升轮播组件的无障碍体验:
+
+```vue
+<template>
+  <view
+    role="region"
+    aria-label="轮播图"
+    aria-roledescription="carousel"
+  >
+    <wd-swiper
+      :list="accessibleList"
+      height="350"
+      :autoplay="false"
+      :indicator="{ showControls: true }"
+      @change="handleChange"
+    />
+    <!-- 屏幕阅读器提示 -->
+    <view class="sr-only" aria-live="polite">
+      第 {{ currentIndex + 1 }} 张，共 {{ accessibleList.length }} 张
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+interface AccessibleItem {
+  value: string
+  text: string
+  alt: string
+}
+
+const accessibleList = ref<AccessibleItem[]>([
+  { value: '/banner1.jpg', text: '新品上市', alt: '新品上市宣传图' },
+  { value: '/banner2.jpg', text: '限时优惠', alt: '限时优惠活动图' }
+])
+
+const currentIndex = ref(0)
+
+const handleChange = ({ current }: { current: number }) => {
+  currentIndex.value = current
+}
+</script>
+
+<style scoped>
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+</style>
+```
+
+**无障碍建议:**
+- 关闭自动播放或提供暂停按钮
+- 提供控制按钮方便键盘操作
+- 使用 `aria-live` 播报当前状态
+- 为图片提供描述文字
 
 ## 常见问题
 
@@ -1586,3 +2039,230 @@ const handleVideoChange = ({ current }) => {
   :snap-to-edge="true"
 />
 ```
+
+### 6. 微信小程序中轮播抖动
+
+**问题描述:**
+在微信小程序中,轮播切换时出现轻微抖动或闪烁。
+
+**问题原因:**
+- 微信小程序 swiper 组件的已知问题
+- 图片尺寸不一致
+- CSS 样式冲突
+
+**解决方案:**
+```vue
+<!-- ✅ 组件已内置 scroll-view 包裹解决抖动问题 -->
+<wd-swiper
+  :list="images"
+  height="350"
+  image-mode="aspectFill"
+/>
+
+<!-- ✅ 确保图片尺寸一致 -->
+<script setup>
+// 使用统一尺寸的图片
+const images = ref([
+  'https://cdn.example.com/banner1-750x350.jpg',
+  'https://cdn.example.com/banner2-750x350.jpg',
+  'https://cdn.example.com/banner3-750x350.jpg'
+])
+</script>
+```
+
+### 7. 动态更新 list 不生效
+
+**问题描述:**
+动态修改 `list` 数据后,轮播内容没有更新。
+
+**问题原因:**
+- 响应式数据更新问题
+- 直接修改数组元素而非替换整个数组
+
+**解决方案:**
+```vue
+<template>
+  <wd-swiper :list="imageList" :key="listKey" height="350" />
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const imageList = ref<string[]>([])
+const listKey = ref(0)
+
+// ✅ 正确方式: 替换整个数组
+const updateList = (newImages: string[]) => {
+  imageList.value = [...newImages]
+}
+
+// ✅ 如果需要强制刷新,可以更新 key
+const forceRefresh = (newImages: string[]) => {
+  imageList.value = newImages
+  listKey.value++
+}
+
+// ❌ 错误方式: 直接修改数组
+const wrongUpdate = () => {
+  imageList.value[0] = 'new-image.jpg'  // 可能不会触发更新
+}
+</script>
+```
+
+### 8. 切换到后台后自动播放停止
+
+**问题描述:**
+小程序切换到后台后,轮播自动播放停止,返回前台后不会恢复。
+
+**问题原因:**
+- 小程序生命周期导致定时器暂停
+- 页面隐藏时 swiper 组件停止工作
+
+**解决方案:**
+```vue
+<template>
+  <wd-swiper
+    v-model:current="currentIndex"
+    :list="images"
+    :autoplay="isAutoplay"
+    height="350"
+  />
+</template>
+
+<script lang="ts" setup>
+import { ref, onShow, onHide } from 'vue'
+
+const images = ref([/* ... */])
+const currentIndex = ref(0)
+const isAutoplay = ref(true)
+
+// 页面显示时恢复自动播放
+onShow(() => {
+  isAutoplay.value = true
+})
+
+// 页面隐藏时暂停自动播放
+onHide(() => {
+  isAutoplay.value = false
+})
+</script>
+```
+
+### 9. 自定义指示器样式不生效
+
+**问题描述:**
+通过 `custom-indicator-class` 设置的样式不生效。
+
+**问题原因:**
+- scoped 样式隔离
+- 选择器优先级不够
+- 类名未正确传递
+
+**解决方案:**
+```vue
+<template>
+  <view class="swiper-wrapper">
+    <wd-swiper
+      :list="images"
+      height="350"
+      custom-indicator-class="my-indicator"
+    />
+  </view>
+</template>
+
+<style lang="scss" scoped>
+.swiper-wrapper {
+  // ✅ 使用 :deep() 穿透 scoped 样式
+  :deep(.my-indicator) {
+    .wd-swiper-nav__item--dots {
+      width: 20rpx !important;
+      height: 20rpx !important;
+      background: rgba(255, 255, 255, 0.5) !important;
+
+      &.is-active {
+        background: #1890ff !important;
+      }
+    }
+  }
+}
+</style>
+
+<!-- 或者使用全局样式 -->
+<style lang="scss">
+// ✅ 全局样式不受 scoped 限制
+.my-indicator {
+  .wd-swiper-nav__item--dots {
+    width: 20rpx;
+    height: 20rpx;
+  }
+}
+</style>
+```
+
+### 10. 轮播项点击事件不触发
+
+**问题描述:**
+给轮播项绑定的点击事件不触发或触发不稳定。
+
+**问题原因:**
+- 滑动和点击事件冲突
+- 事件冒泡问题
+- 视频组件层级问题
+
+**解决方案:**
+```vue
+<template>
+  <wd-swiper
+    :list="images"
+    height="350"
+    @click="handleClick"
+  />
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const images = ref([/* ... */])
+
+// ✅ 使用组件提供的 click 事件
+const handleClick = ({ index, item }: { index: number; item: any }) => {
+  console.log('点击了第', index + 1, '项')
+
+  // 跳转或其他操作
+  if (item.link) {
+    uni.navigateTo({ url: item.link })
+  }
+}
+</script>
+```
+
+### 11. 支付宝小程序高度自适应问题
+
+**问题描述:**
+在支付宝小程序中,轮播高度无法自适应内容。
+
+**问题原因:**
+- 支付宝小程序 swiper 组件的特殊行为
+- 需要使用专属属性配置
+
+**解决方案:**
+```vue
+<!-- ✅ 使用支付宝小程序专属属性 -->
+<wd-swiper
+  :list="images"
+  adjust-height="current"
+  :adjust-vertical-height="true"
+/>
+
+<!-- 或者根据最高项设置高度 -->
+<wd-swiper
+  :list="images"
+  adjust-height="highest"
+/>
+```
+
+**属性说明:**
+- `adjust-height="first"`: 使用第一个滑块高度
+- `adjust-height="current"`: 使用当前滑块高度(实时)
+- `adjust-height="highest"`: 使用最高滑块高度
+- `adjust-height="none"`: 不自动调整高度

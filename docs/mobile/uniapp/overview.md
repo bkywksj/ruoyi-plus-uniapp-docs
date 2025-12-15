@@ -355,10 +355,544 @@ pnpm build:app
 - **类型支持**：更好的 TypeScript 支持
 - **性能**：启动和热更新速度提升
 
-## 下一步
+### 4. 开发环境配置问题
 
-- [项目配置 (manifest.json)](./manifest-config.md) - 了解应用配置
-- [页面配置 (pages.json)](./pages-config.md) - 了解页面路由配置
-- [生命周期](./lifecycle.md) - 掌握应用和页面生命周期
-- [路由导航](./navigation.md) - 学习页面跳转和导航
-- [条件编译](./conditional.md) - 处理平台差异
+**问题**: 运行 `pnpm install` 时出错
+
+**解决方案**:
+```bash
+# 1. 确保 Node.js 版本 >= 18
+node -v
+
+# 2. 确保使用 pnpm
+npm install -g pnpm
+
+# 3. 清除缓存重新安装
+pnpm store prune
+rm -rf node_modules
+pnpm install
+```
+
+**问题**: 微信开发者工具无法打开项目
+
+**解决方案**:
+1. 确保已运行 `pnpm dev:mp-weixin`
+2. 在微信开发者工具中导入 `dist/dev/mp-weixin` 目录
+3. 在开发者工具设置中启用"不校验合法域名"
+
+### 5. 跨平台兼容性问题
+
+**问题**: 某些功能在特定平台不可用
+
+**解决方案**: 使用条件编译处理平台差异
+
+```vue
+<template>
+  <!-- #ifdef MP-WEIXIN -->
+  <button open-type="share">分享</button>
+  <!-- #endif -->
+
+  <!-- #ifdef H5 -->
+  <button @click="handleShare">分享</button>
+  <!-- #endif -->
+</template>
+
+<script lang="ts" setup>
+// #ifdef H5
+const handleShare = () => {
+  // H5 分享逻辑
+  navigator.share?.({
+    title: '分享标题',
+    url: window.location.href
+  })
+}
+// #endif
+</script>
+```
+
+### 6. 性能优化建议
+
+**小程序包体积优化**:
+
+1. **启用分包加载**
+```json
+{
+  "subPackages": [
+    {
+      "root": "pages-sub",
+      "pages": [
+        { "path": "detail/index" }
+      ]
+    }
+  ]
+}
+```
+
+2. **按需引入组件**
+```typescript
+// 仅导入需要的组件
+import { WdButton, WdIcon } from '@/wd'
+```
+
+3. **使用 Tree Shaking**
+```typescript
+// vite.config.ts
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      treeshake: true
+    }
+  }
+})
+```
+
+**渲染性能优化**:
+
+1. **使用虚拟列表处理长列表**
+```vue
+<template>
+  <wd-paging
+    v-model="list"
+    :page-size="20"
+    @load="loadMore"
+  >
+    <template #default="{ item }">
+      <view class="list-item">{{ item.name }}</view>
+    </template>
+  </wd-paging>
+</template>
+```
+
+2. **避免不必要的重渲染**
+```vue
+<script lang="ts" setup>
+import { shallowRef, computed } from 'vue'
+
+// 使用 shallowRef 减少深度响应
+const list = shallowRef<Item[]>([])
+
+// 使用 computed 缓存计算结果
+const filteredList = computed(() =>
+  list.value.filter(item => item.active)
+)
+</script>
+```
+
+## 最佳实践
+
+### 1. 项目结构组织
+
+推荐的项目目录结构：
+
+```
+src/
+├── api/                  # API 接口定义
+│   ├── modules/          # 按模块分类的 API
+│   └── index.ts          # API 导出入口
+├── components/           # 公共组件
+│   ├── business/         # 业务组件
+│   └── common/           # 通用组件
+├── composables/          # 组合式函数
+│   ├── useAuth.ts        # 认证相关
+│   ├── useHttp.ts        # 请求封装
+│   └── useModal.ts       # 弹窗相关
+├── layouts/              # 布局组件
+├── pages/                # 主包页面
+├── pages-sub/            # 分包页面
+├── stores/               # Pinia 状态管理
+│   ├── modules/          # 状态模块
+│   └── index.ts          # Store 导出
+├── styles/               # 全局样式
+│   ├── variables.scss    # SCSS 变量
+│   └── index.scss        # 全局样式入口
+├── types/                # TypeScript 类型
+├── utils/                # 工具函数
+├── wd/                   # WD UI 组件库
+├── App.vue               # 根组件
+├── main.ts               # 应用入口
+├── manifest.json         # 应用配置
+├── pages.json            # 页面配置
+└── uni.scss              # uni-app 主题变量
+```
+
+### 2. 组件开发规范
+
+```vue
+<template>
+  <view :class="rootClass" :style="customStyle">
+    <slot />
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { computed } from 'vue'
+
+// 1. 定义属性接口
+interface Props {
+  /** 自定义样式 */
+  customStyle?: string
+  /** 自定义类名 */
+  customClass?: string
+  /** 是否禁用 */
+  disabled?: boolean
+}
+
+// 2. 定义属性默认值
+const props = withDefaults(defineProps<Props>(), {
+  customStyle: '',
+  customClass: '',
+  disabled: false
+})
+
+// 3. 定义事件
+const emit = defineEmits<{
+  click: [event: Event]
+}>()
+
+// 4. 计算属性
+const rootClass = computed(() => {
+  return [
+    'my-component',
+    props.customClass,
+    { 'is-disabled': props.disabled }
+  ]
+})
+</script>
+
+<style lang="scss" scoped>
+.my-component {
+  // 组件样式
+}
+</style>
+```
+
+### 3. 状态管理规范
+
+```typescript
+// stores/modules/user.ts
+import { defineStore } from 'pinia'
+import { ref, computed } from 'vue'
+import type { UserInfo } from '@/types'
+
+export const useUserStore = defineStore('user', () => {
+  // 状态
+  const token = ref<string>('')
+  const userInfo = ref<UserInfo | null>(null)
+
+  // 计算属性
+  const isLoggedIn = computed(() => !!token.value)
+  const userName = computed(() => userInfo.value?.nickname || '未登录')
+
+  // 方法
+  const setToken = (newToken: string) => {
+    token.value = newToken
+    uni.setStorageSync('token', newToken)
+  }
+
+  const setUserInfo = (info: UserInfo) => {
+    userInfo.value = info
+  }
+
+  const logout = () => {
+    token.value = ''
+    userInfo.value = null
+    uni.removeStorageSync('token')
+  }
+
+  // 初始化
+  const init = () => {
+    const savedToken = uni.getStorageSync('token')
+    if (savedToken) {
+      token.value = savedToken
+    }
+  }
+
+  return {
+    token,
+    userInfo,
+    isLoggedIn,
+    userName,
+    setToken,
+    setUserInfo,
+    logout,
+    init
+  }
+})
+```
+
+### 4. API 请求封装
+
+```typescript
+// api/request.ts
+import { useUserStore } from '@/stores'
+
+interface RequestConfig {
+  url: string
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
+  data?: Record<string, any>
+  header?: Record<string, string>
+}
+
+interface Response<T = any> {
+  code: number
+  msg: string
+  data: T
+}
+
+const BASE_URL = import.meta.env.VITE_API_URL
+
+export const request = <T = any>(config: RequestConfig): Promise<T> => {
+  const userStore = useUserStore()
+
+  return new Promise((resolve, reject) => {
+    uni.request({
+      url: `${BASE_URL}${config.url}`,
+      method: config.method || 'GET',
+      data: config.data,
+      header: {
+        'Content-Type': 'application/json',
+        'Authorization': userStore.token ? `Bearer ${userStore.token}` : '',
+        ...config.header
+      },
+      success: (res) => {
+        const response = res.data as Response<T>
+
+        if (response.code === 200) {
+          resolve(response.data)
+        } else if (response.code === 401) {
+          // Token 过期
+          userStore.logout()
+          uni.navigateTo({ url: '/pages/login/index' })
+          reject(new Error('登录已过期'))
+        } else {
+          uni.showToast({
+            title: response.msg || '请求失败',
+            icon: 'none'
+          })
+          reject(new Error(response.msg))
+        }
+      },
+      fail: (error) => {
+        uni.showToast({
+          title: '网络请求失败',
+          icon: 'none'
+        })
+        reject(error)
+      }
+    })
+  })
+}
+```
+
+### 5. 条件编译最佳实践
+
+```vue
+<template>
+  <view class="container">
+    <!-- 平台特定的头部 -->
+    <!-- #ifdef MP-WEIXIN -->
+    <view class="weixin-header">
+      <button open-type="getUserInfo" @getuserinfo="onGetUserInfo">
+        获取用户信息
+      </button>
+    </view>
+    <!-- #endif -->
+
+    <!-- #ifdef H5 -->
+    <view class="h5-header">
+      <button @click="onLogin">登录</button>
+    </view>
+    <!-- #endif -->
+
+    <!-- 通用内容 -->
+    <view class="content">
+      <slot />
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+// #ifdef MP-WEIXIN
+const onGetUserInfo = (e: any) => {
+  console.log('微信用户信息:', e.detail)
+}
+// #endif
+
+// #ifdef H5
+const onLogin = () => {
+  // H5 登录逻辑
+}
+// #endif
+</script>
+
+<style lang="scss" scoped>
+.container {
+  padding: 20rpx;
+}
+
+/* #ifdef MP-WEIXIN */
+.weixin-header {
+  background: #07c160;
+}
+/* #endif */
+
+/* #ifdef H5 */
+.h5-header {
+  background: #1890ff;
+}
+/* #endif */
+</style>
+```
+
+## 调试技巧
+
+### 1. H5 调试
+
+```bash
+# 启动开发服务器
+pnpm dev:h5
+```
+
+使用浏览器开发者工具进行调试：
+- 打开 Chrome DevTools (F12)
+- 使用移动设备模拟器测试响应式
+- 使用 Network 面板查看请求
+- 使用 Console 面板查看日志
+
+### 2. 微信小程序调试
+
+```bash
+# 启动小程序编译
+pnpm dev:mp-weixin
+```
+
+调试步骤：
+1. 打开微信开发者工具
+2. 导入 `dist/dev/mp-weixin` 目录
+3. 使用开发者工具的调试面板
+4. 查看 AppData 面板了解数据状态
+5. 使用远程调试功能真机调试
+
+### 3. 日志输出
+
+```typescript
+// 使用 uni.log 兼容多平台
+const log = {
+  info: (...args: any[]) => {
+    // #ifdef H5
+    console.log(...args)
+    // #endif
+    // #ifndef H5
+    console.log(JSON.stringify(args))
+    // #endif
+  },
+  error: (...args: any[]) => {
+    console.error(...args)
+  }
+}
+
+// 使用
+log.info('用户信息:', userInfo)
+```
+
+### 4. 网络请求调试
+
+```typescript
+// 开发环境启用请求日志
+const DEBUG = import.meta.env.DEV
+
+export const request = async (config: RequestConfig) => {
+  if (DEBUG) {
+    console.log('🚀 Request:', config.url, config.data)
+  }
+
+  try {
+    const response = await doRequest(config)
+
+    if (DEBUG) {
+      console.log('✅ Response:', config.url, response)
+    }
+
+    return response
+  } catch (error) {
+    if (DEBUG) {
+      console.error('❌ Error:', config.url, error)
+    }
+    throw error
+  }
+}
+```
+
+## 发布部署
+
+### 1. H5 部署
+
+```bash
+# 生产构建
+pnpm build:h5
+
+# 输出目录
+dist/build/h5/
+```
+
+部署到服务器：
+```bash
+# 使用 nginx 配置
+server {
+  listen 80;
+  server_name your-domain.com;
+  root /path/to/dist/build/h5;
+  index index.html;
+
+  location / {
+    try_files $uri $uri/ /index.html;
+  }
+}
+```
+
+### 2. 小程序发布
+
+```bash
+# 生产构建
+pnpm build:mp-weixin
+```
+
+发布流程：
+1. 打开微信开发者工具
+2. 导入 `dist/build/mp-weixin` 目录
+3. 点击"上传"按钮
+4. 填写版本号和备注
+5. 在微信公众平台提交审核
+
+### 3. App 打包
+
+```bash
+# 生产构建
+pnpm build:app
+```
+
+使用 HBuilderX 打包：
+1. 打开 HBuilderX
+2. 导入项目
+3. 发行 → 原生App-云打包
+4. 配置签名证书
+5. 等待打包完成
+
+## 版本升级
+
+### 升级 uni-app 版本
+
+```bash
+# 使用官方升级工具
+pnpm uvm
+
+# 或手动升级
+pnpm add @dcloudio/uni-app@latest
+```
+
+### 升级注意事项
+
+1. **备份项目**：升级前备份代码和依赖锁文件
+2. **阅读更新日志**：了解 Breaking Changes
+3. **测试功能**：升级后在各平台测试核心功能
+4. **更新依赖**：同步更新相关插件和依赖
