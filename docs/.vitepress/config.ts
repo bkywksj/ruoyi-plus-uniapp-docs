@@ -1057,18 +1057,6 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '⚡ 性能优化',
-                    items: [
-                        { text: '性能优化概览', link: '/practices/performance/overview' },
-                        { text: '后端性能优化', link: '/practices/performance/backend' },
-                        { text: '前端性能优化', link: '/practices/performance/frontend' },
-                        { text: '移动端性能优化', link: '/practices/performance/mobile' },
-                        { text: '数据库优化', link: '/practices/performance/database' },
-                        { text: '缓存优化策略', link: '/practices/performance/cache' },
-                        { text: 'JVM调优指南', link: '/practices/performance/jvm-tuning' }
-                    ]
-                },
-                {
                     text: '🔒 安全指南',
                     items: [
                         { text: '安全总览', link: '/practices/security/overview' },
@@ -1087,27 +1075,13 @@ export default defineConfig({
                     text: '🛠️ 工程化',
                     items: [
                         { text: 'Claude Code Skills ⭐', link: '/practices/engineering/claude-code-skills' },
-                        { text: '代码生成器使用', link: '/practices/engineering/code-generator' },
-                        { text: '构建优化', link: '/practices/engineering/build-optimization' },
-                        { text: 'CI/CD最佳实践', link: '/practices/engineering/cicd' },
-                        { text: '代码质量管控', link: '/practices/engineering/code-quality' }
+                        { text: '代码生成器使用', link: '/practices/engineering/code-generator' }
                     ]
                 },
                 {
                     text: '🚀 部署运维',
                     items: [
-                        { text: 'Docker部署指南', link: '/practices/devops/docker-deploy' },
-                        { text: '容器化最佳实践', link: '/practices/devops/containerization' },
-                        { text: '监控告警', link: '/practices/devops/monitoring' },
-                        { text: '日志管理', link: '/practices/devops/logging' },
-                        { text: '备份策略', link: '/practices/devops/backup' },
-                        { text: '故障排查指南', link: '/practices/devops/troubleshooting' }
-                    ]
-                },
-                {
-                    text: '📊 数据管理',
-                    items: [
-                        { text: '数据库设计规范', link: '/practices/data/database-design' }
+                        { text: 'Docker部署指南', link: '/practices/devops/docker-deploy' }
                     ]
                 }
             ]

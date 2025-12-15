@@ -1,10 +1,10 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-12-15
-> **整体完成度**: 67.9% (C+ 评分) - 按500+行标准
-> **总文档数**: 489 个 (已清理 17 个占位符/重复文档)
-> **总行数**: 517,000+ 行
-> **已完成文档**: 332 个 (≥500行)
+> **最后更新**: 2025-12-16
+> **整体完成度**: 68.0% (C+ 评分) - 按500+行标准
+> **总文档数**: 490 个 (已清理 18 个占位符/重复文档)
+> **总行数**: 519,400+ 行
+> **已完成文档**: 333 个 (≥500行)
 
 ---
 
@@ -31,8 +31,8 @@
 | **后端文档** | 71 | 41 | 30 | **57.7%** | D+ |
 | **前端文档** | 182 | 97 | 85 | **53.3%** | D+ |
 | **移动端文档** | 181 | 138 | 43 | **76.2%** | C+ |
-| **最佳实践** | 53 | 52 | 1 | **98.1%** | A+ |
-| **总计** | **489** | **332** | **157** | **67.9%** | **C+** |
+| **最佳实践** | 54 | 53 | 1 | **98.1%** | A+ |
+| **总计** | **490** | **333** | **157** | **68.0%** | **C+** |
 
 **说明**: 完成标准为文档行数 ≥ 500 行
 
@@ -361,6 +361,7 @@
 - `docs/mobile/utils/format.md` - 2,636 行
 - `docs/mobile/utils/overview.md` - 2,578 行
 - `docs/mobile/utils/http.md` - 2,431 行
+- `docs/mobile/dev-standards.md` - 2,379 行 ✨ **最新**
 - `docs/mobile/composables/use-http.md` - 2,339 行
 - `docs/mobile/styles/best-practices.md` - 2,223 行
 - `docs/mobile/composables/use-theme.md` - 2,211 行
@@ -394,11 +395,11 @@
 
 ## 最佳实践文档进度
 
-### 完成状态: 92.9% (52/56)
+### 完成状态: 98.1% (53/54)
 
-最佳实践目录共 56 个文档,目前已完成 52 个(≥500行),4 个待完善(占位符或index文件)。
+最佳实践目录共 54 个文档,目前已完成 53 个(≥500行),1 个待完善(index文件)。
 
-#### ✅ 已完成 (56个) - 500+ 行
+#### ✅ 已完成 (53个) - 500+ 行
 
 | 文档 | 路径 | 行数 | 状态 |
 |------|------|------|------|
@@ -414,7 +415,6 @@
 | 缓存架构 | `docs/practices/architecture/cache.md` | 2,403 | ✅ |
 | 故障排查 | `docs/practices/devops/troubleshooting.md` | 2,100 | ✅ |
 | API 安全 | `docs/practices/security/api.md` | 1,978 | ✅ |
-| **数据库设计** | `docs/practices/data/database-design.md` | 1,595 | ✅ **最新** 🆕 |
 | 代码质量保障 | `docs/practices/engineering/code-quality.md` | 1,972 | ✅ |
 | 技术债务管理 | `docs/practices/engineering/technical-debt.md` | 1,894 | ✅ |
 | 构建优化 | `docs/practices/engineering/build-optimization.md` | 2,460 | ✅ |
@@ -437,6 +437,8 @@
 | 参数校验 | `docs/practices/backend/validation.md` | 1,497 | ✅ |
 | 认证授权 | `docs/practices/security/auth.md` | 1,453 | ✅ |
 | 命名规范 | `docs/practices/standards/naming.md` | 1,405 | ✅ |
+| **前端开发规范** | `docs/practices/standards/frontend.md` | 1,389 | ✅ |
+| **数据库规范** | `docs/practices/standards/database.md` | 1,142 | ✅ **最新** 🆕 |
 | 数据访问 | `docs/practices/backend/data-access.md` | 1,382 | ✅ |
 | 事务管理 | `docs/practices/backend/transaction.md` | 1,352 | ✅ |
 | 安全概览 | `docs/practices/security/overview.md` | 1,005 | ✅ |
@@ -469,10 +471,11 @@
 **其他**
 - [ ] `docs/practices/index.md` - 175 行 (目录索引文件)
 
-**已清理占位符 (3个)** ✅
+**已清理占位符 (4个)** ✅
 - ~~`docs/practices/data/data-migration.md`~~ - 已删除
 - ~~`docs/practices/data/data-consistency.md`~~ - 已删除
 - ~~`docs/practices/data/backup-recovery.md`~~ - 已删除
+- ~~`docs/practices/data/database-design.md`~~ - 已删除
 
 ---
 

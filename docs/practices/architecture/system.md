@@ -4,7 +4,7 @@
 >
 > **作者**: 抓蛙师
 >
-> **最后更新**: 2025-11-02
+> **最后更新**: 2025-12-16
 
 系统架构是软件系统的顶层设计,定义了系统的组织结构、技术选型、模块划分和交互方式。良好的架构设计是系统稳定性、可扩展性和可维护性的基础保障。本文档详细介绍RuoYi-Plus-UniApp全栈系统的整体架构设计原则和实践。
 
@@ -178,7 +178,7 @@ RuoYi-Plus-UniApp采用**前后端分离**的全栈架构,支持**多端统一**
 
 ### 后端分层架构
 
-RuoYi-Plus-UniApp后端采用经典的**三层架构**,自上而下分为:
+RuoYi-Plus-UniApp后端采用**四层架构**,自上而下分为:
 
 ```
 ┌──────────────────────────────────────────┐
@@ -192,11 +192,20 @@ RuoYi-Plus-UniApp后端采用经典的**三层架构**,自上而下分为:
                     ▼
 ┌──────────────────────────────────────────┐
 │           Service层 (业务逻辑层)           │
-│  - 业务逻辑处理                            │
+│  - 业务逻辑编排                            │
 │  - 事务管理                                │
-│  - 调用Mapper层                           │
-│  - 数据转换(Bo <-> Entity)                │
+│  - 调用Manager层                          │
+│  - 数据转换(Bo <-> Vo)                    │
 │  示例: UserServiceImpl                    │
+└──────────────────────────────────────────┘
+                    ▼
+┌──────────────────────────────────────────┐
+│           Manager层 (通用业务层)           │
+│  - 通用业务处理                            │
+│  - 第三方服务封装                          │
+│  - 缓存方案管理                            │
+│  - 可被多个Service复用                     │
+│  示例: UserManager                        │
 └──────────────────────────────────────────┘
                     ▼
 ┌──────────────────────────────────────────┐
@@ -214,6 +223,12 @@ RuoYi-Plus-UniApp后端采用经典的**三层架构**,自上而下分为:
 │  - 索引优化                                │
 └──────────────────────────────────────────┘
 ```
+
+**四层架构优势:**
+- **职责更清晰**: Service专注业务编排,Manager处理通用逻辑
+- **复用性更强**: Manager层可被多个Service复用,避免代码重复
+- **解耦更彻底**: 第三方服务、缓存操作等下沉到Manager层
+- **测试更方便**: 各层职责单一,便于单元测试
 
 #### 1. Controller层
 
@@ -279,11 +294,11 @@ public class SysUserController extends BaseController {
 #### 2. Service层
 
 **职责:**
-- 核心业务逻辑处理
+- 业务逻辑编排和组合
 - 事务管理(@Transactional)
-- 数据转换(Bo/Vo/Entity互转)
-- 调用Mapper层操作数据
-- 复杂查询组装
+- 数据转换(Bo <-> Vo)
+- 调用Manager层处理通用逻辑
+- 业务规则校验
 
 **规范:**
 ```java
@@ -297,17 +312,15 @@ public class SysUserController extends BaseController {
 @Service
 public class UserServiceImpl implements IUserService {
 
-    private final SysUserMapper baseMapper;
-    private final SysRoleMapper roleMapper;
+    private final UserManager userManager;
+    private final RoleManager roleManager;
 
     /**
      * 根据条件分页查询用户列表
      */
     @Override
     public TableDataInfo<UserVo> queryPageList(UserBo user, PageQuery pageQuery) {
-        LambdaQueryWrapper<SysUser> lqw = buildQueryWrapper(user);
-        Page<UserVo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
-        return TableDataInfo.build(result);
+        return userManager.queryPageList(user, pageQuery);
     }
 
     /**
@@ -316,22 +329,109 @@ public class UserServiceImpl implements IUserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int insertUser(UserBo user) {
-        SysUser sysUser = BeanUtil.toBean(user, SysUser.class);
-        int rows = baseMapper.insert(sysUser);
+        // 1. 业务规则校验
+        userManager.checkUserAllowed(user);
 
-        // 新增用户角色信息
+        // 2. 创建用户
+        int rows = userManager.createUser(user);
+
+        // 3. 新增用户角色关联
         if (CollUtil.isNotEmpty(user.getRoleIds())) {
-            insertUserRole(sysUser.getUserId(), user.getRoleIds());
+            roleManager.insertUserRoles(user.getUserId(), user.getRoleIds());
         }
 
         return rows;
+    }
+}
+```
+
+**最佳实践:**
+- ✅ Service层负责业务编排和事务管理
+- ✅ 使用@Transactional管理事务边界
+- ✅ 调用Manager层处理具体逻辑
+- ✅ 不同Service之间通过Manager层共享逻辑
+- ❌ 不要在Service中处理HTTP相关逻辑
+- ❌ 避免Service之间循环依赖
+- ❌ 避免在Service中直接调用Mapper
+
+#### 3. Manager层
+
+**职责:**
+- 通用业务处理(可被多个Service复用)
+- 第三方服务封装(短信、支付、OSS等)
+- 缓存方案管理(Redis操作封装)
+- 数据访问封装(调用Mapper层)
+- 与DAO层交互,屏蔽底层细节
+
+**规范:**
+```java
+/**
+ * 用户通用业务处理层
+ *
+ * @author 抓蛙师
+ * @date 2025-11-02
+ */
+@RequiredArgsConstructor
+@Component
+public class UserManager {
+
+    private final SysUserMapper userMapper;
+    private final RedisCache redisCache;
+
+    /**
+     * 根据条件分页查询用户列表
+     */
+    public TableDataInfo<UserVo> queryPageList(UserBo user, PageQuery pageQuery) {
+        LambdaQueryWrapper<SysUser> lqw = buildQueryWrapper(user);
+        Page<UserVo> result = userMapper.selectVoPage(pageQuery.build(), lqw);
+        return TableDataInfo.build(result);
+    }
+
+    /**
+     * 创建用户
+     */
+    public int createUser(UserBo user) {
+        SysUser sysUser = BeanUtil.toBean(user, SysUser.class);
+        sysUser.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+        int rows = userMapper.insert(sysUser);
+
+        // 清除用户缓存
+        clearUserCache(sysUser.getUserId());
+
+        return rows;
+    }
+
+    /**
+     * 根据ID查询用户(带缓存)
+     */
+    public SysUser getUserById(Long userId) {
+        String cacheKey = CacheConstants.USER_KEY + userId;
+        return redisCache.getCacheObject(cacheKey, () -> {
+            return userMapper.selectById(userId);
+        }, CacheConstants.USER_EXPIRE);
+    }
+
+    /**
+     * 校验用户是否允许操作
+     */
+    public void checkUserAllowed(UserBo user) {
+        if (ObjectUtil.isNotNull(user.getUserId()) && user.isAdmin()) {
+            throw new ServiceException("不允许操作超级管理员用户");
+        }
+    }
+
+    /**
+     * 清除用户缓存
+     */
+    public void clearUserCache(Long userId) {
+        String cacheKey = CacheConstants.USER_KEY + userId;
+        redisCache.deleteObject(cacheKey);
     }
 
     /**
      * 构建查询条件
      */
     private LambdaQueryWrapper<SysUser> buildQueryWrapper(UserBo user) {
-        Map<String, Object> params = user.getParams();
         LambdaQueryWrapper<SysUser> lqw = Wrappers.lambdaQuery();
         lqw.like(StringUtils.isNotBlank(user.getUserName()),
                  SysUser::getUserName, user.getUserName());
@@ -342,16 +442,22 @@ public class UserServiceImpl implements IUserService {
 }
 ```
 
-**最佳实践:**
-- ✅ Service层包含业务逻辑
-- ✅ 使用@Transactional管理事务
-- ✅ 使用MyBatis-Plus的Wrapper构建查询
-- ✅ 复杂方法拆分为私有方法
-- ✅ 使用工具类进行对象转换
-- ❌ 不要在Service中处理HTTP相关逻辑
-- ❌ 避免Service之间循环依赖
+**Manager层适用场景:**
+1. **缓存管理**: 统一处理缓存的读写和失效
+2. **第三方服务**: 封装短信、邮件、支付等外部调用
+3. **通用逻辑复用**: 多个Service需要调用的相同逻辑
+4. **数据组装**: 复杂的数据查询和组装逻辑
+5. **跨表操作**: 不涉及事务的跨表数据操作
 
-#### 3. Mapper层
+**最佳实践:**
+- ✅ Manager层可被多个Service复用
+- ✅ 封装缓存操作,Service层无需关心缓存细节
+- ✅ 封装第三方服务调用
+- ✅ 使用@Component注解标注
+- ❌ 不要在Manager层管理事务(事务在Service层)
+- ❌ 不要处理Controller相关逻辑
+
+#### 4. Mapper层
 
 **职责:**
 - 定义数据库操作接口
@@ -1772,7 +1878,6 @@ public class R<T> {
 }
 ```
 
-参考: [API设计规范](/practices/standards/api-design)
 
 ---
 
@@ -1787,7 +1892,7 @@ RuoYi-Plus-UniApp系统架构具有以下特点:
 
 **2. 架构设计合理**
 - 前后端分离
-- 分层清晰
+- 四层架构(Controller → Service → Manager → Mapper)
 - 模块化设计
 
 **3. 功能完善**
@@ -1809,15 +1914,6 @@ RuoYi-Plus-UniApp系统架构具有以下特点:
 
 ---
 
-**相关文档:**
-- [数据库设计](/practices/architecture/database)
-- [缓存策略](/practices/architecture/cache)
-- [代码规范](/practices/standards/coding)
-
 **文档维护:**
 - 如有问题或建议,请联系: 抓蛙师 (微信/QQ: 770492966)
 - 文档会持续更新,反映最新的架构实践
-
----
-
-*本文档总计 2856 行,全面介绍了RuoYi-Plus-UniApp的系统架构设计,包括技术选型、分层设计、模块划分、数据流转、部署架构和最佳实践。*
