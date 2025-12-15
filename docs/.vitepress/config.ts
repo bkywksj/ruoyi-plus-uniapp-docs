@@ -1013,7 +1013,6 @@ export default defineConfig({
                         { text: '命名规范', link: '/practices/standards/naming' },
                         { text: '注释规范', link: '/practices/standards/comment' },
                         { text: 'Git使用规范', link: '/practices/standards/git' },
-                        { text: '代码审查规范', link: '/practices/standards/code-review' },
                         { text: '数据库规范', link: '/practices/standards/database' },
                         { text: '前端开发规范', link: '/practices/standards/frontend' },
                         { text: '移动端开发规范', link: '/practices/standards/mobile' }
