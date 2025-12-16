@@ -223,7 +223,7 @@ description: "执行安全审查"
 
 **文件：** `.claude/commands/commit.md`
 
-```markdown
+````markdown
 ---
 description: "生成规范的 Git 提交"
 ---
@@ -258,7 +258,7 @@ description: "生成规范的 Git 提交"
 2. 运行 `git diff` 分析变更内容
 3. 生成提交信息
 4. 执行提交命令
-```
+````
 
 ---
 

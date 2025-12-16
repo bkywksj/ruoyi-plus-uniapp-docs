@@ -26,7 +26,7 @@
 - 📝 [命名规范](/practices/standards/naming) - 项目中的命名约定(待完善)
 - 📝 [注释规范](/practices/standards/comment) - 代码注释的标准格式(待完善)
 - 📝 [Git使用规范](/practices/standards/git) - Git提交和分支管理规范(待完善)
-- 📝 [代码审查规范](/practices/standards/code-review) - Code Review流程和标准(待完善)
+- 📝 代码审查规范 - Code Review流程和标准(待完善)
 
 ## 🏗️ 架构设计
 
@@ -62,12 +62,12 @@
 
 性能优化是提升用户体验的关键环节。
 
-- 📝 [后端性能优化](/practices/performance/backend) - 后端服务性能优化指南
-- 📝 [前端性能优化](/practices/performance/frontend) - 前端页面性能优化技巧
-- 📝 [移动端性能优化](/practices/performance/mobile) - 移动端应用性能优化
-- 📝 [数据库优化](/practices/performance/database) - 数据库查询和存储优化
-- 📝 [缓存优化策略](/practices/performance/cache) - 缓存使用和优化
-- 📝 [JVM调优指南](/practices/performance/jvm-tuning) - JVM参数调优
+- 📝 后端性能优化 - 后端服务性能优化指南(待完善)
+- 📝 前端性能优化 - 前端页面性能优化技巧(待完善)
+- 📝 移动端性能优化 - 移动端应用性能优化(待完善)
+- 📝 数据库优化 - 数据库查询和存储优化(待完善)
+- 📝 缓存优化策略 - 缓存使用和优化(待完善)
+- 📝 JVM调优指南 - JVM参数调优(待完善)
 
 ## 🔒 安全指南
 
@@ -77,32 +77,40 @@
 - 📝 [身份认证安全](/practices/security/auth) - 用户认证和授权安全
 - 📝 [数据安全](/practices/security/data) - 数据存储和传输安全
 - 📝 [接口安全](/practices/security/api) - API接口安全防护
-- 📝 [前端安全](/practices/security/frontend) - 前端应用安全最佳实践
-- 📝 [移动端安全](/practices/security/mobile) - 移动应用安全指南
-- 📝 [传输安全](/practices/security/transport) - 网络传输加密
-- 📝 [漏洞防护](/practices/security/vulnerability) - 常见漏洞防护
+- 📝 [客户端安全](/practices/security/client) - 前端和移动端安全最佳实践
+- 📝 [安全审计](/practices/security/audit) - 安全审计和日志记录
+- 📝 前端安全 - 前端应用安全最佳实践(待完善)
+- 📝 移动端安全 - 移动应用安全指南(待完善)
+- 📝 传输安全 - 网络传输加密(待完善)
+- 📝 漏洞防护 - 常见漏洞防护(待完善)
 
 ## 🛠️ 工程化
 
 - 📝 [代码生成器使用](/practices/engineering/code-generator) - 代码生成器实践
-- 📝 [构建优化](/practices/engineering/build-optimization) - 构建性能优化
-- 📝 [CI/CD最佳实践](/practices/engineering/cicd) - 持续集成部署
-- 📝 [代码质量管控](/practices/engineering/code-quality) - 代码质量工具
+- 📝 [Claude Code Skills](/practices/engineering/claude-code-skills) - Claude Code 技能系统
+- 📝 [Claude Code Hooks](/practices/engineering/claude-code-hooks) - Claude Code 钩子机制
+- 📝 [Claude Code MCP](/practices/engineering/claude-code-mcp) - Claude Code MCP 服务器
+- 📝 [Claude Code Agents](/practices/engineering/claude-code-agents) - Claude Code 智能体
+- 📝 [Claude Code Commands](/practices/engineering/claude-code-commands) - Claude Code 自定义命令
+- 📝 构建优化 - 构建性能优化(待完善)
+- 📝 CI/CD最佳实践 - 持续集成部署(待完善)
+- 📝 代码质量管控 - 代码质量工具(待完善)
 
 ## 🚀 部署运维
 
 高效的部署运维流程确保系统稳定运行。
 
 - 📝 [Docker部署指南](/practices/devops/docker-deploy) - Docker容器化部署
-- 📝 [容器化最佳实践](/practices/devops/containerization) - 容器化方案
-- 📝 [监控告警](/practices/devops/monitoring) - 系统监控和告警机制
-- 📝 [日志管理](/practices/devops/logging) - 日志收集、分析和管理
-- 📝 [备份策略](/practices/devops/backup) - 数据备份和恢复策略
-- 📝 [故障排查指南](/practices/devops/troubleshooting) - 常见问题排查
+- 📝 容器化最佳实践 - 容器化方案(待完善)
+- 📝 监控告警 - 系统监控和告警机制(待完善)
+- 📝 日志管理 - 日志收集、分析和管理(待完善)
+- 📝 备份策略 - 数据备份和恢复策略(待完善)
+- 📝 故障排查指南 - 常见问题排查(待完善)
 
 ## 📊 数据管理
 
-- 📝 [数据库设计规范](/practices/data/database-design) - 数据库设计标准
+- 📝 [数据库规范](/practices/standards/database) - 数据库设计和使用规范
+- 📝 [架构数据库设计](/practices/architecture/database) - 数据库架构设计
 
 ---
 
