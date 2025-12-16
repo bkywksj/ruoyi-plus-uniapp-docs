@@ -1,8 +1,8 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
 > **最后更新**: 2025-12-16
-> **整体完成度**: 68.0% (C+ 评分) - 按500+行标准
-> **总文档数**: 490 个 (已清理 18 个占位符/重复文档)
+> **整体完成度**: 69.2% (C+ 评分) - 按500+行标准
+> **总文档数**: 481 个 (已清理 27 个占位符/重复文档)
 > **总行数**: 519,400+ 行
 > **已完成文档**: 333 个 (≥500行)
 
@@ -30,9 +30,9 @@
 | **WD 组件库** | 51 | 51 | 0 | **100%** | A+ |
 | **后端文档** | 71 | 41 | 30 | **57.7%** | D+ |
 | **前端文档** | 182 | 97 | 85 | **53.3%** | D+ |
-| **移动端文档** | 181 | 138 | 43 | **76.2%** | C+ |
+| **移动端文档** | 172 | 138 | 34 | **80.2%** | B |
 | **最佳实践** | 54 | 53 | 1 | **98.1%** | A+ |
-| **总计** | **490** | **333** | **157** | **68.0%** | **C+** |
+| **总计** | **481** | **333** | **148** | **69.2%** | **C+** |
 
 **说明**: 完成标准为文档行数 ≥ 500 行
 
@@ -337,15 +337,16 @@
 包括 Composables、Utils、Plugins、Layouts、Pages、Styles、Platform、Performance、Components 等模块。
 
 **统计说明**:
-- 移动端总文档: 181 个 (已清理 9 个占位符)
+- 移动端总文档: 172 个 (已清理 18 个占位符)
 - WD 组件库: 51 个
 - UniApp 基础: 9 个
-- 其他模块: 121 个 (181 - 51 - 9)
+- 其他模块: 112 个 (172 - 51 - 9)
 
-**已清理占位符 (9个)** ✅:
+**已清理占位符 (18个)** ✅:
 - ~~移动端平台占位符~~ - 7 个 (android, ios, baidu, qq, toutiao, harmony, conditional)
 - ~~移动端构建占位符~~ - 5 个 (alipay-deploy, app-cloud-build, app-offline-build, store-publish, version-management)
 - ~~重复 Composables~~ - 2 个 (useAuth.md, useHttp.md)
+- ~~调试与测试占位符~~ - 9 个 (tools, device, miniapp-devtools, logging, error-monitoring, unit-testing, integration-testing, compatibility-testing, debugging) ✨ **最新**
 
 **优秀示例 (1000+ 行)**:
 - `docs/mobile/composables/use-websocket.md` - 3,598 行
@@ -649,6 +650,35 @@
 ---
 
 ## 📝 更新日志
+
+### 2025-12-16 - 调试与测试章节清理
+
+**清理统计**:
+- 删除调试与测试文档: 9 个
+- 更新 VitePress 配置: 移除相关侧边栏
+
+**清理详情**:
+
+1. **调试与测试目录** (8个):
+   - tools.md (调试工具使用)
+   - device.md (真机调试)
+   - miniapp-devtools.md (小程序开发者工具)
+   - logging.md (日志管理)
+   - error-monitoring.md (错误监控)
+   - unit-testing.md (单元测试)
+   - integration-testing.md (集成测试)
+   - compatibility-testing.md (兼容性测试)
+
+2. **UniApp 调试文档** (1个):
+   - debugging.md (调试工具)
+
+**清理后效果**:
+- 文档总数: 490 → 481 (-9)
+- 移动端文档: 181 → 172 (-9)
+- 移动端完成度: 76.2% → 80.2% (+4.0%)
+- 整体完成度: 68.0% → 69.2% (+1.2%)
+
+---
 
 ### 2025-12-05 - 文档清理
 

@@ -617,7 +617,6 @@ export default defineConfig({
                         { text: '生命周期', link: '/mobile/uniapp/lifecycle' },
                         { text: '路由导航', link: '/mobile/uniapp/navigation' },
                         { text: '条件编译', link: '/mobile/uniapp/conditional' },
-                        { text: '调试工具', link: '/mobile/uniapp/debugging' },
                         { text: 'HBuilderX使用', link: '/mobile/uniapp/hbuilderx' }
                     ]
                 },
@@ -973,20 +972,6 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🐛 调试与测试',
-                    collapsed: true,
-                    items: [
-                        { text: '调试工具使用', link: '/mobile/debug/tools' },
-                        { text: '真机调试', link: '/mobile/debug/device' },
-                        { text: '小程序开发者工具', link: '/mobile/debug/miniapp-devtools' },
-                        { text: '日志管理', link: '/mobile/debug/logging' },
-                        { text: '错误监控', link: '/mobile/debug/error-monitoring' },
-                        { text: '单元测试', link: '/mobile/debug/unit-testing' },
-                        { text: '集成测试', link: '/mobile/debug/integration-testing' },
-                        { text: '兼容性测试', link: '/mobile/debug/compatibility-testing' }
-                    ]
-                },
-                {
                     text: '📦 打包发布',
                     collapsed: true,
                     items: [
@@ -1004,6 +989,23 @@ export default defineConfig({
             ],
 
             '/practices/': [
+                {
+                    text: '🛠️ 工程化',
+                    items: [
+                        {
+                            text: 'Claude Code',
+                            collapsed: false,
+                            items: [
+                                { text: 'Skills 技能系统 ⭐', link: '/practices/engineering/claude-code-skills' },
+                                { text: 'Commands 自定义命令', link: '/practices/engineering/claude-code-commands' },
+                                { text: 'Hooks 钩子机制', link: '/practices/engineering/claude-code-hooks' },
+                                { text: 'MCP 服务器配置', link: '/practices/engineering/claude-code-mcp' },
+                                { text: 'Sub-Agents 子代理', link: '/practices/engineering/claude-code-agents' }
+                            ]
+                        },
+                        { text: '代码生成器使用', link: '/practices/engineering/code-generator' }
+                    ]
+                },
                 {
                     text: '📋 开发规范',
                     items: [
@@ -1060,22 +1062,11 @@ export default defineConfig({
                     text: '🔒 安全指南',
                     items: [
                         { text: '安全总览', link: '/practices/security/overview' },
-                        { text: '身份认证安全', link: '/practices/security/auth' },
+                        { text: '认证与授权', link: '/practices/security/auth' },
                         { text: '数据安全', link: '/practices/security/data' },
-                        { text: '接口安全', link: '/practices/security/api' },
-                        { text: '前端安全', link: '/practices/security/frontend' },
-                        { text: '移动端安全', link: '/practices/security/mobile' },
-                        { text: '传输安全', link: '/practices/security/transport' },
-                        { text: '漏洞防护', link: '/practices/security/vulnerability' },
-                        { text: '密码安全策略', link: '/practices/security/password' },
-                        { text: '安全审计与日志', link: '/practices/security/audit-logging' }
-                    ]
-                },
-                {
-                    text: '🛠️ 工程化',
-                    items: [
-                        { text: 'Claude Code Skills ⭐', link: '/practices/engineering/claude-code-skills' },
-                        { text: '代码生成器使用', link: '/practices/engineering/code-generator' }
+                        { text: 'API安全', link: '/practices/security/api' },
+                        { text: '客户端安全', link: '/practices/security/client' },
+                        { text: '安全审计', link: '/practices/security/audit' }
                     ]
                 },
                 {
