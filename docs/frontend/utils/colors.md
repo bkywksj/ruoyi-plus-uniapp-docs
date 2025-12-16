@@ -524,8 +524,3 @@ const adjustColor = (color: string, level: number) => {
 5. **自动修复**: RGB 转换会自动修复超出范围的值
 6. **暗色主题**: `lightenColor` 的 `isDark` 参数会反转调整方向
 
-## 🔗 相关文档
-
-- [主题系统](/frontend/styles/theme-system) - 主题配置和切换
-- [样式架构](/frontend/styles/style-architecture) - 样式组织结构
-- [UnoCSS 配置](/frontend/styles/unocss-config) - CSS 工具类配置

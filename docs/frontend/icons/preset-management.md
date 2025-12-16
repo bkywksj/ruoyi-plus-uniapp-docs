@@ -465,10 +465,4 @@ export default defineConfig({
 4. **动态图标**: 动态加载的图标不会被预设
 5. **正则性能**: 正则匹配会影响构建性能,谨慎使用
 
-## 🔗 相关文档
-
-- [图标系统概述](./overview.md)
-- [Iconify 配置](./iconify-config.md)
-- [性能优化](../styles/best-practices/performance.md)
-
 合理的图标预设管理能够显著提升应用性能和用户体验。

@@ -448,93 +448,15 @@ export default defineConfig({
                     text: '🎨 样式系统 (styles)',
                     collapsed: true,
                     items: [
-                        // 基础架构
-                        {
-                            text: '基础架构',
-                            items: [
-                                { text: '样式架构概述', link: '/frontend/styles/architecture/overview' },
-                                { text: '文件组织', link: '/frontend/styles/architecture/file-organization' }
-                            ]
-                        },
-
-                        // 原子化CSS
-                        {
-                            text: '原子化CSS',
-                            items: [
-                                { text: 'UnoCSS配置', link: '/frontend/styles/atomic/unocss-config' },
-                                { text: '快捷方式定义', link: '/frontend/styles/atomic/shortcuts' },
-                                { text: '自定义规则', link: '/frontend/styles/atomic/custom-rules' },
-                                { text: '工具类使用', link: '/frontend/styles/atomic/utility-classes' }
-                            ]
-                        },
-
-                        // 基础样式
-                        {
-                            text: '基础样式',
-                            items: [
-                                { text: '样式重置', link: '/frontend/styles/base/reset' },
-                                { text: '排版系统', link: '/frontend/styles/base/typography' },
-                                { text: '全局变量', link: '/frontend/styles/base/variables' },
-                                { text: 'Mixins工具', link: '/frontend/styles/base/mixins' }
-                            ]
-                        },
-
-                        // 主题系统
-                        {
-                            text: '主题系统',
-                            items: [
-                                { text: '主题概述', link: '/frontend/styles/theme/overview' },
-                                { text: '亮色主题', link: '/frontend/styles/theme/light-theme' },
-                                { text: '暗色主题', link: '/frontend/styles/theme/dark-theme' },
-                                { text: '主题切换', link: '/frontend/styles/theme/theme-switching' },
-                                { text: 'CSS变量系统', link: '/frontend/styles/theme/css-variables' }
-                            ]
-                        },
-
-                        // 组件样式
-                        {
-                            text: '组件样式',
-                            items: [
-                                { text: 'Element Plus覆盖', link: '/frontend/styles/components/element-plus' },
-                                { text: '按钮组件', link: '/frontend/styles/components/buttons' },
-                                { text: '布局组件', link: '/frontend/styles/components/layout' },
-                                { text: '自定义组件样式', link: '/frontend/styles/components/custom' }
-                            ]
-                        },
-
-                        // 动画系统
-                        {
-                            text: '动画系统',
-                            items: [
-                                { text: '动画概述', link: '/frontend/styles/animations/overview' },
-                                { text: '过渡动画', link: '/frontend/styles/animations/transitions' },
-                                { text: '关键帧动画', link: '/frontend/styles/animations/keyframes' },
-                                { text: '图标动画', link: '/frontend/styles/animations/icon-animations' },
-                                { text: '对话框动画', link: '/frontend/styles/animations/dialog-animations' }
-                            ]
-                        },
-
-                        // 响应式设计
-                        {
-                            text: '响应式设计',
-                            items: [
-                                { text: '断点系统', link: '/frontend/styles/responsive/breakpoints' },
-                                { text: '移动端适配', link: '/frontend/styles/responsive/mobile' },
-                                { text: '平板适配', link: '/frontend/styles/responsive/tablet' },
-                                { text: '响应式工具', link: '/frontend/styles/responsive/utilities' }
-                            ]
-                        },
-
-                        // 最佳实践
-                        {
-                            text: '最佳实践',
-                            items: [
-                                { text: '样式规范', link: '/frontend/styles/best-practices/conventions' },
-                                { text: '性能优化', link: '/frontend/styles/best-practices/performance' },
-                                { text: '维护指南', link: '/frontend/styles/best-practices/maintenance' },
-                                { text: '常见问题', link: '/frontend/styles/best-practices/troubleshooting' }
-                            ]
-                        }
+                        { text: '样式架构', link: '/frontend/styles/style-architecture' },
+                        { text: 'UnoCSS配置', link: '/frontend/styles/unocss-config' },
+                        { text: '工具类使用', link: '/frontend/styles/utility-classes' },
+                        { text: '全局样式', link: '/frontend/styles/global-styles' },
+                        { text: '主题系统', link: '/frontend/styles/theme-system' },
+                        { text: '组件样式', link: '/frontend/styles/component-styles' },
+                        { text: '动画系统', link: '/frontend/styles/animations' },
+                        { text: '响应式设计', link: '/frontend/styles/responsive' },
+                        { text: '最佳实践', link: '/frontend/styles/best-practices' }
                     ]
                 },
                 {
@@ -876,18 +798,6 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🏪 状态管理 (stores)',
-                    collapsed: true,
-                    items: [
-                        { text: '状态管理概览', link: '/mobile/stores/overview' },
-                        { text: 'Pinia配置', link: '/mobile/stores/pinia-config' },
-                        { text: '用户状态 (user)', link: '/mobile/stores/user' },
-                        { text: '字典状态 (dict)', link: '/mobile/stores/dict' },
-                        { text: '标签栏状态 (tabbar)', link: '/mobile/stores/tabbar' },
-                        { text: '持久化存储', link: '/mobile/stores/persistence' }
-                    ]
-                },
-                {
                     text: '🎨 样式系统 (styles)',
                     collapsed: true,
                     items: [
@@ -900,33 +810,6 @@ export default defineConfig({
                         { text: '响应式设计', link: '/mobile/styles/responsive' },
                         { text: '组件样式', link: '/mobile/styles/components' },
                         { text: '样式最佳实践', link: '/mobile/styles/best-practices' }
-                    ]
-                },
-                {
-                    text: '📝 类型定义 (types)',
-                    collapsed: true,
-                    items: [
-                        { text: '类型系统概览', link: '/mobile/types/overview' },
-                        { text: '全局类型 (global.d.ts)', link: '/mobile/types/global' },
-                        { text: 'HTTP类型 (http.d.ts)', link: '/mobile/types/http' },
-                        { text: '环境类型 (env.d.ts)', link: '/mobile/types/env' },
-                        { text: '组件类型 (components.d.ts)', link: '/mobile/types/components' },
-                        { text: '页面类型 (uni-pages.d.ts)', link: '/mobile/types/uni-pages' },
-                        { text: '静态资源类型', link: '/mobile/types/static-assets' },
-                        { text: '自动导入类型', link: '/mobile/types/auto-imports' },
-                        { text: '异步组件类型', link: '/mobile/types/async-components' }
-                    ]
-                },
-                {
-                    text: '🌍 国际化 (locales)',
-                    collapsed: true,
-                    items: [
-                        { text: '国际化配置', link: '/mobile/i18n/config' },
-                        { text: '语言包管理', link: '/mobile/i18n/language-packs' },
-                        { text: '中文语言包 (zh-CN)', link: '/mobile/i18n/zh-cn' },
-                        { text: '英文语言包 (en-US)', link: '/mobile/i18n/en-us' },
-                        { text: '动态语言切换', link: '/mobile/i18n/dynamic-switching' },
-                        { text: '国际化最佳实践', link: '/mobile/i18n/best-practices' }
                     ]
                 },
                 {
@@ -945,16 +828,9 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         { text: '平台差异说明', link: '/mobile/platform/differences' },
-                        { text: '条件编译使用', link: '/mobile/platform/conditional-compilation' },
                         { text: 'H5端适配', link: '/mobile/platform/h5' },
                         { text: '微信小程序适配', link: '/mobile/platform/wechat' },
-                        { text: '支付宝小程序适配', link: '/mobile/platform/alipay' },
-                        { text: '百度小程序适配', link: '/mobile/platform/baidu' },
-                        { text: 'QQ小程序适配', link: '/mobile/platform/qq' },
-                        { text: '抖音小程序适配', link: '/mobile/platform/toutiao' },
-                        { text: 'Android App适配', link: '/mobile/platform/android' },
-                        { text: 'iOS App适配', link: '/mobile/platform/ios' },
-                        { text: '鸿蒙适配', link: '/mobile/platform/harmony' }
+                        { text: '支付宝小程序适配', link: '/mobile/platform/alipay' }
                     ]
                 },
                 {
@@ -965,10 +841,8 @@ export default defineConfig({
                         { text: '启动性能优化', link: '/mobile/performance/startup' },
                         { text: '渲染性能优化', link: '/mobile/performance/rendering' },
                         { text: '包体积优化', link: '/mobile/performance/bundle-size' },
-                        { text: '图片优化', link: '/mobile/performance/image-optimization' },
-                        { text: '分包加载优化', link: '/mobile/performance/subpackage' },
-                        { text: '内存优化', link: '/mobile/performance/memory' },
-                        { text: '网络优化', link: '/mobile/performance/network' }
+                        { text: '图片优化', link: '/mobile/performance/image' },
+                        { text: '分包加载优化', link: '/mobile/performance/subpackage' }
                     ]
                 },
                 {
@@ -978,12 +852,7 @@ export default defineConfig({
                         { text: '打包配置概览', link: '/mobile/build/overview' },
                         { text: '环境配置', link: '/mobile/build/environment' },
                         { text: 'H5打包发布', link: '/mobile/build/h5-deploy' },
-                        { text: '微信小程序发布', link: '/mobile/build/wechat-deploy' },
-                        { text: '支付宝小程序发布', link: '/mobile/build/alipay-deploy' },
-                        { text: 'App云打包', link: '/mobile/build/app-cloud-build' },
-                        { text: 'App离线打包', link: '/mobile/build/app-offline-build' },
-                        { text: '应用商店发布', link: '/mobile/build/store-publish' },
-                        { text: '版本管理策略', link: '/mobile/build/version-management' }
+                        { text: '微信小程序发布', link: '/mobile/build/wechat-deploy' }
                     ]
                 }
             ],
@@ -1165,29 +1034,7 @@ export default defineConfig({
             __COMPONENT_PREVIEW__: true
         },
         build: {
-            chunkSizeWarningLimit: 3000,
-            // 优化构建性能，减少内存占用
-            minify: 'esbuild',
-            target: 'esnext',
-            rollupOptions: {
-                output: {
-                    // 手动分块策略，避免单个chunk过大
-                    manualChunks(id) {
-                        if (id.includes('node_modules')) {
-                            // Vue相关
-                            if (id.includes('vue') || id.includes('@vue')) {
-                                return 'vue-vendor'
-                            }
-                            // VueUse
-                            if (id.includes('@vueuse')) {
-                                return 'vueuse-vendor'
-                            }
-                            // 其他第三方库
-                            return 'vendor'
-                        }
-                    }
-                }
-            }
+            chunkSizeWarningLimit: 3000
         },
         optimizeDeps: {
             exclude: ['vitepress']
