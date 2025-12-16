@@ -359,19 +359,6 @@ UnoCSS 原子类 > SCSS 工具类 > 自定义样式
   </div>
 </template>
 
-<style lang="scss" scoped>
-.card-container {
-  @apply flex items-center justify-between p-4 bg-white rounded-lg shadow-md;
-}
-
-.title {
-  @apply text-lg font-semibold text-gray-800;
-}
-
-.btn-primary {
-  @apply px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600;
-}
-</style>
 
 <!-- ❌ 避免 - 完全自定义 -->
 <template>
@@ -381,34 +368,6 @@ UnoCSS 原子类 > SCSS 工具类 > 自定义样式
   </div>
 </template>
 
-<style lang="scss" scoped>
-.card-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #303133;
-}
-
-.btn-primary {
-  padding: 8px 16px;
-  color: white;
-  background: #409eff;
-  border-radius: 4px;
-
-  &:hover {
-    background: #66b1ff;
-  }
-}
-</style>
 ```
 
 ### 2. UnoCSS 预设使用
@@ -1335,67 +1294,6 @@ export default defineConfig({
   </div>
 </template>
 
-<style lang="scss" scoped>
-.card {
-  // 块样式
-  background: white;
-  border-radius: 8px;
-
-  // 修饰符
-  &--primary {
-    border: 2px solid var(--el-color-primary);
-  }
-
-  &--success {
-    border: 2px solid var(--el-color-success);
-  }
-
-  // 元素
-  &__header {
-    padding: 16px;
-    border-bottom: 1px solid #e4e7ed;
-  }
-
-  &__title {
-    font-size: 18px;
-    font-weight: 600;
-  }
-
-  &__subtitle {
-    font-size: 14px;
-    color: #909399;
-
-    &--secondary {
-      color: #c0c4cc;
-    }
-  }
-
-  &__body {
-    padding: 16px;
-  }
-
-  &__text {
-    line-height: 1.6;
-  }
-
-  &__footer {
-    padding: 16px;
-    text-align: right;
-  }
-
-  &__button {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-
-    &--primary {
-      background: var(--el-color-primary);
-      color: white;
-    }
-  }
-}
-</style>
 ```
 
 ### 2. 样式作用域
@@ -1404,11 +1302,6 @@ export default defineConfig({
 
 ```vue
 <!-- ✅ 使用 scoped -->
-<style lang="scss" scoped>
-.container {
-  padding: 20px;  // 只影响当前组件
-}
-</style>
 
 <!-- ⚠️ 全局样式 - 谨慎使用 -->
 <style lang="scss">
@@ -1418,11 +1311,6 @@ export default defineConfig({
 </style>
 
 <!-- ✅ 混合使用 -->
-<style lang="scss" scoped>
-.component {
-  /* 组件样式 */
-}
-</style>
 
 <style lang="scss">
 /* 只在必要时添加全局样式 */
@@ -1435,37 +1323,6 @@ export default defineConfig({
 **深度选择器:**
 
 ```vue
-<style lang="scss" scoped>
-/* 修改子组件样式 */
-.my-component {
-  /* 当前组件样式 */
-
-  /* ✅ Vue 3 推荐写法 */
-  :deep(.child-component) {
-    color: red;
-  }
-
-  /* ❌ 已废弃 */
-  ::v-deep .child-component {
-    color: red;
-  }
-
-  /* ❌ 已废弃 */
-  /deep/ .child-component {
-    color: red;
-  }
-}
-
-/* 修改插槽内容 */
-:slotted(.slot-content) {
-  font-weight: bold;
-}
-
-/* 全局选择器 */
-:global(.app-container) {
-  margin: 0 auto;
-}
-</style>
 ```
 
 ### 3. 注释规范
@@ -1723,77 +1580,6 @@ const cardClass = computed(() => [
 ])
 </script>
 
-<style lang="scss" scoped>
-.card {
-  // 使用 CSS 变量便于主题定制
-  background: var(--card-bg, var(--bg-primary));
-  border: 1px solid var(--card-border, var(--border-color));
-  border-radius: var(--card-radius, var(--radius-md));
-  overflow: hidden;
-  transition: var(--duration-normal);
-
-  // 类型修饰符
-  &--primary {
-    border-color: var(--el-color-primary);
-  }
-
-  &--success {
-    border-color: var(--el-color-success);
-  }
-
-  // 阴影修饰符
-  &--shadow-always {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  &--shadow-hover {
-    &:hover {
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-    }
-  }
-
-  &--shadow-never {
-    box-shadow: none;
-  }
-
-  // 可悬浮
-  &--hoverable {
-    cursor: pointer;
-
-    &:hover {
-      transform: translateY(-2px);
-    }
-  }
-
-  // 子元素
-  &__header {
-    padding: var(--card-padding, 16px);
-    border-bottom: 1px solid var(--card-border, var(--border-color));
-  }
-
-  &__body {
-    padding: var(--card-padding, 16px);
-  }
-
-  &__footer {
-    padding: var(--card-padding, 16px);
-    border-top: 1px solid var(--card-border, var(--border-color));
-    background: var(--card-footer-bg, var(--bg-secondary));
-  }
-}
-
-// 暗黑模式适配
-.dark .card {
-  --card-bg: var(--bg-level-1);
-  --card-border: var(--bg-level-2);
-  --card-footer-bg: var(--bg-level-2);
-
-  &--shadow-always,
-  &--shadow-hover:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-}
-</style>
 ```
 
 ---
@@ -1861,23 +1647,6 @@ Vue scoped 样式只影响当前组件根元素和其子元素,不影响子组�
   </div>
 </template>
 
-<style lang="scss" scoped>
-/* ❌ 不生效 - 无法穿透到子组件内部 */
-.child .inner-element {
-  color: red;
-}
-
-/* ✅ 使用 deep 选择器 */
-.child :deep(.inner-element) {
-  color: red;
-}
-
-/* ✅ 或者为子组件根元素设置样式 */
-.child {
-  /* 可以设置子组件根元素的样式 */
-  border: 1px solid red;
-}
-</style>
 ```
 
 ### 3. CSS 变量在 SCSS 中使用

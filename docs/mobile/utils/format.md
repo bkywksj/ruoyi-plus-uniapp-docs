@@ -521,36 +521,6 @@ const handleDateChange = (value: [Date, Date]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.time-display {
-  padding: 32rpx;
-}
-
-.message-item {
-  padding: 24rpx;
-  border-bottom: 1rpx solid #eee;
-
-  .time {
-    font-size: 24rpx;
-    color: #999;
-    margin-top: 8rpx;
-  }
-}
-
-.range-display {
-  margin-top: 16rpx;
-  color: #666;
-}
-
-.stats {
-  margin-top: 32rpx;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-}
-</style>
 ```
 
 ## 字符串处理
@@ -1160,32 +1130,6 @@ const applyTheme = (theme: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.settings {
-  padding: 32rpx;
-}
-
-.setting-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #eee;
-}
-
-.status-tag {
-  display: inline-block;
-  padding: 8rpx 24rpx;
-  border-radius: 8rpx;
-  background-color: #f5f5f5;
-  color: #999;
-
-  &.active {
-    background-color: #e6f7e6;
-    color: #52c41a;
-  }
-}
-</style>
 ```
 
 ## 数据验证

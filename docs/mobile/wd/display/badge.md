@@ -36,13 +36,6 @@ Badge 徽标组件用于在按钮、图标等元素的右上角显示数字或�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 32rpx;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -137,19 +130,6 @@ Badge 徽标组件用于在按钮、图标等元素的右上角显示数字或�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo-column {
-  display: flex;
-  flex-direction: column;
-  gap: 32rpx;
-  padding: 32rpx;
-}
-
-.demo-row {
-  display: flex;
-  gap: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -403,37 +383,6 @@ const readMessage = (id: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.message-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx;
-  gap: 24rpx;
-}
-
-.avatar {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 50%;
-}
-
-.message-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-}
-
-.name {
-  font-size: 32rpx;
-  font-weight: 500;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #999;
-}
-</style>
 ```
 
 ### 动态徽标
@@ -491,20 +440,6 @@ const reset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.dynamic-badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 32rpx;
-  padding: 32rpx;
-}
-
-.controls {
-  display: flex;
-  gap: 16rpx;
-}
-</style>
 ```
 
 ## API
@@ -725,27 +660,6 @@ const toggleDark = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.dark-mode-demo {
-  padding: 32rpx;
-  transition: background-color 0.3s;
-
-  &.dark {
-    background-color: #1f2937;
-
-    // 暗黑模式下调整徽标边框
-    :deep(.wd-badge__content) {
-      border-color: #374151;
-    }
-  }
-}
-
-.badge-group {
-  display: flex;
-  gap: 24rpx;
-  margin-top: 24rpx;
-}
-</style>
 ```
 
 **暗黑模式实现要点:**
@@ -802,27 +716,6 @@ const toggleDark = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.brand-badge-demo {
-  padding: 32rpx;
-}
-
-.brand-section {
-  margin-bottom: 32rpx;
-}
-
-.brand-title {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-
-.badge-row {
-  display: flex;
-  gap: 24rpx;
-}
-</style>
 ```
 
 ## 最佳实践
@@ -988,19 +881,6 @@ const notifyCount = ref(1234)
   </view>
 </template>
 
-<style lang="scss" scoped>
-.avatar {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.avatar-img {
-  width: 100%;
-  height: 100%;
-}
-</style>
 ```
 
 **点状徽标适用场景:**
@@ -1652,39 +1532,6 @@ import { ref } from 'vue'
 const messageCount = ref(8)
 </script>
 
-<style lang="scss" scoped>
-.combo-badge-demo {
-  padding: 32rpx;
-}
-
-.combo-item {
-  margin-bottom: 40rpx;
-}
-
-.avatar-box {
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.avatar {
-  width: 100%;
-  height: 100%;
-}
-
-.combo-label {
-  display: block;
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-
-.button-group {
-  display: flex;
-  gap: 16rpx;
-}
-</style>
 ```
 
 ### 徽标与 Tabbar 结合
@@ -1819,38 +1666,6 @@ const getCountType = (count: number): BadgeType => {
 }
 </script>
 
-<style lang="scss" scoped>
-.table-badge-demo {
-  padding: 32rpx;
-}
-
-.table-header,
-.table-row {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 16rpx;
-  border-bottom: 1rpx solid #eee;
-}
-
-.table-header {
-  background-color: #f5f5f5;
-  font-weight: 500;
-}
-
-.col {
-  flex: 1;
-}
-
-.col-name {
-  flex: 2;
-}
-
-.col-status,
-.col-count {
-  display: flex;
-  justify-content: center;
-}
-</style>
 ```
 
 ## 总结

@@ -41,11 +41,6 @@ const showToast = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -370,15 +365,6 @@ const showBottom = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  wd-button {
-    margin-bottom: 24rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -460,20 +446,6 @@ const showCustomIcon = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-icon-class {
-  animation: rotate 1s linear infinite;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -2468,26 +2440,6 @@ const debugIcon = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-// 自定义图标字体
-@font-face {
-  font-family: 'my-icon';
-  src: url('/static/fonts/my-icon.ttf') format('truetype');
-}
-
-.my-icon {
-  font-family: 'my-icon' !important;
-}
-
-.my-icon-custom-heart::before {
-  content: '\e001'; // 字体图标编码
-}
-
-// 调试样式
-.debug-icon {
-  border: 2px solid red; // 添加边框方便查看
-}
-</style>
 ```
 
 ### 6. 小程序平台 Toast 层级问题
@@ -2547,12 +2499,6 @@ const showCriticalToast = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.map {
-  width: 100%;
-  height: 400rpx;
-}
-</style>
 ```
 
 ### 7. 性能问题:频繁创建销毁

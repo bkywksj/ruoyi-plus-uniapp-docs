@@ -40,24 +40,6 @@ import { ref } from 'vue'
 const value = ref(50)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-text {
-    margin-top: 24rpx;
-    font-size: 28rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -89,24 +71,6 @@ import { ref } from 'vue'
 const range = ref([20, 80])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-text {
-    margin-top: 24rpx;
-    font-size: 28rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -154,38 +118,6 @@ const age = ref(30)
 const temperature = ref(25)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-
-  &-text {
-    margin-top: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -240,38 +172,6 @@ const value3 = ref(50)
 const value4 = ref(5.0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-
-  &-text {
-    margin-top: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -316,32 +216,6 @@ const value2 = ref(50)
 const range = ref([20, 80])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -392,32 +266,6 @@ const value3 = ref(50)
 const value4 = ref(50)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -480,32 +328,6 @@ const value3 = ref(70)
 const value4 = ref(80)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -579,53 +401,6 @@ const addLog = (message: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-log {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-    max-height: 400rpx;
-    overflow-y: auto;
-
-    &-title {
-      margin-bottom: 16rpx;
-      font-size: 26rpx;
-      font-weight: 500;
-      color: #333;
-    }
-
-    &-item {
-      padding: 8rpx 0;
-      font-size: 24rpx;
-      color: #666;
-      line-height: 1.5;
-      border-bottom: 1rpx solid #EBEDF0;
-
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-
-    &-empty {
-      padding: 32rpx 0;
-      font-size: 24rpx;
-      color: #C8C9CC;
-      text-align: center;
-    }
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -700,73 +475,6 @@ const handleSearch = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-filter {
-    padding: 32rpx;
-    background-color: #FFF;
-    border-radius: 8rpx;
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background-color: #F0F9FF;
-    border: 1rpx solid #BAE7FF;
-    border-radius: 8rpx;
-  }
-}
-
-.filter-info {
-  margin-top: 24rpx;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.filter-label {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.filter-value {
-  font-size: 28rpx;
-  color: #1890FF;
-  font-weight: 500;
-}
-
-.btn-search {
-  width: 100%;
-  height: 88rpx;
-  margin-top: 24rpx;
-  background-color: #1890FF;
-  color: #FFF;
-  font-size: 28rpx;
-  border-radius: 8rpx;
-  border: none;
-}
-
-.result-title {
-  margin-bottom: 12rpx;
-  font-size: 26rpx;
-  font-weight: 500;
-  color: #1890FF;
-}
-
-.result-text {
-  font-size: 26rpx;
-  color: #666;
-}
-</style>
 ```
 
 **技术实现:**
@@ -877,86 +585,6 @@ const setVolume = (value: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-player {
-    display: flex;
-    align-items: center;
-    gap: 16rpx;
-    padding: 32rpx;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-  }
-
-  &-controls {
-    margin-top: 24rpx;
-    display: flex;
-    gap: 16rpx;
-  }
-
-  &-status {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background-color: #FFF;
-    border-radius: 8rpx;
-  }
-}
-
-.player-icon {
-  flex-shrink: 0;
-}
-
-.player-slider {
-  flex: 1;
-}
-
-.player-value {
-  flex-shrink: 0;
-  width: 80rpx;
-  font-size: 26rpx;
-  color: #666;
-  text-align: right;
-}
-
-.btn-control {
-  flex: 1;
-  height: 72rpx;
-  font-size: 26rpx;
-  background-color: #FFF;
-  color: #333;
-  border: 1rpx solid #EBEDF0;
-  border-radius: 8rpx;
-}
-
-.status-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 12rpx 0;
-  font-size: 26rpx;
-
-  &:not(:last-child) {
-    border-bottom: 1rpx solid #EBEDF0;
-  }
-}
-
-.status-label {
-  color: #666;
-}
-
-.status-value {
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1024,64 +652,6 @@ const handleBrightnessChange = ({ value }: { value: number }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-screen {
-    height: 400rpx;
-    margin-bottom: 32rpx;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.3s;
-  }
-
-  &-control {
-    display: flex;
-    align-items: center;
-    gap: 16rpx;
-    padding: 24rpx;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-  }
-
-  &-tips {
-    margin-top: 24rpx;
-    display: flex;
-    align-items: center;
-    gap: 8rpx;
-    padding: 16rpx 24rpx;
-    background-color: #F0F9FF;
-    border-radius: 8rpx;
-  }
-}
-
-.screen-content {
-  text-align: center;
-  color: #FFF;
-}
-
-.screen-text {
-  margin-top: 16rpx;
-  font-size: 48rpx;
-  font-weight: bold;
-}
-
-.tips-text {
-  font-size: 24rpx;
-  color: #666;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1133,46 +703,6 @@ const value1 = ref(50)
 const value2 = ref(60)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-
-:deep(.custom-min) {
-  color: #FF4757;
-  font-weight: bold;
-}
-
-:deep(.custom-max) {
-  color: #2ECC71;
-  font-weight: bold;
-}
-
-:deep(.custom-slider) {
-  // 自定义滑块样式
-}
-</style>
 ```
 
 **使用说明:**
@@ -1236,31 +766,6 @@ const handleTabChange = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-tips {
-    margin-top: 24rpx;
-    padding: 16rpx 24rpx;
-    font-size: 24rpx;
-    color: #666;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-  }
-}
-
-.tab-content {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1410,96 +915,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-form {
-    padding: 32rpx;
-    background-color: #FFF;
-    border-radius: 8rpx;
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background-color: #F0F9FF;
-    border: 1rpx solid #BAE7FF;
-    border-radius: 8rpx;
-  }
-}
-
-.form-item {
-  margin-bottom: 32rpx;
-
-  &:last-of-type {
-    margin-bottom: 0;
-  }
-}
-
-.form-label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-
-.form-required {
-  color: #FF4757;
-  margin-right: 4rpx;
-}
-
-.form-error {
-  margin-top: 8rpx;
-  font-size: 24rpx;
-  color: #FF4757;
-}
-
-.form-actions {
-  margin-top: 48rpx;
-  display: flex;
-  gap: 16rpx;
-}
-
-.btn-submit,
-.btn-reset {
-  flex: 1;
-  height: 88rpx;
-  font-size: 28rpx;
-  border-radius: 8rpx;
-  border: none;
-}
-
-.btn-submit {
-  background-color: #1890FF;
-  color: #FFF;
-}
-
-.btn-reset {
-  background-color: #F7F8FA;
-  color: #666;
-}
-
-.result-title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #1890FF;
-}
-
-.result-content {
-  font-size: 26rpx;
-  color: #666;
-  line-height: 1.8;
-}
-</style>
 ```
 
 **技术实现:**

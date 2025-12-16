@@ -50,17 +50,6 @@ import { ref } from 'vue'
 const value = ref(['1'])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  background: #f5f5f5;
-}
-
-.content {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-</style>
 ```
 
 **使用说明:**
@@ -110,32 +99,6 @@ import { ref } from 'vue'
 const value = ref('intro')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  background: #f5f5f5;
-}
-
-.content {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.spec-item {
-  display: flex;
-  margin-bottom: 12rpx;
-}
-
-.label {
-  color: #999;
-  margin-right: 16rpx;
-}
-
-.value {
-  color: #333;
-  font-weight: bold;
-}
-</style>
 ```
 
 **使用说明:**
@@ -171,16 +134,6 @@ import { ref } from 'vue'
 const value = ref(['1'])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  background: #f5f5f5;
-}
-
-.content {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -237,39 +190,6 @@ import { ref } from 'vue'
 const value = ref([])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  background: #f5f5f5;
-}
-
-.custom-title {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  width: 100%;
-}
-
-.title-text {
-  flex: 1;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.content {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.notice-item {
-  padding: 16rpx 0;
-  border-bottom: 1rpx solid #eee;
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -341,16 +261,6 @@ const handleAsyncBeforeExpand = (name: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  background: #f5f5f5;
-}
-
-.content {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -394,24 +304,6 @@ import { ref } from 'vue'
 const expanded = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #fff;
-}
-
-.long-text {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.control-buttons {
-  margin-top: 24rpx;
-  display: flex;
-  gap: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -463,30 +355,6 @@ import { ref } from 'vue'
 const expanded = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #fff;
-}
-
-.long-text {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.custom-more-button {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  padding: 16rpx 0;
-}
-
-.more-text {
-  font-size: 28rpx;
-  color: #1890ff;
-}
-</style>
 ```
 
 **使用说明:**
@@ -547,23 +415,6 @@ const toggleAll = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  background: #f5f5f5;
-}
-
-.toolbar {
-  display: flex;
-  gap: 16rpx;
-  padding: 32rpx;
-  background: #fff;
-}
-
-.content {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -649,74 +500,6 @@ const faqList = ref<FaqItem[]>([
 ])
 </script>
 
-<style lang="scss" scoped>
-.faq-page {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.page-title {
-  padding: 48rpx 32rpx 32rpx;
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #333;
-  background: #fff;
-}
-
-.faq-title {
-  display: flex;
-  align-items: flex-start;
-  gap: 16rpx;
-  width: 100%;
-}
-
-.question-mark {
-  flex-shrink: 0;
-  width: 48rpx;
-  height: 48rpx;
-  line-height: 48rpx;
-  text-align: center;
-  background: #1890ff;
-  color: #fff;
-  border-radius: 50%;
-  font-weight: bold;
-  font-size: 28rpx;
-}
-
-.question-text {
-  flex: 1;
-  font-size: 32rpx;
-  color: #333;
-  font-weight: bold;
-  line-height: 48rpx;
-}
-
-.faq-answer {
-  display: flex;
-  align-items: flex-start;
-  gap: 16rpx;
-}
-
-.answer-mark {
-  flex-shrink: 0;
-  width: 48rpx;
-  height: 48rpx;
-  line-height: 48rpx;
-  text-align: center;
-  background: #52c41a;
-  color: #fff;
-  border-radius: 50%;
-  font-weight: bold;
-  font-size: 28rpx;
-}
-
-.answer-text {
-  flex: 1;
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-</style>
 ```
 
 **功能说明:**
@@ -817,88 +600,6 @@ import { ref } from 'vue'
 const activeNames = ref(['params'])
 </script>
 
-<style lang="scss" scoped>
-.product-detail {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.product-header {
-  background: #fff;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-}
-
-.product-image {
-  width: 100%;
-  height: 500rpx;
-  border-radius: 16rpx;
-  margin-bottom: 24rpx;
-}
-
-.product-name {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.product-price {
-  font-size: 48rpx;
-  font-weight: bold;
-  color: #ff4d4f;
-}
-
-.param-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.param-item {
-  display: flex;
-  font-size: 28rpx;
-}
-
-.param-label {
-  width: 150rpx;
-  color: #999;
-}
-
-.param-value {
-  flex: 1;
-  color: #333;
-}
-
-.section-title {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.description {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.service-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-}
-
-.service-item {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **功能说明:**
@@ -993,66 +694,6 @@ const handleShare = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.article-page {
-  min-height: 100vh;
-  background: #fff;
-  padding: 32rpx;
-}
-
-.article-header {
-  margin-bottom: 32rpx;
-}
-
-.article-title {
-  font-size: 44rpx;
-  font-weight: bold;
-  color: #333;
-  line-height: 1.4;
-  margin-bottom: 16rpx;
-}
-
-.article-meta {
-  display: flex;
-  gap: 32rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-
-.article-content {
-  font-size: 32rpx;
-  color: #333;
-  line-height: 1.8;
-  white-space: pre-line;
-}
-
-.article-footer {
-  margin-top: 48rpx;
-}
-
-.tags {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  margin-bottom: 32rpx;
-}
-
-.actions {
-  display: flex;
-  justify-content: space-around;
-  padding: 32rpx 0;
-  border-top: 1rpx solid #eee;
-}
-
-.action-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12rpx;
-  font-size: 24rpx;
-  color: #666;
-}
-</style>
 ```
 
 **功能说明:**
@@ -1242,20 +883,6 @@ $-dark-color-gray: #6c6c6e;             // 暗黑模式灰色文字
   </view>
 </template>
 
-<style lang="scss" scoped>
-.custom-theme {
-  // 修改 CSS 变量
-  --collapse-title-color: #1890ff;
-  --collapse-body-color: #666;
-  --collapse-arrow-color: #1890ff;
-  --collapse-header-padding: 40rpx;
-}
-
-:deep(.custom-collapse) {
-  border-radius: 16rpx;
-  overflow: hidden;
-}
-</style>
 ```
 
 ### 暗黑模式

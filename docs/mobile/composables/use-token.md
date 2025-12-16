@@ -90,38 +90,6 @@ const handleRemoveToken = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.token-demo {
-  padding: 32rpx;
-}
-
-.token-info {
-  margin-bottom: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-
-  .label {
-    font-weight: bold;
-    margin-right: 16rpx;
-  }
-
-  .value {
-    color: #666;
-    word-break: break-all;
-  }
-}
-
-.actions {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-
-  button {
-    width: 100%;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -199,65 +167,6 @@ const handleLogout = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.reactive-token-demo {
-  padding: 32rpx;
-}
-
-.token-status {
-  display: flex;
-  align-items: center;
-  margin-bottom: 24rpx;
-  padding: 24rpx;
-  background: #f8f8f8;
-  border-radius: 8rpx;
-
-  .status-label {
-    font-weight: bold;
-    margin-right: 16rpx;
-  }
-
-  .status-value {
-    font-size: 28rpx;
-
-    &.logged-in {
-      color: #07c160;
-    }
-
-    &.logged-out {
-      color: #999;
-    }
-  }
-}
-
-.token-display {
-  margin-bottom: 24rpx;
-  padding: 24rpx;
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8rpx;
-
-  .label {
-    display: block;
-    font-size: 24rpx;
-    color: #999;
-    margin-bottom: 8rpx;
-  }
-
-  .value {
-    font-size: 26rpx;
-    color: #333;
-    word-break: break-all;
-    font-family: monospace;
-  }
-}
-
-.actions {
-  button {
-    width: 100%;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -383,48 +292,6 @@ const handleToggleToken = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.auth-headers-demo {
-  padding: 32rpx;
-}
-
-.headers-display,
-.response {
-  margin-bottom: 24rpx;
-
-  .label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 12rpx;
-  }
-
-  .code-block {
-    padding: 24rpx;
-    background: #1e1e1e;
-    border-radius: 8rpx;
-    overflow-x: auto;
-
-    text {
-      color: #d4d4d4;
-      font-size: 24rpx;
-      font-family: 'Courier New', monospace;
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-  }
-}
-
-.actions {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-  margin-bottom: 24rpx;
-
-  button {
-    width: 100%;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -579,48 +446,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.auth-query-demo {
-  padding: 32rpx;
-}
-
-.query-display,
-.url-example {
-  margin-bottom: 24rpx;
-
-  .label {
-    display: block;
-    font-size: 28rpx;
-    font-weight: bold;
-    margin-bottom: 12rpx;
-  }
-
-  .query-value,
-  .url-value {
-    padding: 24rpx;
-    background: #f5f5f5;
-    border-radius: 8rpx;
-    border: 1px dashed #ccc;
-
-    text {
-      font-size: 24rpx;
-      color: #333;
-      word-break: break-all;
-      font-family: monospace;
-    }
-  }
-}
-
-.actions {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-
-  button {
-    width: 100%;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -808,78 +633,6 @@ const handleLogout = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.login-demo {
-  padding: 32rpx;
-}
-
-.login-form {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
-
-  .form-item {
-    margin-bottom: 24rpx;
-
-    .label {
-      display: block;
-      font-size: 28rpx;
-      margin-bottom: 12rpx;
-      color: #333;
-    }
-
-    .input {
-      width: 100%;
-      height: 80rpx;
-      padding: 0 24rpx;
-      background: #f5f5f5;
-      border-radius: 8rpx;
-      font-size: 28rpx;
-    }
-  }
-
-  .login-btn {
-    width: 100%;
-    margin-top: 16rpx;
-  }
-}
-
-.user-info {
-  margin-top: 32rpx;
-  padding: 32rpx;
-  background: #f8f8f8;
-  border-radius: 16rpx;
-
-  .label {
-    display: block;
-    font-size: 28rpx;
-    font-weight: bold;
-    margin-bottom: 16rpx;
-  }
-
-  .info-item {
-    display: flex;
-    margin-bottom: 12rpx;
-
-    .key {
-      width: 120rpx;
-      color: #666;
-    }
-
-    .value {
-      flex: 1;
-      color: #333;
-      word-break: break-all;
-    }
-  }
-
-  .logout-btn {
-    width: 100%;
-    margin-top: 24rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1066,63 +819,6 @@ const handleFetchOrders = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.interceptor-demo {
-  padding: 32rpx;
-}
-
-.demo-section {
-  margin-bottom: 32rpx;
-
-  .section-title {
-    display: block;
-    font-size: 32rpx;
-    font-weight: bold;
-    margin-bottom: 16rpx;
-  }
-
-  .info-box {
-    padding: 24rpx;
-    background: #e8f4ff;
-    border-left: 4rpx solid #1890ff;
-    border-radius: 8rpx;
-    margin-bottom: 24rpx;
-
-    .info-text {
-      font-size: 26rpx;
-      color: #333;
-    }
-  }
-
-  button {
-    width: 100%;
-    margin-bottom: 16rpx;
-  }
-}
-
-.result-section {
-  .section-title {
-    display: block;
-    font-size: 28rpx;
-    font-weight: bold;
-    margin-bottom: 12rpx;
-  }
-
-  .code-block {
-    padding: 24rpx;
-    background: #1e1e1e;
-    border-radius: 8rpx;
-    overflow-x: auto;
-
-    text {
-      color: #d4d4d4;
-      font-size: 24rpx;
-      font-family: monospace;
-      white-space: pre-wrap;
-    }
-  }
-}
-</style>
 ```
 
 **技术实现:**

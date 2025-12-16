@@ -43,20 +43,6 @@ const value1 = ref('选项1')
 const options1 = ['选项1', '选项2', '选项3']
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 24rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -89,20 +75,6 @@ const value2 = ref(1)
 const options2 = [1, 2, 3, 4, 5]
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 24rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -147,24 +119,6 @@ const handleChange = (option: SegmentedOption) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 24rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  color: #666;
-
-  view + view {
-    margin-top: 8rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -207,17 +161,6 @@ const options5: SegmentedOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.tip {
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -265,11 +208,6 @@ const value8 = ref('选项1')
 const options8 = ['选项1', '选项2', '选项3']
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **尺寸规格:**
@@ -312,17 +250,6 @@ const value9 = ref('选项1')
 const options9 = ['选项1', '选项2', '选项3', '选项4']
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.tip {
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -388,21 +315,6 @@ const options11: SegmentedOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.custom-label {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .label-text {
-    margin-left: 8rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -473,17 +385,6 @@ const toggleDisabled = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.btn-group {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -536,17 +437,6 @@ const changeValue = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.btn-group {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -617,36 +507,6 @@ const handleUpdateValue = (value: string | number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.event-log {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-
-  .log-title {
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    font-weight: bold;
-    color: #333;
-  }
-
-  .log-item {
-    padding: 12rpx 0;
-    font-size: 24rpx;
-    color: #666;
-    border-bottom: 1rpx solid #e0e0e0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -701,70 +561,6 @@ const currentView = ref('list')
 const viewOptions = ['list', 'grid', 'chart']
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.content-area {
-  margin-top: 32rpx;
-}
-
-.content-panel {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-}
-
-.panel-title {
-  margin-bottom: 24rpx;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.list-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #333;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16rpx;
-}
-
-.grid-item {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.chart-placeholder {
-  height: 400rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 8rpx;
-  font-size: 32rpx;
-  color: #fff;
-}
-</style>
 ```
 
 **使用说明:**
@@ -827,53 +623,6 @@ const filteredOrders = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.order-list {
-  margin-top: 32rpx;
-}
-
-.order-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  .order-id {
-    font-size: 28rpx;
-    color: #333;
-    font-weight: bold;
-  }
-
-  .order-status {
-    margin-top: 8rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-
-  .order-amount {
-    margin-top: 8rpx;
-    font-size: 32rpx;
-    color: #ff6b6b;
-    font-weight: bold;
-  }
-}
-
-.empty {
-  padding: 64rpx 32rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -926,37 +675,6 @@ const priceRange = ref('全部')
 const priceOptions = ['全部', '0-100', '100-500', '500+']
 </script>
 
-<style lang="scss" scoped>
-.demo-segmented {
-  padding: 32rpx;
-}
-
-.filter-group {
-  display: flex;
-  align-items: center;
-  margin-bottom: 24rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-
-  .filter-label {
-    width: 100rpx;
-    font-size: 28rpx;
-    color: #333;
-    font-weight: bold;
-  }
-}
-
-.result-info {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1146,34 +864,6 @@ const value = ref('选项1')
 const options = ['选项1', '选项2', '选项3']
 </script>
 
-<style lang="scss" scoped>
-.custom-segmented {
-  padding: 32rpx;
-
-  // 自定义容器样式
-  :deep(.my-segmented) {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 12rpx;
-    border-radius: 16rpx;
-  }
-
-  // 自定义选项样式
-  :deep(.wd-segmented__item) {
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: bold;
-
-    &.is-active {
-      color: #333;
-    }
-  }
-
-  // 自定义激活项背景
-  :deep(.wd-segmented__item--active) {
-    background: #fff;
-    box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
-  }
-}
-</style>
 ```
 
 **深色主题:**
@@ -1192,13 +882,6 @@ const value = ref('选项1')
 const options = ['选项1', '选项2', '选项3']
 </script>
 
-<style lang="scss" scoped>
-.dark-segmented {
-  padding: 32rpx;
-  background: #1a1a1a;
-  min-height: 100vh;
-}
-</style>
 ```
 
 **胶囊样式:**
@@ -1221,30 +904,6 @@ const value = ref('选项1')
 const options = ['选项1', '选项2', '选项3']
 </script>
 
-<style lang="scss" scoped>
-.capsule-segmented {
-  padding: 32rpx;
-
-  :deep(.capsule-style) {
-    background: #fff;
-    border: 2rpx solid #e0e0e0;
-    border-radius: 48rpx;
-
-    .wd-segmented__item {
-      color: #666;
-
-      &.is-active {
-        color: #fff;
-      }
-    }
-
-    .wd-segmented__item--active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 48rpx;
-    }
-  }
-}
-</style>
 ```
 
 参考: src/wd/components/wd-segmented/wd-segmented.vue:236-345
@@ -1824,25 +1483,6 @@ const getLabelStyle = (value: string | number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  :deep(.custom-segmented) {
-    .wd-segmented__item {
-      &.is-active {
-        font-weight: bold;
-      }
-    }
-  }
-
-  .custom-label {
-    display: flex;
-    align-items: center;
-    gap: 8rpx;
-  }
-}
-</style>
 ```
 
 **说明:**

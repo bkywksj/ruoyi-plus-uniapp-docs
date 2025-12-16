@@ -37,13 +37,6 @@ Loading 加载指示器是一个轻量级的加载动画组件,用于表示数�
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  justify-content: center;
-}
-</style>
 ```
 
 **默认配置:**
@@ -78,27 +71,6 @@ Loading 组件提供两种加载指示器类型,通过 `type` 属性设置:
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 32rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.demo-label {
-  width: 200rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **类型说明:**
@@ -163,33 +135,6 @@ Loading 组件提供两种加载指示器类型,通过 `type` 属性设置:
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-row {
-  display: flex;
-  margin-bottom: 32rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.demo-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.demo-label {
-  font-size: 24rpx;
-  color: #999;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **颜色处理机制:**
@@ -252,33 +197,6 @@ intermediateColor.value = gradient(props.color, '#ffffff', 2)[1]
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-row {
-  display: flex;
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.demo-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.demo-label {
-  font-size: 24rpx;
-  color: #999;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **尺寸格式:**
@@ -351,44 +269,6 @@ iconSize.value = addUnit(newVal)
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.demo-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.demo-row {
-  display: flex;
-  justify-content: space-around;
-}
-
-.demo-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.demo-label {
-  font-size: 24rpx;
-  color: #999;
-  margin-top: 16rpx;
-}
-</style>
 ```
 
 **组合说明:**
@@ -426,27 +306,6 @@ Loading 组件默认为 `display: inline-block`,可以直接内联在文本或�
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 32rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.demo-text {
-  font-size: 28rpx;
-  color: #333;
-  margin: 0 16rpx;
-}
-</style>
 ```
 
 **内联特性:**
@@ -518,64 +377,6 @@ const handleSuccessClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.demo-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.custom-button,
-.primary-button,
-.success-button {
-  width: 100%;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8rpx;
-  border: none;
-  font-size: 28rpx;
-
-  &[disabled] {
-    opacity: 0.6;
-  }
-}
-
-.custom-button {
-  background-color: #4D80F0;
-  color: #ffffff;
-}
-
-.primary-button {
-  background-color: #1989fa;
-  color: #ffffff;
-}
-
-.success-button {
-  background-color: #00C851;
-  color: #ffffff;
-}
-
-.button-text {
-  margin-left: 16rpx;
-  color: #ffffff;
-}
-</style>
 ```
 
 **实现要点:**
@@ -625,35 +426,6 @@ const handleSuccessClick = () => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 32rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.demo-label {
-  width: 200rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-// 自定义类名样式
-:deep(.my-loading) {
-  background-color: #fff3cd;
-  padding: 16rpx;
-  border-radius: 8rpx;
-  border: 2rpx solid #ffc107;
-}
-</style>
 ```
 
 **样式自定义说明:**
@@ -704,46 +476,6 @@ const hideFullLoading = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-button {
-  width: 100%;
-  height: 88rpx;
-  background-color: #4D80F0;
-  color: #ffffff;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  border: none;
-}
-
-.loading-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-}
-
-.loading-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.loading-text {
-  margin-top: 32rpx;
-  font-size: 28rpx;
-  color: #ffffff;
-}
-</style>
 ```
 
 **实现要点:**
@@ -816,94 +548,6 @@ const refreshData = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.content-card {
-  background-color: #ffffff;
-  border-radius: 12rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32rpx;
-  border-bottom: 2rpx solid #f5f5f5;
-}
-
-.card-title {
-  font-size: 32rpx;
-  font-weight: 500;
-  color: #333;
-}
-
-.refresh-button {
-  height: 60rpx;
-  padding: 0 24rpx;
-  background-color: #4D80F0;
-  color: #ffffff;
-  border-radius: 6rpx;
-  font-size: 24rpx;
-  border: none;
-}
-
-.card-body {
-  position: relative;
-  min-height: 400rpx;
-}
-
-.data-list {
-  padding: 32rpx;
-}
-
-.data-item {
-  padding: 24rpx;
-  background-color: #f9f9f9;
-  border-radius: 8rpx;
-  margin-bottom: 16rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.item-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.item-desc {
-  display: block;
-  font-size: 24rpx;
-  color: #999;
-}
-
-.local-loading {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(255, 255, 255, 0.9);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.loading-tip {
-  margin-top: 24rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1003,71 +647,6 @@ const loadMore = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-}
-
-.scroll-container {
-  height: 100%;
-}
-
-.list {
-  padding: 32rpx;
-}
-
-.list-item {
-  display: flex;
-  align-items: center;
-  padding: 32rpx;
-  background-color: #ffffff;
-  border-radius: 8rpx;
-  margin-bottom: 16rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
-}
-
-.item-number {
-  width: 60rpx;
-  height: 60rpx;
-  line-height: 60rpx;
-  text-align: center;
-  background-color: #4D80F0;
-  color: #ffffff;
-  border-radius: 50%;
-  font-size: 24rpx;
-  margin-right: 24rpx;
-}
-
-.item-content {
-  flex: 1;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.load-more {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 32rpx;
-}
-
-.load-more-text {
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-
-.no-more {
-  display: flex;
-  justify-content: center;
-  padding: 32rpx;
-}
-
-.no-more-text {
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1140,150 +719,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding: 32rpx;
-}
-
-.skeleton-container {
-  background-color: #ffffff;
-  border-radius: 12rpx;
-  padding: 32rpx;
-}
-
-.skeleton-header {
-  display: flex;
-  margin-bottom: 32rpx;
-}
-
-.skeleton-avatar {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 50%;
-  background-color: #f0f0f0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 24rpx;
-}
-
-.skeleton-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.skeleton-line {
-  height: 40rpx;
-  background-color: #f0f0f0;
-  border-radius: 4rpx;
-  margin-bottom: 16rpx;
-  display: flex;
-  align-items: center;
-  padding: 0 16rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-    width: 60%;
-  }
-}
-
-.skeleton-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.skeleton-card {
-  height: 120rpx;
-  background-color: #f0f0f0;
-  border-radius: 8rpx;
-  margin-bottom: 16rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.skeleton-text {
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-
-.content-loaded {
-  background-color: #ffffff;
-  border-radius: 12rpx;
-  padding: 32rpx;
-}
-
-.user-header {
-  display: flex;
-  margin-bottom: 32rpx;
-}
-
-.user-avatar {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 50%;
-  margin-right: 24rpx;
-}
-
-.user-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.user-name {
-  font-size: 32rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.user-desc {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.user-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.content-card {
-  padding: 32rpx;
-  background-color: #f9f9f9;
-  border-radius: 8rpx;
-  margin-bottom: 16rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.card-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.card-desc {
-  display: block;
-  font-size: 24rpx;
-  color: #666;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1390,109 +825,6 @@ const sizeOptions = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background-color: #f5f5f5;
-  min-height: 100vh;
-}
-
-.control-panel {
-  background-color: #ffffff;
-  border-radius: 12rpx;
-  padding: 32rpx;
-  margin-bottom: 32rpx;
-}
-
-.panel-title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.control-group {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 24rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.control-label {
-  width: 100rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-
-.control-button {
-  height: 60rpx;
-  padding: 0 24rpx;
-  background-color: #f5f5f5;
-  color: #333;
-  border-radius: 6rpx;
-  font-size: 24rpx;
-  border: 2rpx solid transparent;
-  margin-right: 16rpx;
-  margin-bottom: 16rpx;
-
-  &.active {
-    background-color: #4D80F0;
-    color: #ffffff;
-    border-color: #4D80F0;
-  }
-}
-
-.color-button {
-  width: 120rpx;
-  height: 60rpx;
-  border-radius: 6rpx;
-  font-size: 24rpx;
-  color: #ffffff;
-  border: 2rpx solid transparent;
-  margin-right: 16rpx;
-  margin-bottom: 16rpx;
-
-  &.active {
-    border-color: #333;
-    box-shadow: 0 0 0 2rpx #ffffff, 0 0 0 4rpx #333;
-  }
-}
-
-.preview-area {
-  background-color: #ffffff;
-  border-radius: 12rpx;
-  padding: 32rpx;
-}
-
-.preview-title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.preview-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 64rpx 32rpx;
-  background-color: #f9f9f9;
-  border-radius: 8rpx;
-}
-
-.preview-info {
-  margin-top: 32rpx;
-  font-size: 24rpx;
-  color: #999;
-  text-align: center;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1559,104 +891,6 @@ const sizeOptions = [
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-section {
-  background-color: #ffffff;
-  border-radius: 12rpx;
-  padding: 32rpx;
-  margin-bottom: 32rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.demo-title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.demo-row {
-  display: flex;
-  justify-content: space-around;
-  padding: 32rpx;
-  background-color: #f9f9f9;
-  border-radius: 8rpx;
-}
-
-.gradient-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.gradient-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 24rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.gradient-box {
-  width: 120rpx;
-  height: 60rpx;
-  border-radius: 6rpx;
-  margin-right: 16rpx;
-}
-
-.ring-gradient {
-  background: linear-gradient(to right, #4D80F0, #a6bff7);
-}
-
-.outline-gradient {
-  background: linear-gradient(to right, transparent, #ffffff);
-  border: 2rpx solid #e0e0e0;
-}
-
-.gradient-label {
-  flex: 1;
-  font-size: 28rpx;
-  color: #666;
-}
-
-.params-info {
-  background-color: #f9f9f9;
-  border-radius: 8rpx;
-  padding: 24rpx;
-}
-
-.param-item {
-  display: flex;
-  padding: 16rpx 0;
-  border-bottom: 2rpx solid #f0f0f0;
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.param-label {
-  width: 200rpx;
-  font-size: 28rpx;
-  color: #999;
-}
-
-.param-value {
-  flex: 1;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **SVG 生成机制:**
@@ -1752,112 +986,6 @@ const setStage = (newStage: Stage) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.demo-section {
-  background-color: #ffffff;
-  border-radius: 12rpx;
-  padding: 32rpx;
-  margin-bottom: 32rpx;
-}
-
-.demo-title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.stage-buttons {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.stage-button {
-  height: 60rpx;
-  padding: 0 24rpx;
-  background-color: #4D80F0;
-  color: #ffffff;
-  border-radius: 6rpx;
-  font-size: 24rpx;
-  border: none;
-  margin-right: 16rpx;
-  margin-bottom: 16rpx;
-}
-
-.content-area {
-  background-color: #ffffff;
-  border-radius: 12rpx;
-  padding: 64rpx 32rpx;
-  min-height: 400rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.stage-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  &.success {
-    color: #00C851;
-  }
-
-  &.error {
-    color: #FF4444;
-  }
-}
-
-.stage-text {
-  margin-top: 32rpx;
-  font-size: 28rpx;
-  color: #666;
-
-  &.loading {
-    color: #4D80F0;
-    font-weight: 500;
-  }
-}
-
-.success-icon,
-.error-icon {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 80rpx;
-  font-weight: bold;
-  color: #ffffff;
-}
-
-.success-icon {
-  background-color: #00C851;
-}
-
-.error-icon {
-  background-color: #FF4444;
-}
-
-.retry-button {
-  margin-top: 32rpx;
-  height: 60rpx;
-  padding: 0 32rpx;
-  background-color: #FF4444;
-  color: #ffffff;
-  border-radius: 6rpx;
-  font-size: 24rpx;
-  border: none;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1967,36 +1095,6 @@ Loading 组件支持以下 CSS 变量进行主题定制:
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 48rpx;
-}
-
-// 方式2: 使用深度选择器定义自定义类样式
-:deep(.theme-loading) {
-  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-  padding: 24rpx;
-  border-radius: 50%;
-  box-shadow: 0 8rpx 24rpx rgba(16, 185, 129, 0.3);
-}
-
-// 方式3: 全局 CSS 变量覆盖
-.custom-theme {
-  padding: 32rpx;
-  background-color: #f9fafb;
-  border-radius: 12rpx;
-
-  // 覆盖默认尺寸
-  :deep(.wd-loading) {
-    width: 120rpx;
-    height: 120rpx;
-  }
-}
-</style>
 ```
 
 参考: src/wd/components/wd-loading/wd-loading.vue:151-181
@@ -2305,15 +1403,6 @@ const loadingStage = computed(() => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.loading-wrapper {
-  min-width: 100rpx;
-  min-height: 100rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-</style>
 ```
 
 **检查清单:**
@@ -2390,19 +1479,6 @@ const svgDefineId2 = context.id++
   </view>
 </template>
 
-<style lang="scss" scoped>
-.flex-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // ✅ 不设置固定宽高
-}
-
-.fixed-size {
-  width: 50rpx;  // ❌ 限制了宽度
-  height: 50rpx; // ❌ 限制了高度
-}
-</style>
 ```
 
 **检查要点:**

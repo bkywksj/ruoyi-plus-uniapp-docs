@@ -897,51 +897,6 @@ const handleCustomColorChange = (value: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-picker {
-  padding: 20px;
-
-  h3 {
-    margin-bottom: 16px;
-    font-size: 16px;
-    font-weight: 500;
-  }
-
-  .color-list {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
-  .color-item {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-    border: 2px solid transparent;
-
-    &:hover {
-      transform: scale(1.1);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    &.active {
-      border-color: var(--el-text-color-primary);
-      box-shadow: 0 0 0 2px rgba(var(--el-color-primary-rgb), 0.2);
-    }
-
-    .check-icon {
-      color: #fff;
-      font-size: 20px;
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -996,18 +951,6 @@ const handleDarkModeChange = (value: boolean) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.dark-mode-toggle {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  .label {
-    font-size: 14px;
-    color: var(--el-text-color-regular);
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -1113,94 +1056,6 @@ const resetToDefault = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-preview {
-  padding: 20px;
-  background: var(--el-bg-color);
-  border-radius: 8px;
-
-  .preview-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-
-    h3 {
-      font-size: 18px;
-      font-weight: 500;
-      margin: 0;
-    }
-  }
-
-  .preview-content {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .color-section {
-    h4 {
-      font-size: 14px;
-      margin-bottom: 12px;
-      color: var(--el-text-color-regular);
-    }
-
-    .color-box {
-      height: 80px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 500;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .color-variants {
-      display: grid;
-      grid-template-columns: repeat(9, 1fr);
-      gap: 8px;
-
-      .variant-box {
-        height: 60px;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: rgba(0, 0, 0, 0.65);
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: transform 0.2s;
-
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        &.dark {
-          color: rgba(255, 255, 255, 0.85);
-        }
-      }
-    }
-  }
-
-  .component-section {
-    h4 {
-      font-size: 14px;
-      margin-bottom: 16px;
-      color: var(--el-text-color-regular);
-    }
-
-    .component-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 12px;
-    }
-  }
-}
-</style>
 ```
 
 **功能特点:**
@@ -1365,36 +1220,6 @@ const handleCancel = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.settings-panel {
-  padding: 16px;
-
-  .setting-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 0;
-    border-bottom: 1px solid var(--el-border-color-light);
-
-    .setting-label {
-      font-size: 14px;
-      color: var(--el-text-color-regular);
-    }
-  }
-
-  .setting-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 24px;
-    margin-bottom: 16px;
-
-    .el-button {
-      width: 100%;
-    }
-  }
-}
-</style>
 ```
 
 **功能特点:**
@@ -1539,95 +1364,6 @@ const blendedColor = computed(() => blendColor(color1.value, color2.value, ratio
 const baseColor = ref('#1890ff')
 </script>
 
-<style lang="scss" scoped>
-.color-tools-demo {
-  padding: 24px;
-  max-width: 800px;
-
-  h3 {
-    margin-bottom: 24px;
-    font-size: 20px;
-  }
-
-  .tool-section {
-    margin-bottom: 32px;
-    padding: 16px;
-    background: var(--el-bg-color-page);
-    border-radius: 8px;
-
-    h4 {
-      margin-bottom: 16px;
-      font-size: 16px;
-      color: var(--el-text-color-regular);
-    }
-
-    .result {
-      margin-top: 12px;
-      padding: 12px;
-      background: var(--el-bg-color);
-      border-radius: 4px;
-      font-family: monospace;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .color-preview {
-      width: 40px;
-      height: 40px;
-      border-radius: 4px;
-      border: 1px solid var(--el-border-color);
-    }
-
-    .rgb-inputs {
-      display: flex;
-      gap: 12px;
-    }
-
-    .blend-inputs {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .blend-preview {
-      display: flex;
-      gap: 8px;
-    }
-
-    .adjust-preview {
-      margin-top: 16px;
-
-      .base-color {
-        height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #fff;
-        font-weight: 500;
-        margin: 8px 0;
-        border-radius: 4px;
-      }
-
-      .variants {
-        display: grid;
-        grid-template-columns: repeat(9, 1fr);
-        gap: 4px;
-
-        .variant-item {
-          height: 50px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 12px;
-          border-radius: 4px;
-          color: rgba(0, 0, 0, 0.65);
-        }
-      }
-    }
-  }
-}
-</style>
 ```
 
 **功能演示:**
@@ -1727,49 +1463,6 @@ const handleRefresh = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.themed-card {
-  .status-card {
-    border-top: 3px solid v-bind(themeColor);
-  }
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .card-content {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-  }
-
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-
-    .stat-item {
-      padding: 16px;
-      background: var(--el-bg-color-page);
-      border-radius: 8px;
-      border-left: 4px solid;
-
-      .label {
-        font-size: 14px;
-        color: var(--el-text-color-regular);
-        margin-bottom: 8px;
-      }
-
-      .value {
-        font-size: 24px;
-        font-weight: 600;
-      }
-    }
-  }
-}
-</style>
 ```
 
 **技术要点:**
@@ -2099,58 +1792,6 @@ const handlePresetChange = (presetName: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-preset-selector {
-  h4 {
-    margin-bottom: 16px;
-    font-size: 14px;
-    color: var(--el-text-color-regular);
-  }
-
-  .preset-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 12px;
-  }
-
-  .preset-item {
-    padding: 12px;
-    border: 2px solid var(--el-border-color);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-      border-color: var(--el-color-primary);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    &.active {
-      border-color: var(--el-color-primary);
-      background: var(--el-color-primary-light-9);
-    }
-
-    .preset-colors {
-      display: flex;
-      gap: 4px;
-      margin-bottom: 8px;
-
-      .color-dot {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        border: 1px solid var(--el-border-color);
-      }
-    }
-
-    .preset-name {
-      font-size: 12px;
-      text-align: center;
-      color: var(--el-text-color-regular);
-    }
-  }
-}
-</style>
 ```
 
 ### 动态CSS变量覆盖
@@ -2716,13 +2357,6 @@ const buttonStyle = {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.themed-box {
-  background-color: var(--el-color-primary);
-  border: 1px solid var(--el-color-primary-light-3);
-  color: #fff;
-}
-</style>
 
 <!-- ❌ 不推荐: 内联样式 -->
 <template>
@@ -3052,11 +2686,6 @@ const { currentTheme } = useTheme()
   </div>
 </template>
 
-<style lang="scss" scoped>
-.themed-text {
-  color: var(--el-color-primary);
-}
-</style>
 ```
 
 **检查清单:**

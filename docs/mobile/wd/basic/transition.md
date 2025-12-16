@@ -46,19 +46,6 @@ import { ref } from 'vue'
 const visible = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.content-box {
-  margin-top: 32rpx;
-  padding: 32rpx;
-  background: #f5f5f5;
-  border-radius: 16rpx;
-  text-align: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -120,28 +107,6 @@ const show4 = ref(false)
 const show5 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
-}
-
-.animation-box {
-  margin-top: 16rpx;
-  padding: 32rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border-radius: 16rpx;
-  text-align: center;
-  font-weight: bold;
-}
-</style>
 ```
 
 **动画效果说明:**
@@ -227,67 +192,6 @@ const show3 = ref(false)
 const show4 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
-}
-
-.slide-panel {
-  position: fixed;
-  background: white;
-  box-shadow: 0 0 30rpx rgba(0, 0, 0, 0.1);
-  z-index: 100;
-}
-
-.slide-up-panel {
-  bottom: 0;
-  left: 0;
-  right: 0;
-  border-radius: 32rpx 32rpx 0 0;
-}
-
-.slide-down-panel {
-  top: 0;
-  left: 0;
-  right: 0;
-  border-radius: 0 0 32rpx 32rpx;
-}
-
-.slide-side-panel {
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 600rpx;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 32rpx;
-  border-bottom: 1px solid #ebeef5;
-}
-
-.panel-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.panel-content {
-  padding: 32rpx;
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-</style>
 ```
 
 **动画效果说明:**
@@ -346,54 +250,6 @@ const show1 = ref(false)
 const show2 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.button-group {
-  display: flex;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
-}
-
-.zoom-box {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 100;
-}
-
-.zoom-content {
-  width: 600rpx;
-  padding: 48rpx 32rpx;
-  background: white;
-  border-radius: 16rpx;
-  text-align: center;
-}
-
-.zoom-title {
-  display: block;
-  margin-top: 24rpx;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.zoom-desc {
-  display: block;
-  margin-top: 16rpx;
-  font-size: 26rpx;
-  color: #999;
-  line-height: 1.6;
-}
-</style>
 ```
 
 **动画效果说明:**
@@ -449,20 +305,6 @@ const show2 = ref(false)
 const show3 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.animation-box {
-  margin-top: 16rpx;
-  padding: 32rpx;
-  background: #f0f9ff;
-  border: 2px solid #0ea5e9;
-  border-radius: 16rpx;
-  color: #0369a1;
-}
-</style>
 ```
 
 **使用说明:**
@@ -518,33 +360,6 @@ const show2 = ref(false)
 const show3 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.combination-box {
-  margin-top: 16rpx;
-  padding: 32rpx;
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-  border-radius: 16rpx;
-}
-
-.title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #8b4513;
-  margin-bottom: 16rpx;
-}
-
-.desc {
-  display: block;
-  font-size: 26rpx;
-  color: #a0522d;
-  line-height: 1.6;
-}
-</style>
 ```
 
 **使用说明:**
@@ -628,114 +443,6 @@ const show2 = ref(false)
 const show3 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-box {
-  margin-top: 16rpx;
-  padding: 48rpx 32rpx;
-  background: white;
-  border-radius: 16rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-  text-align: center;
-
-  text {
-    display: block;
-    margin-top: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-
-/* 旋转动画 */
-.custom-enter {
-  opacity: 0;
-  transform: rotate(0deg) scale(0.5);
-}
-
-.custom-enter-active {
-  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.custom-enter-to {
-  opacity: 1;
-  transform: rotate(360deg) scale(1);
-}
-
-.custom-leave {
-  opacity: 1;
-  transform: rotate(360deg) scale(1);
-}
-
-.custom-leave-active {
-  transition: all 0.3s ease;
-}
-
-.custom-leave-to {
-  opacity: 0;
-  transform: rotate(0deg) scale(0.5);
-}
-
-/* 弹跳动画 */
-.bounce-enter {
-  opacity: 0;
-  transform: scale(0.3);
-}
-
-.bounce-enter-active {
-  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-.bounce-enter-to {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.bounce-leave {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.bounce-leave-active {
-  transition: all 0.3s ease-in;
-}
-
-.bounce-leave-to {
-  opacity: 0;
-  transform: scale(0.3);
-}
-
-/* 3D 翻转动画 */
-.flip-enter {
-  opacity: 0;
-  transform: perspective(800rpx) rotateY(-90deg);
-}
-
-.flip-enter-active {
-  transition: all 0.5s ease;
-}
-
-.flip-enter-to {
-  opacity: 1;
-  transform: perspective(800rpx) rotateY(0deg);
-}
-
-.flip-leave {
-  opacity: 1;
-  transform: perspective(800rpx) rotateY(0deg);
-}
-
-.flip-leave-active {
-  transition: all 0.3s ease;
-}
-
-.flip-leave-to {
-  opacity: 0;
-  transform: perspective(800rpx) rotateY(90deg);
-}
-</style>
 ```
 
 **自定义类名说明:**
@@ -786,82 +493,6 @@ import { ref } from 'vue'
 const show = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.heartbeat-box {
-  margin-top: 32rpx;
-  padding: 64rpx 32rpx;
-  background: linear-gradient(135deg, #ffeef8 0%, #ffe5f1 100%);
-  border-radius: 16rpx;
-  text-align: center;
-}
-
-.heartbeat-text {
-  display: block;
-  margin-top: 24rpx;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #f56c6c;
-}
-
-/* 心跳动画 - 进入 */
-.heartbeat-enter {
-  opacity: 0;
-  transform: scale(0.3);
-}
-
-.heartbeat-enter-active {
-  animation: heartbeat 0.8s ease-out;
-}
-
-.heartbeat-enter-to {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* 心跳动画 - 离开 */
-.heartbeat-leave {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.heartbeat-leave-active {
-  transition: all 0.3s ease-in;
-}
-
-.heartbeat-leave-to {
-  opacity: 0;
-  transform: scale(0.3);
-}
-
-/* 心跳关键帧动画 */
-@keyframes heartbeat {
-  0% {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-  20% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-  40% {
-    transform: scale(0.9);
-  }
-  60% {
-    transform: scale(1.05);
-  }
-  80% {
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -925,49 +556,6 @@ watch(show2, (newVal) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.info-box {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-  padding: 24rpx;
-  background: #f0f9ff;
-  border-radius: 12rpx;
-  margin-bottom: 32rpx;
-
-  text {
-    font-size: 26rpx;
-    color: #0369a1;
-  }
-}
-
-.modal-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-  margin-top: 16rpx;
-  padding: 32rpx;
-  background: white;
-  border-radius: 16rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-
-  text {
-    font-size: 28rpx;
-    color: #666;
-    line-height: 1.6;
-  }
-
-  text:first-child {
-    font-size: 32rpx;
-    font-weight: bold;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1020,45 +608,6 @@ const show1 = ref(false)
 const show2 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.info-box {
-  padding: 24rpx;
-  background: #fff3e0;
-  border-radius: 12rpx;
-  margin-bottom: 32rpx;
-
-  text {
-    font-size: 26rpx;
-    color: #e65100;
-  }
-}
-
-.content-box {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-  margin-top: 16rpx;
-  padding: 32rpx;
-  background: #f5f5f5;
-  border-radius: 16rpx;
-
-  text {
-    font-size: 26rpx;
-    color: #666;
-    line-height: 1.6;
-  }
-
-  text:first-child {
-    font-size: 30rpx;
-    font-weight: bold;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1167,59 +716,6 @@ const onClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.log-box {
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-  padding: 24rpx;
-  background: #1e1e1e;
-  border-radius: 12rpx;
-  margin-bottom: 32rpx;
-  max-height: 400rpx;
-  overflow-y: auto;
-}
-
-.log-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #4fc08d;
-  margin-bottom: 8rpx;
-}
-
-.log-item {
-  font-size: 24rpx;
-  color: #abb2bf;
-  font-family: 'Monaco', 'Menlo', monospace;
-  line-height: 1.6;
-}
-
-.lifecycle-box {
-  margin-top: 16rpx;
-  padding: 48rpx 32rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16rpx;
-  text-align: center;
-}
-
-.title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: white;
-  margin-bottom: 16rpx;
-}
-
-.desc {
-  display: block;
-  font-size: 26rpx;
-  color: rgba(255, 255, 255, 0.8);
-}
-</style>
 ```
 
 **生命周期说明:**
@@ -1673,18 +1169,6 @@ import { ref } from 'vue'
 const visible = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.content {
-  /* ❌ 错误: 覆盖了过渡效果 */
-  transition: none !important;
-}
-
-.content {
-  /* ✅ 正确: 不要覆盖 transition 属性 */
-  padding: 32rpx;
-  background: white;
-}
-</style>
 ```
 
 参考: src/wd/components/wd-transition/wd-transition.vue:54,56,320-326
@@ -1790,48 +1274,6 @@ const handleBadToggle = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-/* ❌ 错误: 没有定义 transition 属性 */
-.my-enter {
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.my-enter-to {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* ✅ 正确: 完整的动画定义 */
-.my-enter {
-  opacity: 0;
-  transform: scale(0.5);
-}
-
-.my-enter-active {
-  /* 必须定义 transition 属性 */
-  transition: all 0.3s ease;
-}
-
-.my-enter-to {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.my-leave {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.my-leave-active {
-  transition: all 0.3s ease;
-}
-
-.my-leave-to {
-  opacity: 0;
-  transform: scale(0.5);
-}
-</style>
 ```
 
 参考: src/wd/components/wd-transition/wd-transition.vue:65-75,177-203
@@ -1940,26 +1382,6 @@ const fetchData = async () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-/* ❌ 不推荐: 复杂的 3D 变换 */
-.complex-3d-enter {
-  transform: perspective(1000px) rotateX(90deg) rotateY(45deg) scale(0.5);
-}
-
-.complex-3d-active {
-  transition: all 0.8s ease;
-}
-
-/* ✅ 推荐: 简单的变换 + 硬件加速 */
-.simple-enter {
-  opacity: 0;
-  transform: translate3d(0, 20rpx, 0);
-}
-
-.simple-active {
-  transition: all 0.3s ease;
-}
-</style>
 ```
 
 **优化建议:**

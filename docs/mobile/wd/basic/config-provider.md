@@ -127,52 +127,6 @@ const toggleTheme = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  min-height: 100vh;
-}
-
-.mode-switch {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-}
-
-.current-theme {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.theme-content {
-  display: flex;
-  flex-direction: column;
-  gap: 32rpx;
-}
-
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-}
-
-.section-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.button-group {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-</style>
 ```
 
 **使用说明:**
@@ -295,57 +249,6 @@ const switchPreset = (name: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.theme-selector {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  margin-bottom: 32rpx;
-}
-
-.custom-theme-content {
-  display: flex;
-  flex-direction: column;
-  gap: 32rpx;
-}
-
-.color-preview {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 24rpx;
-}
-
-.color-item {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  padding: 16rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-}
-
-.color-block {
-  width: 64rpx;
-  height: 64rpx;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-}
-
-.color-name {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.component-preview {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-</style>
 ```
 
 **使用说明:**
@@ -409,56 +312,6 @@ const buttonThemeVars = computed(() => ({
 }))
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.config-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-  margin-bottom: 32rpx;
-}
-
-.panel-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.config-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.config-label {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.button-preview {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-  padding: 32rpx;
-  background: white;
-  border-radius: 12rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-}
-
-.preview-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-</style>
 ```
 
 **按钮主题变量说明:**
@@ -566,50 +419,6 @@ const currentThemeConfig = computed(() => themeConfigs[currentTheme.value])
 const inputThemeVars = computed(() => currentThemeConfig.value.vars)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.theme-tabs {
-  display: flex;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
-  padding: 8rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-}
-
-.tab-item {
-  flex: 1;
-  padding: 16rpx;
-  text-align: center;
-  font-size: 26rpx;
-  color: #666;
-  background: transparent;
-  border-radius: 8rpx;
-  transition: all 0.3s ease;
-
-  &.active {
-    color: white;
-    background: #1890ff;
-    font-weight: bold;
-  }
-}
-
-.input-group {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-}
-
-.group-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-</style>
 ```
 
 **输入框主题变量说明:**
@@ -685,36 +494,6 @@ const customThemeVars = ref({
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.tag-section,
-.badge-section {
-  margin-bottom: 48rpx;
-}
-
-.section-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.tag-group {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-
-.badge-group {
-  display: flex;
-  gap: 32rpx;
-  flex-wrap: wrap;
-}
-</style>
 ```
 
 参考: src/wd/components/wd-config-provider/wd-config-provider.vue:203-230,1199-1240
@@ -795,52 +574,6 @@ const child2Theme = ref({
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.parent-section {
-  padding: 24rpx;
-  background: #e6f7ff;
-  border-radius: 12rpx;
-}
-
-.child-section {
-  margin: 24rpx 0;
-  padding: 24rpx;
-  background: #fff1f0;
-  border-radius: 12rpx;
-}
-
-.grandchild-section {
-  margin: 24rpx 0;
-  padding: 24rpx;
-  background: #f6ffed;
-  border-radius: 12rpx;
-}
-
-.section-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.button-row {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-
-.note {
-  display: block;
-  margin: 24rpx 0 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -940,32 +673,6 @@ const buttonTheme = ref({
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.button-showcase {
-  display: flex;
-  flex-direction: column;
-  gap: 48rpx;
-}
-
-.size-section,
-.type-section,
-.style-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-}
-
-.section-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-</style>
 ```
 
 参考: src/wd/components/wd-config-provider/wd-config-provider.vue:234-312
@@ -1065,56 +772,6 @@ const toggleMode = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  padding: 32rpx;
-}
-
-.mode-toggle {
-  margin-bottom: 32rpx;
-}
-
-.content-area {
-  display: flex;
-  flex-direction: column;
-  gap: 32rpx;
-}
-
-.card {
-  padding: 32rpx;
-  background: var(--wot-dark-background2, #ffffff);
-  border-radius: 16rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-}
-
-.card-title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: var(--wot-dark-color, #333);
-  margin-bottom: 16rpx;
-}
-
-.card-content {
-  display: block;
-  font-size: 26rpx;
-  color: var(--wot-dark-color2, #666);
-  line-height: 1.6;
-  margin-bottom: 24rpx;
-}
-
-.card-actions {
-  display: flex;
-  gap: 16rpx;
-}
-
-.form-area {
-  display: flex;
-  flex-direction: column;
-  gap: 1rpx;
-}
-</style>
 ```
 
 参考: src/wd/components/wd-config-provider/wd-config-provider.vue:98-121
@@ -1244,148 +901,6 @@ const colorSystemVars = computed(() => ({
 }))
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.color-picker {
-  margin-bottom: 48rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-}
-
-.picker-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.color-options {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-
-.color-option {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-
-  &.active {
-    box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.3);
-    transform: scale(1.1);
-  }
-}
-
-.color-system-demo {
-  display: flex;
-  flex-direction: column;
-  gap: 32rpx;
-}
-
-.color-category {
-  padding: 24rpx;
-  background: white;
-  border-radius: 12rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-}
-
-.category-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.color-row {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  margin-bottom: 12rpx;
-}
-
-.color-block {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-}
-
-.theme-block {
-  background: var(--wot-color-theme);
-}
-
-.success-block {
-  background: var(--wot-color-success);
-}
-
-.warning-block {
-  background: var(--wot-color-warning);
-}
-
-.danger-block {
-  background: var(--wot-color-danger);
-}
-
-.info-block {
-  background: var(--wot-color-info);
-}
-
-.gray1-block {
-  background: var(--wot-color-gray-1);
-}
-
-.gray2-block {
-  background: var(--wot-color-gray-2);
-}
-
-.gray3-block {
-  background: var(--wot-color-gray-3);
-}
-
-.gray4-block {
-  background: var(--wot-color-gray-4);
-}
-
-.gray5-block {
-  background: var(--wot-color-gray-5);
-}
-
-.gray6-block {
-  background: var(--wot-color-gray-6);
-}
-
-.color-label {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.neutral-colors {
-  display: flex;
-  gap: 12rpx;
-}
-
-.component-samples {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-  padding: 24rpx;
-  background: white;
-  border-radius: 12rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-}
-</style>
 ```
 
 参考: src/wd/components/wd-config-provider/wd-config-provider.vue:29-146
@@ -2101,19 +1616,6 @@ const darkVars = {
 // }
 </script>
 
-<style lang="scss" scoped>
-// ✅ 推荐: 自定义样式使用 CSS 变量
-.custom-box {
-  background: var(--wot-dark-background, #ffffff);
-  color: var(--wot-dark-color, #333333);
-}
-
-// ❌ 不推荐: 硬编码颜色值
-// .custom-box {
-//   background: #ffffff; // 深色模式下不会变化
-//   color: #333333;
-// }
-</style>
 ```
 
 **解决建议:**

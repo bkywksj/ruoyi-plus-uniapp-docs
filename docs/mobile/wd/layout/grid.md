@@ -43,11 +43,6 @@ Grid 宫格组件是一个强大的网格布局容器,用于在页面中展示�
 // 子组件模式无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -92,11 +87,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -165,22 +155,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 // 自定义列数无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -235,22 +209,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 // 边框配置无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -318,23 +276,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 // 间距配置无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background-color: #f5f5f5;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -404,22 +345,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 // 正方形配置无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -480,26 +405,6 @@ const handleItemClick = (item: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-
-:deep(.custom-hover) {
-  background-color: #e0f7fa !important;
-}
-</style>
 ```
 
 **使用说明:**
@@ -580,11 +485,6 @@ const handleItemClick = (item: number) => {
 // 页面跳转无需额外逻辑,组件内部自动处理
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -678,11 +578,6 @@ const handleItemClick = (item: number) => {
 // 徽标配置无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -787,24 +682,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-:deep(.custom-star-icon) {
-  animation: star-rotate 2s linear infinite;
-}
-
-@keyframes star-rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -920,77 +797,6 @@ const handleProductClick = (item: Product) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background-color: #f5f5f5;
-}
-
-.product-card {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  border-radius: 12rpx;
-  overflow: hidden;
-}
-
-.product-image {
-  width: 100%;
-  height: 300rpx;
-  background: #f0f0f0;
-}
-
-.product-info {
-  padding: 16rpx;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.product-name {
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-  margin-bottom: 8rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.product-price {
-  display: flex;
-  align-items: baseline;
-  margin-bottom: 8rpx;
-
-  .price {
-    font-size: 32rpx;
-    color: #ff6b6b;
-    font-weight: bold;
-    margin-right: 8rpx;
-  }
-
-  .original-price {
-    font-size: 24rpx;
-    color: #999;
-    text-decoration: line-through;
-  }
-}
-
-.product-tags {
-  display: flex;
-  gap: 8rpx;
-
-  .tag {
-    padding: 4rpx 8rpx;
-    font-size: 20rpx;
-    color: #ff6b6b;
-    background: #ffe3e3;
-    border-radius: 4rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1057,51 +863,6 @@ const handleProductClick = (item: Product) => {
 // 插槽自定义无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-icon {
-  width: 64rpx;
-  height: 64rpx;
-
-  .icon-image {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-  }
-}
-
-.gradient-icon {
-  width: 64rpx;
-  height: 64rpx;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-text {
-  margin-top: 8rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .text-main {
-    font-size: 28rpx;
-    color: #333;
-    font-weight: 500;
-  }
-
-  .text-sub {
-    font-size: 24rpx;
-    color: #999;
-    margin-top: 4rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1185,68 +946,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-card {
-  position: relative;
-  padding: 16rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8rpx;
-
-  .card-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 4rpx 8rpx;
-    font-size: 20rpx;
-    color: #fff;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
-    border-radius: 0 0 0 8rpx;
-  }
-
-  .card-title {
-    font-size: 28rpx;
-    color: #333;
-    font-weight: 500;
-  }
-}
-
-.rotating-icon {
-  animation: rotate 2s linear infinite;
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.multi-line-text {
-  margin-top: 8rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .text-main {
-    font-size: 28rpx;
-    color: #333;
-  }
-
-  .text-sub {
-    font-size: 24rpx;
-    color: #999;
-    margin-top: 4rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1341,32 +1040,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 // 背景色定制无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-  }
-
-  &.gradient-bg {
-    padding: 32rpx;
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-    border-radius: 16rpx;
-
-    .title {
-      color: #fff;
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1449,44 +1122,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 // 自定义 hover 样式无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-
-// 自定义 hover 样式
-:deep(.hover-blue) {
-  background-color: #e3f2fd !important;
-}
-
-:deep(.hover-scale) {
-  transform: scale(0.95) !important;
-  background-color: #f5f5f5 !important;
-}
-
-:deep(.hover-gradient) {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-
-  .wd-grid-item__text {
-    color: #fff !important;
-  }
-
-  .wd-icon {
-    color: #fff !important;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1557,26 +1192,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.info {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-
-  text {
-    font-size: 28rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1917,20 +1532,6 @@ Grid 组件支持通过 CSS 变量进行主题定制。
 // 主题定制无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-theme {
-  // 自定义主题变量
-  --wot-grid-item-bg: #f0f9ff;
-  --wot-grid-item-border-color: #bae6fd;
-  --wot-grid-item-padding: 40rpx 20rpx;
-  --wot-grid-item-fs: 28rpx;
-  --wot-grid-item-hover-bg: rgba(14, 165, 233, 0.1);
-}
-</style>
 ```
 
 参考: src/wd/components/wd-grid/wd-grid.vue:446-610

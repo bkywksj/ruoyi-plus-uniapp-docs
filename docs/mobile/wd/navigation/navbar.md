@@ -38,16 +38,6 @@ Navbar (导航栏) 是一个页面顶部导航组件,为页面提供导航功能
 // 基础用法无需额外配置
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -80,16 +70,6 @@ Navbar (导航栏) 是一个页面顶部导航组件,为页面提供导航功能
 // 组件会自动识别返回按钮并执行 uni.navigateBack
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -142,16 +122,6 @@ const handleBackHome = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -192,16 +162,6 @@ const handleSearch = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -241,16 +201,6 @@ const handleShare = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -320,45 +270,6 @@ const handleMore = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-left {
-  display: flex;
-  align-items: center;
-  color: #333;
-}
-
-.left-text {
-  margin-left: 8rpx;
-  font-size: 28rpx;
-}
-
-.custom-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.title-logo {
-  width: 48rpx;
-  height: 48rpx;
-  margin-right: 12rpx;
-}
-
-.custom-right {
-  display: flex;
-  align-items: center;
-  color: #333;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -415,11 +326,6 @@ const handleSave = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -461,23 +367,6 @@ const handleHeightReady = (height: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-
-.info {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.tip {
-  font-size: 26rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -521,25 +410,6 @@ const handleHeightReady = (height: number) => {
 // placeholder 为 false 时不生成占位元素
 </script>
 
-<style lang="scss" scoped>
-.banner {
-  width: 100%;
-}
-
-.banner-image {
-  width: 100%;
-  display: block;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -575,16 +445,6 @@ const handleHeightReady = (height: number) => {
 // height 单位为 rpx
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -617,16 +477,6 @@ const handleHeightReady = (height: number) => {
 // bordered 为 true 时显示底部边框
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -659,16 +509,6 @@ const handleHeightReady = (height: number) => {
 // 默认 z-index 为 99
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -701,16 +541,6 @@ const handleHeightReady = (height: number) => {
 // safe-area-inset-top 默认为 true
 </script>
 
-<style lang="scss" scoped>
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -755,20 +585,6 @@ const handleHeightReady = (height: number) => {
 // 单按钮模式会自动调整样式
 </script>
 
-<style lang="scss" scoped>
-.divider {
-  height: 20rpx;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.text {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**

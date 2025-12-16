@@ -78,21 +78,6 @@ const handleBackHome = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-nav {
-  display: flex;
-  align-items: center;
-  padding: 20rpx;
-  background: #ffffff;
-}
-
-.nav-title {
-  flex: 1;
-  text-align: center;
-  font-size: 32rpx;
-  font-weight: bold;
-}
-</style>
 ```
 
 **使用说明：**

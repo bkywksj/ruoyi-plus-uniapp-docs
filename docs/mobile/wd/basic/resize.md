@@ -96,55 +96,6 @@ const setWidth = (width: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.info-box {
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-  padding: 24rpx;
-  background: #f0f9ff;
-  border-radius: 12rpx;
-  margin-bottom: 32rpx;
-}
-
-.info-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #0369a1;
-  margin-bottom: 8rpx;
-}
-
-.info-item {
-  font-size: 26rpx;
-  color: #0284c7;
-}
-
-.content-box {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-  padding: 32rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16rpx;
-  text-align: center;
-  transition: width 0.3s ease;
-
-  text {
-    color: white;
-    font-size: 28rpx;
-  }
-}
-
-.button-group {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -233,63 +184,6 @@ const removeItem = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.status-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 24rpx;
-  background: #fef3c7;
-  border-radius: 12rpx;
-  margin-bottom: 32rpx;
-
-  text {
-    font-size: 26rpx;
-    color: #92400e;
-  }
-}
-
-.dynamic-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-  padding: 32rpx;
-  background: white;
-  border-radius: 16rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-}
-
-.title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.content-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-}
-
-.item-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.item-desc {
-  font-size: 24rpx;
-  color: #999;
-  line-height: 1.6;
-}
-</style>
 ```
 
 **使用场景:**
@@ -354,66 +248,6 @@ const toggleFullscreen = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.toolbar {
-  margin-bottom: 32rpx;
-}
-
-.chart-container {
-  display: flex;
-  flex-direction: column;
-  height: 400rpx;
-  padding: 32rpx;
-  background: white;
-  border-radius: 16rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-
-  &.fullscreen {
-    height: 800rpx;
-  }
-}
-
-.chart-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.chart-placeholder {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16rpx;
-  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
-  border-radius: 12rpx;
-  margin-bottom: 24rpx;
-
-  text {
-    font-size: 28rpx;
-    color: #0284c7;
-  }
-}
-
-.chart-size {
-  font-size: 24rpx !important;
-  color: #0369a1 !important;
-  font-family: 'Monaco', monospace;
-}
-
-.chart-tip {
-  font-size: 24rpx;
-  color: #999;
-  text-align: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -504,85 +338,6 @@ const setContainerWidth = (width: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.responsive-container {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-  padding: 32rpx;
-  background: white;
-  border-radius: 16rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-}
-
-.layout-mode {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #667eea;
-  text-align: center;
-}
-
-.grid {
-  display: grid;
-  gap: 24rpx;
-
-  &.single {
-    grid-template-columns: 1fr;
-  }
-
-  &.double {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  &.triple {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.grid-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12rpx;
-  padding: 32rpx;
-  background: #f5f3ff;
-  border-radius: 12rpx;
-
-  text {
-    font-size: 24rpx;
-    color: #5b21b6;
-  }
-}
-
-.layout-info {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-  padding: 24rpx;
-  background: #f0fdf4;
-  border-radius: 12rpx;
-
-  text {
-    font-size: 24rpx;
-    color: #166534;
-  }
-
-  text:first-child {
-    font-weight: bold;
-    margin-bottom: 8rpx;
-  }
-}
-
-.controls {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 **使用场景:**
@@ -684,84 +439,6 @@ const handlePanelResize = (info: Record<string, any>) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.accordion-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
-}
-
-.panel-item {
-  background: white;
-  border-radius: 12rpx;
-  overflow: hidden;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 32rpx;
-  background: #fafafa;
-  cursor: pointer;
-}
-
-.panel-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.panel-content {
-  padding: 32rpx;
-  animation: slideDown 0.3s ease;
-
-  text {
-    font-size: 26rpx;
-    color: #666;
-    line-height: 1.6;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10rpx);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.resize-log {
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-  padding: 24rpx;
-  background: #1e1e1e;
-  border-radius: 12rpx;
-}
-
-.log-title {
-  font-size: 26rpx;
-  font-weight: bold;
-  color: #4fc08d;
-  margin-bottom: 8rpx;
-}
-
-.log-item {
-  font-size: 24rpx;
-  color: #abb2bf;
-  font-family: 'Monaco', monospace;
-}
-</style>
 ```
 
 **使用说明:**
@@ -837,66 +514,6 @@ const toggleExpand = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.virtual-scroll-info {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-  padding: 24rpx;
-  background: #f0fdf4;
-  border-radius: 12rpx;
-  margin-bottom: 32rpx;
-
-  text {
-    font-size: 26rpx;
-    color: #166534;
-  }
-}
-
-.virtual-scroll-container {
-  height: 400rpx;
-  background: white;
-  border-radius: 12rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-  margin-bottom: 32rpx;
-  transition: height 0.3s ease;
-
-  &.expanded {
-    height: 800rpx;
-  }
-}
-
-.scroll-item {
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-  height: 80rpx;
-  padding: 0 32rpx;
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.item-index {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 64rpx;
-  height: 64rpx;
-  background: #667eea;
-  color: white;
-  border-radius: 50%;
-  font-size: 24rpx;
-  font-weight: bold;
-}
-
-.item-label {
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用场景:**
@@ -940,34 +557,6 @@ const handleResize = (info: Record<string, any>) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16rpx;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-  border-radius: 16rpx;
-}
-
-.size-display {
-  font-size: 48rpx;
-  font-weight: bold;
-  color: #8b4513;
-}
-
-.tip {
-  font-size: 24rpx;
-  color: #a0522d;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1010,51 +599,6 @@ const handleResize = (info: Record<string, any>) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-// 自定义 Resize 根元素样式
-:deep(.resize-wrapper) {
-  border: 2px dashed #667eea;
-  border-radius: 16rpx;
-  padding: 16rpx;
-}
-
-// 自定义 Resize 容器样式
-:deep(.resize-content) {
-  background: rgba(102, 126, 234, 0.1);
-  border-radius: 12rpx;
-}
-
-.styled-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-  padding: 48rpx 32rpx;
-  text-align: center;
-}
-
-.title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #667eea;
-}
-
-.desc {
-  font-size: 26rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.size {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #764ba2;
-  margin-top: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1129,76 +673,6 @@ const handlePositionResize = (info: Record<string, any>) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  min-height: 150vh; // 确保有足够的滚动空间
-}
-
-.position-info {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  padding: 24rpx;
-  background: white;
-  border-radius: 12rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-  margin-bottom: 32rpx;
-}
-
-.info-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16rpx;
-}
-
-.info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-  padding: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-}
-
-.label {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.value {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #667eea;
-}
-
-.position-box {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 300rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16rpx;
-  margin-bottom: 32rpx;
-
-  text {
-    font-size: 28rpx;
-    color: white;
-  }
-}
-
-.spacer {
-  height: 100vh;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1571,24 +1045,6 @@ const handleLayoutResize = (info: Record<string, any>) => {
 // })
 </script>
 
-<style lang="scss" scoped>
-.content-grid {
-  display: grid;
-  gap: 16rpx;
-
-  &.mobile {
-    grid-template-columns: 1fr;
-  }
-
-  &.tablet {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  &.desktop {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-</style>
 ```
 
 **优点:**
@@ -1799,20 +1255,6 @@ const handleResize = (info: Record<string, any>) => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-/* ❌ 不推荐: 固定尺寸容器 */
-.fixed-container {
-  width: 600rpx;
-  height: 400rpx;
-  overflow: hidden;
-}
-
-/* ✅ 推荐: 自适应容器 */
-.dynamic-content {
-  width: 100%;
-  min-height: 200rpx;
-}
-</style>
 ```
 
 **解决建议:**

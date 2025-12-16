@@ -44,25 +44,6 @@ Button 组件是 WD UI 的基础组件之一,提供了丰富的样式和功能�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo-section {
-  padding: 32rpx;
-}
-
-.demo-title {
-  margin-bottom: 24rpx;
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #333;
-}
-
-.button-group {
-  display: flex;
-  gap: 24rpx;
-  margin-bottom: 24rpx;
-  flex-wrap: wrap;
-}
-</style>
 ```
 
 **类型说明**:
@@ -678,21 +659,6 @@ const handleCardClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.container {
-  position: relative;
-  padding: 32rpx;
-  background: #f5f5f5;
-  border-radius: 16rpx;
-}
-
-.content {
-  position: relative;
-  padding: 48rpx;
-  background: white;
-  border-radius: 12rpx;
-}
-</style>
 ```
 
 **特点**:

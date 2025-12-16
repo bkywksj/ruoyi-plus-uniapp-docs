@@ -85,24 +85,6 @@ const selectImage = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.camera-demo {
-  padding: 32rpx;
-}
-
-.image-list {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 24rpx;
-}
-
-.preview-image {
-  width: 200rpx;
-  height: 200rpx;
-  margin: 8rpx;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **配置说明:**
@@ -156,17 +138,6 @@ const takePhoto = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.camera-only-demo {
-  padding: 32rpx;
-}
-
-.photo-preview {
-  width: 100%;
-  margin-top: 24rpx;
-  border-radius: 12rpx;
-}
-</style>
 ```
 
 ### 仅从相册选择
@@ -298,26 +269,6 @@ const formatSize = (size: number): string => {
 }
 </script>
 
-<style lang="scss" scoped>
-.video-demo {
-  padding: 32rpx;
-}
-
-.video-preview {
-  width: 100%;
-  height: 400rpx;
-  margin-top: 24rpx;
-  border-radius: 12rpx;
-}
-
-.video-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #666;
-}
-</style>
 ```
 
 **视频配置说明:**
@@ -365,19 +316,6 @@ const recordShortVideo = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.short-video-demo {
-  padding: 32rpx;
-  text-align: center;
-}
-
-.tip {
-  display: block;
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 ## 媒体混选
@@ -453,41 +391,6 @@ const selectMedia = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.media-demo {
-  padding: 32rpx;
-}
-
-.media-list {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 24rpx;
-}
-
-.media-item {
-  position: relative;
-  width: 200rpx;
-  height: 200rpx;
-  margin: 8rpx;
-
-  image, video {
-    width: 100%;
-    height: 100%;
-    border-radius: 8rpx;
-  }
-}
-
-.media-type {
-  position: absolute;
-  bottom: 8rpx;
-  right: 8rpx;
-  padding: 4rpx 12rpx;
-  font-size: 20rpx;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 4rpx;
-}
-</style>
 ```
 
 **注意事项:**
@@ -563,36 +466,6 @@ const formatSize = (size: number): string => {
 }
 </script>
 
-<style lang="scss" scoped>
-.file-demo {
-  padding: 32rpx;
-}
-
-.file-list {
-  margin-top: 24rpx;
-}
-
-.file-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-}
-
-.file-name {
-  flex: 1;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.file-size {
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 ### 限制文件扩展名
@@ -790,64 +663,6 @@ const getStatusText = (status: string): string => {
 }
 </script>
 
-<style lang="scss" scoped>
-.upload-demo {
-  padding: 32rpx;
-}
-
-.upload-list {
-  margin-top: 24rpx;
-}
-
-.upload-item {
-  display: flex;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-}
-
-.thumb {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 8rpx;
-}
-
-.info {
-  flex: 1;
-  margin-left: 24rpx;
-}
-
-.name {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.progress-bar {
-  height: 8rpx;
-  margin-top: 16rpx;
-  background: #e5e5e5;
-  border-radius: 4rpx;
-  overflow: hidden;
-}
-
-.progress {
-  height: 100%;
-  background: #1890ff;
-  transition: width 0.3s;
-}
-
-.status {
-  display: block;
-  margin-top: 8rpx;
-  font-size: 24rpx;
-
-  &.pending { color: #999; }
-  &.loading { color: #1890ff; }
-  &.success { color: #52c41a; }
-  &.fail { color: #ff4d4f; }
-}
-</style>
 ```
 
 ### 快速上传
@@ -1020,43 +835,6 @@ const updateUserAvatar = (url: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.avatar-demo {
-  padding: 32rpx;
-  display: flex;
-  justify-content: center;
-}
-
-.avatar-wrapper {
-  position: relative;
-  width: 200rpx;
-  height: 200rpx;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.avatar {
-  width: 100%;
-  height: 100%;
-}
-
-.avatar-mask {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 60rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-
-  text {
-    font-size: 24rpx;
-    color: #fff;
-  }
-}
-</style>
 ```
 
 ### 证件照上传
@@ -1138,31 +916,6 @@ const uploadIdCard = async (side: 'front' | 'back') => {
 }
 </script>
 
-<style lang="scss" scoped>
-.id-card-demo {
-  padding: 32rpx;
-}
-
-.card-item {
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-top: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-
-.card-image {
-  width: 100%;
-  height: 300rpx;
-}
-</style>
 ```
 
 ### 多图批量上传
@@ -1278,37 +1031,6 @@ const batchUpload = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.batch-upload-demo {
-  padding: 32rpx;
-}
-
-.total-progress {
-  display: flex;
-  align-items: center;
-  margin-top: 24rpx;
-
-  text {
-    margin-left: 16rpx;
-    font-size: 28rpx;
-    color: #1890ff;
-  }
-}
-
-.progress-bar {
-  flex: 1;
-  height: 16rpx;
-  background: #e5e5e5;
-  border-radius: 8rpx;
-  overflow: hidden;
-}
-
-.progress {
-  height: 100%;
-  background: #1890ff;
-  transition: width 0.3s;
-}
-</style>
 ```
 
 ### 图片预览
@@ -1365,24 +1087,6 @@ const previewImage = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.preview-demo {
-  padding: 32rpx;
-}
-
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16rpx;
-  margin-top: 24rpx;
-}
-
-.grid-image {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 ## API 参考

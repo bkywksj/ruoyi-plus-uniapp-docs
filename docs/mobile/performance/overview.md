@@ -543,12 +543,6 @@ onMounted(() => {
 ### 7.2 样式隔离
 
 ```vue
-<style lang="scss" scoped>
-// scoped 样式隔离,避免全局污染
-.user-card {
-  padding: 32rpx;
-}
-</style>
 ```
 
 ## 8. 内存优化

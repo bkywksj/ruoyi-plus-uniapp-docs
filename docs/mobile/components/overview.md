@@ -1633,46 +1633,6 @@ defineExpose({
 })
 </script>
 
-<style lang="scss" scoped>
-.custom-component {
-  display: flex;
-  align-items: center;
-
-  &--default {
-    background-color: #f5f5f5;
-  }
-
-  &--primary {
-    background-color: #1890ff;
-    color: #ffffff;
-  }
-
-  &--success {
-    background-color: #52c41a;
-    color: #ffffff;
-  }
-
-  &--small {
-    padding: 8rpx 16rpx;
-    font-size: 24rpx;
-  }
-
-  &--medium {
-    padding: 16rpx 32rpx;
-    font-size: 28rpx;
-  }
-
-  &--large {
-    padding: 24rpx 48rpx;
-    font-size: 32rpx;
-  }
-
-  &--disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-</style>
 ```
 
 ### 组件类型定义
@@ -1859,48 +1819,6 @@ const handleClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.user-avatar {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: #e6e6e6;
-
-  &--small {
-    width: 64rpx;
-    height: 64rpx;
-  }
-
-  &--medium {
-    width: 96rpx;
-    height: 96rpx;
-  }
-
-  &--large {
-    width: 128rpx;
-    height: 128rpx;
-  }
-
-  &__image {
-    width: 100%;
-    height: 100%;
-  }
-
-  &__placeholder {
-    color: #999999;
-    font-size: 32rpx;
-  }
-
-  &__badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-}
-</style>
 ```
 
 #### 2. 空状态组件
@@ -1944,38 +1862,6 @@ withDefaults(defineProps<EmptyStateProps>(), {
 })
 </script>
 
-<style lang="scss" scoped>
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 80rpx 32rpx;
-
-  &__image {
-    width: 320rpx;
-    height: 240rpx;
-    margin-bottom: 32rpx;
-  }
-
-  &__title {
-    font-size: 32rpx;
-    color: #333333;
-    margin-bottom: 16rpx;
-  }
-
-  &__description {
-    font-size: 28rpx;
-    color: #999999;
-    text-align: center;
-    margin-bottom: 32rpx;
-  }
-
-  &__action {
-    margin-top: 32rpx;
-  }
-}
-</style>
 ```
 
 使用空状态组件：
@@ -2395,12 +2281,6 @@ interface WdButtonProps {
 }
 </style>
 
-<style lang="scss" scoped>
-/* 局部样式 - 使用深度选择器 */
-:deep(.wd-button) {
-  /* ... */
-}
-</style>
 ```
 
 ### 2. v-model 不生效
@@ -2549,27 +2429,6 @@ const handleChange = (value: string) => {
 使用正确的深度选择器：
 
 ```vue
-<style lang="scss" scoped>
-/* ✅ 使用 :deep() */
-:deep(.wd-button) {
-  background-color: red;
-}
-
-/* ✅ 或使用 >>> */
->>> .wd-button {
-  background-color: red;
-}
-
-/* ✅ 或使用 /deep/ */
-/deep/ .wd-button {
-  background-color: red;
-}
-
-/* ❌ 不使用深度选择器无法穿透 */
-.wd-button {
-  background-color: red; /* 不生效 */
-}
-</style>
 ```
 
 ### 6. 组件通信失败

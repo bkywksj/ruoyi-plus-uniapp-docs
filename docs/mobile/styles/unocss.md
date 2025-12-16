@@ -910,14 +910,6 @@ const toForget = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-</style>
 ```
 
 ### 用户信息卡片

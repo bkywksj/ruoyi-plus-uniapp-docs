@@ -53,17 +53,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -105,17 +94,6 @@ const tabItems: TabItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -161,26 +139,6 @@ import { ref } from 'vue'
 const activeTab = ref('home')
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.current-tab {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -234,27 +192,6 @@ const handleDisabled = (event: { index: number; name: string | number }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.tip {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background: #fff3cd;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  color: #856404;
-  text-align: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -301,17 +238,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **Items 模式示例:**
@@ -343,17 +269,6 @@ const tabItems: TabItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -429,17 +344,6 @@ const activeTab2 = ref(0)
 const activeTab3 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -525,17 +429,6 @@ const activeTab3 = ref(0)
 const activeTab4 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -595,17 +488,6 @@ const activeTab2 = ref(0)
 const activeTab3 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -661,17 +543,6 @@ const activeTab2 = ref(0)
 const activeTab3 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -738,35 +609,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  min-height: 100vh;
-}
-
-.header {
-  height: 400rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 32rpx;
-  font-weight: bold;
-}
-
-.tab-content {
-  padding: 32rpx;
-}
-
-.content-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **自定义吸顶位置:**
@@ -812,51 +654,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  min-height: 100vh;
-}
-
-.custom-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 88rpx;
-  line-height: 88rpx;
-  background: #fff;
-  text-align: center;
-  font-size: 32rpx;
-  font-weight: bold;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-  z-index: 100;
-}
-
-.header {
-  margin-top: 88rpx;
-  height: 400rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 32rpx;
-  font-weight: bold;
-}
-
-.tab-content {
-  padding: 32rpx;
-}
-
-.content-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -926,34 +723,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 32rpx;
-}
-
-.tip {
-  padding: 24rpx;
-  margin-bottom: 24rpx;
-  background: #e7f4ff;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  color: #0066cc;
-  text-align: center;
-}
-
-.content-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1037,18 +806,6 @@ const activeTab2 = ref(0)
 const activeTab3 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-  min-height: 400rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1106,34 +863,6 @@ const activeTab1 = ref(0)
 const activeTab2 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 32rpx;
-}
-
-.tip {
-  padding: 24rpx;
-  margin-bottom: 24rpx;
-  background: #fff3cd;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  color: #856404;
-  text-align: center;
-}
-
-.content-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **Items 模式懒加载:**
@@ -1168,34 +897,6 @@ const tabItems: TabItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 32rpx;
-}
-
-.tip {
-  padding: 24rpx;
-  margin-bottom: 24rpx;
-  background: #fff3cd;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  color: #856404;
-  text-align: center;
-}
-
-.content-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1271,45 +972,6 @@ const tabItems: TabItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 32rpx;
-  min-height: 400rpx;
-}
-
-.default-content {
-  padding: 48rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #333;
-  text-align: center;
-}
-
-.custom-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 64rpx 32rpx;
-
-  .title {
-    margin-top: 32rpx;
-    font-size: 32rpx;
-    font-weight: bold;
-    color: #333;
-  }
-
-  .desc {
-    margin-top: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1384,42 +1046,6 @@ const handleDisabled = (event: { index: number; name: string | number }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.event-log {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-
-  .log-title {
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    font-weight: bold;
-    color: #333;
-  }
-
-  .log-item {
-    padding: 12rpx 0;
-    font-size: 24rpx;
-    color: #666;
-    border-bottom: 1rpx solid #e0e0e0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1489,24 +1115,6 @@ const updateLine = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-tabs {
-  padding: 32rpx;
-}
-
-.btn-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1835,32 +1443,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.custom-tabs {
-  padding: 32rpx;
-
-  // 自定义导航栏高度
-  :deep(.wd-tabs__nav) {
-    height: 100rpx;
-  }
-
-  :deep(.wd-tabs__nav-item) {
-    height: 100rpx;
-    font-size: 32rpx;
-  }
-
-  // 自定义指示线样式
-  :deep(.wd-tabs__line) {
-    border-radius: 4rpx;
-  }
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **深色主题:**
@@ -1888,19 +1470,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.dark-tabs {
-  padding: 32rpx;
-  background: #1a1a1a;
-  min-height: 100vh;
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #e5e5e5;
-}
-</style>
 ```
 
 **圆角胶囊样式:**
@@ -1935,38 +1504,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.capsule-tabs {
-  padding: 32rpx;
-
-  :deep(.capsule-style) {
-    .wd-tabs__nav {
-      background: #f5f5f5;
-      border-radius: 48rpx;
-      padding: 8rpx;
-    }
-
-    .wd-tabs__nav-item {
-      border-radius: 48rpx;
-      transition: all 0.3s;
-
-      &.is-active {
-        background: #4d80f0;
-      }
-    }
-
-    .wd-tabs__line {
-      display: none;
-    }
-  }
-}
-
-.tab-content {
-  padding: 48rpx 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 参考: src/wd/components/wd-tabs/wd-tabs.vue:988-1312
@@ -2354,19 +1891,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.page {
-  // 确保页面层级正确
-  position: relative;
-  z-index: 1;
-}
-
-.tab-content {
-  // 标签内容不要设置过高的 z-index
-  position: relative;
-  z-index: 1;
-}
-</style>
 ```
 
 **说明:**
@@ -2422,13 +1946,6 @@ const handleTouchStart = (event: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.tab-content {
-  padding: 32rpx;
-  // 确保内容区域可以接收触摸事件
-  touch-action: pan-y;  // 只阻止垂直滚动
-}
-</style>
 ```
 
 **说明:**
@@ -2492,29 +2009,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.custom-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: calc(88rpx + var(--status-bar-height));
-  background: #fff;
-  z-index: 100;
-}
-
-.content {
-  padding-top: calc(88rpx + var(--status-bar-height));
-}
-
-.tab-content {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **说明:**

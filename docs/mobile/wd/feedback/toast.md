@@ -44,11 +44,6 @@ const showToast = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **默认配置:**
@@ -80,11 +75,6 @@ const showSuccess = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **成功提示特点:**
@@ -115,11 +105,6 @@ const showError = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **错误提示特点:**
@@ -150,11 +135,6 @@ const showWarning = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **警告提示特点:**
@@ -185,11 +165,6 @@ const showInfo = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **信息提示特点:**
@@ -225,12 +200,6 @@ const hideLoading = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-}
-</style>
 ```
 
 **加载提示特点:**
@@ -281,12 +250,6 @@ const showForever = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-}
-</style>
 ```
 
 **时长说明:**
@@ -350,26 +313,6 @@ const showBottom = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-group {
-  display: flex;
-  margin-bottom: 32rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.demo-title {
-  font-size: 28rpx;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **位置说明:**
@@ -414,12 +357,6 @@ const showHorizontal = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-}
-</style>
 ```
 
 **排列方式:**
@@ -453,11 +390,6 @@ const showCustomIcon = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **自定义图标说明:**
@@ -513,29 +445,6 @@ const withoutCover = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-group {
-  display: flex;
-  margin-bottom: 32rpx;
-}
-
-.counter {
-  display: flex;
-  align-items: center;
-  padding: 32rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
-
-  text {
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **遮罩层说明:**
@@ -584,12 +493,6 @@ const showOutline = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-}
-</style>
 ```
 
 **加载类型说明:**
@@ -628,11 +531,6 @@ const showCustomLoading = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **加载样式选项:**
@@ -686,33 +584,6 @@ const showWithCallback = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.log-area {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
-}
-
-.log-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.log-item {
-  font-size: 24rpx;
-  color: #666;
-  line-height: 1.5;
-  margin-bottom: 8rpx;
-}
-</style>
 ```
 
 **回调说明:**
@@ -789,20 +660,6 @@ const closeToast3 = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.demo-group {
-  display: flex;
-  margin-bottom: 32rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-</style>
 ```
 
 **多实例说明:**
@@ -851,12 +708,6 @@ const closeAll = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-}
-</style>
 ```
 
 **偏移计算逻辑:**
@@ -911,11 +762,6 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **异步操作模式:**
@@ -969,11 +815,6 @@ const startCountdown = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **动态更新说明:**
@@ -1429,12 +1270,6 @@ const showToast = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-// ✅ 确保没有元素 z-index 过高
-.demo {
-  // 不要设置过高的 z-index
-}
-</style>
 ```
 
 **检查清单:**

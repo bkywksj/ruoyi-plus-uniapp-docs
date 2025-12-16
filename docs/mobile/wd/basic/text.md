@@ -48,14 +48,6 @@ WD Text 组件提供 7 种预设主题类型,适用于不同的信息层级和�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -104,23 +96,6 @@ WD Text 组件提供 7 种预设主题类型,适用于不同的信息层级和�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &-title {
-    display: block;
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: bold;
-    color: #262626;
-  }
-}
-</style>
 ```
 
 **样式应用说明:**
@@ -224,28 +199,6 @@ WD Text 组件提供 7 种预设主题类型,适用于不同的信息层级和�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.product-card {
-  display: flex;
-  gap: 24rpx;
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 16rpx;
-
-  .product-image {
-    width: 200rpx;
-    height: 200rpx;
-    border-radius: 8rpx;
-  }
-
-  .product-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 16rpx;
-  }
-}
-</style>
 ```
 
 **省略功能说明:**
@@ -300,25 +253,6 @@ WD Text 组件提供 7 种预设主题类型,适用于不同的信息层级和�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.container {
-  padding: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-
-  &-item {
-    padding: 24rpx;
-    background: #fff;
-    border-radius: 12rpx;
-  }
-}
-</style>
 ```
 
 **块级显示说明:**
@@ -456,32 +390,6 @@ const products = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.price-compare {
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-}
-
-.product-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-}
-
-.product-item {
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 12rpx;
-}
-
-.product-price {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  margin-top: 12rpx;
-}
-</style>
 ```
 
 **价格格式化说明:**
@@ -790,26 +698,6 @@ const tabs = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.icon-text-group {
-  display: flex;
-  gap: 48rpx;
-}
-
-.tabbar {
-  display: flex;
-  justify-content: space-around;
-  padding: 16rpx 0;
-  background: #fff;
-  border-top: 1rpx solid #e8e8e8;
-
-  &-item {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-  }
-}
-</style>
 ```
 
 **上下图标说明:**
@@ -862,13 +750,6 @@ const tabs = [
   </view>
 </template>
 
-<style lang="scss" scoped>
-.price-tag {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-}
-</style>
 ```
 
 **插槽使用说明:**

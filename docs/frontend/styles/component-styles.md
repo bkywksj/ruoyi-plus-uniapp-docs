@@ -96,13 +96,6 @@ RuoYi-Plus-UniApp 前端项目的组件样式系统提供了一套统一的组�
   </div>
 </template>
 
-<style lang="scss" scoped>
-.button-group {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-</style>
 ```
 
 ### pan-btn 动画按钮
@@ -198,14 +191,6 @@ const handleClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 40px;
-  background: var(--bg-level-1);
-  display: flex;
-  gap: 20px;
-}
-</style>
 ```
 
 ### custom-button 简洁按钮
@@ -274,15 +259,6 @@ const handleClick = () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.toolbar {
-  display: flex;
-  gap: 8px;
-  padding: 12px;
-  background: var(--bg-level-1);
-  border-radius: 4px;
-}
-</style>
 ```
 
 ### 自定义按钮样式
@@ -403,17 +379,6 @@ setTimeout(() => {
 }, 3000)
 </script>
 
-<style lang="scss" scoped>
-.message {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px 16px;
-  background: var(--bg-level-1);
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-</style>
 ```
 
 ### breadcrumb 面包屑动画
@@ -485,28 +450,6 @@ const handleClick = (item: Breadcrumb) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.breadcrumb-list {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.breadcrumb-item {
-  cursor: pointer;
-  color: var(--text-color-regular);
-
-  &:last-child {
-    color: var(--text-color-primary);
-    font-weight: 500;
-  }
-
-  .separator {
-    margin: 0 8px;
-    color: var(--text-color-placeholder);
-  }
-}
-</style>
 ```
 
 ## 对话框动画
@@ -617,17 +560,6 @@ const handleConfirm = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.dialog-content {
-  padding: 20px 0;
-
-  p {
-    margin-bottom: 12px;
-    color: var(--text-color-regular);
-    line-height: 1.6;
-  }
-}
-</style>
 ```
 
 ## 菜单动画
@@ -848,25 +780,6 @@ const handleConfirm = () => {
 import { Bell, RefreshRight, Upload, Search, Close, Loading } from '@element-plus/icons-vue'
 </script>
 
-<style lang="scss" scoped>
-.icon-demo {
-  display: flex;
-  gap: 32px;
-  padding: 40px;
-  background: var(--bg-level-1);
-  border-radius: 8px;
-
-  .el-icon {
-    cursor: pointer;
-    color: var(--text-color-primary);
-    transition: color 0.3s ease;
-
-    &:hover {
-      color: var(--primary-color);
-    }
-  }
-}
-</style>
 ```
 
 ## 徽章动画
@@ -909,19 +822,6 @@ import { Bell, RefreshRight, Upload, Search, Close, Loading } from '@element-plu
   </div>
 </template>
 
-<style lang="scss" scoped>
-.badge-demo {
-  display: flex;
-  gap: 20px;
-  padding: 20px;
-}
-
-.breathing-badge {
-  :deep(.el-badge__content) {
-    animation: breathe 2s ease-in-out infinite;
-  }
-}
-</style>
 ```
 
 ## 组件样式最佳实践
@@ -1166,17 +1066,6 @@ import { Bell, RefreshRight, Upload, Search, Close, Loading } from '@element-plu
   </transition>
 </template>
 
-<style lang="scss" scoped>
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>
 ```
 
 ## 总结

@@ -1272,12 +1272,6 @@ WD UI 组件支持通过 `customClass` 属性传入自定义类名：
   </wd-button>
 </template>
 
-<style lang="scss" scoped>
-.my-button {
-  margin: 24rpx;
-  min-width: 300rpx;
-}
-</style>
 ```
 
 ### customStyle 属性
@@ -1308,17 +1302,6 @@ WD UI 组件支持通过 `customClass` 属性传入自定义类名：
   </view>
 </template>
 
-<style lang="scss" scoped>
-.container {
-  :deep(.wd-button) {
-    background-color: #1890ff;
-
-    .wd-button__text {
-      font-weight: 600;
-    }
-  }
-}
-</style>
 ```
 
 ### 全局样式覆盖
@@ -1631,14 +1614,6 @@ $-cell-tap-bg: var(--wot-cell-tap-bg, #f9f9f9);
 }
 </style>
 
-<style lang="scss" scoped>
-// 方案2: 正确使用 :deep()
-.my-container {
-  :deep(.wd-button) {
-    background-color: #1890ff;
-  }
-}
-</style>
 ```
 
 ### 5. rpx 单位在 H5 端适配问题

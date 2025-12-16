@@ -47,13 +47,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -179,13 +172,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16px;
-  align-items: flex-end; // 底部对齐更容易看出尺寸差异
-}
-</style>
 ```
 
 **尺寸处理逻辑:**
@@ -229,33 +215,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.animated-icon {
-  animation: pulse 1s ease-in-out infinite;
-}
-
-.spinning-icon {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>
 ```
 
 **样式优先级:**
@@ -495,16 +454,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.spinning {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-</style>
 ```
 
 **完整图标列表:**
@@ -1000,12 +949,6 @@ const handleSave = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.disabled {
-  pointer-events: none; // 禁用所有点击事件
-  opacity: 0.5;
-}
-</style>
 ```
 
 **事件处理说明:**
@@ -1124,83 +1067,6 @@ const handleSave = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-// 旋转动画
-.spinning {
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-// 心跳动画
-.pulse {
-  animation: pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-}
-
-// 摇摆动画
-.shake {
-  animation: shake 0.5s ease-in-out infinite;
-}
-
-@keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-4px);
-  }
-  75% {
-    transform: translateX(4px);
-  }
-}
-
-// 弹跳动画
-.bounce {
-  animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
-    transform: translateY(0);
-  }
-  40% {
-    transform: translateY(-10px);
-  }
-  60% {
-    transform: translateY(-5px);
-  }
-}
-
-// 闪烁动画
-.blink {
-  animation: blink 2s ease-in-out infinite;
-}
-
-@keyframes blink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-}
-</style>
 ```
 
 **动画使用建议:**
@@ -1273,54 +1139,6 @@ const handleComment = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  flex-direction: column;
-  gap: 32rpx;
-}
-
-.icon-badge {
-  position: relative;
-  display: inline-block;
-
-  .badge {
-    position: absolute;
-    top: -8rpx;
-    right: -8rpx;
-    min-width: 32rpx;
-    height: 32rpx;
-    padding: 0 8rpx;
-    background: #ff4d4f;
-    border-radius: 16rpx;
-    color: #fff;
-    font-size: 20rpx;
-    line-height: 32rpx;
-    text-align: center;
-  }
-}
-
-.icon-group {
-  display: flex;
-  gap: 48rpx;
-
-  .icon-item {
-    display: flex;
-    align-items: center;
-    gap: 8rpx;
-    cursor: pointer;
-
-    text {
-      font-size: 28rpx;
-      color: #8c8c8c;
-    }
-
-    &:active {
-      opacity: 0.6;
-    }
-  }
-}
-</style>
 ```
 
 ## API

@@ -316,24 +316,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-page {
-  min-height: 100vh;
-  background-color: #f8f8f8;
-}
-
-.form-section {
-  margin: 20rpx;
-}
-
-.button-section {
-  padding: 40rpx 20rpx;
-}
-
-.display-section {
-  margin: 20rpx;
-}
-</style>
 ```
 
 ### 列表页面示例
@@ -514,22 +496,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.list-page {
-  min-height: 100vh;
-  background-color: #f8f8f8;
-}
-
-.filter-tags {
-  padding: 20rpx;
-  background: white;
-  margin-bottom: 20rpx;
-}
-
-.user-list {
-  margin-bottom: 20rpx;
-}
-</style>
 ```
 
 ## 🔧 常用配置

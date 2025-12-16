@@ -475,16 +475,6 @@ const chooseAndUpload = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.upload-demo {
-  padding: 32rpx;
-}
-.preview {
-  width: 200rpx;
-  height: 200rpx;
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 ### 带进度的上传
@@ -719,13 +709,6 @@ const downloadWithProgress = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.progress-text {
-  font-size: 24rpx;
-  color: #999;
-  margin-top: 16rpx;
-}
-</style>
 ```
 
 ## Token 管理

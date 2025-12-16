@@ -1268,63 +1268,6 @@ onMounted(() => {
 ### 样式注释
 
 ```scss
-<style lang="scss" scoped>
-// =========== 暗色主题样式 ===========
-.wot-theme-dark {
-  // 按钮背景色
-  --wd-button-bg-color: #333;
-  // 按钮文字颜色
-  --wd-button-text-color: #fff;
-}
-
-// =========== 按钮主体样式 ===========
-@include b(button) {
-  position: relative;
-  display: inline-flex;
-
-  // 按钮按下效果
-  &::before {
-    content: ' ';
-    position: absolute;
-  }
-
-  // 内容区域
-  @include e(content) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  // 激活状态
-  @include m(active) {
-    opacity: 0.8;
-  }
-
-  // 隐形按钮样式
-  @include when(invisible) {
-    // 移除任何可能的阴影或边框
-    box-shadow: none !important;
-    border: none !important;
-  }
-
-  // 禁用状态
-  @include when(disabled) {
-    opacity: $-button-disabled-opacity;
-    cursor: not-allowed;
-  }
-}
-
-// =========== 旋转动画 ===========
-@keyframes wd-rotate {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-</style>
 ```
 
 参考: plus-uniapp/src/wd/components/wd-button/wd-button.vue:447-825
@@ -1643,12 +1586,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-// =========== 主体样式 ===========
-.${COMPONENT_CLASS} {
-
-}
-</style>
 ```
 
 ## 注释生成工具

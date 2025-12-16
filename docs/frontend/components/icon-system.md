@@ -168,13 +168,6 @@ Icon 组件提供了三种使用方式，以适应不同的开发场景。
 import Icon from '@/components/Icon/Icon.vue'
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-</style>
 ```
 
 **优势说明:**
@@ -264,13 +257,6 @@ Icon 组件提供了灵活的尺寸控制系统，支持预设尺寸和自定义
 import Icon from '@/components/Icon/Icon.vue'
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-</style>
 ```
 
 **预设尺寸对照表:**
@@ -378,20 +364,6 @@ Icon 组件支持灵活的颜色自定义。
 import Icon from '@/components/Icon/Icon.vue'
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16px;
-}
-
-.blue-text {
-  color: #409eff;
-}
-
-.primary-text {
-  color: var(--el-color-primary);
-}
-</style>
 ```
 
 #### 自定义颜色
@@ -419,13 +391,6 @@ import Icon from '@/components/Icon/Icon.vue'
 import Icon from '@/components/Icon/Icon.vue'
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-</style>
 ```
 
 #### 主题色预设
@@ -456,13 +421,6 @@ import Icon from '@/components/Icon/Icon.vue'
 import Icon from '@/components/Icon/Icon.vue'
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-</style>
 ```
 
 **Element Plus 颜色变量:**
@@ -494,11 +452,6 @@ Icon 组件内置 6 种 CSS 动画效果，通过 `animate` 属性启用。
 import Icon from '@/components/Icon/Icon.vue'
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32px;
-}
-</style>
 ```
 
 **动画细节:**
@@ -532,11 +485,6 @@ const toggle = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32px;
-}
-</style>
 ```
 
 **动画细节:**
@@ -656,37 +604,6 @@ import Icon from '@/components/Icon/Icon.vue'
 import Icon from '@/components/Icon/Icon.vue'
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 32px;
-}
-
-.message {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  border-radius: 4px;
-
-  &.error {
-    background-color: var(--el-color-danger-light-9);
-    color: var(--el-color-danger);
-  }
-
-  &.success {
-    background-color: var(--el-color-success-light-9);
-    color: var(--el-color-success);
-  }
-
-  &.loading {
-    background-color: var(--el-color-primary-light-9);
-    color: var(--el-color-primary);
-  }
-}
-</style>
 ```
 
 ### Props API
@@ -787,18 +704,6 @@ import Icon from '@/components/Icon/Icon.vue'
 const selectedIcon = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32px;
-}
-
-.result {
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-</style>
 ```
 
 #### 双向绑定
@@ -830,11 +735,6 @@ const form = ref({
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32px;
-}
-</style>
 ```
 
 **使用说明:**
@@ -868,17 +768,6 @@ import IconSelect from '@/components/Icon/IconSelect.vue'
 const icon = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32px;
-}
-
-.tip {
-  margin-top: 8px;
-  font-size: 14px;
-  color: var(--el-color-info);
-}
-</style>
 ```
 
 **搜索示例:**
@@ -939,31 +828,6 @@ import IconSelect from '@/components/Icon/IconSelect.vue'
 const icon = ref('dashboard')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32px;
-}
-
-.description {
-  margin-top: 16px;
-  font-size: 14px;
-
-  p {
-    font-weight: 600;
-    margin-bottom: 8px;
-  }
-
-  ul {
-    margin: 0;
-    padding-left: 20px;
-    color: var(--el-color-info);
-
-    li {
-      margin-bottom: 4px;
-    }
-  }
-}
-</style>
 ```
 
 **预览功能:**
@@ -1010,25 +874,6 @@ const icon3 = ref('')
 const icon4 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.row {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  label {
-    font-weight: 600;
-    font-size: 14px;
-  }
-}
-</style>
 ```
 
 **宽度说明:**
@@ -1128,29 +973,6 @@ Iconfont 图标库包含 644 个精心挑选的图标，涵盖企业级应用开
 import Icon from '@/components/Icon/Icon.vue'
 </script>
 
-<style lang="scss" scoped>
-.icon-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-  gap: 16px;
-  padding: 16px;
-}
-
-.icon-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 16px;
-  border: 1px solid var(--el-border-color);
-  border-radius: 4px;
-
-  span {
-    font-size: 12px;
-    color: var(--el-text-color-secondary);
-  }
-}
-</style>
 ```
 
 **常用图标代码:**
@@ -1884,15 +1706,6 @@ Icon 组件使用 CSS 变量进行主题定制，可以通过覆盖这些变量�
   </div>
 </template>
 
-<style lang="scss" scoped>
-.custom-theme {
-  --my-primary-color: #1890ff;  // 自定义主色
-  --my-success-color: #52c41a;  // 自定义成功色
-
-  display: flex;
-  gap: 16px;
-}
-</style>
 ```
 
 #### IconSelect 样式变量
@@ -1925,14 +1738,6 @@ IconSelect 组件的样式可以通过以下变量定制：
   </div>
 </template>
 
-<style lang="scss" scoped>
-.icon-select-custom {
-  --icon-border-color: #d9d9d9;
-  --icon-hover-border: #1890ff;
-  --icon-active-bg: #e6f7ff;
-  --icon-info-bg: #f5f5f5;
-}
-</style>
 ```
 
 ### 动画定制
@@ -1948,26 +1753,6 @@ IconSelect 组件的样式可以通过以下变量定制：
   </div>
 </template>
 
-<style lang="scss" scoped>
-.custom-shake {
-  // 覆盖抖动动画
-  :deep(.animate-shake) {
-    animation: custom-shake 0.5s ease-in-out infinite;
-  }
-}
-
-@keyframes custom-shake {
-  0%, 100% {
-    transform: translateX(0) rotate(0deg);
-  }
-  25% {
-    transform: translateX(-10px) rotate(-10deg);
-  }
-  75% {
-    transform: translateX(10px) rotate(10deg);
-  }
-}
-</style>
 ```
 
 #### 自定义呼吸动画
@@ -1979,24 +1764,6 @@ IconSelect 组件的样式可以通过以下变量定制：
   </div>
 </template>
 
-<style lang="scss" scoped>
-.custom-breathing {
-  :deep(.animate-breathing) {
-    animation: custom-breathing 1.5s ease-in-out infinite;
-  }
-}
-
-@keyframes custom-breathing {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 0.7;
-  }
-}
-</style>
 ```
 
 #### 添加新动画
@@ -2010,23 +1777,6 @@ IconSelect 组件的样式可以通过以下变量定制：
   </div>
 </template>
 
-<style lang="scss" scoped>
-.pulse-animation {
-  animation: pulse 1s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-</style>
 ```
 
 ## 最佳实践

@@ -32,14 +32,6 @@ Tag 标签组件用于标记和分类,提供多种预设颜色和样式。Tag �
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -68,14 +60,6 @@ Tag 标签组件用于标记和分类,提供多种预设颜色和样式。Tag �
 // 无需导入,WD UI 已全局注册
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -99,14 +83,6 @@ Tag 标签组件用于标记和分类,提供多种预设颜色和样式。Tag �
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -131,14 +107,6 @@ Tag 标签组件用于标记和分类,提供多种预设颜色和样式。Tag �
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -161,14 +129,6 @@ Tag 标签组件用于标记和分类,提供多种预设颜色和样式。Tag �
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -209,14 +169,6 @@ const handleClose3 = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -246,14 +198,6 @@ const handleClose3 = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -293,14 +237,6 @@ const handleClose3 = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -330,14 +266,6 @@ const handleClose3 = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -412,33 +340,6 @@ const userType = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  margin-bottom: 16rpx;
-  color: #333;
-}
-
-.tag-list {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-</style>
 ```
 
 **使用说明:**
@@ -480,14 +381,6 @@ import { ref } from 'vue'
 const dynamicValue = ref('动态文本')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -533,17 +426,6 @@ const handleAdd = (data: { value: string }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.tag-list {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-</style>
 ```
 
 **使用说明:**
@@ -602,17 +484,6 @@ const handleAdd = (data: { value: string }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.tag-list {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-</style>
 ```
 
 **使用说明:**
@@ -690,30 +561,6 @@ const addTag = (data: { value: string }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.article-tags {
-  padding: 32rpx;
-}
-
-.label {
-  font-size: 28rpx;
-  font-weight: bold;
-  margin-bottom: 16rpx;
-  color: #333;
-}
-
-.tag-container {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-
-.tip {
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **功能说明:**
@@ -796,36 +643,6 @@ const selectSize = (size: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.product-attrs {
-  padding: 32rpx;
-}
-
-.attr-group {
-  margin-bottom: 32rpx;
-}
-
-.attr-label {
-  font-size: 28rpx;
-  font-weight: bold;
-  margin-bottom: 16rpx;
-  color: #333;
-}
-
-.attr-tags {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-
-.selected-info {
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **功能说明:**
@@ -871,42 +688,6 @@ const orders = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.order-status {
-  padding: 32rpx;
-}
-
-.order-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.order-info {
-  flex: 1;
-}
-
-.order-id {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.order-time {
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **功能说明:**
@@ -973,32 +754,6 @@ const clearAll = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.filter-tags {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 32rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.label {
-  font-size: 28rpx;
-  font-weight: bold;
-  margin-bottom: 16rpx;
-  color: #333;
-}
-
-.tags {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-}
-</style>
 ```
 
 **功能说明:**
@@ -1067,45 +822,6 @@ const toggleTag = (id: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.hot-tags {
-  padding: 32rpx;
-}
-
-.section-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  margin-bottom: 24rpx;
-  color: #333;
-}
-
-.tags-container {
-  display: flex;
-  gap: 16rpx;
-  flex-wrap: wrap;
-  margin-bottom: 24rpx;
-}
-
-.tag-content {
-  display: flex;
-  align-items: center;
-}
-
-.tag-count {
-  margin-left: 8rpx;
-  font-size: 22rpx;
-  opacity: 0.7;
-}
-
-.selected-count {
-  padding: 20rpx;
-  background: #f0f9ff;
-  border-radius: 8rpx;
-  text-align: center;
-  color: #1890ff;
-  font-size: 28rpx;
-}
-</style>
 ```
 
 **功能说明:**
@@ -1273,18 +989,6 @@ $-tag-close-active-color: #606266; // 关闭按钮激活颜色
   </view>
 </template>
 
-<style lang="scss" scoped>
-.custom-theme {
-  --tag-primary-color: #722ed1;
-  --tag-primary-bg: #f9f0ff;
-  --tag-border-radius: 12rpx;
-}
-
-.custom-tag {
-  font-weight: bold;
-  letter-spacing: 2rpx;
-}
-</style>
 ```
 
 ### 暗黑模式支持

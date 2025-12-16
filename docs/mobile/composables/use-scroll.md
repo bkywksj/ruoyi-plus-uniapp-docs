@@ -52,16 +52,6 @@ onPageScroll((e) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -88,27 +78,6 @@ import { useScroll } from '@/composables/useScroll'
 const { scrollTop, isScrolled } = useScroll()
 </script>
 
-<style lang="scss" scoped>
-.scroll-info {
-  position: fixed;
-  top: 0;
-  right: 0;
-  padding: 20rpx 32rpx;
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  font-size: 24rpx;
-  z-index: 9999;
-
-  text {
-    display: block;
-    margin-bottom: 10rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -151,16 +120,6 @@ onPageScroll((e) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -216,30 +175,6 @@ const handleBackTop = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-
-.backtop-btn {
-  position: fixed;
-  bottom: 100rpx;
-  right: 32rpx;
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -307,45 +242,6 @@ onPageScroll((e) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6rpx;
-  background: #f0f0f0;
-  z-index: 9999;
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
-    transition: width 0.1s ease;
-  }
-}
-
-.progress-text {
-  position: fixed;
-  top: 20rpx;
-  right: 32rpx;
-  padding: 10rpx 20rpx;
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  font-size: 24rpx;
-  border-radius: 8rpx;
-  z-index: 9999;
-}
-
-.page {
-  min-height: 100vh;
-  padding-top: 60rpx;
-}
-
-.item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -410,59 +306,6 @@ const handleBackTop = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.sticky-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 88rpx;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1rpx solid #eee;
-  z-index: 999;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.1);
-}
-
-.navbar {
-  height: 88rpx;
-  background: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.content {
-  min-height: 100vh;
-}
-
-.item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-
-.backtop {
-  position: fixed;
-  bottom: 100rpx;
-  right: 32rpx;
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-
-  &.backtop-active {
-    background: #e6f7ff;
-    transform: scale(1.1);
-  }
-}
-</style>
 ```
 
 **使用说明:**

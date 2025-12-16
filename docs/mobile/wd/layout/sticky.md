@@ -44,26 +44,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 // 无需额外配置
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.placeholder {
-  height: 200rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  margin-bottom: 20rpx;
-}
-
-.list-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -108,37 +88,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 // offset-top 单位为 px
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.placeholder {
-  height: 300rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  margin-bottom: 20rpx;
-}
-
-.sticky-bar {
-  height: 88rpx;
-  padding: 0 32rpx;
-  background: #4d80f0;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28rpx;
-}
-
-.list-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -183,36 +132,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 // z-index 默认值为 1
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.placeholder {
-  height: 200rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  margin-bottom: 20rpx;
-}
-
-.sticky-bar {
-  height: 88rpx;
-  padding: 0 32rpx;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28rpx;
-}
-
-.list-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -258,49 +177,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 // StickyBox 为 Sticky 提供边界容器
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.placeholder {
-  height: 200rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  margin-bottom: 20rpx;
-}
-
-.sticky-bar {
-  height: 88rpx;
-  padding: 0 32rpx;
-  background: #4d80f0;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28rpx;
-}
-
-.box-content {
-  background: #f9f9f9;
-  padding: 20rpx;
-}
-
-.content-item {
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  margin-bottom: 16rpx;
-}
-
-.list-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -349,47 +225,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 // 可通过 custom-class 和 custom-style 自定义样式
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.placeholder {
-  height: 200rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  margin-bottom: 20rpx;
-}
-
-.custom-sticky {
-  margin: 0 32rpx;
-}
-
-.sticky-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: #fff;
-  padding: 32rpx;
-}
-
-.card-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  margin-bottom: 16rpx;
-}
-
-.card-content {
-  font-size: 28rpx;
-  opacity: 0.9;
-}
-
-.list-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -467,82 +302,6 @@ const handleFilterClick = (id: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-  background: #f5f5f5;
-}
-
-.header {
-  background: #fff;
-}
-
-.banner {
-  width: 100%;
-  display: block;
-}
-
-.filter-bar {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-bottom: 1rpx solid #eee;
-}
-
-.filter-item {
-  flex: 1;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28rpx;
-  color: #666;
-  position: relative;
-
-  &.active {
-    color: #4d80f0;
-  }
-}
-
-.goods-list {
-  padding: 20rpx;
-}
-
-.goods-item {
-  display: flex;
-  background: #fff;
-  border-radius: 12rpx;
-  padding: 24rpx;
-  margin-bottom: 20rpx;
-}
-
-.goods-image {
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 8rpx;
-  margin-right: 20rpx;
-}
-
-.goods-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.goods-name {
-  font-size: 28rpx;
-  color: #333;
-  line-height: 1.5;
-}
-
-.goods-price {
-  font-size: 32rpx;
-  color: #ff6b6b;
-  font-weight: bold;
-}
-</style>
 ```
 
 **使用说明:**
@@ -616,60 +375,6 @@ const handleFilterClick = (id: string) => {
 // 多个 Sticky 元素通过设置不同的 offset-top 形成层叠效果
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.placeholder {
-  height: 200rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  margin-bottom: 20rpx;
-}
-
-.sticky-bar {
-  height: 88rpx;
-  padding: 0 32rpx;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28rpx;
-}
-
-.bar-1 {
-  background: #4d80f0;
-}
-
-.bar-2 {
-  background: #19be6b;
-}
-
-.bar-3 {
-  background: #ff6b6b;
-}
-
-.section {
-  background: #f9f9f9;
-  padding: 20rpx;
-}
-
-.section-item {
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  margin-bottom: 16rpx;
-}
-
-.list-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -763,67 +468,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.status-panel {
-  position: fixed;
-  top: 20rpx;
-  right: 20rpx;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  padding: 24rpx;
-  border-radius: 12rpx;
-  font-size: 24rpx;
-  z-index: 1000;
-}
-
-.status-item {
-  display: flex;
-  margin-bottom: 12rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.label {
-  margin-right: 12rpx;
-  opacity: 0.7;
-}
-
-.value {
-  font-weight: bold;
-}
-
-.placeholder {
-  height: 200rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  margin-bottom: 20rpx;
-}
-
-.sticky-bar {
-  height: 88rpx;
-  padding: 0 32rpx;
-  background: #4d80f0;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28rpx;
-}
-
-.list-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -924,136 +568,6 @@ const handleTabClick = (id: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-  background: #f5f5f5;
-}
-
-.product-info {
-  background: #fff;
-}
-
-.product-image {
-  width: 100%;
-  display: block;
-}
-
-.info-box {
-  padding: 32rpx;
-}
-
-.product-name {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.product-price {
-  font-size: 40rpx;
-  color: #ff6b6b;
-  font-weight: bold;
-  margin-bottom: 16rpx;
-}
-
-.product-desc {
-  font-size: 28rpx;
-  color: #999;
-  line-height: 1.6;
-}
-
-.tab-bar {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border-bottom: 1rpx solid #eee;
-}
-
-.tab-item {
-  flex: 1;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28rpx;
-  color: #666;
-  position: relative;
-
-  &.active {
-    color: #4d80f0;
-    font-weight: bold;
-
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60rpx;
-      height: 4rpx;
-      background: #4d80f0;
-      border-radius: 2rpx;
-    }
-  }
-}
-
-.tab-content {
-  background: #fff;
-  margin-top: 20rpx;
-  padding: 32rpx;
-  min-height: 800rpx;
-}
-
-.section-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.detail-item {
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #f5f5f5;
-  font-size: 28rpx;
-  color: #666;
-}
-
-.param-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #f5f5f5;
-  font-size: 28rpx;
-}
-
-.param-label {
-  color: #999;
-}
-
-.param-value {
-  color: #333;
-}
-
-.review-item {
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #f5f5f5;
-}
-
-.review-user {
-  font-size: 28rpx;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 12rpx;
-}
-
-.review-content {
-  font-size: 26rpx;
-  color: #666;
-  line-height: 1.6;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1150,85 +664,6 @@ const handleContactClick = (contact: Contact) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-  background: #f5f5f5;
-}
-
-.header {
-  background: #fff;
-  padding: 20rpx 32rpx;
-}
-
-.search-bar {
-  height: 64rpx;
-  background: #f5f5f5;
-  border-radius: 32rpx;
-  display: flex;
-  align-items: center;
-  padding: 0 24rpx;
-  color: #999;
-  font-size: 28rpx;
-
-  .wd-icon {
-    margin-right: 12rpx;
-  }
-}
-
-.contact-group {
-  margin-bottom: 20rpx;
-}
-
-.group-title {
-  height: 60rpx;
-  padding: 0 32rpx;
-  background: #f5f5f5;
-  display: flex;
-  align-items: center;
-  font-size: 26rpx;
-  color: #999;
-  font-weight: bold;
-}
-
-.contact-list {
-  background: #fff;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid #f5f5f5;
-
-  &:active {
-    background: #f9f9f9;
-  }
-}
-
-.avatar {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  margin-right: 24rpx;
-}
-
-.contact-info {
-  flex: 1;
-}
-
-.contact-name {
-  font-size: 30rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.contact-phone {
-  font-size: 26rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1277,37 +712,6 @@ const toggleHeight = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.placeholder {
-  height: 200rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  margin-bottom: 20rpx;
-}
-
-.sticky-bar {
-  padding: 0 32rpx;
-  background: #4d80f0;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 28rpx;
-  transition: height 0.3s;
-}
-
-.list-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1382,63 +786,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  height: 100vh;
-  overflow-y: auto;
-}
-
-.platform-info {
-  background: #fff;
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-
-.info-item {
-  display: flex;
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.label {
-  color: #999;
-  margin-right: 12rpx;
-}
-
-.value {
-  color: #333;
-  font-weight: bold;
-}
-
-.placeholder {
-  height: 200rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  margin-bottom: 20rpx;
-}
-
-.sticky-bar {
-  height: 88rpx;
-  padding: 0 32rpx;
-  background: #4d80f0;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28rpx;
-}
-
-.list-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 **平台差异处理:**

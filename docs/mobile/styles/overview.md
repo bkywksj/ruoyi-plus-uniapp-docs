@@ -145,29 +145,6 @@ $uni-opacity-disabled: 0.3;       // 禁用态透明度
   </view>
 </template>
 
-<style lang="scss" scoped>
-.container {
-  padding: $uni-spacing-row-base $uni-spacing-col-base;
-  background-color: $uni-bg-color;
-}
-
-.title {
-  font-size: $uni-font-size-lg;
-  color: $uni-text-color;
-  margin-bottom: $uni-spacing-row-sm;
-}
-
-.button {
-  padding: $uni-spacing-row-base $uni-spacing-col-lg;
-  background-color: $uni-color-primary;
-  color: $uni-text-color-inverse;
-  border-radius: $uni-border-radius-base;
-
-  &:hover {
-    background-color: $uni-bg-color-hover;
-  }
-}
-</style>
 ```
 
 #### 文章场景变量
@@ -199,30 +176,6 @@ $uni-font-size-paragraph: 15px;   // 段落字号
   </view>
 </template>
 
-<style lang="scss" scoped>
-.article {
-  padding: 32rpx;
-
-  &-title {
-    font-size: $uni-font-size-title;
-    color: $uni-color-title;
-    font-weight: bold;
-    margin-bottom: 16rpx;
-  }
-
-  &-subtitle {
-    font-size: $uni-font-size-subtitle;
-    color: $uni-color-subtitle;
-    margin-bottom: 24rpx;
-  }
-
-  &-paragraph {
-    font-size: $uni-font-size-paragraph;
-    color: $uni-color-paragraph;
-    line-height: 1.6;
-  }
-}
-</style>
 ```
 
 ### 变量定制
@@ -250,24 +203,6 @@ $uni-border-radius-base: 8px;     // 增大圆角
 在具体组件中可以覆盖或组合使用这些变量:
 
 ```vue
-<style lang="scss" scoped>
-.custom-button {
-  // 使用 UniApp 变量
-  background-color: $uni-color-primary;
-  color: $uni-text-color-inverse;
-
-  // 组合使用
-  padding: $uni-spacing-row-lg $uni-spacing-col-lg;
-  border-radius: $uni-border-radius-lg;
-  font-size: $uni-font-size-lg;
-
-  // 覆盖定制
-  &.large {
-    padding: calc($uni-spacing-row-lg * 1.5) calc($uni-spacing-col-lg * 2);
-    font-size: calc($uni-font-size-lg * 1.2);
-  }
-}
-</style>
 ```
 
 ## WD UI 样式系统
@@ -471,49 +406,6 @@ $-color-gray-8: var(--wot-color-gray-8, #323233);     // 最深
   </view>
 </template>
 
-<style lang="scss" scoped>
-.card {
-  background: $-color-white;
-  border: 1px solid $-color-gray-3;
-  border-radius: 16rpx;
-
-  &-header {
-    padding: 32rpx;
-    border-bottom: 1px solid $-color-gray-2;
-    font-weight: 500;
-  }
-
-  &-body {
-    padding: 32rpx;
-    color: $-color-gray-7;
-  }
-
-  &-footer {
-    padding: 24rpx 32rpx;
-    display: flex;
-    gap: 16rpx;
-  }
-}
-
-.btn {
-  flex: 1;
-  height: 72rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8rpx;
-
-  &-primary {
-    background: $-color-theme;
-    color: $-color-white;
-  }
-
-  &-default {
-    background: $-color-gray-2;
-    color: $-color-gray-7;
-  }
-}
-</style>
 ```
 
 #### 文字颜色变量
@@ -554,44 +446,6 @@ $-font-white-4: var(--wot-font-white-4, rgba(255, 255, 255, 0.22));  // 白色�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.info-card {
-  padding: 32rpx;
-  background: $-color-white;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-
-  .title {
-    font-size: 32rpx;
-    color: $-color-title;          // rgba(0, 0, 0, 1) 或 #000
-    font-weight: 600;
-  }
-
-  .content {
-    font-size: 28rpx;
-    color: $-color-content;        // #262626
-    line-height: 1.5;
-  }
-
-  .secondary {
-    font-size: 28rpx;
-    color: $-color-secondary;      // #595959
-  }
-
-  .aid {
-    font-size: 24rpx;
-    color: $-color-aid;            // #8c8c8c
-  }
-
-  .tip {
-    font-size: 24rpx;
-    color: $-color-tip;            // #bfbfbf
-  }
-}
-</style>
 ```
 
 #### 暗黑模式变量
@@ -630,46 +484,6 @@ import { ref } from 'vue'
 const isDark = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.theme-card {
-  padding: 32rpx;
-  background: $-color-white;
-  color: $-color-title;
-  border: 1px solid $-color-border;
-
-  // 暗黑模式样式
-  &.is-dark {
-    background: $-dark-background;
-    color: $-dark-color;
-    border-color: $-dark-border-color;
-
-    .card-bg {
-      background: $-dark-background2;
-    }
-
-    .card-text {
-      color: $-dark-color3;
-    }
-  }
-}
-
-.card-bg {
-  padding: 24rpx;
-  background: $-color-bg;
-  margin-bottom: 16rpx;
-}
-
-.card-text {
-  font-size: 28rpx;
-  color: $-color-content;
-  margin-bottom: 16rpx;
-}
-
-.card-border {
-  padding: 16rpx;
-  border: 1px solid $-color-border;
-}
-</style>
 ```
 
 #### 字体变量
@@ -702,50 +516,6 @@ $-fw-semibold: var(--wot-fw-semibold, 600);       // PingFangSC-Semibold
   </view>
 </template>
 
-<style lang="scss" scoped>
-.typography {
-  padding: 32rpx;
-
-  text {
-    display: block;
-    margin-bottom: 24rpx;
-  }
-
-  .big-title {
-    font-size: $-fs-big;
-    font-weight: $-fw-semibold;
-    color: $-color-title;
-  }
-
-  .important {
-    font-size: $-fs-important;
-    font-weight: $-fw-medium;
-    color: $-color-theme;
-  }
-
-  .title {
-    font-size: $-fs-title;
-    font-weight: $-fw-medium;
-    color: $-color-title;
-  }
-
-  .content {
-    font-size: $-fs-content;
-    color: $-color-content;
-    line-height: 1.5;
-  }
-
-  .secondary {
-    font-size: $-fs-secondary;
-    color: $-color-secondary;
-  }
-
-  .aid {
-    font-size: $-fs-aid;
-    color: $-color-aid;
-  }
-}
-</style>
 ```
 
 #### 尺寸变量
@@ -777,50 +547,6 @@ $-size-side-padding-small: var(--wot-size-side-padding-small, 12rpx);  // 小留
   </view>
 </template>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background: $-color-bg;
-}
-
-.section {
-  // 使用标准边距
-  padding: 32rpx $-size-side-padding;
-  background: $-color-white;
-  margin-bottom: 20rpx;
-
-  .section-title {
-    font-size: $-fs-title;
-    font-weight: $-fw-medium;
-    color: $-color-title;
-    margin-bottom: 16rpx;
-  }
-
-  .content {
-    font-size: $-fs-content;
-    color: $-color-content;
-    line-height: 1.5;
-  }
-}
-
-.compact-section {
-  // 使用紧凑边距
-  padding: 24rpx $-size-side-padding-small;
-  background: $-color-white;
-
-  .section-title {
-    font-size: $-fs-content;
-    color: $-color-title;
-    margin-bottom: 12rpx;
-  }
-
-  .content {
-    font-size: $-fs-secondary;
-    color: $-color-secondary;
-    line-height: 1.4;
-  }
-}
-</style>
 ```
 
 #### 组件变量
@@ -1054,33 +780,6 @@ WD UI 提供了一套完善的 SCSS 混合宏,简化常用样式的编写。
   </view>
 </template>
 
-<style lang="scss" scoped>
-.card-item {
-  padding: 24rpx;
-  background: $-color-white;
-  margin-bottom: 16rpx;
-}
-
-.card-title {
-  display: block;
-  font-size: $-fs-title;
-  color: $-color-title;
-  margin-bottom: 12rpx;
-
-  // 单行省略
-  @include lineEllipsis;
-}
-
-.card-desc {
-  display: block;
-  font-size: $-fs-content;
-  color: $-color-content;
-  line-height: 1.5;
-
-  // 两行省略
-  @include multiEllipsis(2);
-}
-</style>
 ```
 
 #### 边框混合宏
@@ -1148,25 +847,6 @@ WD UI 提供了一套完善的 SCSS 混合宏,简化常用样式的编写。
   </view>
 </template>
 
-<style lang="scss" scoped>
-.list-item {
-  padding: 32rpx;
-  background: $-color-white;
-
-  // 底部边框,左侧偏移 32rpx
-  @include halfPixelBorder("bottom", 32rpx, $-color-border-light);
-}
-
-.bordered-box {
-  margin: 32rpx;
-  padding: 32rpx;
-  background: $-color-white;
-  border-radius: 16rpx;
-
-  // 四周环绕边框
-  @include halfPixelBorderSurround($-color-border);
-}
-</style>
 ```
 
 #### 其他实用混合宏
@@ -1300,24 +980,6 @@ button {
   </view>
 </template>
 
-<style lang="scss" scoped>
-@include b(tooltip) {
-  position: relative;
-  padding: 16rpx 24rpx;
-  background: $-color-gray-8;
-  color: $-color-white;
-  border-radius: 8rpx;
-
-  // 生成三角形箭头
-  @include triangleArrow(12rpx, $-color-gray-8);
-}
-
-// 使用时只需添加对应类名
-// <view class="tooltip__arrow-down"></view>  向下箭头
-// <view class="tooltip__arrow-up"></view>    向上箭头
-// <view class="tooltip__arrow-left"></view>  向左箭头
-// <view class="tooltip__arrow-right"></view> 向右箭头
-</style>
 ```
 
 ### SCSS 工具函数
@@ -1485,14 +1147,6 @@ page {
   </wd-button>
 </template>
 
-<style lang="scss" scoped>
-.custom-button {
-  // 仅修改这个按钮的样式
-  --wot-button-primary-bg-color: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-  --wot-button-large-height: 100rpx;
-  --wot-button-large-radius: 50rpx;
-}
-</style>
 ```
 
 #### 动态主题切换
@@ -1567,18 +1221,6 @@ const toggleDarkMode = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page-content {
-  background: $-color-white;
-  color: $-color-title;
-
-  // 暗黑模式样式
-  .dark-mode & {
-    background: $-dark-background;
-    color: $-dark-color;
-  }
-}
-</style>
 ```
 
 #### 暗黑模式 CSS Variables
@@ -1632,33 +1274,6 @@ RuoYi-Plus-UniApp 移动端统一使用 `rpx` 单位实现响应式布局。`rpx
   </view>
 </template>
 
-<style lang="scss" scoped>
-.responsive-box {
-  width: 750rpx;                    // 满屏宽度
-  padding: 32rpx;                   // 内边距
-  background: $-color-white;
-}
-
-.box-header {
-  height: 88rpx;                    // 固定高度
-  padding: 0 32rpx;
-  border-bottom: 1px solid $-color-border-light;
-
-  .title {
-    font-size: 32rpx;               // 字体大小
-    line-height: 88rpx;
-  }
-}
-
-.box-body {
-  padding: 24rpx 32rpx;
-
-  .content {
-    font-size: 28rpx;
-    line-height: 1.5;
-  }
-}
-</style>
 ```
 
 ### 屏幕尺寸适配
@@ -1666,37 +1281,6 @@ RuoYi-Plus-UniApp 移动端统一使用 `rpx` 单位实现响应式布局。`rpx
 对于不同尺寸的设备,可以使用条件编译或媒体查询:
 
 ```vue
-<style lang="scss" scoped>
-.container {
-  padding: 32rpx;
-
-  // 平板尺寸
-  @media screen and (min-width: 768px) {
-    padding: 64rpx;
-    max-width: 1200rpx;
-    margin: 0 auto;
-  }
-
-  // 大屏幕
-  @media screen and (min-width: 1024px) {
-    padding: 96rpx;
-  }
-}
-
-// 使用条件编译
-.platform-box {
-  width: 750rpx;
-
-  // #ifdef H5
-  max-width: 750px;
-  margin: 0 auto;
-  // #endif
-
-  // #ifdef MP-WEIXIN
-  width: 100%;
-  // #endif
-}
-</style>
 ```
 
 ### 安全区域适配
@@ -1714,25 +1298,6 @@ RuoYi-Plus-UniApp 移动端统一使用 `rpx` 单位实现响应式布局。`rpx
   </view>
 </template>
 
-<style lang="scss" scoped>
-.safe-area-top {
-  height: constant(safe-area-inset-top);    // iOS 11.2+
-  height: env(safe-area-inset-top);         // iOS 11.2+
-}
-
-.safe-area-bottom {
-  height: constant(safe-area-inset-bottom);
-  height: env(safe-area-inset-bottom);
-}
-
-// 或使用 padding
-.page {
-  padding-top: constant(safe-area-inset-top);
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-</style>
 ```
 
 ## 最佳实践
@@ -1743,24 +1308,10 @@ RuoYi-Plus-UniApp 移动端统一使用 `rpx` 单位实现响应式布局。`rpx
 
 **❌ 不推荐:**
 ```vue
-<style lang="scss" scoped>
-.text {
-  font-size: 28rpx;
-  color: #262626;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **✅ 推荐:**
 ```vue
-<style lang="scss" scoped>
-.text {
-  font-size: $-fs-content;
-  color: $-color-content;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 ### 2. 遵循 BEM 命名规范
@@ -1777,11 +1328,6 @@ RuoYi-Plus-UniApp 移动端统一使用 `rpx` 单位实现响应式布局。`rpx
   </view>
 </template>
 
-<style lang="scss" scoped>
-.card { }
-.header { }      // 太通用,易冲突
-.title { }       // 太通用,易冲突
-</style>
 ```
 
 **✅ 推荐:**
@@ -1794,20 +1340,6 @@ RuoYi-Plus-UniApp 移动端统一使用 `rpx` 单位实现响应式布局。`rpx
   </view>
 </template>
 
-<style lang="scss" scoped>
-@include b(product-card) {
-  padding: 32rpx;
-
-  @include e(header) {
-    margin-bottom: 16rpx;
-  }
-
-  @include e(title) {
-    font-size: $-fs-title;
-    color: $-color-title;
-  }
-}
-</style>
 ```
 
 ### 3. 合理使用混合宏
@@ -1816,34 +1348,10 @@ RuoYi-Plus-UniApp 移动端统一使用 `rpx` 单位实现响应式布局。`rpx
 
 **❌ 不推荐:**
 ```vue
-<style lang="scss" scoped>
-.title {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.subtitle {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-</style>
 ```
 
 **✅ 推荐:**
 ```vue
-<style lang="scss" scoped>
-.title {
-  @include lineEllipsis;
-  font-size: $-fs-title;
-}
-
-.subtitle {
-  @include lineEllipsis;
-  font-size: $-fs-content;
-}
-</style>
 ```
 
 ### 4. 组件样式隔离
@@ -1851,12 +1359,6 @@ RuoYi-Plus-UniApp 移动端统一使用 `rpx` 单位实现响应式布局。`rpx
 始终使用 `scoped` 避免样式污染:
 
 ```vue
-<style lang="scss" scoped>
-// 这些样式只在当前组件生效
-.container {
-  padding: 32rpx;
-}
-</style>
 ```
 
 ### 5. 性能优化
@@ -1865,36 +1367,10 @@ RuoYi-Plus-UniApp 移动端统一使用 `rpx` 单位实现响应式布局。`rpx
 
 **❌ 不推荐:**
 ```vue
-<style lang="scss" scoped>
-.page {
-  .container {
-    .content {
-      .item {
-        .title {
-          .text {
-            color: red;  // 6 层嵌套
-          }
-        }
-      }
-    }
-  }
-}
-</style>
 ```
 
 **✅ 推荐:**
 ```vue
-<style lang="scss" scoped>
-.page-container { }
-
-.content-item { }
-
-.item-title {
-  .text {
-    color: red;  // 2 层嵌套
-  }
-}
-</style>
 ```
 
 ### 6. 主题定制集中管理
@@ -1940,19 +1416,6 @@ page {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.image-container {
-  width: 750rpx;
-  height: 400rpx;
-}
-
-.image-fit,
-.image-fill,
-.image-scale {
-  width: 100%;
-  height: 100%;
-}
-</style>
 ```
 
 ## 常见问题
@@ -1974,24 +1437,6 @@ page {
   </view>
 </template>
 
-<style lang="scss" scoped>
-// 方案 1: 提高选择器权重
-.custom-button {
-  :deep(.wd-button) {
-    background: red;
-  }
-}
-
-// 方案 2: 使用 !important (不推荐)
-.custom-button :deep(.wd-button) {
-  background: red !important;
-}
-
-// 方案 3: 使用 CSS Variables
-.custom-button {
-  --wot-button-primary-bg-color: red;
-}
-</style>
 ```
 
 ### 2. rpx 和 px 混用问题
@@ -2003,20 +1448,6 @@ page {
 **解决方案:**
 
 ```vue
-<style lang="scss" scoped>
-.container {
-  // ✅ 布局、间距、字体使用 rpx
-  width: 750rpx;
-  padding: 32rpx;
-  font-size: 28rpx;
-
-  // ✅ 边框使用 px 或 1px
-  border: 1px solid $-color-border;
-
-  // ❌ 避免边框使用 rpx
-  // border: 2rpx solid $-color-border;  // 可能模糊
-}
-</style>
 ```
 
 ### 3. 暗黑模式适配不完整
@@ -2049,25 +1480,6 @@ const lightLogo = '/static/logo-light.png'
 const darkLogo = '/static/logo-dark.png'
 </script>
 
-<style lang="scss" scoped>
-.card {
-  // ✅ 使用变量
-  background: $-color-white;
-  color: $-color-title;
-  border: 1px solid $-color-border;
-
-  // ❌ 避免硬编码
-  // background: #ffffff;
-  // color: #000000;
-
-  // 暗黑模式
-  .dark-mode & {
-    background: $-dark-background;
-    color: $-dark-color;
-    border-color: $-dark-border-color;
-  }
-}
-</style>
 ```
 
 ### 4. 样式变量修改不生效
@@ -2080,21 +1492,6 @@ const darkLogo = '/static/logo-dark.png'
 **解决方案:**
 
 ```vue
-<style lang="scss" scoped>
-// ❌ 错误: 修改 SCSS 变量(编译时固定)
-// $-color-theme: red;
-
-// ✅ 正确: 修改 CSS 变量(运行时可变)
-.custom-component {
-  --wot-color-theme: red;
-  --wot-button-primary-bg-color: red;
-}
-
-// 或在全局修改
-:root {
-  --wot-color-theme: red;
-}
-</style>
 ```
 
 ### 5. 1px 边框在不同设备显示粗细不一
@@ -2106,33 +1503,6 @@ const darkLogo = '/static/logo-dark.png'
 **解决方案:**
 
 ```vue
-<style lang="scss" scoped>
-.border-box {
-  // 方案 1: 使用混合宏
-  @include halfPixelBorder("bottom", 0, $-color-border);
-}
-
-.border-box-2 {
-  // 方案 2: 手动实现
-  position: relative;
-
-  &::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 1px;
-    background: $-color-border;
-    transform: scaleY(0.5);
-  }
-}
-
-.border-box-3 {
-  // 方案 3: 使用 1px(在高清屏上可能较粗)
-  border-bottom: 1px solid $-color-border;
-}
-</style>
 ```
 
 ### 6. 组件样式穿透不生效
@@ -2150,25 +1520,6 @@ const darkLogo = '/static/logo-dark.png'
   </view>
 </template>
 
-<style lang="scss" scoped>
-.wrapper {
-  // ✅ Vue 3 正确写法
-  :deep(.wd-button) {
-    background: red;
-  }
-
-  // ❌ Vue 2 写法(已废弃)
-  // /deep/ .wd-button { }
-  // >>> .wd-button { }
-}
-
-// 或使用 WD UI 的深度混合宏
-@include b(wrapper) {
-  @include edeep(button) {
-    background: red;
-  }
-}
-</style>
 ```
 
 ---

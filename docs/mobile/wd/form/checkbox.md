@@ -43,17 +43,6 @@ import { ref } from 'vue'
 const checked = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 32rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -99,18 +88,6 @@ const value = ref(0)
 const status = ref('inactive')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 16rpx;
-  margin-bottom: 32rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **技术实现:**
@@ -159,26 +136,6 @@ const checked2 = ref(true)
 const checked3 = ref(true)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **形状说明:**
@@ -241,26 +198,6 @@ const checked2 = ref(true)
 const checked3 = ref(true)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **尺寸详情:**
@@ -314,26 +251,6 @@ const checked3 = ref(true)
 const checked4 = ref(true)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **禁用规则:**
@@ -391,26 +308,6 @@ const checked4 = ref(true)
 const checked5 = ref(true)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **颜色定制:**
@@ -451,11 +348,6 @@ const checked2 = ref(false)
 const checked3 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **宽度控制:**
@@ -491,26 +383,6 @@ import { ref } from 'vue'
 const checked1 = ref(true)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-:deep(.custom-checkbox) {
-  padding: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-}
-
-:deep(.custom-label) {
-  font-weight: 500;
-  color: #333;
-}
-
-:deep(.custom-shape) {
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-}
-</style>
 ```
 
 **样式类说明:**
@@ -550,20 +422,6 @@ import { ref } from 'vue'
 const checkedList = ref<number[]>([1, 3])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **组合使用规则:**
@@ -609,26 +467,6 @@ const list1 = ref<number[]>([1])
 const list2 = ref<number[]>([1, 2])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **内联布局:**
@@ -688,26 +526,6 @@ const list2 = ref<number[]>([1, 2])
 const list3 = ref<number[]>([2])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **网格布局特性:**
@@ -769,32 +587,6 @@ const list2 = ref<number[]>([1])
 const list3 = ref<number[]>([1, 2])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-
-.tip {
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #ff976a;
-}
-</style>
 ```
 
 **限制规则:**
@@ -877,26 +669,6 @@ const list3 = ref<number[]>([1, 2])
 const list4 = ref<number[]>([1, 2])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **配置优先级:**
@@ -961,26 +733,6 @@ const handleUncheck = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.actions {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 32rpx;
-}
-
-.result {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **方法说明:**

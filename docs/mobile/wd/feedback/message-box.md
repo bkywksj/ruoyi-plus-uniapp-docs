@@ -45,11 +45,6 @@ const showAlert = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -707,28 +702,6 @@ import { ref } from 'vue'
 const visible = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.custom-content {
-  text-align: left;
-
-  .agreement-text {
-    font-size: 28rpx;
-    color: #666;
-    line-height: 1.6;
-  }
-
-  .agreement-list {
-    margin-top: 20rpx;
-
-    text {
-      display: block;
-      font-size: 26rpx;
-      color: #999;
-      line-height: 2;
-    }
-  }
-}
-</style>
 ```
 
 ## API

@@ -103,17 +103,6 @@ const toggleLoading = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.content {
-  padding: 32rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -146,22 +135,6 @@ setTimeout(() => {
 }, 3000)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-}
-
-.avatar {
-  width: 128rpx;
-  height: 128rpx;
-  border-radius: 50%;
-}
-</style>
 ```
 
 **使用说明:**
@@ -199,30 +172,6 @@ setTimeout(() => {
 }, 3000)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.article {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 8rpx;
-}
-
-.title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: bold;
-  margin-bottom: 16rpx;
-}
-
-.content {
-  font-size: 28rpx;
-  line-height: 1.6;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -257,17 +206,6 @@ setTimeout(() => {
 }, 3000)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.image {
-  width: 128rpx;
-  height: 128rpx;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -291,11 +229,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -320,11 +253,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -347,11 +275,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -380,11 +303,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -413,11 +331,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -454,11 +367,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **布局说明:**
@@ -490,11 +398,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -525,11 +428,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -560,11 +458,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -593,11 +486,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -626,11 +514,6 @@ setTimeout(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -702,46 +585,6 @@ setTimeout(() => {
 }, 3000)
 </script>
 
-<style lang="scss" scoped>
-.user-list {
-  padding: 32rpx;
-}
-
-.user-item {
-  margin-bottom: 24rpx;
-}
-
-.user-card {
-  display: flex;
-  align-items: center;
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 8rpx;
-}
-
-.avatar {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 50%;
-  margin-right: 24rpx;
-}
-
-.info {
-  flex: 1;
-}
-
-.name {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  margin-bottom: 8rpx;
-}
-
-.desc {
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **实现要点:**
@@ -861,85 +704,6 @@ setTimeout(() => {
 }, 3000)
 </script>
 
-<style lang="scss" scoped>
-.article-detail {
-  min-height: 100vh;
-  background: #f5f5f5;
-  padding: 32rpx;
-}
-
-.article {
-  background: #fff;
-  border-radius: 8rpx;
-  padding: 32rpx;
-}
-
-.title {
-  display: block;
-  font-size: 36rpx;
-  font-weight: bold;
-  line-height: 1.4;
-  margin-bottom: 32rpx;
-}
-
-.author-info {
-  display: flex;
-  align-items: center;
-  margin-bottom: 32rpx;
-}
-
-.avatar {
-  width: 64rpx;
-  height: 64rpx;
-  border-radius: 50%;
-  margin-right: 16rpx;
-}
-
-.author-details {
-  flex: 1;
-}
-
-.author-name {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  margin-bottom: 8rpx;
-}
-
-.publish-time {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.cover {
-  width: 100%;
-  height: 400rpx;
-  border-radius: 8rpx;
-  margin-bottom: 32rpx;
-}
-
-.content {
-  font-size: 28rpx;
-  line-height: 1.8;
-  color: #333;
-  margin-bottom: 48rpx;
-}
-
-.actions {
-  display: flex;
-  justify-content: space-around;
-  padding-top: 32rpx;
-  border-top: 1rpx solid #f0f0f0;
-}
-
-.action-item {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  font-size: 26rpx;
-  color: #666;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1012,56 +776,6 @@ setTimeout(() => {
 }, 3000)
 </script>
 
-<style lang="scss" scoped>
-.product-list {
-  padding: 32rpx;
-  background: #f5f5f5;
-  min-height: 100vh;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16rpx;
-}
-
-.product-item {
-  background: #fff;
-  border-radius: 8rpx;
-  overflow: hidden;
-}
-
-.product-card {
-  height: 100%;
-}
-
-.product-image {
-  width: 100%;
-  height: 300rpx;
-}
-
-.product-info {
-  padding: 16rpx;
-}
-
-.product-name {
-  display: block;
-  font-size: 28rpx;
-  line-height: 1.4;
-  margin-bottom: 16rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.product-price {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #ff4d4f;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1655,18 +1369,6 @@ setTimeout(() => {
 }, 2000)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.content-item {
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1776,49 +1478,6 @@ setTimeout(() => {
 }, 2000)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.user-card {
-  display: flex;
-  align-items: center;
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  margin-bottom: 24rpx;
-}
-
-.avatar {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 50%;
-  margin-right: 24rpx;
-}
-
-.name {
-  font-size: 28rpx;
-  font-weight: bold;
-}
-
-.product-card {
-  background: #fff;
-  border-radius: 8rpx;
-  overflow: hidden;
-}
-
-.product-image {
-  width: 100%;
-  height: 200rpx;
-}
-
-.product-name {
-  display: block;
-  padding: 16rpx;
-  font-size: 28rpx;
-}
-</style>
 ```
 
 **工厂函数优势:**
@@ -1968,42 +1627,6 @@ const onRefresh = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.scroll-container {
-  height: 100vh;
-}
-
-.list-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-
-.avatar {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 50%;
-  margin-right: 24rpx;
-}
-
-.info {
-  flex: 1;
-}
-
-.name {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  margin-bottom: 8rpx;
-}
-
-.desc {
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用要点:**
@@ -2121,29 +1744,6 @@ const onLoadMore = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.scroll-container {
-  height: 100vh;
-}
-
-.list-item {
-  padding: 24rpx 32rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-
-.item-text {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.no-more {
-  text-align: center;
-  padding: 32rpx;
-  color: #999;
-  font-size: 24rpx;
-}
-</style>
 ```
 
 **实现要点:**
@@ -2248,11 +1848,6 @@ const computedConfig = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.skeleton-wrapper {
-  width: 100%;
-}
-</style>
 ```
 
 **使用封装组件:**

@@ -353,16 +353,6 @@ const handleExport = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.selection-header {
-  margin-bottom: 8px;
-}
-
-.custom-tag-content {
-  display: flex;
-  align-items: center;
-}
-</style>
 ```
 
 **插槽说明:**
@@ -1242,10 +1232,4 @@ const handleRemove = (userId: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-content {
-  display: flex;
-  align-items: center;
-}
-</style>
 ```

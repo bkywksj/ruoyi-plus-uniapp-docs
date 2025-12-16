@@ -41,17 +41,6 @@ import { ref } from 'vue'
 const password = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.result {
-  margin-top: 16rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -80,17 +69,6 @@ import { ref } from 'vue'
 const password = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.tip {
-  margin-top: 16rpx;
-  text-align: center;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -132,22 +110,6 @@ const password2 = ref('')
 const password3 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -195,22 +157,6 @@ const password3 = ref('')
 const password4 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -258,23 +204,6 @@ const password3 = ref('')
 const password4 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -353,22 +282,6 @@ const validatePassword = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 48rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -427,22 +340,6 @@ const password2 = ref('')
 const password3 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 48rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -507,11 +404,6 @@ const handleKeyboardClose = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -622,32 +514,6 @@ const handlePasswordComplete = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.payment-info {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 80rpx 0;
-}
-
-.amount {
-  font-size: 72rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.desc {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **技术实现:**
@@ -764,43 +630,6 @@ const verifyCode = async () => {
 startCountdown()
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.code-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 80rpx 0 60rpx;
-}
-
-.title {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-
-.phone {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.resend-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 48rpx;
-}
-
-.resend-text {
-  font-size: 28rpx;
-  color: #4d80f0;
-}
-</style>
 ```
 
 **使用说明:**
@@ -923,78 +752,6 @@ const submitPassword = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.step-indicator {
-  display: flex;
-  justify-content: space-around;
-  padding: 60rpx 0;
-}
-
-.step-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0.4;
-
-  &.active {
-    opacity: 1;
-  }
-}
-
-.step-number {
-  width: 60rpx;
-  height: 60rpx;
-  line-height: 60rpx;
-  text-align: center;
-  border-radius: 50%;
-  background: #e0e0e0;
-  color: #666;
-  font-size: 28rpx;
-  margin-bottom: 16rpx;
-
-  .active & {
-    background: #4d80f0;
-    color: #fff;
-  }
-}
-
-.step-text {
-  font-size: 24rpx;
-  color: #666;
-}
-
-.step-content {
-  padding: 32rpx 0;
-}
-
-.step-title {
-  display: block;
-  text-align: center;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 60rpx;
-}
-
-.success {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 120rpx;
-}
-
-.success-text {
-  font-size: 32rpx;
-  color: #333;
-  margin-top: 40rpx;
-}
-</style>
 ```
 
 **技术实现:**

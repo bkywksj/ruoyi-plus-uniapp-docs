@@ -27,11 +27,6 @@ Progress 是一个进度条组件，用于展示操作的当前进度。该组�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -75,17 +70,6 @@ const reset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.buttons {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -113,22 +97,6 @@ const reset = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 ## 自定义颜色
@@ -167,22 +135,6 @@ const reset = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 ### 颜色数组
@@ -213,15 +165,6 @@ const progress = ref(20)
 const colors = ['#ff4d4f', '#fa8c16', '#1890ff', '#52c41a']
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.slider {
-  margin-top: 48rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -264,26 +207,6 @@ const colorSteps = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.slider {
-  margin-top: 48rpx;
-}
-
-.tips {
-  margin-top: 32rpx;
-
-  text {
-    display: block;
-    font-size: 24rpx;
-    color: #999;
-    line-height: 1.8;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -339,54 +262,6 @@ const useBattery = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.battery-wrapper {
-  display: flex;
-  align-items: center;
-}
-
-.battery {
-  width: 200rpx;
-  height: 60rpx;
-  border: 4rpx solid #333;
-  border-radius: 8rpx;
-  padding: 6rpx;
-
-  :deep(.wd-progress) {
-    height: 100%;
-  }
-
-  :deep(.wd-progress__outer) {
-    height: 100%;
-    border-radius: 4rpx;
-  }
-}
-
-.battery-head {
-  width: 12rpx;
-  height: 24rpx;
-  background: #333;
-  border-radius: 0 4rpx 4rpx 0;
-  margin-left: 4rpx;
-}
-
-.battery-text {
-  display: block;
-  font-size: 28rpx;
-  color: #333;
-  margin-top: 24rpx;
-}
-
-.buttons {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 ## 进度状态
@@ -415,22 +290,6 @@ const useBattery = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -469,22 +328,6 @@ const useBattery = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -538,24 +381,6 @@ const statusText = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.info {
-  margin-top: 24rpx;
-}
-
-.status-text {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.slider {
-  margin-top: 48rpx;
-}
-</style>
 ```
 
 ## 动画效果
@@ -603,28 +428,6 @@ const resetProgress = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-
-.buttons {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -692,25 +495,6 @@ const startUpload = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.info {
-  margin: 24rpx 0;
-}
-
-.progress-text {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.success-text {
-  font-size: 28rpx;
-  color: #52c41a;
-}
-</style>
 ```
 
 ### 步进式进度
@@ -784,61 +568,6 @@ const nextStep = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.steps {
-  display: flex;
-  justify-content: space-between;
-  margin: 32rpx 0;
-}
-
-.step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0.5;
-
-  &.active {
-    opacity: 1;
-  }
-}
-
-.step-icon {
-  width: 48rpx;
-  height: 48rpx;
-  border-radius: 50%;
-  background: #e8e8e8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24rpx;
-  color: #666;
-  margin-bottom: 8rpx;
-
-  .active & {
-    background: #1890ff;
-    color: #fff;
-  }
-}
-
-.step-text {
-  font-size: 22rpx;
-  color: #666;
-
-  .active & {
-    color: #333;
-  }
-}
-
-.buttons {
-  display: flex;
-  justify-content: center;
-  gap: 24rpx;
-}
-</style>
 ```
 
 ## 实际应用场景
@@ -933,62 +662,6 @@ const uploadAll = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.file-list {
-  margin-bottom: 32rpx;
-}
-
-.file-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-  margin-bottom: 16rpx;
-}
-
-.file-info {
-  display: flex;
-  align-items: center;
-  width: 200rpx;
-}
-
-.file-detail {
-  margin-left: 16rpx;
-}
-
-.file-name {
-  display: block;
-  font-size: 26rpx;
-  color: #333;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 140rpx;
-}
-
-.file-size {
-  display: block;
-  font-size: 22rpx;
-  color: #999;
-  margin-top: 4rpx;
-}
-
-.file-progress {
-  flex: 1;
-  margin: 0 24rpx;
-}
-
-.file-actions {
-  width: 60rpx;
-  display: flex;
-  justify-content: center;
-}
-</style>
 ```
 
 ### 任务完成度
@@ -1071,67 +744,6 @@ const toggleTask = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.task-card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
-}
-
-.task-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24rpx;
-}
-
-.task-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.task-count {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.task-list {
-  margin-top: 32rpx;
-}
-
-.task-item {
-  display: flex;
-  align-items: center;
-  padding: 20rpx 0;
-  border-bottom: 1rpx solid #f0f0f0;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &.completed {
-    .task-text {
-      color: #999;
-      text-decoration: line-through;
-    }
-  }
-}
-
-.task-checkbox {
-  margin-right: 16rpx;
-}
-
-.task-text {
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 ### 技能熟练度
@@ -1179,50 +791,6 @@ const skills = ref<Skill[]>([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.skill-card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
-}
-
-.card-title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 32rpx;
-}
-
-.skill-item {
-  margin-bottom: 24rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.skill-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 12rpx;
-}
-
-.skill-name {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.skill-level {
-  font-size: 24rpx;
-  color: #666;
-}
-</style>
 ```
 
 ### 数据加载骨架
@@ -1296,41 +864,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.loading-wrapper {
-  text-align: center;
-  padding: 64rpx 0;
-}
-
-.loading-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 32rpx;
-}
-
-.loading-text {
-  font-size: 28rpx;
-  color: #666;
-  margin-top: 16rpx;
-}
-
-.data-content {
-  text-align: center;
-  padding: 64rpx 0;
-}
-
-.data-text {
-  display: block;
-  font-size: 32rpx;
-  color: #52c41a;
-  margin-bottom: 32rpx;
-}
-</style>
 ```
 
 ## API

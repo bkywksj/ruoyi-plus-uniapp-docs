@@ -590,11 +590,6 @@ Components({
 
 ```vue
 <!-- ✅ 正确：使用 scoped 避免样式污染 -->
-<style lang="scss" scoped>
-.custom-button {
-  /* 自定义样式 */
-}
-</style>
 
 <!-- ❌ 错误：直接覆盖组件样式 -->
 <style lang="scss">

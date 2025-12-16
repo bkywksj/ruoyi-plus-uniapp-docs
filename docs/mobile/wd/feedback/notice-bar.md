@@ -31,11 +31,6 @@ NoticeBar 是一个通知栏组件,用于在页面顶部或指定位置展示通
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -68,22 +63,6 @@ NoticeBar 是一个通知栏组件,用于在页面顶部或指定位置展示通
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -121,11 +100,6 @@ const handleClose = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -156,22 +130,6 @@ const handleClose = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -205,22 +163,6 @@ const handleClose = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -257,22 +199,6 @@ const handleClose = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -318,22 +244,6 @@ const handleClose = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -371,15 +281,6 @@ const handleClose = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-</style>
 ```
 
 ## 插槽使用
@@ -405,20 +306,6 @@ const handleClose = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-prefix {
-  margin-right: 16rpx;
-}
-
-.prefix-image {
-  width: 36rpx;
-  height: 36rpx;
-}
-</style>
 ```
 
 ### 后缀插槽
@@ -445,22 +332,6 @@ const handleViewMore = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-suffix {
-  display: flex;
-  align-items: center;
-  margin-left: 16rpx;
-}
-
-.suffix-text {
-  font-size: 26rpx;
-  margin-right: 8rpx;
-}
-</style>
 ```
 
 ### 默认插槽
@@ -479,26 +350,6 @@ const handleViewMore = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-content {
-  display: flex;
-  align-items: center;
-}
-
-.highlight {
-  color: #ff4d4f;
-  font-weight: bold;
-  margin-right: 8rpx;
-}
-
-.content-text {
-  color: inherit;
-}
-</style>
 ```
 
 **使用说明:**
@@ -560,23 +411,6 @@ const handleJoin = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.notice-content {
-  display: flex;
-  align-items: center;
-  font-size: 28rpx;
-}
-
-.countdown {
-  color: #ff4d4f;
-  font-weight: bold;
-  margin: 0 8rpx;
-}
-</style>
 ```
 
 ## 文本轮播
@@ -615,11 +449,6 @@ const handleClick = (result: { index: number; text: string }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -665,11 +494,6 @@ const handleClick = (result: { index: number; text: string }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -718,17 +542,6 @@ const clearText = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.buttons {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 ## 高级配置
@@ -766,22 +579,6 @@ const clearText = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -823,22 +620,6 @@ const clearText = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -881,15 +662,6 @@ const resetAnimation = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.buttons {
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -933,11 +705,6 @@ const handleClick = (result: { index: number; text: string }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -979,20 +746,6 @@ const handleClose = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.closed-tip {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 ### 轮播切换事件
@@ -1031,20 +784,6 @@ const handleNext = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.info {
-  margin-top: 24rpx;
-  padding: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1146,20 +885,6 @@ const currentAvatar = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.purchase-bar {
-  margin: 32rpx;
-  border-radius: 8rpx;
-  overflow: hidden;
-}
-
-.avatar {
-  width: 40rpx;
-  height: 40rpx;
-  border-radius: 50%;
-  margin-right: 16rpx;
-}
-</style>
 ```
 
 ### 活动倒计时
@@ -1225,47 +950,6 @@ const goActivity = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.activity-bar {
-  margin: 32rpx;
-  border-radius: 8rpx;
-  overflow: hidden;
-}
-
-.activity-content {
-  display: flex;
-  align-items: center;
-  font-size: 28rpx;
-}
-
-.countdown {
-  display: flex;
-  align-items: center;
-  margin: 0 8rpx;
-}
-
-.time-block {
-  background: rgba(0, 0, 0, 0.3);
-  padding: 4rpx 8rpx;
-  border-radius: 4rpx;
-  font-size: 24rpx;
-  font-weight: bold;
-}
-
-.separator {
-  margin: 0 4rpx;
-  font-weight: bold;
-}
-
-.go-btn {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.3);
-  padding: 8rpx 16rpx;
-  border-radius: 24rpx;
-  font-size: 24rpx;
-}
-</style>
 ```
 
 ### 消息通知列表
@@ -1313,31 +997,6 @@ const clearMessages = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.message-bar {
-  margin: 32rpx;
-}
-
-.message-badge {
-  position: relative;
-  margin-right: 16rpx;
-}
-
-.badge {
-  position: absolute;
-  top: -8rpx;
-  right: -8rpx;
-  min-width: 28rpx;
-  height: 28rpx;
-  line-height: 28rpx;
-  text-align: center;
-  font-size: 20rpx;
-  color: #fff;
-  background: #ff4d4f;
-  border-radius: 14rpx;
-  padding: 0 6rpx;
-}
-</style>
 ```
 
 ## API

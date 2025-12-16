@@ -276,22 +276,6 @@ const handleSearch = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-capsule {
-  display: flex;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.1);
-  border-radius: 32rpx;
-  padding: 8rpx 16rpx;
-}
-
-.divider {
-  width: 1px;
-  height: 32rpx;
-  background: rgba(0, 0, 0, 0.2);
-  margin: 0 16rpx;
-}
-</style>
 ```
 
 **使用说明：**
@@ -360,19 +344,6 @@ const handleTitleClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-title {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.city-selector {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-}
-</style>
 ```
 
 **使用说明：**
@@ -446,16 +417,6 @@ const handleScroll = (e: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.content {
-  height: 100vh;
-}
-
-.item {
-  padding: 32rpx;
-  border-bottom: 1px solid #eee;
-}
-</style>
 ```
 
 **使用说明：**

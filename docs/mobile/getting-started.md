@@ -272,16 +272,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.profile-page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.content {
-  padding: 24rpx;
-}
-</style>
 ```
 
 #### 2. 在 pages.config.ts 中注册页面
@@ -397,49 +387,6 @@ const fetchUserList = async () => {
 fetchUserList()
 </script>
 
-<style lang="scss" scoped>
-.user-list-page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.list-container {
-  height: calc(100vh - 200rpx);
-}
-
-.user-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx;
-  background-color: #fff;
-  margin-bottom: 2rpx;
-}
-
-.user-info {
-  flex: 1;
-  margin-left: 24rpx;
-
-  .name {
-    display: block;
-    font-size: 32rpx;
-    color: #333;
-  }
-
-  .phone {
-    display: block;
-    font-size: 26rpx;
-    color: #999;
-    margin-top: 8rpx;
-  }
-}
-
-.no-more {
-  text-align: center;
-  padding: 32rpx;
-  color: #999;
-  font-size: 26rpx;
-}
-</style>
 ```
 
 #### 2. 配置分包

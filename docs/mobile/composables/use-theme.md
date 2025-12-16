@@ -45,11 +45,6 @@ import { useTheme } from '@/composables/useTheme'
 const { themeVars } = useTheme()
 </script>
 
-<style lang="scss" scoped>
-.page {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -96,25 +91,6 @@ const { themeVars } = useTheme({
 })
 </script>
 
-<style lang="scss" scoped>
-.custom-page {
-  padding: 32rpx;
-
-  .title {
-    font-size: 32rpx;
-    margin-bottom: 24rpx;
-  }
-
-  .navbar {
-    margin-top: 48rpx;
-
-    .navbar-title {
-      font-size: var(--wd-navbar-title-font-size);
-      font-weight: var(--wd-navbar-title-font-weight);
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -209,37 +185,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.app {
-  padding: 32rpx;
-
-  .theme-panel {
-    margin-bottom: 48rpx;
-
-    .title {
-      font-size: 32rpx;
-      margin-bottom: 24rpx;
-      display: block;
-    }
-
-    wd-button {
-      margin-right: 16rpx;
-      margin-bottom: 16rpx;
-    }
-  }
-
-  .preview {
-    padding: 32rpx;
-    background: #f5f5f5;
-    border-radius: 16rpx;
-
-    wd-button {
-      margin-right: 16rpx;
-      margin-bottom: 16rpx;
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -327,52 +272,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  padding: 32rpx;
-  background: var(--wd-bg-color, #ffffff);
-  transition: background-color 0.3s;
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 48rpx;
-
-    .title {
-      font-size: 36rpx;
-      font-weight: bold;
-    }
-  }
-
-  .content {
-    wd-button {
-      margin-right: 16rpx;
-      margin-bottom: 16rpx;
-    }
-
-    .card {
-      margin-top: 48rpx;
-      padding: 32rpx;
-      background: #f5f5f5;
-      border-radius: 16rpx;
-
-      .card-title {
-        display: block;
-        font-size: 32rpx;
-        font-weight: bold;
-        margin-bottom: 16rpx;
-      }
-
-      .card-content {
-        font-size: 28rpx;
-        color: #666;
-      }
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -458,53 +357,6 @@ const exportTheme = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.debug-panel {
-  padding: 32rpx;
-
-  .title {
-    font-size: 32rpx;
-    font-weight: bold;
-    margin-bottom: 24rpx;
-    display: block;
-  }
-
-  wd-button {
-    margin-right: 16rpx;
-    margin-bottom: 16rpx;
-  }
-
-  .config-display {
-    margin-top: 48rpx;
-    padding: 24rpx;
-    background: #f5f5f5;
-    border-radius: 16rpx;
-
-    .subtitle {
-      font-size: 28rpx;
-      font-weight: bold;
-      margin-bottom: 16rpx;
-      display: block;
-    }
-
-    .config-item {
-      display: flex;
-      padding: 8rpx 0;
-      font-size: 24rpx;
-
-      .key {
-        color: #666;
-        min-width: 300rpx;
-      }
-
-      .value {
-        color: #333;
-        font-weight: 500;
-      }
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -579,36 +431,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.merge-demo {
-  padding: 32rpx;
-
-  .title {
-    font-size: 36rpx;
-    font-weight: bold;
-    margin-bottom: 48rpx;
-    display: block;
-  }
-
-  .section {
-    margin-bottom: 48rpx;
-
-    .subtitle {
-      font-size: 28rpx;
-      font-weight: bold;
-      margin-bottom: 16rpx;
-      display: block;
-    }
-
-    .desc {
-      display: block;
-      font-size: 24rpx;
-      color: #666;
-      margin-top: 8rpx;
-    }
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -754,82 +576,6 @@ const handleThemeSwitch = (value: boolean) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-animation-demo {
-  min-height: 100vh;
-  padding: 32rpx;
-  background: #ffffff;
-  transition: all 0.3s ease;
-
-  &.dark {
-    background: #1a1a1a;
-
-    .title {
-      color: #ffffff;
-    }
-
-    .card {
-      background: #2a2a2a;
-
-      .card-title {
-        color: #ffffff;
-      }
-
-      .card-desc {
-        color: #b3b3b3;
-      }
-    }
-  }
-
-  &.theme-switching {
-    * {
-      transition: all 0.3s ease !important;
-    }
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 48rpx;
-
-    .title {
-      font-size: 36rpx;
-      font-weight: bold;
-      transition: color 0.3s ease;
-    }
-  }
-
-  .content {
-    wd-button {
-      margin-right: 16rpx;
-      margin-bottom: 16rpx;
-    }
-
-    .card {
-      margin-top: 48rpx;
-      padding: 32rpx;
-      background: #f5f5f5;
-      border-radius: 16rpx;
-      transition: background-color 0.3s ease;
-
-      .card-title {
-        display: block;
-        font-size: 32rpx;
-        font-weight: bold;
-        margin-bottom: 16rpx;
-        transition: color 0.3s ease;
-      }
-
-      .card-desc {
-        font-size: 28rpx;
-        color: #666;
-        transition: color 0.3s ease;
-      }
-    }
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -1125,58 +871,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.theme-selector {
-  padding: 32rpx;
-
-  .title {
-    font-size: 32rpx;
-    font-weight: bold;
-    margin-bottom: 32rpx;
-    display: block;
-  }
-
-  .preset-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 24rpx;
-
-    .preset-item {
-      width: 200rpx;
-      padding: 24rpx;
-      background: #f5f5f5;
-      border-radius: 16rpx;
-      border: 2rpx solid transparent;
-      cursor: pointer;
-      transition: all 0.3s;
-
-      &.active {
-        border-color: #409EFF;
-        background: #E3F2FD;
-      }
-
-      .preset-preview {
-        display: flex;
-        justify-content: center;
-        gap: 8rpx;
-        margin-bottom: 16rpx;
-
-        .color-dot {
-          width: 32rpx;
-          height: 32rpx;
-          border-radius: 50%;
-        }
-      }
-
-      .preset-name {
-        display: block;
-        text-align: center;
-        font-size: 24rpx;
-      }
-    }
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -1293,37 +987,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.app {
-  padding: 32rpx;
-
-  .settings {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24rpx;
-    background: #f5f5f5;
-    border-radius: 16rpx;
-    margin-bottom: 48rpx;
-
-    .label {
-      font-size: 28rpx;
-    }
-  }
-
-  .preview {
-    .current-mode {
-      display: block;
-      font-size: 28rpx;
-      margin-bottom: 24rpx;
-    }
-
-    wd-button {
-      margin-right: 16rpx;
-    }
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -1418,43 +1081,6 @@ const listItemStyle = computed(() => ({
 }))
 </script>
 
-<style lang="scss" scoped>
-.page {
-  padding: 32rpx;
-
-  .card {
-    padding: 32rpx;
-    margin-bottom: 24rpx;
-    border: 2rpx solid;
-
-    .card-title {
-      display: block;
-      font-size: 32rpx;
-      font-weight: bold;
-      margin-bottom: 16rpx;
-    }
-
-    .card-content {
-      font-size: 28rpx;
-      color: #666;
-    }
-  }
-
-  .list-item {
-    margin-bottom: 16rpx;
-    border-radius: 12rpx;
-    transition: background 0.3s;
-
-    &:active {
-      background: var(--list-item-hover-bg-color);
-    }
-
-    text {
-      font-size: 28rpx;
-    }
-  }
-}
-</style>
 ```
 
 **技术实现:**

@@ -80,42 +80,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.user-list {
-  padding: 32rpx;
-}
-
-.loading,
-.error {
-  text-align: center;
-  padding: 64rpx;
-  color: #999;
-}
-
-.error {
-  color: #f56c6c;
-}
-
-.user-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #fff;
-  border-radius: 8rpx;
-
-  .name {
-    display: block;
-    font-size: 32rpx;
-    font-weight: 500;
-    margin-bottom: 8rpx;
-  }
-
-  .dept {
-    display: block;
-    font-size: 28rpx;
-    color: #999;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -204,11 +168,6 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.create-user {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -298,11 +257,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.edit-user {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -367,25 +321,6 @@ const handleDelete = async (userId: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.user-manage {
-  padding: 32rpx;
-}
-
-.user-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #fff;
-  border-radius: 8rpx;
-
-  .info {
-    flex: 1;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -461,24 +396,6 @@ const uploadImage = async (filePath: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.upload-demo {
-  padding: 32rpx;
-}
-
-.uploading {
-  margin-top: 32rpx;
-  text-align: center;
-  color: #999;
-}
-
-.preview {
-  width: 100%;
-  height: 400rpx;
-  margin-top: 32rpx;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -537,19 +454,6 @@ const downloadFile = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.download-demo {
-  padding: 32rpx;
-}
-
-.success {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background: #f0f9ff;
-  border-radius: 8rpx;
-  color: #1890ff;
-}
-</style>
 ```
 
 **技术实现:**

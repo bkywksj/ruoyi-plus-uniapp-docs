@@ -53,17 +53,6 @@ const displayText = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 16rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -798,13 +787,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.form-actions {
-  display: flex;
-  gap: 16rpx;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -846,20 +828,6 @@ const columns = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-:deep(.custom-picker) {
-  background-color: #f5f5f5;
-}
-
-:deep(.custom-label) {
-  color: #1890ff;
-  font-weight: bold;
-}
-
-:deep(.custom-value) {
-  color: #52c41a;
-}
-</style>
 ```
 
 **使用说明:**
@@ -918,23 +886,6 @@ const handleOpen = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-label {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  color: #1890ff;
-}
-
-.custom-trigger {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **使用说明:**

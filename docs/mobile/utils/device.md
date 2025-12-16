@@ -218,27 +218,6 @@ const envName = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.platform-demo {
-  padding: 32rpx;
-}
-
-.info-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #eee;
-}
-
-.label {
-  color: #666;
-}
-
-.value {
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 ## 环境检测函数
@@ -637,18 +616,6 @@ const navbarStyle = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.navbar {
-  background-color: #fff;
-}
-
-.navbar-content {
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  padding: 0 32rpx;
-}
-</style>
 ```
 
 ### 下拉菜单窗口高度
@@ -858,24 +825,6 @@ const handleClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.fab {
-  position: fixed;
-  width: 100rpx;
-  height: 100rpx;
-  border-radius: 50%;
-  background-color: #409EFF;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
-}
-
-.fab-icon {
-  color: #fff;
-  font-size: 48rpx;
-}
-</style>
 ```
 
 ## 新旧 API 兼容
@@ -1253,59 +1202,6 @@ const {
 } = useDevice()
 </script>
 
-<style lang="scss" scoped>
-.device-demo {
-  padding: 32rpx;
-}
-
-.info-card {
-  background-color: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-}
-
-.card-title {
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.info-list {
-  .info-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 16rpx 0;
-    border-bottom: 1rpx solid #f0f0f0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  .label {
-    color: #666;
-    font-size: 28rpx;
-  }
-
-  .value {
-    color: #333;
-    font-size: 28rpx;
-  }
-}
-
-.convert-demo {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-
-  text {
-    font-size: 28rpx;
-    color: #409EFF;
-  }
-}
-</style>
 ```
 
 ## 系统语言检测

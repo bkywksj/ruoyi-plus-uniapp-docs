@@ -34,25 +34,6 @@ SwipeAction 是一个滑动操作组件,常用于单元格左右滑动删除等�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 160rpx;
-  height: 100%;
-  font-size: 28rpx;
-  color: #fff;
-
-  &.delete {
-    background: #ff4d4f;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -77,21 +58,6 @@ SwipeAction 是一个滑动操作组件,常用于单元格左右滑动删除等�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 160rpx;
-  height: 100%;
-  font-size: 28rpx;
-  color: #fff;
-
-  &.collect {
-    background: #ffc107;
-  }
-}
-</style>
 ```
 
 ### 双向滑动
@@ -115,33 +81,6 @@ SwipeAction 是一个滑动操作组件,常用于单元格左右滑动删除等�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 160rpx;
-  height: 100%;
-  font-size: 28rpx;
-  color: #fff;
-
-  &.collect {
-    background: #ffc107;
-  }
-
-  &.share {
-    background: #1890ff;
-  }
-
-  &.edit {
-    background: #52c41a;
-  }
-
-  &.delete {
-    background: #ff4d4f;
-  }
-}
-</style>
 ```
 
 ### 控制滑动状态
@@ -175,35 +114,6 @@ import { ref } from 'vue'
 const state = ref<'left' | 'close' | 'right'>('close')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.buttons {
-  display: flex;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 160rpx;
-  height: 100%;
-  font-size: 28rpx;
-  color: #fff;
-
-  &.collect {
-    background: #ffc107;
-  }
-
-  &.delete {
-    background: #ff4d4f;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -411,25 +321,6 @@ const handleDelete = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 160rpx;
-  height: 100%;
-  font-size: 28rpx;
-  color: #fff;
-
-  &.edit {
-    background: #52c41a;
-  }
-
-  &.delete {
-    background: #ff4d4f;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -507,57 +398,6 @@ const beforeClose = async (reason: string, position: string, index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.cart-list {
-  background: #fff;
-}
-
-.cart-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx;
-
-  &__image {
-    width: 160rpx;
-    height: 160rpx;
-    border-radius: 8rpx;
-  }
-
-  &__info {
-    flex: 1;
-    margin-left: 24rpx;
-
-    .cart-item__title {
-      font-size: 28rpx;
-      color: #333;
-    }
-
-    .cart-item__price {
-      font-size: 32rpx;
-      color: #ff4d4f;
-      margin-top: 16rpx;
-    }
-  }
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 160rpx;
-  height: 100%;
-  font-size: 28rpx;
-  color: #fff;
-
-  &.collect {
-    background: #ffc107;
-  }
-
-  &.delete {
-    background: #ff4d4f;
-  }
-}
-</style>
 ```
 
 ### 消息列表场景
@@ -645,79 +485,6 @@ const deleteMessage = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.message-item {
-  display: flex;
-  padding: 24rpx;
-  background: #fff;
-
-  &.is-unread {
-    background: #f0f8ff;
-  }
-
-  &__avatar {
-    image {
-      width: 96rpx;
-      height: 96rpx;
-      border-radius: 50%;
-    }
-  }
-
-  &__content {
-    flex: 1;
-    margin-left: 24rpx;
-  }
-
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__name {
-    font-size: 30rpx;
-    color: #333;
-    font-weight: 500;
-  }
-
-  &__time {
-    font-size: 24rpx;
-    color: #999;
-  }
-
-  &__text {
-    font-size: 26rpx;
-    color: #666;
-    margin-top: 8rpx;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 160rpx;
-  padding: 0 24rpx;
-  height: 100%;
-  font-size: 26rpx;
-  color: #fff;
-
-  &.read {
-    background: #1890ff;
-  }
-
-  &.pin {
-    background: #ffc107;
-  }
-
-  &.delete {
-    background: #ff4d4f;
-  }
-}
-</style>
 ```
 
 ## 高级用法
@@ -743,23 +510,6 @@ const deleteMessage = (index: number) => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.icon-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 120rpx;
-  height: 100%;
-
-  &.edit {
-    background: #52c41a;
-  }
-
-  &.delete {
-    background: #ff4d4f;
-  }
-}
-</style>
 ```
 
 ### 结合 ref 调用方法
@@ -811,29 +561,6 @@ const closeSwipe = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.tip {
-  display: block;
-  font-size: 24rpx;
-  color: #999;
-  margin-bottom: 24rpx;
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 160rpx;
-  height: 100%;
-  font-size: 28rpx;
-  color: #fff;
-  background: #ff4d4f;
-}
-</style>
 ```
 
 ## API

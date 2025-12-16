@@ -53,23 +53,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  text-align: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -112,22 +95,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -171,22 +138,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -232,22 +183,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -292,22 +227,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -352,22 +271,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -413,35 +316,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.custom-button {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-}
-
-.button-text {
-  font-size: 20rpx;
-  margin-top: 4rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -507,27 +381,6 @@ const handleBacktopClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  height: 100vh;
-  position: relative;
-}
-
-.scroll-container {
-  height: 100%;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -586,29 +439,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.quick-menu {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-}
-</style>
 ```
 
 **技术实现:**
@@ -670,22 +500,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -754,56 +568,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.progress-button {
-  position: relative;
-  width: 80rpx;
-  height: 80rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.progress-ring {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.progress-text {
-  font-size: 20rpx;
-  color: #fff;
-  font-weight: bold;
-}
-
-.progress-fill {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(77, 128, 240, 0.3);
-  z-index: 1;
-  transition: height 0.3s ease;
-}
-</style>
 ```
 
 **技术实现:**
@@ -867,31 +631,6 @@ const toggleBacktop = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  padding: 16rpx;
-  background-color: #fff;
-  border-bottom: 2rpx solid #f0f0f0;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -953,40 +692,6 @@ onPageScroll((e: any) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.item {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-// 主题1: 渐变蓝色
-.theme-blue {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  box-shadow: 0 4rpx 12rpx rgba(102, 126, 234, 0.4);
-}
-
-// 主题2: 渐变紫色
-.theme-purple {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  box-shadow: 0 4rpx 12rpx rgba(240, 147, 251, 0.4);
-}
-
-// 主题3: 渐变橙色
-.theme-orange {
-  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-  box-shadow: 0 4rpx 12rpx rgba(250, 112, 154, 0.4);
-}
-</style>
 ```
 
 **技术实现:**
@@ -1337,15 +1042,6 @@ const handleScroll = (e: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  height: 100vh;
-}
-
-.scroll-container {
-  height: 100%;
-}
-</style>
 ```
 
 参考: src/wd/components/wd-backtop/wd-backtop.vue:49-50
@@ -1403,22 +1099,6 @@ const handleBacktopClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-backtop {
-  position: fixed;
-  bottom: 200rpx;
-  right: 40rpx;
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  z-index: 99;
-}
-</style>
 ```
 
 参考: src/wd/components/wd-backtop/wd-backtop.vue:90-95

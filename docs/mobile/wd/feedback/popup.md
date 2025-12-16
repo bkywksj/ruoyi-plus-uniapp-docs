@@ -42,16 +42,6 @@ import { ref } from 'vue'
 const showPopup = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.popup-content {
-  padding: 64rpx 32rpx;
-  text-align: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -129,52 +119,6 @@ const showLeft = () => { leftVisible.value = true }
 const showRight = () => { rightVisible.value = true }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-
-.popup-center {
-  width: 500rpx;
-  padding: 64rpx 32rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-}
-
-.popup-top {
-  padding: 32rpx;
-  text-align: center;
-}
-
-.popup-bottom {
-  padding: 64rpx 32rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-}
-
-.popup-side {
-  width: 500rpx;
-  height: 100%;
-  padding: 64rpx 32rpx;
-  box-sizing: border-box;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -225,24 +169,6 @@ const selectCity = (city: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.city-list {
-  padding: 16rpx 0;
-}
-
-.city-item {
-  padding: 24rpx 32rpx;
-  font-size: 28rpx;
-
-  &:active {
-    background-color: #f5f5f5;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -293,24 +219,6 @@ const showWithTitle = ref(false)
 const showWithoutTitle = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  gap: 16rpx;
-}
-
-.popup-content {
-  width: 500rpx;
-  padding: 64rpx 32rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -357,18 +265,6 @@ const showLarge = ref(false)
 const showNone = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  gap: 16rpx;
-}
-
-.popup-content {
-  padding: 64rpx 32rpx;
-  text-align: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -423,19 +319,6 @@ const showZoom = ref(false)
 const showSlide = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  gap: 16rpx;
-}
-
-.popup-content {
-  width: 400rpx;
-  padding: 64rpx 32rpx;
-  text-align: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -482,19 +365,6 @@ const showNormal = ref(false)
 const showSlow = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-
-.popup-content {
-  padding: 64rpx 32rpx;
-  text-align: center;
-}
-</style>
 ```
 
 ### 遮罩层控制
@@ -532,23 +402,6 @@ const showWithModal = ref(false)
 const showWithoutModal = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  gap: 16rpx;
-}
-
-.popup-content {
-  padding: 64rpx 32rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -585,22 +438,6 @@ import { ref } from 'vue'
 const showPopup = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.popup-content {
-  width: 500rpx;
-  padding: 64rpx 32rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -640,22 +477,6 @@ const showFirst = ref(false)
 const showSecond = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.popup-content {
-  width: 400rpx;
-  padding: 48rpx 32rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 24rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -694,21 +515,6 @@ import { ref } from 'vue'
 const showPopup = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.popup-content {
-  padding: 32rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -741,21 +547,6 @@ import { ref } from 'vue'
 const showPopup = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.popup-content {
-  padding: 64rpx 32rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -788,21 +579,6 @@ import { ref } from 'vue'
 const showPopup = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.popup-content {
-  padding: 64rpx 32rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 16rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1020,12 +796,6 @@ interface WdPopupProps {
   </wd-popup>
 </template>
 
-<style lang="scss" scoped>
-.content {
-  // ✅ 不设置背景色
-  padding: 32rpx;
-}
-</style>
 ```
 
 ## 主题定制
@@ -1215,22 +985,6 @@ const handleSubCategory = (sub: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.category-list,
-.sub-list {
-  padding: 16rpx 0;
-}
-
-.category-item,
-.sub-item {
-  padding: 24rpx 32rpx;
-  font-size: 28rpx;
-
-  &:active {
-    background: #f5f5f5;
-  }
-}
-</style>
 ```
 
 ### 带表单的弹出层
@@ -1315,21 +1069,6 @@ const handleSubmit = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.form-content {
-  padding: 0 0 32rpx;
-}
-
-.form-actions {
-  display: flex;
-  gap: 24rpx;
-  padding: 32rpx;
-
-  :deep(.wd-button) {
-    flex: 1;
-  }
-}
-</style>
 ```
 
 ### 带选项卡的弹出层
@@ -1381,16 +1120,6 @@ const showTabs = ref(false)
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.tab-content {
-  height: calc(60vh - 100rpx);
-}
-
-.list-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 ### 筛选面板
@@ -1517,95 +1246,6 @@ const handleConfirm = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.filter-panel {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.filter-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-
-.filter-title {
-  font-size: 32rpx;
-  font-weight: 500;
-}
-
-.filter-reset {
-  font-size: 28rpx;
-  color: #1890ff;
-}
-
-.filter-content {
-  flex: 1;
-  padding: 32rpx;
-}
-
-.filter-section {
-  margin-bottom: 48rpx;
-}
-
-.section-title {
-  font-size: 28rpx;
-  font-weight: 500;
-  margin-bottom: 24rpx;
-}
-
-.price-range {
-  display: flex;
-  align-items: center;
-}
-
-.price-input {
-  flex: 1;
-  height: 72rpx;
-  padding: 0 24rpx;
-  border: 1rpx solid #ddd;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-}
-
-.price-sep {
-  margin: 0 16rpx;
-  color: #999;
-}
-
-.tag-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-
-.tag-item {
-  padding: 16rpx 32rpx;
-  border: 1rpx solid #ddd;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-
-  &.active {
-    background: #1890ff;
-    border-color: #1890ff;
-    color: #fff;
-  }
-}
-
-.filter-footer {
-  display: flex;
-  gap: 24rpx;
-  padding: 32rpx;
-  border-top: 1rpx solid #eee;
-
-  :deep(.wd-button) {
-    flex: 1;
-  }
-}
-</style>
 ```
 
 ### 图片预览弹出层
@@ -1680,60 +1320,6 @@ const onSwiperChange = (e: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16rpx;
-  padding: 32rpx;
-}
-
-.grid-image {
-  width: 100%;
-  height: 200rpx;
-  border-radius: 8rpx;
-}
-
-.preview-swiper {
-  width: 100vw;
-  height: 100vh;
-}
-
-.preview-item {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.preview-image {
-  width: 100%;
-  height: 100%;
-}
-
-.preview-indicator {
-  position: fixed;
-  bottom: 100rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #fff;
-  font-size: 28rpx;
-}
-
-.preview-close {
-  position: fixed;
-  top: 80rpx;
-  right: 32rpx;
-  width: 80rpx;
-  height: 80rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-}
-</style>
 ```
 
 ## 注意事项
@@ -1899,84 +1485,4 @@ const handleSelectCity = (city: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-page {
-  padding: 32rpx;
-}
-
-.demo-section {
-  margin-bottom: 48rpx;
-}
-
-.demo-title {
-  font-size: 28rpx;
-  color: #999;
-  margin-bottom: 24rpx;
-}
-
-.demo-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-
-.popup-box {
-  width: 400rpx;
-  padding: 64rpx 32rpx;
-  text-align: center;
-}
-
-.popup-bar {
-  padding: 32rpx;
-  text-align: center;
-}
-
-.popup-panel {
-  padding: 64rpx 32rpx;
-  text-align: center;
-}
-
-.popup-drawer {
-  width: 500rpx;
-  height: 100%;
-  padding: 64rpx 32rpx;
-  box-sizing: border-box;
-}
-
-.city-list {
-  padding: 16rpx 0;
-  max-height: 50vh;
-}
-
-.city-item {
-  padding: 24rpx 32rpx;
-  font-size: 28rpx;
-
-  &:active {
-    background: #f5f5f5;
-  }
-}
-
-.custom-content {
-  width: 500rpx;
-  padding: 48rpx 32rpx;
-  text-align: center;
-}
-
-.custom-icon {
-  margin-bottom: 24rpx;
-}
-
-.custom-title {
-  font-size: 36rpx;
-  font-weight: 500;
-  margin-bottom: 16rpx;
-}
-
-.custom-desc {
-  font-size: 28rpx;
-  color: #999;
-  margin-bottom: 48rpx;
-}
-</style>
 ```

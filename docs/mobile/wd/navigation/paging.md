@@ -54,30 +54,6 @@ const fetchUsers = async (query: PageQuery) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-}
-
-.user-card {
-  padding: 32rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.user-name {
-  font-size: 32rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.user-email {
-  font-size: 28rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -135,33 +111,6 @@ const handleSearch = (keyword: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.product-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.product-name {
-  font-size: 32rpx;
-  color: #333;
-}
-
-.product-price {
-  font-size: 36rpx;
-  color: #ff4444;
-  font-weight: bold;
-}
-</style>
 ```
 
 **技术实现:**
@@ -254,38 +203,6 @@ const handleTabChange = ({ index, name, tab }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.order-card {
-  padding: 32rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.order-no {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 8rpx;
-}
-
-.order-amount {
-  font-size: 32rpx;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 8rpx;
-}
-
-.order-status {
-  font-size: 26rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**
@@ -355,30 +272,6 @@ const handleRadioChange = ({ value, option, field }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.task-card {
-  padding: 32rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.task-title {
-  font-size: 32rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.task-priority {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **技术实现:**
@@ -433,30 +326,6 @@ const handleManualLoad = ({ currentRecords, maxRecords }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.news-card {
-  padding: 32rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.news-title {
-  font-size: 32rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.news-date {
-  font-size: 26rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**
@@ -521,49 +390,6 @@ const handleAddBook = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.book-card {
-  padding: 32rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.book-name {
-  font-size: 32rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.book-author {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.custom-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 80rpx 32rpx;
-}
-
-.empty-image {
-  width: 300rpx;
-  height: 300rpx;
-  margin-bottom: 32rpx;
-}
-
-.empty-text {
-  font-size: 28rpx;
-  color: #999;
-  margin-bottom: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -630,42 +456,6 @@ const handleAddMember = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.member-card {
-  padding: 32rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.member-name {
-  font-size: 32rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.member-role {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.add-member-card {
-  padding: 32rpx;
-  margin: 16rpx;
-}
-
-.member-count {
-  text-align: center;
-  font-size: 26rpx;
-  color: #999;
-  margin-top: 16rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -788,61 +578,6 @@ const handleRadioChange = ({ value, option, field, tabIndex }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.user-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  flex: 1;
-}
-
-.user-avatar {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 24rpx;
-
-  image {
-    width: 100%;
-    height: 100%;
-  }
-}
-
-.user-details {
-  flex: 1;
-}
-
-.user-name {
-  font-size: 32rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.user-type {
-  font-size: 26rpx;
-  color: #999;
-}
-
-.user-priority {
-  font-size: 28rpx;
-  color: #4d80f0;
-}
-</style>
 ```
 
 **技术实现:**
@@ -967,40 +702,6 @@ const checkStatus = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.toolbar {
-  display: flex;
-  gap: 16rpx;
-  padding: 16rpx;
-  background-color: #fff;
-  border-bottom: 2rpx solid #f0f0f0;
-}
-
-.article-card {
-  padding: 32rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.article-title {
-  font-size: 32rpx;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 12rpx;
-}
-
-.article-summary {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-</style>
 ```
 
 **暴露的方法:**
@@ -1095,43 +796,6 @@ const fetchGoods = async (query: PageQuery) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.goods-card {
-  display: flex;
-  padding: 24rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.goods-image {
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 8rpx;
-  margin-right: 24rpx;
-}
-
-.goods-info {
-  flex: 1;
-}
-
-.goods-name {
-  font-size: 32rpx;
-  color: #333;
-  margin-bottom: 12rpx;
-}
-
-.goods-price {
-  font-size: 36rpx;
-  color: #ff4444;
-  font-weight: bold;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1235,55 +899,6 @@ const handleError = (error: Error) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.stats {
-  display: flex;
-  padding: 24rpx;
-  background-color: #fff;
-  border-bottom: 2rpx solid #f0f0f0;
-}
-
-.stat-item {
-  flex: 1;
-  text-align: center;
-}
-
-.stat-label {
-  font-size: 24rpx;
-  color: #999;
-  display: block;
-  margin-bottom: 8rpx;
-}
-
-.stat-value {
-  font-size: 32rpx;
-  color: #333;
-  font-weight: bold;
-}
-
-.data-card {
-  padding: 32rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.data-id {
-  font-size: 26rpx;
-  color: #999;
-  margin-bottom: 8rpx;
-}
-
-.data-name {
-  font-size: 32rpx;
-  color: #333;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1548,193 +1163,6 @@ const handleToggleMode = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding-bottom: 120rpx;
-}
-
-.order-card {
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  overflow: hidden;
-}
-
-.order-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  border-bottom: 2rpx solid #f5f5f5;
-}
-
-.order-no {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.order-status {
-  font-size: 26rpx;
-  padding: 6rpx 16rpx;
-  border-radius: 4rpx;
-
-  &.status-pending {
-    color: #ff9900;
-    background-color: #fff7e6;
-  }
-
-  &.status-paid {
-    color: #4d80f0;
-    background-color: #e6f7ff;
-  }
-
-  &.status-shipped {
-    color: #52c41a;
-    background-color: #f6ffed;
-  }
-
-  &.status-completed {
-    color: #999;
-    background-color: #f5f5f5;
-  }
-
-  &.status-cancelled {
-    color: #ff4444;
-    background-color: #fff1f0;
-  }
-}
-
-.order-products {
-  padding: 24rpx;
-}
-
-.product-item {
-  display: flex;
-  margin-bottom: 16rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.product-image {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 8rpx;
-  margin-right: 16rpx;
-}
-
-.product-info {
-  flex: 1;
-}
-
-.product-name {
-  font-size: 28rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.product-spec {
-  font-size: 24rpx;
-  color: #999;
-  margin-bottom: 8rpx;
-}
-
-.product-price {
-  font-size: 26rpx;
-  color: #ff4444;
-}
-
-.order-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  border-top: 2rpx solid #f5f5f5;
-}
-
-.order-total {
-  font-size: 28rpx;
-  color: #666;
-
-  .amount {
-    color: #ff4444;
-    font-size: 32rpx;
-    font-weight: bold;
-  }
-}
-
-.order-actions {
-  display: flex;
-  gap: 16rpx;
-}
-
-.summary-card {
-  display: flex;
-  justify-content: space-around;
-  padding: 24rpx;
-  margin: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.summary-item {
-  text-align: center;
-}
-
-.summary-label {
-  font-size: 24rpx;
-  color: #999;
-  display: block;
-  margin-bottom: 8rpx;
-}
-
-.summary-value {
-  font-size: 32rpx;
-  color: #333;
-  font-weight: bold;
-}
-
-.custom-empty {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 120rpx 32rpx;
-}
-
-.empty-image {
-  width: 400rpx;
-  height: 300rpx;
-  margin-bottom: 32rpx;
-}
-
-.empty-text {
-  font-size: 28rpx;
-  color: #999;
-}
-
-.fab-group {
-  position: fixed;
-  right: 32rpx;
-  bottom: 120rpx;
-  z-index: 100;
-}
-
-.fab {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 50%;
-  background-color: #4d80f0;
-  box-shadow: 0 4rpx 16rpx rgba(77, 128, 240, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 48rpx;
-}
-</style>
 ```
 
 **功能说明:**

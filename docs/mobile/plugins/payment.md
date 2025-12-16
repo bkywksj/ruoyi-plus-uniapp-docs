@@ -268,63 +268,6 @@ const handlePay = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.checkout {
-  padding: 32rpx;
-}
-
-.goods-info {
-  display: flex;
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  margin-bottom: 32rpx;
-
-  image {
-    width: 160rpx;
-    height: 160rpx;
-    border-radius: 8rpx;
-  }
-
-  .info {
-    flex: 1;
-    margin-left: 24rpx;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    .name {
-      font-size: 28rpx;
-      color: #333;
-    }
-
-    .price {
-      font-size: 32rpx;
-      color: #f56c6c;
-      font-weight: bold;
-    }
-  }
-}
-
-.payment-methods {
-  background: #fff;
-  border-radius: 16rpx;
-  margin-bottom: 32rpx;
-
-  .method-item {
-    padding: 32rpx;
-    border-bottom: 1rpx solid #eee;
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    &.active {
-      color: var(--wot-color-theme);
-    }
-  }
-}
-</style>
 ```
 
 ### 支付已有订单
@@ -1022,58 +965,6 @@ const selectMethod = (method: PaymentMethod) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.payment-selector {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 24rpx;
-
-  .title {
-    font-size: 28rpx;
-    font-weight: bold;
-    margin-bottom: 24rpx;
-  }
-
-  .method-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 24rpx 0;
-    border-bottom: 1rpx solid #eee;
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    .left {
-      display: flex;
-      align-items: center;
-
-      .icon {
-        width: 48rpx;
-        height: 48rpx;
-        margin-right: 16rpx;
-      }
-
-      .name {
-        font-size: 28rpx;
-      }
-    }
-
-    .radio {
-      width: 40rpx;
-      height: 40rpx;
-      border: 2rpx solid #ddd;
-      border-radius: 50%;
-
-      &.active {
-        border-color: var(--wot-color-theme);
-        background: var(--wot-color-theme);
-      }
-    }
-  }
-}
-</style>
 ```
 
 ### 5. 订单支付倒计时
@@ -1141,18 +1032,6 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.countdown {
-  text-align: center;
-  padding: 16rpx;
-  color: #f56c6c;
-  font-size: 26rpx;
-
-  .expired {
-    color: #999;
-  }
-}
-</style>
 ```
 
 ## 常见问题

@@ -79,31 +79,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 // span 值为 1-24 的整数，表示占据的栅格数
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.wd-row {
-  margin-bottom: 20rpx;
-}
-
-.col-content {
-  padding: 24rpx;
-  text-align: center;
-  color: #fff;
-  font-size: 28rpx;
-  border-radius: 8rpx;
-}
-
-.bg-blue {
-  background: #4d80f0;
-}
-
-.bg-purple {
-  background: #667eea;
-}
-</style>
 ```
 
 **使用说明:**
@@ -179,31 +154,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 // 通过设置不同的 span 值实现不等宽布局
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.wd-row {
-  margin-bottom: 20rpx;
-}
-
-.col-content {
-  padding: 24rpx;
-  text-align: center;
-  color: #fff;
-  font-size: 28rpx;
-  border-radius: 8rpx;
-}
-
-.bg-blue {
-  background: #4d80f0;
-}
-
-.bg-purple {
-  background: #667eea;
-}
-</style>
 ```
 
 **使用说明:**
@@ -282,42 +232,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 // gutter 单位为 px，默认值为 0
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section-title {
-  font-size: 28rpx;
-  color: #333;
-  margin-bottom: 16rpx;
-  margin-top: 32rpx;
-
-  &:first-child {
-    margin-top: 0;
-  }
-}
-
-.wd-row {
-  margin-bottom: 20rpx;
-}
-
-.col-content {
-  padding: 24rpx;
-  text-align: center;
-  color: #fff;
-  font-size: 28rpx;
-  border-radius: 8rpx;
-}
-
-.bg-blue {
-  background: #4d80f0;
-}
-
-.bg-purple {
-  background: #667eea;
-}
-</style>
 ```
 
 **使用说明:**
@@ -393,31 +307,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 // offset 单位为栅格数，默认值为 0
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.wd-row {
-  margin-bottom: 20rpx;
-}
-
-.col-content {
-  padding: 24rpx;
-  text-align: center;
-  color: #fff;
-  font-size: 28rpx;
-  border-radius: 8rpx;
-}
-
-.bg-blue {
-  background: #4d80f0;
-}
-
-.bg-purple {
-  background: #667eea;
-}
-</style>
 ```
 
 **使用说明:**
@@ -500,32 +389,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 // 灵活组合 span、offset、gutter 实现各种布局
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.wd-row {
-  margin-bottom: 20rpx;
-}
-
-.col-content {
-  padding: 24rpx;
-  text-align: center;
-  color: #fff;
-  font-size: 28rpx;
-  border-radius: 8rpx;
-  margin-bottom: 15rpx;
-}
-
-.bg-blue {
-  background: #4d80f0;
-}
-
-.bg-purple {
-  background: #667eea;
-}
-</style>
 ```
 
 **使用说明:**
@@ -601,42 +464,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 // 可通过 custom-class 和 custom-style 自定义样式
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.wd-row {
-  margin-bottom: 20rpx;
-}
-
-.custom-row {
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-}
-
-.shadow-col {
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.15);
-  border-radius: 12rpx;
-  overflow: hidden;
-}
-
-.col-content {
-  padding: 24rpx;
-  text-align: center;
-  color: #333;
-  font-size: 28rpx;
-}
-
-.bg-blue {
-  background: #4d80f0;
-  color: #fff;
-}
-
-.bg-purple {
-  background: #667eea;
-  color: #fff;
-}
-</style>
 ```
 
 **使用说明:**
@@ -710,47 +537,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.info-panel {
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 32rpx;
-}
-
-.card {
-  background: #fff;
-  border-radius: 12rpx;
-  overflow: hidden;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-  margin-bottom: 20rpx;
-}
-
-.card-image {
-  width: 100%;
-  height: 200rpx;
-}
-
-.card-title {
-  padding: 20rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.card-price {
-  padding: 0 20rpx 20rpx;
-  font-size: 32rpx;
-  color: #ff6b6b;
-  font-weight: bold;
-}
-</style>
 ```
 
 **使用说明:**
@@ -824,52 +610,6 @@ Row 和 Col 可以嵌套使用,实现复杂的多层级布局。
 // Row 和 Col 可以嵌套使用
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  padding: 24rpx;
-  border-radius: 12rpx;
-  min-height: 400rpx;
-}
-
-.left-section {
-  background: #f0f5ff;
-}
-
-.right-section {
-  background: #fff5f0;
-}
-
-.section-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.content-box {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 15rpx;
-}
-
-.sidebar-box {
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  text-align: center;
-  font-size: 26rpx;
-  color: #666;
-  margin-bottom: 10rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -962,51 +702,6 @@ const handleCardClick = (card: Card) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-  min-height: 100vh;
-}
-
-.card {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-  text-align: center;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-  margin-bottom: 20rpx;
-  transition: all 0.3s;
-
-  &:active {
-    transform: scale(0.98);
-    box-shadow: 0 1rpx 6rpx rgba(0, 0, 0, 0.08);
-  }
-}
-
-.card-icon {
-  margin-bottom: 16rpx;
-}
-
-.card-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.card-desc {
-  font-size: 26rpx;
-  color: #999;
-  margin-bottom: 16rpx;
-}
-
-.card-count {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #4d80f0;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1096,43 +791,6 @@ const handleCardClick = (card: Card) => {
 // 使用栅格布局实现表单
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-  min-height: 100vh;
-}
-
-.form {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-}
-
-.form-item {
-  margin-bottom: 24rpx;
-}
-
-.label {
-  font-size: 28rpx;
-  color: #333;
-  margin-bottom: 12rpx;
-}
-
-.form-label {
-  font-size: 28rpx;
-  color: #333;
-  line-height: 80rpx;
-}
-
-.input {
-  height: 80rpx;
-  padding: 0 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1197,34 +855,6 @@ const handleNavClick = (nav: NavItem) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  background: #fff;
-}
-
-.nav-item {
-  padding: 40rpx 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-right: 1rpx solid #f5f5f5;
-  border-bottom: 1rpx solid #f5f5f5;
-
-  &:active {
-    background: #f9f9f9;
-  }
-}
-
-.nav-icon {
-  margin-bottom: 12rpx;
-}
-
-.nav-text {
-  font-size: 24rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1354,35 +984,6 @@ const handleNavClick = (nav: NavItem) => {
 // 使用栅格布局实现图片画廊
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 10rpx;
-  background: #f5f5f5;
-}
-
-.image-wrapper {
-  border-radius: 12rpx;
-  overflow: hidden;
-  margin-bottom: 10rpx;
-}
-
-.image {
-  width: 100%;
-  display: block;
-}
-
-.main-image {
-  height: 400rpx;
-}
-
-.large-image {
-  height: 410rpx;
-}
-
-.small-image {
-  height: 200rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1806,15 +1407,6 @@ if (props.gutter < 0) {
   </wd-row>
 </template>
 
-<style lang="scss" scoped>
-.content {
-  /* 避免设置固定宽度 */
-  /* width: 200rpx; ❌ */
-
-  /* 使用百分比或不设置宽度 */
-  width: 100%; /* ✅ */
-}
-</style>
 ```
 
 **技术说明:**

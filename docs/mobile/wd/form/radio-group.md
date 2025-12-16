@@ -53,17 +53,6 @@ const handleChange = (val: string | number | boolean) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 32rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -97,17 +86,6 @@ import { ref } from 'vue'
 const value = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 32rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **技术实现:**
@@ -146,11 +124,6 @@ const options: RadioOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -190,11 +163,6 @@ const options: RadioOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -234,11 +202,6 @@ const options: RadioOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -323,25 +286,6 @@ const options: RadioOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.section-title {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -409,25 +353,6 @@ const optionsWithDisabled: RadioOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.section-title {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -527,15 +452,6 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.form-actions {
-  margin-top: 48rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -624,25 +540,6 @@ const moreOptions: RadioOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.section-title {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -707,25 +604,6 @@ const options: RadioOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.section-title {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -791,25 +669,6 @@ const options: RadioOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.section-title {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -869,17 +728,6 @@ const options: RadioOption[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-option {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -990,15 +838,6 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.form-actions {
-  margin-top: 48rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1098,30 +937,6 @@ const selectedText = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 32rpx;
-}
-
-.section-title {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-
-.result {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **技术实现:**

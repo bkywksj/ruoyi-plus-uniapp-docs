@@ -38,18 +38,6 @@ Gap 间隙槽组件是一个轻量级的布局辅助组件,用于在页面中创
 // 基础用法无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.card {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-}
-</style>
 ```
 
 **使用说明:**
@@ -105,30 +93,6 @@ Gap 间隙槽组件是一个轻量级的布局辅助组件,用于在页面中创
 // 自定义高度无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-    font-weight: 500;
-  }
-}
-
-.card {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-}
-</style>
 ```
 
 **使用说明:**
@@ -189,31 +153,6 @@ height 属性支持多种 CSS 单位格式。
 // 单位设置无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-    font-weight: 500;
-  }
-}
-
-.card {
-  padding: 32rpx;
-  background: #e3f2fd;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #1976d2;
-}
-</style>
 ```
 
 **使用说明:**
@@ -273,35 +212,6 @@ height 属性支持多种 CSS 单位格式。
 // 背景颜色无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #fff;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-    font-weight: 500;
-  }
-}
-
-.card {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-
-  &.white {
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -351,68 +261,6 @@ height 属性支持多种 CSS 单位格式。
 // 底部安全区无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: #f5f5f5;
-}
-
-.content {
-  flex: 1;
-  padding: 32rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 24rpx;
-    font-size: 36rpx;
-    color: #333;
-    font-weight: 500;
-  }
-}
-
-.card {
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-}
-
-.footer {
-  background: #fff;
-  border-top: 1rpx solid #eee;
-  position: sticky;
-  bottom: 0;
-  z-index: 100;
-
-  .button-group {
-    display: flex;
-    gap: 16rpx;
-    padding: 24rpx 32rpx;
-
-    .btn {
-      flex: 1;
-      height: 88rpx;
-      line-height: 88rpx;
-      border-radius: 44rpx;
-      border: none;
-      font-size: 32rpx;
-
-      &.btn-default {
-        background: #f5f5f5;
-        color: #666;
-      }
-
-      &.btn-primary {
-        background: #4dabf7;
-        color: #fff;
-      }
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -515,70 +363,6 @@ const handleProductClick = (item: Product) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  background: #f5f5f5;
-  padding: 32rpx;
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-}
-
-.product-card {
-  display: flex;
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-
-  .product-image {
-    width: 160rpx;
-    height: 160rpx;
-    border-radius: 12rpx;
-    background: #f0f0f0;
-    flex-shrink: 0;
-  }
-
-  .product-info {
-    flex: 1;
-    margin-left: 24rpx;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .product-name {
-    font-size: 30rpx;
-    color: #333;
-    font-weight: 500;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
-  .product-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .product-price {
-    font-size: 32rpx;
-    color: #ff6b6b;
-    font-weight: bold;
-  }
-
-  .product-sales {
-    font-size: 24rpx;
-    color: #999;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -648,41 +432,6 @@ const handleProductClick = (item: Product) => {
 // 分隔线效果无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  overflow: hidden;
-
-  .title {
-    display: block;
-    padding: 24rpx 32rpx;
-    font-size: 28rpx;
-    color: #333;
-    font-weight: 500;
-    background: #f5f5f5;
-  }
-}
-
-.item {
-  padding: 32rpx;
-  font-size: 30rpx;
-  color: #333;
-}
-
-.block {
-  padding: 48rpx 32rpx;
-  background: #fff;
-  font-size: 30rpx;
-  color: #333;
-  text-align: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -732,64 +481,6 @@ const handleProductClick = (item: Product) => {
 // 占位元素无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.content {
-  padding: 32rpx;
-  padding-bottom: 0;
-
-  .card {
-    padding: 32rpx;
-    margin-bottom: 16rpx;
-    background: #fff;
-    border-radius: 16rpx;
-    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-  }
-}
-
-.bottom-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: #fff;
-  border-top: 1rpx solid #eee;
-  z-index: 100;
-
-  .action-buttons {
-    display: flex;
-    gap: 16rpx;
-    padding: 24rpx 32rpx;
-
-    .btn {
-      flex: 1;
-      height: 88rpx;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8rpx;
-      border-radius: 44rpx;
-      border: none;
-      font-size: 30rpx;
-
-      &.btn-cart {
-        background: #fff7e6;
-        color: #ffa94d;
-        border: 2rpx solid #ffa94d;
-      }
-
-      &.btn-buy {
-        background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
-        color: #fff;
-      }
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -855,46 +546,6 @@ const handleProductClick = (item: Product) => {
 // 自定义样式无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #333;
-    font-weight: 500;
-  }
-}
-
-.card {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-}
-
-// 自定义类名样式
-:deep(.custom-gap) {
-  margin: 0 32rpx;
-  background: repeating-linear-gradient(
-    90deg,
-    #4dabf7 0px,
-    #4dabf7 10px,
-    transparent 10px,
-    transparent 20px
-  );
-}
-
-:deep(.dotted-gap) {
-  margin: 0 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -946,21 +597,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  flex-direction: column;
-}
-
-.card {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-  text-align: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1038,34 +674,6 @@ Gap 组件本身没有主题变量,样式完全由 Props 控制。
 // 主题定制无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-:deep(.custom-gap) {
-  // 自定义背景
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-
-  // 添加圆角
-  border-radius: 15rpx;
-
-  // 添加边框
-  border: 2rpx solid #667eea;
-
-  // 添加阴影
-  box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.3);
-
-  // 添加动画
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-</style>
 ```
 
 参考: src/wd/components/wd-gap/wd-gap.vue:48-61

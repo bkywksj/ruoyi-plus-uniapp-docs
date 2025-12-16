@@ -264,33 +264,6 @@ $-color-tip: var(--wot-color-tip, #bfbfbf) !default;        // 提示文字
   </view>
 </template>
 
-<style lang="scss" scoped>
-.title {
-  color: var(--wot-color-title);
-  font-size: 32rpx;
-  font-weight: 600;
-}
-
-.content {
-  color: var(--wot-color-content);
-  font-size: 28rpx;
-}
-
-.secondary {
-  color: var(--wot-color-secondary);
-  font-size: 26rpx;
-}
-
-.aid {
-  color: var(--wot-color-aid);
-  font-size: 24rpx;
-}
-
-.tip {
-  color: var(--wot-color-tip);
-  font-size: 22rpx;
-}
-</style>
 ```
 
 ### 边框和背景颜色
@@ -351,19 +324,6 @@ $-fw-semibold: var(--wot-fw-semibold, 600) !default; // 半粗体
 **字重使用示例:**
 
 ```vue
-<style lang="scss" scoped>
-.title {
-  font-weight: var(--wot-fw-semibold);  // 标题使用半粗体
-}
-
-.subtitle {
-  font-weight: var(--wot-fw-medium);    // 副标题使用中等粗细
-}
-
-.content {
-  font-weight: 400;                      // 正文使用常规字重
-}
-</style>
 ```
 
 ## 间距系统
@@ -385,17 +345,6 @@ $-size-side-padding-small: var(--wot-size-side-padding-small, 12rpx) !default; /
   </view>
 </template>
 
-<style lang="scss" scoped>
-.page {
-  // 页面使用标准边距
-  padding: 0 var(--wot-size-side-padding);
-}
-
-.section {
-  // 模块使用标准边距
-  margin: 0 var(--wot-size-side-padding);
-}
-</style>
 ```
 
 ### 通用间距规范
@@ -456,39 +405,6 @@ import { ref } from 'vue'
 const isDark = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.card {
-  background-color: #ffffff;
-  border: 1px solid var(--wot-color-border);
-  border-radius: 16rpx;
-  padding: 32rpx;
-
-  .title {
-    color: var(--wot-color-title);
-    font-size: var(--wot-fs-title);
-    margin-bottom: 16rpx;
-  }
-
-  .content {
-    color: var(--wot-color-content);
-    font-size: var(--wot-fs-content);
-  }
-
-  // 暗黑模式样式
-  &.dark-mode {
-    background-color: var(--wot-dark-background3);
-    border-color: var(--wot-dark-border-color);
-
-    .title {
-      color: var(--wot-dark-color);
-    }
-
-    .content {
-      color: var(--wot-dark-color3);
-    }
-  }
-}
-</style>
 ```
 
 ### 使用 CSS 变量实现自动切换
@@ -762,40 +678,6 @@ $-toast-icon-size: var(--wot-toast-icon-size, 50rpx) !default;
   </view>
 </template>
 
-<style lang="scss" scoped>
-@import '@/static/style/mixins.scss';
-
-.card {
-  @include card-style;
-  margin: 24rpx;
-  padding: 32rpx;
-
-  .header {
-    @include flex-between;
-    @include hairline-border(#e8e8e8, bottom);
-    padding-bottom: 24rpx;
-    margin-bottom: 24rpx;
-  }
-
-  .title {
-    font-size: 32rpx;
-    font-weight: 600;
-    color: var(--wot-color-title);
-  }
-
-  .more {
-    font-size: 24rpx;
-    color: var(--wot-color-theme);
-  }
-
-  .text {
-    @include ellipsis(2);
-    font-size: 28rpx;
-    color: var(--wot-color-content);
-    line-height: 1.6;
-  }
-}
-</style>
 ```
 
 ## 工具类样式
@@ -1063,28 +945,6 @@ const selectTheme = (theme: ThemeConfig) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-demo {
-  padding: 32rpx;
-}
-
-.content {
-  margin-bottom: 48rpx;
-}
-
-.theme-selector {
-  display: flex;
-  gap: 24rpx;
-  flex-wrap: wrap;
-}
-
-.theme-item {
-  padding: 16rpx 32rpx;
-  border-radius: 8rpx;
-  color: #fff;
-  font-size: 24rpx;
-}
-</style>
 ```
 
 ## 跨平台兼容
@@ -1244,12 +1104,6 @@ SCSS 嵌套不超过 3 层,提高可读性和性能:
 使用 scoped 样式避免污染全局:
 
 ```vue
-<style lang="scss" scoped>
-// 样式仅作用于当前组件
-.my-component {
-  // ...
-}
-</style>
 ```
 
 ## 常见问题

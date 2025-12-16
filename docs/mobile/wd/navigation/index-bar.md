@@ -58,21 +58,6 @@ const getContactsByLetter = (letter: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-index-bar {
-  height: 100vh;
-}
-
-.contact-item {
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid #e0e0e0;
-
-  .contact-name {
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -123,43 +108,6 @@ const getContactsByLetter = (letter: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-index-bar {
-  height: 100vh;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid #e0e0e0;
-
-  .contact-avatar {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 50%;
-    background: #f0f0f0;
-  }
-
-  .contact-info {
-    flex: 1;
-    margin-left: 24rpx;
-    display: flex;
-    flex-direction: column;
-
-    .contact-name {
-      font-size: 28rpx;
-      color: #333;
-      margin-bottom: 8rpx;
-    }
-
-    .contact-phone {
-      font-size: 24rpx;
-      color: #999;
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -223,43 +171,6 @@ const cityGroups = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-index-bar {
-  height: 100vh;
-}
-
-.custom-anchor {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-  padding: 20rpx 32rpx;
-  background: #f5f5f5;
-
-  .anchor-text {
-    font-size: 28rpx;
-    color: #333;
-    font-weight: bold;
-  }
-}
-
-.city-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid #e0e0e0;
-
-  .city-name {
-    font-size: 28rpx;
-    color: #333;
-  }
-
-  .city-code {
-    font-size: 24rpx;
-    color: #999;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -399,83 +310,6 @@ const handleContactClick = (contact: Contact) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.contact-list {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.search-bar {
-  padding: 16rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #e0e0e0;
-}
-
-.anchor-title {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-  padding: 20rpx 32rpx;
-  background: #fff8e6;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: bold;
-}
-
-.contact-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #e0e0e0;
-
-  &:active {
-    background: #f5f5f5;
-  }
-
-  .contact-avatar {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 50%;
-    background: #f0f0f0;
-  }
-
-  .contact-info {
-    flex: 1;
-    margin-left: 24rpx;
-    display: flex;
-    flex-direction: column;
-
-    .contact-name {
-      font-size: 28rpx;
-      color: #333;
-      margin-bottom: 8rpx;
-    }
-
-    .contact-phone,
-    .contact-company {
-      font-size: 24rpx;
-      color: #999;
-    }
-  }
-}
-
-.empty-state {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 128rpx 32rpx;
-
-  .empty-text {
-    margin-top: 32rpx;
-    font-size: 28rpx;
-    color: #999;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -592,85 +426,6 @@ const handleClose = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.city-selector {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid #e0e0e0;
-
-  .title {
-    font-size: 32rpx;
-    font-weight: bold;
-    color: #333;
-  }
-}
-
-.section-title {
-  padding: 20rpx 32rpx;
-  background: #f5f5f5;
-  font-size: 28rpx;
-  color: #666;
-  font-weight: bold;
-}
-
-.current-city {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid #e0e0e0;
-
-  .city-name {
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-
-.hot-cities {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 24rpx 24rpx 12rpx;
-  gap: 16rpx;
-  border-bottom: 1rpx solid #e0e0e0;
-
-  .hot-city-item {
-    flex: 0 0 calc(33.333% - 12rpx);
-    padding: 20rpx 0;
-    text-align: center;
-    background: #f5f5f5;
-    border-radius: 8rpx;
-    font-size: 28rpx;
-    color: #333;
-
-    &:active {
-      background: #e0e0e0;
-    }
-  }
-}
-
-.city-item {
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid #e0e0e0;
-
-  &:active {
-    background: #f5f5f5;
-  }
-
-  .city-name {
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -751,48 +506,6 @@ const handleCategoryClick = (item: CategoryItem) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.product-category {
-  height: 100vh;
-}
-
-.category-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #e0e0e0;
-
-  &:active {
-    background: #f5f5f5;
-  }
-
-  .category-icon {
-    width: 80rpx;
-    height: 80rpx;
-    border-radius: 8rpx;
-    background: #f0f0f0;
-  }
-
-  .category-info {
-    flex: 1;
-    margin-left: 24rpx;
-    display: flex;
-    flex-direction: column;
-
-    .category-name {
-      font-size: 28rpx;
-      color: #333;
-      margin-bottom: 8rpx;
-    }
-
-    .category-count {
-      font-size: 24rpx;
-      color: #999;
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -950,43 +663,6 @@ $-color-theme: #4d80f0;                                  // 激活索引颜色
 const letters = ['A', 'B', 'C', 'D', 'E']
 </script>
 
-<style lang="scss" scoped>
-.custom-index-bar {
-  height: 100vh;
-
-  // 自定义锚点样式
-  :deep(.custom-anchor) {
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    padding: 24rpx 32rpx;
-    font-size: 32rpx;
-    font-weight: bold;
-  }
-
-  // 自定义右侧索引栏
-  :deep(.wd-index-bar__sidebar) {
-    right: 16rpx;
-  }
-
-  :deep(.wd-index-bar__index) {
-    font-size: 28rpx;
-    padding: 12rpx 16rpx;
-    color: #4d80f0;
-    font-weight: bold;
-
-    &.is-active {
-      background: #4d80f0;
-      color: #fff;
-      border-radius: 50%;
-    }
-  }
-}
-
-.list-item {
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid #e0e0e0;
-}
-</style>
 ```
 
 **深色主题:**
@@ -1009,19 +685,6 @@ const letters = ['A', 'B', 'C', 'D', 'E']
 const letters = ['A', 'B', 'C', 'D', 'E']
 </script>
 
-<style lang="scss" scoped>
-.dark-index-bar {
-  height: 100vh;
-  background: #1a1a1a;
-}
-
-.list-item {
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid #2c2c2e;
-  color: #e5e5e7;
-  background: #1a1a1a;
-}
-</style>
 ```
 
 参考: src/wd/components/wd-index-bar/wd-index-bar.vue:238-245, src/wd/components/wd-index-anchor/wd-index-anchor.vue:122-128
@@ -1152,28 +815,11 @@ const getItemsByLetter = (letter: string) => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.page {
-  height: 100vh;
-  overflow: hidden;
-}
-
-// ✅ 设置固定高度
-.index-bar-container {
-  height: 100%;
-}
-</style>
 ```
 
 **不推荐做法:**
 
 ```vue
-<style lang="scss" scoped>
-// ❌ 没有设置高度，吸顶效果可能异常
-.index-bar-container {
-  // 没有 height
-}
-</style>
 ```
 
 **说明:**
@@ -1254,17 +900,6 @@ const searchResults = computed(() => {
   </wd-index-bar>
 </template>
 
-<style lang="scss" scoped>
-.list-item {
-  padding: 24rpx 32rpx;
-  transition: background-color 0.2s;
-
-  // ✅ 添加点击态反馈
-  &:active {
-    background-color: #f5f5f5;
-  }
-}
-</style>
 ```
 
 **说明:**
@@ -1304,15 +939,6 @@ const searchResults = computed(() => {
 const letters = ['A', 'B', 'C', 'D', 'E']
 </script>
 
-<style lang="scss" scoped>
-.page {
-  height: 100vh;
-}
-
-.index-bar-wrapper {
-  height: 100%;
-}
-</style>
 ```
 
 **说明:**
@@ -1345,13 +971,6 @@ const letters = ['A', 'B', 'C', 'D', 'E']
   </wd-index-bar>
 </template>
 
-<style lang="scss" scoped>
-// 确保列表有足够高度可以滚动
-.list-item {
-  padding: 24rpx 32rpx;
-  min-height: 100rpx;
-}
-</style>
 ```
 
 **说明:**
@@ -1430,36 +1049,6 @@ onMounted(() => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.custom-wrapper {
-  height: 100vh;
-
-  // ✅ 自定义右侧索引栏样式
-  :deep(.wd-index-bar__sidebar) {
-    right: 24rpx;  // 调整位置
-  }
-
-  :deep(.wd-index-bar__index) {
-    font-size: 28rpx;  // 调整字体大小
-    color: #4d80f0;    // 调整颜色
-    padding: 12rpx 16rpx;  // 调整内边距
-
-    &.is-active {
-      background: #4d80f0;
-      color: #fff;
-      border-radius: 50%;
-    }
-  }
-
-  // ✅ 自定义锚点样式
-  :deep(.my-anchor) {
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    color: #fff;
-    padding: 28rpx 32rpx;
-    font-weight: bold;
-  }
-}
-</style>
 ```
 
 **说明:**
@@ -1515,20 +1104,6 @@ const handleScroll = (event: any) => {
 // IndexBar 内部通过 state.activeIndex 管理当前索引
 </script>
 
-<style lang="scss" scoped>
-.current-index {
-  position: fixed;
-  top: 100rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  padding: 16rpx 32rpx;
-  background: rgba(0, 0, 0, 0.7);
-  color: #fff;
-  border-radius: 8rpx;
-  font-size: 24rpx;
-  z-index: 1000;
-}
-</style>
 ```
 
 **说明:**

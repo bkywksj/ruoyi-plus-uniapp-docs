@@ -42,11 +42,6 @@ import { useDict, DictTypes } from '@/composables/useDict'
 const { sys_normal_disable, dictLoading } = useDict(DictTypes.SYS_NORMAL_DISABLE)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -129,34 +124,6 @@ const handleEnableChange = (e: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.user-form {
-  padding: 32rpx;
-}
-
-.loading {
-  text-align: center;
-  padding: 64rpx;
-  color: #999;
-}
-
-.form-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #eee;
-
-  .label {
-    width: 200rpx;
-    font-weight: 500;
-  }
-
-  .picker {
-    flex: 1;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -233,11 +200,6 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.notice-form {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -324,49 +286,6 @@ const getStatusTag = (status: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.user-list {
-  padding: 32rpx;
-}
-
-.loading {
-  text-align: center;
-  padding: 64rpx;
-  color: #999;
-}
-
-.user-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #fff;
-  border-radius: 8rpx;
-
-  .user-info {
-    flex: 1;
-
-    .name {
-      display: block;
-      font-size: 32rpx;
-      font-weight: 500;
-      margin-bottom: 8rpx;
-    }
-
-    .dept {
-      display: block;
-      font-size: 28rpx;
-      color: #999;
-    }
-  }
-
-  .user-tags {
-    display: flex;
-    gap: 16rpx;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -445,29 +364,6 @@ const genderItem = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.dict-demo {
-  padding: 32rpx;
-}
-
-.section {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-
-  .title {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 12rpx;
-  }
-
-  .result {
-    display: block;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **DictStore 提供的方法:**
@@ -552,47 +448,6 @@ const loadDict = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.dynamic-dict {
-  padding: 32rpx;
-}
-
-.input-group {
-  display: flex;
-  gap: 16rpx;
-  margin-bottom: 32rpx;
-
-  input {
-    flex: 1;
-    padding: 16rpx;
-    border: 1rpx solid #ddd;
-    border-radius: 8rpx;
-  }
-
-  button {
-    padding: 16rpx 32rpx;
-    background: #1890ff;
-    color: #fff;
-    border: none;
-    border-radius: 8rpx;
-  }
-}
-
-.loading {
-  text-align: center;
-  padding: 64rpx;
-  color: #999;
-}
-
-.dict-list {
-  .dict-item {
-    padding: 24rpx;
-    margin-bottom: 16rpx;
-    background: #f5f5f5;
-    border-radius: 8rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**

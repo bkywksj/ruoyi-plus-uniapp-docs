@@ -404,57 +404,6 @@ const handleClose = (item?: any, index?: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.dict-tag {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
-
-  .separator {
-    color: var(--el-text-color-secondary);
-    font-size: 12px;
-  }
-
-  .dict-tag-empty {
-    color: var(--el-text-color-placeholder);
-    font-size: 14px;
-  }
-}
-
-// 字典样式类
-:deep(.el-tag) {
-  &.dict-primary {
-    --el-tag-bg-color: var(--el-color-primary-light-9);
-    --el-tag-border-color: var(--el-color-primary-light-8);
-    --el-tag-text-color: var(--el-color-primary);
-  }
-
-  &.dict-success {
-    --el-tag-bg-color: var(--el-color-success-light-9);
-    --el-tag-border-color: var(--el-color-success-light-8);
-    --el-tag-text-color: var(--el-color-success);
-  }
-
-  &.dict-warning {
-    --el-tag-bg-color: var(--el-color-warning-light-9);
-    --el-tag-border-color: var(--el-color-warning-light-8);
-    --el-tag-text-color: var(--el-color-warning);
-  }
-
-  &.dict-danger {
-    --el-tag-bg-color: var(--el-color-danger-light-9);
-    --el-tag-border-color: var(--el-color-danger-light-8);
-    --el-tag-text-color: var(--el-color-danger);
-  }
-
-  &.dict-info {
-    --el-tag-bg-color: var(--el-color-info-light-9);
-    --el-tag-border-color: var(--el-color-info-light-8);
-    --el-tag-text-color: var(--el-color-info);
-  }
-}
-</style>
 ```
 
 ## 🔧 增强功能
@@ -566,34 +515,6 @@ const handleChange = (value: string | number | undefined) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.dict-option {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  .option-label {
-    flex: 1;
-  }
-
-  .option-tag {
-    margin-left: 8px;
-  }
-}
-
-.empty-data {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  color: var(--el-text-color-secondary);
-
-  .el-icon {
-    font-size: 24px;
-    margin-bottom: 8px;
-  }
-}
-</style>
 ```
 
 ### 字典单选框组

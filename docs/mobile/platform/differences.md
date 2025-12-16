@@ -963,19 +963,6 @@ const rootClass = computed(() => ({
 }))
 </script>
 
-<style lang="scss" scoped>
-.component {
-  // 通用样式
-}
-
-.component--alipay {
-  // 支付宝特有样式
-}
-
-.component--weixin {
-  // 微信特有样式
-}
-</style>
 ```
 
 ### 5. 测试策略

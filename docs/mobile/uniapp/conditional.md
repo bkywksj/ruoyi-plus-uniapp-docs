@@ -220,31 +220,6 @@ onMounted(() => {
 ### Style 中使用
 
 ```vue
-<style lang="scss" scoped>
-.container {
-  padding: 20px;
-
-  /* #ifdef H5 */
-  background-color: #f0f0f0;
-  /* #endif */
-
-  /* #ifdef MP-WEIXIN */
-  background-color: #ffffff;
-  /* #endif */
-}
-
-/* #ifndef H5 */
-.page-title {
-  font-size: 32rpx;
-}
-/* #endif */
-
-/* #ifdef H5 */
-.page-title {
-  font-size: 16px;
-}
-/* #endif */
-</style>
 ```
 
 ## 项目实践

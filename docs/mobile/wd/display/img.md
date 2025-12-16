@@ -36,11 +36,6 @@ Img 是一个增强版的图片组件,在 UniApp 原生 image 组件的基础上
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -69,11 +64,6 @@ import { ref } from 'vue'
 const imageUrls = ref('https://unpkg.com/wot-design-uni-assets/redpanda.jpg,https://unpkg.com/wot-design-uni-assets/elephant.jpg,https://unpkg.com/wot-design-uni-assets/panda.jpg')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -108,11 +98,6 @@ const multiImages = ref([
 ].join(','))
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -187,29 +172,6 @@ const multiImages = ref([
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.mode-group {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  margin-bottom: 16rpx;
-}
-
-.mode-name {
-  display: block;
-  font-size: 24rpx;
-  color: #999;
-  margin-top: 8rpx;
-}
-</style>
 ```
 
 **模式说明:**
@@ -260,13 +222,6 @@ const multiImages = ref([
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  gap: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -309,11 +264,6 @@ const imageList = ref([
 ].join(','))
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -342,11 +292,6 @@ const imageList = ref([
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -379,11 +324,6 @@ const handleLongpress = (event: Event, imageList: string[], currentIndex: number
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **默认长按菜单包含:**
@@ -436,11 +376,6 @@ const customLongpress = (event: Event, imageList: string[], currentIndex: number
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -479,11 +414,6 @@ const manyImages = ref([
 ].join(','))
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -515,15 +445,6 @@ const manyImages = ref([
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.image-item {
-  margin-bottom: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -564,29 +485,6 @@ const manyImages = ref([
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-loading,
-.custom-error {
-  width: 200rpx;
-  height: 200rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-}
-
-.loading-text,
-.error-text {
-  font-size: 24rpx;
-  color: #999;
-  margin-top: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -632,18 +530,6 @@ const handleError = (event: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.status {
-  display: block;
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -673,20 +559,6 @@ const handleError = (event: any) => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-:deep(.custom-img) {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 8rpx;
-}
-
-:deep(.custom-image) {
-  border-radius: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -758,41 +630,6 @@ const detailImages = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.product-detail {
-  background: #fff;
-}
-
-.main-images {
-  background: #f5f5f5;
-}
-
-.product-info {
-  padding: 32rpx;
-}
-
-.product-name {
-  display: block;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.product-price {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #ff4d4f;
-}
-
-.detail-images {
-  margin-top: 32rpx;
-}
-
-.detail-image {
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **实现要点:**
@@ -885,66 +722,6 @@ const moments = ref<Moment[]>([
 ])
 </script>
 
-<style lang="scss" scoped>
-.moments {
-  background: #f5f5f5;
-  min-height: 100vh;
-}
-
-.moment-item {
-  background: #fff;
-  padding: 32rpx;
-  margin-bottom: 16rpx;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  margin-bottom: 24rpx;
-}
-
-.user-details {
-  margin-left: 24rpx;
-  flex: 1;
-}
-
-.user-name {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.post-time {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.content {
-  display: block;
-  font-size: 28rpx;
-  line-height: 1.6;
-  color: #333;
-  margin-bottom: 24rpx;
-}
-
-.images {
-  margin-bottom: 24rpx;
-}
-
-.actions {
-  display: flex;
-  gap: 32rpx;
-  padding-top: 16rpx;
-  border-top: 1rpx solid #f0f0f0;
-}
-
-.action-btn {
-  font-size: 26rpx;
-  color: #666;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1068,96 +845,6 @@ const confirmSelect = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.photo-album {
-  min-height: 100vh;
-  background: #fff;
-  padding-bottom: 120rpx;
-}
-
-.album-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32rpx;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-
-.album-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.photo-count {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.photo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8rpx;
-  padding: 8rpx;
-}
-
-.photo-item {
-  position: relative;
-  aspect-ratio: 1;
-}
-
-.select-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.checkbox {
-  width: 48rpx;
-  height: 48rpx;
-  border: 2rpx solid #fff;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.3);
-
-  &.checked {
-    background: #1890ff;
-    border-color: #1890ff;
-  }
-}
-
-.bottom-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 120rpx;
-  background: #fff;
-  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 32rpx;
-}
-
-.selected-count {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.actions {
-  display: flex;
-  gap: 16rpx;
-}
-</style>
 ```
 
 **实现要点:**

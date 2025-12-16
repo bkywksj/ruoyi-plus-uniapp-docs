@@ -284,11 +284,6 @@ const showDatePicker = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.value {
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -561,16 +556,6 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-error {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  margin-top: 8rpx;
-  color: #f56c6c;
-  font-size: 24rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -653,18 +638,6 @@ const removeContact = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.contact-group {
-  padding: 16rpx 0;
-  border-bottom: 1px solid #eee;
-}
-
-.group-title {
-  padding: 16rpx 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -966,19 +939,6 @@ const rules = {
 }
 </script>
 
-<style lang="scss" scoped>
-.form-group {
-  margin-bottom: 32rpx;
-}
-
-.group-title {
-  padding: 16rpx 32rpx;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  background-color: #f5f5f5;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1390,18 +1350,6 @@ const increase = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-control {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.value {
-  font-size: 28rpx;
-  font-weight: bold;
-}
-</style>
 ```
 
 参考: src/wd/components/wd-form-item/wd-form-item.vue:17

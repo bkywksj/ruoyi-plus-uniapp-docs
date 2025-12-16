@@ -15,13 +15,6 @@ src/uni.scss
 `uni.scss` 中的变量会被自动注入到每个 `.vue` 组件的 `<style lang="scss">` 中，**无需手动导入**。
 
 ```vue
-<style lang="scss" scoped>
-.button {
-  /* 直接使用 uni.scss 中的变量 */
-  color: $uni-color-primary;
-  font-size: $uni-font-size-base;
-}
-</style>
 ```
 
 ## 颜色变量
@@ -58,19 +51,6 @@ $uni-text-color-disable: #c0c0c0;         // 禁用状态文字
 **使用示例**：
 
 ```vue
-<style lang="scss" scoped>
-.title {
-  color: $uni-text-color;           // 标题：深色
-}
-
-.subtitle {
-  color: $uni-text-color-grey;      // 副标题：灰色
-}
-
-.disabled-text {
-  color: $uni-text-color-disable;   // 禁用：浅灰
-}
-</style>
 ```
 
 ### 背景颜色
@@ -209,25 +189,6 @@ $uni-font-size-paragraph: 15px;           // 段落字号
 **使用示例**：
 
 ```vue
-<style lang="scss" scoped>
-.article {
-  .title {
-    color: $uni-color-title;
-    font-size: $uni-font-size-title;
-  }
-
-  .subtitle {
-    color: $uni-color-subtitle;
-    font-size: $uni-font-size-subtitle;
-  }
-
-  .content {
-    color: $uni-color-paragraph;
-    font-size: $uni-font-size-paragraph;
-    line-height: 1.6;
-  }
-}
-</style>
 ```
 
 ## 其他变量
@@ -298,26 +259,6 @@ $box-shadow-card: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
   </button>
 </template>
 
-<style lang="scss" scoped>
-.custom-button {
-  /* 使用 uni.scss 变量 */
-  padding: $uni-spacing-col-base $uni-spacing-row-base;
-  font-size: $uni-font-size-base;
-  color: $uni-text-color-inverse;
-  background-color: $uni-color-primary;
-  border-radius: $uni-border-radius-base;
-  border: none;
-
-  &:active {
-    background-color: darken($uni-color-primary, 10%);
-  }
-
-  &.is-disabled {
-    opacity: $uni-opacity-disabled;
-    cursor: not-allowed;
-  }
-}
-</style>
 ```
 
 ### 示例 2：卡片组件
@@ -334,31 +275,6 @@ $box-shadow-card: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
   </view>
 </template>
 
-<style lang="scss" scoped>
-.card {
-  background-color: $uni-bg-color;
-  border-radius: $uni-border-radius-lg;
-  border: 1px solid $uni-border-color;
-  overflow: hidden;
-
-  .card-header {
-    padding: $uni-spacing-col-base $uni-spacing-row-base;
-    border-bottom: 1px solid $uni-border-color;
-
-    .card-title {
-      font-size: $uni-font-size-lg;
-      color: $uni-text-color;
-      font-weight: bold;
-    }
-  }
-
-  .card-body {
-    padding: $uni-spacing-col-lg $uni-spacing-row-base;
-    color: $uni-text-color;
-    font-size: $uni-font-size-base;
-  }
-}
-</style>
 ```
 
 ### 示例 3：表单组件
@@ -371,41 +287,6 @@ $box-shadow-card: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
   </view>
 </template>
 
-<style lang="scss" scoped>
-.form-item {
-  margin-bottom: $uni-spacing-col-lg;
-
-  .label {
-    display: block;
-    margin-bottom: $uni-spacing-col-sm;
-    font-size: $uni-font-size-base;
-    color: $uni-text-color;
-  }
-
-  .input {
-    width: 100%;
-    padding: $uni-spacing-col-base $uni-spacing-row-base;
-    font-size: $uni-font-size-base;
-    color: $uni-text-color;
-    background-color: $uni-bg-color;
-    border: 1px solid $uni-border-color;
-    border-radius: $uni-border-radius-base;
-
-    &::placeholder {
-      color: $uni-text-color-placeholder;
-    }
-
-    &:focus {
-      border-color: $uni-color-primary;
-    }
-
-    &:disabled {
-      background-color: $uni-bg-color-grey;
-      color: $uni-text-color-disable;
-    }
-  }
-}
-</style>
 ```
 
 ## 与 CSS 变量结合
@@ -419,11 +300,6 @@ $box-shadow-card: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
 $uni-color-primary: var(--primary-color, #007aff);
 
 // 组件中
-<style lang="scss" scoped>
-.button {
-  background-color: $uni-color-primary;
-}
-</style>
 
 // JavaScript 动态修改
 <script setup>
@@ -535,11 +411,6 @@ const changePrimaryColor = (color) => {
 **解决方案**：
 ```vue
 <!-- ✅ 正确 -->
-<style lang="scss" scoped>
-.button {
-  color: $uni-color-primary;
-}
-</style>
 
 <!-- ❌ 错误 -->
 <style scoped>

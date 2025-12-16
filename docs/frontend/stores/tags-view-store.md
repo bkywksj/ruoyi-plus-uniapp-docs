@@ -1423,31 +1423,6 @@ const handleLoad = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.inner-link-container {
-  width: 100%;
-  height: calc(100vh - 84px);  // 减去头部和标签栏高度
-
-  iframe {
-    display: block;
-  }
-
-  .loading {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    font-size: 16px;
-    color: var(--el-text-color-secondary);
-
-    .el-icon {
-      font-size: 32px;
-      margin-bottom: 16px;
-    }
-  }
-}
-</style>
 ```
 
 ### Iframe 生命周期管理
@@ -1660,72 +1635,6 @@ watch(visible, (value) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.tags-view-container {
-  height: 34px;
-  width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);
-
-  .tags-view-wrapper {
-    .tags-view-item {
-      display: inline-block;
-      position: relative;
-      cursor: pointer;
-      height: 26px;
-      line-height: 26px;
-      border: 1px solid #d8dce5;
-      color: #495060;
-      background: #fff;
-      padding: 0 8px;
-      font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
-
-      &:first-of-type {
-        margin-left: 15px;
-      }
-
-      &:last-of-type {
-        margin-right: 15px;
-      }
-
-      &.active {
-        background-color: var(--el-color-primary);
-        color: #fff;
-        border-color: var(--el-color-primary);
-
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 2px;
-        }
-      }
-
-      .el-icon-close {
-        width: 16px;
-        height: 16px;
-        vertical-align: 2px;
-        border-radius: 50%;
-        text-align: center;
-        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-        transform-origin: 100% 50%;
-
-        &:hover {
-          background-color: #b4bccc;
-          color: #fff;
-        }
-      }
-    }
-  }
-}
-</style>
 ```
 
 ### 2. 右键菜单组件
@@ -1899,35 +1808,6 @@ const toLastView = (visitedViews: RouteLocationNormalized[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.contextmenu {
-  margin: 0;
-  background: #fff;
-  z-index: 3000;
-  position: fixed;
-  list-style-type: none;
-  padding: 5px 0;
-  border-radius: 4px;
-  font-size: 12px;
-  font-weight: 400;
-  color: #333;
-  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
-
-  li {
-    margin: 0;
-    padding: 7px 16px;
-    cursor: pointer;
-
-    .el-icon {
-      margin-right: 5px;
-    }
-
-    &:hover {
-      background: #eee;
-    }
-  }
-}
-</style>
 ```
 
 ### 3. 滚动面板组件
@@ -1985,25 +1865,6 @@ defineExpose({
 })
 </script>
 
-<style lang="scss" scoped>
-.scroll-pane {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-
-  .scroll-wrapper {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
-  }
-}
-</style>
 ```
 
 ### 4. 路由监听

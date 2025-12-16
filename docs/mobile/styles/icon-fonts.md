@@ -1656,17 +1656,6 @@ const logoPath = new URL('@/static/icons/logo.png', import.meta.url).href
   </view>
 </template>
 
-<style lang="scss" scoped>
-.icon-wrapper {
-  padding: 16rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  // 最小点击区域 44x44
-  min-width: 88rpx;
-  min-height: 88rpx;
-}
-</style>
 ```
 
 ## API 参考

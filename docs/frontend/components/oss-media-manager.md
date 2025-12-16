@@ -79,23 +79,6 @@ const formatFileSize = (bytes: number): string => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-.selected-info {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: var(--el-fill-color-light);
-  border-radius: 4px;
-
-  p {
-    margin: 8px 0;
-    color: var(--el-text-color-regular);
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -177,20 +160,6 @@ const formatFileSize = (bytes: number): string => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-.selected-list {
-  margin-top: 20px;
-
-  h4 {
-    margin-bottom: 10px;
-    color: var(--el-text-color-primary);
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -278,34 +247,6 @@ const isImage = (file: SysOssVo): boolean => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-.button-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.selected-info {
-  padding: 15px;
-  background-color: var(--el-fill-color-light);
-  border-radius: 4px;
-
-  p {
-    margin: 8px 0;
-  }
-}
-
-.preview-image {
-  max-width: 100%;
-  max-height: 300px;
-  margin-top: 10px;
-  border-radius: 4px;
-}
-</style>
 ```
 
 **使用说明:**
@@ -405,31 +346,6 @@ const getFileSizeStatus = (bytes: number): string => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-.unit {
-  margin-left: 10px;
-  color: var(--el-text-color-regular);
-}
-
-.selected-info {
-  margin-top: 20px;
-  padding: 15px;
-  background-color: var(--el-fill-color-light);
-  border-radius: 4px;
-
-  p {
-    margin: 8px 0;
-  }
-
-  .el-tag {
-    margin-top: 10px;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -512,11 +428,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-</style>
 ```
 
 **使用说明:**
@@ -587,23 +498,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-.selected-info {
-  margin-top: 20px;
-
-  h4 {
-    margin-bottom: 10px;
-  }
-
-  .file-tag {
-    margin: 5px;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -666,11 +560,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-</style>
 ```
 
 **使用说明:**
@@ -730,20 +619,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-ul {
-  margin: 0;
-  padding-left: 20px;
-
-  li {
-    margin: 5px 0;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -806,20 +681,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-ul {
-  margin: 0;
-  padding-left: 20px;
-
-  li {
-    margin: 5px 0;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -884,20 +745,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-ul {
-  margin: 0;
-  padding-left: 20px;
-
-  li {
-    margin: 5px 0;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -961,20 +808,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-ul {
-  margin: 0;
-  padding-left: 20px;
-
-  li {
-    margin: 5px 0;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -1041,20 +874,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-ul {
-  margin: 0;
-  padding-left: 20px;
-
-  li {
-    margin: 5px 0;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -1116,20 +935,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-ul {
-  margin: 0;
-  padding-left: 20px;
-
-  li {
-    margin: 5px 0;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -1192,20 +997,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-container {
-  padding: 20px;
-}
-
-ul {
-  margin: 0;
-  padding-left: 20px;
-
-  li {
-    margin: 5px 0;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -1494,26 +1285,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-theme-demo {
-  // 自定义目录树样式
-  :deep(.a-oss-media-manager) {
-    --oss-tree-width: 300px;
-    --oss-tree-bg: #f5f7fa;
-
-    // 自定义文件卡片样式
-    --oss-card-width: 180px;
-    --oss-card-gap: 20px;
-    --oss-card-bg: #ffffff;
-    --oss-card-hover-bg: #ecf5ff;
-    --oss-card-selected-border: #409eff;
-
-    // 自定义工具栏样式
-    --oss-toolbar-height: 70px;
-    --oss-toolbar-bg: #ffffff;
-  }
-}
-</style>
 ```
 
 ### 暗黑模式适配
@@ -1551,11 +1322,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.dark-mode-demo {
-  padding: 20px;
-}
-</style>
 ```
 
 ## 最佳实践
@@ -1816,53 +1582,6 @@ const removeFile = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.file-selection-demo {
-  padding: 20px;
-}
-
-.image-selector {
-  .preview {
-    width: 120px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: 4px;
-    margin-bottom: 10px;
-  }
-}
-
-.images-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-
-  .image-item {
-    position: relative;
-    width: 100px;
-    height: 100px;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 4px;
-    }
-
-    .el-button {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-    }
-  }
-}
-
-.files-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-</style>
 ```
 
 **实践要点:**
@@ -1927,17 +1646,6 @@ const handleConfirm = (files: SysOssVo[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-pre {
-  margin: 10px 0;
-  padding: 10px;
-  background-color: var(--el-fill-color-light);
-  border-radius: 4px;
-  font-family: monospace;
-  font-size: 13px;
-  line-height: 1.6;
-}
-</style>
 ```
 
 **实践要点:**
@@ -2129,34 +1837,6 @@ const resetForm = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.form-integration-demo {
-  padding: 20px;
-  max-width: 800px;
-}
-
-.cover-selector {
-  .cover-preview {
-    position: relative;
-    display: inline-block;
-
-    img {
-      width: 200px;
-      height: 120px;
-      object-fit: cover;
-      border-radius: 4px;
-    }
-
-    .cover-actions {
-      margin-top: 10px;
-    }
-  }
-}
-
-.attachments {
-  width: 100%;
-}
-</style>
 ```
 
 **实践要点:**
@@ -2521,39 +2201,6 @@ const formatFileSize = (bytes: number): string => {
 }
 </script>
 
-<style lang="scss" scoped>
-.preview-container {
-  min-height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-error,
-.video-error,
-.unsupported-preview {
-  text-align: center;
-  color: var(--el-text-color-secondary);
-
-  .el-icon {
-    color: var(--el-text-color-placeholder);
-  }
-
-  p {
-    margin: 10px 0;
-  }
-}
-
-.file-info {
-  margin: 15px 0;
-  line-height: 1.8;
-}
-
-video {
-  max-width: 100%;
-  max-height: 600px;
-}
-</style>
 ```
 
 ### 5. 多选模式下无法取消选择
@@ -2654,62 +2301,6 @@ const isImage = (file: SysOssVo): boolean => {
 }
 </script>
 
-<style lang="scss" scoped>
-.file-card {
-  position: relative;
-  padding: 12px;
-  border: 1px solid var(--el-border-color);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: var(--el-fill-color-light);
-  }
-
-  &.selected {
-    border-color: var(--el-color-primary);
-    background-color: var(--el-color-primary-light-9);
-  }
-
-  .el-checkbox {
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    z-index: 1;
-  }
-}
-
-.file-thumbnail {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100px;
-  margin-bottom: 8px;
-
-  img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-  }
-}
-
-.file-info {
-  .file-name {
-    font-size: 14px;
-    color: var(--el-text-color-primary);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .file-size {
-    font-size: 12px;
-    color: var(--el-text-color-secondary);
-    margin-top: 4px;
-  }
-}
-</style>
 ```
 
 **技术要点:**

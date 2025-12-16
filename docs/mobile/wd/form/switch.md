@@ -51,39 +51,6 @@ const handleChange = ({ value }: { value: boolean }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24rpx 0;
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background: #F7F8FA;
-    border-radius: 8rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-
-.item-label {
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -133,35 +100,6 @@ const value2 = ref(true)
 const value3 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24rpx 0;
-    border-bottom: 1rpx solid #EBEDF0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-}
-
-.item-label {
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -216,35 +154,6 @@ const value3 = ref(true)
 const value4 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24rpx 0;
-    border-bottom: 1rpx solid #EBEDF0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-}
-
-.item-label {
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -295,35 +204,6 @@ const value3 = ref(true)
 const value4 = ref(true)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24rpx 0;
-    border-bottom: 1rpx solid #EBEDF0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-}
-
-.item-label {
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -374,45 +254,6 @@ const value2 = ref('on')
 const value3 = ref('no')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24rpx 0;
-    border-bottom: 1rpx solid #EBEDF0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background: #F7F8FA;
-    border-radius: 8rpx;
-    font-size: 26rpx;
-    color: #666;
-    line-height: 1.8;
-  }
-}
-
-.item-label {
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -495,44 +336,6 @@ const handleBeforeChange2 = async ({ value, resolve }: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24rpx 0;
-    border-bottom: 1rpx solid #EBEDF0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  &-tips {
-    margin-top: 24rpx;
-    padding: 16rpx 24rpx;
-    font-size: 24rpx;
-    color: #FF6B6B;
-    background-color: #FFF0F0;
-    border-radius: 8rpx;
-  }
-}
-
-.item-label {
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **技术实现:**
@@ -631,54 +434,6 @@ const handlePermissionChange = ({ value }: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24rpx 0;
-    border-bottom: 1rpx solid #EBEDF0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-
-  &-hint {
-    margin-top: 24rpx;
-    padding: 16rpx 24rpx;
-    font-size: 24rpx;
-    color: #1890FF;
-    background-color: #F0F9FF;
-    border-radius: 8rpx;
-  }
-}
-
-.item-info {
-  flex: 1;
-}
-
-.item-label {
-  font-size: 28rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.item-desc {
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**
@@ -781,60 +536,6 @@ watch(settings, () => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-section {
-    background: #FFF;
-    border-radius: 8rpx;
-    overflow: hidden;
-  }
-
-  &-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24rpx 32rpx;
-    border-bottom: 1rpx solid #EBEDF0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24rpx 32rpx;
-  background: #F7F8FA;
-}
-
-.section-title {
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #333;
-}
-
-.section-divider {
-  height: 16rpx;
-  background: #F7F8FA;
-}
-
-.item-label {
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **技术实现:**
@@ -906,44 +607,6 @@ const handleSyncChange = async ({ value, resolve }: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24rpx 0;
-  }
-
-  &-tips {
-    margin-top: 24rpx;
-    padding: 16rpx 24rpx;
-    font-size: 24rpx;
-    color: #666;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-  }
-}
-
-.item-label {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.item-right {
-  display: flex;
-  align-items: center;
-}
-</style>
 ```
 
 **技术实现:**

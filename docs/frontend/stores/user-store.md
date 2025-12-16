@@ -481,44 +481,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.login-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.login-form {
-  width: 400px;
-  padding: 40px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-}
-
-.captcha-container {
-  display: flex;
-  gap: 12px;
-
-  :deep(.el-input) {
-    flex: 1;
-  }
-}
-
-.captcha-image {
-  width: 100px;
-  height: 38px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.login-button {
-  width: 100%;
-  margin-top: 20px;
-}
-</style>
 ```
 
 **使用说明:**
@@ -733,53 +695,6 @@ const handleAvatarError = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.user-profile {
-  padding: 20px;
-}
-
-.user-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 24px;
-  padding: 20px;
-  background: #f5f7fa;
-  border-radius: 8px;
-}
-
-.user-info {
-  margin-left: 20px;
-
-  .nickname {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  .username {
-    color: #909399;
-    margin-bottom: 4px;
-  }
-
-  .dept {
-    color: #606266;
-    font-size: 14px;
-  }
-}
-
-.roles-card,
-.permissions-card {
-  margin-top: 20px;
-}
-
-.role-tag {
-  margin: 4px;
-}
-
-.permission-tag {
-  margin: 4px;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1015,21 +930,6 @@ const handleLogout = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.user-dropdown {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  .username {
-    margin: 0 8px;
-  }
-
-  &:hover {
-    color: var(--el-color-primary);
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1138,54 +1038,6 @@ const handleAvatarSuccess: UploadProps['onSuccess'] = (
 }
 </script>
 
-<style lang="scss" scoped>
-.avatar-upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.avatar-uploader {
-  :deep(.el-upload) {
-    border: 1px dashed var(--el-border-color);
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    transition: var(--el-transition-duration-fast);
-
-    &:hover {
-      border-color: var(--el-color-primary);
-    }
-  }
-}
-
-.avatar {
-  width: 120px;
-  height: 120px;
-  display: block;
-  object-fit: cover;
-}
-
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 120px;
-  height: 120px;
-  text-align: center;
-  line-height: 120px;
-}
-
-.tips {
-  margin-top: 12px;
-  color: #909399;
-  font-size: 12px;
-
-  p {
-    margin: 0;
-  }
-}
-</style>
 ```
 
 **使用说明:**

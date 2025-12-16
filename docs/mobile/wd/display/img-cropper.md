@@ -70,19 +70,6 @@ const handleCancel = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.result {
-  margin-top: 32rpx;
-}
-.preview {
-  width: 300rpx;
-  height: 300rpx;
-  margin-top: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -612,41 +599,6 @@ const handleCropCancel = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.avatar-upload {
-  display: flex;
-  justify-content: center;
-  padding: 64rpx;
-}
-
-.avatar {
-  width: 200rpx;
-  height: 200rpx;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: #f5f5f5;
-}
-
-.avatar-img {
-  width: 100%;
-  height: 100%;
-}
-
-.avatar-placeholder {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.tip {
-  font-size: 24rpx;
-  color: #999;
-  margin-top: 8rpx;
-}
-</style>
 ```
 
 ## API

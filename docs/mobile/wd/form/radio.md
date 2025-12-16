@@ -48,17 +48,6 @@ import { ref } from 'vue'
 const value = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 32rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -114,26 +103,6 @@ const value2 = ref(2)
 const value3 = ref(3)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **形状说明:**
@@ -196,26 +165,6 @@ const value3 = ref(1)
 const value4 = ref(2)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **尺寸详情:**
@@ -271,26 +220,6 @@ const value2 = ref(2)
 const value3 = ref(2)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **禁用规则:**
@@ -354,26 +283,6 @@ const value3 = ref(1)
 const value4 = ref(2)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **颜色定制:**
@@ -436,26 +345,6 @@ const value3 = ref(1)
 const value4 = ref(2)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **图标位置说明:**
@@ -494,11 +383,6 @@ import { ref } from 'vue'
 const value = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **宽度控制:**
@@ -557,26 +441,6 @@ const value2 = ref(2)
 const value3 = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **内联布局:**
@@ -636,26 +500,6 @@ const value2 = ref(2)
 const value3 = ref(3)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **网格布局特性:**
@@ -740,26 +584,6 @@ const value3 = ref(2)
 const value4 = ref(2)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-</style>
 ```
 
 **配置优先级:**
@@ -837,35 +661,6 @@ const selected = ref(1)
 const selected2 = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-
-.result {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **动态渲染说明:**

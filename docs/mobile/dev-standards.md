@@ -143,25 +143,6 @@ src/
   </view>
 </template>
 
-<style lang="scss" scoped>
-.container {
-  padding: 20rpx;
-  margin: 16rpx;
-}
-
-.card {
-  width: 710rpx;
-  height: 200rpx;
-  border-radius: 16rpx;
-  background-color: #ffffff;
-}
-
-.title {
-  font-size: 32rpx;
-  line-height: 44rpx;
-  color: #333333;
-}
-</style>
 ```
 
 ### UnoCSS数值映射
@@ -241,33 +222,6 @@ UnoCSS中的数值类与rpx的对应关系:
   </view>
 </template>
 
-<style lang="scss" scoped>
-/* 使用CSS变量保持主题一致性 */
-.status-card {
-  background-color: var(--color-success-light);
-  border: 2rpx solid var(--color-success);
-  border-radius: 8rpx;
-  padding: 16rpx 24rpx;
-}
-
-.status-text {
-  color: var(--color-success);
-  font-size: 28rpx;
-}
-
-/* 自定义复杂样式仅在必要时使用 */
-.gradient-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 40rpx 32rpx;
-  border-radius: 0 0 32rpx 32rpx;
-}
-
-.header-title {
-  color: #ffffff;
-  font-size: 36rpx;
-  font-weight: 600;
-}
-</style>
 ```
 
 ---
@@ -422,20 +376,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.user-profile-page {
-  min-height: 100vh;
-  background-color: #f8f8f8;
-}
-
-.content {
-  padding: 20rpx;
-}
-
-.button-section {
-  padding: 40rpx 20rpx;
-}
-</style>
 ```
 
 ### TypeScript规范
@@ -1555,23 +1495,6 @@ const handleShare = () => {
 // 条件编译 - 样式
 </script>
 
-<style lang="scss" scoped>
-.container {
-  padding: 20rpx;
-}
-
-/* #ifdef H5 */
-.h5-only {
-  /* H5特有样式 */
-}
-/* #endif */
-
-/* #ifdef MP-WEIXIN */
-.wechat-only {
-  /* 微信小程序特有样式 */
-}
-/* #endif */
-</style>
 ```
 
 ---

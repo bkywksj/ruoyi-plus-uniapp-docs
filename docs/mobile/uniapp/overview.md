@@ -559,11 +559,6 @@ const rootClass = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.my-component {
-  // 组件样式
-}
-</style>
 ```
 
 ### 3. 状态管理规范
@@ -725,23 +720,6 @@ const onLogin = () => {
 // #endif
 </script>
 
-<style lang="scss" scoped>
-.container {
-  padding: 20rpx;
-}
-
-/* #ifdef MP-WEIXIN */
-.weixin-header {
-  background: #07c160;
-}
-/* #endif */
-
-/* #ifdef H5 */
-.h5-header {
-  background: #1890ff;
-}
-/* #endif */
-</style>
 ```
 
 ## 调试技巧

@@ -117,9 +117,6 @@ watch(() => props.userId, (newVal) => {
 })
 </script>
 
-<style lang="scss" scoped>
-/* 样式 */
-</style>
 ```
 
 #### TypeScript 文件结构
@@ -488,24 +485,6 @@ if (typeof value === 'string') {
 ### Scoped 样式
 
 ```vue
-<style lang="scss" scoped>
-/* ✅ Scoped 避免样式污染 */
-.container {
-  padding: 20px;
-}
-
-/* ✅ 深度选择器 */
-:deep(.el-input__inner) {
-  border-radius: 8px;
-}
-
-/* ✅ 全局选择器 */
-:global(.global-class) {
-  color: red;
-}
-
-/* ❌ 避免：不加 scoped 污染全局 */
-</style>
 ```
 
 ### CSS 变量

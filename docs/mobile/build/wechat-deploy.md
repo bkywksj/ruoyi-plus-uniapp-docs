@@ -1819,48 +1819,6 @@ pages/agreement/
   </view>
 </template>
 
-<style lang="scss" scoped>
-.agreement {
-  padding: 32rpx;
-
-  .title {
-    font-size: 36rpx;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 40rpx;
-  }
-
-  .section {
-    margin-bottom: 32rpx;
-
-    .section-title {
-      font-size: 32rpx;
-      font-weight: bold;
-      margin-bottom: 16rpx;
-    }
-
-    .content {
-      font-size: 28rpx;
-      line-height: 1.8;
-      color: #666;
-    }
-  }
-
-  .footer {
-    margin-top: 60rpx;
-    padding-top: 32rpx;
-    border-top: 1px solid #eee;
-    font-size: 24rpx;
-    color: #999;
-    text-align: center;
-
-    text {
-      display: block;
-      margin-bottom: 8rpx;
-    }
-  }
-}
-</style>
 ```
 
 **隐私政策示例:**
@@ -1941,48 +1899,6 @@ pages/agreement/
   </view>
 </template>
 
-<style lang="scss" scoped>
-.privacy {
-  padding: 32rpx;
-
-  .title {
-    font-size: 36rpx;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 40rpx;
-  }
-
-  .section {
-    margin-bottom: 32rpx;
-
-    .section-title {
-      font-size: 32rpx;
-      font-weight: bold;
-      margin-bottom: 16rpx;
-    }
-
-    .content {
-      font-size: 28rpx;
-      line-height: 1.8;
-      color: #666;
-    }
-  }
-
-  .footer {
-    margin-top: 60rpx;
-    padding-top: 32rpx;
-    border-top: 1px solid #eee;
-    font-size: 24rpx;
-    color: #999;
-    text-align: center;
-
-    text {
-      display: block;
-      margin-bottom: 8rpx;
-    }
-  }
-}
-</style>
 ```
 
 **在登录页面引用协议:**
@@ -2037,23 +1953,6 @@ const toPrivacyPolicy = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.login {
-  padding: 32rpx;
-
-  .agreement {
-    display: flex;
-    align-items: center;
-    margin-top: 32rpx;
-    font-size: 24rpx;
-    color: #666;
-
-    .link {
-      color: #1890ff;
-    }
-  }
-}
-</style>
 ```
 
 ### 测试账号准备
@@ -2280,28 +2179,6 @@ onMounted(async () => {
 })
 </script>
 
-<style lang="scss" scoped>
-.skeleton {
-  padding: 32rpx;
-
-  .skeleton-item {
-    height: 100rpx;
-    margin-bottom: 16rpx;
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-    background-size: 200% 100%;
-    animation: skeleton 1.5s ease-in-out infinite;
-  }
-}
-
-@keyframes skeleton {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-</style>
 ```
 
 **2. 图片懒加载**

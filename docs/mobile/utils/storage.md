@@ -79,26 +79,6 @@ const loadTheme = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.container {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 40rpx;
-}
-
-.title {
-  font-size: 32rpx;
-  font-weight: bold;
-  margin-bottom: 20rpx;
-  display: block;
-}
-
-button {
-  margin-bottom: 20rpx;
-}
-</style>
 ```
 
 **使用说明**:
@@ -310,51 +290,6 @@ const loadTags = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.container {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 40rpx;
-}
-
-.title {
-  font-size: 32rpx;
-  font-weight: bold;
-  margin-bottom: 20rpx;
-  display: block;
-}
-
-.info {
-  padding: 20rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
-
-  text {
-    display: block;
-    margin-bottom: 10rpx;
-  }
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10rpx;
-}
-
-.tag {
-  padding: 10rpx 20rpx;
-  background-color: #409eff;
-  color: white;
-  border-radius: 4rpx;
-  font-size: 24rpx;
-}
-
-button {
-  margin-bottom: 20rpx;
-}
-</style>
 ```
 
 **技术实现**:

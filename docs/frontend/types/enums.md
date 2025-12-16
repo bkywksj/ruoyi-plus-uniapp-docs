@@ -163,19 +163,6 @@ const handleThemeChange = (value: boolean) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.sidebar {
-  &.theme-dark {
-    background: #1f1f1f;
-    color: #ffffff;
-  }
-
-  &.theme-light {
-    background: #ffffff;
-    color: #333333;
-  }
-}
-</style>
 ```
 
 **与布局配置集成:**
@@ -276,53 +263,6 @@ const switchLayout = (mode: MenuLayoutMode) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.app-layout {
-  height: 100vh;
-
-  &.layout-vertical {
-    display: flex;
-
-    .sidebar {
-      width: 200px;
-      background: #1f1f1f;
-    }
-
-    .main-content {
-      flex: 1;
-    }
-  }
-
-  &.layout-mixed {
-    display: flex;
-    flex-direction: column;
-
-    .top-menu {
-      height: 60px;
-      background: #409eff;
-    }
-
-    .content-wrapper {
-      display: flex;
-      flex: 1;
-
-      .sidebar {
-        width: 200px;
-      }
-    }
-  }
-
-  &.layout-horizontal {
-    display: flex;
-    flex-direction: column;
-
-    .horizontal-menu {
-      height: 60px;
-      background: #409eff;
-    }
-  }
-}
-</style>
 ```
 
 **布局模式选择器:**

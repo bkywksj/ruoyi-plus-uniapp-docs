@@ -1039,29 +1039,6 @@ const openPicker = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-label {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-}
-
-.custom-field {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  background: #fff;
-
-  .label {
-    margin-right: 24rpx;
-  }
-
-  .value {
-    flex: 1;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明：**

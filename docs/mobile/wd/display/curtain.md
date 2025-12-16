@@ -240,16 +240,6 @@ const showPosition = (position: ClosePosition) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.position-buttons {
-  .row {
-    display: flex;
-    justify-content: center;
-    gap: 20rpx;
-    margin-bottom: 20rpx;
-  }
-}
-</style>
 ```
 
 **位置说明:**
@@ -575,18 +565,6 @@ const handleClose = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-close {
-  position: absolute;
-  right: 16rpx;
-  top: 16rpx;
-  padding: 8rpx 16rpx;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: #ffffff;
-  font-size: 24rpx;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -625,22 +603,6 @@ const handleClose = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.icon-close {
-  position: absolute;
-  right: 16rpx;
-  top: 16rpx;
-  width: 56rpx;
-  height: 56rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #ff4d4f;
-  color: #ffffff;
-  font-size: 28rpx;
-  border-radius: 50%;
-}
-</style>
 ```
 
 ### 渐变色关闭按钮
@@ -673,23 +635,6 @@ const handleClose = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.gradient-close {
-  position: absolute;
-  right: -24rpx;
-  top: -24rpx;
-  width: 72rpx;
-  height: 72rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
-  color: #ffffff;
-  font-size: 36rpx;
-  border-radius: 50%;
-  box-shadow: 0 8rpx 16rpx rgba(244, 63, 94, 0.4);
-}
-</style>
 ```
 
 ### 自定义关闭按钮样式类
@@ -878,42 +823,6 @@ const onError = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.event-log {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background-color: #f5f5f5;
-  border-radius: 12rpx;
-
-  .log-title {
-    font-size: 28rpx;
-    font-weight: bold;
-    margin-bottom: 16rpx;
-  }
-
-  .log-content {
-    height: 300rpx;
-    background-color: #ffffff;
-    border-radius: 8rpx;
-    padding: 16rpx;
-    margin-bottom: 16rpx;
-  }
-
-  .log-item {
-    font-size: 24rpx;
-    margin-bottom: 8rpx;
-
-    .log-time {
-      color: #999999;
-      margin-right: 8rpx;
-    }
-
-    .log-message {
-      color: #333333;
-    }
-  }
-}
-</style>
 ```
 
 **事件触发顺序:**
@@ -1452,45 +1361,6 @@ const finishGuide = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.guide-controls {
-  position: absolute;
-  bottom: -100rpx;
-  left: 0;
-  right: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .guide-dots {
-    display: flex;
-    gap: 16rpx;
-    margin-bottom: 24rpx;
-
-    .dot {
-      width: 16rpx;
-      height: 16rpx;
-      border-radius: 50%;
-      background-color: rgba(255, 255, 255, 0.5);
-
-      &.active {
-        background-color: #ffffff;
-      }
-    }
-  }
-
-  .guide-buttons {
-    display: flex;
-    gap: 48rpx;
-
-    text {
-      color: #ffffff;
-      font-size: 28rpx;
-      padding: 16rpx 32rpx;
-    }
-  }
-}
-</style>
 ```
 
 ### 3. 公告通知场景
@@ -2006,21 +1876,6 @@ const handleClose = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-close {
-  position: absolute;
-  right: 16rpx;
-  top: 16rpx;
-  padding: 16rpx 24rpx;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: #ffffff;
-  border-radius: 8rpx;
-  font-size: 26rpx;
-  // 确保可点击
-  z-index: 10;
-  cursor: pointer;
-}
-</style>
 ```
 
 **关键点:**

@@ -245,34 +245,6 @@ html:not(.dark) {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.light-card {
-  /* 使用一级背景色 */
-  background: var(--bg-level-1);
-  /* 使用应用边框色 */
-  border: 1px solid var(--app-border);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.card-header {
-  /* 使用二级背景色 */
-  background: var(--bg-level-2);
-  /* 使用应用文字色 */
-  color: var(--app-text);
-  padding: 16px;
-  font-weight: 600;
-}
-
-.card-body {
-  padding: 16px;
-
-  /* 悬停时使用三级背景色 */
-  &:hover {
-    background: var(--bg-level-3);
-  }
-}
-</style>
 ```
 
 ## 暗色主题
@@ -409,53 +381,6 @@ html.dark {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.theme-aware-card {
-  /* 使用主题变量,自动适配亮色/暗色 */
-  background: var(--bg-level-1);
-  border: 1px solid var(--app-border);
-  color: var(--app-text);
-  padding: 24px;
-  border-radius: 8px;
-  transition: all 0.3s;
-
-  &:hover {
-    background: var(--bg-level-2);
-    /* 暗色模式下的阴影会自动加深 */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.card-icon {
-  margin-bottom: 16px;
-
-  svg {
-    width: 48px;
-    height: 48px;
-    /* SVG 颜色会根据主题自动调整 */
-    fill: var(--app-text);
-  }
-}
-
-.card-content {
-  h3 {
-    color: var(--app-text);
-    margin-bottom: 8px;
-  }
-
-  p {
-    /* 次要文字可以使用略浅的颜色 */
-    color: var(--app-text);
-    opacity: 0.7;
-  }
-}
-
-/* 可选:仅在暗色主题下的特殊样式 */
-html.dark .theme-aware-card {
-  /* 暗色主题下增强阴影 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-</style>
 ```
 
 ## 主题切换
@@ -544,11 +469,6 @@ const handleToggle = (value: boolean) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-switcher {
-  padding: 16px;
-}
-</style>
 ```
 
 ### 带动画切换
@@ -583,11 +503,6 @@ const handleAnimatedToggle = (event: MouseEvent) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.animated-theme-switcher {
-  padding: 16px;
-}
-</style>
 ```
 
 **技术实现:**
@@ -723,36 +638,6 @@ const handleToggle = (event: MouseEvent) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-toggle-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.theme-toggle-btn {
-  transition: all 0.3s;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
-.theme-status {
-  font-size: 14px;
-  color: var(--app-text);
-  opacity: 0.7;
-  transition: all 0.3s;
-
-  &.is-dark {
-    opacity: 1;
-  }
-}
-</style>
 ```
 
 ## 自定义主题色
@@ -862,29 +747,6 @@ const handleColorChange = (value: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-color-picker {
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.current-theme {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  color: var(--app-text);
-}
-
-.color-preview {
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
-  border: 1px solid var(--app-border);
-}
-</style>
 ```
 
 ### 颜色变体生成
@@ -1128,130 +990,6 @@ watch(currentTheme, (newVal) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.theme-customizer {
-  max-width: 600px;
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.theme-preview {
-  margin-bottom: 24px;
-}
-
-.preview-label {
-  font-size: 14px;
-  color: var(--app-text);
-  margin-bottom: 8px;
-  opacity: 0.7;
-}
-
-.preview-color {
-  height: 60px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 600;
-  font-size: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.color-picker-wrapper {
-  margin-bottom: 24px;
-  display: flex;
-  justify-content: center;
-}
-
-.preset-themes {
-  margin-bottom: 24px;
-}
-
-.preset-label {
-  font-size: 14px;
-  color: var(--app-text);
-  margin-bottom: 12px;
-  opacity: 0.7;
-}
-
-.preset-colors {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-}
-
-.preset-item {
-  text-align: center;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: all 0.3s;
-  border: 2px solid transparent;
-
-  &:hover {
-    background: var(--bg-level-2);
-  }
-
-  &.active {
-    border-color: var(--el-color-primary);
-    background: var(--bg-level-2);
-  }
-}
-
-.preset-color {
-  width: 100%;
-  height: 48px;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.preset-name {
-  font-size: 12px;
-  color: var(--app-text);
-}
-
-.color-variants {
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid var(--app-border);
-}
-
-.variants-section {
-  &:not(:last-child) {
-    margin-bottom: 16px;
-  }
-}
-
-.variants-label {
-  font-size: 14px;
-  color: var(--app-text);
-  margin-bottom: 8px;
-  opacity: 0.7;
-}
-
-.variants-grid {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 4px;
-}
-
-.variant-item {
-  aspect-ratio: 1;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-}
-</style>
 ```
 
 ## 颜色工具函数
@@ -1464,70 +1202,6 @@ const blendedColors = computed(() => ({
 }))
 </script>
 
-<style lang="scss" scoped>
-.color-tools-demo {
-  padding: 24px;
-}
-
-.demo-section {
-  margin-bottom: 32px;
-
-  h3 {
-    margin-bottom: 16px;
-    color: var(--app-text);
-  }
-}
-
-.demo-row {
-  display: flex;
-  gap: 16px;
-  font-size: 14px;
-  color: var(--app-text);
-}
-
-.color-grid {
-  display: grid;
-  grid-template-columns: repeat(11, 1fr);
-  gap: 8px;
-}
-
-.color-box {
-  aspect-ratio: 1;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: transform 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    transform: scale(1.1);
-  }
-}
-
-.blend-demo {
-  display: flex;
-  gap: 24px;
-  align-items: center;
-}
-
-.blend-source,
-.blend-result {
-  display: flex;
-  gap: 8px;
-}
-
-.blend-color {
-  width: 80px;
-  height: 60px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-</style>
 ```
 
 ## 最佳实践
@@ -1537,27 +1211,11 @@ const blendedColors = computed(() => ({
 **推荐做法:**
 
 ```vue
-<style lang="scss" scoped>
-.card {
-  /* ✅ 使用主题变量 */
-  background: var(--bg-level-1);
-  color: var(--app-text);
-  border: 1px solid var(--app-border);
-}
-</style>
 ```
 
 **不推荐做法:**
 
 ```vue
-<style lang="scss" scoped>
-.card {
-  /* ❌ 硬编码颜色 */
-  background: #ffffff;
-  color: #303133;
-  border: 1px solid #dbdfe9;
-}
-</style>
 ```
 
 **原因:**
@@ -1588,44 +1246,11 @@ const blendedColors = computed(() => ({
   </div>
 </template>
 
-<style lang="scss" scoped>
-.page {
-  background: var(--bg-base);
-}
-
-.card-level-1 {
-  background: var(--bg-level-1);
-}
-
-.content-level-2 {
-  background: var(--bg-level-2);
-}
-
-.item-level-3 {
-  &:hover {
-    background: var(--bg-level-3);
-  }
-
-  &:active {
-    background: var(--bg-level-4);
-  }
-}
-</style>
 ```
 
 **不推荐做法:**
 
 ```vue
-<style lang="scss" scoped>
-/* ❌ 跳跃使用层级,缺乏层次感 */
-.card {
-  background: var(--bg-level-1);
-}
-
-.content {
-  background: var(--bg-level-4); /* 跳过 level-2 和 level-3 */
-}
-</style>
 ```
 
 ### 3. 暗色模式专属样式的正确使用
@@ -1633,37 +1258,11 @@ const blendedColors = computed(() => ({
 **推荐做法:**
 
 ```vue
-<style lang="scss" scoped>
-.component {
-  /* 通用样式,使用主题变量 */
-  background: var(--bg-level-1);
-  color: var(--app-text);
-  border: 1px solid var(--app-border);
-}
-
-/* 仅在暗色模式下需要调整的特殊样式 */
-html.dark .component {
-  /* ✅ 增强暗色模式下的阴影 */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-
-  /* ✅ 调整特定元素的透明度 */
-  .component-icon {
-    opacity: 0.8;
-  }
-}
-</style>
 ```
 
 **不推荐做法:**
 
 ```vue
-<style lang="scss" scoped>
-/* ❌ 在暗色样式中重复定义已有主题变量 */
-html.dark .component {
-  background: #161618;  /* 应该使用 var(--bg-level-1) */
-  color: #f1f5f9;       /* 应该使用 var(--app-text) */
-}
-</style>
 ```
 
 ### 4. 主题色变体的正确使用
@@ -1679,39 +1278,11 @@ html.dark .component {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.status-success {
-  /* ✅ 使用 Element Plus 的颜色变量 */
-  background: var(--el-color-success-light-9);
-  color: var(--el-color-success);
-  border: 1px solid var(--el-color-success-light-5);
-}
-
-.status-warning {
-  background: var(--el-color-warning-light-9);
-  color: var(--el-color-warning);
-  border: 1px solid var(--el-color-warning-light-5);
-}
-
-.status-error {
-  background: var(--el-color-error-light-9);
-  color: var(--el-color-error);
-  border: 1px solid var(--el-color-error-light-5);
-}
-</style>
 ```
 
 **不推荐做法:**
 
 ```vue
-<style lang="scss" scoped>
-.status-success {
-  /* ❌ 硬编码主题色及其变体 */
-  background: #f0f9ff;
-  color: #67c23a;
-  border: 1px solid #b3e19d;
-}
-</style>
 ```
 
 ### 5. 过渡动画的最佳实践
@@ -1719,38 +1290,11 @@ html.dark .component {
 **推荐做法:**
 
 ```vue
-<style lang="scss" scoped>
-.theme-aware-component {
-  /* ✅ 为主题相关属性添加过渡 */
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
-  background: var(--bg-level-1);
-  color: var(--app-text);
-  border: 1px solid var(--app-border);
-}
-
-/* 交互状态也保持过渡 */
-.theme-aware-component:hover {
-  background: var(--bg-level-2);
-  transition: background-color 0.2s; /* 悬停更快响应 */
-}
-</style>
 ```
 
 **不推荐做法:**
 
 ```vue
-<style lang="scss" scoped>
-.component {
-  /* ❌ 使用 all 过渡,性能差 */
-  transition: all 0.3s;
-}
-
-/* ❌ 没有过渡,主题切换生硬 */
-.another-component {
-  background: var(--bg-level-1);
-  color: var(--app-text);
-}
-</style>
 ```
 
 ## 常见问题
@@ -1772,13 +1316,6 @@ html.dark .component {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.problem-component {
-  /* ❌ 硬编码颜色 */
-  background: #ffffff !important;
-  color: #303133;
-}
-</style>
 
 <!-- 解决方案 -->
 <template>
@@ -1787,13 +1324,6 @@ html.dark .component {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.fixed-component {
-  /* ✅ 使用主题变量,移除 !important */
-  background: var(--bg-level-1);
-  color: var(--app-text);
-}
-</style>
 ```
 
 

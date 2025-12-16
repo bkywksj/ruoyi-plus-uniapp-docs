@@ -651,30 +651,6 @@ const handleCheckout = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.wrapper {
-  display: flex;
-  height: calc(100vh - 88rpx - 100rpx); // 减去导航栏和底部栏高度
-}
-
-.content {
-  flex: 1;
-  background: #fff;
-}
-
-.cart-bar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16rpx 32rpx;
-  background: #fff;
-  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.1);
-}
-</style>
 ```
 
 **Menu 组件功能：**

@@ -40,11 +40,6 @@ const imageList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -73,11 +68,6 @@ const videoList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -121,11 +111,6 @@ const mixedList = ref<SwiperItem[]>([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -159,11 +144,6 @@ const imageList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -220,22 +200,6 @@ const imageList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-}
-
-.label {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **指示器类型:**
@@ -354,11 +318,6 @@ const imageList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -394,25 +353,6 @@ const imageList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-indicator {
-  position: absolute;
-  right: 32rpx;
-  bottom: 32rpx;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 8rpx 24rpx;
-  border-radius: 32rpx;
-}
-
-.indicator-text {
-  color: #fff;
-  font-size: 24rpx;
-}
-</style>
 ```
 
 **插槽参数:**
@@ -445,11 +385,6 @@ const imageList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -486,11 +421,6 @@ const imageList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -523,11 +453,6 @@ const imageList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -560,11 +485,6 @@ const imageList = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -680,18 +600,6 @@ const handleClick = ({ index, item }: { index: number; item: any }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.info {
-  margin-top: 32rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **事件说明:**
@@ -755,18 +663,6 @@ const goTo = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.controls {
-  margin-top: 32rpx;
-  display: flex;
-  gap: 16rpx;
-  justify-content: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -836,21 +732,6 @@ const handleBannerClick = ({ index, item }: { index: number; item: Banner }) => 
 }
 </script>
 
-<style lang="scss" scoped>
-.home-page {
-  background: #f5f5f5;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-</style>
 ```
 
 **实现要点:**
@@ -919,54 +800,6 @@ const handlePreview = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.product-detail {
-  background: #fff;
-}
-
-.thumbnail-list {
-  white-space: nowrap;
-  padding: 24rpx 32rpx;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-
-.thumbnail-item {
-  display: inline-block;
-  width: 120rpx;
-  height: 120rpx;
-  margin-right: 16rpx;
-  border: 2rpx solid transparent;
-  border-radius: 8rpx;
-  overflow: hidden;
-
-  &.active {
-    border-color: #1890ff;
-  }
-}
-
-.thumbnail-image {
-  width: 100%;
-  height: 100%;
-}
-
-.product-info {
-  padding: 32rpx;
-}
-
-.product-name {
-  display: block;
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.product-price {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #ff4d4f;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1041,61 +874,6 @@ const handlePreview = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.gallery-page {
-  position: relative;
-  background: #000;
-}
-
-.thumbnail-scroll {
-  width: 100%;
-  white-space: nowrap;
-  padding: 24rpx 0;
-  background: rgba(0, 0, 0, 0.8);
-}
-
-.thumbnail-container {
-  display: inline-flex;
-  padding: 0 24rpx;
-  gap: 16rpx;
-}
-
-.thumb-item {
-  flex-shrink: 0;
-  width: 120rpx;
-  height: 120rpx;
-  border: 4rpx solid transparent;
-  border-radius: 8rpx;
-  overflow: hidden;
-  opacity: 0.6;
-  transition: all 0.3s ease;
-
-  &.active {
-    border-color: #fff;
-    opacity: 1;
-    transform: scale(1.05);
-  }
-}
-
-.thumb-image {
-  width: 100%;
-  height: 100%;
-}
-
-.gallery-counter {
-  position: absolute;
-  top: 24rpx;
-  right: 24rpx;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 8rpx 24rpx;
-  border-radius: 32rpx;
-}
-
-.counter-text {
-  color: #fff;
-  font-size: 24rpx;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1215,56 +993,6 @@ const handleShare = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.video-page {
-  position: relative;
-  width: 100vw;
-  height: 100vh;
-  background: #000;
-}
-
-.actions {
-  position: fixed;
-  right: 32rpx;
-  bottom: 200rpx;
-  z-index: 10;
-}
-
-.action-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 48rpx;
-}
-
-.action-text {
-  margin-top: 8rpx;
-  font-size: 24rpx;
-  color: #fff;
-}
-
-.video-info {
-  position: fixed;
-  left: 32rpx;
-  bottom: 100rpx;
-  right: 160rpx;
-  z-index: 10;
-}
-
-.author {
-  display: block;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 16rpx;
-}
-
-.description {
-  font-size: 26rpx;
-  color: rgba(255, 255, 255, 0.9);
-  line-height: 1.6;
-}
-</style>
 ```
 
 **实现要点:**
@@ -1549,22 +1277,6 @@ type ImageMode =
   </view>
 </template>
 
-<style lang="scss" scoped>
-.custom-swiper {
-  // 自定义指示器颜色
-  :deep(.my-indicator) {
-    .wd-swiper-nav__item--dots {
-      width: 16rpx;
-      height: 16rpx;
-      background: rgba(0, 0, 0, 0.3);
-
-      &.is-active {
-        background: #1890ff;
-      }
-    }
-  }
-}
-</style>
 ```
 
 #### 自定义图片圆角
@@ -1580,14 +1292,6 @@ type ImageMode =
   </view>
 </template>
 
-<style lang="scss" scoped>
-.custom-swiper {
-  :deep(.rounded-image) {
-    border-radius: 24rpx;
-    overflow: hidden;
-  }
-}
-</style>
 ```
 
 #### 卡片缩放效果
@@ -1607,19 +1311,6 @@ type ImageMode =
   </view>
 </template>
 
-<style lang="scss" scoped>
-.card-swiper {
-  :deep(.swiper-item) {
-    transition: transform 0.3s ease;
-  }
-
-  :deep(.prev-item),
-  :deep(.next-item) {
-    transform: scale(0.9);
-    opacity: 0.7;
-  }
-}
-</style>
 ```
 
 #### 自定义分式指示器
@@ -1637,16 +1328,6 @@ type ImageMode =
   </view>
 </template>
 
-<style lang="scss" scoped>
-.fraction-swiper {
-  :deep(.custom-fraction) {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 8rpx 24rpx;
-    border-radius: 8rpx;
-    font-weight: bold;
-  }
-}
-</style>
 ```
 
 #### 全局主题配置
@@ -2170,22 +1851,6 @@ onHide(() => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.swiper-wrapper {
-  // ✅ 使用 :deep() 穿透 scoped 样式
-  :deep(.my-indicator) {
-    .wd-swiper-nav__item--dots {
-      width: 20rpx !important;
-      height: 20rpx !important;
-      background: rgba(255, 255, 255, 0.5) !important;
-
-      &.is-active {
-        background: #1890ff !important;
-      }
-    }
-  }
-}
-</style>
 
 <!-- 或者使用全局样式 -->
 <style lang="scss">

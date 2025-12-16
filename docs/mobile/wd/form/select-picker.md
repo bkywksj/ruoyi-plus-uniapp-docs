@@ -965,42 +965,6 @@ const handleOpen = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-date-picker {
-  padding: 40rpx 30rpx;
-
-  .date-input-group {
-    margin-bottom: 40rpx;
-  }
-
-  .date-input {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20rpx;
-
-    .label {
-      width: 160rpx;
-      font-size: 28rpx;
-    }
-
-    input {
-      flex: 1;
-      padding: 16rpx;
-      border: 1px solid #ddd;
-      border-radius: 8rpx;
-    }
-  }
-
-  .action-buttons {
-    display: flex;
-    gap: 20rpx;
-
-    button {
-      flex: 1;
-    }
-  }
-}
-</style>
 ```
 
 **content 插槽参数：**
@@ -1068,22 +1032,6 @@ const formatCount = (value: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-stepper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 60rpx 40rpx;
-  gap: 40rpx;
-
-  .count {
-    font-size: 48rpx;
-    font-weight: bold;
-    min-width: 100rpx;
-    text-align: center;
-  }
-}
-</style>
 ```
 
 **使用说明：**
@@ -1266,29 +1214,6 @@ const openPicker = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-label {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-}
-
-.custom-field {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  background: #fff;
-
-  .label {
-    margin-right: 24rpx;
-  }
-
-  .value {
-    flex: 1;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明：**

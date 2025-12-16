@@ -84,18 +84,6 @@ const checkCameraPermission = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.permission-demo {
-  padding: 32rpx;
-}
-
-.status {
-  display: block;
-  margin-top: 24rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 ### 请求单个权限
@@ -272,25 +260,6 @@ const showLocationPermissionGuide = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.location-demo {
-  padding: 32rpx;
-}
-
-.location-info {
-  margin-top: 24rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-
-  text {
-    display: block;
-    font-size: 28rpx;
-    color: #333;
-    margin-bottom: 8rpx;
-  }
-}
-</style>
 ```
 
 ## 权限类型

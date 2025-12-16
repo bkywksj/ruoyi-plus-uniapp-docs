@@ -1141,25 +1141,6 @@ const status = computed(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.auto-theme-card {
-  background: var(--bg-level-1);
-  color: var(--text-color-primary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 20px;
-
-  h3 {
-    color: var(--text-color-primary);
-    margin-bottom: 12px;
-  }
-
-  p {
-    color: var(--text-color-regular);
-    line-height: 1.6;
-  }
-}
-</style>
 ```
 
 ## 响应式设计

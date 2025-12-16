@@ -42,18 +42,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -88,18 +76,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -127,18 +103,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -179,18 +143,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -226,18 +178,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -282,18 +222,6 @@ const value1 = ref(false)
 const value2 = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -337,18 +265,6 @@ const desc = ref('')
 const images = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -400,18 +316,6 @@ const phone = ref('')
 const email = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -461,18 +365,6 @@ const email = ref('')
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -523,18 +415,6 @@ const email = ref('')
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -575,18 +455,6 @@ const email = ref('')
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -682,25 +550,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-
-.form-actions {
-  margin-top: 48rpx;
-  display: flex;
-  gap: 16rpx;
-  padding: 0 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -770,66 +619,6 @@ import { ref } from 'vue'
 const rate = ref(4)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-
-.custom-icon {
-  width: 40rpx;
-  height: 40rpx;
-  border-radius: 50%;
-  margin-right: 16rpx;
-}
-
-.custom-title {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-}
-
-.title-main {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.title-tag {
-  padding: 2rpx 8rpx;
-  font-size: 20rpx;
-  color: #fff;
-  background-color: #FF4757;
-  border-radius: 4rpx;
-}
-
-.product-title {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-}
-
-.product-name {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.product-price {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #FF4757;
-}
-
-.product-actions {
-  display: flex;
-  gap: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**

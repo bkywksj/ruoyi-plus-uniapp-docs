@@ -110,34 +110,6 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.payment-page {
-  padding: 32rpx;
-}
-
-.payment-info {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 32rpx;
-}
-
-.amount {
-  color: #ff4757;
-  font-size: 40rpx;
-  font-weight: bold;
-}
-
-.payment-methods {
-  margin-bottom: 32rpx;
-}
-
-.method-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f8f8f8;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -317,46 +289,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.payment-status {
-  padding: 64rpx 32rpx;
-  text-align: center;
-}
-
-.checking {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24rpx;
-}
-
-.result {
-  margin-bottom: 64rpx;
-}
-
-.success,
-.failed {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.title {
-  font-size: 36rpx;
-  font-weight: bold;
-}
-
-.order-no {
-  color: #666;
-  font-size: 28rpx;
-}
-
-.message {
-  color: #ff4757;
-  font-size: 28rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -467,34 +399,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.payment-polling {
-  padding: 64rpx 32rpx;
-}
-
-.polling-animation {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24rpx;
-  margin-bottom: 64rpx;
-}
-
-.polling-text {
-  font-size: 32rpx;
-  font-weight: bold;
-}
-
-.polling-hint {
-  color: #999;
-  font-size: 28rpx;
-}
-
-.polling-count {
-  color: #666;
-  font-size: 28rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -574,45 +478,6 @@ const { getPlatformInfo } = usePayment()
 const platformInfo = computed(() => getPlatformInfo())
 </script>
 
-<style lang="scss" scoped>
-.platform-info {
-  padding: 32rpx;
-}
-
-.info-section {
-  margin-bottom: 32rpx;
-  padding: 24rpx;
-  background: #f8f8f8;
-  border-radius: 8rpx;
-}
-
-.section-title {
-  display: block;
-  margin-bottom: 16rpx;
-  color: #333;
-  font-size: 32rpx;
-  font-weight: bold;
-}
-
-.section-value {
-  color: #666;
-  font-size: 28rpx;
-}
-
-.capabilities,
-.environment,
-.trade-types {
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-}
-
-.capability-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -745,22 +610,6 @@ const handleCustomPay = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-payment {
-  padding: 32rpx;
-}
-
-.form-item {
-  margin-bottom: 32rpx;
-}
-
-.label {
-  display: block;
-  margin-bottom: 12rpx;
-  color: #333;
-  font-size: 28rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -928,38 +777,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.wechat-official-pay {
-  padding: 32rpx;
-}
-
-.order-info,
-.user-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f8f8f8;
-  border-radius: 8rpx;
-}
-
-.amount {
-  color: #ff4757;
-  font-size: 40rpx;
-  font-weight: bold;
-}
-
-.tips {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-  margin-top: 24rpx;
-  color: #999;
-  font-size: 24rpx;
-  text-align: center;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1060,46 +877,6 @@ const handleMpPay = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.mp-weixin-pay {
-  padding: 32rpx;
-}
-
-.order-summary {
-  margin-bottom: 32rpx;
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
-}
-
-.summary-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 16rpx 0;
-  border-bottom: 1rpx solid #f0f0f0;
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.label {
-  color: #666;
-  font-size: 28rpx;
-}
-
-.value {
-  color: #333;
-  font-size: 28rpx;
-}
-
-.amount {
-  color: #ff4757;
-  font-size: 32rpx;
-  font-weight: bold;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1233,48 +1010,6 @@ onShow(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.alipay-h5-pay {
-  padding: 32rpx;
-}
-
-.payment-info {
-  margin-bottom: 32rpx;
-  padding: 24rpx;
-  background: #f8f8f8;
-  border-radius: 8rpx;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 12rpx 0;
-}
-
-.label {
-  color: #666;
-}
-
-.value {
-  color: #333;
-}
-
-.amount {
-  color: #1890ff;
-  font-size: 36rpx;
-  font-weight: bold;
-}
-
-.tips {
-  display: flex;
-  flex-direction: column;
-  gap: 8rpx;
-  margin-top: 24rpx;
-  color: #999;
-  font-size: 24rpx;
-  text-align: center;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1430,78 +1165,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.balance-pay {
-  padding: 32rpx;
-}
-
-.balance-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16rpx;
-  color: #fff;
-}
-
-.balance {
-  font-size: 48rpx;
-  font-weight: bold;
-}
-
-.order-info {
-  margin-bottom: 32rpx;
-  padding: 24rpx;
-  background: #f8f8f8;
-  border-radius: 8rpx;
-}
-
-.info-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 12rpx 0;
-}
-
-.amount {
-  color: #ff4757;
-  font-size: 32rpx;
-  font-weight: bold;
-}
-
-.remaining {
-  color: #52c41a;
-  font-size: 28rpx;
-
-  &.insufficient {
-    color: #ff4757;
-  }
-}
-
-.password-section {
-  margin-bottom: 32rpx;
-}
-
-.section-title {
-  display: block;
-  margin-bottom: 16rpx;
-  color: #333;
-  font-size: 28rpx;
-}
-
-.insufficient-tip {
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-  padding: 24rpx;
-  margin-bottom: 24rpx;
-  background: #fff3f3;
-  border-radius: 8rpx;
-  color: #ff4757;
-  font-size: 28rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1645,67 +1308,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.app-payment {
-  padding: 32rpx;
-}
-
-.order-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  margin-bottom: 32rpx;
-  background: #f8f8f8;
-  border-radius: 8rpx;
-}
-
-.order-no {
-  color: #666;
-  font-size: 28rpx;
-}
-
-.amount {
-  color: #ff4757;
-  font-size: 40rpx;
-  font-weight: bold;
-}
-
-.payment-methods {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16rpx;
-  margin-bottom: 32rpx;
-}
-
-.method-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12rpx;
-  padding: 32rpx 24rpx;
-  background: #fff;
-  border: 2rpx solid #e0e0e0;
-  border-radius: 12rpx;
-  transition: all 0.3s;
-
-  &.active {
-    border-color: #52c41a;
-    background: #f6ffed;
-  }
-}
-
-.method-name {
-  font-size: 28rpx;
-}
-
-.check-icon {
-  position: absolute;
-  top: 8rpx;
-  right: 8rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1958,183 +1560,6 @@ const viewOrder = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.complete-payment-flow {
-  min-height: 100vh;
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.steps {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 32rpx;
-}
-
-.step-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8rpx;
-  flex: 1;
-
-  &.active .step-number {
-    background: #52c41a;
-    color: #fff;
-  }
-
-  &.current .step-number {
-    background: #1890ff;
-  }
-}
-
-.step-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48rpx;
-  height: 48rpx;
-  background: #e0e0e0;
-  border-radius: 50%;
-  color: #666;
-  font-size: 24rpx;
-}
-
-.step-title {
-  color: #666;
-  font-size: 24rpx;
-}
-
-.step-content {
-  background: #fff;
-  border-radius: 12rpx;
-  padding: 24rpx;
-}
-
-.product-card {
-  display: flex;
-  gap: 16rpx;
-  margin-bottom: 24rpx;
-}
-
-.product-image {
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 8rpx;
-}
-
-.product-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1;
-}
-
-.product-name {
-  font-size: 32rpx;
-  font-weight: bold;
-}
-
-.product-price {
-  color: #ff4757;
-  font-size: 36rpx;
-  font-weight: bold;
-}
-
-.quantity-selector,
-.total-amount {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx 0;
-  border-top: 1rpx solid #f0f0f0;
-}
-
-.total-amount {
-  .amount {
-    color: #ff4757;
-    font-size: 40rpx;
-    font-weight: bold;
-  }
-}
-
-.payment-methods {
-  margin-bottom: 24rpx;
-}
-
-.payment-method {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #f8f8f8;
-  border-radius: 8rpx;
-  border: 2rpx solid transparent;
-
-  &.active {
-    border-color: #1890ff;
-    background: #e6f7ff;
-  }
-}
-
-.method-info {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.method-name {
-  font-size: 28rpx;
-}
-
-.action-buttons {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 16rpx;
-}
-
-.paying-animation {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24rpx;
-  padding: 64rpx 0;
-}
-
-.paying-text {
-  font-size: 32rpx;
-  font-weight: bold;
-}
-
-.paying-hint {
-  color: #999;
-  font-size: 28rpx;
-}
-
-.payment-result {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16rpx;
-  padding: 64rpx 0;
-}
-
-.result-title {
-  font-size: 36rpx;
-  font-weight: bold;
-}
-
-.result-message {
-  color: #666;
-  font-size: 28rpx;
-}
-
-.order-no {
-  color: #999;
-  font-size: 24rpx;
-}
-</style>
 ```
 
 **完整流程说明:**
@@ -2298,15 +1723,6 @@ const cancelPayment = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.payment-with-error-handling {
-  padding: 32rpx;
-}
-
-.payment-form {
-  margin-bottom: 32rpx;
-}
-</style>
 ```
 
 **错误处理策略:**

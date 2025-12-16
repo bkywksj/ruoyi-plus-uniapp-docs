@@ -55,39 +55,6 @@ const handleConfirm = ({ value, selectedItems }: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-    display: flex;
-    align-items: center;
-  }
-}
-
-.result-label {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.result-value {
-  margin-left: 16rpx;
-  font-size: 26rpx;
-  color: #1890FF;
-  font-weight: 500;
-}
-</style>
 ```
 
 **使用说明:**
@@ -142,37 +109,6 @@ const handleConfirm = ({ value }: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-  }
-}
-
-.result-label {
-  margin-bottom: 8rpx;
-  font-size: 26rpx;
-  color: #666;
-}
-
-.result-value {
-  font-size: 32rpx;
-  color: #1890FF;
-  font-weight: 500;
-}
-</style>
 ```
 
 **使用说明:**
@@ -226,39 +162,6 @@ const handleConfirm = ({ value, selectedItems }: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-    display: flex;
-    align-items: center;
-  }
-}
-
-.result-label {
-  font-size: 26rpx;
-  color: #666;
-}
-
-.result-value {
-  margin-left: 16rpx;
-  font-size: 26rpx;
-  color: #1890FF;
-  font-weight: 500;
-}
-</style>
 ```
 
 **使用说明:**
@@ -309,18 +212,6 @@ const value3 = ref('橙子')
 const fruits = ['苹果', '香蕉', '橙子', '葡萄', '西瓜']
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -389,18 +280,6 @@ const formatCity = (item: any, { labelKey }: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -451,27 +330,6 @@ const fruits = ['苹果', '香蕉', '橙子']
 const cities = ['北京', '上海', '深圳']
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-tips {
-    margin-top: 24rpx;
-    padding: 16rpx 24rpx;
-    font-size: 24rpx;
-    color: #666;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -515,27 +373,6 @@ const handleClear = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-tips {
-    margin-top: 24rpx;
-    padding: 16rpx 24rpx;
-    font-size: 24rpx;
-    color: #666;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -667,37 +504,6 @@ const handleConfirm = ({ value, selectedItems }: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background-color: #F7F8FA;
-    border-radius: 8rpx;
-  }
-}
-
-.result-label {
-  margin-bottom: 8rpx;
-  font-size: 26rpx;
-  color: #666;
-}
-
-.result-value {
-  font-size: 26rpx;
-  color: #1890FF;
-  font-weight: 500;
-}
-</style>
 ```
 
 **技术实现:**
@@ -770,27 +576,6 @@ const handleConfirm = ({ value }: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-tips {
-    margin-top: 24rpx;
-    padding: 16rpx 24rpx;
-    font-size: 24rpx;
-    color: #FF6B6B;
-    background-color: #FFF0F0;
-    border-radius: 8rpx;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -860,18 +645,6 @@ const handleConfirm = ({ value }: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -937,54 +710,6 @@ const fruits = ['苹果', '香蕉', '橙子']
 const cities = ['北京', '上海', '深圳']
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-
-.custom-trigger {
-  padding: 24rpx 32rpx;
-  background-color: #FFF;
-  border-radius: 8rpx;
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.trigger-text {
-  flex: 1;
-}
-
-.trigger-label {
-  font-size: 26rpx;
-  color: #999;
-  margin-bottom: 8rpx;
-}
-
-.trigger-value {
-  font-size: 28rpx;
-  color: #333;
-  font-weight: 500;
-}
-
-.custom-label {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-}
-
-.label-text {
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1085,44 +810,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-
-.form-actions {
-  margin-top: 48rpx;
-  display: flex;
-  gap: 16rpx;
-  padding: 0 32rpx;
-}
-
-.btn-submit,
-.btn-reset {
-  flex: 1;
-  height: 88rpx;
-  font-size: 28rpx;
-  border-radius: 8rpx;
-  border: none;
-}
-
-.btn-submit {
-  background-color: #1890FF;
-  color: #FFF;
-}
-
-.btn-reset {
-  background-color: #F7F8FA;
-  color: #666;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1184,34 +871,6 @@ const handleSetLoading = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-actions {
-    margin-top: 24rpx;
-    display: flex;
-    gap: 16rpx;
-  }
-}
-
-.btn {
-  flex: 1;
-  height: 72rpx;
-  font-size: 26rpx;
-  background-color: #1890FF;
-  color: #FFF;
-  border: none;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **使用说明:**

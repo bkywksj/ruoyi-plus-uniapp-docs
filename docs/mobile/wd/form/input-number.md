@@ -41,16 +41,6 @@ import { ref } from 'vue'
 const value1 = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.result {
-  margin-top: 16rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -110,22 +100,6 @@ const value3 = ref(0)
 const value4 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -185,22 +159,6 @@ const value6 = ref(0.0)
 const value7 = ref(0.00)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **技术实现:**
@@ -261,22 +219,6 @@ const value10 = ref(5)
 const value11 = ref(5)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -327,27 +269,6 @@ const value12 = ref(5)
 const value13 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.result {
-  margin-top: 16rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -396,22 +317,6 @@ const value14 = ref(0)
 const value15 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **技术实现:**
@@ -461,27 +366,6 @@ const value16 = ref<string | number>('')
 const value17 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.result {
-  margin-top: 16rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -592,16 +476,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.button-group {
-  margin-top: 32rpx;
-  display: flex;
-  gap: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -683,22 +557,6 @@ const handleIconClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -803,27 +661,6 @@ const handleConfirm = (value: number | string): Promise<boolean> => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.tip {
-  margin-top: 8rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**
@@ -889,27 +726,6 @@ const handleBlur = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.result {
-  margin-top: 16rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -962,27 +778,6 @@ const value27 = ref(13)
 const value28 = ref(13)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.tip {
-  margin-top: 8rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1044,22 +839,6 @@ const value31 = ref(3.1416)
 const value32 = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1109,27 +888,6 @@ const value33 = ref(0)
 const value34 = ref(0.00)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.tip {
-  margin-top: 8rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**

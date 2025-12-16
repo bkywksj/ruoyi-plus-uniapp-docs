@@ -37,16 +37,6 @@ Watermark 是一个功能完善的水印组件,用于在页面或组件上添加
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  position: relative;
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -77,16 +67,6 @@ Watermark 是一个功能完善的水印组件,用于在页面或组件上添加
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  position: relative;
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -121,41 +101,6 @@ Watermark 是一个功能完善的水印组件,用于在页面或组件上添加
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.card {
-  position: relative;
-  background: #fff;
-  border-radius: 16rpx;
-  overflow: hidden;
-  margin-bottom: 32rpx;
-}
-
-.card-content {
-  padding: 32rpx;
-}
-
-.title {
-  display: block;
-  font-size: 32rpx;
-  font-weight: bold;
-  margin-bottom: 16rpx;
-}
-
-.desc {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.normal-content {
-  padding: 32rpx;
-  background: #f5f5f5;
-  border-radius: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -199,27 +144,6 @@ Watermark 是一个功能完善的水印组件,用于在页面或组件上添加
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.card {
-  position: relative;
-  background: #fff;
-  border-radius: 16rpx;
-  overflow: hidden;
-  margin-bottom: 32rpx;
-}
-
-.dark-card {
-  background: #333;
-}
-
-.card-content {
-  padding: 48rpx 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -271,23 +195,6 @@ Watermark 是一个功能完善的水印组件,用于在页面或组件上添加
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.card {
-  position: relative;
-  background: #fff;
-  border-radius: 16rpx;
-  overflow: hidden;
-  margin-bottom: 32rpx;
-}
-
-.card-content {
-  padding: 48rpx 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -345,24 +252,6 @@ Watermark 是一个功能完善的水印组件,用于在页面或组件上添加
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.card {
-  position: relative;
-  background: #fff;
-  border-radius: 16rpx;
-  overflow: hidden;
-  margin-bottom: 32rpx;
-  min-height: 200rpx;
-}
-
-.card-content {
-  padding: 48rpx 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -433,23 +322,6 @@ Watermark 是一个功能完善的水印组件,用于在页面或组件上添加
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.card {
-  position: relative;
-  background: #fff;
-  border-radius: 16rpx;
-  overflow: hidden;
-  margin-bottom: 32rpx;
-}
-
-.card-content {
-  padding: 48rpx 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -488,21 +360,6 @@ import { ref } from 'vue'
 const showPopup = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  position: relative;
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.popup-content {
-  padding: 48rpx;
-  text-align: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -561,30 +418,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  position: relative;
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.title {
-  display: block;
-  font-size: 36rpx;
-  font-weight: bold;
-  margin-bottom: 32rpx;
-}
-
-.info {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -627,16 +460,6 @@ onMounted(() => {
 <script lang="ts" setup>
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  position: relative;
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -701,53 +524,6 @@ const document = ref({
 })
 </script>
 
-<style lang="scss" scoped>
-.document-viewer {
-  position: relative;
-  min-height: 100vh;
-  background: #fff;
-}
-
-.doc-header {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-
-.doc-title {
-  display: block;
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.doc-meta {
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-}
-
-.meta-item {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.doc-content {
-  padding: 32rpx;
-  line-height: 1.8;
-}
-
-.doc-footer {
-  padding: 32rpx;
-  text-align: center;
-  border-top: 1rpx solid #eee;
-}
-
-.footer-text {
-  font-size: 24rpx;
-  color: #ff4d4f;
-}
-</style>
 ```
 
 ## API

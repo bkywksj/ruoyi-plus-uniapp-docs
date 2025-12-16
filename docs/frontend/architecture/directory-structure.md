@@ -172,14 +172,6 @@ src/assets/
 import loginBg from '@/assets/images/login-bg.jpg'
 </script>
 
-<style lang="scss" scoped>
-// 引入SCSS变量
-@import '@/assets/styles/variables.scss';
-
-.container {
-  background-color: $primary-color;
-}
-</style>
 ```
 
 ### src/components - 全局公共组件目录

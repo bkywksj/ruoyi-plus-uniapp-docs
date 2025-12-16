@@ -59,18 +59,6 @@ const handleNext = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #fff;
-}
-
-.control-buttons {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 48rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -94,12 +82,6 @@ const handleNext = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #fff;
-}
-</style>
 ```
 
 **使用说明:**
@@ -123,12 +105,6 @@ const handleNext = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #fff;
-}
-</style>
 ```
 
 **使用说明:**
@@ -165,29 +141,6 @@ const handleNext = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.section {
-  background: #fff;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.section-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -234,29 +187,6 @@ const handleNext = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.section {
-  background: #fff;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.section-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -284,21 +214,6 @@ const handleNext = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #fff;
-}
-
-.tip {
-  margin-top: 48rpx;
-  padding: 24rpx;
-  background: #fff3e6;
-  border-radius: 8rpx;
-  font-size: 24rpx;
-  color: #ff8800;
-}
-</style>
 ```
 
 **使用说明:**
@@ -342,29 +257,6 @@ const handleNext = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.section {
-  background: #fff;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.section-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -399,29 +291,6 @@ const handleNext = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.section {
-  background: #fff;
-  padding: 32rpx;
-  margin-bottom: 24rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.section-title {
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -506,26 +375,6 @@ const getStatusTagType = (status: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.order-track {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.order-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32rpx;
-  background: #fff;
-  margin-bottom: 24rpx;
-}
-
-.order-no {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **功能说明:**
@@ -659,77 +508,6 @@ const handleGoLogin = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.register-page {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.page-header {
-  background: #fff;
-  padding: 48rpx 32rpx 32rpx;
-}
-
-.page-title {
-  font-size: 44rpx;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-}
-
-.step-content {
-  margin-top: 48rpx;
-}
-
-.step-form {
-  padding: 32rpx;
-  background: #fff;
-  margin: 24rpx;
-  border-radius: 16rpx;
-}
-
-.form-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 32rpx;
-}
-
-.code-input {
-  display: flex;
-  gap: 16rpx;
-  align-items: center;
-}
-
-.button-group {
-  display: flex;
-  gap: 16rpx;
-  margin-top: 32rpx;
-}
-
-.step-success {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 80rpx 32rpx;
-  background: #fff;
-  margin: 24rpx;
-  border-radius: 16rpx;
-}
-
-.success-title {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #333;
-  margin-top: 32rpx;
-}
-
-.success-desc {
-  font-size: 28rpx;
-  color: #999;
-  margin: 16rpx 0 48rpx;
-}
-</style>
 ```
 
 **功能说明:**
@@ -854,65 +632,6 @@ const completedCount = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.task-progress {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.task-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 32rpx;
-  background: #fff;
-  margin-bottom: 24rpx;
-}
-
-.task-title {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.task-progress-text {
-  font-size: 28rpx;
-  color: #1890ff;
-}
-
-.task-step-title {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.task-name {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.task-desc {
-  display: flex;
-  flex-direction: column;
-  gap: 12rpx;
-  margin-top: 16rpx;
-}
-
-.task-info {
-  display: flex;
-  font-size: 24rpx;
-}
-
-.info-label {
-  color: #999;
-  margin-right: 8rpx;
-}
-
-.info-value {
-  color: #666;
-}
-</style>
 ```
 
 **功能说明:**
@@ -1045,20 +764,6 @@ $-dark-color-gray: #6c6c6e;            // 暗黑模式灰色
   </view>
 </template>
 
-<style lang="scss" scoped>
-.custom-theme {
-  // 修改 CSS 变量
-  --steps-finished-color: #722ed1;
-  --steps-icon-size: 60rpx;
-  --steps-icon-text-fs: 32rpx;
-}
-
-:deep(.custom-steps) {
-  .wd-step {
-    // 自定义步骤样式
-  }
-}
-</style>
 ```
 
 ### 暗黑模式

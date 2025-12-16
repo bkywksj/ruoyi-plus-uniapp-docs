@@ -672,17 +672,6 @@ function onScroll(e) {
 }
 </script>
 
-<style lang="scss" scoped>
-.wraper {
-  display: flex;
-  height: calc(100vh - var(--window-top));
-}
-
-.content {
-  flex: 1;
-  background: #fff;
-}
-</style>
 ```
 
 ### My 页面示例

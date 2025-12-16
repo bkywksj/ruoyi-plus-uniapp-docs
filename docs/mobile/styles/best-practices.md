@@ -239,21 +239,6 @@ const themeVars = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  transition: background-color 0.3s ease;
-
-  &.dark-mode {
-    background-color: #131313;
-  }
-}
-
-.content {
-  padding: 32rpx;
-}
-</style>
 ```
 
 ### 组件暗黑模式适配
@@ -479,32 +464,6 @@ const switchTheme = (theme: typeof themes[0]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-demo {
-  padding: 32rpx;
-}
-
-.theme-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24rpx;
-  margin-top: 48rpx;
-}
-
-.theme-item {
-  width: 160rpx;
-  height: 80rpx;
-  border-radius: 12rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .theme-name {
-    color: #fff;
-    font-size: 24rpx;
-  }
-}
-</style>
 ```
 
 ## 响应式设计
@@ -620,47 +579,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.responsive-layout {
-  display: flex;
-  min-height: 100vh;
-
-  .main-content {
-    flex: 1;
-    padding: 32rpx;
-  }
-
-  .side-panel {
-    width: 300rpx;
-    border-left: 1px solid #e8e8e8;
-    padding: 32rpx;
-  }
-}
-
-// 小屏幕适配
-.screen-sm {
-  .main-content {
-    padding: 24rpx;
-  }
-}
-
-// 中等屏幕适配
-.screen-md {
-  .main-content {
-    padding: 32rpx;
-    max-width: 750rpx;
-    margin: 0 auto;
-  }
-}
-
-// 大屏幕适配
-.screen-lg {
-  .main-content {
-    max-width: 1000rpx;
-    padding: 48rpx;
-  }
-}
-</style>
 ```
 
 ## 组件样式规范
@@ -740,14 +658,6 @@ defineOptions({
 })
 </script>
 
-<style lang="scss" scoped>
-// scoped 样式仅作用于当前组件
-.wd-custom-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-</style>
 
 <style lang="scss">
 // 无 scoped 的样式可被外部覆盖
@@ -813,18 +723,6 @@ withDefaults(defineProps<Props>(), {
   </wd-card>
 </template>
 
-<style lang="scss" scoped>
-// 外部样式可以覆盖组件默认样式
-.my-card {
-  border-radius: 24rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
-}
-
-.my-card-header {
-  background-color: #f0f5ff;
-  padding: 24rpx;
-}
-</style>
 ```
 
 ## UnoCSS 原子化样式
@@ -1007,68 +905,6 @@ export default defineConfig({
   </view>
 </template>
 
-<style lang="scss" scoped>
-// 水平布局
-.flex-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 24rpx;
-
-  .flex-item {
-    flex: 1;
-    padding: 24rpx;
-    background-color: #f5f5f5;
-    border-radius: 8rpx;
-    text-align: center;
-  }
-}
-
-// 垂直布局
-.flex-col {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-
-  .flex-item {
-    padding: 24rpx;
-    background-color: #f5f5f5;
-    border-radius: 8rpx;
-  }
-}
-
-// 网格布局（3列）
-.grid-layout {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24rpx;
-
-  .grid-item {
-    width: calc((100% - 48rpx) / 3);
-    aspect-ratio: 1;
-    background-color: #f5f5f5;
-    border-radius: 8rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-// 等分布局
-.equal-layout {
-  display: flex;
-
-  .equal-item {
-    flex: 1;
-    padding: 24rpx;
-    text-align: center;
-
-    &:not(:last-child) {
-      border-right: 1px solid #e8e8e8;
-    }
-  }
-}
-</style>
 ```
 
 ### 滚动容器布局
@@ -1131,47 +967,6 @@ const loadMore = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-// 横向滚动容器
-.scroll-x-container {
-  white-space: nowrap;
-
-  .scroll-x-content {
-    display: inline-flex;
-    gap: 24rpx;
-    padding: 24rpx;
-  }
-
-  .scroll-item {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 200rpx;
-    height: 200rpx;
-    background-color: #f5f5f5;
-    border-radius: 16rpx;
-    flex-shrink: 0;
-  }
-}
-
-// 纵向滚动容器
-.scroll-y-container {
-  .list-item {
-    padding: 32rpx;
-    border-bottom: 1px solid #f0f0f0;
-  }
-
-  .loading-more {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16rpx;
-    padding: 32rpx;
-    color: #999;
-    font-size: 24rpx;
-  }
-}
-</style>
 ```
 
 ### 固定布局
@@ -1198,55 +993,6 @@ const loadMore = async () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  background-color: #f5f5f5;
-}
-
-// 固定头部
-.fixed-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background-color: #fff;
-}
-
-// 可滚动内容区域
-.scroll-content {
-  flex: 1;
-  padding: 24rpx;
-  // 为固定头部和底部留出空间
-  padding-top: calc(88rpx + var(--status-bar-height, 44px) + 24rpx);
-  padding-bottom: calc(120rpx + constant(safe-area-inset-bottom) + 24rpx);
-  padding-bottom: calc(120rpx + env(safe-area-inset-bottom) + 24rpx);
-
-  .content-item {
-    padding: 32rpx;
-    margin-bottom: 16rpx;
-    background-color: #fff;
-    border-radius: 12rpx;
-  }
-}
-
-// 固定底部
-.fixed-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  padding: 24rpx 32rpx;
-  padding-bottom: calc(24rpx + constant(safe-area-inset-bottom));
-  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
-  background-color: #fff;
-  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.05);
-}
-</style>
 ```
 
 ## 动画效果
@@ -1457,55 +1203,6 @@ const onLeave = (el: Element, done: () => void) => {
 }
 </script>
 
-<style lang="scss" scoped>
-// 淡入淡出
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-// 列表动画
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.3s ease;
-}
-
-.list-enter-from {
-  opacity: 0;
-  transform: translateX(-30rpx);
-}
-
-.list-leave-to {
-  opacity: 0;
-  transform: translateX(30rpx);
-}
-
-// 列表移动动画
-.list-move {
-  transition: transform 0.3s ease;
-}
-
-.box,
-.custom-box {
-  padding: 32rpx;
-  background-color: #4d80f0;
-  color: #fff;
-  border-radius: 12rpx;
-  margin-bottom: 24rpx;
-}
-
-.list-item {
-  padding: 24rpx;
-  background-color: #f5f5f5;
-  margin-bottom: 16rpx;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 ## 性能优化
@@ -1615,30 +1312,6 @@ const computedStyle = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-// 使用 CSS 变量减少重复计算
-.button {
-  --button-height: 80rpx;
-  --button-padding: 0 32rpx;
-  --button-font-size: 28rpx;
-
-  height: var(--button-height);
-  padding: var(--button-padding);
-  font-size: var(--button-font-size);
-
-  &--small {
-    --button-height: 64rpx;
-    --button-padding: 0 24rpx;
-    --button-font-size: 24rpx;
-  }
-
-  &--large {
-    --button-height: 96rpx;
-    --button-padding: 0 40rpx;
-    --button-font-size: 32rpx;
-  }
-}
-</style>
 ```
 
 ### 样式复用
@@ -1970,22 +1643,6 @@ $font-weight-bold: 700;
 const isDebug = import.meta.env.DEV && false // 手动控制开关
 </script>
 
-<style lang="scss" scoped>
-// 调试模式样式
-.debug-mode {
-  * {
-    outline: 1px solid rgba(255, 0, 0, 0.2);
-  }
-
-  view {
-    outline-color: rgba(0, 255, 0, 0.2);
-  }
-
-  text {
-    outline-color: rgba(0, 0, 255, 0.2);
-  }
-}
-</style>
 ```
 
 ### 样式问题排查清单
@@ -2027,23 +1684,6 @@ const isDebug = import.meta.env.DEV && false // 手动控制开关
 **解决方案**:
 
 ```vue
-<style lang="scss" scoped>
-// 方法1: 使用 :deep() 伪选择器
-.container {
-  :deep(.wd-button) {
-    background-color: #1890ff;
-  }
-
-  :deep(.wd-button__text) {
-    font-size: 32rpx;
-  }
-}
-
-// 方法2: 使用 :global() 全局选择器（慎用）
-:global(.wd-button.custom-button) {
-  background-color: #1890ff;
-}
-</style>
 
 <style lang="scss">
 // 方法3: 单独的无 scoped 样式块

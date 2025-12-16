@@ -44,12 +44,6 @@ import { ref } from 'vue'
 const activeKey = ref('1')
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  display: flex;
-  height: 600rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -86,12 +80,6 @@ const items: SidebarItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  display: flex;
-  height: 600rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -137,15 +125,6 @@ const items: SidebarItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  padding: 32rpx;
-}
-
-.demo-sidebar wd-sidebar {
-  height: 400rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -200,15 +179,6 @@ const items: SidebarItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  padding: 32rpx;
-}
-
-.demo-sidebar wd-sidebar {
-  height: 400rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -257,15 +227,6 @@ const items: SidebarItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  padding: 32rpx;
-}
-
-.demo-sidebar wd-sidebar {
-  height: 500rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -335,39 +296,6 @@ const handleItemClickSub = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  display: flex;
-  height: 600rpx;
-}
-
-.event-log {
-  flex: 1;
-  margin-left: 32rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 8rpx;
-  overflow-y: auto;
-
-  .log-title {
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    font-weight: bold;
-    color: #333;
-  }
-
-  .log-item {
-    padding: 12rpx 0;
-    font-size: 24rpx;
-    color: #666;
-    border-bottom: 1rpx solid #e0e0e0;
-
-    &:last-child {
-      border-bottom: none;
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -434,21 +362,6 @@ const handleBeforeChange = (option: SidebarBeforeChangeOption) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  padding: 32rpx;
-}
-
-.demo-sidebar wd-sidebar {
-  height: 400rpx;
-}
-
-.tip {
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **异步验证示例:**
@@ -516,21 +429,6 @@ const handleBeforeChange = async (option: SidebarBeforeChangeOption) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  padding: 32rpx;
-}
-
-.demo-sidebar wd-sidebar {
-  height: 400rpx;
-}
-
-.tip {
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -609,51 +507,6 @@ const items: SidebarItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  padding: 32rpx;
-}
-
-.demo-sidebar wd-sidebar {
-  height: 400rpx;
-}
-
-.custom-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 60rpx;
-  height: 60rpx;
-  margin-right: 12rpx;
-  border-radius: 50%;
-}
-
-.custom-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24rpx 16rpx;
-
-  .label {
-    margin-top: 8rpx;
-    font-size: 28rpx;
-    color: #333;
-  }
-
-  .desc {
-    margin-top: 4rpx;
-    font-size: 22rpx;
-    color: #999;
-  }
-
-  &.is-active {
-    .label {
-      color: #4d80f0;
-      font-weight: bold;
-    }
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -742,82 +595,6 @@ const currentProducts = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  display: flex;
-  height: 100vh;
-}
-
-.content-area {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background: #f5f5f5;
-}
-
-.content-header {
-  padding: 32rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #e0e0e0;
-
-  .title {
-    font-size: 32rpx;
-    font-weight: bold;
-    color: #333;
-  }
-}
-
-.content-body {
-  flex: 1;
-  padding: 32rpx;
-}
-
-.product-item {
-  display: flex;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background: #fff;
-  border-radius: 8rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.product-image {
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 8rpx;
-  background: #f0f0f0;
-}
-
-.product-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-left: 24rpx;
-
-  .product-name {
-    font-size: 28rpx;
-    color: #333;
-    margin-bottom: 12rpx;
-  }
-
-  .product-price {
-    font-size: 32rpx;
-    color: #ff6b6b;
-    font-weight: bold;
-  }
-}
-
-.empty {
-  padding: 128rpx 32rpx;
-  text-align: center;
-  font-size: 28rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -911,25 +688,6 @@ const toggleBadge = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-sidebar {
-  display: flex;
-  flex-direction: column;
-  height: 600rpx;
-}
-
-.demo-sidebar wd-sidebar {
-  flex: 1;
-}
-
-.actions {
-  display: flex;
-  gap: 16rpx;
-  padding: 32rpx;
-  background: #f5f5f5;
-  border-top: 1rpx solid #e0e0e0;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1239,33 +997,6 @@ const items: SidebarItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.custom-sidebar {
-  height: 600rpx;
-
-  // 自定义侧边栏宽度和背景色
-  :deep(.my-sidebar) {
-    width: 240rpx;
-    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-  }
-
-  // 自定义侧边栏项样式
-  :deep(.wd-sidebar-item) {
-    color: rgba(255, 255, 255, 0.7);
-    background: transparent;
-
-    &.wd-sidebar-item--active {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 16rpx;
-
-      &::before {
-        display: none;  // 隐藏左侧边框
-      }
-    }
-  }
-}
-</style>
 ```
 
 **深色主题:**
@@ -1290,12 +1021,6 @@ const items: SidebarItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.dark-sidebar {
-  height: 600rpx;
-  background: #1a1a1a;
-}
-</style>
 ```
 
 **扁平风格:**
@@ -1324,32 +1049,6 @@ const items: SidebarItem[] = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.flat-sidebar {
-  height: 600rpx;
-
-  :deep(.flat-style) {
-    .wd-sidebar-item {
-      background: #fff;
-      border-bottom: 1rpx solid #e0e0e0;
-
-      &.wd-sidebar-item--active {
-        background: #4d80f0;
-        color: #fff;
-
-        &::before {
-          display: none;
-        }
-      }
-
-      &.wd-sidebar-item--prefix,
-      &.wd-sidebar-item--suffix {
-        border-radius: 0;
-      }
-    }
-  }
-}
-</style>
 ```
 
 参考: src/wd/components/wd-sidebar/wd-sidebar.vue:259-379
@@ -1804,16 +1503,6 @@ const handleCustomClick = (item: SidebarItem) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-item {
-  &.is-disabled {
-    color: #c8c9cc;
-    cursor: not-allowed;
-    // 阻止点击
-    pointer-events: none;
-  }
-}
-</style>
 ```
 
 **说明:**
@@ -1887,15 +1576,6 @@ const getIconColor = (item: SidebarItem, active: boolean) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-item {
-  padding: 24rpx;
-  display: flex;
-  align-items: center;
-  gap: 12rpx;
-  transition: all 0.3s;
-}
-</style>
 ```
 
 **说明:**
@@ -1945,11 +1625,6 @@ watch(activeKey, (newValue) => {
 })
 </script>
 
-<style lang="scss" scoped>
-.sidebar-scroll {
-  height: 100vh;
-}
-</style>
 ```
 
 **说明:**

@@ -219,16 +219,6 @@ defineExpose({
 })
 </script>
 
-<style lang="scss" scoped>
-.component-name {
-  // 组件样式
-
-  &.is-disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-</style>
 ```
 
 ## 开发流程
@@ -380,9 +370,6 @@ defineExpose<AMyComponentExpose>({
 })
 </script>
 
-<style lang="scss" scoped>
-// 组件样式
-</style>
 ```
 
 ### 4. 导出组件
@@ -498,12 +485,6 @@ const rootStyle = computed(() => ({
   </div>
 </template>
 
-<style lang="scss" scoped>
-.my-component {
-  background-color: var(--component-bg);
-  color: var(--component-text);
-}
-</style>
 ```
 
 ### 表单集成
@@ -870,18 +851,6 @@ watch(() => props.modelValue, (val) => {
 }, { immediate: true })
 </script>
 
-<style lang="scss" scoped>
-.user-picker {
-  .selected-tags {
-    margin-bottom: 8px;
-
-    .el-tag {
-      margin-right: 8px;
-      margin-bottom: 4px;
-    }
-  }
-}
-</style>
 ```
 
 ### 案例 2: 开发一个统计卡片组件
@@ -965,75 +934,6 @@ const trendIcon = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.stats-card {
-  .stats-content {
-    display: flex;
-    gap: 16px;
-
-    .icon-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 64px;
-      height: 64px;
-      border-radius: 8px;
-      flex-shrink: 0;
-    }
-
-    .data-wrapper {
-      flex: 1;
-
-      .title {
-        font-size: 14px;
-        color: var(--el-text-color-secondary);
-        margin-bottom: 8px;
-      }
-
-      .value {
-        font-size: 24px;
-        font-weight: 600;
-        color: var(--el-text-color-primary);
-
-        .unit {
-          font-size: 14px;
-          margin-left: 4px;
-        }
-      }
-
-      .trend {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 12px;
-        margin-top: 8px;
-
-        &.trend-up {
-          color: var(--el-color-success);
-        }
-
-        &.trend-down {
-          color: var(--el-color-danger);
-        }
-
-        &.trend-flat {
-          color: var(--el-color-info);
-        }
-
-        .label {
-          color: var(--el-text-color-secondary);
-        }
-      }
-    }
-  }
-
-  .stats-footer {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--el-border-color-lighter);
-  }
-}
-</style>
 ```
 
 ## 测试
@@ -1247,11 +1147,6 @@ emit('change', {
 **使用 scoped**
 
 ```vue
-<style lang="scss" scoped>
-.my-component {
-  // 样式只作用于当前组件
-}
-</style>
 ```
 
 **CSS Variables 传递主题**
@@ -1365,17 +1260,6 @@ const internalValue = computed({
 **解决方案**:
 
 ```vue
-<style lang="scss" scoped>
-/* 使用 scoped 隔离样式 */
-.my-component {
-  // 组件样式
-}
-
-/* 如果需要覆盖子组件样式,使用 :deep() */
-:deep(.el-input__inner) {
-  border-color: red;
-}
-</style>
 ```
 
 ### 3. 组件不响应 props 变化

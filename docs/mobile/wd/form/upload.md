@@ -42,17 +42,6 @@ import { ref } from 'vue'
 const images = ref<string>('https://example.com/img1.jpg,https://example.com/img2.jpg')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.result {
-  margin-top: 16rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -682,13 +671,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.form-actions {
-  display: flex;
-  gap: 16rpx;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -841,24 +823,6 @@ import { ref } from 'vue'
 const images = ref<string>('')
 </script>
 
-<style lang="scss" scoped>
-.custom-trigger {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 200rpx;
-  height: 200rpx;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 16rpx;
-}
-
-.custom-text {
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #fff;
-}
-</style>
 ```
 
 **使用说明:**
@@ -892,35 +856,6 @@ import { ref } from 'vue'
 const images = ref<string>('')
 </script>
 
-<style lang="scss" scoped>
-.custom-cover {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
-  padding: 16rpx;
-}
-
-.custom-badge {
-  position: absolute;
-  top: 8rpx;
-  right: 8rpx;
-  width: 40rpx;
-  height: 40rpx;
-  line-height: 40rpx;
-  text-align: center;
-  background: #1890ff;
-  color: #fff;
-  border-radius: 50%;
-  font-size: 20rpx;
-}
-
-.custom-info {
-  font-size: 20rpx;
-  color: #fff;
-}
-</style>
 ```
 
 **使用说明:**

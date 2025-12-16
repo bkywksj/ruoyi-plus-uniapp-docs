@@ -67,53 +67,6 @@ rpx（responsive pixel）是 UniApp 提供的响应式单位，以 750rpx 为屏
   </view>
 </template>
 
-<style lang="scss" scoped>
-.responsive-demo {
-  // 页面边距使用 rpx
-  padding: 24rpx 32rpx;
-}
-
-.card {
-  // 圆角和背景
-  background-color: #ffffff;
-  border-radius: 16rpx;
-  overflow: hidden;
-
-  .card-header {
-    // 内边距使用 rpx
-    padding: 24rpx 32rpx;
-    border-bottom: 1rpx solid #f0f0f0;
-
-    .title {
-      // 字体大小使用 rpx
-      font-size: 32rpx;
-      font-weight: 600;
-      color: #262626;
-    }
-
-    .subtitle {
-      font-size: 24rpx;
-      color: #8c8c8c;
-      margin-top: 8rpx;
-    }
-  }
-
-  .card-body {
-    padding: 32rpx;
-
-    .content {
-      font-size: 28rpx;
-      color: #595959;
-      line-height: 1.6;
-    }
-  }
-
-  .card-footer {
-    padding: 24rpx 32rpx;
-    border-top: 1rpx solid #f0f0f0;
-  }
-}
-</style>
 ```
 
 **rpx 使用建议:**
@@ -377,48 +330,6 @@ const goBack = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background-color: #ffffff;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
-}
-
-.navbar-content {
-  display: flex;
-  align-items: center;
-  height: 88rpx;
-  padding: 0 24rpx;
-}
-
-.navbar-left {
-  width: 80rpx;
-  display: flex;
-  align-items: center;
-}
-
-.navbar-title {
-  flex: 1;
-  text-align: center;
-
-  text {
-    font-size: 34rpx;
-    font-weight: 600;
-    color: #262626;
-  }
-}
-
-.navbar-right {
-  width: 80rpx;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-</style>
 ```
 
 **WD UI Navbar 组件的安全区域适配:**
@@ -462,41 +373,6 @@ const goBack = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.page {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.content {
-  // 为底部固定区域留出空间
-  padding-bottom: calc(120rpx + constant(safe-area-inset-bottom));
-  padding-bottom: calc(120rpx + env(safe-area-inset-bottom));
-
-  .item {
-    padding: 32rpx;
-    margin: 16rpx;
-    background-color: #ffffff;
-    border-radius: 12rpx;
-  }
-}
-
-// 底部固定区域
-.fixed-bottom {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background-color: #ffffff;
-  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.05);
-
-  // 内边距 = 按钮边距 + 底部安全距离
-  padding: 20rpx 32rpx;
-  padding-bottom: calc(20rpx + constant(safe-area-inset-bottom));
-  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
-}
-</style>
 ```
 
 ### TabBar 安全区域适配
@@ -554,49 +430,6 @@ const switchTab = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.custom-tabbar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 999;
-  display: flex;
-  background-color: #ffffff;
-  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.05);
-
-  // 底部安全区域适配
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-
-.tabbar-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100rpx;
-  padding: 8rpx 0;
-  transition: all 0.2s ease;
-
-  &.active {
-    .tabbar-text {
-      color: #4d80f0;
-    }
-  }
-}
-
-.tabbar-icon {
-  margin-bottom: 4rpx;
-}
-
-.tabbar-text {
-  font-size: 22rpx;
-  color: #999999;
-  transition: color 0.2s ease;
-}
-</style>
 ```
 
 ### UnoCSS 安全区域规则
@@ -699,44 +532,6 @@ $-fs-aid: var(--wot-fs-aid, 20rpx) !default;          // 辅助文字
   </view>
 </template>
 
-<style lang="scss" scoped>
-@import '@/wd/components/common/abstracts/variable.scss';
-
-.typography-demo {
-  padding: 32rpx;
-}
-
-.amount {
-  font-size: $-fs-important;  // 38rpx
-  font-weight: 600;
-  color: #fa4350;
-}
-
-.title {
-  font-size: $-fs-title;  // 32rpx
-  font-weight: 600;
-  color: #262626;
-  margin: 24rpx 0 16rpx;
-}
-
-.content {
-  font-size: $-fs-content;  // 28rpx
-  color: #595959;
-  line-height: 1.6;
-}
-
-.secondary {
-  font-size: $-fs-secondary;  // 24rpx
-  color: #8c8c8c;
-  margin-top: 12rpx;
-}
-
-.tip {
-  font-size: $-fs-aid;  // 20rpx
-  color: #bfbfbf;
-  margin-top: 8rpx;
-}
-</style>
 ```
 
 ### UnoCSS 字体大小配置
@@ -828,59 +623,6 @@ $spacing-xxl: 64rpx;   // 特大间距（页面级别）
   </view>
 </template>
 
-<style lang="scss" scoped>
-// 间距变量
-$spacing-xs: 8rpx;
-$spacing-sm: 16rpx;
-$spacing-md: 24rpx;
-$spacing-lg: 32rpx;
-$spacing-xl: 48rpx;
-
-.spacing-demo {
-  padding: $spacing-lg;  // 页面内边距
-}
-
-.page-section {
-  margin-bottom: $spacing-xl;  // 区块间距
-}
-
-.section-title {
-  font-size: 32rpx;
-  font-weight: 600;
-  margin-bottom: $spacing-md;  // 标题与内容间距
-}
-
-.module {
-  background-color: #ffffff;
-  border-radius: 16rpx;
-  padding: $spacing-lg;
-  margin-bottom: $spacing-lg;  // 模块间距
-}
-
-.module-header {
-  font-size: 28rpx;
-  font-weight: 500;
-  margin-bottom: $spacing-sm;  // 模块内标题间距
-}
-
-.item {
-  display: flex;
-  justify-content: space-between;
-  padding: $spacing-sm 0;  // 列表项内边距
-
-  .label {
-    color: #8c8c8c;
-  }
-
-  .value {
-    color: #262626;
-  }
-
-  & + .item {
-    border-top: 1rpx solid #f0f0f0;
-  }
-}
-</style>
 ```
 
 ## 多平台响应式适配
@@ -1006,43 +748,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.platform-demo {
-  padding: 32rpx;
-}
-
-.h5-tip,
-.mp-tip,
-.app-tip {
-  padding: 24rpx;
-  border-radius: 12rpx;
-  margin-bottom: 24rpx;
-  font-size: 28rpx;
-}
-
-.h5-tip {
-  background-color: #e6f7ff;
-  color: #1890ff;
-}
-
-.mp-tip {
-  background-color: #f6ffed;
-  color: #52c41a;
-}
-
-.app-tip {
-  background-color: #fff7e6;
-  color: #fa8c16;
-}
-
-.common-content {
-  padding: 32rpx;
-  background-color: #ffffff;
-  border-radius: 12rpx;
-  text-align: center;
-  color: #595959;
-}
-</style>
 ```
 
 ### 屏幕尺寸适配
@@ -1099,46 +804,6 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.screen-adaptive {
-  display: flex;
-  min-height: 100vh;
-}
-
-.main-content {
-  flex: 1;
-  padding: 32rpx;
-}
-
-.side-panel {
-  width: 500rpx;
-  padding: 32rpx;
-  background-color: #f5f5f5;
-  border-left: 1rpx solid #e8e8e8;
-}
-
-// 小屏幕适配
-.screen-sm {
-  .main-content {
-    padding: 24rpx;
-  }
-}
-
-// 中屏幕适配
-.screen-md {
-  .main-content {
-    padding: 32rpx;
-  }
-}
-
-// 大屏幕适配
-.screen-lg {
-  .main-content {
-    max-width: 1000rpx;
-    padding: 48rpx;
-  }
-}
-</style>
 ```
 
 ## 布局响应式设计
@@ -1164,64 +829,6 @@ onUnmounted(() => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.flex-responsive {
-  padding: 32rpx;
-}
-
-// Flex 换行容器
-.flex-wrap-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24rpx;
-  margin-bottom: 48rpx;
-}
-
-.flex-item {
-  // 小屏：一行两个
-  width: calc((100% - 24rpx) / 2);
-  padding: 32rpx;
-  background-color: #f5f5f5;
-  border-radius: 12rpx;
-  text-align: center;
-
-  // 大屏：一行三个
-  @media screen and (min-width: 768px) {
-    width: calc((100% - 48rpx) / 3);
-  }
-}
-
-// Grid 风格布局
-.grid-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-
-.grid-item {
-  // 默认一行三个
-  width: calc((100% - 32rpx) / 3);
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #e6f7ff;
-  border-radius: 8rpx;
-  font-size: 32rpx;
-  font-weight: 600;
-  color: #1890ff;
-
-  // 大屏：一行四个
-  @media screen and (min-width: 768px) {
-    width: calc((100% - 48rpx) / 4);
-  }
-
-  // 超大屏：一行五个
-  @media screen and (min-width: 1024px) {
-    width: calc((100% - 64rpx) / 5);
-  }
-}
-</style>
 ```
 
 ### 滚动容器响应式
@@ -1290,67 +897,6 @@ const loadMore = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.scroll-responsive {
-  padding: 32rpx 0;
-}
-
-// 横向滚动
-.horizontal-scroll {
-  white-space: nowrap;
-  margin-bottom: 48rpx;
-
-  .scroll-content {
-    display: inline-flex;
-    gap: 24rpx;
-    padding: 0 32rpx;
-  }
-
-  .scroll-item {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    width: 200rpx;
-    flex-shrink: 0;
-  }
-
-  .item-image {
-    width: 200rpx;
-    height: 200rpx;
-    background-color: #f5f5f5;
-    border-radius: 16rpx;
-    margin-bottom: 12rpx;
-  }
-
-  .item-title {
-    font-size: 24rpx;
-    color: #595959;
-  }
-}
-
-// 纵向滚动
-.vertical-scroll {
-  padding: 0 32rpx;
-
-  .list-item {
-    padding: 32rpx;
-    margin-bottom: 16rpx;
-    background-color: #ffffff;
-    border-radius: 12rpx;
-    box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.05);
-  }
-
-  .loading-more {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16rpx;
-    padding: 32rpx;
-    color: #8c8c8c;
-    font-size: 24rpx;
-  }
-}
-</style>
 ```
 
 ## WD UI 组件响应式特性
@@ -1403,30 +949,6 @@ WD UI 组件支持 rpx 单位进行尺寸设置：
   </view>
 </template>
 
-<style lang="scss" scoped>
-.component-responsive {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    font-size: 28rpx;
-    color: #8c8c8c;
-    margin-bottom: 24rpx;
-    display: block;
-  }
-}
-
-.button-group,
-.icon-group,
-.loading-group {
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-}
-</style>
 ```
 
 ### Navbar 响应式适配
@@ -1494,44 +1016,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.navbar-responsive {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.info-card {
-  background-color: #ffffff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-}
-
-.info-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #f0f0f0;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  .label {
-    font-size: 28rpx;
-    color: #8c8c8c;
-  }
-
-  .value {
-    font-size: 28rpx;
-    color: #262626;
-    font-weight: 500;
-  }
-}
-</style>
 ```
 
 ## 图片响应式处理
@@ -1580,56 +1064,6 @@ onMounted(() => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.image-responsive {
-  padding: 32rpx;
-}
-
-// 图片容器（固定宽高比）
-.image-container {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  border-radius: 16rpx;
-  margin-bottom: 24rpx;
-
-  // 16:9 比例
-  &.ratio-16-9 {
-    padding-bottom: 56.25%; // 9/16 * 100%
-  }
-
-  // 1:1 比例
-  &.ratio-1-1 {
-    padding-bottom: 100%;
-  }
-
-  // 4:3 比例
-  &.ratio-4-3 {
-    padding-bottom: 75%; // 3/4 * 100%
-  }
-}
-
-// 响应式图片
-.responsive-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-// 高度自适应容器
-.image-auto-height {
-  margin-bottom: 24rpx;
-  border-radius: 16rpx;
-  overflow: hidden;
-
-  .auto-image {
-    width: 100%;
-    display: block;
-  }
-}
-</style>
 ```
 
 ### 图片列表响应式
@@ -1678,49 +1112,6 @@ const previewImage = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.grid-images {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8rpx;
-}
-
-.image-item {
-  overflow: hidden;
-  border-radius: 8rpx;
-
-  image {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-}
-
-// 单图：大图显示
-.grid-1 .image-item {
-  width: 100%;
-  max-width: 500rpx;
-  aspect-ratio: 4/3;
-}
-
-// 两图：一行两个
-.grid-2 .image-item {
-  width: calc((100% - 8rpx) / 2);
-  aspect-ratio: 1;
-}
-
-// 四图：两行两列
-.grid-4 .image-item {
-  width: calc((100% - 8rpx) / 2);
-  aspect-ratio: 1;
-}
-
-// 九宫格：三行三列
-.grid-9 .image-item {
-  width: calc((100% - 16rpx) / 3);
-  aspect-ratio: 1;
-}
-</style>
 ```
 
 ## CSS 变量响应式配置
@@ -1928,32 +1319,6 @@ const width = 200 * (375 / 750) // 不同设备不准确
   </view>
 </template>
 
-<style lang="scss" scoped>
-// 通用样式
-.adaptive-container {
-  padding: 32rpx;
-}
-
-// H5 特定样式
-/* #ifdef H5 */
-.h5-feature {
-  cursor: pointer;
-
-  &:hover {
-    background-color: #f5f5f5;
-  }
-}
-/* #endif */
-
-// 小程序特定样式
-/* #ifdef MP */
-button {
-  padding: 0;
-  margin: 0;
-  background: transparent;
-}
-/* #endif */
-</style>
 ```
 
 ## 常见问题

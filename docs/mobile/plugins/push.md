@@ -163,30 +163,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.push-demo {
-  padding: 32rpx;
-}
-
-.cid-info {
-  margin-top: 24rpx;
-  padding: 24rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-
-  text {
-    display: block;
-    font-size: 26rpx;
-    color: #666;
-  }
-
-  .cid {
-    font-size: 24rpx;
-    color: #333;
-    word-break: break-all;
-  }
-}
-</style>
 ```
 
 ### 监听推送消息
@@ -754,31 +730,6 @@ const sendLocalNotification = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.push-manager-demo {
-  padding: 32rpx;
-}
-
-.info {
-  padding: 24rpx;
-  margin-bottom: 24rpx;
-  background: #f5f5f5;
-  border-radius: 12rpx;
-
-  text {
-    display: block;
-    font-size: 26rpx;
-    color: #666;
-    margin-bottom: 8rpx;
-  }
-}
-
-.actions {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-}
-</style>
 ```
 
 ### 推送标签管理

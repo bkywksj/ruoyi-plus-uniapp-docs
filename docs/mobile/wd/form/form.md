@@ -96,17 +96,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.form-actions {
-  display: flex;
-  gap: 16rpx;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -829,29 +818,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.form-section {
-  margin-bottom: 32rpx;
-}
-
-.section-title {
-  padding: 16rpx 32rpx;
-  font-size: 28rpx;
-  font-weight: bold;
-  color: #333;
-  background: #f5f5f5;
-}
-
-.form-actions {
-  display: flex;
-  gap: 16rpx;
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -954,16 +920,6 @@ const handleSubmit = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.contact-item {
-  padding: 16rpx 0;
-  border-bottom: 1px solid #eee;
-}
-
-.form-actions {
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**

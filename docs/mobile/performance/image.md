@@ -381,25 +381,6 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.lazy-image {
-  width: 100%;
-  height: 100%;
-  transition: opacity 0.3s ease;
-
-  &:not(.loaded) {
-    opacity: 0.6;
-  }
-
-  &.loaded {
-    opacity: 1;
-  }
-
-  &.error {
-    opacity: 0.3;
-  }
-}
-</style>
 ```
 
 **使用懒加载组件:**
@@ -1150,38 +1131,6 @@ const handleLoad = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.image-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.placeholder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  filter: blur(20px); // 模糊效果
-  transform: scale(1.1); // 放大遮盖边缘
-}
-
-.image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-
-  &.loaded {
-    opacity: 1;
-  }
-}
-</style>
 ```
 
 ### 颜色占位符
@@ -1217,25 +1166,6 @@ const handleLoad = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.image-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: background-color 0.3s ease;
-}
-
-.image {
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-
-  &.loaded {
-    opacity: 1;
-  }
-}
-</style>
 ```
 
 ### 骨架屏占位符
@@ -1280,29 +1210,6 @@ uni.getImageInfo({
 })
 </script>
 
-<style lang="scss" scoped>
-.skeleton-image {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    #f0f0f0 25%,
-    #e0e0e0 50%,
-    #f0f0f0 75%
-  );
-  background-size: 200% 100%;
-  animation: skeleton-loading 1.5s ease-in-out infinite;
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-</style>
 ```
 
 ---
@@ -1550,25 +1457,6 @@ const handleFullLoad = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.progressive-image {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.layer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.thumbnail {
-  filter: blur(20px);
-}
-</style>
 ```
 
 ---

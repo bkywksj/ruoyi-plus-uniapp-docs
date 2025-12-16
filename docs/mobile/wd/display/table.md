@@ -46,11 +46,6 @@ const tableData = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -487,35 +482,6 @@ const handleDelete = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.status-tag {
-  padding: 4rpx 16rpx;
-  border-radius: 8rpx;
-  font-size: 24rpx;
-}
-.status-1 {
-  background: #e8f5e9;
-  color: #4caf50;
-}
-.status-2 {
-  background: #ffebee;
-  color: #f44336;
-}
-.action-buttons {
-  display: flex;
-  gap: 16rpx;
-}
-.btn {
-  font-size: 24rpx;
-  padding: 4rpx 12rpx;
-}
-.edit {
-  color: #1890ff;
-}
-.delete {
-  color: #f44336;
-}
-</style>
 ```
 
 **使用说明:**

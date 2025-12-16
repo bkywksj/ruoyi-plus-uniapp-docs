@@ -50,16 +50,6 @@ const handleSearch = ({ value: searchValue }: { value: string }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.result {
-  margin-top: 16rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -105,14 +95,6 @@ const handleSearch = ({ value }: { value: string }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.divider {
-  height: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -150,16 +132,6 @@ const handleSearch = ({ value }: { value: string }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.dark-bg {
-  background: #4d80f0;
-  padding: 16rpx;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -204,22 +176,6 @@ const value1 = ref('')
 const value2 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **技术实现:**
@@ -255,11 +211,6 @@ const handleSearch = ({ value }: { value: string }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -304,22 +255,6 @@ const value1 = ref('')
 const value2 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -350,11 +285,6 @@ import { ref } from 'vue'
 const value = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -423,22 +353,6 @@ const value3 = ref('')
 const value4 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -484,27 +398,6 @@ const value1 = ref('')
 const value2 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-/* 自定义占位符样式类 */
-.custom-placeholder {
-  color: #1890ff !important;
-  font-size: 30rpx !important;
-}
-</style>
 ```
 
 **使用说明:**
@@ -552,27 +445,6 @@ const value1 = ref('')
 const value2 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.tip {
-  margin-top: 8rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -626,32 +498,6 @@ const value1 = ref('')
 const value2 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.prefix-icon {
-  padding: 0 16rpx;
-  display: flex;
-  align-items: center;
-}
-.prefix-text {
-  padding: 0 16rpx 0 32rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -734,27 +580,6 @@ const handleIconClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.demo-item {
-  margin-bottom: 32rpx;
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-.label {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.suffix-icon {
-  padding: 0 32rpx;
-  display: flex;
-  align-items: center;
-}
-</style>
 ```
 
 **使用说明:**
@@ -850,56 +675,6 @@ const clearHistory = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.history {
-  background: #fff;
-  margin-top: 16rpx;
-  padding: 32rpx;
-}
-
-.history-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24rpx;
-}
-
-.history-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.history-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-
-.history-item {
-  display: flex;
-  align-items: center;
-  padding: 12rpx 24rpx;
-  background: #f5f5f5;
-  border-radius: 32rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-
-.history-icon {
-  margin-right: 8rpx;
-  font-size: 28rpx;
-}
-
-.history-text {
-  font-size: 28rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -994,40 +769,6 @@ const selectSuggest = (item: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.suggest {
-  background: #fff;
-  margin-top: 16rpx;
-}
-
-.suggest-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 32rpx;
-  border-bottom: 1px solid #f0f0f0;
-
-  &:last-child {
-    border-bottom: none;
-  }
-}
-
-.suggest-icon {
-  margin-right: 16rpx;
-  font-size: 32rpx;
-  color: #999;
-}
-
-.suggest-text {
-  flex: 1;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **技术实现:**

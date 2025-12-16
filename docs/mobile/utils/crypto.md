@@ -918,19 +918,6 @@ const handleLogin = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.login-page {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32rpx;
-}
-
-.login-form {
-  width: 100%;
-}
-</style>
 ```
 
 ### 密码修改加密
@@ -1194,26 +1181,6 @@ const checkAndUpload = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.file-upload {
-  padding: 32rpx;
-}
-
-.progress {
-  margin-top: 32rpx;
-}
-
-.file-info {
-  margin-top: 32rpx;
-
-  text {
-    display: block;
-    font-size: 28rpx;
-    color: #666;
-    margin-bottom: 16rpx;
-  }
-}
-</style>
 ```
 
 ### 本地数据加密存储

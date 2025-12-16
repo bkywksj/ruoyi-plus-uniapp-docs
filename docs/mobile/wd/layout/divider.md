@@ -38,19 +38,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 // 基础分割线无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.content {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -80,19 +67,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 // 文字分割线无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.content {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -145,31 +119,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 // 内容位置无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #666;
-    font-weight: 500;
-  }
-}
-
-.content {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -224,31 +173,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 // 虚线样式无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #666;
-    font-weight: 500;
-  }
-}
-
-.content {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -305,39 +229,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 // 细线效果无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #666;
-    font-weight: 500;
-  }
-}
-
-.content {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #333;
-}
-
-.card {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -406,46 +297,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 // 垂直分割线无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #666;
-    font-weight: 500;
-  }
-}
-
-.card {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #333;
-}
-
-.horizontal-layout {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  gap: 0;
-
-  text {
-    color: #333;
-    font-size: 28rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -513,31 +364,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 // 自定义颜色无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-
-  .title {
-    display: block;
-    margin-bottom: 16rpx;
-    font-size: 28rpx;
-    color: #666;
-    font-weight: 500;
-  }
-}
-
-.content {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -618,72 +444,6 @@ const handleLoadMore = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-}
-
-.content {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #333;
-}
-
-.divider-content {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-
-  text {
-    font-size: 28rpx;
-    color: #ffa94d;
-    font-weight: 500;
-  }
-}
-
-.tag-content {
-  .tag {
-    padding: 8rpx 16rpx;
-    font-size: 24rpx;
-    color: #fff;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff5252 100%);
-    border-radius: 24rpx;
-  }
-}
-
-.more-btn {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  padding: 12rpx 32rpx;
-  font-size: 26rpx;
-  color: #4dabf7;
-  background: #e3f2fd;
-  border: 2rpx solid #4dabf7;
-  border-radius: 32rpx;
-
-  text {
-    font-size: 26rpx;
-  }
-}
-
-.timeline {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-
-  .date {
-    font-size: 24rpx;
-    color: #999;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -757,52 +517,6 @@ const group3 = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-  background: #f5f5f5;
-}
-
-.list {
-  padding: 0 32rpx;
-}
-
-.group-title {
-  font-size: 28rpx;
-  font-weight: 500;
-}
-
-.list-item {
-  display: flex;
-  align-items: center;
-  padding: 32rpx;
-  background: #fff;
-  border-bottom: 1rpx solid #f0f0f0;
-
-  &:first-of-type {
-    border-top-left-radius: 16rpx;
-    border-top-right-radius: 16rpx;
-  }
-
-  &:last-of-type {
-    border-bottom: none;
-    border-bottom-left-radius: 16rpx;
-    border-bottom-right-radius: 16rpx;
-    margin-bottom: 32rpx;
-  }
-
-  .item-label {
-    flex: 1;
-    margin-left: 24rpx;
-    font-size: 30rpx;
-    color: #333;
-  }
-
-  .arrow {
-    color: #999;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -875,69 +589,6 @@ const handleEdit = () => console.log('编辑')
 const handleDelete = () => console.log('删除')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.action-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 24rpx 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-  margin-bottom: 32rpx;
-
-  .action-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8rpx;
-    color: #666;
-    font-size: 24rpx;
-  }
-}
-
-.card {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.08);
-
-  .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 16rpx;
-  }
-
-  .card-title {
-    font-size: 32rpx;
-    color: #333;
-    font-weight: 500;
-  }
-
-  .card-actions {
-    display: flex;
-    align-items: center;
-    gap: 0;
-
-    text {
-      padding: 0 16rpx;
-      font-size: 26rpx;
-      color: #4dabf7;
-    }
-  }
-
-  .card-content {
-    font-size: 28rpx;
-    color: #666;
-    line-height: 1.6;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -999,70 +650,6 @@ const handleDelete = () => console.log('删除')
 // 结合其他组件无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.tabs {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 24rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  margin-bottom: 32rpx;
-
-  .tab {
-    font-size: 28rpx;
-    color: #666;
-
-    &.active {
-      color: #4dabf7;
-      font-weight: 500;
-    }
-  }
-}
-
-.form-section {
-  background: #fff;
-  border-radius: 16rpx;
-  padding: 32rpx;
-}
-
-.section-title {
-  font-size: 28rpx;
-  font-weight: 500;
-}
-
-.form-item {
-  display: flex;
-  align-items: center;
-  padding: 24rpx 0;
-  border-bottom: 1rpx solid #f0f0f0;
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  .label {
-    width: 160rpx;
-    font-size: 28rpx;
-    color: #333;
-  }
-
-  .input,
-  .textarea {
-    flex: 1;
-    font-size: 28rpx;
-    color: #333;
-  }
-
-  .textarea {
-    min-height: 120rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1139,58 +726,6 @@ const handleDelete = () => console.log('删除')
 // 自定义样式无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 48rpx;
-}
-
-.content {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-  color: #333;
-}
-
-:deep(.shadow-divider) {
-  padding: 16rpx 32rpx;
-  background: #fff;
-  border-radius: 8rpx;
-}
-
-:deep(.animate-divider) {
-  animation: pulse 2s infinite;
-
-  &::before,
-  &::after {
-    animation: border-pulse 2s infinite;
-  }
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-@keyframes border-pulse {
-  0%,
-  100% {
-    border-color: #4dabf7;
-  }
-  50% {
-    border-color: #ff6b6b;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1338,29 +873,6 @@ Divider 组件支持通过 CSS 变量进行主题定制。
 // 主题定制无需额外逻辑
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-theme {
-  // 自定义主题变量
-  --wot-divider-color: #4dabf7;
-  --wot-divider-fs: 32rpx;
-  --wot-divider-line-color: #4dabf7;
-  --wot-divider-line-height: 2px;
-  --wot-divider-margin: 48rpx 0;
-  --wot-divider-content-left-margin: 48rpx;
-  --wot-divider-content-right-margin: 48rpx;
-}
-
-.content {
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-}
-</style>
 ```
 
 参考: src/wd/components/wd-divider/wd-divider.vue:78-187

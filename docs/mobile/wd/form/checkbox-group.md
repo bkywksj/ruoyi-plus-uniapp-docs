@@ -54,27 +54,6 @@ const handleChange = (val: string[]) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background: #F7F8FA;
-    border-radius: 8rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -125,32 +104,6 @@ const options = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -200,32 +153,6 @@ const options = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -276,32 +203,6 @@ const optionsWithDisabled = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -346,32 +247,6 @@ const options = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -421,32 +296,6 @@ const options = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -487,28 +336,6 @@ const options = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background: #F7F8FA;
-    border-radius: 8rpx;
-    font-size: 26rpx;
-    color: #666;
-    line-height: 1.8;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -563,33 +390,6 @@ import { ref } from 'vue'
 const value = ref(['apple'])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-result {
-    margin-top: 24rpx;
-    padding: 24rpx;
-    background: #F7F8FA;
-    border-radius: 8rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-
-.custom-item {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -647,38 +447,6 @@ const options = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-
-  &-hint {
-    margin-top: 12rpx;
-    font-size: 24rpx;
-    color: #1890FF;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -737,32 +505,6 @@ const options = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-
-  &-block {
-    margin-bottom: 32rpx;
-
-    &:last-child {
-      margin-bottom: 0;
-    }
-  }
-
-  &-label {
-    margin-bottom: 16rpx;
-    font-size: 26rpx;
-    color: #666;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -866,44 +608,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-
-.form-actions {
-  margin-top: 48rpx;
-  display: flex;
-  gap: 16rpx;
-  padding: 0 32rpx;
-}
-
-.btn-submit,
-.btn-reset {
-  flex: 1;
-  height: 88rpx;
-  font-size: 28rpx;
-  border-radius: 8rpx;
-  border: none;
-}
-
-.btn-submit {
-  background-color: #1890FF;
-  color: #FFF;
-}
-
-.btn-reset {
-  background-color: #F7F8FA;
-  color: #666;
-}
-</style>
 ```
 
 **技术实现:**
@@ -998,57 +702,6 @@ const options = [
 ]
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-
-  &-title {
-    margin-bottom: 24rpx;
-    font-size: 28rpx;
-    font-weight: 500;
-    color: #333;
-  }
-}
-
-.product-item {
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-  padding: 24rpx;
-  border: 2rpx solid #E5E5E5;
-  border-radius: 12rpx;
-  transition: all 0.3s;
-
-  &.is-selected {
-    border-color: #1890FF;
-    background-color: #F0F8FF;
-  }
-}
-
-.product-img {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 8rpx;
-  object-fit: cover;
-}
-
-.product-info {
-  flex: 1;
-}
-
-.product-name {
-  font-size: 28rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.product-price {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #FF4757;
-}
-</style>
 ```
 
 **技术实现:**

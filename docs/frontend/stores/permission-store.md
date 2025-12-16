@@ -488,14 +488,6 @@ const activeMenu = computed(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.sidebar-scrollbar {
-  height: calc(100vh - 50px);
-  :deep(.el-scrollbar__wrap) {
-    overflow-x: hidden;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -676,22 +668,6 @@ const handleSelect = (index: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.topbar-container {
-  height: 50px;
-  line-height: 50px;
-  border-bottom: 1px solid #e6e6e6;
-
-  :deep(.el-menu) {
-    border-bottom: none;
-  }
-
-  :deep(.el-menu-item) {
-    height: 50px;
-    line-height: 50px;
-  }
-}
-</style>
 ```
 
 **使用说明:**

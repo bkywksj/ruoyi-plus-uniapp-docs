@@ -41,11 +41,6 @@ import { ref } from 'vue'
 const activeTab = ref('home')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx; /* 为固定定位的标签栏留出空间 */
-}
-</style>
 ```
 
 **使用说明:**
@@ -99,11 +94,6 @@ const tabbarItems = ref<WdTabbarItemProps[]>([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -160,11 +150,6 @@ const activeTab = ref('home')
 const messageCount = ref(128)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -212,22 +197,6 @@ const activeTab1 = ref(0)
 const activeTab2 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-
-.section {
-  margin-bottom: 160rpx;
-}
-
-.section-title {
-  display: block;
-  padding: 20rpx 32rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -301,22 +270,6 @@ const activeTab2 = ref(0)
 const activeTab3 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-
-.section {
-  margin-bottom: 160rpx;
-}
-
-.section-title {
-  display: block;
-  padding: 20rpx 32rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **技术实现:**
@@ -409,11 +362,6 @@ const items = ref<WdTabbarItemProps[]>([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -489,55 +437,6 @@ const items = ref<WdTabbarItemProps[]>([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-
-.custom-icon {
-  width: 56rpx;
-  height: 56rpx;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  transition: all 0.3s;
-
-  &.active {
-    transform: scale(1.1);
-    box-shadow: 0 4rpx 12rpx rgba(102, 126, 234, 0.5);
-  }
-}
-
-.icon-image {
-  width: 48rpx;
-  height: 48rpx;
-}
-
-.special-icon {
-  transition: all 0.3s;
-
-  .icon-text {
-    font-size: 48rpx;
-  }
-
-  &.glow {
-    filter: drop-shadow(0 0 8rpx rgba(255, 215, 0, 0.8));
-    animation: pulse 1s infinite;
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -641,20 +540,6 @@ const getPageLoaded = (name: string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  min-height: 100vh;
-}
-
-.content {
-  padding: 32rpx;
-  padding-bottom: 140rpx;
-}
-
-.page {
-  min-height: 1000rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -717,43 +602,6 @@ const activeTab = ref(0)
 const activeTab2 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.header {
-  padding: 40rpx;
-  background: #f5f5f5;
-  text-align: center;
-}
-
-.content {
-  padding: 40rpx;
-  min-height: 400rpx;
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.section {
-  margin: 40rpx 0;
-}
-
-.section-title {
-  display: block;
-  margin-bottom: 20rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-
-.footer {
-  padding: 40rpx;
-  background: #f5f5f5;
-  text-align: center;
-  margin-top: 40rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -856,40 +704,6 @@ const trackPageView = (tabName: number | string) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-
-.info {
-  padding: 32rpx;
-  background: #f5f5f5;
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-
-  text {
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-
-.content {
-  padding: 32rpx;
-}
-
-.page {
-  padding: 40rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
-
-  text {
-    font-size: 32rpx;
-    color: #333;
-  }
-}
-</style>
 ```
 
 **技术实现:**
@@ -976,22 +790,6 @@ const activeTab3 = ref(0)
 const activeTab4 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-
-.section {
-  margin-bottom: 160rpx;
-}
-
-.section-title {
-  display: block;
-  padding: 20rpx 32rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1081,42 +879,6 @@ const activeTab3 = ref(0)
 const activeTab4 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-
-.section {
-  margin-bottom: 160rpx;
-}
-
-.section-title {
-  display: block;
-  padding: 20rpx 32rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-
-.floating-content {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 500;
-  padding: 40rpx;
-  background: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 16rpx;
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-  text-align: center;
-
-  text {
-    font-size: 28rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -1201,23 +963,6 @@ const activeTab3 = ref(0)
 const activeTab4 = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-
-.section {
-  margin-bottom: 160rpx;
-}
-
-.section-title {
-  display: block;
-  padding: 20rpx 32rpx;
-  font-size: 28rpx;
-  color: #666;
-  background: #f5f5f5;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1329,11 +1074,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding-bottom: 120rpx;
-}
-</style>
 ```
 
 **pages.json 配置:**
@@ -1614,19 +1354,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.custom-tabbar-page {
-  // 通过 CSS 变量定制标签栏
-  .my-tabbar {
-    --wd-tabbar-height: 120rpx;
-    --wd-tabbar-background: linear-gradient(to right, #667eea, #764ba2);
-    --wd-tabbar-active-color: #fff;
-    --wd-tabbar-inactive-color: rgba(255, 255, 255, 0.6);
-    --wd-tabbar-item-icon-size: 52rpx;
-    --wd-tabbar-item-title-font-size: 26rpx;
-  }
-}
-</style>
 ```
 
 **通过 custom-style 定制样式:**
@@ -1650,11 +1377,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-:deep(.elevated-tabbar) {
-  box-shadow: 0 -8rpx 24rpx rgba(0, 0, 0, 0.1);
-}
-</style>
 ```
 
 参考: src/wd/components/wd-tabbar/wd-tabbar.vue:379-501
@@ -1890,12 +1612,6 @@ const staticTabs = ref([
   </view>
 </template>
 
-<style lang="scss" scoped>
-.page-content {
-  // 仅预留标签栏高度,不额外添加安全区域
-  padding-bottom: 100rpx; // 标签栏高度
-}
-</style>
 ```
 
 ❌ **不推荐做法:**
@@ -1913,12 +1629,6 @@ const staticTabs = ref([
   </view>
 </template>
 
-<style lang="scss" scoped>
-.page-content {
-  // 重复处理安全区域,导致底部留白过多
-  padding-bottom: calc(100rpx + env(safe-area-inset-bottom));
-}
-</style>
 ```
 
 **说明:**
@@ -1962,15 +1672,6 @@ import { ref } from 'vue'
 const activeTab = ref(0)
 </script>
 
-<style lang="scss" scoped>
-.content {
-  // 方案1: 使用 padding-bottom 预留空间
-  padding-bottom: 120rpx; // 标签栏高度 + 一些额外空间
-
-  // 方案2: 如果内容是滚动的,使用 min-height
-  // min-height: calc(100vh - 120rpx);
-}
-</style>
 ```
 
 **或者确保占位元素正常工作:**
@@ -2240,15 +1941,6 @@ const isSmallScreen = computed(() => systemInfo.windowWidth < 375)
   </wd-tabbar>
 </template>
 
-<style lang="scss" scoped>
-:deep(.custom-round-tabbar) {
-  // 减小左右边距
-  &.wd-tabbar--round {
-    margin-left: 16rpx;
-    margin-right: 16rpx;
-  }
-}
-</style>
 ```
 
 **方案3: 确保阴影不被遮挡:**

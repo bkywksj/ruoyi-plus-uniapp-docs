@@ -40,19 +40,6 @@ import { ref } from 'vue'
 const value = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.result {
-  margin-top: 32rpx;
-  padding: 20rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -91,14 +78,6 @@ const value1 = ref('')
 const value2 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.mt-16 {
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -129,11 +108,6 @@ import { ref } from 'vue'
 const value = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -166,16 +140,6 @@ import { ref } from 'vue'
 const value = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.tips {
-  margin-top: 16rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**
@@ -207,11 +171,6 @@ import { ref } from 'vue'
 const value = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -254,14 +213,6 @@ const value1 = ref('')
 const value2 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.mt-16 {
-  margin-top: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -309,19 +260,6 @@ const value1 = ref('这是一段文本内容')
 const value2 = ref('这是一段文本内容')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.section {
-  margin-bottom: 32rpx;
-}
-.section-title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **技术实现:**
@@ -380,19 +318,6 @@ const handleIconClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.section {
-  margin-bottom: 32rpx;
-}
-.section-title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-</style>
 ```
 
 **使用说明:**
@@ -440,24 +365,6 @@ const readonlyValue = ref('这是只读内容,可以选择但不能编辑')
 const disabledValue = ref('这是禁用内容,完全不可交互')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.section {
-  margin-bottom: 32rpx;
-}
-.section-title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.tips {
-  margin-top: 8rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**
@@ -544,17 +451,6 @@ const handleReset = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.button-group {
-  margin-top: 32rpx;
-}
-.mt-16 {
-  margin-top: 16rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -614,29 +510,6 @@ const value2 = ref('')
 const value3 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.section {
-  margin-bottom: 32rpx;
-}
-.section-title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-:deep(.custom-textarea) {
-  background-color: #f0f9ff;
-}
-
-:deep(.custom-inner) {
-  font-size: 32rpx;
-  color: #1989fa;
-  font-weight: 500;
-}
-</style>
 ```
 
 **使用说明:**
@@ -739,27 +612,6 @@ const selectText = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.section {
-  margin-bottom: 32rpx;
-}
-.section-title {
-  margin-bottom: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-.tips {
-  margin-top: 8rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-.mt-16 {
-  margin-top: 16rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -803,19 +655,6 @@ const value1 = ref('')
 const value2 = ref('')
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-.mt-16 {
-  margin-top: 32rpx;
-}
-
-:deep(.custom-placeholder) {
-  color: #ff6b6b !important;
-  font-style: italic;
-}
-</style>
 ```
 
 **使用说明:**
@@ -1104,22 +943,6 @@ import { ref } from 'vue'
 const value = ref('')
 </script>
 
-<style lang="scss" scoped>
-.custom-theme {
-  padding: 32rpx;
-
-  :deep(.wd-textarea) {
-    --textarea-bg: #f0f9ff;
-    --textarea-fs: 32rpx;
-    --textarea-color: #1890ff;
-    --textarea-icon-color: #1890ff;
-    --textarea-count-color: #69b1ff;
-    --textarea-count-current-color: #1890ff;
-    border-radius: 16rpx;
-    border: 2rpx solid #91d5ff;
-  }
-}
-</style>
 ```
 
 参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:625-924

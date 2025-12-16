@@ -49,13 +49,6 @@
 import AGeometricBackground from '@/components/ATheme/AGeometricBackground.vue'
 </script>
 
-<style lang="scss" scoped>
-.content {
-  position: relative;
-  z-index: 10;
-  padding: 40px;
-}
-</style>
 ```
 
 **使用说明：**
@@ -91,71 +84,6 @@ import AGeometricBackground from '@/components/ATheme/AGeometricBackground.vue'
 const router = useRouter()
 </script>
 
-<style lang="scss" scoped>
-.error-page {
-  width: 100vw;
-  height: 100vh;
-}
-
-.error-container {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  text-align: center;
-}
-
-.error-icon .number {
-  font-size: 120px;
-  font-weight: 800;
-  color: var(--el-color-primary);
-}
-
-.error-title {
-  margin-top: 24px;
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--app-text);
-}
-
-.error-description {
-  margin-top: 16px;
-  font-size: 16px;
-  color: var(--el-text-color-regular);
-}
-
-.error-actions {
-  display: flex;
-  gap: 16px;
-  margin-top: 32px;
-}
-
-.btn-primary,
-.btn-secondary {
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.btn-primary {
-  background: var(--el-color-primary);
-  color: white;
-  border: none;
-  text-decoration: none;
-}
-
-.btn-secondary {
-  background: rgba(var(--el-color-primary-rgb, 93, 135, 255), 0.08);
-  color: var(--el-color-primary);
-  border: 1px solid rgba(var(--el-color-primary-rgb, 93, 135, 255), 0.2);
-}
-</style>
 ```
 
 **技术实现：**
@@ -194,77 +122,6 @@ const router = useRouter()
 import AGeometricBackground from '@/components/ATheme/AGeometricBackground.vue'
 </script>
 
-<style lang="scss" scoped>
-.auth-left-view {
-  position: relative;
-  width: 65vw;
-  height: 100vh;
-  padding: 20px;
-}
-
-.logo {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s;
-
-  &:hover {
-    opacity: 0.8;
-    transform: translateX(2px);
-  }
-
-  .icon {
-    width: 46px;
-    height: 46px;
-  }
-
-  .title {
-    margin: 0 0 0 10px;
-    font-size: 20px;
-    font-weight: 400;
-    color: var(--app-text);
-  }
-}
-
-.illustration {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40%;
-  z-index: 10;
-
-  img {
-    width: 100%;
-    height: auto;
-  }
-}
-
-.slogan {
-  position: absolute;
-  bottom: 80px;
-  width: 100%;
-  text-align: center;
-
-  h1 {
-    font-size: 24px;
-    font-weight: 400;
-    color: var(--app-text);
-    margin: 0 0 10px 0;
-  }
-
-  p {
-    font-size: 14px;
-    color: var(--el-text-color-secondary);
-    margin: 0;
-  }
-}
-</style>
 ```
 
 **技术实现：**
@@ -290,20 +147,6 @@ import AGeometricBackground from '@/components/ATheme/AGeometricBackground.vue'
 import AGeometricBackground from '@/components/ATheme/AGeometricBackground.vue'
 </script>
 
-<style lang="scss" scoped>
-.custom-background {
-  width: 800px;
-  height: 600px;
-  border-radius: 16px;
-  overflow: hidden;
-}
-
-.content {
-  position: relative;
-  z-index: 10;
-  padding: 40px;
-}
-</style>
 ```
 
 **使用说明：**
@@ -350,28 +193,6 @@ const systemName = ref('RuoYi Plus')
 const systemVersion = ref('1.0.0')
 </script>
 
-<style lang="scss" scoped>
-.page-container {
-  min-height: 100vh;
-  padding: 40px;
-}
-
-.content-wrapper {
-  position: relative;
-  z-index: 10;
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.info-card {
-  background: var(--bg-level-1);
-
-  :deep(.el-card__header) {
-    background: transparent;
-    border-bottom: 1px solid var(--el-border-color-lighter);
-  }
-}
-</style>
 ```
 
 **技术实现：**
@@ -933,18 +754,6 @@ const systemVersion = ref('1.0.0')
   </AGeometricBackground>
 </template>
 
-<style lang="scss" scoped>
-.content-container {
-  position: relative;
-  z-index: 10;
-  padding: 40px;
-}
-
-.content-card {
-  background: var(--bg-level-1);
-  backdrop-filter: blur(10px);
-}
-</style>
 ```
 
 **❌ 不推荐做法：**
@@ -979,33 +788,6 @@ const systemVersion = ref('1.0.0')
   </AGeometricBackground>
 </template>
 
-<style lang="scss" scoped>
-.responsive-page {
-  width: 100%;
-  min-height: 100vh;
-}
-
-// 平板及以下
-@media (max-width: 1024px) {
-  .responsive-page {
-    // 可以通过深度选择器隐藏部分装饰元素
-    :deep(.squares-group) {
-      display: none;
-    }
-  }
-}
-
-// 手机端
-@media (max-width: 768px) {
-  .responsive-page {
-    // 简化装饰效果
-    :deep(.bg-bubble),
-    :deep(.dot) {
-      display: none;
-    }
-  }
-}
-</style>
 ```
 
 **关键点：**
@@ -1072,16 +854,6 @@ const toggleDark = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.app-background {
-  transition: background 0.3s ease;
-
-  // 所有几何元素也需要过渡
-  :deep(.geo-element) {
-    transition: all 0.3s ease;
-  }
-}
-</style>
 ```
 
 **关键点：**
@@ -1145,12 +917,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.no-animations :deep(.geo-element) {
-  animation: none !important;
-  opacity: 1 !important;
-}
-</style>
 ```
 
 ### 3. 暗黑模式下视觉效果不佳
@@ -1192,18 +958,6 @@ onMounted(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.page-wrapper {
-  width: 100%;
-  min-height: 100vh;
-  position: relative;
-}
-
-.background {
-  width: 100%;
-  height: 100%;
-}
-</style>
 ```
 
 ### 5. 在 SSR 环境下渲染异常

@@ -36,11 +36,6 @@ import { ref } from 'vue'
 const current = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -72,11 +67,6 @@ import { ref } from 'vue'
 const current = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -108,11 +98,6 @@ import { ref } from 'vue'
 const current = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -145,11 +130,6 @@ import { ref } from 'vue'
 const current = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -183,11 +163,6 @@ import { ref } from 'vue'
 const current = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -256,22 +231,6 @@ const handlePageChange = (event: { value: number }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.data-list {
-  margin-top: 32rpx;
-}
-
-.data-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -304,11 +263,6 @@ import { ref } from 'vue'
 const current = ref(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **技术实现:**
@@ -398,37 +352,6 @@ const handlePageChange = (event: { value: number }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.product-list {
-  margin-bottom: 32rpx;
-}
-
-.product-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.product-name {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.product-price {
-  font-size: 32rpx;
-  color: #ff4444;
-  font-weight: bold;
-}
-</style>
 ```
 
 **技术实现:**
@@ -552,50 +475,6 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.loading {
-  text-align: center;
-  padding: 80rpx 0;
-  color: #999;
-}
-
-.article-list {
-  margin-bottom: 32rpx;
-}
-
-.article-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.article-title {
-  font-size: 32rpx;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 12rpx;
-}
-
-.article-summary {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 12rpx;
-}
-
-.article-meta {
-  display: flex;
-  justify-content: space-between;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**
@@ -716,77 +595,6 @@ const handlePageChange = (event: { value: number }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.filter {
-  margin-bottom: 32rpx;
-  padding: 24rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.filter-item {
-  margin-bottom: 16rpx;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.filter-label {
-  font-size: 28rpx;
-  color: #333;
-  margin-bottom: 16rpx;
-  display: block;
-}
-
-.filter-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-
-.filter-option {
-  padding: 12rpx 24rpx;
-  background-color: #f5f5f5;
-  border-radius: 4rpx;
-  font-size: 26rpx;
-  color: #666;
-
-  &.active {
-    background-color: #4d80f0;
-    color: #fff;
-  }
-}
-
-.book-list {
-  margin-bottom: 32rpx;
-}
-
-.book-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.book-name {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.book-category {
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**
@@ -894,34 +702,6 @@ onUnmounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.news-list {
-  margin-bottom: 32rpx;
-}
-
-.news-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.news-title {
-  font-size: 28rpx;
-  color: #333;
-  margin-bottom: 12rpx;
-}
-
-.news-date {
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1030,61 +810,6 @@ const handleJump = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.item-list {
-  margin-bottom: 32rpx;
-}
-
-.item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  text-align: center;
-}
-
-.jump-to {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-}
-
-.jump-label {
-  font-size: 28rpx;
-  color: #333;
-  margin-right: 16rpx;
-}
-
-.jump-input {
-  width: 120rpx;
-  height: 60rpx;
-  padding: 0 16rpx;
-  border: 2rpx solid #e0e0e0;
-  border-radius: 4rpx;
-  text-align: center;
-  font-size: 28rpx;
-}
-
-.jump-unit {
-  font-size: 28rpx;
-  color: #333;
-  margin: 0 16rpx;
-}
-
-.jump-button {
-  background-color: #4d80f0;
-  color: #fff;
-  border: none;
-}
-</style>
 ```
 
 **技术实现:**
@@ -1207,48 +932,6 @@ const handlePageChange = (event: { value: number }) => {
 loadPage(1)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.scroll-view {
-  flex: 1;
-  margin-bottom: 32rpx;
-}
-
-.card-item {
-  padding: 24rpx;
-  margin-bottom: 16rpx;
-  background-color: #fff;
-  border-radius: 8rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.card-title {
-  font-size: 32rpx;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 12rpx;
-}
-
-.card-content {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.loading-tip,
-.no-more-tip {
-  text-align: center;
-  padding: 24rpx;
-  font-size: 28rpx;
-  color: #999;
-}
-</style>
 ```
 
 **技术实现:**

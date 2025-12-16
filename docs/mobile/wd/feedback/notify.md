@@ -41,11 +41,6 @@ const showNotify = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -494,16 +489,6 @@ import { ref } from 'vue'
 const visible = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.custom-notify {
-  display: flex;
-  align-items: center;
-
-  .custom-text {
-    margin-left: 16rpx;
-  }
-}
-</style>
 ```
 
 ### 组件式调用

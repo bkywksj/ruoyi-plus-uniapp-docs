@@ -486,9 +486,6 @@ defineExpose({
 })
 </script>
 
-<style lang="scss" scoped>
-/* 样式 */
-</style>
 ```
 
 ### 组件命名规范
@@ -1106,42 +1103,7 @@ src/assets/styles/
 ### 组件样式规范
 
 ```vue
-<style lang="scss" scoped>
-// ✅ 正确 - 使用 BEM 命名规范
-.user-management {
-  // 块（Block）
-  padding: 20px;
 
-  &__header {
-    // 元素（Element）
-    margin-bottom: 16px;
-  }
-
-  &__content {
-    // 元素
-    min-height: 400px;
-  }
-
-  &__footer {
-    // 元素
-    margin-top: 16px;
-    text-align: right;
-  }
-
-  &--loading {
-    // 修饰符（Modifier）
-    opacity: 0.5;
-    pointer-events: none;
-  }
-}
-</style>
-
-<style lang="scss" scoped>
-// ❌ 错误 - 过于简单或不规范的命名
-.header { }
-.content { }
-.btn { }
-</style>
 ```
 
 ### UnoCSS 使用

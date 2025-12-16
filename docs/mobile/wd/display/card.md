@@ -38,37 +38,6 @@ Card 卡片组件是一个灵活的内容容器,用于承载图片、文字、�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.card-content {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.product-name {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.product-desc {
-  font-size: 24rpx;
-  color: #999;
-  margin-bottom: 16rpx;
-}
-
-.product-price {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #ff4d4f;
-}
-</style>
 ```
 
 **使用说明:**
@@ -98,34 +67,6 @@ Card 卡片组件是一个灵活的内容容器,用于承载图片、文字、�
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.message {
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-}
-
-.message-text {
-  flex: 1;
-}
-
-.message-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.message-desc {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -173,40 +114,6 @@ const handleMore = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.custom-title {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.title-text {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-}
-
-.title-with-extra {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.title-extra {
-  font-size: 28rpx;
-  color: #1890ff;
-}
-
-.card-content {
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 **使用说明:**
@@ -258,60 +165,6 @@ const handleMore = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.card-content {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.product-info {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.product-name {
-  font-size: 32rpx;
-  color: #333;
-}
-
-.product-price {
-  font-size: 36rpx;
-  font-weight: bold;
-  color: #ff4d4f;
-}
-
-.card-footer {
-  display: flex;
-  gap: 16rpx;
-  justify-content: flex-end;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-}
-
-.info-item {
-  display: flex;
-  gap: 16rpx;
-}
-
-.label {
-  color: #999;
-}
-
-.value {
-  color: #333;
-  font-weight: bold;
-}
-</style>
 ```
 
 **使用说明:**
@@ -361,47 +214,6 @@ const handleMore = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  background: #f5f5f5;
-}
-
-.card-content {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.order-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-}
-
-.order-item {
-  display: flex;
-  justify-content: space-between;
-  font-size: 28rpx;
-}
-
-.label {
-  color: #999;
-}
-
-.value {
-  color: #333;
-}
-
-.price {
-  font-weight: bold;
-  color: #ff4d4f;
-}
-
-.order-footer {
-  display: flex;
-  gap: 16rpx;
-  justify-content: flex-end;
-}
-</style>
 ```
 
 **使用说明:**
@@ -440,34 +252,6 @@ const handleMore = () => {
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.custom-card {
-  border: 2rpx solid #1890ff;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.custom-title {
-  color: #fff !important;
-  border-bottom: 1rpx solid rgba(255, 255, 255, 0.3);
-}
-
-.custom-content {
-  color: rgba(255, 255, 255, 0.9) !important;
-}
-
-.custom-footer {
-  border-top: 1rpx solid rgba(255, 255, 255, 0.3);
-}
-
-.card-content {
-  font-size: 28rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -550,88 +334,6 @@ const activities = ref([
 ])
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.stats-content {
-  display: flex;
-  justify-content: space-around;
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-value {
-  font-size: 48rpx;
-  font-weight: bold;
-  color: #1890ff;
-  margin-bottom: 8rpx;
-}
-
-.stat-label {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.shortcuts-content {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.shortcut-item {
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16rpx;
-  padding: 24rpx 0;
-}
-
-.shortcut-text {
-  font-size: 24rpx;
-  color: #666;
-}
-
-.activity-content {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-}
-
-.activity-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 16rpx;
-}
-
-.activity-dot {
-  width: 16rpx;
-  height: 16rpx;
-  border-radius: 50%;
-  background: #1890ff;
-  margin-top: 8rpx;
-  flex-shrink: 0;
-}
-
-.activity-info {
-  flex: 1;
-}
-
-.activity-title {
-  font-size: 28rpx;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.activity-time {
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **使用说明:**
@@ -706,73 +408,6 @@ const products = ref<Product[]>([
 ])
 </script>
 
-<style lang="scss" scoped>
-.product-list {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.product-card {
-  display: flex;
-  gap: 24rpx;
-}
-
-.product-image {
-  width: 200rpx;
-  height: 200rpx;
-  border-radius: 8rpx;
-  flex-shrink: 0;
-}
-
-.product-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.product-name {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.product-desc {
-  font-size: 24rpx;
-  color: #999;
-  margin-bottom: 16rpx;
-}
-
-.product-tags {
-  display: flex;
-  gap: 8rpx;
-  margin-bottom: 16rpx;
-}
-
-.product-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.product-price {
-  display: flex;
-  align-items: baseline;
-}
-
-.price-symbol {
-  font-size: 24rpx;
-  color: #ff4d4f;
-  font-weight: bold;
-}
-
-.price-value {
-  font-size: 40rpx;
-  color: #ff4d4f;
-  font-weight: bold;
-}
-</style>
 ```
 
 **功能说明:**
@@ -859,78 +494,6 @@ const articles = ref<Article[]>([
 ])
 </script>
 
-<style lang="scss" scoped>
-.article-list {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.article-header {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-}
-
-.author-avatar {
-  width: 64rpx;
-  height: 64rpx;
-  border-radius: 50%;
-}
-
-.author-info {
-  flex: 1;
-}
-
-.author-name {
-  font-size: 28rpx;
-  color: #333;
-  font-weight: bold;
-  margin-bottom: 4rpx;
-}
-
-.publish-time {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.article-content {
-  display: flex;
-  flex-direction: column;
-  gap: 16rpx;
-}
-
-.article-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  line-height: 1.4;
-}
-
-.article-excerpt {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.article-cover {
-  width: 100%;
-  height: 300rpx;
-  border-radius: 8rpx;
-}
-
-.article-footer {
-  display: flex;
-  gap: 48rpx;
-}
-
-.article-stat {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **功能说明:**
@@ -1068,96 +631,6 @@ const orders = ref<Order[]>([
 ])
 </script>
 
-<style lang="scss" scoped>
-.order-list {
-  background: #f5f5f5;
-}
-
-.order-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.order-no {
-  font-size: 28rpx;
-  color: #666;
-}
-
-.order-content {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-}
-
-.order-item {
-  display: flex;
-  gap: 24rpx;
-}
-
-.item-image {
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 8rpx;
-  flex-shrink: 0;
-}
-
-.item-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.item-name {
-  font-size: 28rpx;
-  color: #333;
-  font-weight: bold;
-}
-
-.item-spec {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.item-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.item-price {
-  font-size: 32rpx;
-  color: #ff4d4f;
-  font-weight: bold;
-}
-
-.item-quantity {
-  font-size: 24rpx;
-  color: #999;
-}
-
-.order-total {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 16rpx;
-  font-size: 28rpx;
-  color: #333;
-}
-
-.total-price {
-  font-size: 36rpx;
-  color: #ff4d4f;
-  font-weight: bold;
-}
-
-.order-footer {
-  display: flex;
-  gap: 16rpx;
-  justify-content: flex-end;
-}
-</style>
 ```
 
 **功能说明:**
@@ -1246,102 +719,6 @@ const userInfo = ref({
 })
 </script>
 
-<style lang="scss" scoped>
-.user-profile {
-  padding: 32rpx;
-  background: #f5f5f5;
-}
-
-.profile-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.profile-content {
-  display: flex;
-  flex-direction: column;
-  gap: 32rpx;
-}
-
-.profile-header {
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-}
-
-.user-avatar {
-  width: 120rpx;
-  height: 120rpx;
-  border-radius: 50%;
-  border: 4rpx solid rgba(255, 255, 255, 0.3);
-}
-
-.user-basic {
-  flex: 1;
-}
-
-.user-name {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 12rpx;
-}
-
-.profile-stats {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 32rpx 0;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8rpx;
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-value {
-  font-size: 40rpx;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 8rpx;
-}
-
-.stat-label {
-  font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.stat-divider {
-  width: 1rpx;
-  height: 60rpx;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.profile-footer {
-  padding: 24rpx 0 0;
-}
-
-.info-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24rpx;
-}
-
-.info-item {
-  display: flex;
-  justify-content: space-between;
-  font-size: 28rpx;
-}
-
-.info-label {
-  color: #999;
-}
-
-.info-value {
-  color: #333;
-  font-weight: bold;
-}
-</style>
 ```
 
 **功能说明:**
@@ -1435,50 +812,6 @@ const handleClick = (notification: Notification) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.notification-list {
-  background: #f5f5f5;
-}
-
-.notification-content {
-  display: flex;
-  align-items: center;
-  gap: 24rpx;
-}
-
-.notification-icon {
-  width: 96rpx;
-  height: 96rpx;
-  border-radius: 50%;
-  background: #f5f5f5;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.notification-info {
-  flex: 1;
-}
-
-.notification-title {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 8rpx;
-}
-
-.notification-desc {
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 8rpx;
-}
-
-.notification-time {
-  font-size: 24rpx;
-  color: #999;
-}
-</style>
 ```
 
 **功能说明:**
@@ -1590,19 +923,6 @@ $-dark-color3: #a8a8a8;            // 暗黑模式次要文字色
   </view>
 </template>
 
-<style lang="scss" scoped>
-.custom-theme {
-  // 修改 CSS 变量
-  --card-bg: #f0f9ff;
-  --card-radius: 24rpx;
-  --card-shadow-color: 0 4rpx 16rpx rgba(24, 144, 255, 0.2);
-  --card-title-color: #1890ff;
-}
-
-.custom-card {
-  border: 2rpx solid #1890ff;
-}
-</style>
 ```
 
 ### 暗黑模式
@@ -1785,23 +1105,6 @@ Card 组件自动支持暗黑模式,在暗黑主题下会应用暗色样式:
   </view>
 </template>
 
-<style lang="scss" scoped>
-.card-list {
-  padding: 32rpx;
-
-  /* ✅ 方案1: 移除最后一个卡片的底部间距 */
-  :deep(.wd-card:last-child) {
-    margin-bottom: 0;
-  }
-}
-
-/* ✅ 方案2: 使用自定义样式类 */
-.card-list {
-  :deep(.wd-card) {
-    margin-bottom: 16rpx;
-  }
-}
-</style>
 ```
 
 ### 2. 矩形卡片的分割线显示异常
@@ -1856,24 +1159,6 @@ Card 组件自动支持暗黑模式,在暗黑主题下会应用暗色样式:
   </wd-card>
 </template>
 
-<style lang="scss" scoped>
-.card-content {
-  width: 100%;
-  overflow: hidden; /* 防止溢出 */
-}
-
-.text-overflow {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.responsive-image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-</style>
 ```
 
 ### 4. 自定义样式不生效
@@ -1891,15 +1176,6 @@ Card 组件自动支持暗黑模式,在暗黑主题下会应用暗色样式:
   </wd-card>
 </template>
 
-<style lang="scss" scoped>
-/* ✅ 使用 deep 选择器 */
-:deep(.my-card) {
-  background: #f0f9ff;
-  border: 2rpx solid #1890ff;
-}
-
-/* ✅ 或使用 custom-style 内联样式 */
-</style>
 
 <template>
   <wd-card custom-style="background: #f0f9ff; border: 2rpx solid #1890ff">
@@ -1923,32 +1199,4 @@ Card 组件自动支持暗黑模式,在暗黑主题下会应用暗色样式:
   </wd-card>
 </template>
 
-<style lang="scss" scoped>
-/* ✅ 使用 CSS 变量适配暗黑模式 */
-.themed-card {
-  background: var(--card-bg, #fff);
-  color: var(--card-color, #333);
-}
-
-/* ✅ 或使用媒体查询 */
-.themed-card {
-  background: #fff;
-  color: #333;
-}
-
-@media (prefers-color-scheme: dark) {
-  .themed-card {
-    background: #1f1f1f;
-    color: #e5e5e5;
-  }
-}
-
-/* ✅ 或使用主题类 */
-.wot-theme-dark {
-  .themed-card {
-    background: #1f1f1f;
-    color: #e5e5e5;
-  }
-}
-</style>
 ```

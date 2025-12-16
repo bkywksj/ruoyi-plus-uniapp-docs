@@ -35,11 +35,6 @@ import { ref } from 'vue'
 const showOverlay = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -80,40 +75,6 @@ const handleClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.content {
-  width: 500rpx;
-  padding: 48rpx 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-
-  .title {
-    display: block;
-    font-size: 32rpx;
-    font-weight: bold;
-    margin-bottom: 16rpx;
-  }
-
-  .message {
-    display: block;
-    font-size: 28rpx;
-    color: #666;
-    margin-bottom: 32rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -146,14 +107,6 @@ const showNormal = ref(false)
 const showSlow = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -197,31 +150,6 @@ const showFirst = ref(false)
 const showSecond = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.content {
-  width: 400rpx;
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 24rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -271,13 +199,6 @@ const showDark = ref(false)
 const showBlur = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  gap: 16rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -332,33 +253,6 @@ const showLocked = ref(false)
 const showUnlocked = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-  display: flex;
-  gap: 16rpx;
-}
-
-.wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.content {
-  width: 400rpx;
-  padding: 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-
-  text {
-    display: block;
-    margin-bottom: 24rpx;
-  }
-}
-</style>
 ```
 
 **使用说明:**
@@ -398,25 +292,6 @@ const handleLoad = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.loading-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.loading-text {
-  margin-top: 16rpx;
-  font-size: 28rpx;
-  color: #fff;
-}
-</style>
 ```
 
 ### 图片预览
@@ -452,30 +327,6 @@ import { ref } from 'vue'
 const showPreview = ref(false)
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.thumb {
-  width: 200rpx;
-  height: 200rpx;
-  border-radius: 8rpx;
-}
-
-.preview-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 32rpx;
-}
-
-.preview-image {
-  width: 100%;
-  max-height: 80vh;
-}
-</style>
 ```
 
 ## API
@@ -644,24 +495,6 @@ Overlay 通常作为 Popup 等弹出组件的内部依赖,不需要单独使用:
   </wd-overlay>
 </template>
 
-<style lang="scss" scoped>
-.wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.content {
-  background: #fff;
-  padding: 32rpx;
-  border-radius: 16rpx;
-}
-</style>
 ```
 
 ### 6. 小程序端滚动穿透问题
@@ -775,88 +608,6 @@ const nextStep = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.guide-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.highlight-area {
-  position: absolute;
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7);
-  border-radius: 8rpx;
-}
-
-.highlight-border {
-  position: absolute;
-  top: -4rpx;
-  left: -4rpx;
-  right: -4rpx;
-  bottom: -4rpx;
-  border: 4rpx solid #1890ff;
-  border-radius: 12rpx;
-  animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.guide-tip {
-  position: absolute;
-  background: #fff;
-  padding: 24rpx 32rpx;
-  border-radius: 12rpx;
-  max-width: 400rpx;
-}
-
-.tip-text {
-  font-size: 28rpx;
-  color: #333;
-}
-
-.tip-arrow {
-  position: absolute;
-  top: -16rpx;
-  left: 32rpx;
-  width: 0;
-  height: 0;
-  border-left: 16rpx solid transparent;
-  border-right: 16rpx solid transparent;
-  border-bottom: 16rpx solid #fff;
-}
-
-.step-indicator {
-  position: absolute;
-  bottom: 100rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 16rpx;
-}
-
-.step-dot {
-  width: 16rpx;
-  height: 16rpx;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-
-  &.active {
-    background: #fff;
-    width: 32rpx;
-    border-radius: 8rpx;
-  }
-}
-</style>
 ```
 
 ### 确认对话框
@@ -920,63 +671,6 @@ const handleConfirm = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.dialog-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 32rpx;
-}
-
-.dialog-content {
-  width: 560rpx;
-  background: #fff;
-  border-radius: 24rpx;
-  overflow: hidden;
-}
-
-.dialog-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 48rpx 32rpx 24rpx;
-}
-
-.dialog-title {
-  margin-top: 16rpx;
-  font-size: 36rpx;
-  font-weight: 500;
-  color: #333;
-}
-
-.dialog-body {
-  padding: 0 32rpx 32rpx;
-  text-align: center;
-}
-
-.dialog-message {
-  font-size: 28rpx;
-  color: #666;
-  line-height: 1.6;
-}
-
-.dialog-footer {
-  display: flex;
-  border-top: 1rpx solid #eee;
-
-  :deep(.wd-button) {
-    flex: 1;
-    height: 96rpx;
-    border-radius: 0;
-    border: none;
-
-    &:first-child {
-      border-right: 1rpx solid #eee;
-    }
-  }
-}
-</style>
 ```
 
 ### 侧边抽屉
@@ -1047,69 +741,6 @@ const saveSettings = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 600rpx;
-  height: 100%;
-  background: #fff;
-  transform: translateX(100%);
-  transition: transform 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-.drawer--visible {
-  transform: translateX(0);
-}
-
-.drawer-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-
-.drawer-title {
-  font-size: 36rpx;
-  font-weight: 500;
-  color: #333;
-}
-
-.drawer-body {
-  flex: 1;
-  padding: 16rpx 0;
-}
-
-.setting-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 24rpx 32rpx;
-
-  &:active {
-    background: #f5f5f5;
-  }
-}
-
-.setting-label {
-  font-size: 30rpx;
-  color: #333;
-}
-
-.setting-value {
-  font-size: 28rpx;
-  color: #999;
-}
-
-.drawer-footer {
-  padding: 32rpx;
-  border-top: 1rpx solid #eee;
-}
-</style>
 ```
 
 ### 全屏加载带进度
@@ -1189,58 +820,6 @@ const cancelUpload = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.upload-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.upload-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 48rpx;
-  background: #fff;
-  border-radius: 24rpx;
-}
-
-.progress-circle {
-  position: relative;
-  width: 160rpx;
-  height: 160rpx;
-  border-radius: 50%;
-  background: conic-gradient(
-    #1890ff var(--progress, 0%),
-    #e8e8e8 var(--progress, 0%)
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.progress-fill {
-  position: absolute;
-  width: 130rpx;
-  height: 130rpx;
-  border-radius: 50%;
-  background: #fff;
-}
-
-.progress-text {
-  position: relative;
-  font-size: 32rpx;
-  font-weight: 500;
-  color: #1890ff;
-}
-
-.upload-status {
-  margin: 24rpx 0;
-  font-size: 28rpx;
-  color: #666;
-}
-</style>
 ```
 
 ### 图片查看器
@@ -1383,97 +962,6 @@ const deleteImage = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8rpx;
-  padding: 32rpx;
-}
-
-.grid-image {
-  width: 100%;
-  aspect-ratio: 1;
-  border-radius: 8rpx;
-}
-
-.viewer-wrapper {
-  width: 100%;
-  height: 100%;
-  background: #000;
-}
-
-.viewer-swiper {
-  width: 100%;
-  height: 100%;
-}
-
-.movable-area {
-  width: 100%;
-  height: 100%;
-}
-
-.movable-view {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.viewer-image {
-  width: 100%;
-  height: 100%;
-}
-
-.viewer-indicator {
-  position: absolute;
-  top: 100rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #fff;
-  font-size: 28rpx;
-  padding: 8rpx 24rpx;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 24rpx;
-}
-
-.viewer-toolbar {
-  position: absolute;
-  bottom: 100rpx;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 48rpx;
-}
-
-.toolbar-btn {
-  width: 96rpx;
-  height: 96rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-
-  &:active {
-    background: rgba(0, 0, 0, 0.7);
-  }
-}
-
-.viewer-close {
-  position: absolute;
-  top: 80rpx;
-  right: 32rpx;
-  width: 80rpx;
-  height: 80rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  border-radius: 50%;
-}
-</style>
 ```
 
 ## 注意事项
@@ -1663,65 +1151,4 @@ const handleLoad = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-page {
-  padding: 32rpx;
-}
-
-.demo-section {
-  margin-bottom: 48rpx;
-}
-
-.demo-title {
-  font-size: 28rpx;
-  color: #999;
-  margin-bottom: 24rpx;
-}
-
-.demo-buttons {
-  display: flex;
-  gap: 16rpx;
-}
-
-.content-wrapper,
-.loading-wrapper,
-.light-content,
-.dark-content,
-.blur-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.content-box {
-  width: 500rpx;
-  padding: 48rpx 32rpx;
-  background: #fff;
-  border-radius: 16rpx;
-  text-align: center;
-}
-
-.content-title {
-  display: block;
-  font-size: 36rpx;
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 16rpx;
-}
-
-.content-message {
-  display: block;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 32rpx;
-}
-
-.loading-text {
-  margin-top: 16rpx;
-  font-size: 28rpx;
-  color: #fff;
-}
-</style>
 ```

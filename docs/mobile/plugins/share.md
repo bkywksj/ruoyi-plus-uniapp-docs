@@ -166,26 +166,6 @@ const handleShareClick = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.share-buttons {
-  display: flex;
-  gap: 24rpx;
-}
-
-.share-btn {
-  padding: 16rpx 32rpx;
-  background: var(--wot-color-theme);
-  color: #fff;
-  border-radius: 8rpx;
-}
-
-.custom-share {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16rpx;
-}
-</style>
 ```
 
 ## 分享配置

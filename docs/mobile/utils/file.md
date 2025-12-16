@@ -495,108 +495,6 @@ const formatSize = (bytes: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.file-picker {
-  padding: 24rpx;
-}
-
-.picker-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24rpx;
-
-  .title {
-    font-size: 32rpx;
-    font-weight: 500;
-  }
-
-  .count {
-    font-size: 28rpx;
-    color: #999;
-  }
-}
-
-.file-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16rpx;
-}
-
-.file-item {
-  position: relative;
-  width: 200rpx;
-  height: 200rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
-  overflow: hidden;
-
-  .file-preview {
-    width: 100%;
-    height: 100%;
-  }
-
-  .file-icon {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .file-info {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 8rpx;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6));
-
-    .file-name {
-      font-size: 20rpx;
-      color: #fff;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .file-size {
-      font-size: 18rpx;
-      color: rgba(255, 255, 255, 0.8);
-    }
-  }
-
-  .delete-btn {
-    position: absolute;
-    top: 8rpx;
-    right: 8rpx;
-    width: 40rpx;
-    height: 40rpx;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-.add-btn {
-  width: 200rpx;
-  height: 200rpx;
-  border: 2rpx dashed #ddd;
-  border-radius: 8rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8rpx;
-
-  .add-text {
-    font-size: 24rpx;
-    color: #999;
-  }
-}
-</style>
 ```
 
 ## 文件上传
@@ -1086,53 +984,6 @@ const formatSize = (bytes: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.upload-demo {
-  padding: 32rpx;
-}
-
-.upload-list {
-  margin-top: 32rpx;
-}
-
-.upload-item {
-  padding: 24rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
-  margin-bottom: 16rpx;
-}
-
-.file-info {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16rpx;
-
-  .name {
-    font-size: 28rpx;
-    color: #333;
-  }
-
-  .size {
-    font-size: 24rpx;
-    color: #999;
-  }
-}
-
-.status {
-  margin: 16rpx 0;
-
-  .pending { color: #999; }
-  .loading { color: #409EFF; }
-  .success { color: #67C23A; }
-  .fail { color: #F56C6C; }
-}
-
-.actions {
-  display: flex;
-  gap: 16rpx;
-  justify-content: flex-end;
-}
-</style>
 ```
 
 ### 直传模式示例
@@ -1406,60 +1257,6 @@ const cancelDownload = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.download-demo {
-  padding: 32rpx;
-}
-
-.file-card {
-  padding: 24rpx;
-  background-color: #fff;
-  border-radius: 12rpx;
-  margin-bottom: 24rpx;
-  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
-}
-
-.file-info {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  margin-bottom: 16rpx;
-}
-
-.file-detail {
-  flex: 1;
-
-  .name {
-    display: block;
-    font-size: 28rpx;
-    color: #333;
-  }
-
-  .size {
-    font-size: 24rpx;
-    color: #999;
-  }
-}
-
-.progress-wrap {
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  margin-bottom: 16rpx;
-
-  .progress-text {
-    font-size: 24rpx;
-    color: #409EFF;
-    width: 80rpx;
-    text-align: right;
-  }
-}
-
-.actions {
-  display: flex;
-  justify-content: flex-end;
-}
-</style>
 ```
 
 ## 文件预览
@@ -1685,46 +1482,6 @@ const handleError = (e: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.video-player-page {
-  width: 100vw;
-  height: 100vh;
-  background-color: #000;
-}
-
-.header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 88rpx;
-  display: flex;
-  align-items: center;
-  padding: 0 32rpx;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent);
-  z-index: 10;
-}
-
-.back-btn {
-  width: 60rpx;
-  height: 60rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.title {
-  flex: 1;
-  color: #fff;
-  font-size: 32rpx;
-  margin-left: 16rpx;
-}
-
-.video {
-  width: 100%;
-  height: 100%;
-}
-</style>
 ```
 
 ## 文件类型检测
@@ -2252,36 +2009,6 @@ const handlePaste = async () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.clipboard-demo {
-  padding: 32rpx;
-}
-
-.btn-group {
-  display: flex;
-  gap: 24rpx;
-  margin-top: 32rpx;
-}
-
-.result {
-  margin-top: 32rpx;
-  padding: 24rpx;
-  background-color: #f5f5f5;
-  border-radius: 8rpx;
-
-  .label {
-    display: block;
-    font-size: 28rpx;
-    color: #666;
-    margin-bottom: 8rpx;
-  }
-
-  .content {
-    font-size: 28rpx;
-    color: #333;
-  }
-}
-</style>
 ```
 
 ## 类型定义

@@ -52,11 +52,6 @@ const handleSelect = (data: { item: any; index: number }) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 **使用说明:**
@@ -490,36 +485,6 @@ const handleConfirm = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-
-.custom-content {
-  padding: 32rpx;
-  text-align: center;
-
-  .tip {
-    display: block;
-    font-size: 32rpx;
-    font-weight: bold;
-    margin-bottom: 16rpx;
-  }
-
-  .desc {
-    display: block;
-    font-size: 28rpx;
-    color: #999;
-    margin-bottom: 32rpx;
-  }
-
-  .btns {
-    display: flex;
-    justify-content: center;
-    gap: 24rpx;
-  }
-}
-</style>
 ```
 
 ### 兼容字典数据
@@ -1291,32 +1256,6 @@ const handleIconSelect = (item: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.icon-actions {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 32rpx;
-}
-
-.icon-action {
-  width: 25%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24rpx 0;
-
-  &__name {
-    margin-top: 16rpx;
-    font-size: 26rpx;
-    color: #333;
-  }
-
-  &:active {
-    background: rgba(0, 0, 0, 0.05);
-    border-radius: 16rpx;
-  }
-}
-</style>
 ```
 
 ### 结合表单使用
@@ -1534,52 +1473,6 @@ const handleConfirm = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.demo-page {
-  padding: 32rpx;
-}
-
-.demo-section {
-  margin-bottom: 48rpx;
-}
-
-.demo-title {
-  font-size: 28rpx;
-  color: #999;
-  margin-bottom: 24rpx;
-}
-
-.custom-content {
-  padding: 48rpx 32rpx;
-  text-align: center;
-
-  &__icon {
-    margin-bottom: 32rpx;
-  }
-
-  &__title {
-    font-size: 34rpx;
-    font-weight: 500;
-    color: #333;
-    margin-bottom: 16rpx;
-  }
-
-  &__desc {
-    font-size: 28rpx;
-    color: #999;
-    margin-bottom: 48rpx;
-  }
-
-  &__btns {
-    display: flex;
-    gap: 24rpx;
-
-    :deep(.wd-button) {
-      flex: 1;
-    }
-  }
-}
-</style>
 ```
 
 ### 业务场景示例
@@ -1707,12 +1600,6 @@ const handleFileAction = (data: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.file-item {
-  padding: 32rpx;
-  border-bottom: 1rpx solid #eee;
-}
-</style>
 ```
 
 #### 支付方式选择
@@ -1787,16 +1674,4 @@ const handlePaymentSelect = (data: any) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.order-info {
-  text-align: center;
-  padding: 64rpx 0;
-}
-
-.order-amount {
-  font-size: 64rpx;
-  font-weight: bold;
-  color: #333;
-}
-</style>
 ```

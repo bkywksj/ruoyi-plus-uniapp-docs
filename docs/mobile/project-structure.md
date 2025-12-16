@@ -700,11 +700,6 @@ onMounted(() => {
 </script>
 
 <!-- 样式写在最后 -->
-<style lang="scss" scoped>
-.container {
-  padding: 32rpx;
-}
-</style>
 ```
 
 #### TypeScript 类型规范

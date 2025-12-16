@@ -302,31 +302,6 @@ const resetTheme = () => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-demo {
-  padding: 32rpx;
-}
-
-.section {
-  margin-bottom: 32rpx;
-}
-
-.title {
-  font-size: 28rpx;
-  margin-bottom: 16rpx;
-}
-
-.color-picker {
-  display: flex;
-  gap: 16rpx;
-}
-
-.color-item {
-  width: 60rpx;
-  height: 60rpx;
-  border-radius: 8rpx;
-}
-</style>
 ```
 
 ## CSS 变量系统
@@ -687,11 +662,6 @@ export default defineConfig({
   </view>
 </template>
 
-<style lang="scss" scoped>
-.demo {
-  padding: 32rpx;
-}
-</style>
 ```
 
 ## 主题持久化
@@ -1040,42 +1010,6 @@ const selectTheme = (index: number) => {
 }
 </script>
 
-<style lang="scss" scoped>
-.theme-selector {
-  padding: 32rpx;
-}
-
-.theme-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24rpx;
-}
-
-.theme-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 16rpx;
-  border-radius: 12rpx;
-  border: 2rpx solid transparent;
-
-  &.active {
-    border-color: var(--wot-color-theme);
-  }
-}
-
-.theme-preview {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  margin-bottom: 12rpx;
-}
-
-.theme-name {
-  font-size: 24rpx;
-  color: var(--wot-color-content);
-}
-</style>
 ```
 
 ## 类型定义
