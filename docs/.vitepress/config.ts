@@ -751,38 +751,9 @@ export default defineConfig({
                     text: '📄 页面开发 (pages)',
                     collapsed: true,
                     items: [
-                        { text: '页面开发指南', link: '/mobile/pages/development-guide' },
-                        { text: '页面生命周期', link: '/mobile/pages/lifecycle' },
-                        { text: '页面路由传参', link: '/mobile/pages/route-params' },
-                        {
-                            text: '主包页面',
-                            collapsed: false,
-                            items: [
-                                { text: '首页 (index)', link: '/mobile/pages/main/index' },
-                                { text: '个人中心 (my)', link: '/mobile/pages/main/my' },
-                                { text: '设置页面 (settings)', link: '/mobile/pages/main/settings' }
-                            ]
-                        },
-                        {
-                            text: '认证页面',
-                            collapsed: false,
-                            items: [
-                                { text: '统一认证 (auth)', link: '/mobile/pages/auth/auth' },
-                                { text: '账号登录 (login)', link: '/mobile/pages/auth/login' },
-                                { text: '手机登录 (phoneLogin)', link: '/mobile/pages/auth/phone-login' },
-                                { text: '用户注册 (register)', link: '/mobile/pages/auth/register' },
-                                { text: '短信验证 (smsVerify)', link: '/mobile/pages/auth/sms-verify' }
-                            ]
-                        },
-                        {
-                            text: '分包页面',
-                            collapsed: false,
-                            items: [
-                                { text: '分包管理', link: '/mobile/pages/subpackages/overview' },
-                                { text: '管理员页面 (admin)', link: '/mobile/pages/subpackages/admin' },
-                                { text: '业务页面扩展', link: '/mobile/pages/subpackages/business' }
-                            ]
-                        }
+                        { text: '页面概述', link: '/mobile/pages/' },
+                        { text: '登录页面', link: '/mobile/pages/login' },
+                        { text: '分包页面管理', link: '/mobile/pages/subpackages' }
                     ]
                 },
                 {
