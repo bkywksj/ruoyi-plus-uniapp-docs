@@ -793,8 +793,7 @@ export default defineConfig({
                         { text: '默认布局 (default)', link: '/mobile/layouts/default' },
                         { text: '导航栏配置', link: '/mobile/layouts/navbar' },
                         { text: '标签栏配置', link: '/mobile/layouts/tabbar' },
-                        { text: '胶囊组件', link: '/mobile/layouts/capsule' },
-                        { text: '自定义布局', link: '/mobile/layouts/custom' }
+                        { text: '胶囊组件', link: '/mobile/layouts/capsule' }
                     ]
                 },
                 {
