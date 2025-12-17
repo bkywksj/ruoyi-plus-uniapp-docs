@@ -1155,6 +1155,40 @@ git log --oneline -10
 **完成文档后**:
 - 必须立即更新 `PROJECT_PROGRESS.md` 进度表
 - 更新文档状态和行数统计
+
+#### 10. ⚠️ 禁止创建 Windows 保留文件名(重要)
+
+**绝对禁止**创建以下 Windows 系统保留名称的文件或目录:
+
+- `nul`, `con`, `prn`, `aux`
+- `com1` ~ `com9`
+- `lpt1` ~ `lpt9`
+
+**常见错误场景**:
+- 使用 Bash 工具时误将输出重定向到 `nul`(Windows 的空设备)
+- 创建测试文件时使用保留名称
+
+**错误示例** ❌:
+```bash
+# 这会在 Windows 上创建一个名为 "nul" 的文件
+echo "test" > nul
+some_command 2>nul
+```
+
+**正确示例** ✅:
+```bash
+# 在 Windows 上使用正确的空设备路径
+echo "test" > /dev/null 2>&1
+# 或者使用 PowerShell
+some_command 2>$null
+```
+
+**注意**: 如果意外创建了这类文件,需要使用特殊方式删除:
+```bash
+rm ./nul
+# 或
+del \\?\D:\path\to\nul
+```
 - 更新整体完成度
 
 ### 💡 最佳实践
