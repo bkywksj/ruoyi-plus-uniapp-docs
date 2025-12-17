@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/upload
+---
+
 # Upload 上传
 
 ## 介绍

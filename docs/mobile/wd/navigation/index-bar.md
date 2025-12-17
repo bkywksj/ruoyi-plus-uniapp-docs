@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/navigation/indexBar
+---
+
 # IndexBar 索引栏
 
 ## 介绍

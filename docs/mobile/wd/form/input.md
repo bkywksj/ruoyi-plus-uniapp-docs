@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/input
+---
+
 # Input 输入框
 
 ## 介绍

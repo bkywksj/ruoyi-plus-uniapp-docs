@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/checkbox
+---
+
 # Checkbox 复选框
 
 ## 介绍

@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/display/swiper
+---
+
 # Swiper 轮播图
 
 ## 介绍

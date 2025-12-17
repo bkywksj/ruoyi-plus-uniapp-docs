@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/basic/transition
+---
+
 # Transition 过渡动画
 
 ## 介绍

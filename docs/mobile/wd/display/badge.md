@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/display/badge
+---
+
 # Badge 徽标
 
 ## 介绍

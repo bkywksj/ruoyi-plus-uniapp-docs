@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/display/collapse
+---
+
 # Collapse 折叠面板
 
 ## 介绍

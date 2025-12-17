@@ -31,7 +31,6 @@ AI 辅助开发工具 Claude Code 的使用指南：
 - [Git使用规范](/practices/standards/git) - Git 提交和分支管理规范
 - [数据库规范](/practices/standards/database) - 数据库设计和使用规范
 - [前端开发规范](/practices/standards/frontend) - 前端代码规范
-- [移动端开发规范](/practices/standards/mobile) - 移动端开发规范
 
 ## 🏗️ 架构设计
 

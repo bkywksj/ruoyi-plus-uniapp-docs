@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/checkbox
+---
+
 # CheckboxGroup 复选框组
 
 ## 介绍

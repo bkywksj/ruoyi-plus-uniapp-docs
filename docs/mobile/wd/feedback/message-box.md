@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/feedback/messageBox
+---
+
 # MessageBox 消息弹框
 
 ## 介绍

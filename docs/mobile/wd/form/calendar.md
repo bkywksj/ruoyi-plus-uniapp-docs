@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/calendar
+---
+
 # Calendar 日历选择器
 
 ## 介绍

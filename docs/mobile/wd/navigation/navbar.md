@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/navigation/navbar
+---
+
 # Navbar 导航栏
 
 ## 介绍

@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/navigation/tabs
+---
+
 # Tabs 标签页
 
 ## 介绍

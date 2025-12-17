@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/feedback/swipeAction
+---
+
 # SwipeAction 滑动操作
 
 ## 介绍

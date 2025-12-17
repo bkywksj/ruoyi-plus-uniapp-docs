@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/slider
+---
+
 # Slider 滑块
 
 ## 介绍

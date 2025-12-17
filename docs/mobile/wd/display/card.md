@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/display/card
+---
+
 # Card 卡片
 
 ## 介绍

@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/search
+---
+
 # Search 搜索框
 
 ## 介绍

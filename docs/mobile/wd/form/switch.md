@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/switch
+---
+
 # Switch 开关
 
 ## 介绍

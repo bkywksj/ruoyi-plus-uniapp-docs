@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/feedback/toast
+---
+
 # Toast 轻提示
 
 ## 介绍

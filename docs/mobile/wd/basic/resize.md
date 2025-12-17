@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/basic/resize
+---
+
 # Resize 尺寸监听
 
 ## 介绍

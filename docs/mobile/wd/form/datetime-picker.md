@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/datetimePicker
+---
+
 # DatetimePicker 日期时间选择器
 
 ## 介绍

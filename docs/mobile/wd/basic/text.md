@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/basic/text
+---
+
 # Text 文本
 
 ## 介绍

@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/navigation/sidebar
+---
+
 # Sidebar 侧边栏
 
 ## 介绍

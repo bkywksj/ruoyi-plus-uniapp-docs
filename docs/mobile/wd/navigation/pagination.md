@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/navigation/pagination
+---
+
 # Pagination 分页
 
 ## 介绍

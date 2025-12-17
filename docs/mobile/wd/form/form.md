@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/form
+---
+
 # Form 表单
 
 ## 介绍

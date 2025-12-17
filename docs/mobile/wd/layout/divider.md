@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/layout/divider
+---
+
 # Divider 分割线
 
 ## 介绍

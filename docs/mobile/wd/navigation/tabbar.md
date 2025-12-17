@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/navigation/tabbar
+---
+
 # Tabbar 标签栏
 
 ## 介绍

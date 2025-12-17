@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/feedback/notify
+---
+
 # Notify 消息通知
 
 ## 介绍

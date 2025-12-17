@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/display/curtain
+---
+
 # Curtain 幕帘
 
 ## 介绍

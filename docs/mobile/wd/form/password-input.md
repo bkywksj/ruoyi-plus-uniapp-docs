@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/passwordInput
+---
+
 # PasswordInput 密码输入框
 
 ## 介绍

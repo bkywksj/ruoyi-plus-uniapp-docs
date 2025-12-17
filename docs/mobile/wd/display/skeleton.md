@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/display/skeleton
+---
+
 # Skeleton 骨架屏
 
 ## 介绍

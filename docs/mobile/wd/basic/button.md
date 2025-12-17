@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/basic/button
+---
+
 # Button 按钮
 
 按钮用于触发一个操作,如提交表单、打开链接或执行业务逻辑。

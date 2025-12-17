@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/rate
+---
+
 # Rate 评分
 
 ## 介绍

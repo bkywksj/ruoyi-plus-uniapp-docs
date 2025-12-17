@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/basic/icon
+---
+
 # Icon 图标
 
 ## 介绍

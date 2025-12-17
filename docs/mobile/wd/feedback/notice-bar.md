@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/feedback/noticeBar
+---
+
 # NoticeBar 通知栏
 
 ## 介绍

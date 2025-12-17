@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/basic/configProvider
+---
+
 # ConfigProvider 全局配置
 
 ## 介绍

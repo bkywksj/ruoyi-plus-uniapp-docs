@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/display/progress
+---
+
 # Progress 进度条
 
 ## 介绍

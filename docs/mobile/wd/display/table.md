@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/display/table
+---
+
 # Table 表格
 
 ## 介绍

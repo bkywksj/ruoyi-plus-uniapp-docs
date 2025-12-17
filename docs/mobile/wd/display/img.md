@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/display/img
+---
+
 # Img 图片
 
 ## 介绍

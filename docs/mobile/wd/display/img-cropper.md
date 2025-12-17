@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/display/imgCropper
+---
+
 # ImgCropper 图片裁剪
 
 ## 介绍

@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/feedback/loading
+---
+
 # Loading 加载指示器
 
 ## 介绍

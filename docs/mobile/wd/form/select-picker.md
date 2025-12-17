@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/form/selectPicker
+---
+
 # SelectPicker 选择器
 
 ## 介绍

@@ -1,3 +1,8 @@
+---
+iframe: true
+url: https://uni.ruoyi.plus/demo/pages-sub/navigation/segmented
+---
+
 # Segmented 分段器
 
 ## 介绍
