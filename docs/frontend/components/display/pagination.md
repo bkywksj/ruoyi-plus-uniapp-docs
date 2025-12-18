@@ -1,324 +1,693 @@
 # Pagination 分页组件
 
-基于 Element Plus 封装的分页组件，提供响应式布局、自动滚动、页码管理等功能。
+基于Element Plus的增强分页组件，提供更丰富的功能和更好的用户体验。
 
-## 基础用法
+## 📋 基础用法
 
-最简单的使用方式，提供基本的分页功能：
+### 简单分页
 
 ```vue
 <template>
   <div>
-    <!-- 表格内容 -->
-    <el-table :data="tableData">
-      <!-- 表格列 -->
+    <!-- 数据表格 -->
+    <el-table :data="tableData" border>
+      <el-table-column prop="id" label="ID" width="80" />
+      <el-table-column prop="name" label="姓名" />
+      <el-table-column prop="email" label="邮箱" />
+      <el-table-column prop="createTime" label="创建时间" />
     </el-table>
-    
+
     <!-- 分页组件 -->
     <Pagination
-      v-model:page="currentPage"
-      v-model:limit="pageSize"
+      v-model:current="queryParams.pageNum"
+      v-model:size="queryParams.pageSize"
       :total="total"
-      @pagination="handlePagination"
+      @change="handlePageChange"
     />
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import Pagination from '@/components/Pagination/index.vue'
 
-const currentPage = ref(1)
-const pageSize = ref(20)
-const total = ref(100)
+const queryParams = reactive({
+  pageNum: 1,
+  pageSize: 10
+})
+
+const total = ref(0)
 const tableData = ref([])
 
-const handlePagination = ({ page, limit }) => {
-  console.log(`当前页: ${page}, 每页条数: ${limit}`)
-  // 获取数据逻辑
-  fetchData(page, limit)
+const handlePageChange = () => {
+  console.log('页码变化:', queryParams.pageNum, queryParams.pageSize)
+  // 重新获取数据
+  fetchData()
 }
 
-const fetchData = (page, limit) => {
-  // API 调用
+const fetchData = async () => {
+  // 模拟API调用
+  console.log('获取数据...', queryParams)
 }
 </script>
 ```
 
-## 自定义布局和样式
-
-自定义分页组件的布局、大小和对齐方式：
-
-```vue
-<template>
-  <Pagination
-    v-model:page="currentPage"
-    v-model:limit="pageSize"
-    :total="total"
-    size="small"
-    float="center"
-    :background="false"
-    layout="prev, pager, next"
-    @pagination="handlePagination"
-  />
-</template>
-```
-
-## 自定义每页显示数量选项
-
-通过 `page-sizes` 属性自定义每页显示记录数的选项：
-
-```vue
-<template>
-  <Pagination
-    v-model:page="currentPage"
-    v-model:limit="pageSize"
-    :total="total"
-    :page-sizes="[5, 10, 20, 50, 100]"
-    @pagination="handlePagination"
-  />
-</template>
-```
-
-## 移动端适配
-
-组件会自动根据屏幕尺寸进行适配：
-
-```vue
-<template>
-  <Pagination
-    v-model:page="currentPage"
-    v-model:limit="pageSize"
-    :total="total"
-    :pager-count="pagerCount"
-    @pagination="handlePagination"
-  />
-</template>
-
-<script setup>
-// pagerCount 会根据屏幕尺寸自动调整
-// 移动端: 5个页码按钮
-// PC端: 7个页码按钮
-</script>
-```
-
-## 禁用自动滚动
-
-某些场景下不需要页码切换时的自动滚动：
-
-```vue
-<template>
-  <Pagination
-    v-model:page="currentPage"
-    v-model:limit="pageSize"
-    :total="total"
-    :auto-scroll="false"
-    @pagination="handlePagination"
-  />
-</template>
-```
-
-## 使用组件方法
-
-通过 ref 调用组件提供的方法：
+### 完整功能分页
 
 ```vue
 <template>
   <div>
-    <el-button @click="goToFirstPage">第一页</el-button>
-    <el-button @click="goToLastPage">最后一页</el-button>
-    <el-button @click="goToSpecificPage">跳转到第5页</el-button>
-    <el-button @click="showPaginationInfo">显示分页信息</el-button>
-    
+    <el-table :data="tableData" border>
+      <el-table-column prop="id" label="ID" />
+      <el-table-column prop="name" label="姓名" />
+      <el-table-column prop="status" label="状态" />
+    </el-table>
+
     <Pagination
-      ref="paginationRef"
-      v-model:page="currentPage"
-      v-model:limit="pageSize"
-      :total="total"
-      @pagination="handlePagination"
+      v-model:current="pagination.current"
+      v-model:size="pagination.size"
+      :total="pagination.total"
+      :show-size-changer="true"
+      :show-quick-jumper="true"
+      :show-total="true"
+      :page-sizes="[10, 20, 50, 100]"
+      :background="true"
+      layout="total, sizes, prev, pager, next, jumper"
+      @change="handleChange"
+      @size-change="handleSizeChange"
     />
   </div>
 </template>
 
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+const pagination = reactive({
+  current: 1,
+  size: 10,
+  total: 0
+})
 
-const paginationRef = ref()
-const currentPage = ref(1)
-const pageSize = ref(20)
-const total = ref(100)
+const tableData = ref([])
 
-const goToFirstPage = () => {
-  paginationRef.value?.goToFirst()
+const handleChange = (page: number) => {
+  console.log('页码变化:', page)
+  fetchData()
 }
 
-const goToLastPage = () => {
-  paginationRef.value?.goToLast()
+const handleSizeChange = (size: number) => {
+  console.log('页面大小变化:', size)
+  pagination.current = 1 // 重置到第一页
+  fetchData()
 }
 
-const goToSpecificPage = () => {
-  paginationRef.value?.goToPage(5)
-}
-
-const showPaginationInfo = () => {
-  const info = paginationRef.value?.getPaginationInfo()
-  console.log('分页信息:', info)
-}
-
-const handlePagination = ({ page, limit }) => {
-  fetchData(page, limit)
+const fetchData = async () => {
+  // API调用逻辑
 }
 </script>
 ```
 
-## 条件显示
+## 🎯 组件实现
 
-根据业务需求控制分页组件的显示：
+### Pagination 组件
 
 ```vue
+<!-- components/Pagination/index.vue -->
 <template>
-  <Pagination
-    v-model:page="currentPage"
-    v-model:limit="pageSize"
-    :total="total"
-    :hidden="total <= 10"
-    @pagination="handlePagination"
-  />
+  <div
+    v-if="total > 0"
+    class="pagination-container"
+    :class="{ 'hidden': hidden }"
+  >
+    <el-pagination
+      v-model:current-page="currentPage"
+      v-model:page-size="pageSize"
+      :total="total"
+      :page-sizes="pageSizes"
+      :layout="layout"
+      :background="background"
+      :small="small"
+      :disabled="disabled"
+      :hide-on-single-page="hideOnSinglePage"
+      :pager-count="pagerCount"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
+    />
+
+    <!-- 额外信息 -->
+    <div v-if="showInfo" class="pagination-info">
+      <span class="info-text">
+        共 {{ total }} 条记录，每页显示 {{ pageSize }} 条
+      </span>
+      <span v-if="showRange" class="range-text">
+        显示第 {{ rangeStart }} - {{ rangeEnd }} 条记录
+      </span>
+    </div>
+
+    <!-- 快速跳转 -->
+    <div v-if="showQuickJumper && !layout.includes('jumper')" class="quick-jumper">
+      <span>跳至</span>
+      <el-input-number
+        v-model="jumpPage"
+        :min="1"
+        :max="totalPages"
+        :controls="false"
+        size="small"
+        style="width: 80px"
+        @keyup.enter="handleJump"
+      />
+      <span>页</span>
+      <el-button size="small" @click="handleJump">跳转</el-button>
+    </div>
+  </div>
 </template>
 
-<script setup>
-// 当总记录数小于等于10时自动隐藏分页组件
-</script>
-```
+<script setup lang="ts">
+interface Props {
+  // v-model 绑定
+  current?: number
+  size?: number
 
-## API
-
-### Props
-
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-|------|------|------|--------|--------|
-| total | 总记录数 | `number` | — | `0` |
-| page | 当前页码（支持 v-model） | `number` | — | `1` |
-| limit | 每页显示记录数（支持 v-model） | `number` | — | `20` |
-| page-sizes | 可选的每页显示记录数 | `number[]` | — | `[10, 50, 1000, 2147483647]` |
-| pager-count | 页码按钮的数量 | `number` | — | 根据屏幕宽度自适应 |
-| size | 组件大小 | `ElSize` | `large` / `default` / `small` | — |
-| layout | 分页布局 | `string` | — | `'total, sizes, prev, pager, next, jumper'` |
-| background | 是否为分页按钮添加背景色 | `boolean` | — | `true` |
-| auto-scroll | 切换页码时是否自动滚动到顶部 | `boolean` | — | `true` |
-| scroll-duration | 滚动动画持续时间（毫秒） | `number` | — | `800` |
-| hidden | 是否隐藏分页组件 | `boolean` | — | `false` |
-| float | 分页组件的对齐方式 | `string` | `left` / `right` / `center` | `right` |
-| reset-on-size-change | 页码超出范围时是否重置到第一页 | `boolean` | — | `true` |
-
-### PaginationEvent 接口
-
-```typescript
-interface PaginationEvent {
-  /** 当前页码 */
-  page: number
-  /** 每页显示记录数 */
-  limit: number
-}
-```
-
-### Events
-
-| 事件名 | 说明 | 回调参数 |
-|--------|------|----------|
-| update:page | 页码变化时触发 | `(page: number)` |
-| update:limit | 每页显示记录数变化时触发 | `(limit: number)` |
-| pagination | 分页参数变化时触发（推荐使用） | `(event: PaginationEvent)` |
-| size-change | 每页显示记录数变化时触发 | `(size: number)` |
-| current-change | 当前页码变化时触发 | `(current: number)` |
-
-### Methods
-
-| 方法名 | 说明 | 参数 | 返回值 |
-|--------|------|------|--------|
-| goToPage | 跳转到指定页码 | `(page: number)` | — |
-| goToFirst | 跳转到第一页 | — | — |
-| goToLast | 跳转到最后一页 | — | — |
-| getPaginationInfo | 获取当前分页信息 | — | `PaginationInfo` |
-
-### PaginationInfo 接口
-
-```typescript
-interface PaginationInfo {
-  /** 当前页码 */
-  currentPage: number
-  /** 每页显示记录数 */
-  pageSize: number
-  /** 总记录数 */
+  // 基础配置
   total: number
-  /** 总页数 */
-  totalPages: number
+  pageSizes?: number[]
+  layout?: string
+  background?: boolean
+  small?: boolean
+  disabled?: boolean
+  hidden?: boolean
+
+  // 显示配置
+  hideOnSinglePage?: boolean
+  pagerCount?: number
+  showInfo?: boolean
+  showRange?: boolean
+  showQuickJumper?: boolean
+
+  // 自定义配置
+  showSizeChanger?: boolean
+  showTotal?: boolean
+}
+
+interface Emits {
+  (e: 'update:current', value: number): void
+  (e: 'update:size', value: number): void
+  (e: 'change', current: number, size: number): void
+  (e: 'current-change', current: number): void
+  (e: 'size-change', size: number): void
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  current: 1,
+  size: 10,
+  pageSizes: () => [10, 20, 50, 100],
+  layout: 'total, sizes, prev, pager, next, jumper',
+  background: true,
+  small: false,
+  disabled: false,
+  hidden: false,
+  hideOnSinglePage: false,
+  pagerCount: 7,
+  showInfo: false,
+  showRange: false,
+  showQuickJumper: false,
+  showSizeChanger: true,
+  showTotal: true
+})
+
+const emit = defineEmits<Emits>()
+
+// 双向绑定
+const currentPage = computed({
+  get: () => props.current,
+  set: (value) => emit('update:current', value)
+})
+
+const pageSize = computed({
+  get: () => props.size,
+  set: (value) => emit('update:size', value)
+})
+
+// 计算属性
+const totalPages = computed(() => Math.ceil(props.total / props.size))
+
+const rangeStart = computed(() => {
+  return (props.current - 1) * props.size + 1
+})
+
+const rangeEnd = computed(() => {
+  return Math.min(props.current * props.size, props.total)
+})
+
+// 快速跳转
+const jumpPage = ref(props.current)
+
+// 处理页码变化
+const handleCurrentChange = (page: number) => {
+  emit('update:current', page)
+  emit('current-change', page)
+  emit('change', page, props.size)
+}
+
+// 处理页面大小变化
+const handleSizeChange = (size: number) => {
+  // 计算新的页码，保持当前数据位置尽量不变
+  const newCurrent = Math.min(
+    Math.ceil(((props.current - 1) * props.size + 1) / size),
+    Math.ceil(props.total / size)
+  )
+
+  emit('update:size', size)
+  emit('update:current', newCurrent)
+  emit('size-change', size)
+  emit('change', newCurrent, size)
+}
+
+// 快速跳转
+const handleJump = () => {
+  if (jumpPage.value >= 1 && jumpPage.value <= totalPages.value) {
+    handleCurrentChange(jumpPage.value)
+  }
+}
+
+// 监听当前页变化，同步快速跳转输入框
+watch(() => props.current, (newCurrent) => {
+  jumpPage.value = newCurrent
+})
+</script>
+
+```
+
+## 🔧 高级功能
+
+### 分页状态管理
+
+```typescript
+// composables/use-pagination-state.ts
+export interface PaginationState {
+  current: number
+  size: number
+  total: number
+  showSizeChanger: boolean
+  showQuickJumper: boolean
+  pageSizes: number[]
+}
+
+export function usePaginationState(
+  initialState?: Partial<PaginationState>
+) {
+  const state = reactive<PaginationState>({
+    current: 1,
+    size: 10,
+    total: 0,
+    showSizeChanger: true,
+    showQuickJumper: true,
+    pageSizes: [10, 20, 50, 100],
+    ...initialState
+  })
+
+  // 计算属性
+  const totalPages = computed(() => Math.ceil(state.total / state.size))
+  const offset = computed(() => (state.current - 1) * state.size)
+  const hasNext = computed(() => state.current < totalPages.value)
+  const hasPrev = computed(() => state.current > 1)
+
+  // 方法
+  const setTotal = (total: number) => {
+    state.total = total
+    // 如果当前页超出范围，调整到最后一页
+    if (state.current > totalPages.value && totalPages.value > 0) {
+      state.current = totalPages.value
+    }
+  }
+
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages.value) {
+      state.current = page
+      return true
+    }
+    return false
+  }
+
+  const nextPage = () => {
+    if (hasNext.value) {
+      state.current++
+      return true
+    }
+    return false
+  }
+
+  const prevPage = () => {
+    if (hasPrev.value) {
+      state.current--
+      return true
+    }
+    return false
+  }
+
+  const changeSize = (size: number) => {
+    // 保持当前数据位置尽量不变
+    const currentOffset = offset.value
+    state.size = size
+    state.current = Math.floor(currentOffset / size) + 1
+  }
+
+  const reset = () => {
+    state.current = 1
+    state.total = 0
+  }
+
+  const getRange = () => {
+    const start = offset.value + 1
+    const end = Math.min(offset.value + state.size, state.total)
+    return { start, end }
+  }
+
+  return {
+    state: readonly(state),
+    totalPages,
+    offset,
+    hasNext,
+    hasPrev,
+    setTotal,
+    goToPage,
+    nextPage,
+    prevPage,
+    changeSize,
+    reset,
+    getRange
+  }
 }
 ```
 
-## 响应式特性
+### 分页数据管理
 
-组件具有完整的响应式适配能力：
+```typescript
+// composables/use-paginated-data.ts
+export interface PaginatedData<T> {
+  records: T[]
+  total: number
+  current: number
+  size: number
+  pages: number
+}
 
-### 桌面端 (> 991px)
-- 显示完整的分页信息（总数、每页显示数、跳转器）
-- 默认显示 7 个页码按钮
-- 右对齐布局
+export function usePaginatedData<T>(
+  fetchFn: (params: { current: number; size: number; [key: string]: any }) => Promise<PaginatedData<T>>,
+  options: {
+    immediate?: boolean
+    defaultParams?: Record<string, any>
+    onSuccess?: (data: PaginatedData<T>) => void
+    onError?: (error: any) => void
+  } = {}
+) {
+  const { immediate = true, defaultParams = {}, onSuccess, onError } = options
 
-### 移动端 (≤ 991px)
-- 自动隐藏总数和跳转器信息
-- 默认显示 5 个页码按钮
-- 居中对齐布局
-- 减少内边距以适配小屏幕
+  const { state: pagination, setTotal, reset } = usePaginationState()
+  const data = ref<T[]>([])
+  const loading = ref(false)
+  const error = ref<any>(null)
 
-### 小屏幕 (≤ 768px)
-- 进一步优化间距
-- 分页按钮居中显示
-- 隐藏非必要信息
+  // 获取数据
+  const fetchData = async (extraParams: Record<string, any> = {}) => {
+    loading.value = true
+    error.value = null
 
-## 自动滚动功能
+    try {
+      const params = {
+        current: pagination.current,
+        size: pagination.size,
+        ...defaultParams,
+        ...extraParams
+      }
 
-组件内置智能滚动功能：
+      const result = await fetchFn(params)
 
-- **触发时机**：页码或每页显示数变化时
-- **滚动目标**：页面顶部（scrollTop: 0）
-- **动画效果**：平滑滚动动画
-- **持续时间**：可配置，默认 800ms
-- **开关控制**：可通过 `auto-scroll` 属性禁用
+      data.value = result.records
+      setTotal(result.total)
 
-## 特性
+      onSuccess?.(result)
+    } catch (err) {
+      error.value = err
+      onError?.(err)
+      console.error('获取分页数据失败:', err)
+    } finally {
+      loading.value = false
+    }
+  }
 
-- **双向数据绑定**：支持 v-model 语法糖
-- **响应式设计**：自动适配不同屏幕尺寸
-- **智能重置**：页码超出范围时自动重置
-- **自动滚动**：页码切换时平滑滚动到顶部
-- **灵活布局**：支持多种对齐方式和布局选项
-- **完整事件**：提供丰富的事件回调
-- **方法暴露**：提供编程式导航方法
-- **条件显示**：支持根据数据量自动隐藏
+  // 刷新当前页
+  const refresh = () => {
+    fetchData()
+  }
 
-## 样式说明
+  // 重置并重新获取
+  const reload = () => {
+    reset()
+    fetchData()
+  }
 
-组件采用现代化的分页设计：
+  // 页码变化处理
+  const handlePageChange = (current: number, size: number) => {
+    pagination.current = current
+    pagination.size = size
+    fetchData()
+  }
 
-- 清爽的间距和对齐
-- 响应式的布局调整
-- 平滑的动画过渡
-- 移动端优化的交互体验
-- 支持主题定制
+  // 搜索（重置到第一页）
+  const search = (searchParams: Record<string, any> = {}) => {
+    pagination.current = 1
+    fetchData(searchParams)
+  }
 
-## 最佳实践
+  // 立即执行
+  if (immediate) {
+    onMounted(() => {
+      fetchData()
+    })
+  }
 
-1. **推荐使用 `pagination` 事件**而不是单独监听 `size-change` 和 `current-change`
-2. **合理设置 `page-sizes`**，避免选项过多造成用户困扰
-3. **在数据较少时使用 `hidden` 属性**自动隐藏分页组件
-4. **移动端场景下考虑简化 `layout`**，只保留必要的分页元素
-5. **使用组件方法进行编程式导航**，提升用户体验
+  return {
+    // 数据状态
+    data: readonly(data),
+    loading: readonly(loading),
+    error: readonly(error),
+    pagination,
 
-## 注意事项
+    // 方法
+    fetchData,
+    refresh,
+    reload,
+    handlePageChange,
+    search
+  }
+}
+```
 
-1. 组件会在总记录数为 0 时自动隐藏
-2. `page-sizes` 数组中的 `2147483647` 表示"全部"选项
-3. 页码超出范围时会自动调整到有效范围内
-4. 自动滚动功能使用 `nextTick` 确保 DOM 更新完成
-5. 移动端会自动隐藏部分分页信息以适配小屏幕
-6. 组件使用 `useMediaQuery` 进行响应式检测
+### 虚拟分页
+
+```typescript
+// composables/use-virtual-pagination.ts
+export function useVirtualPagination<T>(
+  allData: Ref<T[]>,
+  pageSize = 10
+) {
+  const currentPage = ref(1)
+
+  // 计算属性
+  const total = computed(() => allData.value.length)
+  const totalPages = computed(() => Math.ceil(total.value / pageSize))
+
+  const currentData = computed(() => {
+    const start = (currentPage.value - 1) * pageSize
+    const end = start + pageSize
+    return allData.value.slice(start, end)
+  })
+
+  const pagination = computed(() => ({
+    current: currentPage.value,
+    size: pageSize,
+    total: total.value,
+    pages: totalPages.value
+  }))
+
+  // 方法
+  const goToPage = (page: number) => {
+    if (page >= 1 && page <= totalPages.value) {
+      currentPage.value = page
+    }
+  }
+
+  const nextPage = () => {
+    if (currentPage.value < totalPages.value) {
+      currentPage.value++
+    }
+  }
+
+  const prevPage = () => {
+    if (currentPage.value > 1) {
+      currentPage.value--
+    }
+  }
+
+  const reset = () => {
+    currentPage.value = 1
+  }
+
+  return {
+    currentData,
+    pagination,
+    goToPage,
+    nextPage,
+    prevPage,
+    reset
+  }
+}
+```
+
+## 📱 移动端适配
+
+### 响应式分页组件
+
+```vue
+<!-- components/ResponsivePagination/index.vue -->
+<template>
+  <div class="responsive-pagination">
+    <!-- 桌面端分页 -->
+    <el-pagination
+      v-if="!isMobile"
+      v-model:current-page="currentPage"
+      v-model:page-size="pageSize"
+      :total="total"
+      :page-sizes="pageSizes"
+      :layout="layout"
+      :background="background"
+      @current-change="handleCurrentChange"
+      @size-change="handleSizeChange"
+    />
+
+    <!-- 移动端分页 -->
+    <div v-else class="mobile-pagination">
+      <!-- 页码信息 -->
+      <div class="page-info">
+        <span>第 {{ currentPage }} 页，共 {{ totalPages }} 页</span>
+        <span>（{{ total }} 条记录）</span>
+      </div>
+
+      <!-- 简化控制 -->
+      <div class="page-controls">
+        <el-button
+          :disabled="currentPage <= 1"
+          @click="goToPrev"
+        >
+          上一页
+        </el-button>
+
+        <!-- 页码选择器 -->
+        <el-select
+          v-model="currentPage"
+          size="small"
+          style="width: 80px"
+          @change="handleCurrentChange"
+        >
+          <el-option
+            v-for="page in totalPages"
+            :key="page"
+            :label="page"
+            :value="page"
+          />
+        </el-select>
+
+        <el-button
+          :disabled="currentPage >= totalPages"
+          @click="goToNext"
+        >
+          下一页
+        </el-button>
+      </div>
+
+      <!-- 每页条数选择 -->
+      <div class="size-selector">
+        <span>每页</span>
+        <el-select
+          v-model="pageSize"
+          size="small"
+          style="width: 80px"
+          @change="handleSizeChange"
+        >
+          <el-option
+            v-for="size in pageSizes"
+            :key="size"
+            :label="size"
+            :value="size"
+          />
+        </el-select>
+        <span>条</span>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useBreakpoints } from '@vueuse/core'
+
+const props = defineProps<{
+  current: number
+  size: number
+  total: number
+  pageSizes?: number[]
+  layout?: string
+  background?: boolean
+}>()
+
+const emit = defineEmits<{
+  'update:current': [value: number]
+  'update:size': [value: number]
+  'change': [current: number, size: number]
+}>()
+
+// 响应式断点
+const breakpoints = useBreakpoints({
+  mobile: 768
+})
+
+const isMobile = breakpoints.smaller('mobile')
+
+// 双向绑定
+const currentPage = computed({
+  get: () => props.current,
+  set: (value) => emit('update:current', value)
+})
+
+const pageSize = computed({
+  get: () => props.size,
+  set: (value) => emit('update:size', value)
+})
+
+// 计算属性
+const totalPages = computed(() => Math.ceil(props.total / props.size))
+
+// 方法
+const handleCurrentChange = (page: number) => {
+  emit('update:current', page)
+  emit('change', page, props.size)
+}
+
+const handleSizeChange = (size: number) => {
+  emit('update:size', size)
+  emit('change', props.current, size)
+}
+
+const goToPrev = () => {
+  if (currentPage.value > 1) {
+    handleCurrentChange(currentPage.value - 1)
+  }
+}
+
+const goToNext = () => {
+  if (currentPage.value < totalPages.value) {
+    handleCurrentChange(currentPage.value + 1)
+  }
+}
+</script>
+
+```
+
+Pagination组件为Vue3应用提供了完整的分页解决方案，支持桌面端和移动端的不同展示方式，并提供了丰富的配置选项和数据管理功能。

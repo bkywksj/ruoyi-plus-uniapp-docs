@@ -1,295 +1,691 @@
-# ASelectionTags 选择标签组件
+# 选择标签 (ASelectionTags)
 
-可选中的标签组件，用于展示已选择的项目，支持关闭、清空操作和自定义显示内容。
+## 介绍
 
-## 基础用法
+ASelectionTags 是一个用于展示已选中项目的标签组件,通常与表格的多选/单选功能配合使用。组件将选中的数据项渲染为可关闭的标签形式,提供直观的视觉反馈和便捷的操作方式。
 
-最简单的使用方式，展示已选择的用户列表：
+**核心特性:**
+
+- **标签展示** - 将选中项以标签形式展示,支持自定义显示内容和样式
+- **可关闭标签** - 每个标签支持关闭操作,点击关闭图标可移除对应选中项
+- **批量清空** - 提供清空按钮,一键清除所有选中项
+- **灵活定制** - 支持自定义键字段、文本格式化、标签样式等
+- **插槽支持** - 提供 header、default、footer 三个插槽,满足各种布局需求
+- **智能显示** - 只在有选中项时显示,避免占用不必要的空间
+- **跨页选择** - 配合 `useSelection` 组合函数,支持表格跨页选择场景
+
+该组件广泛应用于用户选择器、角色分配、数据批量操作等需要展示选中项的场景。
+
+## 基本用法
+
+### 简单示例
+
+最基础的用法,展示选中的用户列表。
 
 ```vue
 <template>
-  <div>
-    <!-- 用户选择器 -->
-    <el-select v-model="selectedUserIds" multiple placeholder="选择用户">
-      <el-option
-        v-for="user in allUsers"
-        :key="user.id"
-        :label="user.name"
-        :value="user.id"
-      />
-    </el-select>
-    
-    <!-- 已选择的用户标签 -->
+  <div class="demo">
     <ASelectionTags
       :items="selectedUsers"
-      @close="removeUser"
+      @close="handleRemove"
     />
   </div>
 </template>
 
-<script setup>
-import { ref, computed } from 'vue'
+<script lang="ts" setup>
+import { ref } from 'vue'
 
-const selectedUserIds = ref([1, 2])
+interface User {
+  id: number
+  name: string
+}
 
-const allUsers = ref([
-  { id: 1, name: '张三', email: 'zhangsan@example.com' },
-  { id: 2, name: '李四', email: 'lisi@example.com' },
-  { id: 3, name: '王五', email: 'wangwu@example.com' }
+const selectedUsers = ref<User[]>([
+  { id: 1, name: '张三' },
+  { id: 2, name: '李四' },
+  { id: 3, name: '王五' }
 ])
 
-// 根据选中的ID计算已选择的用户
-const selectedUsers = computed(() => {
-  return allUsers.value.filter(user => selectedUserIds.value.includes(user.id))
-})
-
-const removeUser = (userId) => {
-  selectedUserIds.value = selectedUserIds.value.filter(id => id !== userId)
+const handleRemove = (id: number) => {
+  selectedUsers.value = selectedUsers.value.filter(user => user.id !== id)
 }
 </script>
 ```
 
-## 带清空功能
+**使用说明:**
+- 组件会自动识别常见的显示字段(name、label、title 等)
+- 默认使用 `id` 字段作为唯一标识
+- 点击标签的关闭图标会触发 `close` 事件
+- 只在 `items` 数组不为空时显示组件
 
-添加清空所有选择的功能：
+### 自定义键字段
+
+当数据对象的唯一标识字段不是 `id` 时,使用 `keyField` 属性指定。
 
 ```vue
 <template>
-  <ASelectionTags
-    :items="selectedItems"
-    :on-clear="clearAllSelections"
-    @close="removeItem"
-  >
-    <template #header>
-      <span class="text-sm text-gray-500 mb-2 block">已选择商品：</span>
-    </template>
-  </ASelectionTags>
+  <div class="demo">
+    <ASelectionTags
+      :items="selectedRoles"
+      key-field="roleId"
+      @close="handleRemove"
+    />
+  </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+interface Role {
+  roleId: string
+  roleName: string
+}
+
+const selectedRoles = ref<Role[]>([
+  { roleId: 'admin', roleName: '管理员' },
+  { roleId: 'user', roleName: '普通用户' }
+])
+
+const handleRemove = (roleId: string) => {
+  selectedRoles.value = selectedRoles.value.filter(role => role.roleId !== roleId)
+}
+</script>
+```
+
+**技术实现:**
+- `keyField` 属性默认值为 `'id'`
+- 组件内部通过 `item[keyField]` 获取唯一键
+- close 事件会同时传递 key 和完整对象两个参数
+
+### 自定义文本格式化
+
+使用 `formatter` 函数自定义每个标签的显示文本。
+
+```vue
+<template>
+  <div class="demo">
+    <ASelectionTags
+      :items="selectedDepts"
+      key-field="deptId"
+      :formatter="formatDeptName"
+      @close="handleRemove"
+    />
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+interface Dept {
+  deptId: number
+  deptName: string
+  parentName?: string
+}
+
+const selectedDepts = ref<Dept[]>([
+  { deptId: 1, deptName: '研发部', parentName: '技术中心' },
+  { deptId: 2, deptName: '测试部', parentName: '技术中心' }
+])
+
+const formatDeptName = (dept: Dept) => {
+  return dept.parentName ? `${dept.parentName} / ${dept.deptName}` : dept.deptName
+}
+
+const handleRemove = (deptId: number) => {
+  selectedDepts.value = selectedDepts.value.filter(dept => dept.deptId !== deptId)
+}
+</script>
+```
+
+**技术实现:**
+- `formatter` 函数接收当前项作为参数,返回显示文本
+- 如果不提供 `formatter`,组件会按优先级尝试以下字段:
+  - label > name > title > value > text > key > keyField > JSON.stringify(item)
+- 自定义格式化可以实现复杂的显示逻辑,如拼接多个字段、添加前缀后缀等
+
+### 禁用关闭功能
+
+通过 `closable` 属性控制标签是否可关闭。
+
+```vue
+<template>
+  <div class="demo">
+    <ASelectionTags
+      :items="selectedItems"
+      :closable="false"
+    />
+  </div>
+</template>
+
+<script lang="ts" setup>
 import { ref } from 'vue'
 
 const selectedItems = ref([
-  { id: 1, name: 'iPhone 15', price: 5999 },
-  { id: 2, name: 'MacBook Pro', price: 12999 },
-  { id: 3, name: 'AirPods Pro', price: 1899 }
+  { id: 1, name: '已确认项目(不可移除)' },
+  { id: 2, name: '已提交项目(不可移除)' }
 ])
-
-const removeItem = (itemId) => {
-  selectedItems.value = selectedItems.value.filter(item => item.id !== itemId)
-}
-
-const clearAllSelections = () => {
-  selectedItems.value = []
-}
 </script>
 ```
 
-## 自定义显示内容
+**使用说明:**
+- 设置 `closable` 为 `false` 后,标签右侧不会显示关闭图标
+- 适用于只读展示场景,或者需要通过其他方式移除选中项的情况
 
-使用默认插槽自定义标签的显示内容：
+### 自定义标签样式
 
-```vue
-<template>
-  <ASelectionTags
-    :items="selectedProducts"
-    type="warning"
-    effect="dark"
-    @close="removeProduct"
-  >
-    <template #header>
-      <div class="flex items-center mb-2">
-        <el-icon class="mr-1"><ShoppingCart /></el-icon>
-        <span class="text-sm font-medium">购物车商品</span>
-      </div>
-    </template>
-    
-    <!-- 自定义标签内容 -->
-    <template #default="{ item }">
-      <div class="flex items-center">
-        <span>{{ item.name }}</span>
-        <el-divider direction="vertical" />
-        <span class="text-red-500 font-bold">¥{{ item.price }}</span>
-      </div>
-    </template>
-    
-    <template #footer>
-      <div class="mt-2 text-sm text-gray-600">
-        共 {{ selectedProducts.length }} 件商品，
-        总价：¥{{ totalPrice }}
-      </div>
-    </template>
-  </ASelectionTags>
-</template>
-
-<script setup>
-import { ref, computed } from 'vue'
-import { ShoppingCart } from '@element-plus/icons-vue'
-
-const selectedProducts = ref([
-  { id: 1, name: 'iPhone 15', price: 5999, category: '手机' },
-  { id: 2, name: 'MacBook Pro', price: 12999, category: '电脑' }
-])
-
-const totalPrice = computed(() => {
-  return selectedProducts.value.reduce((sum, item) => sum + item.price, 0)
-})
-
-const removeProduct = (productId) => {
-  selectedProducts.value = selectedProducts.value.filter(item => item.id !== productId)
-}
-</script>
-```
-
-## 自定义格式化函数
-
-通过 formatter 属性自定义文本显示格式：
+通过 `type`、`effect`、`size`、`color` 属性自定义标签样式。
 
 ```vue
 <template>
-  <ASelectionTags
-    :items="selectedTags"
-    :formatter="formatTagText"
-    type="info"
-    size="small"
-    @close="removeTag"
-  />
-</template>
-
-<script setup>
-import { ref } from 'vue'
-
-const selectedTags = ref([
-  { id: 1, name: 'Vue.js', count: 150, category: 'frontend' },
-  { id: 2, name: 'React', count: 200, category: 'frontend' },
-  { id: 3, name: 'Node.js', count: 80, category: 'backend' }
-])
-
-// 自定义格式化函数
-const formatTagText = (item) => {
-  return `${item.name} (${item.count})`
-}
-
-const removeTag = (tagId) => {
-  selectedTags.value = selectedTags.value.filter(tag => tag.id !== tagId)
-}
-</script>
-```
-
-## 不同样式和主键配置
-
-使用不同的标签样式和自定义主键字段：
-
-```vue
-<template>
-  <div class="space-y-4">
-    <!-- 成功状态标签 -->
+  <div class="demo">
+    <h3>不同类型</h3>
     <ASelectionTags
-      :items="completedTasks"
+      :items="items1"
+      type="primary"
+      @close="handleRemove1"
+    />
+
+    <h3>不同效果</h3>
+    <ASelectionTags
+      :items="items2"
       type="success"
-      effect="plain"
-      key-field="taskId"
-      @close="removeTask"
-    >
-      <template #header>
-        <span class="text-green-600 font-medium">已完成任务：</span>
-      </template>
-    </ASelectionTags>
-    
-    <!-- 警告状态标签 -->
-    <ASelectionTags
-      :items="pendingTasks"
-      type="warning"
       effect="dark"
-      size="large"
-      key-field="taskId"
-      @close="removeTask"
-    >
-      <template #header>
-        <span class="text-orange-600 font-medium">待处理任务：</span>
-      </template>
-    </ASelectionTags>
-    
-    <!-- 自定义颜色标签 -->
+      @close="handleRemove2"
+    />
+
+    <h3>不同尺寸</h3>
     <ASelectionTags
-      :items="urgentTasks"
-      color="#ff4757"
-      key-field="taskId"
-      @close="removeTask"
-    >
-      <template #header>
-        <span class="text-red-600 font-medium">紧急任务：</span>
-      </template>
-    </ASelectionTags>
+      :items="items3"
+      size="large"
+      @close="handleRemove3"
+    />
+
+    <h3>自定义颜色</h3>
+    <ASelectionTags
+      :items="items4"
+      color="#f56c6c"
+      @close="handleRemove4"
+    />
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue'
 
-const completedTasks = ref([
-  { taskId: 1, title: '完成用户界面设计', priority: 'high' },
-  { taskId: 2, title: '修复登录bug', priority: 'medium' }
-])
+const items1 = ref([{ id: 1, name: '主要标签' }])
+const items2 = ref([{ id: 2, name: '成功标签' }])
+const items3 = ref([{ id: 3, name: '大号标签' }])
+const items4 = ref([{ id: 4, name: '自定义颜色' }])
 
-const pendingTasks = ref([
-  { taskId: 3, title: '编写API文档', priority: 'low' },
-  { taskId: 4, title: '代码review', priority: 'medium' }
-])
+const handleRemove1 = (id: number) => {
+  items1.value = items1.value.filter(item => item.id !== id)
+}
 
-const urgentTasks = ref([
-  { taskId: 5, title: '修复生产环境bug', priority: 'urgent' }
-])
+const handleRemove2 = (id: number) => {
+  items2.value = items2.value.filter(item => item.id !== id)
+}
 
-const removeTask = (taskId) => {
-  completedTasks.value = completedTasks.value.filter(task => task.taskId !== taskId)
-  pendingTasks.value = pendingTasks.value.filter(task => task.taskId !== taskId)
-  urgentTasks.value = urgentTasks.value.filter(task => task.taskId !== taskId)
+const handleRemove3 = (id: number) => {
+  items3.value = items3.value.filter(item => item.id !== id)
+}
+
+const handleRemove4 = (id: number) => {
+  items4.value = items4.value.filter(item => item.id !== id)
 }
 </script>
 ```
 
-## 条件显示
+**样式属性说明:**
+- `type`: 标签类型,可选值为 `'success' | 'info' | 'warning' | 'danger'` (默认 `'success'`)
+- `effect`: 标签效果,可选值为 `'dark' | 'light' | 'plain'` (默认 `'light'`)
+- `size`: 标签尺寸,可选值为 `'large' | 'default' | 'small'` (默认 `'default'`)
+- `color`: 自定义背景色,会覆盖 `type` 设置的颜色
 
-根据业务逻辑控制组件的显示：
+## 高级用法
+
+### 使用清空按钮
+
+通过 `onClear` 回调提供清空功能。
 
 ```vue
 <template>
-  <div>
-    <el-switch v-model="showSelections" active-text="显示选择" />
-    
+  <div class="demo">
     <ASelectionTags
-      :items="selectedFiles"
-      :visible="showSelections && selectedFiles.length > 0"
-      :closable="!readonly"
-      @close="removeFile"
+      :items="selectedUsers"
+      key-field="userId"
+      :formatter="user => user.userName"
+      :on-clear="handleClearAll"
+      @close="handleRemove"
+    />
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+interface User {
+  userId: number
+  userName: string
+}
+
+const selectedUsers = ref<User[]>([
+  { userId: 1, userName: '张三' },
+  { userId: 2, userName: '李四' },
+  { userId: 3, userName: '王五' }
+])
+
+const handleRemove = (userId: number) => {
+  selectedUsers.value = selectedUsers.value.filter(user => user.userId !== userId)
+}
+
+const handleClearAll = () => {
+  selectedUsers.value = []
+}
+</script>
+```
+
+**技术实现:**
+- 只有提供了 `onClear` 回调函数时,才会在标签末尾显示清空按钮
+- 清空按钮使用 `el-button` 的 `link` 类型,样式轻量不突兀
+- 按钮包含删除图标和"清空选择"文字
+
+### 自定义插槽内容
+
+组件提供 `header`、`default`、`footer` 三个插槽,实现灵活布局。
+
+```vue
+<template>
+  <div class="demo">
+    <ASelectionTags
+      :items="selectedUsers"
+      key-field="userId"
+      @close="handleRemove"
     >
       <template #header>
-        <div class="flex items-center justify-between mb-2">
-          <span class="text-sm text-gray-600">已选择文件：</span>
-          <el-switch v-model="readonly" active-text="只读模式" size="small" />
+        <div class="selection-header">
+          <span class="text-sm text-gray-500">已选择用户 ({{ selectedUsers.length }})</span>
         </div>
       </template>
+
+      <template #default="{ item }">
+        <span class="custom-tag-content">
+          <el-icon class="mr-1"><User /></el-icon>
+          {{ item.userName }}
+        </span>
+      </template>
+
+      <template #footer>
+        <el-button size="small" link type="danger" @click="handleClearAll">
+          清空全部
+        </el-button>
+        <el-button size="small" link type="primary" @click="handleExport">
+          导出选中
+        </el-button>
+      </template>
     </ASelectionTags>
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue'
+import { User } from '@element-plus/icons-vue'
 
-const showSelections = ref(true)
-const readonly = ref(false)
+interface User {
+  userId: number
+  userName: string
+}
 
-const selectedFiles = ref([
-  { id: 1, name: 'document.pdf', size: 1024, type: 'pdf' },
-  { id: 2, name: 'image.jpg', size: 2048, type: 'image' }
+const selectedUsers = ref<User[]>([
+  { userId: 1, userName: '张三' },
+  { userId: 2, userName: '李四' }
 ])
 
-const removeFile = (fileId) => {
-  if (!readonly.value) {
-    selectedFiles.value = selectedFiles.value.filter(file => file.id !== fileId)
+const handleRemove = (userId: number) => {
+  selectedUsers.value = selectedUsers.value.filter(user => user.userId !== userId)
+}
+
+const handleClearAll = () => {
+  selectedUsers.value = []
+}
+
+const handleExport = () => {
+  console.log('导出选中用户:', selectedUsers.value)
+}
+</script>
+
+```
+
+**插槽说明:**
+- `header`: 在标签列表之前显示,常用于添加标题或说明文字
+- `default`: 自定义每个标签的内容,作用域插槽提供 `item` 对象
+- `footer`: 在标签列表之后显示,常用于添加操作按钮
+
+### 控制显示状态
+
+使用 `visible` 属性控制组件的显示/隐藏。
+
+```vue
+<template>
+  <div class="demo">
+    <el-switch
+      v-model="showTags"
+      active-text="显示标签"
+      inactive-text="隐藏标签"
+    />
+
+    <ASelectionTags
+      :items="selectedUsers"
+      :visible="showTags"
+      @close="handleRemove"
+    />
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const showTags = ref(true)
+
+const selectedUsers = ref([
+  { id: 1, name: '张三' },
+  { id: 2, name: '李四' }
+])
+
+const handleRemove = (id: number) => {
+  selectedUsers.value = selectedUsers.value.filter(user => user.id !== id)
+}
+</script>
+```
+
+**使用说明:**
+- `visible` 属性默认为 `true`
+- 设置为 `false` 时,整个组件不会渲染
+- 即使 `visible` 为 `true`,如果 `items` 为空数组,组件也不会显示
+
+## 与 useSelection 集成
+
+### 配合 useSelection 实现跨页选择
+
+ASelectionTags 与 `useSelection` 组合函数完美配合,实现表格跨页多选功能。
+
+```vue
+<template>
+  <div class="demo">
+    <ASearchForm ref="queryFormRef" v-model="queryParams">
+      <AFormInput label="用户名" v-model="queryParams.userName" prop="userName" />
+    </ASearchForm>
+
+    <el-card>
+      <template #header>
+        <ASelectionTags
+          :items="selectionItems"
+          key-field="userId"
+          :formatter="user => user.userName"
+          @close="selectionRemove"
+        >
+          <template #footer>
+            <el-button size="small" link type="primary" @click="selectionClear">
+              <el-icon><Delete /></el-icon>
+              清空选择
+            </el-button>
+          </template>
+        </ASelectionTags>
+      </template>
+
+      <el-table
+        ref="tableRef"
+        :data="userList"
+        @selection-change="selectionChange"
+      >
+        <el-table-column type="selection" width="50" />
+        <el-table-column label="用户名" prop="userName" />
+        <el-table-column label="邮箱" prop="email" />
+      </el-table>
+
+      <Pagination
+        v-model:page="queryParams.pageNum"
+        v-model:limit="queryParams.pageSize"
+        :total="total"
+        @pagination="getList"
+      />
+    </el-card>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { useSelection } from '@/composables/useSelection'
+
+interface User {
+  userId: number
+  userName: string
+  email: string
+}
+
+interface QueryParams {
+  pageNum: number
+  pageSize: number
+  userName?: string
+}
+
+const tableRef = ref()
+const userList = ref<User[]>([])
+const queryParams = ref<QueryParams>({
+  pageNum: 1,
+  pageSize: 10
+})
+const total = ref(0)
+
+// 使用 useSelection 管理选择状态
+const {
+  selectionItems,
+  selectionChange,
+  selectionSync,
+  selectionRemove,
+  selectionClear
+} = useSelection('userId', tableRef, userList, ref(true))
+
+const getList = async () => {
+  // 模拟API请求
+  const response = await fetch(`/api/users?page=${queryParams.value.pageNum}`)
+  const data = await response.json()
+
+  userList.value = data.records
+  total.value = data.total
+
+  // 同步选中状态
+  await selectionSync()
+}
+
+// 初始化加载
+getList()
+</script>
+```
+
+**集成说明:**
+- `useSelection` 提供完整的选择状态管理
+- `selectionItems` 包含所有选中的完整对象
+- `selectionRemove` 支持通过标签关闭移除选中项
+- `selectionClear` 提供清空所有选择功能
+- `selectionSync` 在翻页后同步表格选中状态
+
+### 用户选择器完整示例
+
+实际业务场景中的用户选择器实现。
+
+```vue
+<template>
+  <AModal v-model="dialog.visible" title="选择用户" size="xl">
+    <AResizablePanels v-model:leftWidth="leftPanelWidth">
+      <template #left>
+        <el-card shadow="hover">
+          <template #header>部门筛选</template>
+          <el-tree
+            :data="deptTree"
+            @node-click="handleDeptClick"
+          />
+        </el-card>
+      </template>
+
+      <template #right>
+        <ASearchForm ref="queryFormRef" v-model="queryParams">
+          <AFormInput label="用户名称" v-model="queryParams.userName" prop="userName" />
+          <AFormInput label="手机号码" v-model="queryParams.phone" prop="phone" />
+        </ASearchForm>
+
+        <el-card>
+          <template #header>
+            <ASelectionTags
+              :items="selectedUsers"
+              key-field="userId"
+              :formatter="user => user.userName"
+              :on-clear="clearAllSelection"
+              @close="handleTagClose"
+            />
+          </template>
+
+          <el-table
+            ref="userTableRef"
+            :data="userList"
+            @selection-change="handleSelectionChange"
+            @select="handleSelect"
+            @select-all="handleSelectAll"
+          >
+            <el-table-column type="selection" width="50" />
+            <el-table-column label="用户名" prop="userName" />
+            <el-table-column label="昵称" prop="nickName" />
+            <el-table-column label="部门" prop="deptName" />
+          </el-table>
+
+          <Pagination
+            v-model:page="queryParams.pageNum"
+            v-model:limit="queryParams.pageSize"
+            :total="total"
+            @pagination="getList"
+          />
+        </el-card>
+      </template>
+    </AResizablePanels>
+
+    <template #footer>
+      <el-button @click="cancel">取消</el-button>
+      <el-button type="primary" @click="handleConfirm">
+        确定（{{ selectedUserIds.size }}）
+      </el-button>
+    </template>
+  </AModal>
+</template>
+
+<script lang="ts" setup>
+import { ref, nextTick } from 'vue'
+
+interface User {
+  userId: number
+  userName: string
+  nickName: string
+  deptName: string
+}
+
+const dialog = ref({
+  visible: false
+})
+
+const leftPanelWidth = ref(220)
+const userTableRef = ref()
+const userList = ref<User[]>([])
+const queryParams = ref({
+  pageNum: 1,
+  pageSize: 10,
+  userName: '',
+  phone: '',
+  deptId: undefined
+})
+const total = ref(0)
+
+// 选中管理
+const selectedUserIds = ref<Set<number>>(new Set())
+const selectedUsers = ref<User[]>([])
+
+const addSelectedUser = (user: User) => {
+  selectedUserIds.value.add(user.userId)
+  if (!selectedUsers.value.find(u => u.userId === user.userId)) {
+    selectedUsers.value.push(user)
   }
 }
+
+const removeSelectedUser = (userId: number) => {
+  selectedUserIds.value.delete(userId)
+  selectedUsers.value = selectedUsers.value.filter(u => u.userId !== userId)
+
+  nextTick(() => {
+    updateCurrentPageSelection()
+  })
+}
+
+const handleTagClose = (userId: number) => {
+  removeSelectedUser(userId)
+}
+
+const clearAllSelection = () => {
+  selectedUserIds.value.clear()
+  selectedUsers.value = []
+  userTableRef.value?.clearSelection()
+}
+
+const updateCurrentPageSelection = () => {
+  if (!userTableRef.value) return
+
+  userList.value.forEach(user => {
+    const isSelected = selectedUserIds.value.has(user.userId)
+    userTableRef.value.toggleRowSelection(user, isSelected)
+  })
+}
+
+const handleSelect = (selection: User[], row: User) => {
+  const isSelected = selection.includes(row)
+  if (isSelected) {
+    addSelectedUser(row)
+  } else {
+    removeSelectedUser(row.userId)
+  }
+}
+
+const handleSelectAll = (selection: User[]) => {
+  if (selection.length === 0) {
+    userList.value.forEach(user => removeSelectedUser(user.userId))
+  } else {
+    userList.value.forEach(user => addSelectedUser(user))
+  }
+}
+
+const handleSelectionChange = (selection: User[]) => {
+  // 处理选择变化
+}
+
+const getList = async () => {
+  // 加载用户列表
+  await nextTick()
+  updateCurrentPageSelection()
+}
+
+const handleConfirm = () => {
+  emit('confirm', Array.from(selectedUserIds.value))
+  dialog.value.visible = false
+}
+
+const cancel = () => {
+  dialog.value.visible = false
+  clearAllSelection()
+}
+
+const emit = defineEmits(['confirm'])
+
+defineExpose({
+  show: () => {
+    dialog.value.visible = true
+    getList()
+  }
+})
 </script>
 ```
 
@@ -297,18 +693,18 @@ const removeFile = (fileId) => {
 
 ### Props
 
-| 参数 | 说明 | 类型 | 可选值 | 默认值 |
-|------|------|------|--------|--------|
-| items | 要展示的选中项数组 | `any[]` | — | — |
-| closable | 是否可关闭 | `boolean` | — | `true` |
-| visible | 是否显示 | `boolean` | — | `true` |
-| type | 标签类型 | `ElTagType` | `success` / `info` / `warning` / `danger` | `'success'` |
-| effect | 标签效果 | `ElEffect` | `dark` / `light` / `plain` | `'light'` |
-| size | 标签大小 | `ElSize` | `large` / `default` / `small` | `'default'` |
-| color | 自定义标签颜色 | `string` | — | `''` |
-| key-field | 主键字段名 | `string` | — | `'id'` |
-| formatter | 文本格式化函数 | `(item: any) => string` | — | 自动提取常见字段 |
-| on-clear | 清空选择的回调函数 | `() => void` | — | — |
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| items | 要展示的选中项数组 | `any[]` | - |
+| closable | 是否可关闭,为 true 时标签右侧显示关闭图标 | `boolean` | `true` |
+| visible | 是否显示组件 | `boolean` | `true` |
+| type | 标签类型,影响颜色和外观 | `'success' \| 'info' \| 'warning' \| 'danger'` | `'success'` |
+| effect | 标签效果 | `'dark' \| 'light' \| 'plain'` | `'light'` |
+| size | 标签尺寸 | `'large' \| 'default' \| 'small'` | `'default'` |
+| color | 自定义标签背景色,会覆盖 type 设置的颜色 | `string` | `''` |
+| keyField | 主键字段名,用于提取唯一标识符 | `string` | `'id'` |
+| formatter | 文本格式化函数,用于自定义显示内容 | `(item: any) => string` | 自动提取 |
+| onClear | 清空选择的回调函数,提供此函数会显示清空按钮 | `() => void` | - |
 
 ### Events
 
@@ -316,59 +712,524 @@ const removeFile = (fileId) => {
 |--------|------|----------|
 | close | 点击标签关闭图标时触发 | `(key: any, item: any)` |
 
+**事件参数说明:**
+- `key`: 被关闭项的唯一标识(通过 `keyField` 提取)
+- `item`: 被关闭项的完整对象
+
 ### Slots
 
 | 插槽名 | 说明 | 作用域参数 |
 |--------|------|-----------|
-| default | 自定义标签内容 | `{ item }` |
-| header | 头部内容，可用于添加标题或说明 | — |
-| footer | 尾部内容，可用于添加操作按钮或额外信息 | — |
+| header | 标签列表之前的内容,常用于标题或说明 | - |
+| default | 自定义标签内容 | `{ item: any }` |
+| footer | 标签列表之后的内容,常用于操作按钮 | - |
 
-## 文本格式化规则
+### 类型定义
 
-当未提供 `formatter` 属性时，组件会按以下优先级自动提取显示文本：
+```typescript
+/**
+ * Element Plus 标签类型
+ */
+type ElTagType = 'success' | 'info' | 'warning' | 'danger'
 
-1. `item.label`
-2. `item.name`
-3. `item.title`
-4. `item.value`
-5. `item.text`
-6. `item.key`
-7. `item[keyField]`（使用 key-field 指定的字段）
-8. `JSON.stringify(item)`（最后的兜底方案）
+/**
+ * Element Plus 标签效果
+ */
+type ElEffect = 'dark' | 'light' | 'plain'
 
-## 特性
+/**
+ * Element Plus 组件尺寸
+ */
+type ElSize = 'large' | 'default' | 'small'
 
-- **灵活的数据格式**：支持任意对象结构的数组数据
-- **自定义显示**：支持格式化函数和插槽自定义内容
-- **多种样式**：支持 Element Plus 标签的所有样式选项
-- **条件显示**：支持根据条件控制组件显示隐藏
-- **清空功能**：可选的一键清空所有选择功能
-- **自定义主键**：支持使用非 id 字段作为唯一标识
-- **响应式设计**：自动换行和间距处理
+/**
+ * ASelectionTags 组件的属性接口
+ */
+interface ASelectionTagsProps {
+  /**
+   * 要展示的选中项数组
+   * 每个项应该是一个对象,包含唯一标识符和显示信息
+   */
+  items: any[]
 
-## 样式说明
+  /**
+   * 是否可关闭
+   * 为 true 时,标签右侧会显示关闭图标,点击后会触发 close 事件
+   * @default true
+   */
+  closable?: boolean
 
-组件采用灵活的布局设计：
+  /**
+   * 是否显示
+   * 为 false 时,整个组件将不显示
+   * @default true
+   */
+  visible?: boolean
 
-- **标签间距**：右边距 1 单位，下边距 1 单位（`mr-1 mb-1`）
-- **容器间距**：顶部边距 2 单位（`mt-2`）
-- **自动换行**：标签超出容器宽度时自动换行
-- **响应式适配**：适配不同屏幕尺寸
+  /**
+   * 标签类型
+   * 影响标签的颜色和外观,与 Element Plus 的 Tag 组件类型一致
+   * @default 'success'
+   */
+  type?: ElTagType
+
+  /**
+   * 标签效果
+   * 影响标签的显示效果,可选 'light'、'dark' 或 'plain'
+   * @default 'light'
+   */
+  effect?: ElEffect
+
+  /**
+   * 标签大小
+   * 控制标签的尺寸,可选 'large'、'default' 或 'small'
+   * @default 'default'
+   */
+  size?: ElSize
+
+  /**
+   * 标签颜色
+   * 自定义标签的背景色,会覆盖 type 属性设置的颜色
+   * @default ''
+   */
+  color?: string
+
+  /**
+   * 主键字段名
+   * 用于从每个项中提取唯一标识符的字段名
+   * @default 'id'
+   */
+  keyField?: string
+
+  /**
+   * 文本格式化函数
+   * 用于从每个项中提取显示文本的函数
+   * 如果未提供,将尝试从常见字段中获取显示文本
+   * @param item 当前项
+   * @returns 显示文本
+   * @default 自动从常见字段提取
+   */
+  formatter?: (item: any) => string
+
+  /**
+   * 清空选择的回调函数
+   * 当用户点击清空按钮时调用
+   * 如果提供了此函数,将显示清空按钮
+   */
+  onClear?: () => void
+}
+```
 
 ## 最佳实践
 
-1. **合理使用 key-field**：确保主键字段的唯一性
-2. **提供有意义的格式化函数**：为复杂对象提供清晰的显示文本
-3. **使用插槽增强交互**：通过 header 和 footer 插槽提供更多信息
-4. **条件控制显示**：在没有选择项时隐藏组件
-5. **配合选择器使用**：与 el-select、el-checkbox-group 等组件配合使用
+### 1. 合理选择键字段
 
-## 注意事项
+根据数据结构选择合适的唯一标识字段。
 
-1. `items` 数组为空时组件会自动隐藏
-2. `on-clear` 属性存在时才会显示清空按钮
-3. `key-field` 指定的字段必须在每个 item 中存在且唯一
-4. 自定义 `formatter` 函数应该返回字符串类型
-5. `close` 事件同时返回主键和完整的 item 对象
-6. 组件基于 Element Plus 的 `el-tag` 组件，继承其所有样式特性
+```vue
+<template>
+  <!-- ✅ 推荐: 明确指定键字段 -->
+  <ASelectionTags
+    :items="selectedUsers"
+    key-field="userId"
+    @close="handleRemove"
+  />
+
+  <!-- ❌ 不推荐: 数据使用非 id 字段但不指定 keyField -->
+  <ASelectionTags
+    :items="selectedUsers"
+    @close="handleRemove"
+  />
+</template>
+
+<script lang="ts" setup>
+// 如果唯一标识不是 id,必须指定 keyField
+interface User {
+  userId: number  // 唯一标识是 userId 而不是 id
+  userName: string
+}
+</script>
+```
+
+### 2. 使用格式化函数提升用户体验
+
+为用户提供更清晰的信息展示。
+
+```vue
+<template>
+  <!-- ✅ 推荐: 使用格式化函数展示多个字段 -->
+  <ASelectionTags
+    :items="selectedUsers"
+    key-field="userId"
+    :formatter="formatUserInfo"
+    @close="handleRemove"
+  />
+
+  <!-- ❌ 不推荐: 只显示单一字段 -->
+  <ASelectionTags
+    :items="selectedUsers"
+    key-field="userId"
+    @close="handleRemove"
+  />
+</template>
+
+<script lang="ts" setup>
+interface User {
+  userId: number
+  userName: string
+  deptName: string
+}
+
+// 推荐: 组合多个字段提供更多信息
+const formatUserInfo = (user: User) => {
+  return `${user.userName} (${user.deptName})`
+}
+</script>
+```
+
+### 3. 配合 useSelection 实现跨页选择
+
+使用 `useSelection` 简化跨页选择逻辑。
+
+```vue
+<template>
+  <!-- ✅ 推荐: 使用 useSelection 管理选择状态 -->
+  <ASelectionTags
+    :items="selectionItems"
+    key-field="userId"
+    @close="selectionRemove"
+  >
+    <template #footer>
+      <el-button size="small" link type="primary" @click="selectionClear">
+        清空选择
+      </el-button>
+    </template>
+  </ASelectionTags>
+</template>
+
+<script lang="ts" setup>
+import { useSelection } from '@/composables/useSelection'
+
+const {
+  selectionItems,
+  selectionRemove,
+  selectionClear
+} = useSelection('userId', tableRef, userList, ref(true))
+</script>
+```
+
+### 4. 提供清空功能
+
+对于多选场景,提供清空功能提升用户体验。
+
+```vue
+<template>
+  <!-- ✅ 推荐: 提供清空按钮 -->
+  <ASelectionTags
+    :items="selectedItems"
+    :on-clear="handleClearAll"
+    @close="handleRemove"
+  />
+
+  <!-- 或使用 footer 插槽自定义 -->
+  <ASelectionTags
+    :items="selectedItems"
+    @close="handleRemove"
+  >
+    <template #footer>
+      <el-button size="small" link type="danger" @click="handleClearAll">
+        <el-icon><Delete /></el-icon>
+        清空全部
+      </el-button>
+    </template>
+  </ASelectionTags>
+</template>
+```
+
+### 5. 使用 TypeScript 增强类型安全
+
+明确定义数据类型,避免运行时错误。
+
+```typescript
+// ✅ 推荐: 定义明确的接口
+interface User {
+  userId: number
+  userName: string
+  email: string
+}
+
+const selectedUsers = ref<User[]>([])
+
+const handleRemove = (userId: number) => {
+  selectedUsers.value = selectedUsers.value.filter(
+    user => user.userId !== userId
+  )
+}
+
+// ❌ 不推荐: 使用 any 类型
+const selectedUsers = ref<any[]>([])
+```
+
+## 常见问题
+
+### 1. 标签不显示或显示不正确
+
+**问题原因:**
+- `items` 数组为空
+- `visible` 属性设置为 `false`
+- `keyField` 设置不正确,导致 `v-for` 的 `:key` 异常
+- 数据对象缺少显示字段
+
+**解决方案:**
+
+```vue
+<template>
+  <div class="demo">
+    <!-- 1. 确保 items 不为空 -->
+    <div v-if="selectedUsers.length === 0">暂无选中项</div>
+    <ASelectionTags
+      v-else
+      :items="selectedUsers"
+      key-field="userId"
+      :formatter="formatUser"
+      @close="handleRemove"
+    />
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const selectedUsers = ref([
+  { userId: 1, userName: '张三' }  // 确保数据结构正确
+])
+
+// 2. 确保 keyField 对应的字段存在
+// 3. 提供格式化函数确保有内容显示
+const formatUser = (user: any) => {
+  return user.userName || user.name || '未知用户'
+}
+
+const handleRemove = (userId: number) => {
+  selectedUsers.value = selectedUsers.value.filter(
+    user => user.userId !== userId
+  )
+}
+</script>
+```
+
+### 2. close 事件无法正确移除选中项
+
+**问题原因:**
+- `keyField` 设置不正确,导致 key 值不匹配
+- 移除逻辑中的字段名与 `keyField` 不一致
+- ID 类型不匹配(如字符串 vs 数字)
+
+**解决方案:**
+
+```vue
+<template>
+  <ASelectionTags
+    :items="selectedUsers"
+    key-field="userId"
+    @close="handleRemove"
+  />
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+interface User {
+  userId: number
+  userName: string
+}
+
+const selectedUsers = ref<User[]>([
+  { userId: 1, userName: '张三' },
+  { userId: 2, userName: '李四' }
+])
+
+// ✅ 正确: close 事件的 key 参数就是 userId
+const handleRemove = (userId: number, item: User) => {
+  selectedUsers.value = selectedUsers.value.filter(
+    user => user.userId !== userId
+  )
+}
+
+// ❌ 错误: 使用了错误的字段名
+const handleRemoveWrong = (id: number) => {
+  selectedUsers.value = selectedUsers.value.filter(
+    user => user.id !== id  // 应该使用 userId
+  )
+}
+</script>
+```
+
+**类型不匹配处理:**
+
+```typescript
+// 如果存在类型不匹配问题,统一转换为字符串比较
+const handleRemove = (userId: any, item: User) => {
+  selectedUsers.value = selectedUsers.value.filter(
+    user => String(user.userId) !== String(userId)
+  )
+}
+```
+
+### 3. 跨页选择状态丢失
+
+**问题原因:**
+- 翻页后没有同步表格选中状态
+- 选中状态只存储在表格中,没有独立管理
+- 切换页面时清空了选择
+
+**解决方案:**
+
+使用 `useSelection` 组合函数管理跨页选择状态。
+
+```vue
+<template>
+  <div class="demo">
+    <ASelectionTags
+      :items="selectionItems"
+      key-field="userId"
+      @close="selectionRemove"
+    />
+
+    <el-table
+      ref="tableRef"
+      :data="userList"
+      @selection-change="selectionChange"
+    >
+      <el-table-column type="selection" width="50" />
+      <el-table-column label="用户名" prop="userName" />
+    </el-table>
+
+    <Pagination
+      v-model:page="queryParams.pageNum"
+      :total="total"
+      @pagination="handlePageChange"
+    />
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { useSelection } from '@/composables/useSelection'
+
+const tableRef = ref()
+const userList = ref([])
+
+// 使用 useSelection 管理跨页选择
+const {
+  selectionItems,
+  selectionChange,
+  selectionSync,
+  selectionRemove
+} = useSelection('userId', tableRef, userList, ref(true))
+
+const handlePageChange = async () => {
+  await getList()
+  // 关键: 翻页后同步选中状态
+  await selectionSync()
+}
+
+const getList = async () => {
+  // 加载数据
+}
+</script>
+```
+
+### 4. 清空按钮不显示
+
+**问题原因:**
+- 没有提供 `onClear` 回调函数
+- 使用了自定义 `footer` 插槽但没有添加清空按钮
+
+**解决方案:**
+
+```vue
+<template>
+  <!-- 方式1: 使用 onClear 属性,组件自动显示清空按钮 -->
+  <ASelectionTags
+    :items="selectedUsers"
+    :on-clear="handleClearAll"
+    @close="handleRemove"
+  />
+
+  <!-- 方式2: 使用 footer 插槽自定义清空按钮 -->
+  <ASelectionTags
+    :items="selectedUsers"
+    @close="handleRemove"
+  >
+    <template #footer>
+      <el-button size="small" link type="primary" @click="handleClearAll">
+        <el-icon><Delete /></el-icon>
+        清空选择
+      </el-button>
+    </template>
+  </ASelectionTags>
+</template>
+
+<script lang="ts" setup>
+const handleClearAll = () => {
+  selectedUsers.value = []
+  // 如果使用了表格选择,还需要清空表格状态
+  tableRef.value?.clearSelection()
+}
+</script>
+```
+
+### 5. 自定义标签内容不生效
+
+**问题原因:**
+- 插槽使用不正确
+- 作用域插槽参数获取错误
+
+**解决方案:**
+
+```vue
+<template>
+  <!-- ✅ 正确: 使用作用域插槽并正确获取 item -->
+  <ASelectionTags
+    :items="selectedUsers"
+    key-field="userId"
+    @close="handleRemove"
+  >
+    <template #default="{ item }">
+      <span class="custom-content">
+        <el-avatar :size="20" :src="item.avatar" />
+        <span class="ml-2">{{ item.userName }}</span>
+      </span>
+    </template>
+  </ASelectionTags>
+
+  <!-- ❌ 错误: 没有使用作用域插槽 -->
+  <ASelectionTags
+    :items="selectedUsers"
+    key-field="userId"
+    @close="handleRemove"
+  >
+    <template #default>
+      <span>固定内容</span>  <!-- 无法访问 item -->
+    </template>
+  </ASelectionTags>
+</template>
+
+<script lang="ts" setup>
+interface User {
+  userId: number
+  userName: string
+  avatar: string
+}
+
+const selectedUsers = ref<User[]>([])
+
+const handleRemove = (userId: number) => {
+  selectedUsers.value = selectedUsers.value.filter(
+    user => user.userId !== userId
+  )
+}
+</script>
+
+```

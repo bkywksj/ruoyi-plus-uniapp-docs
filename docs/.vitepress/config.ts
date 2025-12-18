@@ -362,7 +362,7 @@ export default defineConfig({
                             collapsed: false,
                             items: [
                                 {
-                                    text: 'APageBackground 页面背景',
+                                    text: 'AGeometricBackground 几何装饰背景',
                                     link: '/frontend/components/layout/page-background'
                                 },
                                 {
@@ -495,7 +495,8 @@ export default defineConfig({
                         { text: '调试技巧', link: '/frontend/dev/debugging' },
                         { text: '性能分析', link: '/frontend/dev/performance' },
                         { text: '单元测试', link: '/frontend/dev/testing' },
-                        { text: '开发最佳实践', link: '/frontend/dev/best-practices' }
+                        { text: '开发最佳实践', link: '/frontend/dev/best-practices' },
+                        { text: '自定义组件开发', link: '/frontend/dev/custom-component' }
                     ]
                 },
                 {
