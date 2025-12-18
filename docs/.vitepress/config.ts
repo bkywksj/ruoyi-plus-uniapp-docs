@@ -880,8 +880,6 @@ export default defineConfig({
                         { text: '事务管理策略', link: '/practices/backend/transaction' },
                         { text: '异常处理机制', link: '/practices/backend/exception-handling' },
                         { text: '数据校验最佳实践', link: '/practices/backend/validation' },
-                        { text: '日志规范', link: '/practices/backend/logging' },
-                        { text: 'API版本管理', link: '/practices/backend/api-versioning' }
                     ]
                 },
                 {
