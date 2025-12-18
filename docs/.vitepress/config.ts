@@ -573,7 +573,7 @@ export default defineConfig({
                             ]
                         },
                         {
-                            text: '导航组件 (9个)',
+                            text: '导航组件 (10个)',
                             collapsed: false,
                             items: [
                                 { text: 'Navbar 导航栏', link: '/mobile/wd/navigation/navbar' },
@@ -584,11 +584,12 @@ export default defineConfig({
                                 { text: 'IndexBar 索引栏', link: '/mobile/wd/navigation/index-bar' },
                                 { text: 'Pagination 分页', link: '/mobile/wd/navigation/pagination' },
                                 { text: 'Paging 分页加载', link: '/mobile/wd/navigation/paging' },
-                                { text: 'Backtop 回到顶部', link: '/mobile/wd/navigation/backtop' }
+                                { text: 'Backtop 回到顶部', link: '/mobile/wd/navigation/backtop' },
+                                { text: 'Fab 悬浮按钮', link: '/mobile/wd/navigation/fab' }
                             ]
                         },
                         {
-                            text: '表单组件 (22个)',
+                            text: '表单组件 (24个)',
                             collapsed: false,
                             items: [
                                 { text: 'Input 输入框', link: '/mobile/wd/form/input' },
@@ -612,11 +613,13 @@ export default defineConfig({
                                 { text: 'Upload 上传', link: '/mobile/wd/form/upload' },
                                 { text: 'Form 表单', link: '/mobile/wd/form/form' },
                                 { text: 'Signature 签名', link: '/mobile/wd/form/signature' },
-                                { text: 'Recorder 录音', link: '/mobile/wd/form/voice-recorder' }
+                                { text: 'Recorder 录音', link: '/mobile/wd/form/voice-recorder' },
+                                { text: 'Keyboard 虚拟键盘', link: '/mobile/wd/form/keyboard' },
+                                { text: 'NumberKeyboard 数字键盘', link: '/mobile/wd/form/number-keyboard' }
                             ]
                         },
                         {
-                            text: '展示组件 (11个)',
+                            text: '展示组件 (12个)',
                             collapsed: false,
                             items: [
                                 { text: 'Cell 单元格', link: '/mobile/wd/display/cell' },
@@ -631,11 +634,12 @@ export default defineConfig({
                                 { text: 'Swiper 轮播图', link: '/mobile/wd/display/swiper' },
                                 { text: 'Skeleton 骨架屏', link: '/mobile/wd/display/skeleton' },
                                 { text: 'Curtain 幕帘', link: '/mobile/wd/display/curtain' },
-                                { text: 'Watermark 水印', link: '/mobile/wd/display/watermark' }
+                                { text: 'Watermark 水印', link: '/mobile/wd/display/watermark' },
+                                { text: 'Progress 进度条', link: '/mobile/wd/display/progress' }
                             ]
                         },
                         {
-                            text: '反馈组件 (23个)',
+                            text: '反馈组件 (19个)',
                             collapsed: false,
                             items: [
                                 { text: 'ActionSheet 上拉菜单', link: '/mobile/wd/feedback/action-sheet' },
@@ -645,7 +649,6 @@ export default defineConfig({
                                 { text: 'Toast 轻提示', link: '/mobile/wd/feedback/toast' },
                                 { text: 'Notify 消息通知', link: '/mobile/wd/feedback/notify' },
                                 { text: 'Loading 加载指示器', link: '/mobile/wd/feedback/loading' },
-                                { text: 'Progress 进度条', link: '/mobile/wd/feedback/progress' },
                                 { text: 'Circle 环形进度条', link: '/mobile/wd/feedback/circle' },
                                 { text: 'Loadmore 加载更多', link: '/mobile/wd/feedback/loadmore' },
                                 { text: 'StatusTip 缺省提示', link: '/mobile/wd/feedback/status-tip' },
@@ -658,9 +661,6 @@ export default defineConfig({
                                 { text: 'NoticeBar 通知栏', link: '/mobile/wd/feedback/notice-bar' },
                                 { text: 'CountDown 倒计时', link: '/mobile/wd/feedback/count-down' },
                                 { text: 'CountTo 数字滚动', link: '/mobile/wd/feedback/count-to' },
-                                { text: 'Keyboard 虚拟键盘', link: '/mobile/wd/feedback/keyboard' },
-                                { text: 'NumberKeyboard 数字', link: '/mobile/wd/feedback/number-keyboard' },
-                                { text: 'Fab 悬浮按钮', link: '/mobile/wd/feedback/fab' }
                             ]
                         }
                     ]
@@ -670,7 +670,6 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         { text: '组合式函数概览', link: '/mobile/composables/overview' },
-                        { text: '自动导入配置', link: '/mobile/composables/auto-imports' },
                         {
                             text: '核心组合函数',
                             collapsed: false,
