@@ -129,8 +129,10 @@ export default defineConfig({
                         },
                         { text: '邮件服务 (mail)', link: '/backend/common/mail' },
                         { text: '媒体处理 (media)', link: '/backend/common/media' },
+                        { text: '统一消息推送 (message)', link: '/backend/common/message' },
                         { text: '小程序集成 (miniapp)', link: '/backend/common/miniapp' },
                         { text: '公众号集成 (mp)', link: '/backend/common/mp' },
+                        { text: 'MQTT消息 (mqtt)', link: '/backend/common/mqtt' },
                         { text: 'MyBatisPlus增强 (mybatis)', link: '/backend/common/mybatis' },
                         { text: 'OSS存储 (oss)', link: '/backend/common/oss' },
                         { text: '支付集成 (pay)', link: '/backend/common/pay' },
@@ -544,7 +546,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🧩 WD UI 组件库 (98组件)',
+                    text: '🧩 WD UI 组件库 (78组件)',
                     collapsed: true,
                     items: [
                         { text: '组件库概览', link: '/mobile/wd/overview' },
@@ -620,7 +622,7 @@ export default defineConfig({
                             ]
                         },
                         {
-                            text: '展示组件 (12个)',
+                            text: '展示组件 (14个)',
                             collapsed: false,
                             items: [
                                 { text: 'Cell 单元格', link: '/mobile/wd/display/cell' },

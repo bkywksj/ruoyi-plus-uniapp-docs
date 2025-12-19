@@ -15,6 +15,164 @@
 - **TypeScript 支持** - 完整的类型定义
 - **平台兼容** - 支持 UniApp 所有平台（H5、小程序、App）
 
+## 架构设计
+
+### 整体架构
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                          应用层 (Application Layer)                       │
+├─────────────────────────────────────────────────────────────────────────┤
+│  App.vue    │   页面组件    │   业务组件    │   自定义处理器              │
+│  (初始化)    │   (使用状态)   │   (发送消息)   │   (处理消息)               │
+└──────┬──────┴───────┬───────┴───────┬───────┴───────────┬───────────────┘
+       │              │               │                   │
+       ▼              ▼               ▼                   ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                    全局管理层 (Global Manager Layer)                      │
+├─────────────────────────────────────────────────────────────────────────┤
+│                     GlobalWebSocketManager (单例)                         │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐ │
+│  │  initialize │  │   connect   │  │    send     │  │ MessagePipeline │ │
+│  │   (初始化)   │  │   (连接)    │  │   (发送)    │  │   (消息管道)     │ │
+│  └─────────────┘  └─────────────┘  └─────────────┘  └─────────────────┘ │
+└──────────────────────────────┬──────────────────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                      核心层 (Core Layer)                                  │
+├─────────────────────────────────────────────────────────────────────────┤
+│                        useWebSocket Composable                           │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐  │
+│  │ 状态管理  │  │ 连接管理  │  │ 重连机制  │  │ 心跳检测  │  │ 消息收发  │  │
+│  │ (status) │  │(connect) │  │(backoff) │  │(heartbt) │  │  (send)  │  │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘  └──────────┘  │
+└──────────────────────────────┬──────────────────────────────────────────┘
+                               │
+                               ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     平台层 (Platform Layer)                               │
+├─────────────────────────────────────────────────────────────────────────┤
+│                      UniApp WebSocket API                                │
+│  ┌───────────────┐  ┌───────────────┐  ┌───────────────────────────┐   │
+│  │ connectSocket │  │  SocketTask   │  │   onOpen/onMessage/...    │   │
+│  └───────────────┘  └───────────────┘  └───────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### 连接状态机
+
+```
+                    ┌─────────────────────────────────────┐
+                    │                                     │
+                    ▼                                     │
+             ┌──────────┐                                 │
+    ┌───────→│  CLOSED  │←────────────────────────┐      │
+    │        └────┬─────┘                         │      │
+    │             │                               │      │
+    │        connect()                     disconnect()  │
+    │             │                        (手动/错误)    │
+    │             ▼                               │      │
+    │     ┌──────────────┐                        │      │
+    │     │  CONNECTING  │────────────────────────┤      │
+    │     └──────┬───────┘                        │      │
+    │            │                                │      │
+    │       onOpen()                              │      │
+    │            │                                │      │
+    │            ▼                                │      │
+    │       ┌────────┐                            │      │
+    │       │  OPEN  │────────────────────────────┤      │
+    │       └───┬────┘                            │      │
+    │           │                                 │      │
+    │      close()/onError()                      │      │
+    │           │                                 │      │
+    │           ▼                                 │      │
+    │     ┌──────────┐                            │      │
+    │     │ CLOSING  │────────────────────────────┘      │
+    │     └────┬─────┘                                   │
+    │          │                                         │
+    │      onClose()                                     │
+    │          │                                         │
+    │          ▼                                         │
+    │     ┌──────────┐                                   │
+    │     │  CLOSED  │                                   │
+    │     └────┬─────┘                                   │
+    │          │                                         │
+    │   自动重连? (非手动关闭)                             │
+    │          │                                         │
+    │          ├─── 是 ──→ 指数退避等待 ─────────────────┘
+    │          │
+    └─── 否 ───┘
+```
+
+### 消息处理管道
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         消息处理管道 (MessagePipeline)                    │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│    接收原始消息                                                          │
+│         │                                                               │
+│         ▼                                                               │
+│    ┌──────────┐                                                         │
+│    │ 消息解析  │ ───→ 字符串? ───→ 检查是否为心跳消息                      │
+│    │ (parse)  │         │               │                               │
+│    └──────────┘         │               ├── 是 ──→ 返回 HEARTBEAT 类型   │
+│         │               │               │                               │
+│         │               │               └── 否 ──→ 尝试 JSON.parse      │
+│         │               │                             │                 │
+│         │               │                             ├── 成功 → 标准化  │
+│         │               │                             │                 │
+│         │               │                             └── 失败 → 文本消息 │
+│         │               │                                               │
+│         │               └── 对象? ──→ 直接标准化                          │
+│         │                                                               │
+│         ▼                                                               │
+│    ┌──────────────┐                                                     │
+│    │ 消息标准化    │ ───→ { type, data, timestamp, id }                  │
+│    │ (normalize)  │                                                     │
+│    └──────────────┘                                                     │
+│         │                                                               │
+│         ▼                                                               │
+│    ┌─────────────────────────────────────────────────────┐              │
+│    │              处理器链 (Handler Chain)                 │              │
+│    │                                                     │              │
+│    │  ┌─────────────────┐    返回 false                  │              │
+│    │  │ HeartbeatHandler│ ─────────────────→ 停止传播    │              │
+│    │  └────────┬────────┘                                │              │
+│    │           │ 返回 true                               │              │
+│    │           ▼                                         │              │
+│    │  ┌─────────────────┐    返回 false                  │              │
+│    │  │  DevLogHandler  │ ─────────────────→ 停止传播    │              │
+│    │  └────────┬────────┘                                │              │
+│    │           │ 返回 true                               │              │
+│    │           ▼                                         │              │
+│    │  ┌─────────────────┐    返回 false                  │              │
+│    │  │SystemNoticeHandler│ ───────────────→ 停止传播    │              │
+│    │  └────────┬────────┘                                │              │
+│    │           │ 返回 true                               │              │
+│    │           ▼                                         │              │
+│    │  ┌─────────────────┐                                │              │
+│    │  │ CustomHandler   │ ───→ 自定义业务处理            │              │
+│    │  └─────────────────┘                                │              │
+│    └─────────────────────────────────────────────────────┘              │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### 核心模块结构
+
+| 模块 | 说明 | 关键函数 |
+|------|------|----------|
+| **状态管理** | 管理连接状态和消息数据 | `status`, `isConnected`, `data` |
+| **连接管理** | WebSocket 连接的建立和关闭 | `connect()`, `disconnect()` |
+| **重连机制** | 指数退避自动重连 | `attemptReconnect()`, `calculateRetryDelay()` |
+| **心跳检测** | 保持连接活跃 | `startHeartbeat()`, `stopHeartbeat()` |
+| **消息收发** | 消息的发送和接收处理 | `send()`, `onMessage()` |
+| **认证管理** | Token 附加和 URL 构建 | `buildWebSocketUrl()` |
+| **消息管道** | 责任链模式消息处理 | `MessagePipeline`, `MessageHandler` |
+
 ## 基本用法
 
 ### 简单连接
@@ -203,6 +361,20 @@ export class HeartbeatHandler implements MessageHandler {
 }
 ```
 
+**DevLogHandler** - 过滤开发日志消息：
+
+```typescript
+export class DevLogHandler implements MessageHandler {
+  handle(message: WSMessage): boolean {
+    if (message.type === WSMessageType.DEV_LOG) {
+      // 静默过滤，不做任何操作
+      return false // 阻止继续传播
+    }
+    return true
+  }
+}
+```
+
 **SystemNoticeHandler** - 处理系统通知：
 
 ```typescript
@@ -256,10 +428,198 @@ onMounted(() => {
 ```typescript
 // 获取当前处理器列表
 const handlers = webSocket.getMessageHandlers()
-// ['HeartbeatHandler', 'SystemNoticeHandler', 'OrderMessageHandler']
+// ['HeartbeatHandler', 'DevLogHandler', 'SystemNoticeHandler', 'OrderMessageHandler']
 
 // 移除处理器
 webSocket.removeMessageHandler(OrderMessageHandler)
+```
+
+## 内部实现
+
+### 指数退避算法
+
+```typescript
+/**
+ * 动态计算退避延迟时间
+ * 规律：3 -> 6 -> 12 -> 24 -> 48 -> 96 -> 192 -> 384...
+ */
+const calculateRetryDelay = (retryIndex: number): number => {
+  const delaySeconds = baseDelay * 2 ** retryIndex
+  return delaySeconds * 1000
+}
+```
+
+**退避策略详解:**
+
+| 重试次数 | 延迟时间 | 累计等待时间 |
+|----------|----------|--------------|
+| 1 | 3秒 | 3秒 |
+| 2 | 6秒 | 9秒 |
+| 3 | 12秒 | 21秒 |
+| 4 | 24秒 | 45秒 |
+| 5 | 48秒 | 93秒 |
+| 6 | 96秒 | 189秒 |
+| 7 | 192秒 | 381秒 |
+| 8 | 384秒 | 765秒 |
+
+### URL 构建与认证
+
+```typescript
+/**
+ * 构造 WebSocket 连接 URL
+ * 自动附加 Token 进行身份验证
+ */
+const buildWebSocketUrl = (): string => {
+  const token = getToken()
+  if (!token) {
+    console.warn('[WebSocket] 未找到有效token，可能影响连接认证')
+    return url
+  }
+
+  const separator = url.includes('?') ? '&' : '?'
+  return `${url}${separator}Authorization=${encodeURIComponent(`Bearer ${token}`)}`
+}
+```
+
+**URL 构建规则:**
+
+| 场景 | 原始 URL | 构建后 URL |
+|------|----------|------------|
+| 无查询参数 | `wss://api.com/ws` | `wss://api.com/ws?Authorization=Bearer%20xxx` |
+| 有查询参数 | `wss://api.com/ws?room=1` | `wss://api.com/ws?room=1&Authorization=Bearer%20xxx` |
+
+### 协议自动转换
+
+全局管理器会根据当前环境自动选择正确的 WebSocket 协议：
+
+```typescript
+private getWebSocketUrl(): string {
+  const baseUrl = SystemConfig.api.baseUrl
+
+  // H5 环境：根据页面协议决定
+  if (PLATFORM.isH5) {
+    const currentProtocol = window.location.protocol
+    if (currentProtocol === 'https:') {
+      wsUrl = baseUrl.replace(/^https?:/, 'wss:')  // HTTPS → WSS
+    } else {
+      wsUrl = baseUrl.replace(/^https?:/, 'ws:')   // HTTP → WS
+    }
+    return `${wsUrl}/resource/websocket`
+  }
+
+  // 非 H5 环境（小程序等）：根据 baseUrl 协议决定
+  const wsUrl = baseUrl.replace(/^https?:/,
+    baseUrl.startsWith('https:') ? 'wss:' : 'ws:'
+  )
+  return `${wsUrl}/resource/websocket`
+}
+```
+
+### 消息解析与标准化
+
+```typescript
+/**
+ * 解析原始消息
+ */
+private parseMessage(rawMessage: any): WSMessage | null {
+  // 1. 字符串消息
+  if (typeof rawMessage === 'string') {
+    // 快速检查心跳消息
+    const lowerMessage = rawMessage.toLowerCase()
+    if (lowerMessage.includes('ping') || lowerMessage.includes('pong')) {
+      return { type: WSMessageType.HEARTBEAT, data: rawMessage, timestamp: Date.now() }
+    }
+
+    // 尝试 JSON 解析
+    try {
+      const parsed = JSON.parse(rawMessage)
+      return this.normalizeMessage(parsed)
+    } catch {
+      // 解析失败，当作文本消息
+      return { type: WSMessageType.SYSTEM_NOTICE, data: { content: rawMessage }, timestamp: Date.now() }
+    }
+  }
+
+  // 2. 对象消息
+  if (typeof rawMessage === 'object' && rawMessage !== null) {
+    return this.normalizeMessage(rawMessage)
+  }
+
+  // 3. 其他类型
+  return { type: WSMessageType.SYSTEM_NOTICE, data: { content: String(rawMessage) }, timestamp: Date.now() }
+}
+
+/**
+ * 标准化消息格式
+ */
+private normalizeMessage(obj: any): WSMessage {
+  // 确定消息类型
+  let messageType: WSMessageType = WSMessageType.SYSTEM_NOTICE
+  if (obj.type && Object.values(WSMessageType).includes(obj.type)) {
+    messageType = obj.type
+  } else if (obj.messageType && Object.values(WSMessageType).includes(obj.messageType)) {
+    messageType = obj.messageType
+  }
+
+  // 提取消息数据
+  let messageData = obj.data || obj.message || obj.content || obj
+
+  // 如果数据是字符串且看起来像 JSON，尝试解析
+  if (typeof messageData === 'string') {
+    try {
+      messageData = JSON.parse(messageData)
+    } catch {
+      messageData = { content: messageData }
+    }
+  }
+
+  return {
+    type: messageType,
+    data: messageData,
+    timestamp: obj.timestamp || Date.now(),
+    id: obj.id || obj.messageId,
+  }
+}
+```
+
+### 功能启用检查
+
+```typescript
+// 检查系统配置
+const featureStore = useFeatureStore()
+if (!featureStore.features.websocketEnabled) {
+  console.warn('[WebSocket] 系统未启用WebSocket功能')
+  return {
+    connect: () => {},
+    disconnect: () => {},
+    reconnect: () => {},
+    send: () => false,
+    status: ref('CLOSED'),
+    isConnected: ref(false),
+    data: ref(null),
+  }
+}
+```
+
+全局管理器的初始化检查更加完善：
+
+```typescript
+private shouldInitializeWebSocket(): { should: boolean; reason: string } {
+  // 检查系统配置
+  const featureStore = useFeatureStore()
+  if (!featureStore.features.websocketEnabled) {
+    return { should: false, reason: '系统未启用WebSocket功能' }
+  }
+
+  // 检查用户登录状态
+  const { getToken } = useToken()
+  const token = getToken()
+  if (!token) {
+    return { should: false, reason: '用户未登录' }
+  }
+
+  return { should: true, reason: '满足初始化条件' }
+}
 ```
 
 ## API 文档
@@ -350,8 +710,9 @@ const handlers = pipeline.getHandlers()
 
 ```typescript
 export enum WSMessageType {
-  SYSTEM_NOTICE = 'system_notice',  // 系统通知
+  SYSTEM_NOTICE = 'system_notice',  // 系统通知（通知和公告）
   CHAT_MESSAGE = 'chat_message',    // 聊天消息
+  DEV_LOG = 'devLog',               // 开发日志（仅开发环境）
   HEARTBEAT = 'heartbeat',          // 心跳消息
 }
 ```
@@ -411,6 +772,7 @@ import {
   type ChatMessageData,
   type MessageHandler,
   HeartbeatHandler,
+  DevLogHandler,
   SystemNoticeHandler,
   MessagePipeline,
 } from '@/composables/useWebSocket'
@@ -526,6 +888,72 @@ const sendMessage = (message: any) => {
 }
 ```
 
+### 6. 处理器错误隔离
+
+消息管道内置了错误隔离机制，单个处理器的错误不会影响其他处理器：
+
+```typescript
+// 管道内部实现
+for (const handler of this.handlers) {
+  try {
+    const shouldContinue = handler.handle(message)
+    if (!shouldContinue) break
+  } catch (handlerError) {
+    console.error(`❌ 处理器 ${handler.constructor.name} 处理消息时出错:`, handlerError)
+    // 继续执行下一个处理器
+  }
+}
+```
+
+### 7. 网络状态监听与自动重连
+
+```typescript
+// 监听网络状态变化
+uni.onNetworkStatusChange((res) => {
+  if (res.isConnected && !webSocket.isConnected) {
+    console.log('网络恢复，尝试重连 WebSocket')
+    webSocket.reconnect()
+  }
+})
+
+// 页面显示时检查连接
+onShow(() => {
+  if (!webSocket.isConnected) {
+    webSocket.reconnect()
+  }
+})
+```
+
+### 8. 消息去重处理
+
+```typescript
+class DeduplicateHandler implements MessageHandler {
+  private processedIds = new Set<string>()
+  private maxCacheSize = 1000
+
+  handle(message: WSMessage): boolean {
+    if (message.id) {
+      if (this.processedIds.has(message.id)) {
+        console.log('跳过重复消息:', message.id)
+        return false
+      }
+
+      this.processedIds.add(message.id)
+
+      // 限制缓存大小
+      if (this.processedIds.size > this.maxCacheSize) {
+        const firstId = this.processedIds.values().next().value
+        this.processedIds.delete(firstId)
+      }
+    }
+    return true
+  }
+}
+
+// 添加到管道最前面
+webSocket.addMessageHandler(new DeduplicateHandler())
+```
+
 ## 常见问题
 
 ### 1. WebSocket 连接失败
@@ -625,6 +1053,7 @@ class DebugHandler implements MessageHandler {
       console.group('📨 WebSocket 消息')
       console.log('类型:', message.type)
       console.log('数据:', message.data)
+      console.log('时间:', new Date(message.timestamp).toLocaleString())
       console.groupEnd()
     }
     return true
@@ -662,6 +1091,72 @@ onShow(() => {
 })
 ```
 
+### 6. 系统未启用 WebSocket 功能
+
+**问题现象:**
+控制台输出 `[WebSocket] 系统未启用WebSocket功能`
+
+**解决方案:**
+1. 检查 FeatureStore 中的 `websocketEnabled` 配置
+2. 确认后端已启用 WebSocket 功能
+3. 检查系统配置接口返回值
+
+```typescript
+// 检查功能状态
+const featureStore = useFeatureStore()
+console.log('WebSocket 启用状态:', featureStore.features.websocketEnabled)
+```
+
+### 7. Token 过期导致认证失败
+
+**问题现象:**
+连接成功后立即断开，错误码 1008
+
+**解决方案:**
+
+```typescript
+webSocket.initialize('wss://example.com/ws', {
+  onDisconnected: (code, reason) => {
+    if (code === 1008) {
+      // 认证失败，可能是 Token 过期
+      console.log('认证失败，尝试刷新 Token')
+      refreshToken().then(() => {
+        webSocket.reconnect()
+      })
+    }
+  },
+})
+```
+
+### 8. 心跳消息过于频繁
+
+**问题现象:**
+控制台大量心跳日志
+
+**解决方案:**
+
+心跳消息默认不会打印发送日志：
+
+```typescript
+// 源码实现
+if (!data.startsWith(`{"type":"ping"`)) {
+  console.log(`📤 WebSocket发送消息成功:`, data)
+}
+```
+
+如需完全禁用心跳日志，可自定义心跳处理器：
+
+```typescript
+class SilentHeartbeatHandler implements MessageHandler {
+  handle(message: WSMessage): boolean {
+    if (message.type === WSMessageType.HEARTBEAT) {
+      return false // 静默处理，不打印
+    }
+    return true
+  }
+}
+```
+
 ## 总结
 
 `useWebSocket` 提供了完整的 WebSocket 解决方案：
@@ -669,7 +1164,9 @@ onShow(() => {
 1. **useWebSocket** - 组件级别的 WebSocket 连接管理
 2. **webSocket** - 全局单例管理器，推荐使用
 3. **消息处理管道** - 责任链模式，支持自定义处理器
-4. **自动重连** - 指数退避策略
-5. **心跳检测** - 保持连接活跃
+4. **自动重连** - 指数退避策略（3s → 6s → 12s → 24s...）
+5. **心跳检测** - 保持连接活跃（默认 30 秒）
+6. **认证支持** - 自动附加 Bearer Token
+7. **功能检查** - 自动检查系统配置和登录状态
 
 建议优先使用全局管理器 `webSocket`，在 App.vue 中初始化一次，其他组件直接使用。

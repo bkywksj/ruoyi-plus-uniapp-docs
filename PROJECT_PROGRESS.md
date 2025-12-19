@@ -1,10 +1,10 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-12-16
-> **整体完成度**: 69.2% (C+ 评分) - 按500+行标准
+> **最后更新**: 2025-12-19
+> **整体完成度**: 71.7% (C+ 评分) - 按500+行标准
 > **总文档数**: 481 个 (已清理 27 个占位符/重复文档)
-> **总行数**: 519,400+ 行
-> **已完成文档**: 333 个 (≥500行)
+> **总行数**: 530,000+ 行
+> **已完成文档**: 345 个 (≥500行)
 
 ---
 
@@ -30,9 +30,9 @@
 | **WD 组件库** | 51 | 51 | 0 | **100%** | A+ |
 | **后端文档** | 71 | 41 | 30 | **57.7%** | D+ |
 | **前端文档** | 182 | 97 | 85 | **53.3%** | D+ |
-| **移动端文档** | 172 | 138 | 34 | **80.2%** | B |
+| **移动端文档** | 172 | 150 | 22 | **87.2%** | B+ |
 | **最佳实践** | 54 | 53 | 1 | **98.1%** | A+ |
-| **总计** | **481** | **333** | **148** | **69.2%** | **C+** |
+| **总计** | **481** | **345** | **136** | **71.7%** | **C+** |
 
 **说明**: 完成标准为文档行数 ≥ 500 行
 
@@ -348,10 +348,21 @@
 - ~~重复 Composables~~ - 2 个 (useAuth.md, useHttp.md)
 - ~~调试与测试占位符~~ - 9 个 (tools, device, miniapp-devtools, logging, error-monitoring, unit-testing, integration-testing, compatibility-testing, debugging) ✨ **最新**
 
-**优秀示例 (1000+ 行)**:
-- `docs/mobile/composables/use-websocket.md` - 3,598 行
+**优秀示例 (500+ 行)**:
+- `docs/mobile/composables/overview.md` - 1,462 行 ✨ **最新完成**
+- `docs/mobile/utils/rsa.md` - 1,868 行
+- `docs/mobile/uniapp/app-config.md` - 1,258 行
+- `docs/mobile/utils/boolean.md` - 1,100 行
+- `docs/mobile/composables/use-share.md` - 1,214 行 ✨ **最新完成**
+- `docs/mobile/composables/use-event-bus.md` - 1,488 行 ✨ **最新完成**
+- `docs/mobile/composables/use-i18n.md` - 1,316 行 ✨ **最新完成**
+- `docs/mobile/composables/use-app-init.md` - 727 行 ✨ **最新完成**
+- `docs/mobile/wd/form/picker-view.md` - 1,100 行 ✨ **最新完成**
+- `docs/mobile/wd/form/signature.md` - 1,817 行 ✨ **最新完成**
+- `docs/mobile/wd/form/keyboard.md` - 1,359 行 ✨ **最新完成**
+- `docs/mobile/wd/form/voice-recorder.md` - 1,377 行 ✨ **最新完成**
+- `docs/mobile/index.md` - 552 行
 - `docs/mobile/composables/use-payment.md` - 3,398 行
-- `docs/mobile/composables/custom-hooks.md` - 3,363 行
 - `docs/mobile/pages/login.md` - 3,239 行
 - `docs/mobile/utils/file.md` - 2,965 行
 - `docs/mobile/utils/validate.md` - 2,969 行
@@ -404,7 +415,7 @@
 
 | 文档 | 路径 | 行数 | 状态 |
 |------|------|------|------|
-| Git 规范 | `docs/practices/standards/git.md` | 3,036 | ✅ |
+| Git 规范 | `docs/practices/standards/git.md` | 849 | ✅ |
 | 自动化测试 | `docs/practices/testing/automated-testing.md` | 2,933 | ✅ |
 | Code Review | `docs/practices/standards/code-review.md` | 2,794 | ✅ |
 | 分布式架构 | `docs/practices/architecture/distributed.md` | 2,635 | ✅ |
@@ -533,10 +544,10 @@
 #### 1. 移动端 Composables 文档扩展
 
 **最新完成**:
-- [x] `docs/mobile/composables/custom-hooks.md` - ✅ 已完成 3,363 行 (超目标 420%) **最新** 🎉
+- [x] `docs/mobile/composables/custom-hooks.md` - ✅ 已完成 909 行
 - [x] `docs/mobile/composables/use-modal.md` - ✅ 已完成 1,774 行 (超目标 222%)
 - [x] `docs/mobile/composables/use-toast.md` - ✅ 已完成 2,689 行 (超目标 336%)
-- [x] `docs/mobile/composables/use-websocket.md` - ✅ 已完成 3,598 行 (超目标 450%)
+- [x] `docs/mobile/composables/use-websocket.md` - ✅ 已完成 675 行
 - [x] `docs/mobile/composables/use-payment.md` - ✅ 已完成 3,398 行 (超目标 425%)
 - [x] `docs/mobile/composables/use-auth.md` - ✅ 已完成 2,856 行 (超目标 357%)
 - [x] `docs/mobile/composables/use-http.md` - ✅ 已完成 2,339 行 (超目标 292%)
