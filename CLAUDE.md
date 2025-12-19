@@ -911,6 +911,20 @@ pnpm build
 pnpm preview
 ```
 
+### 部署发布
+
+当用户说"部署"时,直接执行以下命令:
+
+```bash
+edgeone pages deploy -n ruoyi-plus-uniapp-doc docs/.vitepress/dist
+```
+
+**说明:**
+- **项目名称**: `ruoyi-plus-uniapp-doc`
+- **部署目录**: `docs/.vitepress/dist`
+- **部署平台**: EdgeOne Pages
+- **官方文档**: https://pages.edgeone.ai/zh/document/edgeone-cli
+
 ### 源码项目
 
 ```bash
@@ -1303,6 +1317,12 @@ del \\?\D:\path\to\nul
 ---
 
 ## 更新日志
+
+### v1.5.0 (2025-12-19)
+
+- 🚀 新增 EdgeOne Pages 部署命令配置
+- 📋 添加"部署发布"章节,当用户说"部署"时自动执行部署命令
+- 🔧 部署命令: `edgeone pages deploy -n ruoyi-plus-uniapp-doc docs/.vitepress/dist`
 
 ### v1.4.0 (2025-11-22)
 

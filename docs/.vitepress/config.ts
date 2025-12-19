@@ -1002,7 +1002,17 @@ export default defineConfig({
             __COMPONENT_PREVIEW__: true
         },
         build: {
-            chunkSizeWarningLimit: 3000
+            // 增大 chunk 大小限制
+            chunkSizeWarningLimit: 5000,
+            // 禁用 source map 减少文件数量
+            sourcemap: false,
+            // Rollup 配置优化
+            rollupOptions: {
+                output: {
+                    // 合并小 chunk，减少文件数量 (20KB 以下的 chunk 会被合并)
+                    experimentalMinChunkSize: 20000
+                }
+            }
         },
         optimizeDeps: {
             exclude: ['vitepress']

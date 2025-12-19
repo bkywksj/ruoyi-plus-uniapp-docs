@@ -28,3 +28,10 @@ docs/.vitepress/dist
 docs/.vitepress/cache
 
 pnpm-lock.yaml
+
+# Tencent Cloud EdgeOne
+.env
+.edgeone/*
+!.edgeone/project.json
+.tef_dist/*
+  
