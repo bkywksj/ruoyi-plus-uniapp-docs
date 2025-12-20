@@ -930,3 +930,190 @@ try {
 - 避免频繁创建ObjectMapper实例
 - 使用 `JsonUtils.getObjectMapper()` 获取共享实例
 - 大量JSON处理时考虑使用流式API
+
+## 高级用法
+
+### 1. 流式处理大文件
+
+```java
+@Service
+public class LargeJsonService {
+
+    /**
+     * 流式读取大型JSON数组文件
+     */
+    public void processLargeJsonFile(InputStream inputStream) throws IOException {
+        ObjectMapper mapper = JsonUtils.getObjectMapper();
+        JsonFactory factory = mapper.getFactory();
+
+        try (JsonParser parser = factory.createParser(inputStream)) {
+            // 定位到数组开始
+            if (parser.nextToken() != JsonToken.START_ARRAY) {
+                throw new IllegalStateException("Expected array");
+            }
+
+            // 逐个读取数组元素
+            while (parser.nextToken() != JsonToken.END_ARRAY) {
+                User user = mapper.readValue(parser, User.class);
+                processUser(user);
+            }
+        }
+    }
+
+    private void processUser(User user) {
+        // 处理单个用户数据
+    }
+}
+```
+
+### 2. 自定义序列化器
+
+```java
+/**
+ * 脱敏序列化器 - 手机号中间四位隐藏
+ */
+public class PhoneMaskSerializer extends JsonSerializer<String> {
+
+    @Override
+    public void serialize(String value, JsonGenerator gen, SerializerProvider provider)
+            throws IOException {
+        if (StringUtils.isBlank(value) || value.length() != 11) {
+            gen.writeString(value);
+            return;
+        }
+        // 138****8888
+        String masked = value.substring(0, 3) + "****" + value.substring(7);
+        gen.writeString(masked);
+    }
+}
+
+// 使用
+@Data
+public class UserInfo {
+    private String name;
+
+    @JsonSerialize(using = PhoneMaskSerializer.class)
+    private String phone;
+}
+```
+
+### 3. 条件序列化
+
+```java
+@Data
+@JsonInclude(JsonInclude.Include.NON_NULL)  // 空值不序列化
+public class OptionalFields {
+
+    private String requiredField;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)  // 空集合不序列化
+    private List<String> optionalList;
+
+    @JsonIgnore  // 完全忽略
+    private String internalField;
+}
+```
+
+### 4. 多态类型处理
+
+```java
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = EmailNotification.class, name = "email"),
+    @JsonSubTypes.Type(value = SmsNotification.class, name = "sms")
+})
+public abstract class Notification {
+    private String message;
+}
+
+@Data
+public class EmailNotification extends Notification {
+    private String email;
+}
+
+@Data
+public class SmsNotification extends Notification {
+    private String phone;
+}
+```
+
+## 与前端集成
+
+### TypeScript 类型定义
+
+```typescript
+// 对应后端实体的前端类型定义
+interface Order {
+  id: string;           // Long 类型统一使用 string
+  orderNo: string;
+  amount: string;       // BigDecimal 使用 string
+  createTime: string;   // LocalDateTime 格式化为字符串
+  updateTime: string;   // Date 格式化为字符串
+}
+
+// 通用响应结构
+interface R<T> {
+  code: number;
+  msg: string;
+  data: T;
+}
+
+// 分页响应
+interface PageResult<T> {
+  rows: T[];
+  total: number;
+}
+```
+
+### Axios 响应拦截器
+
+```typescript
+import axios from 'axios';
+
+const service = axios.create({
+  baseURL: '/api',
+  timeout: 10000
+});
+
+// 响应拦截器 - 处理大数值
+service.interceptors.response.use(
+  (response) => {
+    const data = response.data;
+    // 将字符串形式的大数值转换（如需要）
+    return data;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export default service;
+```
+
+### 金额处理工具
+
+```typescript
+/**
+ * 金额格式化工具
+ */
+export const moneyUtils = {
+  /**
+   * 字符串金额转显示格式
+   * @param amount 后端返回的字符串金额
+   * @param decimals 小数位数，默认2位
+   */
+  format(amount: string | null | undefined, decimals = 2): string {
+    if (!amount) return '0.00';
+    const num = parseFloat(amount);
+    return num.toFixed(decimals);
+  },
+
+  /**
+   * 字符串金额转数值（用于计算）
+   */
+  toNumber(amount: string | null | undefined): number {
+    if (!amount) return 0;
+    return parseFloat(amount);
+  }
+};
+```

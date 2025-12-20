@@ -890,6 +890,355 @@ String result2 = wxMaService.getAccessToken();
 2. 对于高并发场景，考虑使用ThreadLocal包装
 3. 或者为每个小程序创建独立的服务实例
 
+## 安全机制
+
+### 消息加解密
+
+微信小程序支持消息加解密，配置了Token和AesKey后，系统会自动处理消息的加解密：
+
+```java
+@Service
+public class MessageSecurityService {
+
+    @Autowired
+    private WxMaService wxMaService;
+
+    /**
+     * 验证消息签名
+     */
+    public boolean checkSignature(String appid, String signature,
+                                   String timestamp, String nonce) {
+        try {
+            wxMaService.switchoverTo(appid);
+            return wxMaService.checkSignature(timestamp, nonce, signature);
+        } catch (Exception e) {
+            log.error("签名验证失败: appid={}", appid, e);
+            return false;
+        }
+    }
+
+    /**
+     * 解密用户敏感数据
+     */
+    public String decryptData(String appid, String sessionKey,
+                              String encryptedData, String iv) {
+        try {
+            wxMaService.switchoverTo(appid);
+            return wxMaService.getUserService()
+                .getUserInfo(sessionKey, encryptedData, iv)
+                .toString();
+        } catch (WxErrorException e) {
+            log.error("数据解密失败", e);
+            throw new RuntimeException("数据解密失败");
+        }
+    }
+}
+```
+
+### 内容安全检测
+
+使用微信内容安全API对文本和图片进行审核：
+
+```java
+@Service
+public class ContentSecurityService {
+
+    @Autowired
+    private WxMaService wxMaService;
+
+    /**
+     * 文本内容安全检测
+     * @return true-内容安全，false-内容违规
+     */
+    public boolean checkTextSecurity(String appid, String content) {
+        try {
+            wxMaService.switchoverTo(appid);
+            return wxMaService.getSecCheckService().checkMessage(content);
+        } catch (WxErrorException e) {
+            // 87014 表示内容含有违法违规内容
+            if (e.getError().getErrorCode() == 87014) {
+                log.warn("检测到违规内容: {}", content);
+                return false;
+            }
+            log.error("内容安全检测异常", e);
+            throw new RuntimeException("内容安全检测失败");
+        }
+    }
+
+    /**
+     * 异步图片安全检测
+     */
+    public String checkImageAsync(String appid, String mediaUrl) {
+        try {
+            wxMaService.switchoverTo(appid);
+            WxMaMediaAsyncCheckResult result = wxMaService.getSecCheckService()
+                .mediaCheckAsync(mediaUrl, WxMaConstants.SecCheckMediaType.IMAGE);
+            return result.getTraceId();
+        } catch (WxErrorException e) {
+            log.error("图片安全检测提交失败", e);
+            throw new RuntimeException("图片安全检测失败");
+        }
+    }
+}
+```
+
+### Session管理
+
+安全管理用户Session，防止Session泄露：
+
+```java
+@Service
+public class SessionSecurityService {
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
+    private static final String SESSION_PREFIX = "miniapp:session:";
+    private static final long SESSION_EXPIRE = 7200L; // 2小时
+
+    /**
+     * 存储Session（使用自定义token替代sessionKey）
+     */
+    public String storeSession(String openid, String sessionKey) {
+        // 生成安全的会话token
+        String token = UUID.randomUUID().toString().replace("-", "");
+
+        // 存储映射关系
+        String key = SESSION_PREFIX + token;
+        Map<String, String> sessionData = new HashMap<>();
+        sessionData.put("openid", openid);
+        sessionData.put("sessionKey", sessionKey);
+        sessionData.put("createTime", String.valueOf(System.currentTimeMillis()));
+
+        redisTemplate.opsForHash().putAll(key, sessionData);
+        redisTemplate.expire(key, Duration.ofSeconds(SESSION_EXPIRE));
+
+        return token;
+    }
+
+    /**
+     * 获取Session数据
+     */
+    public Map<Object, Object> getSession(String token) {
+        String key = SESSION_PREFIX + token;
+        if (Boolean.FALSE.equals(redisTemplate.hasKey(key))) {
+            return null;
+        }
+        // 刷新过期时间
+        redisTemplate.expire(key, Duration.ofSeconds(SESSION_EXPIRE));
+        return redisTemplate.opsForHash().entries(key);
+    }
+
+    /**
+     * 销毁Session
+     */
+    public void destroySession(String token) {
+        String key = SESSION_PREFIX + token;
+        redisTemplate.delete(key);
+    }
+}
+```
+
+## 高级用法
+
+### URL Scheme生成
+
+生成小程序URL Scheme，用于外部H5跳转小程序：
+
+```java
+@Service
+public class SchemeService {
+
+    @Autowired
+    private WxMaService wxMaService;
+
+    /**
+     * 生成URL Scheme（有效期30天）
+     */
+    public String generateScheme(String appid, String path, String query) {
+        try {
+            wxMaService.switchoverTo(appid);
+
+            WxMaScheme scheme = WxMaScheme.builder()
+                .jumpWxa(WxMaScheme.JumpWxa.builder()
+                    .path(path)
+                    .query(query)
+                    .build())
+                .expireType(0)  // 0-到期失效，1-永久有效
+                .expireTime(System.currentTimeMillis() / 1000 + 30 * 24 * 3600)
+                .build();
+
+            return wxMaService.getLinkService().generateScheme(scheme);
+        } catch (WxErrorException e) {
+            log.error("生成URL Scheme失败", e);
+            throw new RuntimeException("生成URL Scheme失败");
+        }
+    }
+
+    /**
+     * 生成短链接（Short Link）
+     */
+    public String generateShortLink(String appid, String pageUrl, String pageTitle) {
+        try {
+            wxMaService.switchoverTo(appid);
+
+            WxMaShortLink shortLink = WxMaShortLink.builder()
+                .pageUrl(pageUrl)
+                .pageTitle(pageTitle)
+                .isPermanent(false)
+                .build();
+
+            return wxMaService.getLinkService().generateShortLink(shortLink);
+        } catch (WxErrorException e) {
+            log.error("生成短链接失败", e);
+            throw new RuntimeException("生成短链接失败");
+        }
+    }
+}
+```
+
+### 直播管理
+
+微信小程序直播相关功能：
+
+```java
+@Service
+public class LiveService {
+
+    @Autowired
+    private WxMaService wxMaService;
+
+    /**
+     * 获取直播间列表
+     */
+    public List<WxMaLiveRoomInfo> getLiveRooms(String appid, int start, int limit) {
+        try {
+            wxMaService.switchoverTo(appid);
+            WxMaLiveResult result = wxMaService.getLiveService()
+                .getLiveInfos(start, limit);
+            return result.getRoomInfos();
+        } catch (WxErrorException e) {
+            log.error("获取直播间列表失败", e);
+            throw new RuntimeException("获取直播间列表失败");
+        }
+    }
+
+    /**
+     * 获取直播间回放
+     */
+    public List<WxMaLiveResult.LiveReplay> getLiveReplay(String appid,
+                                                          Integer roomId,
+                                                          int start,
+                                                          int limit) {
+        try {
+            wxMaService.switchoverTo(appid);
+            return wxMaService.getLiveService()
+                .getLiveReplay(roomId, start, limit)
+                .getLiveReplay();
+        } catch (WxErrorException e) {
+            log.error("获取直播回放失败: roomId={}", roomId, e);
+            throw new RuntimeException("获取直播回放失败");
+        }
+    }
+}
+```
+
+### 物流助手
+
+对接微信物流服务：
+
+```java
+@Service
+public class ExpressService {
+
+    @Autowired
+    private WxMaService wxMaService;
+
+    /**
+     * 获取所有快递公司列表
+     */
+    public List<WxMaExpressDeliveryCompany> getDeliveryCompanies(String appid) {
+        try {
+            wxMaService.switchoverTo(appid);
+            return wxMaService.getExpressService().getAllDeliveryCompany();
+        } catch (WxErrorException e) {
+            log.error("获取快递公司列表失败", e);
+            throw new RuntimeException("获取快递公司列表失败");
+        }
+    }
+
+    /**
+     * 查询物流轨迹
+     */
+    public WxMaExpressPath getExpressPath(String appid, String deliveryId,
+                                           String waybillId, String openid) {
+        try {
+            wxMaService.switchoverTo(appid);
+            return wxMaService.getExpressService()
+                .getPath(deliveryId, waybillId, openid);
+        } catch (WxErrorException e) {
+            log.error("查询物流轨迹失败: waybillId={}", waybillId, e);
+            throw new RuntimeException("查询物流轨迹失败");
+        }
+    }
+}
+```
+
+### 数据分析
+
+获取小程序运营数据：
+
+```java
+@Service
+public class AnalysisService {
+
+    @Autowired
+    private WxMaService wxMaService;
+
+    /**
+     * 获取用户访问小程序日留存
+     */
+    public WxMaRetainInfo getDailyRetain(String appid, Date beginDate, Date endDate) {
+        try {
+            wxMaService.switchoverTo(appid);
+            return wxMaService.getAnalysisService()
+                .getDailyRetainInfo(beginDate, endDate);
+        } catch (WxErrorException e) {
+            log.error("获取日留存数据失败", e);
+            throw new RuntimeException("获取日留存数据失败");
+        }
+    }
+
+    /**
+     * 获取用户访问小程序数据概况
+     */
+    public WxMaSummaryTrend getDailySummary(String appid, Date beginDate, Date endDate) {
+        try {
+            wxMaService.switchoverTo(appid);
+            return wxMaService.getAnalysisService()
+                .getDailySummaryTrend(beginDate, endDate);
+        } catch (WxErrorException e) {
+            log.error("获取数据概况失败", e);
+            throw new RuntimeException("获取数据概况失败");
+        }
+    }
+
+    /**
+     * 获取访问页面数据
+     */
+    public List<WxMaVisitPage> getVisitPage(String appid, Date beginDate, Date endDate) {
+        try {
+            wxMaService.switchoverTo(appid);
+            return wxMaService.getAnalysisService()
+                .getVisitPage(beginDate, endDate);
+        } catch (WxErrorException e) {
+            log.error("获取访问页面数据失败", e);
+            throw new RuntimeException("获取访问页面数据失败");
+        }
+    }
+}
+```
+
 ## 注意事项
 
 1. **并发安全**：多线程环境下使用 `switchoverTo` 时注意线程安全
@@ -899,3 +1248,6 @@ String result2 = wxMaService.getAccessToken();
 5. **资源管理**：注意及时清理不再使用的配置，避免资源浪费
 6. **场景值限制**：不限次数小程序码的scene参数最多32字符
 7. **页面路径**：确保小程序码指向的页面路径在小程序中存在
+8. **Session安全**：不要将sessionKey直接返回给前端，使用自定义token替代
+9. **内容审核**：用户生成内容（UGC）必须经过内容安全检测
+10. **接口频率**：注意微信API的调用频率限制，避免被封禁

@@ -907,3 +907,266 @@ const total = computed(() => list.value.reduce((a, b) => a + b, 0))
 // 防抖搜索
 const debouncedSearch = useDebounce((keyword) => searchApi(keyword), 500)
 ```
+
+### 7. UniApp 平台兼容问题
+
+在 UniApp 多端环境中，部分 API 需要条件编译处理：
+
+```typescript
+export const useClipboard = () => {
+  const copy = async (text: string): Promise<boolean> => {
+    try {
+      // #ifdef H5
+      await navigator.clipboard.writeText(text)
+      // #endif
+
+      // #ifndef H5
+      uni.setClipboardData({
+        data: text,
+        showToast: false
+      })
+      // #endif
+
+      return true
+    } catch {
+      return false
+    }
+  }
+
+  return { copy }
+}
+```
+
+### 8. Hook 内存泄漏问题
+
+如果组件频繁创建销毁，需要确保资源正确释放：
+
+```typescript
+export const useWebSocket = (url: string) => {
+  let socket: UniApp.SocketTask | null = null
+  const isConnected = ref(false)
+
+  const connect = () => {
+    socket = uni.connectSocket({ url, complete: () => {} })
+    socket.onOpen(() => { isConnected.value = true })
+    socket.onClose(() => { isConnected.value = false })
+  }
+
+  const disconnect = () => {
+    if (socket) {
+      socket.close({})
+      socket = null
+      isConnected.value = false
+    }
+  }
+
+  // 关键: 组件卸载时断开连接
+  onUnmounted(() => disconnect())
+
+  return { isConnected, connect, disconnect }
+}
+```
+
+## 测试建议
+
+### 单元测试示例
+
+使用 Vitest 测试 Hook：
+
+```typescript
+// __tests__/useCounter.test.ts
+import { describe, it, expect } from 'vitest'
+import { useCounter } from '@/composables/useCounter'
+
+describe('useCounter', () => {
+  it('should initialize with default value', () => {
+    const { count } = useCounter()
+    expect(count.value).toBe(0)
+  })
+
+  it('should increment count', () => {
+    const { count, increment } = useCounter()
+    increment()
+    expect(count.value).toBe(1)
+  })
+
+  it('should initialize with custom value', () => {
+    const { count } = useCounter(10)
+    expect(count.value).toBe(10)
+  })
+})
+```
+
+### 测试异步 Hook
+
+```typescript
+// __tests__/useAsync.test.ts
+import { describe, it, expect, vi } from 'vitest'
+import { useAsync } from '@/composables/useAsync'
+import { nextTick } from 'vue'
+
+describe('useAsync', () => {
+  it('should handle loading state', async () => {
+    const mockFn = vi.fn().mockResolvedValue('data')
+    const { loading, execute } = useAsync(mockFn)
+
+    expect(loading.value).toBe(false)
+
+    const promise = execute()
+    expect(loading.value).toBe(true)
+
+    await promise
+    await nextTick()
+    expect(loading.value).toBe(false)
+  })
+
+  it('should handle error state', async () => {
+    const mockFn = vi.fn().mockRejectedValue(new Error('test error'))
+    const { error, execute } = useAsync(mockFn)
+
+    await execute()
+    await nextTick()
+
+    expect(error.value?.message).toBe('test error')
+  })
+})
+```
+
+## 调试技巧
+
+### 使用 Vue DevTools
+
+安装 Vue DevTools 扩展，可以在浏览器中查看 Hook 的响应式状态变化。
+
+### 添加调试日志
+
+```typescript
+export const useDebugHook = <T>(hookFn: () => T, hookName: string): T => {
+  console.log(`[Hook] ${hookName} - 开始初始化`)
+
+  const result = hookFn()
+
+  console.log(`[Hook] ${hookName} - 初始化完成`, result)
+
+  return result
+}
+
+// 使用
+const dialog = useDebugHook(() => useDialog(), 'useDialog')
+```
+
+### 状态快照
+
+```typescript
+export const useStateSnapshot = <T extends object>(state: T) => {
+  const takeSnapshot = () => JSON.parse(JSON.stringify(state))
+  const logSnapshot = (label?: string) => {
+    console.log(label || 'State Snapshot:', takeSnapshot())
+  }
+  return { takeSnapshot, logSnapshot }
+}
+```
+
+## 项目示例
+
+### 完整的用户管理 Hook
+
+```typescript
+// composables/useUserManagement.ts
+import { ref, computed, onMounted } from 'vue'
+import type { User } from '@/types/user'
+
+export const useUserManagement = () => {
+  // 状态
+  const users = ref<User[]>([])
+  const loading = ref(false)
+  const currentUser = ref<User | null>(null)
+  const searchKeyword = ref('')
+
+  // 计算属性
+  const filteredUsers = computed(() => {
+    if (!searchKeyword.value) return users.value
+    return users.value.filter(user =>
+      user.name.toLowerCase().includes(searchKeyword.value.toLowerCase())
+    )
+  })
+
+  const userCount = computed(() => users.value.length)
+
+  // 方法
+  const fetchUsers = async () => {
+    loading.value = true
+    try {
+      const response = await userApi.getList()
+      users.value = response.data
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const selectUser = (user: User) => {
+    currentUser.value = user
+  }
+
+  const clearSelection = () => {
+    currentUser.value = null
+  }
+
+  // 生命周期
+  onMounted(() => fetchUsers())
+
+  return {
+    // 状态
+    users,
+    loading,
+    currentUser,
+    searchKeyword,
+    // 计算属性
+    filteredUsers,
+    userCount,
+    // 方法
+    fetchUsers,
+    selectUser,
+    clearSelection,
+  }
+}
+```
+
+### 在组件中使用
+
+```vue
+<template>
+  <view class="user-management">
+    <wd-search v-model="searchKeyword" placeholder="搜索用户" />
+
+    <wd-loading v-if="loading" />
+
+    <view v-else class="user-list">
+      <view
+        v-for="user in filteredUsers"
+        :key="user.id"
+        class="user-item"
+        :class="{ active: currentUser?.id === user.id }"
+        @click="selectUser(user)"
+      >
+        <text>{{ user.name }}</text>
+      </view>
+    </view>
+
+    <view class="footer">
+      共 {{ userCount }} 位用户
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+const {
+  loading,
+  currentUser,
+  searchKeyword,
+  filteredUsers,
+  userCount,
+  selectUser,
+} = useUserManagement()
+</script>
+```

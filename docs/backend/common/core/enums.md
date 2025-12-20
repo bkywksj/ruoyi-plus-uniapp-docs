@@ -731,6 +731,1127 @@ public class DictSyncService {
 }
 ```
 
+## 枚举设计模式
+
+### 策略模式与枚举结合
+
+枚举非常适合实现策略模式，每个枚举项代表一种策略实现：
+
+```java
+/**
+ * 计价策略枚举
+ */
+@Getter
+@AllArgsConstructor
+public enum PricingStrategy {
+
+    /**
+     * 正常价格策略
+     */
+    NORMAL("normal", "正常价格") {
+        @Override
+        public BigDecimal calculate(BigDecimal price, int quantity) {
+            return price.multiply(BigDecimal.valueOf(quantity));
+        }
+    },
+
+    /**
+     * 会员折扣策略
+     */
+    VIP("vip", "会员折扣") {
+        @Override
+        public BigDecimal calculate(BigDecimal price, int quantity) {
+            return price.multiply(BigDecimal.valueOf(quantity))
+                       .multiply(BigDecimal.valueOf(0.8));
+        }
+    },
+
+    /**
+     * 满减策略
+     */
+    FULL_REDUCTION("full_reduction", "满减活动") {
+        @Override
+        public BigDecimal calculate(BigDecimal price, int quantity) {
+            BigDecimal total = price.multiply(BigDecimal.valueOf(quantity));
+            // 满100减20
+            if (total.compareTo(BigDecimal.valueOf(100)) >= 0) {
+                return total.subtract(BigDecimal.valueOf(20));
+            }
+            return total;
+        }
+    },
+
+    /**
+     * 阶梯定价策略
+     */
+    TIERED("tiered", "阶梯定价") {
+        @Override
+        public BigDecimal calculate(BigDecimal price, int quantity) {
+            // 阶梯定价：1-10件原价，11-50件9折，50件以上8折
+            if (quantity <= 10) {
+                return price.multiply(BigDecimal.valueOf(quantity));
+            } else if (quantity <= 50) {
+                BigDecimal first10 = price.multiply(BigDecimal.valueOf(10));
+                BigDecimal rest = price.multiply(BigDecimal.valueOf(0.9))
+                                       .multiply(BigDecimal.valueOf(quantity - 10));
+                return first10.add(rest);
+            } else {
+                BigDecimal first10 = price.multiply(BigDecimal.valueOf(10));
+                BigDecimal mid40 = price.multiply(BigDecimal.valueOf(0.9))
+                                        .multiply(BigDecimal.valueOf(40));
+                BigDecimal rest = price.multiply(BigDecimal.valueOf(0.8))
+                                       .multiply(BigDecimal.valueOf(quantity - 50));
+                return first10.add(mid40).add(rest);
+            }
+        }
+    };
+
+    private final String value;
+    private final String label;
+
+    /**
+     * 计算价格的抽象方法
+     */
+    public abstract BigDecimal calculate(BigDecimal price, int quantity);
+
+    /**
+     * 根据值获取策略
+     */
+    public static PricingStrategy getByValue(String value) {
+        for (PricingStrategy strategy : values()) {
+            if (strategy.getValue().equals(value)) {
+                return strategy;
+            }
+        }
+        return NORMAL;
+    }
+}
+```
+
+**使用示例：**
+
+```java
+@Service
+@RequiredArgsConstructor
+public class OrderPricingService {
+
+    /**
+     * 计算订单总价
+     */
+    public BigDecimal calculateOrderPrice(Order order, String strategyType) {
+        PricingStrategy strategy = PricingStrategy.getByValue(strategyType);
+
+        BigDecimal totalPrice = BigDecimal.ZERO;
+        for (OrderItem item : order.getItems()) {
+            BigDecimal itemPrice = strategy.calculate(
+                item.getUnitPrice(),
+                item.getQuantity()
+            );
+            totalPrice = totalPrice.add(itemPrice);
+        }
+
+        return totalPrice;
+    }
+}
+```
+
+### 工厂模式与枚举结合
+
+使用枚举实现工厂模式，创建不同类型的对象：
+
+```java
+/**
+ * 消息发送器工厂枚举
+ */
+@Getter
+@AllArgsConstructor
+public enum MessageSenderFactory {
+
+    SMS("sms", "短信发送") {
+        @Override
+        public MessageSender createSender() {
+            return new SmsSender();
+        }
+    },
+
+    EMAIL("email", "邮件发送") {
+        @Override
+        public MessageSender createSender() {
+            return new EmailSender();
+        }
+    },
+
+    WECHAT("wechat", "微信消息") {
+        @Override
+        public MessageSender createSender() {
+            return new WechatSender();
+        }
+    },
+
+    APP_PUSH("app_push", "APP推送") {
+        @Override
+        public MessageSender createSender() {
+            return new AppPushSender();
+        }
+    };
+
+    private final String value;
+    private final String label;
+
+    /**
+     * 创建发送器的抽象方法
+     */
+    public abstract MessageSender createSender();
+
+    /**
+     * 根据类型获取发送器
+     */
+    public static MessageSender getSender(String type) {
+        for (MessageSenderFactory factory : values()) {
+            if (factory.getValue().equals(type)) {
+                return factory.createSender();
+            }
+        }
+        throw new ServiceException("不支持的消息类型: " + type);
+    }
+
+    /**
+     * 批量创建发送器
+     */
+    public static List<MessageSender> createSenders(List<String> types) {
+        return types.stream()
+                    .map(MessageSenderFactory::getSender)
+                    .collect(Collectors.toList());
+    }
+}
+
+/**
+ * 消息发送器接口
+ */
+public interface MessageSender {
+    void send(String target, String content);
+    boolean supports(String target);
+}
+
+/**
+ * 短信发送器实现
+ */
+public class SmsSender implements MessageSender {
+    @Override
+    public void send(String target, String content) {
+        // 调用短信接口发送
+        log.info("发送短信到: {}, 内容: {}", target, content);
+    }
+
+    @Override
+    public boolean supports(String target) {
+        return target.matches("^1[3-9]\\d{9}$");
+    }
+}
+```
+
+### 状态机模式与枚举结合
+
+使用枚举实现状态机，管理状态流转：
+
+```java
+/**
+ * 工单状态枚举（状态机实现）
+ */
+@Getter
+@AllArgsConstructor
+public enum WorkOrderStatus {
+
+    CREATED("created", "已创建") {
+        @Override
+        public Set<WorkOrderStatus> allowedTransitions() {
+            return EnumSet.of(ASSIGNED, CANCELLED);
+        }
+    },
+
+    ASSIGNED("assigned", "已分配") {
+        @Override
+        public Set<WorkOrderStatus> allowedTransitions() {
+            return EnumSet.of(IN_PROGRESS, CANCELLED, CREATED);
+        }
+    },
+
+    IN_PROGRESS("in_progress", "处理中") {
+        @Override
+        public Set<WorkOrderStatus> allowedTransitions() {
+            return EnumSet.of(PENDING_REVIEW, ASSIGNED);
+        }
+    },
+
+    PENDING_REVIEW("pending_review", "待审核") {
+        @Override
+        public Set<WorkOrderStatus> allowedTransitions() {
+            return EnumSet.of(COMPLETED, IN_PROGRESS);
+        }
+    },
+
+    COMPLETED("completed", "已完成") {
+        @Override
+        public Set<WorkOrderStatus> allowedTransitions() {
+            return EnumSet.noneOf(WorkOrderStatus.class);
+        }
+    },
+
+    CANCELLED("cancelled", "已取消") {
+        @Override
+        public Set<WorkOrderStatus> allowedTransitions() {
+            return EnumSet.noneOf(WorkOrderStatus.class);
+        }
+    };
+
+    private final String value;
+    private final String label;
+
+    /**
+     * 获取允许流转的目标状态
+     */
+    public abstract Set<WorkOrderStatus> allowedTransitions();
+
+    /**
+     * 检查是否可以流转到目标状态
+     */
+    public boolean canTransitionTo(WorkOrderStatus target) {
+        return allowedTransitions().contains(target);
+    }
+
+    /**
+     * 执行状态流转
+     */
+    public WorkOrderStatus transitionTo(WorkOrderStatus target) {
+        if (!canTransitionTo(target)) {
+            throw new ServiceException(
+                String.format("状态[%s]不能流转到[%s]", this.label, target.label)
+            );
+        }
+        return target;
+    }
+
+    /**
+     * 是否为终态
+     */
+    public boolean isFinalState() {
+        return allowedTransitions().isEmpty();
+    }
+
+    /**
+     * 是否为活跃状态
+     */
+    public boolean isActive() {
+        return this == IN_PROGRESS || this == PENDING_REVIEW;
+    }
+
+    /**
+     * 根据值获取状态
+     */
+    public static WorkOrderStatus getByValue(String value) {
+        for (WorkOrderStatus status : values()) {
+            if (status.getValue().equals(value)) {
+                return status;
+            }
+        }
+        throw new ServiceException("未知的工单状态: " + value);
+    }
+}
+```
+
+**使用示例：**
+
+```java
+@Service
+@RequiredArgsConstructor
+public class WorkOrderService {
+
+    private final WorkOrderRepository workOrderRepository;
+
+    /**
+     * 工单状态变更
+     */
+    @Transactional
+    public void changeStatus(Long workOrderId, String targetStatus) {
+        WorkOrder workOrder = workOrderRepository.findById(workOrderId)
+            .orElseThrow(() -> new ServiceException("工单不存在"));
+
+        WorkOrderStatus currentStatus = WorkOrderStatus.getByValue(workOrder.getStatus());
+        WorkOrderStatus newStatus = WorkOrderStatus.getByValue(targetStatus);
+
+        // 状态机验证并流转
+        WorkOrderStatus finalStatus = currentStatus.transitionTo(newStatus);
+
+        workOrder.setStatus(finalStatus.getValue());
+        workOrder.setStatusLabel(finalStatus.getLabel());
+        workOrder.setUpdateTime(LocalDateTime.now());
+
+        workOrderRepository.save(workOrder);
+
+        // 发布状态变更事件
+        publishStatusChangeEvent(workOrder, currentStatus, finalStatus);
+    }
+}
+```
+
+## 动态字典系统
+
+### 数据库字典与枚举结合
+
+在实际项目中，需要将静态枚举与动态数据库字典结合使用：
+
+```java
+/**
+ * 字典数据服务
+ */
+@Service
+@RequiredArgsConstructor
+public class DictDataService {
+
+    private final SysDictDataMapper dictDataMapper;
+    private final RedissonClient redissonClient;
+
+    /**
+     * 字典缓存前缀
+     */
+    private static final String DICT_CACHE_PREFIX = "dict:data:";
+
+    /**
+     * 获取字典数据列表
+     */
+    public List<SysDictData> getDictByType(String dictType) {
+        String cacheKey = DICT_CACHE_PREFIX + dictType;
+        RList<SysDictData> cachedList = redissonClient.getList(cacheKey);
+
+        if (cachedList.isExists() && !cachedList.isEmpty()) {
+            return cachedList.readAll();
+        }
+
+        // 从数据库加载
+        LambdaQueryWrapper<SysDictData> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(SysDictData::getDictType, dictType)
+               .eq(SysDictData::getStatus, "0")
+               .orderByAsc(SysDictData::getDictSort);
+
+        List<SysDictData> dataList = dictDataMapper.selectList(wrapper);
+
+        // 写入缓存
+        if (CollUtil.isNotEmpty(dataList)) {
+            cachedList.addAll(dataList);
+            cachedList.expire(Duration.ofHours(24));
+        }
+
+        return dataList;
+    }
+
+    /**
+     * 获取字典标签
+     */
+    public String getDictLabel(String dictType, String dictValue) {
+        List<SysDictData> dataList = getDictByType(dictType);
+        return dataList.stream()
+                       .filter(data -> data.getDictValue().equals(dictValue))
+                       .map(SysDictData::getDictLabel)
+                       .findFirst()
+                       .orElse("");
+    }
+
+    /**
+     * 获取字典值
+     */
+    public String getDictValue(String dictType, String dictLabel) {
+        List<SysDictData> dataList = getDictByType(dictType);
+        return dataList.stream()
+                       .filter(data -> data.getDictLabel().equals(dictLabel))
+                       .map(SysDictData::getDictValue)
+                       .findFirst()
+                       .orElse("");
+    }
+
+    /**
+     * 刷新字典缓存
+     */
+    public void refreshCache(String dictType) {
+        String cacheKey = DICT_CACHE_PREFIX + dictType;
+        redissonClient.getList(cacheKey).delete();
+        getDictByType(dictType); // 重新加载
+    }
+
+    /**
+     * 刷新所有字典缓存
+     */
+    public void refreshAllCache() {
+        redissonClient.getKeys().deleteByPattern(DICT_CACHE_PREFIX + "*");
+    }
+}
+```
+
+### 字典包装器
+
+将枚举与数据库字典统一为相同接口：
+
+```java
+/**
+ * 字典项接口
+ */
+public interface DictItem {
+    String getValue();
+    String getLabel();
+    default String getDescription() { return ""; }
+    default Integer getSort() { return 0; }
+    default String getCssClass() { return ""; }
+    default String getListClass() { return ""; }
+}
+
+/**
+ * 枚举字典包装器
+ */
+public class EnumDictWrapper<E extends Enum<E>> {
+
+    private final Class<E> enumClass;
+    private final Function<E, String> valueExtractor;
+    private final Function<E, String> labelExtractor;
+
+    public EnumDictWrapper(
+            Class<E> enumClass,
+            Function<E, String> valueExtractor,
+            Function<E, String> labelExtractor) {
+        this.enumClass = enumClass;
+        this.valueExtractor = valueExtractor;
+        this.labelExtractor = labelExtractor;
+    }
+
+    /**
+     * 获取所有字典项
+     */
+    public List<DictItem> getAllItems() {
+        return Arrays.stream(enumClass.getEnumConstants())
+                     .map(this::toDictItem)
+                     .collect(Collectors.toList());
+    }
+
+    /**
+     * 转换为字典项
+     */
+    private DictItem toDictItem(E enumValue) {
+        return new DictItem() {
+            @Override
+            public String getValue() {
+                return valueExtractor.apply(enumValue);
+            }
+
+            @Override
+            public String getLabel() {
+                return labelExtractor.apply(enumValue);
+            }
+
+            @Override
+            public Integer getSort() {
+                return enumValue.ordinal();
+            }
+        };
+    }
+
+    /**
+     * 根据值查找枚举
+     */
+    public E getByValue(String value) {
+        for (E enumValue : enumClass.getEnumConstants()) {
+            if (valueExtractor.apply(enumValue).equals(value)) {
+                return enumValue;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 根据标签查找枚举
+     */
+    public E getByLabel(String label) {
+        for (E enumValue : enumClass.getEnumConstants()) {
+            if (labelExtractor.apply(enumValue).equals(label)) {
+                return enumValue;
+            }
+        }
+        return null;
+    }
+}
+```
+
+**使用示例：**
+
+```java
+@Configuration
+public class DictConfig {
+
+    @Bean
+    public EnumDictWrapper<DictUserGender> userGenderWrapper() {
+        return new EnumDictWrapper<>(
+            DictUserGender.class,
+            DictUserGender::getValue,
+            DictUserGender::getLabel
+        );
+    }
+
+    @Bean
+    public EnumDictWrapper<DictOrderStatus> orderStatusWrapper() {
+        return new EnumDictWrapper<>(
+            DictOrderStatus.class,
+            DictOrderStatus::getValue,
+            DictOrderStatus::getLabel
+        );
+    }
+}
+```
+
+### 混合字典服务
+
+统一处理枚举字典和数据库字典：
+
+```java
+/**
+ * 混合字典服务
+ */
+@Service
+@RequiredArgsConstructor
+public class HybridDictService {
+
+    private final DictDataService dictDataService;
+    private final Map<String, EnumDictWrapper<?>> enumWrappers;
+
+    /**
+     * 枚举字典类型映射
+     */
+    private static final Map<String, Class<?>> ENUM_DICT_TYPES = Map.of(
+        "sys_user_gender", DictUserGender.class,
+        "sys_order_status", DictOrderStatus.class,
+        "sys_payment_method", DictPaymentMethod.class
+    );
+
+    /**
+     * 获取字典数据（自动判断来源）
+     */
+    public List<DictItem> getDictItems(String dictType) {
+        // 优先从枚举获取
+        EnumDictWrapper<?> wrapper = enumWrappers.get(dictType);
+        if (wrapper != null) {
+            return wrapper.getAllItems();
+        }
+
+        // 从数据库获取
+        return dictDataService.getDictByType(dictType)
+                              .stream()
+                              .map(this::toDictItem)
+                              .collect(Collectors.toList());
+    }
+
+    /**
+     * 获取字典标签
+     */
+    public String getDictLabel(String dictType, String value) {
+        List<DictItem> items = getDictItems(dictType);
+        return items.stream()
+                    .filter(item -> item.getValue().equals(value))
+                    .map(DictItem::getLabel)
+                    .findFirst()
+                    .orElse("");
+    }
+
+    /**
+     * 批量获取字典标签
+     */
+    public Map<String, String> getDictLabels(String dictType, Collection<String> values) {
+        List<DictItem> items = getDictItems(dictType);
+        Map<String, String> labelMap = items.stream()
+            .collect(Collectors.toMap(DictItem::getValue, DictItem::getLabel));
+
+        return values.stream()
+                     .distinct()
+                     .collect(Collectors.toMap(
+                         Function.identity(),
+                         value -> labelMap.getOrDefault(value, "")
+                     ));
+    }
+
+    private DictItem toDictItem(SysDictData data) {
+        return new DictItem() {
+            @Override
+            public String getValue() { return data.getDictValue(); }
+            @Override
+            public String getLabel() { return data.getDictLabel(); }
+            @Override
+            public String getDescription() { return data.getRemark(); }
+            @Override
+            public Integer getSort() { return data.getDictSort(); }
+            @Override
+            public String getCssClass() { return data.getCssClass(); }
+            @Override
+            public String getListClass() { return data.getListClass(); }
+        };
+    }
+}
+```
+
+## 字典与Excel导入导出
+
+### Excel字典转换器
+
+在Excel导入导出时，自动转换字典值和标签：
+
+```java
+/**
+ * Excel字典转换器
+ */
+public class ExcelDictConverter implements Converter<String> {
+
+    private static HybridDictService dictService;
+
+    /**
+     * 设置字典服务（通过静态注入）
+     */
+    public static void setDictService(HybridDictService service) {
+        dictService = service;
+    }
+
+    private final String dictType;
+
+    public ExcelDictConverter(String dictType) {
+        this.dictType = dictType;
+    }
+
+    @Override
+    public Class<?> supportJavaTypeKey() {
+        return String.class;
+    }
+
+    @Override
+    public CellDataTypeEnum supportExcelTypeKey() {
+        return CellDataTypeEnum.STRING;
+    }
+
+    /**
+     * 读取Excel时：标签 -> 值
+     */
+    @Override
+    public String convertToJavaData(ReadCellData<?> cellData,
+                                    ExcelContentProperty contentProperty,
+                                    GlobalConfiguration globalConfiguration) {
+        String label = cellData.getStringValue();
+        if (StringUtils.isBlank(label)) {
+            return "";
+        }
+        return dictService.getDictItems(dictType).stream()
+                          .filter(item -> item.getLabel().equals(label))
+                          .map(DictItem::getValue)
+                          .findFirst()
+                          .orElse(label);
+    }
+
+    /**
+     * 写入Excel时：值 -> 标签
+     */
+    @Override
+    public WriteCellData<?> convertToExcelData(String value,
+                                               ExcelContentProperty contentProperty,
+                                               GlobalConfiguration globalConfiguration) {
+        if (StringUtils.isBlank(value)) {
+            return new WriteCellData<>("");
+        }
+        String label = dictService.getDictLabel(dictType, value);
+        return new WriteCellData<>(StringUtils.isNotBlank(label) ? label : value);
+    }
+}
+```
+
+### 字典转换注解
+
+自定义注解简化Excel字典配置：
+
+```java
+/**
+ * Excel字典转换注解
+ */
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@ExcelProperty
+public @interface ExcelDictField {
+
+    /**
+     * 字典类型
+     */
+    String dictType();
+
+    /**
+     * 列名
+     */
+    String value() default "";
+
+    /**
+     * 列索引
+     */
+    int index() default -1;
+}
+
+/**
+ * 用户导出VO
+ */
+@Data
+public class UserExportVo {
+
+    @ExcelProperty("用户名")
+    private String username;
+
+    @ExcelProperty("姓名")
+    private String nickname;
+
+    @ExcelDictField(dictType = "sys_user_gender", value = "性别")
+    private String gender;
+
+    @ExcelDictField(dictType = "sys_enable_status", value = "状态")
+    private String status;
+
+    @ExcelProperty("创建时间")
+    private LocalDateTime createTime;
+}
+```
+
+### Excel字典处理器
+
+处理字典注解的Excel读写：
+
+```java
+/**
+ * 字典Excel处理器
+ */
+@Component
+@RequiredArgsConstructor
+public class DictExcelHandler {
+
+    private final HybridDictService dictService;
+
+    /**
+     * 导出时处理字典字段
+     */
+    public <T> List<T> processExportData(List<T> dataList) {
+        if (CollUtil.isEmpty(dataList)) {
+            return dataList;
+        }
+
+        Class<?> clazz = dataList.get(0).getClass();
+        Map<Field, String> dictFields = getDictFields(clazz);
+
+        for (T data : dataList) {
+            for (Map.Entry<Field, String> entry : dictFields.entrySet()) {
+                Field field = entry.getKey();
+                String dictType = entry.getValue();
+
+                try {
+                    field.setAccessible(true);
+                    Object value = field.get(data);
+                    if (value instanceof String) {
+                        String label = dictService.getDictLabel(dictType, (String) value);
+                        field.set(data, StringUtils.isNotBlank(label) ? label : value);
+                    }
+                } catch (IllegalAccessException e) {
+                    log.warn("字典字段处理失败: {}", field.getName(), e);
+                }
+            }
+        }
+
+        return dataList;
+    }
+
+    /**
+     * 导入时处理字典字段
+     */
+    public <T> List<T> processImportData(List<T> dataList) {
+        if (CollUtil.isEmpty(dataList)) {
+            return dataList;
+        }
+
+        Class<?> clazz = dataList.get(0).getClass();
+        Map<Field, String> dictFields = getDictFields(clazz);
+
+        for (T data : dataList) {
+            for (Map.Entry<Field, String> entry : dictFields.entrySet()) {
+                Field field = entry.getKey();
+                String dictType = entry.getValue();
+
+                try {
+                    field.setAccessible(true);
+                    Object label = field.get(data);
+                    if (label instanceof String) {
+                        String value = getDictValue(dictType, (String) label);
+                        field.set(data, StringUtils.isNotBlank(value) ? value : label);
+                    }
+                } catch (IllegalAccessException e) {
+                    log.warn("字典字段处理失败: {}", field.getName(), e);
+                }
+            }
+        }
+
+        return dataList;
+    }
+
+    /**
+     * 获取类的字典字段
+     */
+    private Map<Field, String> getDictFields(Class<?> clazz) {
+        Map<Field, String> dictFields = new HashMap<>();
+
+        for (Field field : clazz.getDeclaredFields()) {
+            ExcelDictField annotation = field.getAnnotation(ExcelDictField.class);
+            if (annotation != null) {
+                dictFields.put(field, annotation.dictType());
+            }
+        }
+
+        return dictFields;
+    }
+
+    /**
+     * 根据标签获取值
+     */
+    private String getDictValue(String dictType, String label) {
+        return dictService.getDictItems(dictType).stream()
+                          .filter(item -> item.getLabel().equals(label))
+                          .map(DictItem::getValue)
+                          .findFirst()
+                          .orElse("");
+    }
+}
+```
+
+## 字典权限控制
+
+### 根据角色过滤字典项
+
+某些字典项可能需要根据用户角色进行过滤：
+
+```java
+/**
+ * 字典权限服务
+ */
+@Service
+@RequiredArgsConstructor
+public class DictPermissionService {
+
+    private final HybridDictService dictService;
+
+    /**
+     * 字典权限配置
+     */
+    private static final Map<String, Map<String, Set<String>>> DICT_PERMISSIONS = Map.of(
+        // 订单状态字典：不同角色可见不同状态
+        "sys_order_status", Map.of(
+            "admin", Set.of("pending", "paid", "delivered", "completed", "cancelled", "refunded"),
+            "operator", Set.of("pending", "paid", "delivered", "completed"),
+            "customer", Set.of("pending", "paid", "delivered", "completed")
+        ),
+        // 审核状态字典：管理员可见所有，普通用户仅可见部分
+        "sys_audit_status", Map.of(
+            "admin", Set.of("0", "1", "2", "3"),
+            "auditor", Set.of("0", "1", "2"),
+            "user", Set.of("0", "1")
+        )
+    );
+
+    /**
+     * 获取用户可见的字典项
+     */
+    public List<DictItem> getVisibleDictItems(String dictType, String roleKey) {
+        List<DictItem> allItems = dictService.getDictItems(dictType);
+
+        // 检查是否有权限配置
+        Map<String, Set<String>> rolePermissions = DICT_PERMISSIONS.get(dictType);
+        if (rolePermissions == null) {
+            return allItems; // 无权限配置，返回全部
+        }
+
+        // 获取角色可见的值集合
+        Set<String> visibleValues = rolePermissions.get(roleKey);
+        if (visibleValues == null) {
+            visibleValues = rolePermissions.get("default");
+        }
+        if (visibleValues == null) {
+            return allItems; // 无默认配置，返回全部
+        }
+
+        Set<String> finalVisibleValues = visibleValues;
+        return allItems.stream()
+                       .filter(item -> finalVisibleValues.contains(item.getValue()))
+                       .collect(Collectors.toList());
+    }
+
+    /**
+     * 检查用户是否可以使用某字典值
+     */
+    public boolean canUseValue(String dictType, String value, String roleKey) {
+        Map<String, Set<String>> rolePermissions = DICT_PERMISSIONS.get(dictType);
+        if (rolePermissions == null) {
+            return true;
+        }
+
+        Set<String> visibleValues = rolePermissions.get(roleKey);
+        if (visibleValues == null) {
+            return true;
+        }
+
+        return visibleValues.contains(value);
+    }
+
+    /**
+     * 获取当前用户可见的字典项
+     */
+    public List<DictItem> getCurrentUserDictItems(String dictType) {
+        LoginUser loginUser = SecurityUtils.getLoginUser();
+        if (loginUser == null) {
+            return Collections.emptyList();
+        }
+
+        // 获取用户最高权限角色
+        String roleKey = loginUser.getRoles().stream()
+                                  .map(RoleDto::getRoleKey)
+                                  .min(Comparator.comparingInt(this::getRolePriority))
+                                  .orElse("user");
+
+        return getVisibleDictItems(dictType, roleKey);
+    }
+
+    /**
+     * 角色优先级（越小越高）
+     */
+    private int getRolePriority(String roleKey) {
+        return switch (roleKey) {
+            case "admin" -> 1;
+            case "auditor", "operator" -> 2;
+            default -> 3;
+        };
+    }
+}
+```
+
+### 字典接口权限控制
+
+```java
+/**
+ * 字典控制器（带权限控制）
+ */
+@RestController
+@RequestMapping("/dict")
+@RequiredArgsConstructor
+public class DictController {
+
+    private final DictPermissionService dictPermissionService;
+
+    /**
+     * 获取字典数据（根据用户角色过滤）
+     */
+    @GetMapping("/data/{dictType}")
+    public R<List<DictItem>> getDictData(@PathVariable String dictType) {
+        List<DictItem> items = dictPermissionService.getCurrentUserDictItems(dictType);
+        return R.ok(items);
+    }
+
+    /**
+     * 获取字典数据（管理员专用，返回全部）
+     */
+    @GetMapping("/data/all/{dictType}")
+    @PreAuthorize("@ss.hasRole('admin')")
+    public R<List<DictItem>> getAllDictData(@PathVariable String dictType) {
+        List<DictItem> items = dictPermissionService.getVisibleDictItems(dictType, "admin");
+        return R.ok(items);
+    }
+}
+```
+
+## 字典变更审计
+
+### 字典变更事件
+
+记录字典数据的变更历史：
+
+```java
+/**
+ * 字典变更事件
+ */
+@Getter
+public class DictChangeEvent extends ApplicationEvent {
+
+    private final String dictType;
+    private final String dictValue;
+    private final ChangeType changeType;
+    private final Object oldValue;
+    private final Object newValue;
+    private final String operator;
+    private final LocalDateTime changeTime;
+
+    public DictChangeEvent(Object source, String dictType, String dictValue,
+                           ChangeType changeType, Object oldValue, Object newValue) {
+        super(source);
+        this.dictType = dictType;
+        this.dictValue = dictValue;
+        this.changeType = changeType;
+        this.oldValue = oldValue;
+        this.newValue = newValue;
+        this.operator = SecurityUtils.getUsername();
+        this.changeTime = LocalDateTime.now();
+    }
+
+    public enum ChangeType {
+        CREATE, UPDATE, DELETE
+    }
+}
+
+/**
+ * 字典变更监听器
+ */
+@Component
+@RequiredArgsConstructor
+@Slf4j
+public class DictChangeListener {
+
+    private final DictChangeLogMapper changeLogMapper;
+
+    @EventListener
+    @Async
+    public void handleDictChange(DictChangeEvent event) {
+        log.info("字典变更: type={}, value={}, changeType={}",
+                 event.getDictType(), event.getDictValue(), event.getChangeType());
+
+        // 记录变更日志
+        DictChangeLog changeLog = new DictChangeLog();
+        changeLog.setDictType(event.getDictType());
+        changeLog.setDictValue(event.getDictValue());
+        changeLog.setChangeType(event.getChangeType().name());
+        changeLog.setOldValue(JsonUtils.toJsonString(event.getOldValue()));
+        changeLog.setNewValue(JsonUtils.toJsonString(event.getNewValue()));
+        changeLog.setOperator(event.getOperator());
+        changeLog.setChangeTime(event.getChangeTime());
+
+        changeLogMapper.insert(changeLog);
+    }
+}
+```
+
+### 字典变更日志表
+
+```sql
+-- 字典变更日志表
+CREATE TABLE sys_dict_change_log (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
+    dict_type VARCHAR(100) NOT NULL COMMENT '字典类型',
+    dict_value VARCHAR(100) COMMENT '字典值',
+    change_type VARCHAR(20) NOT NULL COMMENT '变更类型(CREATE/UPDATE/DELETE)',
+    old_value TEXT COMMENT '变更前值(JSON)',
+    new_value TEXT COMMENT '变更后值(JSON)',
+    operator VARCHAR(64) NOT NULL COMMENT '操作人',
+    change_time DATETIME NOT NULL COMMENT '变更时间',
+    INDEX idx_dict_type (dict_type),
+    INDEX idx_change_time (change_time)
+) COMMENT='字典变更日志表';
+```
+
 ## 注意事项
 
 ### 1. 性能考虑
@@ -738,18 +1859,22 @@ public class DictSyncService {
 - 使用静态缓存Map提高查找性能
 - 避免在循环中频繁调用getByValue方法
 - 考虑使用枚举序号进行比较
+- 字典数据加载时使用懒加载策略
+- 批量查询时使用缓存预热
 
 ### 2. 兼容性
 
 - 新增枚举项时考虑向后兼容
 - 删除枚举项需要检查现有数据
 - 修改枚举值需要同步更新数据库
+- 版本升级时提供数据迁移脚本
 
 ### 3. 维护性
 
 - 保持枚举命名的一致性
 - 及时更新相关文档
 - 定期检查未使用的枚举项
+- 枚举类应包含完整的JavaDoc注释
 
 ### 4. 测试覆盖
 
@@ -759,15 +1884,109 @@ public void testDictUserGender() {
     // 测试值查找
     assertEquals(DictUserGender.MALE, DictUserGender.getByValue("1"));
     assertEquals(DictUserGender.UNKNOWN, DictUserGender.getByValue("invalid"));
-    
+
     // 测试标签查找
     assertEquals(DictUserGender.FEMALE, DictUserGender.getByLabel("女"));
-    
+
     // 测试业务方法
     assertTrue(DictUserGender.MALE.getValue().equals("1"));
+}
+
+@Test
+public void testWorkOrderStatusTransition() {
+    // 测试状态机流转
+    WorkOrderStatus created = WorkOrderStatus.CREATED;
+
+    // 可以流转到ASSIGNED
+    assertTrue(created.canTransitionTo(WorkOrderStatus.ASSIGNED));
+
+    // 不能直接流转到COMPLETED
+    assertFalse(created.canTransitionTo(WorkOrderStatus.COMPLETED));
+
+    // 测试流转异常
+    assertThrows(ServiceException.class, () -> {
+        created.transitionTo(WorkOrderStatus.COMPLETED);
+    });
+}
+
+@Test
+public void testPricingStrategy() {
+    // 测试不同定价策略
+    BigDecimal price = BigDecimal.valueOf(100);
+    int quantity = 5;
+
+    assertEquals(BigDecimal.valueOf(500),
+                 PricingStrategy.NORMAL.calculate(price, quantity));
+    assertEquals(BigDecimal.valueOf(400),
+                 PricingStrategy.VIP.calculate(price, quantity));
+}
+```
+
+### 5. 安全性考虑
+
+```java
+/**
+ * 字典值安全校验
+ */
+@Component
+public class DictValueValidator {
+
+    /**
+     * 校验字典值是否合法
+     */
+    public boolean isValidValue(String dictType, String value) {
+        if (StringUtils.isBlank(value)) {
+            return false;
+        }
+
+        // 检查特殊字符
+        if (containsSpecialChars(value)) {
+            return false;
+        }
+
+        // 检查长度
+        if (value.length() > 100) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * 检查是否包含危险字符
+     */
+    private boolean containsSpecialChars(String value) {
+        String pattern = "[<>\"'&;]";
+        return Pattern.compile(pattern).matcher(value).find();
+    }
+
+    /**
+     * 清理字典值
+     */
+    public String sanitizeValue(String value) {
+        if (StringUtils.isBlank(value)) {
+            return "";
+        }
+        return value.replaceAll("[<>\"'&;]", "")
+                    .trim()
+                    .substring(0, Math.min(value.length(), 100));
+    }
 }
 ```
 
 ## 总结
 
 字典枚举系统为ruoyi-plus-uniapp提供了统一、类型安全的字典数据管理方案，通过规范的设计模式和丰富的内置字典，大大提高了开发效率和代码质量。合理使用字典枚举可以有效避免魔法字符串，提升代码的可读性和维护性。
+
+本文档涵盖了字典枚举的核心功能：
+
+1. **基础设计模式** - 统一的枚举结构规范
+2. **策略模式集成** - 在枚举中实现业务策略
+3. **工厂模式应用** - 使用枚举创建对象实例
+4. **状态机实现** - 管理复杂的状态流转逻辑
+5. **动态字典系统** - 数据库字典与枚举的结合
+6. **Excel集成** - 字典与导入导出的自动转换
+7. **权限控制** - 根据角色过滤字典项
+8. **变更审计** - 记录字典数据的变更历史
+
+通过这些功能的合理运用，可以构建出灵活、可维护、高性能的字典管理体系。

@@ -847,3 +847,389 @@ git bisect reset            # 结束查找
 7. **冲突处理** - 及时同步、小步提交、沟通协作
 
 遵循这些规范可以提高协作效率、保证代码质量、简化版本管理。
+
+## CI/CD 集成
+
+### GitHub Actions 配置
+
+创建自动化工作流程，在代码提交和合并时自动执行检查：
+
+```yaml
+# .github/workflows/ci.yml
+name: CI
+
+on:
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run ESLint
+        run: pnpm lint
+
+      - name: Run Type Check
+        run: pnpm type-check
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run Tests
+        run: pnpm test
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build
+```
+
+### 自动发布配置
+
+```yaml
+# .github/workflows/release.yml
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+### PR 检查配置
+
+```yaml
+# .github/workflows/pr-check.yml
+name: PR Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate Commit Messages
+        uses: wagoid/commitlint-github-action@v5
+
+      - name: Check PR Title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+## Git 性能优化
+
+### 大型仓库优化
+
+```bash
+# 浅克隆（只获取最近的提交）
+git clone --depth 1 https://github.com/repo/project.git
+
+# 部分克隆（按需获取）
+git clone --filter=blob:none https://github.com/repo/project.git
+
+# 稀疏检出（只检出需要的目录）
+git clone --filter=blob:none --sparse https://github.com/repo/project.git
+cd project
+git sparse-checkout init --cone
+git sparse-checkout set src/frontend
+```
+
+### 清理仓库
+
+```bash
+# 查看仓库大小
+git count-objects -vH
+
+# 清理无用对象
+git gc --aggressive --prune=now
+
+# 清理远程已删除的分支引用
+git remote prune origin
+
+# 清理本地已合并的分支
+git branch --merged master | grep -v "^\\*\\|master\\|develop" | xargs -n 1 git branch -d
+```
+
+### 提升操作速度
+
+```bash
+# 启用文件系统缓存
+git config --global core.fscache true
+
+# 启用并行获取
+git config --global fetch.parallel 4
+
+# 启用未跟踪文件缓存
+git config --global core.untrackedCache true
+```
+
+## 多人协作规范
+
+### Pull Request 规范
+
+创建 PR 时应包含以下内容：
+
+```markdown
+## 变更说明
+<!-- 描述本次变更的内容和目的 -->
+
+## 变更类型
+- [ ] 新功能 (feat)
+- [ ] Bug 修复 (fix)
+- [ ] 代码重构 (refactor)
+- [ ] 文档更新 (docs)
+- [ ] 其他
+
+## 测试方式
+<!-- 描述如何测试这些变更 -->
+
+## 关联 Issue
+Closes #xxx
+
+## 检查清单
+- [ ] 代码已自测
+- [ ] 文档已更新
+- [ ] 变更已添加到 CHANGELOG
+```
+
+### Code Review 规范
+
+**审查要点：**
+
+1. **代码质量**
+   - 代码是否清晰易读
+   - 命名是否规范
+   - 是否有重复代码
+
+2. **逻辑正确性**
+   - 业务逻辑是否正确
+   - 边界条件是否处理
+   - 异常情况是否考虑
+
+3. **安全性**
+   - 是否有安全漏洞
+   - 敏感信息是否暴露
+   - 输入是否校验
+
+4. **性能**
+   - 是否有性能问题
+   - 资源是否正确释放
+   - 算法复杂度是否合理
+
+**反馈格式：**
+
+```markdown
+<!-- 必须修改 -->
+🔴 **必须修改**: 这里有 SQL 注入风险，需要使用参数化查询
+
+<!-- 建议修改 -->
+🟡 **建议修改**: 这个方法可以提取为工具函数，提高复用性
+
+<!-- 讨论 -->
+💬 **讨论**: 这里是否可以考虑使用缓存？
+
+<!-- 赞 -->
+👍 **赞**: 这个封装很优雅！
+```
+
+## Git 安全规范
+
+### 敏感信息保护
+
+```bash
+# 检查历史提交中的敏感信息
+git log -p | grep -E "(password|secret|api_key)"
+
+# 从历史记录中删除敏感文件
+git filter-branch --force --index-filter \
+  'git rm --cached --ignore-unmatch config/secrets.yml' \
+  --prune-empty --tag-name-filter cat -- --all
+
+# 使用 git-secrets 预防敏感信息提交
+git secrets --install
+git secrets --register-aws
+```
+
+### 签名验证
+
+```bash
+# 配置 GPG 签名
+git config --global user.signingkey YOUR_KEY_ID
+git config --global commit.gpgsign true
+
+# 创建签名提交
+git commit -S -m "feat: 签名提交"
+
+# 验证签名
+git log --show-signature
+```
+
+### 仓库权限控制
+
+**分支保护规则设置：**
+
+| 规则 | master | develop | feature/* |
+|------|--------|---------|-----------|
+| 禁止强制推送 | ✅ | ✅ | ❌ |
+| 禁止删除 | ✅ | ✅ | ❌ |
+| 必须 Code Review | ✅ | ✅ | ❌ |
+| 必须通过 CI | ✅ | ✅ | ❌ |
+| 必须签名提交 | ✅ | ❌ | ❌ |
+
+## CHANGELOG 管理
+
+### 自动生成 CHANGELOG
+
+使用 `conventional-changelog` 自动生成：
+
+```bash
+# 安装
+pnpm install -D conventional-changelog-cli
+
+# 生成 CHANGELOG
+npx conventional-changelog -p angular -i CHANGELOG.md -s
+```
+
+### CHANGELOG 格式
+
+```markdown
+# 更新日志
+
+## [1.2.0] - 2024-01-15
+
+### 新增
+- 新增用户导出功能 (#123)
+- 新增数据备份模块
+
+### 修复
+- 修复登录验证码不刷新问题 (#456)
+- 修复列表分页异常
+
+### 变更
+- 优化用户查询性能
+- 调整菜单权限校验逻辑
+
+### 移除
+- 移除废弃的API接口
+
+## [1.1.0] - 2024-01-01
+...
+```
+
+## 子模块管理
+
+### 添加子模块
+
+```bash
+# 添加子模块
+git submodule add https://github.com/user/repo.git libs/repo
+
+# 克隆包含子模块的项目
+git clone --recurse-submodules https://github.com/user/project.git
+
+# 初始化已有项目的子模块
+git submodule init
+git submodule update
+```
+
+### 更新子模块
+
+```bash
+# 更新单个子模块
+cd libs/repo
+git pull origin main
+
+# 更新所有子模块
+git submodule update --remote
+
+# 提交子模块更新
+cd ..
+git add libs/repo
+git commit -m "chore: 更新子模块版本"
+```
+
+### 删除子模块
+
+```bash
+# 1. 删除子模块条目
+git submodule deinit -f libs/repo
+
+# 2. 删除 .git/modules 中的缓存
+rm -rf .git/modules/libs/repo
+
+# 3. 删除子模块目录
+git rm -f libs/repo
+```

@@ -797,3 +797,1054 @@ public R<WebSocketSessionHolder.ConnectionStats> getStats() {
         return R.ok(WebSocketUtils.getConnectionStats());
     }
 }
+```
+
+## 性能优化
+
+### 连接管理优化
+
+#### 1. 连接池配置
+
+WebSocket连接的性能与服务器资源密切相关，需要合理配置连接参数：
+
+```yaml
+# application.yml
+server:
+  undertow:
+    # 工作线程数（建议为CPU核心数的2-4倍）
+    worker-threads: 200
+    # IO线程数（建议为CPU核心数）
+    io-threads: 8
+    # 直接内存缓冲区
+    direct-buffers: true
+    # 缓冲区大小
+    buffer-size: 1024
+
+# WebSocket配置
+websocket:
+  enabled: true
+  path: "/resource/websocket"
+  allowedOrigins: "*"
+```
+
+#### 2. 会话清理策略
+
+系统采用懒清理策略，在以下时机清理无效连接：
+
+```java
+/**
+ * 自动清理无效连接的场景
+ */
+public class SessionCleanupStrategy {
+
+    // 1. 消息发送失败时清理
+    public static void sendMessage(Long userId, String message) {
+        Map<String, WebSocketSession> userSessions = WebSocketSessionHolder.getUserSessions(userId);
+        List<String> failedSessions = new ArrayList<>();
+
+        for (Map.Entry<String, WebSocketSession> entry : userSessions.entrySet()) {
+            if (!sendMessage(entry.getValue(), message)) {
+                failedSessions.add(entry.getKey());
+            }
+        }
+
+        // 清理失败的连接
+        for (String sessionId : failedSessions) {
+            WebSocketSessionHolder.removeSessionById(userId, sessionId);
+        }
+    }
+
+    // 2. 连接关闭回调时清理
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+        Long userId = getLoginUser(session).getUserId();
+        WebSocketSessionHolder.removeSessionById(userId, session.getId());
+    }
+
+    // 3. 用户登出时强制清理
+    public void onUserLogout(Long userId) {
+        WebSocketSessionHolder.removeAllSessions(userId);
+    }
+}
+```
+
+#### 3. 心跳机制优化
+
+多种心跳格式支持，客户端可根据需求选择：
+
+```java
+/**
+ * 心跳处理策略
+ */
+@Override
+protected void handleTextMessage(WebSocketSession session, TextMessage message) {
+    String payload = message.getPayload();
+
+    // 方式1：简单字符串心跳（最轻量）
+    if ("ping".equals(payload)) {
+        WebSocketUtils.sendMessage(session, "pong");
+        return;
+    }
+
+    // 方式2：JSON格式心跳（携带时间戳）
+    if (payload.contains("\"type\":\"ping\"")) {
+        JSONObject response = new JSONObject();
+        response.put("type", "pong");
+        response.put("timestamp", System.currentTimeMillis());
+        WebSocketUtils.sendMessage(session, response.toString());
+        return;
+    }
+
+    // 业务消息处理...
+}
+```
+
+### 消息发送优化
+
+#### 1. 批量消息合并
+
+对于高频消息场景，可使用消息合并策略：
+
+```java
+@Service
+public class MessageBatchService {
+
+    private final ConcurrentMap<Long, List<String>> pendingMessages = new ConcurrentHashMap<>();
+    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
+    public MessageBatchService() {
+        // 每100ms刷新一次待发送消息
+        scheduler.scheduleAtFixedRate(this::flushMessages, 100, 100, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * 添加待发送消息
+     */
+    public void addMessage(Long userId, String message) {
+        pendingMessages.computeIfAbsent(userId, k -> new CopyOnWriteArrayList<>()).add(message);
+    }
+
+    /**
+     * 刷新发送消息
+     */
+    private void flushMessages() {
+        for (Map.Entry<Long, List<String>> entry : pendingMessages.entrySet()) {
+            Long userId = entry.getKey();
+            List<String> messages = entry.getValue();
+
+            if (!messages.isEmpty()) {
+                // 合并消息为JSON数组
+                JSONArray batch = new JSONArray();
+                messages.forEach(batch::add);
+
+                WebSocketUtils.sendMessage(userId, batch.toString());
+                messages.clear();
+            }
+        }
+    }
+}
+```
+
+#### 2. 消息压缩
+
+对于大消息体，可启用压缩：
+
+```java
+/**
+ * 消息压缩工具
+ */
+public class MessageCompressor {
+
+    private static final int COMPRESS_THRESHOLD = 1024; // 1KB以上启用压缩
+
+    public static String compressIfNeeded(String message) {
+        if (message.length() > COMPRESS_THRESHOLD) {
+            // 使用Gzip压缩并Base64编码
+            byte[] compressed = GzipUtils.compress(message.getBytes(StandardCharsets.UTF_8));
+            return Base64.getEncoder().encodeToString(compressed);
+        }
+        return message;
+    }
+
+    public static String decompressIfNeeded(String message) {
+        if (isCompressed(message)) {
+            byte[] decoded = Base64.getDecoder().decode(message);
+            return new String(GzipUtils.decompress(decoded), StandardCharsets.UTF_8);
+        }
+        return message;
+    }
+}
+```
+
+### 分布式性能优化
+
+#### 1. 本地优先策略
+
+系统采用本地优先发送策略，减少Redis通信开销：
+
+```java
+public static void publishMessage(WebSocketMessageDto webSocketMessage) {
+    List<Long> userIds = webSocketMessage.getUserIds();
+    List<Long> unsentUserIds = new ArrayList<>();
+
+    // 第一阶段：本地会话处理（无Redis开销）
+    for (Long userId : userIds) {
+        if (WebSocketSessionHolder.isUserOnline(userId)) {
+            // 用户在当前实例，直接发送
+            sendMessage(userId, webSocketMessage.getMessage());
+        } else {
+            unsentUserIds.add(userId);
+        }
+    }
+
+    // 第二阶段：仅对不在本地的用户通过Redis分发
+    if (CollUtil.isNotEmpty(unsentUserIds)) {
+        WebSocketMessageDto broadcastMessage = WebSocketMessageDto.of(
+            unsentUserIds, webSocketMessage.getMessage()
+        );
+        RedisUtils.publish(WEB_SOCKET_TOPIC, broadcastMessage, consumer -> {
+            log.info("跨实例消息分发 - 目标用户: {}", unsentUserIds);
+        });
+    }
+}
+```
+
+#### 2. Redis发布订阅优化
+
+```yaml
+# Redis连接池配置
+spring:
+  data:
+    redis:
+      lettuce:
+        pool:
+          # 最大连接数
+          max-active: 50
+          # 最大空闲连接
+          max-idle: 20
+          # 最小空闲连接
+          min-idle: 5
+          # 获取连接超时时间
+          max-wait: 2000ms
+```
+
+### 监控指标
+
+#### 连接统计
+
+```java
+/**
+ * 定期记录连接统计信息
+ */
+@Scheduled(fixedRate = 60000) // 每分钟
+public void logConnectionStats() {
+    // 全局统计
+    ConnectionStats globalStats = WebSocketSessionHolder.getGlobalConnectionStats();
+    log.info("WebSocket全局统计 - 租户数: {}, 在线用户: {}, 总连接数: {}",
+        globalStats.getTotalTenants(),
+        globalStats.getOnlineUsers(),
+        globalStats.getTotalConnections()
+    );
+
+    // 各租户统计
+    for (String tenantId : WebSocketSessionHolder.getAllTenantIds()) {
+        TenantHelper.dynamic(tenantId, () -> {
+            ConnectionStats stats = WebSocketSessionHolder.getConnectionStats();
+            log.info("租户 {} 统计 - 在线用户: {}, 连接数: {}",
+                tenantId, stats.getOnlineUsers(), stats.getTotalConnections());
+        });
+    }
+}
+```
+
+## 模块集成
+
+### 与Redis模块集成
+
+WebSocket模块依赖Redis实现分布式消息分发：
+
+```java
+/**
+ * Redis发布订阅消息处理
+ */
+public class RedisWebSocketIntegration {
+
+    /**
+     * 订阅WebSocket消息主题
+     */
+    public static void subscribeMessage(Consumer<WebSocketMessageDto> consumer) {
+        RedisUtils.subscribe(WEB_SOCKET_TOPIC, WebSocketMessageDto.class, consumer);
+    }
+
+    /**
+     * 发布消息到Redis主题
+     */
+    public static void publishToRedis(WebSocketMessageDto message) {
+        RedisUtils.publish(WEB_SOCKET_TOPIC, message, consumer -> {
+            log.info("消息发布到Redis - topic: {}", WEB_SOCKET_TOPIC);
+        });
+    }
+}
+```
+
+### 与SaToken模块集成
+
+WebSocket连接必须经过SaToken认证：
+
+```java
+/**
+ * WebSocket握手拦截器 - SaToken集成
+ */
+public class PlusWebSocketInterceptor implements HandshakeInterceptor {
+
+    @Override
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
+                                   WebSocketHandler wsHandler, Map<String, Object> attributes) {
+        try {
+            // 从请求中获取token并验证用户登录状态
+            LoginUser loginUser = LoginHelper.getLoginUser();
+
+            // 验证租户权限和状态
+            String tenantId = TenantHelper.getTenantId();
+            if (StringUtils.isBlank(tenantId)) {
+                log.error("WebSocket认证失败: 无效的租户信息");
+                return false;
+            }
+
+            // 将用户信息存储到WebSocket会话属性中
+            attributes.put(LOGIN_USER, loginUser);
+            return true;
+
+        } catch (NotLoginException e) {
+            log.error("WebSocket认证失败: {}", e.getMessage());
+            return false;
+        }
+    }
+}
+```
+
+### 与租户模块集成
+
+多租户隔离是WebSocket模块的核心特性：
+
+```java
+/**
+ * 多租户WebSocket消息处理
+ */
+public class TenantWebSocketIntegration {
+
+    /**
+     * 在指定租户上下文中处理消息
+     */
+    public void handleMessage(WebSocketMessageDto message) {
+        String messageTenantId = message.getTenantId();
+
+        // 在指定租户上下文中处理消息
+        TenantHelper.dynamic(messageTenantId, () -> {
+            if (CollUtil.isNotEmpty(message.getUserIds())) {
+                // 定向推送
+                handleTargetedMessage(message, messageTenantId);
+            } else {
+                // 群发消息
+                handleBroadcastMessage(message, messageTenantId);
+            }
+        });
+    }
+
+    /**
+     * 处理全局消息（所有租户）
+     */
+    public void handleGlobalMessage(WebSocketMessageDto message) {
+        for (String tenantId : WebSocketSessionHolder.getAllTenantIds()) {
+            TenantHelper.dynamic(tenantId, () -> {
+                var tenantUserIds = WebSocketSessionHolder.getAllUserIds();
+                for (Long userId : tenantUserIds) {
+                    WebSocketUtils.sendMessage(userId, message.getMessage());
+                }
+            });
+        }
+    }
+}
+```
+
+### 与日志模块集成
+
+WebSocket操作可集成日志记录：
+
+```java
+@Service
+public class WebSocketLogService {
+
+    @Autowired
+    private OperLogService operLogService;
+
+    /**
+     * 记录WebSocket管理操作日志
+     */
+    public void logAdminOperation(String action, Long targetUserId, String detail) {
+        OperLog operLog = new OperLog();
+        operLog.setTitle("WebSocket管理");
+        operLog.setBusinessType(BusinessType.OTHER.ordinal());
+        operLog.setMethod("WebSocket." + action);
+        operLog.setOperatorType(OperatorType.MANAGE.ordinal());
+        operLog.setOperName(LoginHelper.getUsername());
+        operLog.setOperParam(String.format("目标用户: %d, 详情: %s", targetUserId, detail));
+        operLog.setOperTime(new Date());
+
+        operLogService.insertOperlog(operLog);
+    }
+}
+```
+
+## 测试策略
+
+### 单元测试
+
+#### 会话管理器测试
+
+```java
+@ExtendWith(MockitoExtension.class)
+class WebSocketSessionHolderTest {
+
+    @Mock
+    private WebSocketSession mockSession;
+
+    @BeforeEach
+    void setUp() {
+        // 模拟租户上下文
+        TenantHelper.setTenantId("000000");
+        when(mockSession.getId()).thenReturn("test-session-001");
+        when(mockSession.isOpen()).thenReturn(true);
+    }
+
+    @Test
+    void testAddSession() {
+        Long userId = 1001L;
+        String sessionId = "test-session-001";
+
+        // 添加会话
+        WebSocketSessionHolder.addSession(userId, sessionId, mockSession);
+
+        // 验证会话存在
+        assertTrue(WebSocketSessionHolder.isUserOnline(userId));
+        assertTrue(WebSocketSessionHolder.isSessionExists(userId, sessionId));
+        assertEquals(mockSession, WebSocketSessionHolder.getSession(userId, sessionId));
+    }
+
+    @Test
+    void testMultipleConnections() {
+        Long userId = 1001L;
+        WebSocketSession session1 = mock(WebSocketSession.class);
+        WebSocketSession session2 = mock(WebSocketSession.class);
+
+        when(session1.getId()).thenReturn("session-001");
+        when(session2.getId()).thenReturn("session-002");
+        when(session1.isOpen()).thenReturn(true);
+        when(session2.isOpen()).thenReturn(true);
+
+        // 添加多个连接
+        WebSocketSessionHolder.addSession(userId, "session-001", session1);
+        WebSocketSessionHolder.addSession(userId, "session-002", session2);
+
+        // 验证用户有2个连接
+        Map<String, WebSocketSession> sessions = WebSocketSessionHolder.getUserSessions(userId);
+        assertEquals(2, sessions.size());
+    }
+
+    @Test
+    void testRemoveSpecificSession() {
+        Long userId = 1001L;
+        WebSocketSession session1 = mock(WebSocketSession.class);
+        WebSocketSession session2 = mock(WebSocketSession.class);
+
+        when(session1.getId()).thenReturn("session-001");
+        when(session2.getId()).thenReturn("session-002");
+        when(session1.isOpen()).thenReturn(true);
+        when(session2.isOpen()).thenReturn(true);
+
+        WebSocketSessionHolder.addSession(userId, "session-001", session1);
+        WebSocketSessionHolder.addSession(userId, "session-002", session2);
+
+        // 移除一个连接
+        WebSocketSessionHolder.removeSessionById(userId, "session-001");
+
+        // 验证只剩一个连接
+        assertFalse(WebSocketSessionHolder.isSessionExists(userId, "session-001"));
+        assertTrue(WebSocketSessionHolder.isSessionExists(userId, "session-002"));
+        assertTrue(WebSocketSessionHolder.isUserOnline(userId));
+    }
+
+    @Test
+    void testConnectionStats() {
+        Long userId1 = 1001L;
+        Long userId2 = 1002L;
+
+        WebSocketSession session1 = mock(WebSocketSession.class);
+        WebSocketSession session2 = mock(WebSocketSession.class);
+        WebSocketSession session3 = mock(WebSocketSession.class);
+
+        when(session1.getId()).thenReturn("session-001");
+        when(session2.getId()).thenReturn("session-002");
+        when(session3.getId()).thenReturn("session-003");
+
+        WebSocketSessionHolder.addSession(userId1, "session-001", session1);
+        WebSocketSessionHolder.addSession(userId1, "session-002", session2);
+        WebSocketSessionHolder.addSession(userId2, "session-003", session3);
+
+        // 验证统计信息
+        WebSocketSessionHolder.ConnectionStats stats = WebSocketSessionHolder.getConnectionStats();
+        assertEquals(2, stats.getOnlineUsers()); // 2个用户
+        assertEquals(3, stats.getTotalConnections()); // 3个连接
+    }
+}
+```
+
+#### 消息处理器测试
+
+```java
+@ExtendWith(MockitoExtension.class)
+class PlusWebSocketHandlerTest {
+
+    @Mock
+    private WebSocketSession mockSession;
+
+    @Mock
+    private MessageProcessor mockProcessor;
+
+    @InjectMocks
+    private PlusWebSocketHandler handler;
+
+    private LoginUser loginUser;
+
+    @BeforeEach
+    void setUp() {
+        loginUser = new LoginUser();
+        loginUser.setUserId(1001L);
+        loginUser.setUserType("sys_user");
+
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("LOGIN_USER", loginUser);
+
+        when(mockSession.getAttributes()).thenReturn(attributes);
+        when(mockSession.getId()).thenReturn("test-session");
+    }
+
+    @Test
+    void testHandlePingMessage() throws Exception {
+        TextMessage pingMessage = new TextMessage("ping");
+
+        // 处理ping消息
+        handler.handleTextMessage(mockSession, pingMessage);
+
+        // 验证返回pong响应
+        verify(mockSession).sendMessage(argThat(msg ->
+            msg instanceof TextMessage && "pong".equals(((TextMessage) msg).getPayload())
+        ));
+    }
+
+    @Test
+    void testHandleJsonMessage() throws Exception {
+        String jsonPayload = "{\"type\":\"chat\",\"content\":\"Hello\"}";
+        TextMessage message = new TextMessage(jsonPayload);
+
+        when(mockProcessor.support("chat")).thenReturn(true);
+
+        handler.handleTextMessage(mockSession, message);
+
+        verify(mockProcessor).process(eq(mockSession), eq(loginUser), eq(jsonPayload));
+    }
+}
+```
+
+### 集成测试
+
+```java
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(properties = {"websocket.enabled=true"})
+class WebSocketIntegrationTest {
+
+    @LocalServerPort
+    private int port;
+
+    private WebSocketClient client;
+    private WebSocketSession clientSession;
+    private List<String> receivedMessages = new CopyOnWriteArrayList<>();
+
+    @BeforeEach
+    void setUp() throws Exception {
+        client = new StandardWebSocketClient();
+
+        // 获取测试token
+        String token = getTestToken();
+
+        // 建立WebSocket连接
+        URI uri = new URI("ws://localhost:" + port + "/resource/websocket?token=" + token);
+
+        clientSession = client.execute(new TextWebSocketHandler() {
+            @Override
+            protected void handleTextMessage(WebSocketSession session, TextMessage message) {
+                receivedMessages.add(message.getPayload());
+            }
+        }, uri).get(5, TimeUnit.SECONDS);
+    }
+
+    @Test
+    void testConnectionEstablishment() {
+        assertTrue(clientSession.isOpen());
+    }
+
+    @Test
+    void testHeartbeat() throws Exception {
+        // 发送ping
+        clientSession.sendMessage(new TextMessage("ping"));
+
+        // 等待pong响应
+        Thread.sleep(500);
+
+        assertTrue(receivedMessages.contains("pong"));
+    }
+
+    @Test
+    void testMessageReceive() throws Exception {
+        Long testUserId = 1001L;
+        String testMessage = "Test notification";
+
+        // 服务端发送消息
+        WebSocketUtils.sendMessage(testUserId, testMessage);
+
+        // 等待消息到达
+        Thread.sleep(500);
+
+        assertTrue(receivedMessages.contains(testMessage));
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        if (clientSession != null && clientSession.isOpen()) {
+            clientSession.close();
+        }
+    }
+}
+```
+
+### 负载测试
+
+```java
+@SpringBootTest
+class WebSocketLoadTest {
+
+    @Test
+    void testMassiveConnections() throws Exception {
+        int connectionCount = 1000;
+        List<WebSocketSession> sessions = new ArrayList<>();
+        ExecutorService executor = Executors.newFixedThreadPool(100);
+        CountDownLatch latch = new CountDownLatch(connectionCount);
+        AtomicInteger successCount = new AtomicInteger(0);
+
+        for (int i = 0; i < connectionCount; i++) {
+            final int userId = i;
+            executor.submit(() -> {
+                try {
+                    WebSocketSession session = createConnection(userId);
+                    if (session != null && session.isOpen()) {
+                        sessions.add(session);
+                        successCount.incrementAndGet();
+                    }
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+
+        latch.await(60, TimeUnit.SECONDS);
+
+        log.info("连接测试结果 - 成功: {}/{}", successCount.get(), connectionCount);
+        assertTrue(successCount.get() >= connectionCount * 0.95); // 95%成功率
+
+        // 清理
+        for (WebSocketSession session : sessions) {
+            try {
+                session.close();
+            } catch (Exception ignored) {}
+        }
+    }
+
+    @Test
+    void testMessageThroughput() throws Exception {
+        int messageCount = 10000;
+        Long testUserId = 1001L;
+        AtomicInteger sentCount = new AtomicInteger(0);
+
+        long startTime = System.currentTimeMillis();
+
+        for (int i = 0; i < messageCount; i++) {
+            WebSocketUtils.sendMessage(testUserId, "Message " + i);
+            sentCount.incrementAndGet();
+        }
+
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        double throughput = (double) messageCount / duration * 1000;
+
+        log.info("消息吞吐量测试 - 发送: {} 条, 耗时: {} ms, 吞吐量: {} msg/s",
+            messageCount, duration, throughput);
+
+        assertTrue(throughput >= 1000); // 至少1000 msg/s
+    }
+}
+```
+
+## 安全考虑
+
+### 连接认证
+
+所有WebSocket连接必须经过认证：
+
+```java
+/**
+ * WebSocket连接认证策略
+ */
+public class WebSocketSecurityConfig {
+
+    /**
+     * 握手前验证Token
+     */
+    public boolean validateConnection(ServerHttpRequest request) {
+        // 1. 从URL参数获取Token
+        String token = extractToken(request);
+        if (StringUtils.isBlank(token)) {
+            log.warn("WebSocket连接拒绝: 缺少Token");
+            return false;
+        }
+
+        // 2. 验证Token有效性
+        try {
+            StpUtil.checkLogin();
+        } catch (NotLoginException e) {
+            log.warn("WebSocket连接拒绝: Token无效 - {}", e.getMessage());
+            return false;
+        }
+
+        // 3. 验证租户状态
+        String tenantId = TenantHelper.getTenantId();
+        if (!isTenantActive(tenantId)) {
+            log.warn("WebSocket连接拒绝: 租户已禁用 - {}", tenantId);
+            return false;
+        }
+
+        return true;
+    }
+}
+```
+
+### 消息权限控制
+
+```java
+/**
+ * 消息发送权限验证
+ */
+public class MessagePermissionValidator {
+
+    /**
+     * 验证是否可以发送全局消息
+     */
+    public static void validateGlobalMessage() {
+        if (!LoginHelper.isSuperAdmin()) {
+            throw new ServiceException("无权限发送全局消息");
+        }
+    }
+
+    /**
+     * 验证是否可以跨租户发送消息
+     */
+    public static void validateCrossTenantMessage(String targetTenantId) {
+        if (!LoginHelper.isSuperAdmin()) {
+            throw new ServiceException("无权限跨租户发送消息");
+        }
+    }
+
+    /**
+     * 验证是否可以向指定用户发送消息
+     */
+    public static void validateTargetUser(Long targetUserId) {
+        String currentTenantId = TenantHelper.getTenantId();
+        String userTenantId = getUserTenantId(targetUserId);
+
+        if (!currentTenantId.equals(userTenantId) && !LoginHelper.isSuperAdmin()) {
+            throw new ServiceException("无权限向其他租户用户发送消息");
+        }
+    }
+}
+```
+
+### 防止连接滥用
+
+```java
+/**
+ * 连接限制策略
+ */
+@Component
+public class ConnectionLimitInterceptor implements HandshakeInterceptor {
+
+    // 每个用户最大连接数
+    private static final int MAX_CONNECTIONS_PER_USER = 10;
+
+    // 每个IP最大连接数
+    private static final int MAX_CONNECTIONS_PER_IP = 50;
+
+    @Override
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response,
+                                   WebSocketHandler wsHandler, Map<String, Object> attributes) {
+        LoginUser loginUser = LoginHelper.getLoginUser();
+        Long userId = loginUser.getUserId();
+
+        // 检查用户连接数限制
+        Map<String, WebSocketSession> userSessions = WebSocketSessionHolder.getUserSessions(userId);
+        if (userSessions.size() >= MAX_CONNECTIONS_PER_USER) {
+            log.warn("用户 {} 连接数已达上限: {}", userId, MAX_CONNECTIONS_PER_USER);
+            return false;
+        }
+
+        // 检查IP连接数限制
+        String clientIp = getClientIp(request);
+        int ipConnections = countConnectionsByIp(clientIp);
+        if (ipConnections >= MAX_CONNECTIONS_PER_IP) {
+            log.warn("IP {} 连接数已达上限: {}", clientIp, MAX_CONNECTIONS_PER_IP);
+            return false;
+        }
+
+        return true;
+    }
+}
+```
+
+### 消息内容安全
+
+```java
+/**
+ * 消息内容过滤
+ */
+public class MessageContentFilter {
+
+    // 敏感词列表
+    private static final List<String> SENSITIVE_WORDS = loadSensitiveWords();
+
+    // 最大消息长度
+    private static final int MAX_MESSAGE_LENGTH = 10000;
+
+    /**
+     * 过滤消息内容
+     */
+    public static String filterMessage(String message) {
+        if (StringUtils.isBlank(message)) {
+            return message;
+        }
+
+        // 长度检查
+        if (message.length() > MAX_MESSAGE_LENGTH) {
+            throw new ServiceException("消息内容过长");
+        }
+
+        // 敏感词过滤
+        String filtered = message;
+        for (String word : SENSITIVE_WORDS) {
+            filtered = filtered.replace(word, "***");
+        }
+
+        // XSS过滤
+        filtered = HtmlUtil.cleanHtmlTag(filtered);
+
+        return filtered;
+    }
+}
+```
+
+## 注意事项
+
+### 连接生命周期
+
+1. **连接建立**
+   - 必须通过握手拦截器验证用户身份
+   - 验证通过后将用户信息存入会话属性
+   - 使用sessionId作为连接唯一标识
+
+2. **消息处理**
+   - 从会话属性中获取用户信息，不要重复查询数据库
+   - 心跳消息优先处理，避免阻塞业务消息
+   - 使用策略模式将消息路由到对应处理器
+
+3. **连接关闭**
+   - 及时清理会话管理器中的连接记录
+   - 关闭连接时优雅处理，使用合适的关闭状态码
+   - 保留用户的其他活跃连接
+
+### 多租户注意事项
+
+1. **租户上下文**
+   - WebSocket消息处理没有自动的租户上下文
+   - 必须从消息中获取租户ID并手动切换上下文
+   - 使用`TenantHelper.dynamic()`确保正确的租户隔离
+
+2. **跨租户操作**
+   - 跨租户消息发送需要超级管理员权限
+   - 全局广播需要遍历所有租户分别发送
+   - 统计信息区分租户级别和全局级别
+
+### 分布式部署注意事项
+
+1. **Redis依赖**
+   - WebSocket分布式消息依赖Redis发布订阅
+   - 确保Redis连接稳定可用
+   - 配置合适的连接池大小
+
+2. **本地优先策略**
+   - 优先在当前实例发送消息
+   - 仅对不在本实例的用户通过Redis分发
+   - 减少不必要的Redis通信开销
+
+## 常见问题
+
+### 1. 连接无法建立
+
+**问题原因**：
+- Token无效或已过期
+- 租户状态异常
+- 连接数超限
+- WebSocket服务未启用
+
+**解决方案**：
+
+```java
+// 1. 检查WebSocket是否启用
+@Value("${websocket.enabled:false}")
+private boolean websocketEnabled;
+
+// 2. 检查Token有效性
+try {
+    StpUtil.checkLogin();
+    LoginUser loginUser = LoginHelper.getLoginUser();
+    log.info("用户认证成功: {}", loginUser.getUserId());
+} catch (NotLoginException e) {
+    log.error("Token验证失败: {}", e.getMessage());
+}
+
+// 3. 检查连接数
+Map<String, WebSocketSession> sessions = WebSocketSessionHolder.getUserSessions(userId);
+log.info("当前用户连接数: {}", sessions.size());
+```
+
+### 2. 消息发送失败
+
+**问题原因**：
+- 目标用户不在线
+- 会话已关闭
+- 网络异常
+
+**解决方案**：
+
+```java
+// 1. 检查用户是否在线
+if (!WebSocketSessionHolder.isUserOnline(userId)) {
+    log.warn("用户 {} 当前不在线", userId);
+    // 可以考虑存储离线消息
+    saveOfflineMessage(userId, message);
+    return;
+}
+
+// 2. 发送消息并处理失败
+boolean success = WebSocketUtils.sendMessage(userId, sessionId, message);
+if (!success) {
+    log.warn("消息发送失败，会话可能已断开");
+    // 会话会自动清理，可以尝试发送到用户其他连接
+    WebSocketUtils.sendMessage(userId, message);
+}
+```
+
+### 3. 多实例消息不同步
+
+**问题原因**：
+- Redis连接异常
+- 主题订阅失败
+- 消息序列化问题
+
+**解决方案**：
+
+```java
+// 1. 检查Redis连接状态
+RedisConnectionFactory factory = redisTemplate.getConnectionFactory();
+RedisConnection connection = factory.getConnection();
+log.info("Redis连接状态: {}", connection.ping());
+
+// 2. 检查主题订阅状态
+WebSocketUtils.subscribeMessage(message -> {
+    log.info("收到订阅消息: {}", message);
+});
+
+// 3. 手动触发消息分发测试
+WebSocketMessageDto testMessage = WebSocketMessageDto.of(
+    Arrays.asList(1001L), "测试消息"
+);
+RedisUtils.publish(WEB_SOCKET_TOPIC, testMessage, consumer -> {
+    log.info("测试消息已发布");
+});
+```
+
+### 4. 心跳超时断连
+
+**问题原因**：
+- 客户端心跳间隔过长
+- 服务器超时配置过短
+- 网络不稳定
+
+**解决方案**：
+
+```yaml
+# 调整Undertow配置
+server:
+  undertow:
+    # WebSocket超时时间（毫秒）
+    websocket-timeout: 300000  # 5分钟
+```
+
+```javascript
+// 客户端心跳配置
+const HEARTBEAT_INTERVAL = 30000; // 30秒
+
+setInterval(() => {
+    if (websocket.readyState === WebSocket.OPEN) {
+        websocket.send('ping');
+    }
+}, HEARTBEAT_INTERVAL);
+```
+
+### 5. 内存泄漏
+
+**问题原因**：
+- 连接关闭但未清理会话
+- 消息处理异常导致会话残留
+- 大量僵尸连接
+
+**解决方案**：
+
+```java
+// 定期清理僵尸连接
+@Scheduled(fixedRate = 300000) // 5分钟
+public void cleanupZombieSessions() {
+    for (String tenantId : WebSocketSessionHolder.getAllTenantIds()) {
+        TenantHelper.dynamic(tenantId, () -> {
+            Set<Long> userIds = WebSocketSessionHolder.getAllUserIds();
+            for (Long userId : userIds) {
+                Map<String, WebSocketSession> sessions =
+                    WebSocketSessionHolder.getUserSessions(userId);
+
+                for (Map.Entry<String, WebSocketSession> entry : sessions.entrySet()) {
+                    WebSocketSession session = entry.getValue();
+                    if (session == null || !session.isOpen()) {
+                        WebSocketSessionHolder.removeSessionById(userId, entry.getKey());
+                        log.info("清理僵尸会话: 用户={}, 会话={}", userId, entry.getKey());
+                    }
+                }
+            }
+        });
+    }
+}
+```

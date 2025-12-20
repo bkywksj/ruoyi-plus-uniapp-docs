@@ -757,20 +757,518 @@ const sortedData = computed(() => {
 </script>
 ```
 
+## 高级用法
+
+### 多列固定
+
+支持同时固定多个列,固定列会按顺序从左侧依次排列:
+
+```vue
+<template>
+  <view class="demo">
+    <wd-table :columns="columns" :data="tableData" />
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const columns = ref([
+  { prop: 'id', label: 'ID', width: 80, fixed: true, align: 'center' },
+  { prop: 'name', label: '姓名', width: 120, fixed: true },
+  { prop: 'phone', label: '手机号', width: 200 },
+  { prop: 'email', label: '邮箱', width: 250 },
+  { prop: 'department', label: '部门', width: 150 },
+  { prop: 'position', label: '职位', width: 150 },
+  { prop: 'address', label: '地址', width: 300 }
+])
+
+const tableData = ref([
+  {
+    id: 1,
+    name: '张三',
+    phone: '13800138000',
+    email: 'zhangsan@example.com',
+    department: '技术部',
+    position: '高级工程师',
+    address: '北京市朝阳区建国路88号'
+  },
+  {
+    id: 2,
+    name: '李四',
+    phone: '13900139000',
+    email: 'lisi@example.com',
+    department: '产品部',
+    position: '产品经理',
+    address: '上海市浦东新区陆家嘴'
+  }
+])
+</script>
+```
+
+**技术实现:**
+- 固定列使用 CSS `position: sticky` 实现
+- 多个固定列的 `left` 值会自动计算累加
+- 最后一个固定列会显示阴影效果区分固定区域
+
+### 组合使用序号列和固定列
+
+序号列也支持固定功能:
+
+```vue
+<template>
+  <view class="demo">
+    <wd-table
+      :columns="columns"
+      :data="tableData"
+      :index="{ label: '#', width: 60, fixed: true, align: 'center' }"
+    />
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const columns = ref([
+  { prop: 'name', label: '姓名', width: 120, fixed: true },
+  { prop: 'score1', label: '语文', width: 100 },
+  { prop: 'score2', label: '数学', width: 100 },
+  { prop: 'score3', label: '英语', width: 100 },
+  { prop: 'total', label: '总分', width: 100 }
+])
+
+const tableData = ref([
+  { name: '张三', score1: 85, score2: 92, score3: 88, total: 265 },
+  { name: '李四', score1: 78, score2: 95, score3: 82, total: 255 },
+  { name: '王五', score1: 92, score2: 88, score3: 90, total: 270 }
+])
+</script>
+```
+
+### 动态列配置
+
+根据条件动态生成列配置:
+
+```vue
+<template>
+  <view class="demo">
+    <view class="controls">
+      <wd-checkbox v-model="showPhone" label="显示手机号" />
+      <wd-checkbox v-model="showEmail" label="显示邮箱" />
+    </view>
+    <wd-table :columns="dynamicColumns" :data="tableData" />
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref, computed } from 'vue'
+
+const showPhone = ref(true)
+const showEmail = ref(true)
+
+const baseColumns = [
+  { prop: 'name', label: '姓名', width: 150 },
+  { prop: 'department', label: '部门', width: 150 }
+]
+
+const dynamicColumns = computed(() => {
+  const cols = [...baseColumns]
+  if (showPhone.value) {
+    cols.push({ prop: 'phone', label: '手机号', width: 200 })
+  }
+  if (showEmail.value) {
+    cols.push({ prop: 'email', label: '邮箱', width: 250 })
+  }
+  return cols
+})
+
+const tableData = ref([
+  { name: '张三', department: '技术部', phone: '13800138000', email: 'zhangsan@example.com' },
+  { name: '李四', department: '产品部', phone: '13900139000', email: 'lisi@example.com' }
+])
+</script>
+```
+
+### 空数据状态
+
+当表格无数据时的处理:
+
+```vue
+<template>
+  <view class="demo">
+    <wd-table :columns="columns" :data="tableData">
+      <template v-if="tableData.length === 0" #empty>
+        <view class="empty-state">
+          <wd-icon name="warning-fill" size="48" color="#999" />
+          <text class="empty-text">暂无数据</text>
+        </view>
+      </template>
+    </wd-table>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const columns = ref([
+  { prop: 'name', label: '姓名', width: 150 },
+  { prop: 'status', label: '状态', width: 100 }
+])
+
+const tableData = ref([])
+</script>
+
+<style lang="scss" scoped>
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64rpx;
+
+  .empty-text {
+    margin-top: 16rpx;
+    font-size: 28rpx;
+    color: #999;
+  }
+}
+</style>
+```
+
+### 复杂单元格渲染
+
+结合多个组件实现复杂单元格:
+
+```vue
+<template>
+  <view class="demo">
+    <wd-table :columns="columns" :data="tableData">
+      <template #column-user="{ row }">
+        <view class="user-cell">
+          <image class="avatar" :src="row.avatar" mode="aspectFill" />
+          <view class="user-info">
+            <text class="name">{{ row.name }}</text>
+            <text class="role">{{ row.role }}</text>
+          </view>
+        </view>
+      </template>
+      <template #column-status="{ row }">
+        <wd-tag :type="getStatusType(row.status)" size="small">
+          {{ getStatusText(row.status) }}
+        </wd-tag>
+      </template>
+      <template #column-action="{ row, index }">
+        <view class="action-cell">
+          <wd-button size="small" type="primary" @click="handleView(row)">
+            查看
+          </wd-button>
+          <wd-button size="small" type="error" @click="handleDelete(index)">
+            删除
+          </wd-button>
+        </view>
+      </template>
+    </wd-table>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const columns = ref([
+  { prop: 'user', label: '用户', width: 200, useSlot: true },
+  { prop: 'department', label: '部门', width: 120 },
+  { prop: 'status', label: '状态', width: 100, useSlot: true },
+  { prop: 'action', label: '操作', width: 180, useSlot: true }
+])
+
+const tableData = ref([
+  {
+    name: '张三',
+    role: '管理员',
+    avatar: '/static/avatar1.png',
+    department: '技术部',
+    status: 1
+  },
+  {
+    name: '李四',
+    role: '普通用户',
+    avatar: '/static/avatar2.png',
+    department: '产品部',
+    status: 0
+  }
+])
+
+const getStatusType = (status: number) => {
+  return status === 1 ? 'success' : 'info'
+}
+
+const getStatusText = (status: number) => {
+  return status === 1 ? '在线' : '离线'
+}
+
+const handleView = (row: any) => {
+  console.log('查看:', row)
+}
+
+const handleDelete = (index: number) => {
+  tableData.value.splice(index, 1)
+}
+</script>
+
+<style lang="scss" scoped>
+.user-cell {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+
+  .avatar {
+    width: 64rpx;
+    height: 64rpx;
+    border-radius: 50%;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+
+    .name {
+      font-size: 28rpx;
+      font-weight: 500;
+    }
+
+    .role {
+      font-size: 24rpx;
+      color: #999;
+    }
+  }
+}
+
+.action-cell {
+  display: flex;
+  gap: 16rpx;
+}
+</style>
+```
+
+## 性能优化
+
+### 大数据量渲染
+
+对于大数据量场景,建议采取以下优化措施:
+
+```vue
+<template>
+  <view class="demo">
+    <wd-table
+      :columns="columns"
+      :data="displayData"
+      :height="600"
+      fixed-header
+      :row-height="80"
+    />
+    <view class="pagination">
+      <wd-button
+        size="small"
+        :disabled="currentPage === 1"
+        @click="prevPage"
+      >
+        上一页
+      </wd-button>
+      <text class="page-info">{{ currentPage }} / {{ totalPages }}</text>
+      <wd-button
+        size="small"
+        :disabled="currentPage === totalPages"
+        @click="nextPage"
+      >
+        下一页
+      </wd-button>
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref, computed } from 'vue'
+
+const pageSize = 20
+const currentPage = ref(1)
+
+// 模拟大数据
+const allData = ref(
+  Array.from({ length: 1000 }, (_, i) => ({
+    id: i + 1,
+    name: `用户${i + 1}`,
+    email: `user${i + 1}@example.com`
+  }))
+)
+
+const columns = ref([
+  { prop: 'id', label: 'ID', width: 80 },
+  { prop: 'name', label: '姓名', width: 150 },
+  { prop: 'email', label: '邮箱', width: 250 }
+])
+
+const totalPages = computed(() => Math.ceil(allData.value.length / pageSize))
+
+const displayData = computed(() => {
+  const start = (currentPage.value - 1) * pageSize
+  return allData.value.slice(start, start + pageSize)
+})
+
+const prevPage = () => {
+  if (currentPage.value > 1) currentPage.value--
+}
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) currentPage.value++
+}
+</script>
+```
+
+**优化建议:**
+- 使用分页加载,避免一次渲染过多数据
+- 设置固定高度和行高,减少重排计算
+- 避免在渲染函数中进行复杂计算
+- 对于静态数据,使用 `shallowRef` 减少响应式开销
+
+### 懒加载数据
+
+结合滚动事件实现数据懒加载:
+
+```vue
+<template>
+  <view class="demo">
+    <wd-table
+      :columns="columns"
+      :data="tableData"
+      :height="500"
+      @scroll="handleScroll"
+    />
+    <view v-if="loading" class="loading">
+      <wd-loading />
+    </view>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const loading = ref(false)
+const hasMore = ref(true)
+const page = ref(1)
+
+const columns = ref([
+  { prop: 'id', label: 'ID', width: 80 },
+  { prop: 'title', label: '标题', width: 200 },
+  { prop: 'createTime', label: '创建时间', width: 180 }
+])
+
+const tableData = ref([])
+
+// 加载数据
+const loadData = async () => {
+  if (loading.value || !hasMore.value) return
+
+  loading.value = true
+  try {
+    // 模拟 API 请求
+    const newData = await fetchData(page.value)
+    tableData.value.push(...newData)
+    page.value++
+    hasMore.value = newData.length === 20
+  } finally {
+    loading.value = false
+  }
+}
+
+// 模拟获取数据
+const fetchData = (page: number) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(
+        Array.from({ length: 20 }, (_, i) => ({
+          id: (page - 1) * 20 + i + 1,
+          title: `数据项 ${(page - 1) * 20 + i + 1}`,
+          createTime: new Date().toLocaleString()
+        }))
+      )
+    }, 500)
+  })
+}
+
+const handleScroll = (e: any) => {
+  const { scrollTop, scrollHeight, clientHeight } = e.detail
+  if (scrollHeight - scrollTop - clientHeight < 100) {
+    loadData()
+  }
+}
+
+// 初始加载
+loadData()
+</script>
+```
+
+## 无障碍访问
+
+### 语义化增强
+
+为表格添加无障碍属性:
+
+```vue
+<template>
+  <view class="demo">
+    <wd-table
+      :columns="columns"
+      :data="tableData"
+      custom-class="accessible-table"
+      aria-label="用户数据表格"
+    />
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const columns = ref([
+  { prop: 'name', label: '姓名', width: 150 },
+  { prop: 'age', label: '年龄', width: 100 },
+  { prop: 'status', label: '状态', width: 100 }
+])
+
+const tableData = ref([
+  { name: '张三', age: 28, status: '在线' },
+  { name: '李四', age: 32, status: '离线' }
+])
+</script>
+```
+
 ## 常见问题
 
 ### 1. 列宽不生效
 
 **问题原因:**
 - 所有列宽总和小于表格容器宽度时,列会自动扩展
+- 未正确设置列宽度单位
 
 **解决方案:**
-确保列宽总和大于等于容器宽度,或设置合理的列宽。
+确保列宽总和大于等于容器宽度,或设置合理的列宽。列宽默认单位为 rpx。
+
+```vue
+<script lang="ts" setup>
+// 确保列宽总和足够
+const columns = ref([
+  { prop: 'name', label: '姓名', width: 150 },   // 150rpx
+  { prop: 'age', label: '年龄', width: 100 },    // 100rpx
+  { prop: 'address', label: '地址', width: 300 } // 300rpx
+  // 总计: 550rpx
+])
+</script>
+```
 
 ### 2. 固定列显示异常
 
 **问题原因:**
 - 固定列需要有明确的宽度
+- 固定列的层级 z-index 冲突
 
 **解决方案:**
 
@@ -781,27 +1279,172 @@ const columns = ref([
   { prop: 'other', label: '其他', width: 200 }
 ])
 </script>
+
+<style lang="scss">
+// 如有层级冲突，可自定义 z-index
+.wd-table-col--fixed {
+  z-index: 10 !important;
+}
+</style>
 ```
 
 ### 3. 排序不生效
 
 **问题原因:**
 - 未监听 `sort-method` 事件实现排序逻辑
+- 排序状态管理不正确
 
 **解决方案:**
 组件只负责触发排序事件,排序逻辑需自行实现。
+
+```vue
+<template>
+  <wd-table
+    :columns="columns"
+    :data="sortedData"
+    @sort-method="handleSort"
+  />
+</template>
+
+<script lang="ts" setup>
+import { ref, computed } from 'vue'
+
+const sortState = ref({ prop: '', direction: 0 })
+
+const sortedData = computed(() => {
+  if (!sortState.value.prop || sortState.value.direction === 0) {
+    return tableData.value
+  }
+
+  return [...tableData.value].sort((a, b) => {
+    const aVal = a[sortState.value.prop]
+    const bVal = b[sortState.value.prop]
+
+    // 数值排序
+    if (typeof aVal === 'number' && typeof bVal === 'number') {
+      return sortState.value.direction === 1 ? aVal - bVal : bVal - aVal
+    }
+
+    // 字符串排序
+    const comparison = String(aVal).localeCompare(String(bVal))
+    return sortState.value.direction === 1 ? comparison : -comparison
+  })
+})
+
+const handleSort = (column: any) => {
+  sortState.value = {
+    prop: column.prop,
+    direction: column.sortDirection
+  }
+}
+</script>
+```
 
 ### 4. 自定义内容不显示
 
 **问题原因:**
 - 配置式使用插槽时未设置 `useSlot: true`
+- 插槽名称不正确
 
 **解决方案:**
 
 ```vue
+<template>
+  <wd-table :columns="columns" :data="tableData">
+    <!-- 插槽名称格式: column-{prop} -->
+    <template #column-status="{ row }">
+      <wd-tag>{{ row.status }}</wd-tag>
+    </template>
+  </wd-table>
+</template>
+
 <script lang="ts" setup>
 const columns = ref([
-  { prop: 'status', label: '状态', width: 100, useSlot: true }
+  { prop: 'name', label: '名称', width: 150 },
+  { prop: 'status', label: '状态', width: 100, useSlot: true } // 必须设置 useSlot
 ])
 </script>
+```
+
+### 5. 横向滚动卡顿
+
+**问题原因:**
+- 数据量过大
+- 复杂的单元格渲染
+
+**解决方案:**
+- 减少单次渲染的数据量
+- 简化单元格内容
+- 使用防抖处理滚动事件
+
+```vue
+<script lang="ts" setup>
+// 组件内部已使用防抖处理滚动事件
+// 如仍有卡顿，可考虑减少数据量或简化渲染
+const columns = ref([
+  {
+    prop: 'status',
+    label: '状态',
+    width: 100,
+    // 使用 render 函数替代复杂的插槽
+    render: (row: any) => row.status === 1 ? '启用' : '禁用'
+  }
+])
+</script>
+```
+
+### 6. 子组件模式与配置式混用问题
+
+**问题原因:**
+- 同时使用 columns 配置和 wd-table-col 子组件
+
+**解决方案:**
+只能选择其中一种模式使用,不能混用。
+
+```vue
+<!-- ❌ 错误: 混用两种模式 -->
+<wd-table :columns="columns" :data="tableData">
+  <wd-table-col prop="action" label="操作" />
+</wd-table>
+
+<!-- ✅ 正确: 只使用配置式 -->
+<wd-table :columns="columns" :data="tableData" />
+
+<!-- ✅ 正确: 只使用子组件式 -->
+<wd-table :data="tableData">
+  <wd-table-col prop="name" label="姓名" />
+  <wd-table-col prop="action" label="操作">
+    <template #value="{ row }">
+      <button>操作</button>
+    </template>
+  </wd-table-col>
+</wd-table>
+```
+
+### 7. 暗黑模式下样式异常
+
+**问题原因:**
+- 未正确引入暗黑模式样式
+- 自定义样式覆盖了暗黑模式变量
+
+**解决方案:**
+
+```vue
+<template>
+  <!-- 确保父级有 wot-theme-dark 类名 -->
+  <view :class="{ 'wot-theme-dark': isDark }">
+    <wd-table :columns="columns" :data="tableData" />
+  </view>
+</template>
+
+<style lang="scss">
+// 自定义暗黑模式样式时，使用 CSS 变量
+.wot-theme-dark {
+  .custom-table {
+    --wot-table-bg: #1a1a1a;
+    --wot-table-color: #ffffff;
+    --wot-table-stripe-bg: #262626;
+  }
+}
+</style>
 ```

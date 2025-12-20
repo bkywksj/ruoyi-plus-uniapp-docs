@@ -975,3 +975,225 @@ List<UserVo> userVos = MapstructUtils.convert(userDTOs, UserVo.class);
 // Map转对象
 UserDTO userDTO = MapstructUtils.convert(userMap, UserDTO.class);
 ```
+
+### 手动转换示例
+
+```java
+/**
+ * 用户实体转DTO
+ */
+public class UserConverter {
+
+    public static UserDTO toDTO(User user) {
+        if (user == null) {
+            return null;
+        }
+
+        UserDTO dto = new UserDTO();
+        dto.setUserId(user.getUserId());
+        dto.setUserName(user.getUserName());
+        dto.setNickName(user.getNickName());
+        dto.setEmail(user.getEmail());
+        dto.setPhone(user.getPhone());
+        dto.setStatus(user.getStatus());
+        dto.setCreateTime(user.getCreateTime());
+
+        return dto;
+    }
+
+    public static List<UserDTO> toDTOList(List<User> users) {
+        if (users == null) {
+            return Collections.emptyList();
+        }
+        return users.stream()
+                    .map(UserConverter::toDTO)
+                    .collect(Collectors.toList());
+    }
+}
+```
+
+## 数据模型测试
+
+### 单元测试示例
+
+```java
+/**
+ * R响应类测试
+ */
+class RTest {
+
+    @Test
+    void testOkWithData() {
+        User user = new User();
+        user.setUserId(1L);
+        user.setUserName("test");
+
+        R<User> result = R.ok(user);
+
+        assertEquals(R.SUCCESS, result.getCode());
+        assertNotNull(result.getData());
+        assertEquals(1L, result.getData().getUserId());
+    }
+
+    @Test
+    void testFail() {
+        R<Void> result = R.fail("操作失败");
+
+        assertEquals(R.FAIL, result.getCode());
+        assertEquals("操作失败", result.getMsg());
+        assertNull(result.getData());
+    }
+
+    @Test
+    void testStatus() {
+        R<Void> success = R.status(true);
+        R<Void> fail = R.status(false);
+
+        assertEquals(R.SUCCESS, success.getCode());
+        assertEquals(R.FAIL, fail.getCode());
+    }
+}
+
+/**
+ * DTO转换测试
+ */
+class DTOConvertTest {
+
+    @Test
+    void testUserDTOConvert() {
+        User user = new User();
+        user.setUserId(1L);
+        user.setUserName("admin");
+        user.setNickName("管理员");
+
+        UserDTO dto = MapstructUtils.convert(user, UserDTO.class);
+
+        assertNotNull(dto);
+        assertEquals(user.getUserId(), dto.getUserId());
+        assertEquals(user.getUserName(), dto.getUserName());
+        assertEquals(user.getNickName(), dto.getNickName());
+    }
+
+    @Test
+    void testPaymentDTOMethods() {
+        PaymentDTO payment = new PaymentDTO();
+        payment.setStatus("1");
+        payment.setType("WECHAT");
+        payment.setMchKey("1234567890abcdef");
+
+        assertTrue(payment.isEnabled());
+        assertTrue(payment.isWechatPayment());
+        assertEquals("1234****cdef", payment.getMaskedMchKey());
+    }
+}
+
+/**
+ * 登录模型校验测试
+ */
+class LoginBodyValidationTest {
+
+    private Validator validator;
+
+    @BeforeEach
+    void setUp() {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+    }
+
+    @Test
+    void testPasswordLoginBody_Valid() {
+        PasswordLoginBody body = new PasswordLoginBody();
+        body.setAuthType("password");
+        body.setUserName("admin");
+        body.setPassword("admin123");
+
+        Set<ConstraintViolation<PasswordLoginBody>> violations = validator.validate(body);
+        assertTrue(violations.isEmpty());
+    }
+
+    @Test
+    void testPasswordLoginBody_Invalid() {
+        PasswordLoginBody body = new PasswordLoginBody();
+        body.setAuthType("password");
+        body.setUserName(""); // 空用户名
+        body.setPassword("123"); // 密码太短
+
+        Set<ConstraintViolation<PasswordLoginBody>> violations = validator.validate(body);
+        assertFalse(violations.isEmpty());
+        assertEquals(2, violations.size());
+    }
+}
+```
+
+## 注意事项
+
+### 1. 序列化兼容性
+
+```java
+// 始终声明 serialVersionUID
+@Data
+public class UserDTO implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+    // ...
+}
+```
+
+### 2. 空值安全
+
+```java
+// 使用Optional或默认值处理可能为空的字段
+public String getDisplayName() {
+    return Optional.ofNullable(nickName)
+                   .filter(s -> !s.isEmpty())
+                   .orElse(userName);
+}
+```
+
+### 3. 不可变性考虑
+
+```java
+// 对于集合类型字段，返回不可变副本
+public List<Long> getPaymentIdList() {
+    if (paymentIds == null) {
+        return Collections.emptyList();
+    }
+    return Collections.unmodifiableList(parsePaymentIds());
+}
+```
+
+### 4. 敏感信息处理
+
+```java
+// 重写toString避免输出敏感信息
+@Override
+public String toString() {
+    return "PaymentDTO{mchId='" + mchId + "', mchKey='****'}";
+}
+
+// 使用@JsonIgnore避免序列化敏感字段
+@JsonIgnore
+private String secretKey;
+```
+
+### 5. 线程安全
+
+```java
+// DTO通常是不可变的，天然线程安全
+// 如果包含可变字段，考虑使用同步或不可变集合
+private final List<String> roles = new CopyOnWriteArrayList<>();
+```
+
+## 总结
+
+数据模型与DTO系统是ruoyi-plus-uniapp中数据传输的核心基础设施，本文档涵盖了：
+
+1. **统一响应体系** - `R<T>` 类提供标准化的API响应格式，支持国际化
+2. **数据传输对象** - 用于不同层之间的数据传输，包含用户、角色、字典等
+3. **业务模型** - 封装业务逻辑相关数据，如登录用户、登录请求等
+4. **视图对象** - 面向前端展示的数据结构
+5. **设计原则** - 命名规范、字段设计、安全性考虑
+6. **使用场景** - Controller层、Service层、认证场景的实际应用
+7. **数据转换** - MapStruct工具的使用方法
+
+遵循这些规范和最佳实践，可以确保系统各层之间的数据交互规范化、类型安全，提高代码的可维护性和可读性。

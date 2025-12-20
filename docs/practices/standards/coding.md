@@ -803,3 +803,447 @@ public class UserServiceImpl {
 ```
 
 代码规范是保证项目质量的基础，通过统一的规范可以提高代码的可读性、可维护性和团队协作效率。
+
+## 🔒 安全编码规范
+
+### SQL 注入防护
+
+```java
+// ✅ 使用参数化查询
+@Override
+public List<SysUser> selectUserList(SysUser user) {
+    LambdaQueryWrapper<SysUser> lqw = Wrappers.lambdaQuery();
+    lqw.like(StringUtils.isNotBlank(user.getUserName()),
+             SysUser::getUserName, user.getUserName());
+    return baseMapper.selectList(lqw);
+}
+
+// ❌ 拼接SQL（危险）
+@Override
+public List<SysUser> selectUserList(String userName) {
+    String sql = "SELECT * FROM sys_user WHERE user_name = '" + userName + "'";
+    return jdbcTemplate.query(sql, new UserRowMapper());
+}
+```
+
+### XSS 防护
+
+```java
+// ✅ 使用 HtmlUtil 转义
+@PostMapping("/comment")
+public R<Void> addComment(@RequestBody CommentBo bo) {
+    // 对用户输入进行转义
+    bo.setContent(HtmlUtil.escape(bo.getContent()));
+    return R.ok(commentService.add(bo));
+}
+
+// 前端同样需要转义
+<template>
+  <!-- 使用 v-text 代替 v-html -->
+  <div v-text="userInput"></div>
+
+  <!-- 如需渲染HTML，使用DOMPurify -->
+  <div v-html="sanitizedHtml"></div>
+</template>
+
+<script setup lang="ts">
+import DOMPurify from 'dompurify'
+
+const sanitizedHtml = computed(() =>
+  DOMPurify.sanitize(rawHtml.value)
+)
+</script>
+```
+
+### 敏感信息处理
+
+```java
+// ✅ 敏感信息脱敏
+@Data
+public class UserVo {
+
+    private Long userId;
+    private String userName;
+
+    @Sensitive(strategy = SensitiveStrategy.PHONE)
+    private String phone;  // 138****8888
+
+    @Sensitive(strategy = SensitiveStrategy.EMAIL)
+    private String email;  // t***@example.com
+
+    @Sensitive(strategy = SensitiveStrategy.ID_CARD)
+    private String idCard; // 110***********1234
+
+    @JsonIgnore
+    private String password; // 不返回密码
+}
+
+// ✅ 密码加密存储
+public void createUser(UserBo user) {
+    String encodedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+    user.setPassword(encodedPassword);
+}
+```
+
+## ⚡ 性能编码规范
+
+### 数据库查询优化
+
+```java
+// ✅ 按需查询字段
+@Override
+public List<UserVo> selectUserList() {
+    return baseMapper.selectVoList(Wrappers.<SysUser>lambdaQuery()
+        .select(SysUser::getUserId, SysUser::getUserName, SysUser::getNickName)
+    );
+}
+
+// ✅ 分页查询大数据量
+@Override
+public TableDataInfo<UserVo> queryPageList(UserBo bo, PageQuery pageQuery) {
+    Page<UserVo> page = baseMapper.selectVoPage(pageQuery.build(), buildQueryWrapper(bo));
+    return TableDataInfo.build(page);
+}
+
+// ✅ 批量操作
+@Override
+@Transactional(rollbackFor = Exception.class)
+public boolean insertBatch(List<UserBo> users) {
+    List<SysUser> list = BeanUtil.copyToList(users, SysUser.class);
+    return baseMapper.insertBatch(list);  // 批量插入
+}
+
+// ❌ 避免在循环中查询
+public void badExample(List<Long> userIds) {
+    for (Long userId : userIds) {
+        SysUser user = baseMapper.selectById(userId); // N+1 问题
+    }
+}
+
+// ✅ 改用批量查询
+public void goodExample(List<Long> userIds) {
+    List<SysUser> users = baseMapper.selectBatchIds(userIds);
+}
+```
+
+### 缓存使用规范
+
+```java
+// ✅ 合理使用缓存
+@Cacheable(cacheNames = "user", key = "#userId")
+public UserVo getUserById(Long userId) {
+    return baseMapper.selectVoById(userId);
+}
+
+@CacheEvict(cacheNames = "user", key = "#user.userId")
+public void updateUser(UserBo user) {
+    baseMapper.updateById(BeanUtil.toBean(user, SysUser.class));
+}
+
+// ✅ 缓存空值防止穿透
+@Cacheable(cacheNames = "user", key = "#userId", unless = "#result == null")
+public UserVo getUserById(Long userId) {
+    return baseMapper.selectVoById(userId);
+}
+```
+
+### 集合操作优化
+
+```java
+// ✅ 使用 Stream 高效处理
+List<String> userNames = users.stream()
+    .filter(user -> "0".equals(user.getStatus()))
+    .map(SysUser::getUserName)
+    .collect(Collectors.toList());
+
+// ✅ 使用 Map 提高查找效率
+Map<Long, SysUser> userMap = users.stream()
+    .collect(Collectors.toMap(SysUser::getUserId, Function.identity()));
+SysUser user = userMap.get(targetUserId);
+
+// ❌ 避免嵌套循环查找
+for (Order order : orders) {
+    for (User user : users) {
+        if (order.getUserId().equals(user.getId())) {
+            // 效率低
+        }
+    }
+}
+```
+
+## 🧪 测试代码规范
+
+### 单元测试结构
+
+```java
+@SpringBootTest
+class UserServiceTest {
+
+    @Autowired
+    private IUserService userService;
+
+    @MockBean
+    private SysUserMapper userMapper;
+
+    /**
+     * 测试方法命名：方法名_场景_期望结果
+     */
+    @Test
+    @DisplayName("根据ID查询用户 - 用户存在 - 返回用户信息")
+    void selectUserById_WhenUserExists_ReturnsUser() {
+        // Arrange - 准备数据
+        Long userId = 1L;
+        SysUser mockUser = new SysUser();
+        mockUser.setUserId(userId);
+        mockUser.setUserName("testUser");
+
+        when(userMapper.selectVoById(userId))
+            .thenReturn(BeanUtil.toBean(mockUser, UserVo.class));
+
+        // Act - 执行测试
+        UserVo result = userService.selectUserById(userId);
+
+        // Assert - 验证结果
+        assertNotNull(result);
+        assertEquals("testUser", result.getUserName());
+        verify(userMapper).selectVoById(userId);
+    }
+
+    @Test
+    @DisplayName("根据ID查询用户 - 用户不存在 - 抛出异常")
+    void selectUserById_WhenUserNotExists_ThrowsException() {
+        // Arrange
+        Long userId = 999L;
+        when(userMapper.selectVoById(userId)).thenReturn(null);
+
+        // Act & Assert
+        assertThrows(ServiceException.class, () ->
+            userService.selectUserById(userId)
+        );
+    }
+}
+```
+
+### 前端测试规范
+
+```typescript
+import { describe, it, expect, vi } from 'vitest'
+import { mount } from '@vue/test-utils'
+import UserList from '@/views/system/user/index.vue'
+
+describe('UserList.vue', () => {
+  it('should render user list correctly', async () => {
+    const wrapper = mount(UserList)
+
+    // 等待异步数据加载
+    await wrapper.vm.$nextTick()
+
+    // 验证表格渲染
+    expect(wrapper.find('.el-table').exists()).toBe(true)
+  })
+
+  it('should call delete API when clicking delete button', async () => {
+    const deleteSpy = vi.spyOn(userApi, 'deleteUser')
+    const wrapper = mount(UserList)
+
+    // 模拟点击删除
+    await wrapper.find('.btn-delete').trigger('click')
+    await wrapper.find('.confirm-btn').trigger('click')
+
+    expect(deleteSpy).toHaveBeenCalled()
+  })
+})
+```
+
+## 📋 代码审查清单
+
+### 功能正确性
+
+- [ ] 代码逻辑是否正确实现了需求
+- [ ] 边界条件是否处理（空值、空集合、极限值）
+- [ ] 异常情况是否妥善处理
+- [ ] 并发场景是否考虑
+
+### 代码质量
+
+- [ ] 命名是否清晰、有意义
+- [ ] 方法长度是否适中（建议不超过50行）
+- [ ] 类职责是否单一
+- [ ] 是否有重复代码需要提取
+- [ ] 注释是否必要且准确
+
+### 性能考虑
+
+- [ ] 是否有N+1查询问题
+- [ ] 大数据量是否使用分页
+- [ ] 是否合理使用缓存
+- [ ] 是否有不必要的数据库操作
+
+### 安全性
+
+- [ ] 用户输入是否校验
+- [ ] 是否防止SQL注入
+- [ ] 敏感信息是否脱敏
+- [ ] 权限是否正确控制
+
+### 可维护性
+
+- [ ] 代码是否易于理解
+- [ ] 配置是否外部化
+- [ ] 是否有适当的日志记录
+- [ ] 错误信息是否有助于排查问题
+
+## 🎨 代码格式规范
+
+### Java 代码格式
+
+```java
+// ✅ 推荐的代码格式
+public class UserServiceImpl implements IUserService {
+
+    private final SysUserMapper baseMapper;
+
+    @Override
+    public UserVo selectUserById(Long userId) {
+        // 空行分隔逻辑块
+        if (ObjectUtil.isNull(userId)) {
+            throw new ServiceException("用户ID不能为空");
+        }
+
+        UserVo user = baseMapper.selectVoById(userId);
+
+        // 返回前空一行
+        return user;
+    }
+
+    @Override
+    public boolean updateUser(UserBo user) {
+        // 链式调用换行
+        return lambdaUpdate()
+            .set(SysUser::getNickName, user.getNickName())
+            .set(SysUser::getEmail, user.getEmail())
+            .set(SysUser::getPhone, user.getPhone())
+            .eq(SysUser::getUserId, user.getUserId())
+            .update();
+    }
+}
+```
+
+### TypeScript 代码格式
+
+```typescript
+// ✅ 推荐的代码格式
+export function useUserList() {
+  // 状态定义
+  const loading = ref(false)
+  const userList = ref<UserVO[]>([])
+  const total = ref(0)
+
+  // 查询参数
+  const queryParams = reactive<UserQuery>({
+    pageNum: 1,
+    pageSize: 10,
+    userName: '',
+    status: ''
+  })
+
+  // 方法定义
+  const getList = async () => {
+    loading.value = true
+    try {
+      const { data } = await listUser(queryParams)
+      userList.value = data.records
+      total.value = data.total
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const handleQuery = () => {
+    queryParams.pageNum = 1
+    getList()
+  }
+
+  // 返回值
+  return {
+    loading,
+    userList,
+    total,
+    queryParams,
+    getList,
+    handleQuery
+  }
+}
+```
+
+### Vue 模板格式
+
+```vue
+<template>
+  <div class="user-list">
+    <!-- 搜索区域 -->
+    <el-form :model="queryParams" inline>
+      <el-form-item label="用户名">
+        <el-input
+          v-model="queryParams.userName"
+          placeholder="请输入用户名"
+          clearable
+          @keyup.enter="handleQuery"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="handleQuery">
+          搜索
+        </el-button>
+        <el-button @click="resetQuery">
+          重置
+        </el-button>
+      </el-form-item>
+    </el-form>
+
+    <!-- 表格区域 -->
+    <el-table
+      v-loading="loading"
+      :data="userList"
+      border
+    >
+      <el-table-column prop="userName" label="用户名" />
+      <el-table-column prop="nickName" label="昵称" />
+      <el-table-column prop="status" label="状态">
+        <template #default="{ row }">
+          <el-tag :type="row.status === '0' ? 'success' : 'danger'">
+            {{ row.status === '0' ? '正常' : '停用' }}
+          </el-tag>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <!-- 分页区域 -->
+    <pagination
+      v-model:page="queryParams.pageNum"
+      v-model:limit="queryParams.pageSize"
+      :total="total"
+      @pagination="getList"
+    />
+  </div>
+</template>
+```
+
+## 📝 TODO 和 FIXME 规范
+
+```java
+// TODO: 描述需要完成的功能
+// TODO(author): 待优化的批量删除逻辑，需要添加事务控制
+
+// FIXME: 描述需要修复的问题
+// FIXME(author): 这里存在并发问题，需要添加锁机制
+
+// NOTE: 描述需要注意的事项
+// NOTE: 这个方法仅供内部使用，不要在Controller中直接调用
+
+// HACK: 描述临时解决方案
+// HACK: 由于第三方API限制，这里使用了轮询方式
+
+// DEPRECATED: 标记废弃代码
+// DEPRECATED: 该方法将在2.0版本移除，请使用 newMethod() 代替
+```

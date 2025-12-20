@@ -874,3 +874,429 @@ pnpm add @dcloudio/uni-app@latest
 2. **阅读更新日志**：了解 Breaking Changes
 3. **测试功能**：升级后在各平台测试核心功能
 4. **更新依赖**：同步更新相关插件和依赖
+
+## 高级条件编译
+
+### 条件编译语法详解
+
+条件编译使用特定的注释标记，支持模板、脚本和样式三个区域：
+
+```vue
+<template>
+  <!-- 单平台条件 -->
+  <!-- #ifdef MP-WEIXIN -->
+  <view>仅微信小程序显示</view>
+  <!-- #endif -->
+
+  <!-- 多平台条件（或关系） -->
+  <!-- #ifdef MP-WEIXIN || MP-ALIPAY -->
+  <view>微信或支付宝小程序显示</view>
+  <!-- #endif -->
+
+  <!-- 排除平台 -->
+  <!-- #ifndef H5 -->
+  <view>除H5外的所有平台显示</view>
+  <!-- #endif -->
+</template>
+
+<script lang="ts" setup>
+// 脚本区域条件编译
+// #ifdef APP-PLUS
+import { plus } from '@/utils/plus-api'
+// #endif
+
+// #ifdef MP-WEIXIN
+const wxLogin = async () => {
+  const { code } = await uni.login({ provider: 'weixin' })
+  return code
+}
+// #endif
+
+// #ifdef H5
+const h5Login = async () => {
+  // H5 登录逻辑
+  return 'h5-token'
+}
+// #endif
+</script>
+
+<style lang="scss" scoped>
+/* 样式区域条件编译 */
+.container {
+  padding: 20rpx;
+
+  /* #ifdef H5 */
+  max-width: 750px;
+  margin: 0 auto;
+  /* #endif */
+
+  /* #ifdef MP-WEIXIN */
+  background-color: #f8f8f8;
+  /* #endif */
+}
+</style>
+```
+
+### 平台标识符完整列表
+
+| 平台标识符 | 说明 |
+|-----------|------|
+| `VUE3` | HBuilderX 3.2.0+ 使用 Vue 3 |
+| `APP-PLUS` | App（包含 iOS 和 Android） |
+| `APP-PLUS-NVUE` | App nvue 页面 |
+| `APP-ANDROID` | App Android 平台 |
+| `APP-IOS` | App iOS 平台 |
+| `H5` | H5 网页 |
+| `MP-WEIXIN` | 微信小程序 |
+| `MP-ALIPAY` | 支付宝小程序 |
+| `MP-BAIDU` | 百度小程序 |
+| `MP-TOUTIAO` | 字节跳动小程序 |
+| `MP-QQ` | QQ 小程序 |
+| `MP-KUAISHOU` | 快手小程序 |
+| `MP-JD` | 京东小程序 |
+| `MP-LARK` | 飞书小程序 |
+| `MP-360` | 360 小程序 |
+| `QUICKAPP-WEBVIEW` | 快应用 |
+
+## 环境变量配置
+
+### 多环境配置
+
+项目支持开发、测试、生产等多环境配置：
+
+```typescript
+// .env.development
+VITE_API_URL = 'http://localhost:8080/api'
+VITE_APP_TITLE = '开发环境'
+VITE_UPLOAD_URL = 'http://localhost:8080/upload'
+
+// .env.production
+VITE_API_URL = 'https://api.example.com'
+VITE_APP_TITLE = '生产环境'
+VITE_UPLOAD_URL = 'https://upload.example.com'
+```
+
+### 在代码中使用
+
+```typescript
+// 获取环境变量
+const apiUrl = import.meta.env.VITE_API_URL
+const appTitle = import.meta.env.VITE_APP_TITLE
+
+// 判断环境
+const isDev = import.meta.env.DEV
+const isProd = import.meta.env.PROD
+const mode = import.meta.env.MODE
+
+// 条件配置
+const config = {
+  baseUrl: isDev ? 'http://localhost:8080' : 'https://api.example.com',
+  timeout: isDev ? 30000 : 10000,
+  enableLog: isDev
+}
+```
+
+### 类型定义
+
+```typescript
+// src/types/env.d.ts
+/// <reference types="vite/client" />
+
+interface ImportMetaEnv {
+  readonly VITE_API_URL: string
+  readonly VITE_APP_TITLE: string
+  readonly VITE_UPLOAD_URL: string
+  readonly VITE_WX_APPID: string
+}
+
+interface ImportMeta {
+  readonly env: ImportMetaEnv
+}
+```
+
+## 错误处理与监控
+
+### 全局错误捕获
+
+```typescript
+// main.ts
+import { createSSRApp } from 'vue'
+import App from './App.vue'
+
+export function createApp() {
+  const app = createSSRApp(App)
+
+  // 全局错误处理
+  app.config.errorHandler = (err, instance, info) => {
+    console.error('Vue Error:', err)
+    console.error('Component:', instance)
+    console.error('Error Info:', info)
+
+    // 上报错误到监控平台
+    reportError({
+      type: 'vue-error',
+      message: String(err),
+      stack: (err as Error).stack,
+      info
+    })
+  }
+
+  // 全局警告处理（仅开发环境）
+  if (import.meta.env.DEV) {
+    app.config.warnHandler = (msg, instance, trace) => {
+      console.warn('Vue Warning:', msg)
+    }
+  }
+
+  return { app }
+}
+```
+
+### API 请求错误处理
+
+```typescript
+// composables/useRequest.ts
+import { ref } from 'vue'
+
+interface RequestState<T> {
+  data: T | null
+  loading: boolean
+  error: Error | null
+}
+
+export const useRequest = <T>(
+  requestFn: () => Promise<T>
+) => {
+  const state = ref<RequestState<T>>({
+    data: null,
+    loading: false,
+    error: null
+  })
+
+  const execute = async () => {
+    state.value.loading = true
+    state.value.error = null
+
+    try {
+      state.value.data = await requestFn()
+    } catch (error) {
+      state.value.error = error as Error
+
+      // 统一错误提示
+      uni.showToast({
+        title: (error as Error).message || '请求失败',
+        icon: 'none'
+      })
+    } finally {
+      state.value.loading = false
+    }
+  }
+
+  return {
+    state,
+    execute,
+    loading: computed(() => state.value.loading),
+    error: computed(() => state.value.error),
+    data: computed(() => state.value.data)
+  }
+}
+```
+
+## 安全性考虑
+
+### 敏感信息保护
+
+```typescript
+// 不要在代码中硬编码敏感信息
+// ❌ 错误做法
+const API_SECRET = 'abc123secret'
+
+// ✅ 正确做法 - 使用环境变量
+const API_SECRET = import.meta.env.VITE_API_SECRET
+
+// Token 存储加密
+import CryptoJS from 'crypto-js'
+
+const encryptToken = (token: string): string => {
+  const secretKey = import.meta.env.VITE_ENCRYPT_KEY
+  return CryptoJS.AES.encrypt(token, secretKey).toString()
+}
+
+const decryptToken = (encryptedToken: string): string => {
+  const secretKey = import.meta.env.VITE_ENCRYPT_KEY
+  const bytes = CryptoJS.AES.decrypt(encryptedToken, secretKey)
+  return bytes.toString(CryptoJS.enc.Utf8)
+}
+```
+
+### XSS 防护
+
+```vue
+<template>
+  <!-- 使用 v-text 而非 v-html 渲染用户内容 -->
+  <view v-text="userContent" />
+
+  <!-- 如需渲染 HTML，必须先消毒 -->
+  <rich-text :nodes="sanitizedHtml" />
+</template>
+
+<script lang="ts" setup>
+import DOMPurify from 'dompurify'
+
+const userContent = ref('')
+const rawHtml = ref('')
+
+const sanitizedHtml = computed(() => {
+  return DOMPurify.sanitize(rawHtml.value)
+})
+</script>
+```
+
+### 请求签名验证
+
+```typescript
+// utils/sign.ts
+import CryptoJS from 'crypto-js'
+
+export const generateSign = (params: Record<string, any>): string => {
+  // 按 key 排序
+  const sortedKeys = Object.keys(params).sort()
+
+  // 拼接参数
+  const signStr = sortedKeys
+    .map(key => `${key}=${params[key]}`)
+    .join('&')
+
+  // 添加密钥并生成签名
+  const secret = import.meta.env.VITE_SIGN_SECRET
+  return CryptoJS.MD5(signStr + secret).toString()
+}
+
+// 使用示例
+const params = { userId: 123, timestamp: Date.now() }
+const sign = generateSign(params)
+
+request({
+  url: '/api/user/info',
+  data: { ...params, sign }
+})
+```
+
+## 多语言支持
+
+### i18n 配置
+
+```typescript
+// locales/index.ts
+import { createI18n } from 'vue-i18n'
+import zhCN from './zh-CN'
+import enUS from './en-US'
+
+const i18n = createI18n({
+  legacy: false,
+  locale: uni.getStorageSync('language') || 'zh-CN',
+  fallbackLocale: 'zh-CN',
+  messages: {
+    'zh-CN': zhCN,
+    'en-US': enUS
+  }
+})
+
+export default i18n
+```
+
+### 在组件中使用
+
+```vue
+<template>
+  <view class="page">
+    <text>{{ t('common.welcome') }}</text>
+    <wd-button @click="changeLanguage">
+      {{ t('common.switchLang') }}
+    </wd-button>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { useI18n } from 'vue-i18n'
+
+const { t, locale } = useI18n()
+
+const changeLanguage = () => {
+  locale.value = locale.value === 'zh-CN' ? 'en-US' : 'zh-CN'
+  uni.setStorageSync('language', locale.value)
+}
+</script>
+```
+
+## 测试策略
+
+### 单元测试配置
+
+```typescript
+// vitest.config.ts
+import { defineConfig } from 'vitest/config'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    include: ['src/**/*.{test,spec}.{js,ts}']
+  }
+})
+```
+
+### 编写组件测试
+
+```typescript
+// components/__tests__/MyButton.spec.ts
+import { describe, it, expect } from 'vitest'
+import { mount } from '@vue/test-utils'
+import MyButton from '../MyButton.vue'
+
+describe('MyButton', () => {
+  it('渲染正确的文本', () => {
+    const wrapper = mount(MyButton, {
+      props: { text: '点击我' }
+    })
+    expect(wrapper.text()).toContain('点击我')
+  })
+
+  it('点击时触发事件', async () => {
+    const wrapper = mount(MyButton)
+    await wrapper.trigger('click')
+    expect(wrapper.emitted('click')).toBeTruthy()
+  })
+
+  it('禁用状态不触发事件', async () => {
+    const wrapper = mount(MyButton, {
+      props: { disabled: true }
+    })
+    await wrapper.trigger('click')
+    expect(wrapper.emitted('click')).toBeFalsy()
+  })
+})
+```
+
+### 端到端测试
+
+```typescript
+// e2e/login.spec.ts
+describe('登录流程', () => {
+  it('成功登录后跳转首页', () => {
+    // 访问登录页
+    cy.visit('/pages/login/index')
+
+    // 输入账号密码
+    cy.get('[data-testid="username"]').type('admin')
+    cy.get('[data-testid="password"]').type('123456')
+
+    // 点击登录
+    cy.get('[data-testid="login-btn"]').click()
+
+    // 验证跳转到首页
+    cy.url().should('include', '/pages/index/index')
+  })
+})

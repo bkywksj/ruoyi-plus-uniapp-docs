@@ -1,180 +1,574 @@
-# 监控管理 (monitor-admin)
+# Spring Boot Admin 监控中心
 
-## 1. 模块概述
+基于 Spring Boot Admin 的应用监控中心 - 提供集中化、可视化的服务监控与告警能力
 
-### 1.1. 模块定位
-`monitor-admin` 是一个基于 **Spring Boot Admin** 的独立应用监控中心。它作为 `ruoyi-plus-uniapp` 微服务体系中的核心组件，专用于提供集中化、可视化的服务监控和管理功能。该模块本身也是一个独立的 Spring Boot 应用，可以独立部署和运行。
+## 模块简介
 
-### 1.2. 核心价值
-- **集中视图**: 在统一的 UI 界面中展示所有已注册微服务的健康状态、基本信息和性能指标。
-- **健康检查**: 实时监控服务实例的在线状态（UP）、离线（OFFLINE）、下线（DOWN）等，帮助快速发现和定位问题。
-- **实时告警**: 当服务状态发生变更（如服务宕机或恢复）时，能够通过邮件、钉钉 Webhook 等多种渠道发送实时告警通知，确保运维团队第一时间响应。
-- **深度洞察**: 深度集成 Spring Boot Actuator 端点，提供对应用内部的详细信息查看，如 JVM 指标、环境变量、日志文件、缓存、Spring Beans 等。
-- **安全可靠**: 内置 Spring Security 提供企业级的安全认证，确保只有授权用户才能访问监控数据。
+`ruoyi-monitor-admin` 是 RuoYi-Plus 框架的应用监控中心模块，基于 Spring Boot Admin 构建。该模块作为独立服务部署，提供统一的服务监控、健康检查和告警通知功能，是微服务架构中的核心运维组件。
 
----
+### 核心特性
 
-## 2. 核心功能
+- **集中监控**: 在统一的 Web UI 界面中展示所有已注册服务的健康状态、性能指标和运行信息
+- **健康检查**: 实时监控服务实例的在线状态（UP、DOWN、OFFLINE），快速发现和定位问题
+- **实时告警**: 服务状态变更时自动发送通知，支持邮件和钉钉 Webhook 两种渠道
+- **深度洞察**: 集成 Spring Boot Actuator，提供 JVM 指标、环境变量、日志文件、缓存等详细信息
+- **安全可靠**: 内置 Spring Security 认证机制，确保监控数据的访问安全
+- **自我监控**: 支持将自身注册为客户端，实现监控中心的自我监控
 
-### 2.1. 应用实例监控
-- **实例列表**: 实时展示所有注册到监控中心的服务实例。
-- **状态显示**: 清晰展示每个实例的健康状态（UP, DOWN, OFFLINE, UNKNOWN）、实例数量、版本号、IP 地址和端口。
-- **生命周期**: 记录并展示服务实例的生命周期事件，如注册、离线、上线等，方便追踪问题。
+::: warning 重要说明
+本模块是独立的监控服务端，需要单独部署。业务应用作为客户端注册到此服务端。
+:::
 
-### 2.2. Actuator 端点集成
-通过可视化的 UI 界面，方便地访问和操作客户端应用的 Actuator 端点，主要包括：
-- `health`: 查看应用健康状况，包括磁盘空间、数据库连接、Redis 等。
-- `metrics`: 查看详细的性能指标，如 JVM 内存使用、CPU 占用率、HTTP 请求统计、线程池状态等。
-- `env`: 查看和搜索应用的所有环境属性，包括配置文件、系统属性、JVM 参数等。
-- `logfile`: 在线查看和下载应用的日志文件，无需登录服务器。
-- `beans`: 查看 Spring 容器中所有 Bean 的定义、依赖关系和作用域。
-- `mappings`: 查看应用中所有的 HTTP 请求映射（@RequestMapping），包括路径、HTTP 方法和处理的 Controller 方法。
-- `caches`: 查看和管理应用中的缓存（如 Caffeine, EhCache）。
-- `heapdump`: 下载 JVM 堆转储快照，用于内存泄漏分析。
-- `threaddump`: 下载 JVM 线程转储，用于分析线程死锁和性能瓶颈。
+## 模块架构
 
-### 2.3. 安全认证
-模块内置了基于 **Spring Security** 的安全机制 (`SecurityConfig.java`)。
-- **强制认证**: 默认情况下，访问监控中心的所有页面（除了静态资源和登录页）都需要进行身份认证。
-- **登录方式**: 支持基于表单的登录 (`formLogin`) 和 HTTP Basic 认证 (`httpBasic`)。
-- **安全策略**: 禁用了 CSRF (Cross-Site Request Forgery) 保护，并允许页面被 `iframe` 嵌入，以适应常见的后台管理系统集成场景。
+### 整体架构图
 
-### 2.4. 实时事件告警
-这是模块的核心定制功能，能够对服务实例的状态变更进行实时通知。
-- **事件监听**: 通过自定义的 `CustomNotifier` 监听所有客户端实例的状态变化事件 (`InstanceStatusChangedEvent`)。
-- **异步处理**: 收到事件后，通过 `@Async` 注解进行异步处理，避免阻塞主线程，确保监控性能。
-- **多渠道通知**:
-  - **邮件通知**: 当服务状态变更时，若配置启用，可自动发送格式化的 HTML 告警邮件给指定收件人。
-  - **Webhook 通知**: 支持将告警信息通过 Webhook 推送到 **钉钉** 或其他兼容平台（如企业微信），实现更灵活的即时通讯。钉钉机器人支持“签名”和“关键词”两种安全设置。
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                     Spring Boot Admin 监控中心架构                           │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │                         Web UI 层                                     │  │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌────────────┐  │  │
+│  │  │  应用列表   │  │  实例详情   │  │  日志查看   │  │  指标监控  │  │  │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  └────────────┘  │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+│                                    │                                        │
+│                                    ▼                                        │
+│  ┌──────────────────────────────────────────────────────────────────────┐  │
+│  │                    Monitor Admin Server (端口 9090)                   │  │
+│  │  ┌─────────────────────────────────────────────────────────────────┐ │  │
+│  │  │                       核心组件                                   │ │  │
+│  │  │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐    │ │  │
+│  │  │  │ MonitorAdmin   │  │ SecurityConfig │  │ CustomNotifier │    │ │  │
+│  │  │  │ (启动入口)     │  │ (安全配置)     │  │ (事件监听)     │    │ │  │
+│  │  │  └────────────────┘  └────────────────┘  └────────────────┘    │ │  │
+│  │  │                                                                 │ │  │
+│  │  │  ┌────────────────┐  ┌────────────────┐  ┌────────────────┐    │ │  │
+│  │  │  │ InfoNotifier   │  │ NotifyProps    │  │ NotifierEvent  │    │ │  │
+│  │  │  │ (通知服务)     │  │ (配置属性)     │  │ (通知事件)     │    │ │  │
+│  │  │  └────────────────┘  └────────────────┘  └────────────────┘    │ │  │
+│  │  └─────────────────────────────────────────────────────────────────┘ │  │
+│  │                               │                                      │  │
+│  │              ┌────────────────┴────────────────┐                    │  │
+│  │              │          通知渠道               │                    │  │
+│  │              │  ┌──────────┐  ┌──────────┐    │                    │  │
+│  │              │  │  邮件    │  │  钉钉    │    │                    │  │
+│  │              │  │ (SMTP)   │  │(Webhook) │    │                    │  │
+│  │              │  └──────────┘  └──────────┘    │                    │  │
+│  │              └─────────────────────────────────┘                    │  │
+│  └──────────────────────────────────────────────────────────────────────┘  │
+│                                    ▲                                        │
+│              ┌─────────────────────┼─────────────────────┐                 │
+│              │                     │                     │                 │
+│              │                     │                     │                 │
+│  ┌───────────────────┐  ┌───────────────────┐  ┌───────────────────┐      │
+│  │   ruoyi-admin     │  │  snailjob-server  │  │   其他服务        │      │
+│  │   (主应用)        │  │  (任务调度)       │  │                   │      │
+│  │                   │  │                   │  │                   │      │
+│  │  ┌─────────────┐  │  │  ┌─────────────┐  │  │  ┌─────────────┐  │      │
+│  │  │  Actuator   │  │  │  │  Actuator   │  │  │  │  Actuator   │  │      │
+│  │  │  Endpoints  │  │  │  │  Endpoints  │  │  │  │  Endpoints  │  │      │
+│  │  └─────────────┘  │  │  └─────────────┘  │  │  └─────────────┘  │      │
+│  └───────────────────┘  └───────────────────┘  └───────────────────┘      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
 
----
+### 核心组件说明
 
-## 3. 技术栈与依赖
+| 组件 | 文件 | 说明 |
+|------|------|------|
+| `MonitorAdmin` | MonitorAdmin.java | 服务端启动入口类，启用 Admin Server |
+| `SecurityConfig` | SecurityConfig.java | Spring Security 安全配置，定义认证规则 |
+| `CustomNotifier` | CustomNotifier.java | 事件监听器，捕获服务状态变更事件 |
+| `InfoNotifier` | InfoNotifier.java | 通知服务，处理邮件和 Webhook 发送 |
+| `NotifyProperties` | NotifyProperties.java | 通知配置属性类，绑定配置文件 |
+| `NotifierEvent` | NotifierEvent.java | 通知事件对象，封装状态变更信息 |
 
-### 3.1. 核心框架
-- **Spring Boot**: 应用基础框架。
-- **Spring Boot Admin Server**: 监控中心服务端核心。
-- **Spring Security**: 提供安全认证。
-- **Reactor**: `CustomNotifier` 基于 Reactor 模型处理事件流。
+### 端口说明
 
-### 3.2. 主要依赖 (`pom.xml`)
-- `de.codecentric:spring-boot-admin-starter-server`: Spring Boot Admin 服务端核心依赖。
-- `de.codecentric:spring-boot-admin-starter-client`: 用于将监控中心自身也作为客户端注册，实现自我监控。
-- `org.springframework.boot:spring-boot-starter-web`: 提供 Web 应用基础支持。
-- `org.springframework.boot:spring-boot-starter-security`: Spring Security 框架，用于安全认证。
-- `plus.ruoyi:ruoyi-common-mail`: 依赖内部邮件通用模块，提供邮件发送能力。
-- `org.projectlombok:lombok`: 简化 Java 代码，如 `@Data`, `@Slf4j` 等。
+| 端口 | 用途 | 说明 |
+|------|------|------|
+| 9090 | Web 服务端口 | 访问监控后台 UI |
 
----
+## 快速部署
 
-## 4. 配置指南
+### 环境要求
 
-配置文件位于 `src/main/resources/application.yml`。
+- **JDK**: 21+
+- **Maven**: 3.8+
+- **邮件服务器**: （可选）用于邮件告警
+- **钉钉机器人**: （可选）用于 Webhook 告警
 
-### 4.1. `application.yml` 基础配置
+### 1. 修改配置文件
+
+编辑 `application.yml` 配置认证信息：
+
 ```yaml
 # 服务器基础配置
 server:
-  port: 9090 # 监控中心服务端口
+  port: 9090                          # 监控中心服务端口
 
 # Spring 应用配置
 spring:
   application:
-    name: Spring Boot Admin # 应用名称
+    name: Spring Boot Admin           # 应用名称
   security:
     user:
-      name: @monitor.username@ # 登录监控中心的用户名 (支持Maven占位符)
-      password: @monitor.password@ # 登录监控中心的密码 (支持Maven占位符)
+      name: ruoyi                      # 监控中心登录用户名
+      password: "123456"               # 监控中心登录密码
   boot:
     admin:
       ui:
-        title: Spring Boot Admin服务监控中心 # 监控中心界面标题
-      context-path: /admin # 监控中心的访问路径, 如 /admin
+        title: Spring Boot Admin服务监控中心  # 界面标题
+      context-path: /admin             # 监控中心访问路径
 ```
 
-### 4.2. `notify` 告警通知配置
-这是自定义的通知配置，通过 `NotifyProperties.java` 类进行绑定。
+### 2. 启动服务
+
+**方式一：IDE 启动**
+
+运行 `plus.ruoyi.monitor.admin.MonitorAdmin` 类的 `main` 方法。
+
+**方式二：Maven 命令启动**
+
+```bash
+# 进入模块目录
+cd ruoyi-extend/ruoyi-monitor-admin
+
+# 编译打包
+mvn clean package -DskipTests
+
+# 运行
+java -jar target/ruoyi-monitor-admin.jar --spring.profiles.active=dev
+```
+
+启动成功后会显示：
+
+```
+(✨◠‿◠)ﾉ♪♫ Spring Boot Admin 启动成功！环境: [dev] 地址: http://127.0.0.1:9090/admin
+```
+
+### 3. 访问管理后台
+
+- **地址**: http://127.0.0.1:9090/admin
+- **默认账号**: ruoyi
+- **默认密码**: 123456
+
+## Docker 部署
+
+### Dockerfile 说明
+
+项目提供了优化的 Dockerfile，使用 Liberica OpenJDK 21 作为基础镜像：
+
+```dockerfile
+# 使用贝尔实验室 OpenJDK 21 镜像（支持 CDS 加速启动）
+FROM bellsoft/liberica-openjdk-rocky:21.0.8-cds
+
+LABEL maintainer="抓蛙师"
+
+# 创建目录结构
+RUN mkdir -p /ruoyi/monitor/logs
+
+WORKDIR /ruoyi/monitor
+
+# 设置环境变量
+ENV SERVER_PORT=9090 \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    JAVA_OPTS="-Xms256m -Xmx512m" \
+    SPRING_PROFILES_ACTIVE=prod \
+    TZ=Asia/Shanghai
+
+# 暴露端口
+EXPOSE ${SERVER_PORT}
+
+# 复制应用
+COPY ./target/ruoyi-monitor-admin.jar /ruoyi/monitor/app.jar
+
+# 启动命令
+ENTRYPOINT ["sh", "-c", "cd /ruoyi/monitor && exec java \
+    -Dserver.port=${SERVER_PORT} \
+    -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} \
+    -Duser.timezone=${TZ} \
+    -XX:+HeapDumpOnOutOfMemoryError \
+    -XX:HeapDumpPath=/ruoyi/monitor/logs/ \
+    -XX:+UseZGC \
+    ${JAVA_OPTS} \
+    -jar /ruoyi/monitor/app.jar"]
+```
+
+### 构建 Docker 镜像
+
+```bash
+# 进入模块目录
+cd ruoyi-extend/ruoyi-monitor-admin
+
+# 编译打包
+mvn clean package -DskipTests
+
+# 构建镜像
+docker build -t ruoyi-monitor-admin:latest .
+```
+
+### Docker Compose 部署
+
+创建 `docker-compose.yml` 文件：
 
 ```yaml
-# 服务状态通知配置
-notify:
-  # 邮件通知配置
-  mail:
-    enabled: false # 是否启用邮件通知, true为启用
-    to: xxxxxx@qq.com # 收件人邮箱地址, 多个用逗号隔开
-    subject: admin监控通知 # 邮件主题
-    # 邮件模板（HTML格式）
-    # 占位符: {0}服务名, {1}实例ID, {2}状态中文名, {3}状态码, {4}服务URL, {5}时间
-    template: "<html><body>...</body></html>"
+version: '3.8'
 
-  # Webhook通知配置（以钉钉为例）
+services:
+  # Spring Boot Admin 监控中心
+  monitor-admin:
+    image: ruoyi-monitor-admin:latest
+    container_name: monitor-admin
+    environment:
+      # 服务配置
+      SERVER_PORT: 9090
+      SPRING_PROFILES_ACTIVE: prod
+      # 认证配置
+      MONITOR_USERNAME: ruoyi
+      MONITOR_PASSWORD: "123456"
+      MONITOR_TITLE: "生产环境监控中心"
+      # 自监控配置
+      MONITOR_SELF_ENABLED: "true"
+      MONITOR_URL: http://monitor-admin:9090/admin
+      # JVM 配置
+      JAVA_OPTS: "-Xms256m -Xmx512m"
+      # 邮件通知配置（可选）
+      NOTIFY_MAIL_ENABLED: "false"
+      NOTIFY_MAIL_TO: admin@example.com
+      # 钉钉通知配置（可选）
+      NOTIFY_WEBHOOK_ENABLED: "false"
+      DINGTALK_SECRET: ""
+      DINGTALK_WEBHOOK_URL: ""
+    ports:
+      - "9090:9090"
+    volumes:
+      - monitor_logs:/ruoyi/monitor/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9090/admin/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  monitor_logs:
+```
+
+**启动服务**
+
+```bash
+# 启动所有服务
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f monitor-admin
+
+# 停止服务
+docker-compose down
+```
+
+### 环境变量说明
+
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| `SERVER_PORT` | Web 服务端口 | 9090 |
+| `MONITOR_USERNAME` | 登录用户名 | ruoyi |
+| `MONITOR_PASSWORD` | 登录密码 | 123456 |
+| `MONITOR_TITLE` | 界面标题 | Spring Boot Admin服务监控中心 |
+| `MONITOR_SELF_ENABLED` | 是否启用自监控 | true |
+| `MONITOR_URL` | 监控中心地址（自监控用） | http://127.0.0.1:9090/admin |
+| `SPRING_PROFILES_ACTIVE` | 激活的配置环境 | prod |
+| `JAVA_OPTS` | JVM 参数 | -Xms256m -Xmx512m |
+| `NOTIFY_MAIL_ENABLED` | 是否启用邮件通知 | false |
+| `NOTIFY_MAIL_TO` | 邮件收件人 | - |
+| `NOTIFY_WEBHOOK_ENABLED` | 是否启用 Webhook 通知 | false |
+| `DINGTALK_SECRET` | 钉钉机器人密钥 | - |
+| `DINGTALK_WEBHOOK_URL` | 钉钉 Webhook 地址 | - |
+
+## 核心功能详解
+
+### 应用实例监控
+
+监控中心提供完整的服务实例生命周期监控：
+
+**实例状态说明**
+
+| 状态码 | 中文描述 | 说明 |
+|--------|----------|------|
+| `UP` | 服务上线 | 服务正常运行 |
+| `DOWN` | 服务下线 | 服务异常停止 |
+| `OFFLINE` | 服务离线 | 服务主动下线 |
+| `OUT_OF_SERVICE` | 停止服务状态 | 服务被标记为停止 |
+| `RESTRICTED` | 服务受限 | 服务部分功能受限 |
+| `UNKNOWN` | 服务未知异常 | 无法确定服务状态 |
+
+**状态转换逻辑**
+
+```java
+private String getStatusName(String status) {
+    return switch (status) {
+        case STATUS_UP -> "服务上线";
+        case STATUS_OFFLINE -> "服务离线";
+        case STATUS_RESTRICTED -> "服务受限";
+        case STATUS_OUT_OF_SERVICE -> "停止服务状态";
+        case STATUS_DOWN -> "服务下线";
+        case STATUS_UNKNOWN -> "服务未知异常";
+        default -> "未知状态";
+    };
+}
+```
+
+### Actuator 端点集成
+
+通过可视化界面访问客户端应用的 Actuator 端点：
+
+| 端点 | 功能 | 说明 |
+|------|------|------|
+| `health` | 健康检查 | 查看磁盘空间、数据库、Redis 等健康状态 |
+| `metrics` | 性能指标 | JVM 内存、CPU、HTTP 请求统计、线程池状态 |
+| `env` | 环境属性 | 配置文件、系统属性、JVM 参数 |
+| `logfile` | 日志文件 | 在线查看和下载应用日志 |
+| `beans` | Bean 列表 | Spring 容器中所有 Bean 的定义和依赖 |
+| `mappings` | 请求映射 | 所有 HTTP 请求映射（@RequestMapping） |
+| `caches` | 缓存管理 | 查看和管理应用缓存 |
+| `heapdump` | 堆转储 | 下载 JVM 堆转储快照 |
+| `threaddump` | 线程转储 | 下载 JVM 线程转储 |
+| `scheduledtasks` | 定时任务 | 查看已注册的定时任务 |
+
+### 安全认证机制
+
+监控中心使用 Spring Security 提供企业级安全认证：
+
+```java
+@EnableWebSecurity
+@Configuration
+public class SecurityConfig {
+
+    private final String adminContextPath;
+
+    public SecurityConfig(AdminServerProperties adminServerProperties) {
+        this.adminContextPath = adminServerProperties.getContextPath();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        SavedRequestAwareAuthenticationSuccessHandler successHandler =
+            new SavedRequestAwareAuthenticationSuccessHandler();
+        successHandler.setTargetUrlParameter("redirectTo");
+        successHandler.setDefaultTargetUrl(adminContextPath + "/");
+
+        PathPatternRequestMatcher.Builder mvc = PathPatternRequestMatcher.withDefaults();
+
+        return httpSecurity
+            // 禁用 X-Frame-Options，允许页面嵌入 iframe
+            .headers((header) ->
+                header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+            // 配置请求授权规则
+            .authorizeHttpRequests((authorize) ->
+                authorize.requestMatchers(
+                        mvc.matcher(adminContextPath + "/assets/**"),
+                        mvc.matcher(adminContextPath + "/login")
+                    ).permitAll()
+                    .anyRequest().authenticated())
+            // 配置表单登录
+            .formLogin((formLogin) ->
+                formLogin.loginPage(adminContextPath + "/login")
+                    .successHandler(successHandler))
+            // 配置登出
+            .logout((logout) ->
+                logout.logoutUrl(adminContextPath + "/logout"))
+            // 启用 HTTP Basic 认证
+            .httpBasic(Customizer.withDefaults())
+            // 禁用 CSRF 保护
+            .csrf(AbstractHttpConfigurer::disable)
+            .build();
+    }
+}
+```
+
+**安全策略说明**
+
+| 策略 | 配置 | 说明 |
+|------|------|------|
+| 静态资源 | `/admin/assets/**` | 允许匿名访问 |
+| 登录页面 | `/admin/login` | 允许匿名访问 |
+| 其他请求 | `anyRequest()` | 需要认证 |
+| CSRF | 禁用 | 简化 API 交互 |
+| X-Frame-Options | 禁用 | 允许 iframe 嵌入 |
+
+## 告警通知配置
+
+### 邮件通知
+
+配置邮件告警，当服务状态变更时发送通知邮件：
+
+```yaml
+notify:
+  mail:
+    enabled: true                      # 启用邮件通知
+    to: admin@example.com              # 收件人邮箱
+    subject: admin监控通知              # 邮件主题
+    # 邮件模板（HTML格式）
+    # 占位符：{0}服务名 {1}实例ID {2}状态名 {3}状态码 {4}服务URL {5}时间
+    template: |
+      <html>
+      <body>
+        <h2>服务状态变更通知</h2>
+        <p><b>服务名称:</b> {}</p>
+        <p><b>实例编号:</b> {}</p>
+        <p><b>服务状态:</b> {}({})</p>
+        <p><b>服务地址:</b> {}</p>
+        <p><b>发送时间:</b> {}</p>
+      </body>
+      </html>
+```
+
+**邮件通知流程**
+
+```java
+public void sendMail(NotifierEvent notifier) {
+    NotifyProperties.Mail mail = notifyProperties.getMail();
+    if (!mail.getEnabled()) {
+        return;
+    }
+
+    // 格式化邮件内容
+    String message = StringUtils.format(mail.getTemplate(),
+        notifier.getRegisterName(),
+        notifier.getInstanceId(),
+        notifier.getStatusName(),
+        notifier.getStatus(),
+        notifier.getServiceUrl(),
+        DateUtils.getTime());
+
+    try {
+        if (StringUtils.isBlank(mail.getTo())) {
+            log.error("请设置收件人");
+            return;
+        }
+
+        // 发送HTML格式邮件
+        MailUtils.sendHtml(mail.getTo(),
+            notifier.getRegisterName() + notifier.getStatusName(),
+            message);
+        log.info("邮件已发送至: {}", mail.getTo());
+    } catch (Exception e) {
+        log.error("邮件发送失败: ", e);
+    }
+}
+```
+
+### 钉钉 Webhook 通知
+
+配置钉钉机器人告警，实时推送服务状态变更：
+
+```yaml
+notify:
   web-hook:
-    enabled: true # 是否启用Webhook通知, true为启用
-    # 认证类型:
-    # '0': 无认证
-    # '1': 签名认证(钉钉常用), 需配合 secret 使用
-    # '2': 密码认证 (待实现)
-    type: '1'
-    secret: xxxxxx # 钉钉机器人安全设置中的“加签”密钥
-    keywords: # 触发关键词, 某些机器人需要
-    url: https://oapi.dingtalk.com/robot/send?access_token=xxxxxx # 钉钉机器人Webhook地址
+    enabled: true                      # 启用 Webhook 通知
+    type: "1"                          # 认证类型：1-签名认证
+    secret: "SEC..."                   # 钉钉机器人签名密钥
+    keywords: ""                       # 关键词（可选）
+    url: https://oapi.dingtalk.com/robot/send?access_token=xxx
     # 消息模板（Markdown格式）
-    # 占位符: {0}标题, {1}服务名, {2}实例ID, {3}状态中文名, {4}状态码, {5}服务URL, {6}时间
+    # 占位符：{0}标题 {1}服务名 {2}实例ID {3}状态名 {4}状态码 {5}服务URL {6}时间
     template: |
       #### **{}**
       - **服务名称**: {}
       - **实例编号**: {}
-      ...
+      - **服务状态**: {}({})
+      - **服务地址**: {}
+      - **发送时间**: {}
 ```
 
----
+**认证类型说明**
 
-## 5. 实现原理剖析
+| 类型 | 值 | 说明 |
+|------|---|------|
+| 无认证 | 0 | 不进行任何认证 |
+| 签名认证 | 1 | 钉钉机器人签名认证（推荐） |
+| 密码认证 | 2 | 密码认证（待实现） |
 
-### 5.1. 事件监听与发布
-1.  **`CustomNotifier`**: 该类继承自 `AbstractEventNotifier`，是事件处理的入口。它通过 `doNotify` 方法专门监听 `InstanceStatusChangedEvent`（实例状态变更事件）。
-2.  当监听到事件后，它会提取服务名、实例 ID、状态码（如 `UP`, `DOWN`）等关键信息。
-3.  通过内部的 `getStatusName` 方法，将状态码转换为易于理解的中文描述（如 "服务上线", "服务下线"）。
-4.  最后，它将这些信息封装成一个自定义的 `NotifierEvent` 对象，并通过 `SpringUtils.context().publishEvent()` 在 Spring 应用上下文中发布此内部事件。这一步是解耦的关键，将事件的产生和处理分离开。
+**签名算法实现**
 
-### 5.2. 异步通知处理
-1.  **`InfoNotifier`**: 这是一个事件监听服务，使用 `@EventListener` 注解来订阅 `NotifierEvent`。
-2.  为了不阻塞主流程，所有监听方法都使用 `@Async` 注解，交由 `AdminServerConfig` 中配置的线程池异步执行。
-3.  **`infoNotification`** 和 **`errNotification`** 方法分别监听 `NotifierEvent` 事件。目前两者逻辑相同，都会同时尝试发送 Webhook 和邮件通知。可以通过 `@EventListener` 的 `condition` 属性实现更精细的控制，例如只在服务下线时发送邮件：`@EventListener(condition = "#notifier.status == 'DOWN'")`。
-4.  **`sendMail`**: 如果邮件通知在 `application.yml` 中被启用 (`notify.mail.enabled=true`)，该方法会格式化邮件模板，并调用 `ruoyi-common-mail` 模块的 `MailUtils.sendHtml` 发送 HTML 格式的邮件。
-5.  **`sendWebHook`**: 如果 Webhook 通知被启用 (`notify.web-hook.enabled=true`)，该方法会调用 `sendWebHookMessage`。
+```java
+private String generateSign(String secret) {
+    Long timestamp = System.currentTimeMillis();
+    String stringToSign = timestamp + "\n" + secret;
+    String sign;
 
-### 5.3. Webhook 签名与发送
-1.  **`sendWebHookMessage`**: 此方法负责构造并发送 Webhook 请求。
-2.  它首先会根据配置的 `type`（认证类型）进行处理。对于钉钉的签名认证 (`type: '1'`)，它会调用 `generateSign` 方法。
-3.  **`generateSign`**: 这是钉钉机器人签名算法的实现。它将当前时间戳和密钥（secret）拼接，使用 `HmacSHA256` 算法计算签名，并进行 Base64 和 URL 编码，最后将签名和时间戳拼接到 Webhook URL 的末尾。
-4.  **消息构造**: 方法会构造一个符合钉钉/企业微信格式的 Markdown 消息体（JSON 格式）。
-5.  **HTTP 发送**: 使用 `Hutool` 的 `HttpRequest` 工具发送 POST 请求，并将响应结果打印到日志中，方便调试。
+    try {
+        // 使用 HmacSHA256 算法生成签名
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(new SecretKeySpec(
+            secret.getBytes(StandardCharsets.UTF_8),
+            "HmacSHA256"));
+        byte[] signData = mac.doFinal(
+            stringToSign.getBytes(StandardCharsets.UTF_8));
+        sign = URLEncodeUtil.encode(
+            Base64.encode(signData),
+            StandardCharsets.UTF_8);
+    } catch (NoSuchAlgorithmException | InvalidKeyException e) {
+        throw new RuntimeException("签名生成失败", e);
+    }
 
-### 5.4. 安全控制
-- **`SecurityConfig`**: 这是 Spring Security 的核心配置类。
-- 它通过 `HttpSecurity` 配置了一个安全过滤器链。
-- `authorizeHttpRequests` 方法定义了 URL 的访问权限：允许对静态资源 (`/assets/**`) 和登录页面 (`/login`) 的匿名访问，而其他所有请求 (`anyRequest()`) 都必须经过认证 (`authenticated()`)。
-- `formLogin` 配置了自定义的表单登录页面 (`/admin/login`) 和一个成功处理器，该处理器会在登录成功后跳转到用户之前访问的页面或监控中心首页。
-- `csrf(AbstractHttpConfigurer::disable)` 禁用了 CSRF 保护，这在内部服务管理平台中是常见的做法，可以简化与非浏览器客户端的交互。
+    return StringUtils.format("&timestamp={}&sign={}", timestamp, sign);
+}
+```
 
----
+### 事件处理机制
 
-## 6. 部署与运行
+监控中心使用异步事件驱动架构处理通知：
 
-### 6.1. 本地启动
-- 在 IDE 中找到 `MonitorAdmin.java` 类。
-- 直接运行其 `main` 方法即可启动。
-- 启动后，控制台会打印访问地址。访问 `http://localhost:9090/admin` ，并使用 `application.yml` 中配置的用户名和密码登录。
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│ Instance Event  │───▶│ CustomNotifier  │───▶│ NotifierEvent   │
+│ (状态变更)      │    │ (事件监听)      │    │ (内部事件)      │
+└─────────────────┘    └─────────────────┘    └────────┬────────┘
+                                                       │
+                                                       ▼
+                                              ┌─────────────────┐
+                                              │ Spring Context  │
+                                              │ publishEvent()  │
+                                              └────────┬────────┘
+                                                       │
+                              ┌────────────────────────┼────────────────────────┐
+                              │                        │                        │
+                              ▼                        ▼                        ▼
+                    ┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐
+                    │ infoNotification│      │ errNotification │      │ 其他监听器      │
+                    │ (Webhook通知)   │      │ (邮件通知)      │      │                 │
+                    │ @Async          │      │ @Async          │      │                 │
+                    └─────────────────┘      └─────────────────┘      └─────────────────┘
+```
 
----
+**异步处理配置**
 
-## 7. 客户端接入指南
+```java
+@Async
+@EventListener
+public void infoNotification(NotifierEvent notifier) {
+    sendWebHook(notifier);
+}
 
-对于任何需要被监控的 Spring Boot 微服务，请遵循以下步骤接入：
+@Async
+@EventListener
+public void errNotification(NotifierEvent notifier) {
+    sendMail(notifier);
+}
+```
 
-### 7.1. 引入依赖
-在客户端项目的 `pom.xml` 中，添加 `spring-boot-admin-starter-client` 依赖。
+## 客户端接入指南
+
+### 添加依赖
+
+在需要被监控的服务模块 `pom.xml` 中添加依赖：
 
 ```xml
 <dependency>
@@ -183,8 +577,9 @@ notify:
 </dependency>
 ```
 
-### 7.2. 配置客户端
-在客户端的 `application.yml` 文件中，添加以下配置：
+### 配置客户端
+
+在客户端的 `application.yml` 中添加配置：
 
 ```yaml
 spring:
@@ -194,25 +589,475 @@ spring:
         # 监控中心地址
         url: http://localhost:9090/admin
         instance:
-          # 服务主机类型，建议使用IP，避免因hostname解析问题导致注册失败
+          # 服务主机类型，建议使用 IP
           service-host-type: IP
           metadata:
-            # 客户端认证用户名，需与监控中心配置的 spring.security.user.name 一致
+            # 客户端认证信息
             username: ${spring.boot.admin.client.username}
             userpassword: ${spring.boot.admin.client.password}
-        # 客户端连接监控中心的用户名和密码
-        username: @monitor.username@ # 此处应填写监控中心 spring.security.user.name 的值
-        password: @monitor.password@ # 此处应填写监控中心 spring.security.user.password 的值
+        # 客户端认证用户名和密码
+        username: ruoyi
+        password: "123456"
 
-# 为了让监控中心能获取到所有信息，需要暴露所有监控端点
+# 暴露 Actuator 端点
 management:
   endpoints:
     web:
       exposure:
-        include: '*' # 暴露所有端点, 如需安全控制可改为 'health,info'
+        include: '*'                   # 暴露所有端点
   endpoint:
     health:
-      # 健康检查默认只显示基本信息，配置为ALWAYS可以显示详细信息（如数据库、Redis等）
+      show-details: ALWAYS             # 显示健康检查详细信息
+```
+
+### Actuator 端点安全配置
+
+如果客户端的 Actuator 端点需要认证，需要在 metadata 中配置认证信息：
+
+```yaml
+spring:
+  boot:
+    admin:
+      client:
+        instance:
+          metadata:
+            # 这些信息会被监控中心用于访问客户端的 Actuator 端点
+            username: actuator-user
+            userpassword: actuator-password
+```
+
+## 日志配置
+
+### Logback 配置
+
+监控中心使用自定义的 Logback 配置：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="false" scan="true" scanPeriod="1 seconds">
+
+    <contextName>logback</contextName>
+    <!-- 从 Spring 配置读取日志路径 -->
+    <springProperty scope="context" name="log.path"
+                    source="logging.file.path"
+                    defaultValue="./logs/ruoyi-monitor-admin"/>
+
+    <property name="console.log.pattern"
+              value="%cyan(%d{yyyy-MM-dd HH:mm:ss}) %green([%thread])
+                     %highlight(%-5level) %boldMagenta(%logger{36}%n) - %msg%n"/>
+    <property name="log.pattern"
+              value="%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"/>
+
+    <!-- 控制台输出 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${console.log.pattern}</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 开发环境配置 -->
+    <springProfile name="dev">
+        <root level="info">
+            <appender-ref ref="console"/>
+        </root>
+    </springProfile>
+
+    <!-- 生产环境配置 -->
+    <springProfile name="prod">
+        <!-- 文件输出 -->
+        <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${log.path}.log</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${log.path}.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <maxHistory>60</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${log.pattern}</pattern>
+            </encoder>
+        </appender>
+
+        <root level="info">
+            <appender-ref ref="console"/>
+            <appender-ref ref="file"/>
+        </root>
+    </springProfile>
+
+</configuration>
+```
+
+**日志文件位置**
+
+| 环境 | 日志输出 | 说明 |
+|------|----------|------|
+| 开发环境 | 控制台 | 彩色日志输出 |
+| 生产环境 | 控制台 + 文件 | 日志保留 60 天 |
+
+## 最佳实践
+
+### 1. 认证安全配置
+
+**使用强密码**
+
+```yaml
+spring:
+  security:
+    user:
+      name: admin                      # 避免使用默认用户名
+      password: "${MONITOR_PASSWORD}"  # 使用环境变量注入密码
+```
+
+**生产环境配置**
+
+```yaml
+# 不要在配置文件中硬编码密码
+spring:
+  security:
+    user:
+      name: ${MONITOR_USERNAME:admin}
+      password: ${MONITOR_PASSWORD}    # 必须通过环境变量提供
+```
+
+### 2. 告警策略配置
+
+**按状态过滤通知**
+
+可以通过 `@EventListener` 的 `condition` 属性实现精细化告警：
+
+```java
+// 只在服务下线时发送邮件
+@Async
+@EventListener(condition = "#notifier.status == 'DOWN'")
+public void onServiceDown(NotifierEvent notifier) {
+    sendMail(notifier);
+}
+
+// 只在服务上线时发送 Webhook
+@Async
+@EventListener(condition = "#notifier.status == 'UP'")
+public void onServiceUp(NotifierEvent notifier) {
+    sendWebHook(notifier);
+}
+```
+
+### 3. 高可用部署
+
+**多实例部署**
+
+```yaml
+# 实例 1
+server:
+  port: 9090
+
+# 实例 2
+server:
+  port: 9091
+```
+
+**Nginx 负载均衡**
+
+```nginx
+upstream monitor-admin {
+    server 192.168.1.101:9090 weight=1;
+    server 192.168.1.102:9091 weight=1;
+}
+
+server {
+    listen 80;
+    server_name monitor.example.com;
+
+    location /admin {
+        proxy_pass http://monitor-admin;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+### 4. 性能优化
+
+**JVM 参数配置**
+
+```bash
+# 监控中心资源消耗较低，可以使用较小的堆内存
+JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseZGC"
+```
+
+## 故障排查
+
+### 1. 客户端无法注册
+
+**错误现象**
+
+```
+Failed to register with Admin Server
+Connection refused: localhost:9090
+```
+
+**排查步骤**
+
+1. 检查监控中心是否启动
+2. 检查客户端配置的监控中心地址是否正确
+3. 检查网络连通性
+4. 检查认证信息是否正确
+
+**解决方案**
+
+```bash
+# 检查监控中心进程
+ps aux | grep monitor-admin
+
+# 检查端口监听
+netstat -tlnp | grep 9090
+
+# 测试连通性
+curl -u ruoyi:123456 http://localhost:9090/admin/actuator/health
+```
+
+### 2. 邮件发送失败
+
+**错误现象**
+
+```
+邮件发送失败: Could not connect to SMTP host
+```
+
+**排查步骤**
+
+1. 检查邮件服务器配置
+2. 检查 SMTP 端口是否可达
+3. 检查认证信息是否正确
+
+**解决方案**
+
+确保 `ruoyi-common-mail` 模块配置正确：
+
+```yaml
+spring:
+  mail:
+    host: smtp.example.com
+    port: 465
+    username: your-email@example.com
+    password: your-password
+    properties:
+      mail:
+        smtp:
+          ssl:
+            enable: true
+```
+
+### 3. Webhook 发送失败
+
+**错误现象**
+
+```
+WebHook消息发送失败: errcode=310000, errmsg=sign not match
+```
+
+**排查步骤**
+
+1. 检查签名密钥是否正确
+2. 检查服务器时间是否同步
+3. 检查 Webhook URL 是否正确
+
+**解决方案**
+
+```bash
+# 同步服务器时间
+ntpdate ntp.aliyun.com
+
+# 检查密钥配置
+echo $DINGTALK_SECRET
+```
+
+## 技术栈
+
+| 组件 | 版本 | 说明 |
+|------|------|------|
+| Spring Boot | 3.5.6 | 应用基础框架 |
+| Spring Boot Admin | 3.4.x | 监控中心核心 |
+| Spring Security | 6.x | 安全认证框架 |
+| Hutool | 5.8.40 | 工具类库 |
+| Lombok | 1.18.x | 代码简化工具 |
+| Logback | 1.5.x | 日志框架 |
+
+## 常见问题
+
+### Q1: 如何修改监控中心的登录密码？
+
+通过环境变量或配置文件修改：
+
+```yaml
+spring:
+  security:
+    user:
+      password: "new-password"
+```
+
+或使用环境变量：
+
+```bash
+export MONITOR_PASSWORD="new-password"
+```
+
+### Q2: 如何配置多个邮件收件人？
+
+在配置中使用逗号分隔多个邮箱地址：
+
+```yaml
+notify:
+  mail:
+    to: admin1@example.com,admin2@example.com
+```
+
+### Q3: 如何只监控特定状态的变更？
+
+使用 `@EventListener` 的 `condition` 属性：
+
+```java
+@EventListener(condition = "#notifier.status == 'DOWN' or #notifier.status == 'OFFLINE'")
+public void onServiceUnavailable(NotifierEvent notifier) {
+    // 只处理服务不可用的情况
+}
+```
+
+### Q4: 如何禁用自监控功能？
+
+设置环境变量：
+
+```yaml
+spring.boot.admin.client:
+  enabled: false
+```
+
+或：
+
+```bash
+export MONITOR_SELF_ENABLED=false
+```
+
+### Q5: 如何查看客户端的详细健康信息？
+
+确保客户端配置了：
+
+```yaml
+management:
+  endpoint:
+    health:
       show-details: ALWAYS
 ```
-完成以上配置后，启动客户端应用，它将自动注册到 `monitor-admin` 监控中心。您可以在监控中心的 UI 界面上看到该服务实例。
+
+### Q6: 监控中心占用多少内存？
+
+监控中心资源消耗较低，推荐配置：
+
+| 环境 | 堆内存 | 说明 |
+|------|--------|------|
+| 开发环境 | 256MB | 监控少量服务 |
+| 生产环境 | 512MB | 监控 10-50 个服务实例 |
+| 大规模 | 1GB | 监控 100+ 个服务实例 |
+
+```bash
+# 生产环境推荐配置
+JAVA_OPTS="-Xms512m -Xmx512m -XX:+UseZGC -XX:+ZGenerational"
+```
+
+### Q7: 如何实现告警静默期？
+
+可以在通知服务中添加静默期逻辑，避免频繁告警：
+
+```java
+private final Map<String, Long> lastNotifyTime = new ConcurrentHashMap<>();
+private static final long SILENT_PERIOD = 5 * 60 * 1000; // 5分钟静默期
+
+public boolean shouldNotify(String instanceId) {
+    Long lastTime = lastNotifyTime.get(instanceId);
+    long currentTime = System.currentTimeMillis();
+
+    if (lastTime == null || currentTime - lastTime > SILENT_PERIOD) {
+        lastNotifyTime.put(instanceId, currentTime);
+        return true;
+    }
+    return false;
+}
+```
+
+## 监控指标说明
+
+### JVM 指标
+
+监控中心可以展示客户端的 JVM 运行指标：
+
+| 指标 | 说明 | 单位 |
+|------|------|------|
+| `jvm.memory.used` | 已使用堆内存 | bytes |
+| `jvm.memory.max` | 最大堆内存 | bytes |
+| `jvm.gc.pause` | GC 暂停时间 | ms |
+| `jvm.threads.live` | 活跃线程数 | count |
+| `jvm.classes.loaded` | 已加载类数量 | count |
+
+### HTTP 请求指标
+
+| 指标 | 说明 | 单位 |
+|------|------|------|
+| `http.server.requests.count` | 请求总数 | count |
+| `http.server.requests.duration` | 请求耗时 | ms |
+| `http.server.requests.error` | 错误请求数 | count |
+
+### 系统指标
+
+| 指标 | 说明 | 单位 |
+|------|------|------|
+| `system.cpu.usage` | CPU 使用率 | 0-1 |
+| `system.load.average.1m` | 1分钟负载 | - |
+| `disk.free` | 磁盘可用空间 | bytes |
+
+## 自定义扩展
+
+### 自定义通知渠道
+
+可以扩展 `InfoNotifier` 类添加新的通知渠道：
+
+```java
+@Async
+@EventListener
+public void sendSlackNotification(NotifierEvent notifier) {
+    // 发送 Slack 通知
+    String message = buildSlackMessage(notifier);
+    slackClient.send(message);
+}
+
+@Async
+@EventListener
+public void sendSmsNotification(NotifierEvent notifier) {
+    // 发送短信通知（仅限严重告警）
+    if ("DOWN".equals(notifier.getStatus())) {
+        smsService.send(notifier.getRegisterName() + " 服务下线");
+    }
+}
+```
+
+### 自定义健康检查
+
+可以添加自定义的健康检查指标：
+
+```java
+@Component
+public class CustomHealthIndicator implements HealthIndicator {
+
+    @Override
+    public Health health() {
+        // 自定义健康检查逻辑
+        boolean isHealthy = checkExternalDependency();
+
+        if (isHealthy) {
+            return Health.up()
+                .withDetail("external-service", "available")
+                .build();
+        }
+        return Health.down()
+            .withDetail("external-service", "unavailable")
+            .build();
+    }
+}
+```

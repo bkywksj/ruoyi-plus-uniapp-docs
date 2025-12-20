@@ -883,6 +883,225 @@ public class RequestLoggingFilter implements Filter {
 }
 ```
 
+## 性能优化
+
+### Undertow 参数调优
+
+根据服务器配置和业务场景，合理配置 Undertow 参数：
+
+```yaml
+server:
+  undertow:
+    # IO线程数 - 处理网络读写
+    # 建议：CPU核心数（IO密集型可适当增加）
+    io-threads: 8
+
+    # Worker线程数 - 处理业务逻辑
+    # 建议：IO线程数 * 8（阻塞操作多时可增加）
+    worker-threads: 64
+
+    # 每个缓冲区大小（字节）
+    # 建议：16KB 适合大多数场景
+    buffer-size: 16384
+
+    # 是否使用直接内存
+    # 建议：true（减少GC压力）
+    direct-buffers: true
+
+    # 是否开启访问日志
+    accesslog:
+      enabled: true
+      dir: ./logs
+      pattern: '%t %a "%r" %s (%D ms)'
+```
+
+**线程数配置建议：**
+
+| 场景 | IO线程 | Worker线程 | 说明 |
+|------|--------|------------|------|
+| 低并发 | 2-4 | 16-32 | 小型应用 |
+| 中等并发 | 4-8 | 64-128 | 一般业务系统 |
+| 高并发 | 8-16 | 128-256 | 高流量场景 |
+| IO密集型 | 核心数×2 | 核心数×16 | 大量外部调用 |
+
+### 连接池配置
+
+```yaml
+server:
+  undertow:
+    # 最大HTTP连接数
+    max-http-post-size: 10MB
+
+    # HTTP/2 设置
+    options:
+      server:
+        # 启用HTTP/2
+        ENABLE_HTTP2: true
+        # 最大并发流
+        MAX_CONCURRENT_STREAMS_PER_CONNECTION: 100
+```
+
+### 虚拟线程最佳实践
+
+在 JDK 21+ 环境下使用虚拟线程：
+
+```yaml
+spring:
+  threads:
+    virtual:
+      enabled: true
+```
+
+**虚拟线程适用场景：**
+
+```java
+// ✅ 适合：IO密集型操作
+@GetMapping("/user/{id}")
+public R<UserVO> getUser(@PathVariable Long id) {
+    // 数据库查询 - 阻塞操作
+    User user = userMapper.selectById(id);
+    // 远程调用 - 阻塞操作
+    UserDetail detail = remoteService.getDetail(id);
+    return R.ok(convert(user, detail));
+}
+
+// ⚠️ 不适合：CPU密集型操作
+@GetMapping("/report")
+public R<ReportVO> generateReport() {
+    // 大量计算操作仍然使用平台线程池
+    return R.ok(reportService.generate());
+}
+```
+
+### 静态资源优化
+
+```yaml
+spring:
+  web:
+    resources:
+      # 静态资源缓存时间
+      cache:
+        period: 86400  # 1天
+        cachecontrol:
+          max-age: 86400
+          cache-public: true
+      # 资源链优化
+      chain:
+        strategy:
+          content:
+            enabled: true
+            paths: /**
+```
+
+## 监控与诊断
+
+### Actuator 端点
+
+系统集成 Spring Boot Actuator 提供运行时监控：
+
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,env,loggers
+  endpoint:
+    health:
+      show-details: when-authorized
+```
+
+**常用监控端点：**
+
+| 端点 | URL | 说明 |
+|------|-----|------|
+| 健康检查 | `/actuator/health` | 应用健康状态 |
+| 应用信息 | `/actuator/info` | 应用基本信息 |
+| 指标数据 | `/actuator/metrics` | 性能指标 |
+| 日志配置 | `/actuator/loggers` | 动态调整日志级别 |
+| 环境变量 | `/actuator/env` | 环境配置信息 |
+
+### 请求追踪
+
+通过 RequestId 实现全链路追踪：
+
+```java
+// 在请求头中传递
+X-Request-Id: 550e8400-e29b-41d4-a716-446655440000
+
+// 日志中自动包含
+2025-01-01 12:00:00 [550e8400] INFO  - 处理用户请求...
+```
+
+**日志配置：**
+
+```xml
+<pattern>%d{yyyy-MM-dd HH:mm:ss} [%X{requestId}] %-5level %logger{36} - %msg%n</pattern>
+```
+
+### 慢请求监控
+
+通过拦截器记录慢请求：
+
+```java
+@Slf4j
+@Component
+public class SlowRequestInterceptor implements HandlerInterceptor {
+
+    private static final long SLOW_THRESHOLD = 1000L; // 1秒
+    private final ThreadLocal<Long> startTime = new ThreadLocal<>();
+
+    @Override
+    public boolean preHandle(HttpServletRequest request,
+                             HttpServletResponse response,
+                             Object handler) {
+        startTime.set(System.currentTimeMillis());
+        return true;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request,
+                                HttpServletResponse response,
+                                Object handler, Exception ex) {
+        long duration = System.currentTimeMillis() - startTime.get();
+        if (duration > SLOW_THRESHOLD) {
+            log.warn("慢请求: {} {} 耗时 {}ms",
+                request.getMethod(),
+                request.getRequestURI(),
+                duration);
+        }
+        startTime.remove();
+    }
+}
+```
+
+### 内存诊断
+
+```java
+@RestController
+@RequestMapping("/actuator")
+public class DiagnosticController {
+
+    @GetMapping("/memory")
+    public R<Map<String, Object>> memoryInfo() {
+        Runtime runtime = Runtime.getRuntime();
+        Map<String, Object> info = new HashMap<>();
+        info.put("maxMemory", runtime.maxMemory() / 1024 / 1024 + "MB");
+        info.put("totalMemory", runtime.totalMemory() / 1024 / 1024 + "MB");
+        info.put("freeMemory", runtime.freeMemory() / 1024 / 1024 + "MB");
+        info.put("usedMemory", (runtime.totalMemory() - runtime.freeMemory()) / 1024 / 1024 + "MB");
+        return R.ok(info);
+    }
+
+    @GetMapping("/threads")
+    public R<Map<String, Object>> threadInfo() {
+        Map<String, Object> info = new HashMap<>();
+        info.put("activeCount", Thread.activeCount());
+        info.put("virtualThreadEnabled", SpringUtils.isVirtual());
+        return R.ok(info);
+    }
+}
+```
+
 ## 安全建议
 
 1. **始终启用 XSS 过滤**：除非有特殊需求，否则保持 XSS 过滤开启
@@ -891,3 +1110,7 @@ public class RequestLoggingFilter implements Filter {
 4. **限制跨域来源**：生产环境不要使用 `*` 通配符
 5. **验证码有效期**：设置合理的过期时间（建议 5 分钟内）
 6. **验证后即删**：验证码验证成功后立即删除，防止重复使用
+7. **监控端点保护**：Actuator 端点需要身份认证
+8. **请求大小限制**：限制文件上传大小，防止资源耗尽攻击
+9. **请求频率限制**：配合限流模块防止暴力攻击
+10. **敏感信息过滤**：日志中不记录密码、Token 等敏感信息

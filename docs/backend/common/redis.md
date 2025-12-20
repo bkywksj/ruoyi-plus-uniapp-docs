@@ -867,6 +867,512 @@ public LargeData getLargeData(String key) {
 }
 ```
 
+## Session管理
+
+### Redis Session存储
+
+使用Redis存储用户Session，支持分布式环境下的Session共享。
+
+```java
+@Service
+public class SessionService {
+
+    private static final String SESSION_PREFIX = "session:";
+    private static final Duration SESSION_TIMEOUT = Duration.ofMinutes(30);
+
+    /**
+     * 创建Session
+     */
+    public String createSession(Long userId, LoginUser loginUser) {
+        String sessionId = IdUtil.fastSimpleUUID();
+        String key = SESSION_PREFIX + sessionId;
+
+        RedisUtils.setCacheObject(key, loginUser, SESSION_TIMEOUT);
+
+        return sessionId;
+    }
+
+    /**
+     * 获取Session
+     */
+    public LoginUser getSession(String sessionId) {
+        String key = SESSION_PREFIX + sessionId;
+        return RedisUtils.getCacheObject(key);
+    }
+
+    /**
+     * 刷新Session过期时间
+     */
+    public void refreshSession(String sessionId) {
+        String key = SESSION_PREFIX + sessionId;
+        RedisUtils.expire(key, SESSION_TIMEOUT);
+    }
+
+    /**
+     * 销毁Session
+     */
+    public void destroySession(String sessionId) {
+        String key = SESSION_PREFIX + sessionId;
+        RedisUtils.deleteObject(key);
+    }
+
+    /**
+     * 踢出用户所有Session
+     */
+    public void kickoutUser(Long userId) {
+        // 使用模式匹配删除
+        Collection<String> keys = RedisUtils.keys(SESSION_PREFIX + "*");
+        for (String key : keys) {
+            LoginUser loginUser = RedisUtils.getCacheObject(key);
+            if (loginUser != null && userId.equals(loginUser.getUserId())) {
+                RedisUtils.deleteObject(key);
+            }
+        }
+    }
+}
+```
+
+### 在线用户管理
+
+```java
+@Service
+public class OnlineUserService {
+
+    private static final String ONLINE_PREFIX = "online:user:";
+
+    /**
+     * 记录用户上线
+     */
+    public void userOnline(Long userId, String sessionId, String ipAddress) {
+        OnlineUser onlineUser = new OnlineUser();
+        onlineUser.setUserId(userId);
+        onlineUser.setSessionId(sessionId);
+        onlineUser.setIpAddress(ipAddress);
+        onlineUser.setLoginTime(LocalDateTime.now());
+
+        String key = ONLINE_PREFIX + userId;
+        RedisUtils.setCacheObject(key, onlineUser, Duration.ofHours(24));
+    }
+
+    /**
+     * 获取在线用户列表
+     */
+    public List<OnlineUser> getOnlineUsers() {
+        Collection<String> keys = RedisUtils.keys(ONLINE_PREFIX + "*");
+        List<OnlineUser> onlineUsers = new ArrayList<>();
+
+        for (String key : keys) {
+            OnlineUser user = RedisUtils.getCacheObject(key);
+            if (user != null) {
+                onlineUsers.add(user);
+            }
+        }
+
+        return onlineUsers;
+    }
+
+    /**
+     * 统计在线人数
+     */
+    public long countOnlineUsers() {
+        Collection<String> keys = RedisUtils.keys(ONLINE_PREFIX + "*");
+        return keys.size();
+    }
+}
+```
+
+## 限流详解
+
+### 限流类型
+
+| 类型 | 说明 | 适用场景 |
+|------|------|----------|
+| `RateType.OVERALL` | 全局限流 | 接口总QPS限制 |
+| `RateType.PER_CLIENT` | 按客户端限流 | 单用户请求限制 |
+
+### 限流工具类
+
+```java
+@Component
+public class RateLimitUtils {
+
+    /**
+     * 全局限流检查
+     * @param key 限流键
+     * @param rate 每个时间窗口允许的请求数
+     * @param rateInterval 时间窗口（秒）
+     * @return 剩余可用请求数，-1表示已限流
+     */
+    public static long checkLimit(String key, int rate, int rateInterval) {
+        return RedisUtils.rateLimiter(key, RateType.OVERALL, rate, rateInterval);
+    }
+
+    /**
+     * 按用户限流检查
+     */
+    public static long checkUserLimit(String key, Long userId, int rate, int rateInterval) {
+        String userKey = key + ":" + userId;
+        return RedisUtils.rateLimiter(userKey, RateType.PER_CLIENT, rate, rateInterval);
+    }
+
+    /**
+     * 带异常抛出的限流检查
+     */
+    public static void requireLimit(String key, int rate, int rateInterval, String message) {
+        long remaining = checkLimit(key, rate, rateInterval);
+        if (remaining == -1) {
+            throw ServiceException.of(message);
+        }
+    }
+}
+```
+
+### 接口限流示例
+
+```java
+@RestController
+@RequestMapping("/api")
+public class ApiController {
+
+    /**
+     * 登录接口限流：每分钟最多10次
+     */
+    @PostMapping("/login")
+    public R<TokenVO> login(@RequestBody LoginReq req) {
+        // 按IP限流
+        String ip = ServletUtils.getClientIP();
+        long remaining = RateLimitUtils.checkLimit("login:" + ip, 10, 60);
+
+        if (remaining == -1) {
+            return R.fail("登录请求过于频繁，请1分钟后再试");
+        }
+
+        return authService.login(req);
+    }
+
+    /**
+     * 短信发送限流：每个手机号每天最多5次
+     */
+    @PostMapping("/sms/send")
+    public R<Void> sendSms(@RequestBody SmsReq req) {
+        String phone = req.getPhone();
+
+        // 短期限流：60秒内最多1次
+        RateLimitUtils.requireLimit(
+            "sms:short:" + phone, 1, 60,
+            "短信发送过于频繁，请稍后再试"
+        );
+
+        // 长期限流：24小时内最多5次
+        RateLimitUtils.requireLimit(
+            "sms:daily:" + phone, 5, 86400,
+            "今日短信发送次数已达上限"
+        );
+
+        return smsService.send(req);
+    }
+}
+```
+
+### 滑动窗口限流
+
+```java
+@Component
+public class SlidingWindowRateLimiter {
+
+    private static final String WINDOW_PREFIX = "ratelimit:window:";
+
+    /**
+     * 滑动窗口限流
+     * @param key 限流键
+     * @param limit 窗口内最大请求数
+     * @param windowSeconds 窗口大小（秒）
+     * @return true-允许访问，false-被限流
+     */
+    public boolean tryAcquire(String key, int limit, int windowSeconds) {
+        String windowKey = WINDOW_PREFIX + key;
+        long now = System.currentTimeMillis();
+        long windowStart = now - windowSeconds * 1000L;
+
+        // 使用ZSet，score为时间戳
+        RLock lock = RedisUtils.getLock(windowKey + ":lock");
+        try {
+            lock.lock(5, TimeUnit.SECONDS);
+
+            // 移除窗口外的数据
+            RScoredSortedSet<Long> zset = RedisUtils.getClient()
+                .getScoredSortedSet(windowKey);
+            zset.removeRangeByScore(0, true, windowStart, false);
+
+            // 检查当前窗口请求数
+            int count = zset.size();
+            if (count >= limit) {
+                return false;
+            }
+
+            // 添加当前请求
+            zset.add(now, now);
+            zset.expire(Duration.ofSeconds(windowSeconds + 1));
+
+            return true;
+        } finally {
+            if (lock.isHeldByCurrentThread()) {
+                lock.unlock();
+            }
+        }
+    }
+}
+```
+
+## 安全配置
+
+### 连接安全
+
+```yaml
+spring.data:
+  redis:
+    # 密码认证（必须）
+    password: ${REDIS_PASSWORD:your-strong-password}
+
+    # SSL/TLS加密（生产环境推荐）
+    ssl:
+      enabled: true
+      bundle: redis-ssl
+
+    # 连接超时设置
+    timeout: 10s
+    connect-timeout: 5s
+
+# SSL证书配置
+spring.ssl.bundle:
+  pem:
+    redis-ssl:
+      keystore:
+        certificate: classpath:redis/client.crt
+        private-key: classpath:redis/client.key
+      truststore:
+        certificate: classpath:redis/ca.crt
+```
+
+### Key安全规范
+
+```java
+public class RedisKeyConstants {
+
+    // 使用模块前缀避免冲突
+    public static final String PREFIX = "ruoyi:";
+
+    // 敏感数据Key使用额外标识
+    public static final String SENSITIVE_PREFIX = PREFIX + "sec:";
+
+    // 临时数据Key
+    public static final String TEMP_PREFIX = PREFIX + "tmp:";
+
+    /**
+     * 构建安全的缓存Key
+     */
+    public static String buildKey(String module, String... parts) {
+        StringBuilder sb = new StringBuilder(PREFIX);
+        sb.append(module).append(":");
+        for (String part : parts) {
+            // 过滤特殊字符，防止Key注入
+            String safePart = part.replaceAll("[^a-zA-Z0-9_-]", "");
+            sb.append(safePart).append(":");
+        }
+        // 移除最后一个冒号
+        return sb.substring(0, sb.length() - 1);
+    }
+}
+```
+
+### 敏感数据处理
+
+```java
+@Service
+public class SecureRedisService {
+
+    @Autowired
+    private StringEncryptor encryptor;
+
+    /**
+     * 存储加密数据
+     */
+    public void setEncrypted(String key, String sensitiveData, Duration ttl) {
+        String encrypted = encryptor.encrypt(sensitiveData);
+        RedisUtils.setCacheObject(key, encrypted, ttl);
+    }
+
+    /**
+     * 获取解密数据
+     */
+    public String getDecrypted(String key) {
+        String encrypted = RedisUtils.getCacheObject(key);
+        if (encrypted == null) {
+            return null;
+        }
+        return encryptor.decrypt(encrypted);
+    }
+
+    /**
+     * 存储Token（自动加密）
+     */
+    public void storeToken(String tokenKey, String token, Duration ttl) {
+        // Token哈希存储，防止泄露
+        String hashedToken = DigestUtils.sha256Hex(token);
+        RedisUtils.setCacheObject(tokenKey, hashedToken, ttl);
+    }
+
+    /**
+     * 验证Token
+     */
+    public boolean verifyToken(String tokenKey, String token) {
+        String storedHash = RedisUtils.getCacheObject(tokenKey);
+        if (storedHash == null) {
+            return false;
+        }
+        String tokenHash = DigestUtils.sha256Hex(token);
+        return storedHash.equals(tokenHash);
+    }
+}
+```
+
+## 性能调优
+
+### Redisson连接池调优
+
+```yaml
+redisson:
+  # 线程池配置
+  threads: 16              # 处理Redis响应的线程数
+  nettyThreads: 32         # Netty事件循环线程数
+
+  singleServerConfig:
+    # 连接池大小
+    connectionMinimumIdleSize: 24    # 最小空闲连接
+    connectionPoolSize: 64            # 最大连接数
+
+    # 超时设置
+    timeout: 3000                     # 命令超时（毫秒）
+    connectTimeout: 10000             # 连接超时（毫秒）
+    idleConnectionTimeout: 10000      # 空闲连接超时
+
+    # 重试设置
+    retryAttempts: 3                  # 命令重试次数
+    retryInterval: 1500               # 重试间隔（毫秒）
+
+    # DNS监控
+    dnsMonitoringInterval: 5000       # DNS监控间隔
+```
+
+### 本地缓存优化
+
+```java
+@Configuration
+public class CacheConfig {
+
+    @Bean
+    public CacheManager cacheManager(RedissonClient redissonClient) {
+        Map<String, CacheConfig> config = new HashMap<>();
+
+        // 热点数据：大容量本地缓存
+        config.put("hotData", new CacheConfig(
+            Duration.ofHours(1).toMillis(),   // TTL
+            Duration.ofMinutes(30).toMillis(), // 最大空闲时间
+            10000,  // 最大条目数
+            true    // 启用本地缓存
+        ));
+
+        // 用户信息：中等配置
+        config.put("userCache", new CacheConfig(
+            Duration.ofMinutes(30).toMillis(),
+            Duration.ofMinutes(10).toMillis(),
+            5000,
+            true
+        ));
+
+        // 频繁变更数据：禁用本地缓存
+        config.put("realtimeData", new CacheConfig(
+            Duration.ofMinutes(5).toMillis(),
+            Duration.ofMinutes(1).toMillis(),
+            1000,
+            false   // 禁用本地缓存
+        ));
+
+        return new RedissonSpringCacheManager(redissonClient, config);
+    }
+}
+```
+
+### 批量操作优化
+
+```java
+@Service
+public class BatchRedisService {
+
+    /**
+     * 批量设置缓存（使用Pipeline）
+     */
+    public void batchSet(Map<String, Object> dataMap, Duration ttl) {
+        RBatch batch = RedisUtils.getClient().createBatch();
+
+        dataMap.forEach((key, value) -> {
+            batch.getBucket(key).setAsync(value, ttl.toMillis(), TimeUnit.MILLISECONDS);
+        });
+
+        batch.execute();
+    }
+
+    /**
+     * 批量获取缓存
+     */
+    public Map<String, Object> batchGet(Collection<String> keys) {
+        RBatch batch = RedisUtils.getClient().createBatch();
+
+        Map<String, RFuture<Object>> futures = new HashMap<>();
+        for (String key : keys) {
+            futures.put(key, batch.getBucket(key).getAsync());
+        }
+
+        batch.execute();
+
+        Map<String, Object> result = new HashMap<>();
+        futures.forEach((key, future) -> {
+            try {
+                Object value = future.get();
+                if (value != null) {
+                    result.put(key, value);
+                }
+            } catch (Exception e) {
+                log.warn("批量获取缓存失败: {}", key, e);
+            }
+        });
+
+        return result;
+    }
+
+    /**
+     * 批量删除缓存
+     */
+    public void batchDelete(Collection<String> keys) {
+        RBatch batch = RedisUtils.getClient().createBatch();
+
+        for (String key : keys) {
+            batch.getBucket(key).deleteAsync();
+        }
+
+        batch.execute();
+    }
+}
+```
+
 ## 总结
 
 Redis模块提供了完整的缓存解决方案，通过二级缓存架构、分布式锁、队列管理等功能，为应用提供高性能、高可用的缓存服务。在使用过程中要注意合理设置过期时间、选择合适的数据结构、处理异常情况，并进行必要的监控，以确保系统的稳定性和性能。
+
+**核心要点：**
+
+1. **缓存设计**：合理的Key命名、过期策略、数据结构选择
+2. **分布式锁**：注解方式与编程方式结合，注意锁粒度和超时设置
+3. **限流控制**：根据业务场景选择全局限流或按客户端限流
+4. **安全配置**：启用密码认证、SSL加密，注意敏感数据处理
+5. **性能优化**：合理配置连接池、使用批量操作、优化本地缓存

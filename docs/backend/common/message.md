@@ -959,6 +959,74 @@ public MessageResult send(MessageContext context) {
 }
 ```
 
+### 5. 消息发送超时
+
+**问题**: 消息发送耗时过长导致接口超时
+
+**原因**:
+- 同步发送阻塞主线程
+- 第三方通道接口响应慢
+- 网络延迟较高
+
+**解决方案**:
+```java
+// 使用异步发送
+@Async
+public CompletableFuture<MessageResult> sendAsync(String channelType, MessageContext context) {
+    return CompletableFuture.completedFuture(
+        messagePushService.send(channelType, context)
+    );
+}
+
+// 设置超时时间
+MessageContext context = MessageContext.of(userId, content)
+    .setParams(Map.of("timeout", 5000)); // 5秒超时
+
+// 通道实现中处理超时
+@Override
+public MessageResult send(MessageContext context) {
+    int timeout = (int) context.getParams().getOrDefault("timeout", 10000);
+    // 使用带超时的 HTTP 客户端
+}
+```
+
+### 6. 消息重复发送
+
+**问题**: 同一消息被发送多次
+
+**原因**:
+- 接口重试导致重复调用
+- 消息队列消费重复
+
+**解决方案**:
+```java
+// 使用消息ID去重
+@Override
+public MessageResult send(MessageContext context) {
+    String messageId = context.getMessageId();
+
+    // 检查是否已发送
+    if (redisTemplate.hasKey("msg:sent:" + messageId)) {
+        return MessageResult.success(messageId, getChannelType(), userId)
+            .setExtra("duplicate");
+    }
+
+    // 发送消息
+    MessageResult result = doSend(context);
+
+    // 记录已发送
+    if (result.isSuccess()) {
+        redisTemplate.opsForValue().set(
+            "msg:sent:" + messageId,
+            "1",
+            Duration.ofHours(24)
+        );
+    }
+
+    return result;
+}
+```
+
 ## 模块依赖
 
 ```

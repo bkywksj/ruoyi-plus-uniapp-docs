@@ -8,97 +8,834 @@ OSS（Object Storage Service）对象存储模块为若依系统提供了统一�
 
 - 🚀 **多存储支持**：支持本地存储、阿里云OSS、腾讯云COS、七牛云、华为云OBS、MinIO等
 - 🔒 **安全可靠**：支持预签名URL、访问权限控制、文件完整性校验
-- 🎯 **高性能**：基于AWS S3 SDK异步客户端，支持大文件传输
+- 🎯 **高性能**：基于AWS S3 SDK v2异步客户端与Netty，支持大文件传输
 - 🔧 **易于配置**：支持动态配置切换，无需重启应用
-- 📊 **多租户**：支持租户数据隔离
+- 📊 **多租户**：支持租户数据隔离，文件路径自动包含租户ID
 - 🎨 **灵活路径**：支持自定义文件存储路径规则
+- 🔄 **线程安全**：客户端工厂采用双重检查锁定模式，确保并发安全
+- ⚡ **智能缓存**：配置信息缓存至Redis，客户端实例按租户缓存
 
 ### 支持的存储类型
 
-| 存储类型 | 配置键 | 说明 |
-|---------|--------|------|
-| 本地存储 | `local` | 存储在应用服务器本地文件系统 |
-| 阿里云OSS | `aliyun` | 阿里云对象存储服务 |
-| 腾讯云COS | `qcloud` | 腾讯云对象存储服务 |
-| 七牛云 | `qiniu` | 七牛云对象存储服务 |
-| 华为云OBS | `obs` | 华为云对象存储服务 |
-| MinIO | `minio` | 开源S3兼容对象存储 |
+| 存储类型 | 配置键 | 枚举值 | 说明 |
+|---------|--------|--------|------|
+| 本地存储 | `local` | `LOCAL` | 存储在应用服务器本地文件系统 |
+| 阿里云OSS | `aliyun` | `ALIYUN` | 阿里云对象存储服务 |
+| 腾讯云COS | `qcloud` | `QCLOUD` | 腾讯云对象存储服务 |
+| 七牛云 | `qiniu` | `QINIU` | 七牛云对象存储服务 |
+| 华为云OBS | `obs` | `OBS` | 华为云对象存储服务 |
+| MinIO | `minio` | `MINIO` | 开源S3兼容对象存储 |
 
-## 模块结构
+### 存储类型枚举
+
+```java
+public enum OssType {
+    LOCAL("local"),     // 本地存储
+    ALIYUN("aliyun"),   // 阿里云OSS
+    QCLOUD("qcloud"),   // 腾讯云COS
+    QINIU("qiniu"),     // 七牛云
+    OBS("obs"),         // 华为云OBS
+    MINIO("minio");     // MinIO
+
+    private final String value;
+
+    OssType(String value) {
+        this.value = value;
+    }
+
+    public String getValue() {
+        return value;
+    }
+}
+```
+
+## 模块架构
+
+### 目录结构
 
 ```text
 ruoyi-common-oss/
 ├── src/main/java/plus/ruoyi/common/oss/
-│   ├── constant/           # 常量定义
-│   │   └── OssConstant.java
-│   ├── core/               # 核心类
-│   │   └── OssClient.java
-│   ├── entity/             # 实体类
-│   │   ├── OssFileInfo.java
-│   │   ├── OssFileMetadata.java
-│   │   └── UploadResult.java
-│   ├── enums/              # 枚举类
-│   │   └── AccessPolicyType.java
-│   ├── exception/          # 异常类
-│   │   └── OssException.java
-│   ├── factory/            # 工厂类
-│   │   ├── OssFactory.java
-│   │   └── OssStrategyFactory.java
-│   ├── properties/         # 配置属性
-│   │   └── OssProperties.java
-│   └── service/            # 服务接口和实现
-│       ├── OssStrategy.java
+│   ├── constant/                    # 常量定义
+│   │   └── OssConstant.java         # OSS相关常量
+│   ├── core/                        # 核心类
+│   │   └── OssClient.java           # OSS客户端门面
+│   ├── entity/                      # 实体类
+│   │   ├── OssClientConfig.java     # 客户端配置实体
+│   │   ├── OssFileInfo.java         # 文件信息
+│   │   ├── OssFileMetadata.java     # 文件元数据
+│   │   └── UploadResult.java        # 上传结果
+│   ├── enums/                       # 枚举类
+│   │   ├── AccessPolicyType.java    # 访问策略枚举
+│   │   └── OssType.java             # OSS类型枚举
+│   ├── exception/                   # 异常类
+│   │   └── OssException.java        # OSS业务异常
+│   ├── factory/                     # 工厂类
+│   │   ├── OssFactory.java          # OSS客户端工厂
+│   │   └── OssStrategyFactory.java  # 策略工厂
+│   ├── properties/                  # 配置属性
+│   │   └── OssProperties.java       # OSS配置属性
+│   └── service/                     # 服务接口和实现
+│       ├── OssStrategy.java         # 策略接口
 │       └── impl/
-│           ├── LocalOssStrategy.java
-│           └── S3OssStrategy.java
+│           ├── LocalOssStrategy.java   # 本地存储策略
+│           └── S3OssStrategy.java      # S3兼容存储策略
 └── pom.xml
 ```
 
-## 配置说明
+### 架构设计
 
-### 基础配置
+OSS模块采用**策略模式**设计，通过抽象策略接口实现多种存储方式的统一管理：
 
-OSS模块的配置存储在数据库中，通过 `OssProperties` 类定义，支持以下配置项：
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         OssClient                                │
+│                      (门面/Facade)                               │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  - configKey: String                                      │   │
+│  │  - ossClientConfig: OssClientConfig                       │   │
+│  │  - strategy: OssStrategy                                  │   │
+│  │  + upload*(...)                                           │   │
+│  │  + download*(...)                                         │   │
+│  │  + generatePresignedUrl(...)                              │   │
+│  │  + getPath(suffix, moduleName)                            │   │
+│  └──────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                       OssStrategy                                │
+│                      (策略接口)                                   │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  + uploadFile(file, key, md5, contentType)                │   │
+│  │  + uploadFile(bytes, key, md5, contentType)               │   │
+│  │  + uploadFile(stream, key, length, md5, contentType)      │   │
+│  │  + deleteFile(key)                                        │   │
+│  │  + copyFile(source, target)                               │   │
+│  │  + generatePresignedUrl(key, expiration)                  │   │
+│  │  + generatePresignedUploadUrl(key, contentType, exp)      │   │
+│  │  + getBaseUrl()                                           │   │
+│  │  + close()                                                │   │
+│  └──────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+              ┌───────────────┴───────────────┐
+              ▼                               ▼
+┌─────────────────────────┐     ┌─────────────────────────┐
+│   LocalOssStrategy      │     │    S3OssStrategy        │
+│    (本地存储实现)        │     │   (S3兼容存储实现)       │
+│ ┌─────────────────────┐ │     │ ┌─────────────────────┐ │
+│ │ - uploadPath        │ │     │ │ - client: S3Async   │ │
+│ │ - domain            │ │     │ │ - transferManager   │ │
+│ │ + Hutool文件操作     │ │     │ │ - presigner         │ │
+│ └─────────────────────┘ │     │ │ + AWS SDK v2操作    │ │
+└─────────────────────────┘     │ └─────────────────────┘ │
+                                └─────────────────────────┘
+```
 
-| 配置项 | 说明 | 示例值 |
-|--------|------|--------|
-| `tenantId` | 租户ID | `tenant123` |
-| `endpoint` | 访问端点 | `oss-cn-beijing.aliyuncs.com` |
-| `domain` | 自定义域名 | `https://cdn.yourdomain.com` |
-| `prefix` | 文件路径前缀 | `uploads` |
-| `accessKey` | 访问密钥 | `your-access-key` |
-| `secretKey` | 私有密钥 | `your-secret-key` |
-| `bucketName` | 存储桶名称 | `my-bucket` |
-| `region` | 存储区域 | `cn-beijing` |
-| `isHttps` | 是否使用HTTPS | `1`（1=是, 0=否） |
-| `accessPolicy` | 访问策略 | `1`（0=私有, 1=公共读写, 2=公共读） |
+### 工厂模式
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        OssFactory                                │
+│                     (客户端工厂)                                  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │  - CLIENT_CACHE: ConcurrentHashMap<String, OssClient>     │   │
+│  │  - LOCK: ReentrantLock                                    │   │
+│  │  + instance(): OssClient           // 获取默认客户端       │   │
+│  │  + instance(configKey): OssClient  // 根据配置键获取       │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                              │                                   │
+│                              ▼                                   │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │              OssStrategyFactory                            │   │
+│  │  + createStrategy(configKey, config): OssStrategy         │   │
+│  │    - "local" → LocalOssStrategy                           │   │
+│  │    - 其他    → S3OssStrategy                               │   │
+│  └──────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## 核心组件
+
+### OssClient 客户端门面
+
+`OssClient` 是对象存储的核心客户端门面类，封装了所有文件操作接口，并负责文件路径的生成。
+
+#### 核心属性
+
+```java
+public class OssClient {
+    /** 配置键 */
+    private final String configKey;
+    /** 配置对象 */
+    private final OssClientConfig ossClientConfig;
+    /** 存储策略 */
+    private final OssStrategy strategy;
+}
+```
+
+#### 路径生成机制
+
+`OssClient` 内部实现了智能的文件路径生成逻辑，确保文件路径包含租户隔离：
+
+```java
+/**
+ * 生成文件存储路径
+ * 路径格式: [{prefix}/]{tenantId}/[{moduleName}/]{datePath}/{uuid}{suffix}
+ */
+private String getPath(String suffix, String moduleName) {
+    String prefix = ossClientConfig.getPrefix();
+    String tenantId = SpringUtils.getBean(TenantService.class).getTenantId();
+    String datePath = DateUtils.datePath();  // yyyy/MM/dd
+    String uuid = IdUtil.fastSimpleUUID();    // 32位简化UUID
+
+    StringBuilder pathBuilder = new StringBuilder();
+
+    // 1. 添加前缀（可选）
+    if (StrUtil.isNotBlank(prefix)) {
+        pathBuilder.append(prefix).append("/");
+    }
+
+    // 2. 添加租户ID（必须）
+    pathBuilder.append(tenantId).append("/");
+
+    // 3. 添加模块名（可选）
+    if (StrUtil.isNotBlank(moduleName)) {
+        pathBuilder.append(moduleName).append("/");
+    }
+
+    // 4. 添加日期路径和文件名
+    pathBuilder.append(datePath).append("/").append(uuid).append(suffix);
+
+    return pathBuilder.toString();
+}
+```
+
+#### 路径示例
+
+| 场景 | 前缀 | 模块名 | 生成路径 |
+|------|------|--------|----------|
+| 基础上传 | 无 | 无 | `tenant001/2024/01/15/abc123def456.jpg` |
+| 带前缀 | `uploads` | 无 | `uploads/tenant001/2024/01/15/abc123def456.jpg` |
+| 带模块 | 无 | `avatar` | `tenant001/avatar/2024/01/15/abc123def456.jpg` |
+| 完整路径 | `uploads` | `avatar` | `uploads/tenant001/avatar/2024/01/15/abc123def456.jpg` |
+
+#### 配置校验
+
+`OssClient` 提供了配置变更检测方法：
+
+```java
+/**
+ * 检查OSS客户端配置是否相同
+ * 用于工厂判断是否需要重新创建客户端
+ */
+public boolean checkOssClientConfigSame(OssClientConfig ossClientConfig) {
+    return this.ossClientConfig.equals(ossClientConfig);
+}
+```
+
+### OssFactory 客户端工厂
+
+`OssFactory` 是线程安全的客户端工厂，采用双重检查锁定模式管理客户端实例的缓存和创建。
+
+#### 核心实现
+
+```java
+public class OssFactory {
+    /** 客户端缓存（按租户+配置键） */
+    private static final Map<String, OssClient> CLIENT_CACHE = new ConcurrentHashMap<>();
+
+    /** 可重入锁，保证线程安全 */
+    private static final ReentrantLock LOCK = new ReentrantLock();
+
+    /**
+     * 获取OSS客户端实例
+     * 1. 从Redis读取配置
+     * 2. 构建缓存键（租户ID:配置键）
+     * 3. 双重检查锁定获取或创建客户端
+     */
+    public static OssClient instance(String configKey) {
+        // 从Redis获取配置JSON
+        String json = CacheUtils.get(CacheNames.SYS_OSS_CONFIG, configKey);
+        if (StrUtil.isBlank(json)) {
+            throw new OssException("系统异常, '" + configKey + "'配置信息不存在!");
+        }
+
+        // 解析配置
+        OssClientConfig ossClientConfig = JsonUtils.parseObject(json, OssClientConfig.class);
+
+        // 构建缓存键（多租户场景下包含租户ID）
+        String cacheKey = configKey;
+        if (StringUtils.isNotBlank(ossClientConfig.getTenantId())) {
+            cacheKey = ossClientConfig.getTenantId() + ":" + configKey;
+        }
+
+        // 尝试从缓存获取
+        OssClient client = CLIENT_CACHE.get(cacheKey);
+
+        // 检查是否需要创建或更新客户端
+        if (client == null || !client.checkOssClientConfigSame(ossClientConfig)) {
+            LOCK.lock();
+            try {
+                // 双重检查
+                client = CLIENT_CACHE.get(cacheKey);
+                if (client == null || !client.checkOssClientConfigSame(ossClientConfig)) {
+                    // 创建新客户端并缓存
+                    CLIENT_CACHE.put(cacheKey, new OssClient(configKey, ossClientConfig));
+                    client = CLIENT_CACHE.get(cacheKey);
+                }
+            } finally {
+                LOCK.unlock();
+            }
+        }
+        return client;
+    }
+
+    /**
+     * 获取默认OSS客户端
+     */
+    public static OssClient instance() {
+        // 从Redis获取默认配置键
+        String defaultConfigKey = CacheUtils.get(CacheNames.SYS_OSS_CONFIG, OssConstant.DEFAULT_CONFIG_KEY);
+        return instance(defaultConfigKey);
+    }
+}
+```
+
+#### 缓存策略
+
+| 特性 | 说明 |
+|------|------|
+| 缓存容器 | `ConcurrentHashMap<String, OssClient>` |
+| 缓存键格式 | `{tenantId}:{configKey}` 或 `{configKey}` |
+| 线程安全 | `ReentrantLock` 双重检查锁定 |
+| 配置变更检测 | 对比配置对象自动刷新客户端 |
+
+### OssStrategyFactory 策略工厂
+
+策略工厂负责根据配置键创建对应的存储策略实现：
+
+```java
+public class OssStrategyFactory {
+
+    /**
+     * 创建OSS存储策略
+     * @param configKey 配置键
+     * @param ossClientConfig 配置对象
+     * @return 对应的存储策略实现
+     */
+    public static OssStrategy createStrategy(String configKey, OssClientConfig ossClientConfig) {
+        // 本地存储使用专门的策略
+        if (Constants.LOCAL.equals(configKey)) {
+            return new LocalOssStrategy(configKey, ossClientConfig);
+        }
+        // 其他存储类型统一使用S3兼容策略
+        return new S3OssStrategy(configKey, ossClientConfig);
+    }
+}
+```
+
+### OssStrategy 策略接口
+
+策略接口定义了所有存储操作的标准方法：
+
+```java
+public interface OssStrategy extends AutoCloseable {
+
+    // ==================== 文件上传 ====================
+
+    /** 上传文件（File对象） */
+    UploadResult uploadFile(File file, String key, String md5Digest, String contentType);
+
+    /** 上传文件（字节数组） */
+    UploadResult uploadFile(byte[] data, String key, String md5Digest, String contentType);
+
+    /** 上传文件（输入流） */
+    UploadResult uploadFile(InputStream inputStream, String key, Long length,
+                           String md5Digest, String contentType);
+
+    // ==================== 文件下载 ====================
+
+    /** 下载到临时文件 */
+    Path downloadToTempFile(String key);
+
+    /** 下载到输出流 */
+    void downloadToStream(String key, OutputStream outputStream,
+                         Consumer<Long> fileSizeConsumer);
+
+    /** 获取文件输入流 */
+    InputStream getFileAsStream(String key);
+
+    // ==================== 文件管理 ====================
+
+    /** 删除文件 */
+    void deleteFile(String key);
+
+    /** 复制文件 */
+    void copyFile(String sourceKey, String targetKey);
+
+    /** 获取文件元数据 */
+    OssFileMetadata getFileMetadata(String key);
+
+    /** 列出文件 */
+    List<OssFileInfo> listFiles(String prefix, int maxKeys);
+
+    // ==================== URL生成 ====================
+
+    /** 生成预签名下载URL */
+    String generatePresignedUrl(String key, Duration expiredTime);
+
+    /** 生成预签名上传URL */
+    String generatePresignedUploadUrl(String key, String contentType, int expiration);
+
+    /** 获取存储基础URL */
+    String getBaseUrl();
+
+    // ==================== 资源管理 ====================
+
+    /** 关闭策略，释放资源 */
+    @Override
+    void close();
+}
+```
+
+## 存储策略实现
+
+### S3OssStrategy S3兼容存储
+
+`S3OssStrategy` 基于AWS SDK v2实现，支持所有S3协议兼容的云存储服务。
+
+#### 核心组件
+
+```java
+public class S3OssStrategy implements OssStrategy {
+    /** 配置键 */
+    private final String configKey;
+    /** 配置对象 */
+    private final OssClientConfig ossClientConfig;
+    /** S3异步客户端（基于Netty） */
+    private final S3AsyncClient client;
+    /** 传输管理器（支持大文件） */
+    private final S3TransferManager transferManager;
+    /** URL预签名器 */
+    private final S3Presigner presigner;
+}
+```
+
+#### 初始化过程
+
+```java
+public S3OssStrategy(String configKey, OssClientConfig ossClientConfig) {
+    this.configKey = configKey;
+    this.ossClientConfig = ossClientConfig;
+
+    // 1. 创建凭证提供者
+    StaticCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(
+        AwsBasicCredentials.create(
+            ossClientConfig.getAccessKey(),
+            ossClientConfig.getSecretKey()
+        )
+    );
+
+    // 2. 判断是否使用路径样式访问（MinIO等需要）
+    boolean isStyle = !isCloudService();
+
+    // 3. 创建S3异步客户端
+    this.client = S3AsyncClient.builder()
+        .credentialsProvider(credentialsProvider)
+        .endpointOverride(URI.create(getEndpoint()))
+        .region(of())
+        .forcePathStyle(isStyle)
+        .httpClient(NettyNioAsyncHttpClient.builder()
+            .connectionTimeout(Duration.ofSeconds(60))
+            .build())
+        .build();
+
+    // 4. 创建传输管理器
+    this.transferManager = S3TransferManager.builder()
+        .s3Client(this.client)
+        .build();
+
+    // 5. 创建预签名器
+    this.presigner = S3Presigner.builder()
+        .credentialsProvider(credentialsProvider)
+        .endpointOverride(URI.create(getEndpoint()))
+        .region(of())
+        .build();
+
+    // 6. 创建存储桶（如果不存在）
+    createBucket();
+}
+```
+
+#### 云服务检测
+
+系统通过配置键判断是否为云服务，以决定访问样式：
+
+```java
+/** 云服务配置键数组 */
+private static final String[] CLOUD_SERVICE = {"aliyun", "qcloud", "qiniu", "obs"};
+
+/**
+ * 判断是否为云服务
+ * 云服务使用虚拟主机样式，非云服务使用路径样式
+ */
+private boolean isCloudService() {
+    return ArrayUtil.containsIgnoreCase(CLOUD_SERVICE, configKey);
+}
+```
+
+| 存储类型 | 访问样式 | URL格式 |
+|---------|---------|---------|
+| 阿里云/腾讯云/七牛云/华为云 | 虚拟主机样式 | `https://bucket.endpoint/key` |
+| MinIO/本地S3 | 路径样式 | `https://endpoint/bucket/key` |
+
+#### 文件上传实现
+
+```java
+@Override
+public UploadResult uploadFile(InputStream inputStream, String key, Long length,
+                               String md5Digest, String contentType) {
+    try {
+        // 构建上传请求
+        PutObjectRequest.Builder builder = PutObjectRequest.builder()
+            .bucket(ossClientConfig.getBucketName())
+            .key(key)
+            .contentType(contentType)
+            .contentLength(length)
+            .acl(getAccessPolicy().getAcl());
+
+        // 设置MD5校验（可选）
+        if (StrUtil.isNotBlank(md5Digest)) {
+            builder.contentMD5(md5Digest);
+        }
+
+        // 执行异步上传
+        AsyncRequestBody body = AsyncRequestBody.fromInputStream(
+            inputStream, length, Runnable::run);
+        PutObjectResponse response = client.putObject(builder.build(), body)
+            .get(60, TimeUnit.SECONDS);
+
+        // 构建上传结果
+        return UploadResult.builder()
+            .url(getBaseUrl() + "/" + key)
+            .fileName(key)
+            .fileSize(length)
+            .eTag(response.eTag())
+            .build();
+
+    } catch (Exception e) {
+        throw new OssException("文件上传失败: " + e.getMessage());
+    }
+}
+```
+
+#### 预签名URL生成
+
+```java
+@Override
+public String generatePresignedUrl(String key, Duration expiredTime) {
+    // 构建预签名请求
+    GetObjectRequest getObjectRequest = GetObjectRequest.builder()
+        .bucket(ossClientConfig.getBucketName())
+        .key(key)
+        .build();
+
+    GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+        .signatureDuration(expiredTime)
+        .getObjectRequest(getObjectRequest)
+        .build();
+
+    // 生成预签名URL
+    PresignedGetObjectRequest presignedRequest = presigner.presignGetObject(presignRequest);
+    return presignedRequest.url().toString();
+}
+
+@Override
+public String generatePresignedUploadUrl(String key, String contentType, int expiration) {
+    // 构建上传预签名请求
+    PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+        .bucket(ossClientConfig.getBucketName())
+        .key(key)
+        .contentType(contentType)
+        .build();
+
+    PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
+        .signatureDuration(Duration.ofSeconds(expiration))
+        .putObjectRequest(putObjectRequest)
+        .build();
+
+    // 生成预签名URL
+    PresignedPutObjectRequest presignedRequest = presigner.presignPutObject(presignRequest);
+    return presignedRequest.url().toString();
+}
+```
+
+### LocalOssStrategy 本地存储
+
+`LocalOssStrategy` 实现本地文件系统存储，适用于单机部署或开发测试环境。
+
+#### 核心属性
+
+```java
+public class LocalOssStrategy implements OssStrategy {
+    /** 配置键 */
+    private final String configKey;
+    /** 配置对象 */
+    private final OssClientConfig ossClientConfig;
+    /** 本地上传路径 */
+    private final String uploadPath;
+    /** 资源访问域名 */
+    private final String domain;
+}
+```
+
+#### 初始化过程
+
+```java
+public LocalOssStrategy(String configKey, OssClientConfig ossClientConfig) {
+    this.configKey = configKey;
+    this.ossClientConfig = ossClientConfig;
+
+    // 获取应用配置的上传路径
+    AppProperties appProperties = SpringUtils.getBean(AppProperties.class);
+    this.uploadPath = appProperties.getUploadPath();
+
+    // 获取访问域名
+    this.domain = ossClientConfig.getDomain();
+
+    // 确保上传目录存在
+    FileUtil.mkdir(uploadPath);
+}
+```
+
+#### 文件上传实现
+
+```java
+@Override
+public UploadResult uploadFile(File file, String key, String md5Digest, String contentType) {
+    try {
+        // 构建目标路径
+        String targetPath = uploadPath + "/" + key;
+
+        // 确保父目录存在
+        FileUtil.mkParentDirs(targetPath);
+
+        // 复制文件
+        FileUtil.copy(file, new File(targetPath), true);
+
+        // 计算文件哈希
+        String eTag = SecureUtil.md5(file);
+
+        // 构建上传结果
+        return UploadResult.builder()
+            .url(getBaseUrl() + "/" + key)
+            .fileName(key)
+            .fileSize(file.length())
+            .eTag(eTag)
+            .build();
+
+    } catch (Exception e) {
+        throw new OssException("本地文件上传失败: " + e.getMessage());
+    }
+}
+
+@Override
+public UploadResult uploadFile(InputStream inputStream, String key, Long length,
+                               String md5Digest, String contentType) {
+    try {
+        // 构建目标路径
+        String targetPath = uploadPath + "/" + key;
+
+        // 确保父目录存在
+        FileUtil.mkParentDirs(targetPath);
+
+        // 写入文件
+        File targetFile = FileUtil.writeFromStream(inputStream, targetPath);
+
+        // 计算文件哈希
+        String eTag = SecureUtil.md5(targetFile);
+
+        return UploadResult.builder()
+            .url(getBaseUrl() + "/" + key)
+            .fileName(key)
+            .fileSize(targetFile.length())
+            .eTag(eTag)
+            .build();
+
+    } catch (Exception e) {
+        throw new OssException("本地文件上传失败: " + e.getMessage());
+    }
+}
+```
+
+#### 文件下载实现
+
+```java
+@Override
+public Path downloadToTempFile(String key) {
+    try {
+        // 构建源文件路径
+        String sourcePath = uploadPath + "/" + key;
+        File sourceFile = new File(sourcePath);
+
+        if (!sourceFile.exists()) {
+            throw new OssException("文件不存在: " + key);
+        }
+
+        // 创建临时文件
+        String suffix = FileUtil.getSuffix(key);
+        Path tempFile = Files.createTempFile("oss_", "." + suffix);
+
+        // 复制到临时文件
+        FileUtil.copy(sourceFile, tempFile.toFile(), true);
+
+        return tempFile;
+
+    } catch (Exception e) {
+        throw new OssException("文件下载失败: " + e.getMessage());
+    }
+}
+
+@Override
+public InputStream getFileAsStream(String key) {
+    try {
+        String filePath = uploadPath + "/" + key;
+        return new FileInputStream(filePath);
+    } catch (FileNotFoundException e) {
+        throw new OssException("文件不存在: " + key);
+    }
+}
+```
+
+#### 基础URL生成
+
+```java
+@Override
+public String getBaseUrl() {
+    // 优先使用配置的域名
+    if (StrUtil.isNotBlank(domain)) {
+        return domain + OssConstant.RESOURCE_PREFIX;
+    }
+    // 返回默认资源前缀
+    return OssConstant.RESOURCE_PREFIX;
+}
+```
+
+## 配置管理
+
+### 配置实体
+
+```java
+@Data
+public class OssClientConfig {
+    /** 租户ID */
+    private String tenantId;
+    /** 配置键 */
+    private String configKey;
+    /** 访问端点 */
+    private String endpoint;
+    /** 自定义域名 */
+    private String domain;
+    /** 访问密钥 */
+    private String accessKey;
+    /** 私有密钥 */
+    private String secretKey;
+    /** 存储桶名称 */
+    private String bucketName;
+    /** 文件路径前缀 */
+    private String prefix;
+    /** 存储区域 */
+    private String region;
+    /** 是否使用HTTPS */
+    private String isHttps;
+    /** 访问策略 */
+    private String accessPolicy;
+}
+```
+
+### 配置项说明
+
+| 配置项 | 类型 | 必填 | 说明 | 示例 |
+|--------|------|------|------|------|
+| `tenantId` | String | 否 | 租户ID | `tenant001` |
+| `configKey` | String | 是 | 配置键，用于区分不同配置 | `aliyun`、`minio` |
+| `endpoint` | String | 是 | 访问端点URL | `oss-cn-beijing.aliyuncs.com` |
+| `domain` | String | 否 | 自定义访问域名 | `https://cdn.example.com` |
+| `accessKey` | String | 是 | 访问密钥ID | `LTAI5txxxxxxxx` |
+| `secretKey` | String | 是 | 访问密钥密码 | `xxxxxxxx` |
+| `bucketName` | String | 是 | 存储桶名称 | `my-bucket` |
+| `prefix` | String | 否 | 文件路径前缀 | `uploads` |
+| `region` | String | 是 | 存储区域 | `cn-beijing`、`us-east-1` |
+| `isHttps` | String | 是 | 是否HTTPS | `1`（是）、`0`（否） |
+| `accessPolicy` | String | 是 | 访问策略 | `0`（私有）、`1`（公共）、`2`（自定义） |
 
 ### 访问策略类型
 
 ```java
+@Getter
+@AllArgsConstructor
 public enum AccessPolicyType {
-    PRIVATE("0"),      // 私有访问
-    PUBLIC("1"),       // 公共读写
-    CUSTOM("2")        // 自定义（公共读）
+    /** 私有访问 - bucket-owner-full-control */
+    PRIVATE("0", ObjectCannedACL.BUCKET_OWNER_FULL_CONTROL),
+
+    /** 公共读写 - public-read-write */
+    PUBLIC("1", ObjectCannedACL.PUBLIC_READ_WRITE),
+
+    /** 自定义（公共读） - public-read */
+    CUSTOM("2", ObjectCannedACL.PUBLIC_READ);
+
+    /** 策略值 */
+    private final String value;
+
+    /** S3 ACL枚举 */
+    private final ObjectCannedACL acl;
+
+    /**
+     * 根据值获取访问策略类型
+     */
+    public static AccessPolicyType getByValue(String value) {
+        for (AccessPolicyType type : values()) {
+            if (type.getValue().equals(value)) {
+                return type;
+            }
+        }
+        throw new OssException("未知的访问策略类型: " + value);
+    }
 }
 ```
 
+### 配置缓存
+
+OSS配置存储在Redis中，使用以下缓存名称：
+
+```java
+public class CacheNames {
+    /** OSS配置缓存 */
+    public static final String SYS_OSS_CONFIG = "sys_oss:config";
+}
+```
+
+缓存键格式：
+- 配置数据：`sys_oss:config:{configKey}`
+- 默认配置键：`sys_oss:config:default_config`
+
 ### 本地存储配置
 
-本地存储需要在 `AppProperties` 中配置上传路径：
+本地存储需要在应用配置中指定上传路径：
 
 ```yaml
 app:
-  uploadPath: "/data/uploads"  # 本地文件上传路径
+  # 本地文件上传路径
+  uploadPath: /data/uploads
+  # 资源访问域名（可选）
+  domain: https://static.example.com
 ```
 
 ## 核心API
 
-### OssClient 客户端
-
-`OssClient` 是对象存储的核心客户端，提供统一的文件操作接口。
-
-#### 获取客户端实例
+### 获取客户端实例
 
 ```java
 // 获取默认OSS客户端
@@ -106,9 +843,8 @@ OssClient client = OssFactory.instance();
 
 // 根据配置键获取客户端
 OssClient client = OssFactory.instance("aliyun");
-
-// 根据类型枚举获取客户端
-OssClient client = OssFactory.instance(OssFactory.OssType.ALIYUN);
+OssClient client = OssFactory.instance("minio");
+OssClient client = OssFactory.instance("local");
 ```
 
 ### 文件上传
@@ -120,6 +856,9 @@ OssClient client = OssFactory.instance(OssFactory.OssType.ALIYUN);
 File file = new File("/path/to/file.jpg");
 UploadResult result = client.uploadSuffix(file, ".jpg");
 System.out.println("文件URL: " + result.getUrl());
+
+// 指定模块名上传
+UploadResult result = client.uploadSuffix(file, ".jpg", "avatar");
 
 // 指定对象键上传
 String contentType = "image/jpeg";
@@ -136,11 +875,28 @@ UploadResult result = client.uploadSuffix(data, ".txt", "text/plain");
 // 上传输入流
 InputStream inputStream = new FileInputStream(file);
 UploadResult result = client.uploadSuffix(inputStream, ".jpg", file.length(), "image/jpeg");
+
+// 指定模块名上传输入流
+UploadResult result = client.uploadSuffix(inputStream, ".jpg", file.length(), "image/jpeg", "document");
 ```
 
 #### 上传结果
 
 ```java
+@Data
+@Builder
+public class UploadResult {
+    /** 访问URL */
+    private String url;
+    /** 文件名（对象键） */
+    private String fileName;
+    /** 文件大小（字节） */
+    private Long fileSize;
+    /** ETag（文件哈希） */
+    private String eTag;
+}
+
+// 使用示例
 UploadResult result = client.uploadSuffix(file, ".jpg");
 System.out.println("文件URL: " + result.getUrl());
 System.out.println("文件名: " + result.getFileName());
@@ -153,9 +909,12 @@ System.out.println("ETag: " + result.getETag());
 #### 下载到临时文件
 
 ```java
-String filePath = "tenant123/2024/01/15/abc123def456.jpg";
+String filePath = "tenant001/2024/01/15/abc123def456.jpg";
 Path tempFile = client.downloadToTempFile(filePath);
 System.out.println("临时文件路径: " + tempFile.toString());
+
+// 处理完后记得删除临时文件
+Files.deleteIfExists(tempFile);
 ```
 
 #### 下载到输出流
@@ -253,52 +1012,38 @@ String uploadUrl = client.generatePresignedUploadUrl(objectKey, contentType, exp
 System.out.println("预签名上传URL: " + uploadUrl);
 ```
 
-## 文件路径规则
-
-### 自动生成路径
-
-OSS模块会根据以下规则自动生成文件存储路径：
-
-```
-[prefix/]tenantId/yyyy/MM/dd/uuid.suffix
-```
-
-- `prefix`: 业务前缀（可选），如 `avatar`、`document`
-- `tenantId`: 租户ID，用于多租户数据隔离
-- `yyyy/MM/dd`: 按日期分层的目录结构
-- `uuid`: 32位简化UUID，确保文件名唯一性
-- `suffix`: 文件扩展名
-
-### 路径示例
-
-```java
-// 配置了前缀的路径
-avatar/tenant123/2024/01/15/abc123def456789.jpg
-
-// 无前缀的路径
-tenant123/2024/01/15/abc123def456789.jpg
-```
-
 ## 最佳实践
 
 ### 1. 客户端复用
 
 ```java
-@Component
+@Service
 public class FileService {
-    
-    @Autowired
-    private OssClient ossClient; // 通过依赖注入复用客户端
-    
+
+    /**
+     * 通过工厂获取客户端，内部已实现缓存
+     * 无需手动管理客户端生命周期
+     */
     public String uploadFile(MultipartFile file) throws IOException {
+        // 获取OSS客户端（内部缓存，线程安全）
+        OssClient client = OssFactory.instance();
+
         String suffix = FileUtil.getSuffix(file.getOriginalFilename());
-        UploadResult result = ossClient.uploadSuffix(
-            file.getInputStream(), 
-            suffix, 
-            file.getSize(), 
+        UploadResult result = client.uploadSuffix(
+            file.getInputStream(),
+            suffix,
+            file.getSize(),
             file.getContentType()
         );
         return result.getUrl();
+    }
+
+    /**
+     * 多存储场景下，根据业务选择不同存储
+     */
+    public String uploadToSpecificStorage(MultipartFile file, String storageType) throws IOException {
+        OssClient client = OssFactory.instance(storageType);
+        // ... 上传逻辑
     }
 }
 ```
@@ -306,13 +1051,37 @@ public class FileService {
 ### 2. 异常处理
 
 ```java
-public String uploadFileWithErrorHandling(File file) {
-    try {
-        UploadResult result = ossClient.uploadSuffix(file, ".jpg");
-        return result.getUrl();
-    } catch (OssException e) {
-        log.error("文件上传失败: {}", e.getMessage());
-        throw new ServiceException("文件上传失败，请稍后重试");
+@Service
+@Slf4j
+public class FileService {
+
+    public String uploadFileWithErrorHandling(MultipartFile file) {
+        try {
+            OssClient client = OssFactory.instance();
+            String suffix = FileUtil.getSuffix(file.getOriginalFilename());
+            UploadResult result = client.uploadSuffix(
+                file.getInputStream(),
+                suffix,
+                file.getSize(),
+                file.getContentType()
+            );
+            return result.getUrl();
+
+        } catch (OssException e) {
+            // OSS业务异常（配置错误、权限不足等）
+            log.error("OSS业务异常: {}", e.getMessage());
+            throw new ServiceException("文件上传失败: " + e.getMessage());
+
+        } catch (IOException e) {
+            // IO异常（文件读取失败等）
+            log.error("文件读取异常: {}", e.getMessage());
+            throw new ServiceException("文件读取失败，请重试");
+
+        } catch (Exception e) {
+            // 其他异常
+            log.error("未知异常: ", e);
+            throw new ServiceException("系统异常，请稍后重试");
+        }
     }
 }
 ```
@@ -320,10 +1089,40 @@ public String uploadFileWithErrorHandling(File file) {
 ### 3. 文件类型验证
 
 ```java
-public void validateFileType(String fileName) {
-    String suffix = FileUtil.getSuffix(fileName);
-    if (!Arrays.asList(".jpg", ".png", ".gif").contains(suffix.toLowerCase())) {
-        throw new ServiceException("不支持的文件类型: " + suffix);
+@Service
+public class FileValidationService {
+
+    /** 允许的图片类型 */
+    private static final Set<String> ALLOWED_IMAGE_TYPES = Set.of(
+        ".jpg", ".jpeg", ".png", ".gif", ".webp"
+    );
+
+    /** 允许的文档类型 */
+    private static final Set<String> ALLOWED_DOCUMENT_TYPES = Set.of(
+        ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx"
+    );
+
+    /** 最大文件大小（10MB） */
+    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+    public void validateImage(MultipartFile file) {
+        String suffix = FileUtil.getSuffix(file.getOriginalFilename()).toLowerCase();
+
+        if (!ALLOWED_IMAGE_TYPES.contains(suffix)) {
+            throw new ServiceException("不支持的图片格式: " + suffix);
+        }
+
+        if (file.getSize() > MAX_FILE_SIZE) {
+            throw new ServiceException("图片大小不能超过10MB");
+        }
+    }
+
+    public void validateDocument(MultipartFile file) {
+        String suffix = FileUtil.getSuffix(file.getOriginalFilename()).toLowerCase();
+
+        if (!ALLOWED_DOCUMENT_TYPES.contains(suffix)) {
+            throw new ServiceException("不支持的文档格式: " + suffix);
+        }
     }
 }
 ```
@@ -331,58 +1130,142 @@ public void validateFileType(String fileName) {
 ### 4. 大文件处理
 
 ```java
-public String uploadLargeFile(File file) {
-    // 对于大文件，建议使用分片上传或预签名上传
-    if (file.length() > 100 * 1024 * 1024) { // 100MB
-        // 生成预签名上传URL，让前端直传
-        String objectKey = generateObjectKey(file.getName());
-        return ossClient.generatePresignedUploadUrl(objectKey, 
-            Files.probeContentType(file.toPath()), 3600);
-    } else {
-        // 小文件直接上传
-        return ossClient.uploadSuffix(file, FileUtil.getSuffix(file.getName())).getUrl();
+@Service
+@Slf4j
+public class LargeFileService {
+
+    /** 大文件阈值（100MB） */
+    private static final long LARGE_FILE_THRESHOLD = 100 * 1024 * 1024;
+
+    /**
+     * 智能上传：根据文件大小选择上传方式
+     */
+    public String smartUpload(MultipartFile file) throws IOException {
+        if (file.getSize() > LARGE_FILE_THRESHOLD) {
+            // 大文件：返回预签名上传URL，让前端直传
+            return generatePresignedUploadUrl(file);
+        } else {
+            // 小文件：服务端直接上传
+            return directUpload(file);
+        }
+    }
+
+    /**
+     * 生成预签名上传URL（前端直传模式）
+     */
+    private String generatePresignedUploadUrl(MultipartFile file) throws IOException {
+        OssClient client = OssFactory.instance();
+        String suffix = FileUtil.getSuffix(file.getOriginalFilename());
+        String objectKey = generateObjectKey(suffix);
+        String contentType = file.getContentType();
+
+        // 生成1小时有效的预签名URL
+        return client.generatePresignedUploadUrl(objectKey, contentType, 3600);
+    }
+
+    /**
+     * 服务端直接上传
+     */
+    private String directUpload(MultipartFile file) throws IOException {
+        OssClient client = OssFactory.instance();
+        String suffix = FileUtil.getSuffix(file.getOriginalFilename());
+        UploadResult result = client.uploadSuffix(
+            file.getInputStream(),
+            suffix,
+            file.getSize(),
+            file.getContentType()
+        );
+        return result.getUrl();
+    }
+
+    private String generateObjectKey(String suffix) {
+        // 生成唯一对象键
+        return DateUtil.format(new Date(), "yyyy/MM/dd") + "/" +
+               IdUtil.fastSimpleUUID() + suffix;
     }
 }
 ```
 
-## 配置管理
-
-### 动态配置切换
-
-OSS模块支持运行时动态切换存储配置，通过数据库配置更新后会自动生效：
+### 5. 多租户文件隔离
 
 ```java
-// 配置会从数据库加载并缓存到Redis
-@Autowired
-private OssConfigService ossConfigService;
+@Service
+public class TenantFileService {
 
-public void switchToAliyunOss() {
-    // 更新数据库配置后，系统会自动刷新缓存
-    ossConfigService.updateOssConfig("aliyun", newOssProperties);
-    
-    // 下次获取客户端时会自动使用新配置
-    OssClient client = OssFactory.instance("aliyun");
+    /**
+     * OSS模块已内置租户隔离，路径会自动包含租户ID
+     * 无需手动处理
+     */
+    public String uploadFile(MultipartFile file) throws IOException {
+        OssClient client = OssFactory.instance();
+
+        // 路径自动生成为: {prefix}/{tenantId}/{date}/{uuid}{suffix}
+        UploadResult result = client.uploadSuffix(
+            file.getInputStream(),
+            FileUtil.getSuffix(file.getOriginalFilename()),
+            file.getSize(),
+            file.getContentType()
+        );
+
+        return result.getUrl();
+    }
+
+    /**
+     * 按模块分类存储
+     */
+    public String uploadToModule(MultipartFile file, String moduleName) throws IOException {
+        OssClient client = OssFactory.instance();
+
+        // 路径自动生成为: {prefix}/{tenantId}/{moduleName}/{date}/{uuid}{suffix}
+        UploadResult result = client.uploadSuffix(
+            file.getInputStream(),
+            FileUtil.getSuffix(file.getOriginalFilename()),
+            file.getSize(),
+            file.getContentType(),
+            moduleName
+        );
+
+        return result.getUrl();
+    }
 }
 ```
 
-### 数据库配置管理
+### 6. 配置动态切换
 
-OSS配置存储在数据库的系统配置表中，可以通过管理后台进行配置：
+```java
+@Service
+public class OssConfigService {
 
-1. **配置存储位置**：系统配置表 `sys_oss_config`
-2. **缓存机制**：配置信息会缓存到Redis中，键名格式为 `sys_oss:配置键`
-3. **默认配置**：通过 `sys_oss:default_config` 键指定默认使用的OSS配置
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
-#### 配置示例
+    /**
+     * 切换默认OSS配置
+     */
+    public void switchDefaultConfig(String newConfigKey) {
+        // 更新默认配置键
+        CacheUtils.put(CacheNames.SYS_OSS_CONFIG,
+            OssConstant.DEFAULT_CONFIG_KEY, newConfigKey);
 
-```sql
--- 阿里云OSS配置示例
-INSERT INTO sys_oss_config (config_key, access_key, secret_key, bucket_name, prefix, endpoint, domain, is_https, region, access_policy, status) 
-VALUES ('aliyun', 'your-access-key', 'your-secret-key', 'your-bucket', 'uploads', 'oss-cn-beijing.aliyuncs.com', '', '1', 'cn-beijing', '1', '1');
+        // 下次获取客户端时会自动使用新配置
+        log.info("已切换默认OSS配置为: {}", newConfigKey);
+    }
 
--- MinIO配置示例
-INSERT INTO sys_oss_config (config_key, access_key, secret_key, bucket_name, prefix, endpoint, domain, is_https, region, access_policy, status) 
-VALUES ('minio', 'minioadmin', 'minioadmin', 'test', 'uploads', 'localhost:9000', '', '0', 'us-east-1', '1', '1');
+    /**
+     * 更新OSS配置
+     * 配置更新后客户端会自动刷新
+     */
+    public void updateOssConfig(String configKey, OssClientConfig config) {
+        // 序列化配置
+        String json = JsonUtils.toJsonString(config);
+
+        // 更新缓存
+        CacheUtils.put(CacheNames.SYS_OSS_CONFIG, configKey, json);
+
+        // OssFactory会在下次获取客户端时检测配置变化并刷新
+        log.info("已更新OSS配置: {}", configKey);
+    }
+}
 ```
 
 ## 监控与运维
@@ -392,20 +1275,27 @@ VALUES ('minio', 'minioadmin', 'minioadmin', 'test', 'uploads', 'localhost:9000'
 ```java
 @Component
 public class OssHealthIndicator implements HealthIndicator {
-    
+
     @Override
     public Health health() {
         try {
             OssClient client = OssFactory.instance();
-            // 执行简单的健康检查操作
-            client.getBaseUrl();
+            String baseUrl = client.getBaseUrl();
+
             return Health.up()
-                .withDetail("type", client.getConfigKey())
-                .withDetail("endpoint", client.getProperties().getEndpoint())
+                .withDetail("configKey", client.getConfigKey())
+                .withDetail("baseUrl", baseUrl)
+                .withDetail("bucket", client.getOssClientConfig().getBucketName())
                 .build();
-        } catch (Exception e) {
+
+        } catch (OssException e) {
             return Health.down()
                 .withDetail("error", e.getMessage())
+                .build();
+
+        } catch (Exception e) {
+            return Health.down()
+                .withException(e)
                 .build();
         }
     }
@@ -417,116 +1307,462 @@ public class OssHealthIndicator implements HealthIndicator {
 ```java
 @Aspect
 @Component
+@Slf4j
 public class OssPerformanceAspect {
-    
+
     @Around("execution(* plus.ruoyi.common.oss.core.OssClient.upload*(..))")
     public Object monitorUpload(ProceedingJoinPoint joinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
+        String methodName = joinPoint.getSignature().getName();
+
         try {
             Object result = joinPoint.proceed();
             long duration = System.currentTimeMillis() - startTime;
-            log.info("文件上传耗时: {}ms", duration);
+
+            // 记录上传耗时
+            log.info("OSS上传 [{}] 完成, 耗时: {}ms", methodName, duration);
+
+            // 可以将指标发送到监控系统
+            // metricsService.recordUploadTime(methodName, duration);
+
             return result;
+
         } catch (Exception e) {
             long duration = System.currentTimeMillis() - startTime;
-            log.error("文件上传失败，耗时: {}ms, 错误: {}", duration, e.getMessage());
+            log.error("OSS上传 [{}] 失败, 耗时: {}ms, 错误: {}",
+                methodName, duration, e.getMessage());
+            throw e;
+        }
+    }
+
+    @Around("execution(* plus.ruoyi.common.oss.core.OssClient.download*(..))")
+    public Object monitorDownload(ProceedingJoinPoint joinPoint) throws Throwable {
+        long startTime = System.currentTimeMillis();
+        String methodName = joinPoint.getSignature().getName();
+
+        try {
+            Object result = joinPoint.proceed();
+            long duration = System.currentTimeMillis() - startTime;
+            log.info("OSS下载 [{}] 完成, 耗时: {}ms", methodName, duration);
+            return result;
+
+        } catch (Exception e) {
+            long duration = System.currentTimeMillis() - startTime;
+            log.error("OSS下载 [{}] 失败, 耗时: {}ms, 错误: {}",
+                methodName, duration, e.getMessage());
             throw e;
         }
     }
 }
 ```
 
-## 故障排查
-
-### 常见问题
-
-#### 1. 配置错误
-
-**问题**: `OssException: 系统异常, 'xxx'配置信息不存在!`
-
-**解决方案**:
-- 检查OSS配置是否正确设置在数据库或配置中心
-- 确认 `OssConfigService.initOssConfig()` 方法是否正常执行
-- 验证Redis连接是否正常
-
-#### 2. 权限问题
-
-**问题**: 上传失败，提示权限不足
-
-**解决方案**:
-- 检查云存储的AccessKey和SecretKey是否正确
-- 确认存储桶的权限配置
-- 验证IP白名单设置
-
-#### 3. 网络连接问题
-
-**问题**: 连接超时或网络异常
-
-**解决方案**:
-- 检查endpoint配置是否正确
-- 确认网络连通性
-- 调整超时时间配置
-
 ### 日志配置
 
 ```yaml
 logging:
   level:
+    # OSS模块日志
     plus.ruoyi.common.oss: DEBUG
+    # AWS SDK日志（生产环境建议INFO）
     software.amazon.awssdk: INFO
+    # Netty日志
+    io.netty: WARN
+```
+
+## 故障排查
+
+### 常见问题
+
+#### 1. 配置不存在
+
+**问题**: `OssException: 系统异常, 'xxx'配置信息不存在!`
+
+**原因**:
+- Redis中没有对应的配置数据
+- 配置键拼写错误
+- Redis连接异常
+
+**解决方案**:
+```java
+// 检查Redis中的配置
+String json = CacheUtils.get(CacheNames.SYS_OSS_CONFIG, "aliyun");
+if (json == null) {
+    // 配置不存在，需要初始化
+    ossConfigService.initOssConfig("aliyun", config);
+}
+```
+
+#### 2. 权限不足
+
+**问题**: 上传失败，提示AccessDenied
+
+**原因**:
+- AccessKey/SecretKey错误
+- 存储桶权限配置不当
+- IP白名单限制
+
+**解决方案**:
+```java
+// 1. 验证密钥是否正确
+// 2. 检查存储桶ACL设置
+// 3. 检查云服务商控制台的访问控制配置
+```
+
+#### 3. 网络超时
+
+**问题**: 连接超时或读取超时
+
+**原因**:
+- 网络不通
+- Endpoint配置错误
+- 防火墙阻断
+
+**解决方案**:
+```java
+// 1. 检查endpoint是否可访问
+// 2. 检查网络连通性
+// 3. 调整超时配置
+S3AsyncClient.builder()
+    .httpClient(NettyNioAsyncHttpClient.builder()
+        .connectionTimeout(Duration.ofSeconds(120))  // 增加超时时间
+        .readTimeout(Duration.ofSeconds(120))
+        .build())
+    .build();
+```
+
+#### 4. 本地存储路径问题
+
+**问题**: 本地存储上传失败
+
+**原因**:
+- 上传路径不存在
+- 没有写入权限
+- 磁盘空间不足
+
+**解决方案**:
+```yaml
+# 1. 确保配置了正确的上传路径
+app:
+  uploadPath: /data/uploads
+
+# 2. 检查目录权限
+# chmod 755 /data/uploads
+
+# 3. 检查磁盘空间
+# df -h
+```
+
+#### 5. 预签名URL无效
+
+**问题**: 预签名URL访问返回403
+
+**原因**:
+- URL已过期
+- 签名参数被篡改
+- 时钟不同步
+
+**解决方案**:
+```java
+// 1. 检查服务器时间是否准确
+// 2. 确保URL在有效期内使用
+// 3. 不要修改预签名URL的任何参数
+
+// 生成较长有效期的URL
+String url = client.generatePresignedUrl(key, Duration.ofDays(1));
+```
+
+### 诊断工具
+
+```java
+@RestController
+@RequestMapping("/debug/oss")
+public class OssDebugController {
+
+    @GetMapping("/config/{configKey}")
+    public R<OssClientConfig> getConfig(@PathVariable String configKey) {
+        String json = CacheUtils.get(CacheNames.SYS_OSS_CONFIG, configKey);
+        if (json == null) {
+            return R.fail("配置不存在");
+        }
+        return R.ok(JsonUtils.parseObject(json, OssClientConfig.class));
+    }
+
+    @GetMapping("/test/{configKey}")
+    public R<String> testConnection(@PathVariable String configKey) {
+        try {
+            OssClient client = OssFactory.instance(configKey);
+            String baseUrl = client.getBaseUrl();
+            return R.ok("连接成功: " + baseUrl);
+        } catch (Exception e) {
+            return R.fail("连接失败: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/test-upload/{configKey}")
+    public R<UploadResult> testUpload(@PathVariable String configKey) {
+        try {
+            OssClient client = OssFactory.instance(configKey);
+            byte[] data = "test".getBytes();
+            UploadResult result = client.uploadSuffix(data, ".txt", "text/plain");
+            // 清理测试文件
+            client.deleteFile(result.getFileName());
+            return R.ok(result);
+        } catch (Exception e) {
+            return R.fail("上传测试失败: " + e.getMessage());
+        }
+    }
+}
 ```
 
 ## 扩展开发
 
 ### 添加新的存储策略
 
-1. 实现 `OssStrategy` 接口：
+1. **实现OssStrategy接口**：
 
 ```java
-public class MyCustomOssStrategy implements OssStrategy {
-    // 实现所有接口方法
-    
+public class CustomOssStrategy implements OssStrategy {
+
+    private final String configKey;
+    private final OssClientConfig config;
+    // 自定义存储客户端
+    private final CustomStorageClient customClient;
+
+    public CustomOssStrategy(String configKey, OssClientConfig config) {
+        this.configKey = configKey;
+        this.config = config;
+        // 初始化自定义客户端
+        this.customClient = new CustomStorageClient(config);
+    }
+
     @Override
     public UploadResult uploadFile(File file, String key, String md5Digest, String contentType) {
-        // 自定义上传逻辑
-        return null;
+        // 实现自定义上传逻辑
+        customClient.upload(file, key);
+        return UploadResult.builder()
+            .url(getBaseUrl() + "/" + key)
+            .fileName(key)
+            .fileSize(file.length())
+            .build();
     }
-    
-    // ... 其他方法实现
+
+    @Override
+    public void deleteFile(String key) {
+        customClient.delete(key);
+    }
+
+    @Override
+    public String getBaseUrl() {
+        return config.getDomain();
+    }
+
+    @Override
+    public void close() {
+        customClient.close();
+    }
+
+    // ... 实现其他接口方法
 }
 ```
 
-2. 修改 `OssStrategyFactory`：
+2. **修改OssStrategyFactory**：
 
 ```java
-public static OssStrategy createStrategy(String configKey, OssProperties ossProperties) {
-    switch (configKey) {
-        case "custom":
-            return new MyCustomOssStrategy(configKey, ossProperties);
-        // ... 其他case
+public class OssStrategyFactory {
+
+    public static OssStrategy createStrategy(String configKey, OssClientConfig config) {
+        switch (configKey) {
+            case "local":
+                return new LocalOssStrategy(configKey, config);
+            case "custom":
+                return new CustomOssStrategy(configKey, config);
+            default:
+                return new S3OssStrategy(configKey, config);
+        }
     }
 }
 ```
 
-3. 添加对应的枚举类型：
+3. **添加枚举类型**：
 
 ```java
 public enum OssType {
-    CUSTOM("custom"),
+    LOCAL("local"),
+    ALIYUN("aliyun"),
     // ... 其他类型
+    CUSTOM("custom");  // 新增
+
+    // ...
 }
 ```
 
-### 自定义文件路径生成
-
-可以通过扩展 `OssClient` 或实现自定义的路径生成策略：
+### 自定义路径生成
 
 ```java
+@Component
 public class CustomPathGenerator {
-    
-    public String generatePath(String businessType, String fileName) {
-        // 自定义路径生成逻辑
-        return businessType + "/" + DateUtils.datePath() + "/" + fileName;
+
+    /**
+     * 按业务类型生成路径
+     */
+    public String generateByBusinessType(String businessType, String suffix) {
+        String tenantId = TenantHelper.getTenantId();
+        String datePath = DateUtil.format(new Date(), "yyyy/MM/dd");
+        String uuid = IdUtil.fastSimpleUUID();
+
+        return String.format("%s/%s/%s/%s%s",
+            businessType, tenantId, datePath, uuid, suffix);
     }
+
+    /**
+     * 按用户ID生成路径
+     */
+    public String generateByUserId(Long userId, String suffix) {
+        String datePath = DateUtil.format(new Date(), "yyyy/MM/dd");
+        String uuid = IdUtil.fastSimpleUUID();
+
+        return String.format("user/%d/%s/%s%s",
+            userId, datePath, uuid, suffix);
+    }
+
+    /**
+     * 生成固定路径（用于配置文件等）
+     */
+    public String generateFixedPath(String category, String filename) {
+        return String.format("config/%s/%s", category, filename);
+    }
+}
+```
+
+### 文件处理扩展
+
+```java
+@Component
+public class FileProcessingService {
+
+    @Autowired
+    private OssFactory ossFactory;
+
+    /**
+     * 上传并生成缩略图
+     */
+    public Map<String, String> uploadWithThumbnail(MultipartFile file) throws IOException {
+        OssClient client = OssFactory.instance();
+        String suffix = FileUtil.getSuffix(file.getOriginalFilename());
+
+        // 上传原图
+        UploadResult original = client.uploadSuffix(
+            file.getInputStream(), suffix, file.getSize(), file.getContentType());
+
+        // 生成缩略图
+        BufferedImage thumbnail = Thumbnails.of(file.getInputStream())
+            .size(200, 200)
+            .asBufferedImage();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(thumbnail, suffix.substring(1), baos);
+        byte[] thumbnailBytes = baos.toByteArray();
+
+        // 上传缩略图
+        UploadResult thumb = client.uploadSuffix(
+            thumbnailBytes, "_thumb" + suffix, file.getContentType());
+
+        return Map.of(
+            "original", original.getUrl(),
+            "thumbnail", thumb.getUrl()
+        );
+    }
+
+    /**
+     * 批量上传文件
+     */
+    public List<UploadResult> batchUpload(List<MultipartFile> files) {
+        OssClient client = OssFactory.instance();
+
+        return files.parallelStream()
+            .map(file -> {
+                try {
+                    String suffix = FileUtil.getSuffix(file.getOriginalFilename());
+                    return client.uploadSuffix(
+                        file.getInputStream(), suffix, file.getSize(), file.getContentType());
+                } catch (IOException e) {
+                    throw new OssException("文件上传失败: " + file.getOriginalFilename());
+                }
+            })
+            .collect(Collectors.toList());
+    }
+}
+```
+
+## 数据库配置
+
+### 配置表结构
+
+```sql
+CREATE TABLE sys_oss_config (
+    oss_config_id   BIGINT(20)    NOT NULL AUTO_INCREMENT COMMENT '主键ID',
+    tenant_id       VARCHAR(20)   DEFAULT '000000' COMMENT '租户ID',
+    config_key      VARCHAR(20)   NOT NULL COMMENT '配置键',
+    access_key      VARCHAR(255)  NOT NULL COMMENT '访问密钥',
+    secret_key      VARCHAR(255)  NOT NULL COMMENT '私有密钥',
+    bucket_name     VARCHAR(255)  NOT NULL COMMENT '存储桶名称',
+    prefix          VARCHAR(255)  DEFAULT '' COMMENT '前缀',
+    endpoint        VARCHAR(255)  NOT NULL COMMENT '访问端点',
+    domain          VARCHAR(255)  DEFAULT '' COMMENT '自定义域名',
+    is_https        CHAR(1)       DEFAULT '1' COMMENT '是否HTTPS',
+    region          VARCHAR(255)  DEFAULT '' COMMENT '存储区域',
+    access_policy   CHAR(1)       DEFAULT '1' COMMENT '访问策略',
+    status          CHAR(1)       DEFAULT '1' COMMENT '状态',
+    ext1            VARCHAR(255)  DEFAULT '' COMMENT '扩展字段',
+    create_time     DATETIME      DEFAULT NULL COMMENT '创建时间',
+    create_by       VARCHAR(64)   DEFAULT '' COMMENT '创建者',
+    update_time     DATETIME      DEFAULT NULL COMMENT '更新时间',
+    update_by       VARCHAR(64)   DEFAULT '' COMMENT '更新者',
+    remark          VARCHAR(500)  DEFAULT NULL COMMENT '备注',
+    PRIMARY KEY (oss_config_id)
+) ENGINE=InnoDB COMMENT='对象存储配置表';
+```
+
+### 配置示例
+
+```sql
+-- 阿里云OSS配置
+INSERT INTO sys_oss_config (config_key, access_key, secret_key, bucket_name,
+    prefix, endpoint, domain, is_https, region, access_policy, status)
+VALUES ('aliyun', 'LTAI5txxxxxxxx', 'xxxxxxxx', 'my-bucket',
+    'uploads', 'oss-cn-beijing.aliyuncs.com', '', '1', 'cn-beijing', '1', '1');
+
+-- 腾讯云COS配置
+INSERT INTO sys_oss_config (config_key, access_key, secret_key, bucket_name,
+    prefix, endpoint, domain, is_https, region, access_policy, status)
+VALUES ('qcloud', 'AKIDxxxxxxxx', 'xxxxxxxx', 'my-bucket-1234567890',
+    'uploads', 'cos.ap-beijing.myqcloud.com', '', '1', 'ap-beijing', '1', '1');
+
+-- MinIO配置
+INSERT INTO sys_oss_config (config_key, access_key, secret_key, bucket_name,
+    prefix, endpoint, domain, is_https, region, access_policy, status)
+VALUES ('minio', 'minioadmin', 'minioadmin', 'test',
+    'uploads', 'localhost:9000', '', '0', 'us-east-1', '1', '1');
+
+-- 本地存储配置
+INSERT INTO sys_oss_config (config_key, access_key, secret_key, bucket_name,
+    prefix, endpoint, domain, is_https, region, access_policy, status)
+VALUES ('local', '', '', 'local',
+    'uploads', '', 'https://static.example.com', '1', '', '1', '1');
+```
+
+## 常量定义
+
+```java
+public class OssConstant {
+
+    /** 默认配置键的缓存键名 */
+    public static final String DEFAULT_CONFIG_KEY = "default_config";
+
+    /** 云服务配置键数组（用于判断访问样式） */
+    public static final String[] CLOUD_SERVICE = {"aliyun", "qcloud", "qiniu", "obs"};
+
+    /** 本地存储资源访问前缀 */
+    public static final String RESOURCE_PREFIX = "/resource/oss";
 }
 ```

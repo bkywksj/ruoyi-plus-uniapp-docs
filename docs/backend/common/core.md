@@ -883,6 +883,272 @@ List<Long> ids = StreamUtils.toList(users, User::getId);
 List<Long> ids = users.stream().map(User::getId).collect(Collectors.toList());
 ```
 
+## 类型转换器
+
+### LongListConverter
+
+用于将逗号分隔的字符串与 `List<Long>` 之间进行转换，常用于数据库存储多个ID的场景。
+
+```java
+@Data
+public class UserBo {
+    /**
+     * 角色ID列表，存储格式：1,2,3
+     */
+    @TableField(typeHandler = LongListConverter.class)
+    private List<Long> roleIds;
+}
+```
+
+**转换示例：**
+
+| 数据库值 | Java对象 |
+|----------|----------|
+| `"1,2,3"` | `[1L, 2L, 3L]` |
+| `""` | `[]` |
+| `null` | `null` |
+
+### StringListConverter
+
+用于将逗号分隔的字符串与 `List<String>` 之间进行转换。
+
+```java
+@Data
+public class ConfigBo {
+    /**
+     * 允许的文件扩展名，存储格式：jpg,png,gif
+     */
+    @TableField(typeHandler = StringListConverter.class)
+    private List<String> allowedExtensions;
+}
+```
+
+**使用场景：**
+
+- 多选标签存储
+- 权限列表存储
+- 文件扩展名白名单
+
+## 配置属性
+
+### AppProperties
+
+应用配置属性类，用于读取应用级别的配置信息。
+
+```java
+@Data
+@ConfigurationProperties(prefix = "app")
+public class AppProperties {
+
+    /** 应用名称 */
+    private String name = "RuoYi-Plus";
+
+    /** 版本信息 */
+    private String version = "1.0.0";
+
+    /** 版权年份 */
+    private String copyrightYear = "2024";
+
+    /** 是否开启验证码 */
+    private Boolean captchaEnabled = true;
+
+    /** 验证码类型 */
+    private String captchaType = "math";
+
+    /** 文件路径 */
+    private String profile = "/ruoyi/uploadPath";
+
+    /** 获取IP地址开关 */
+    private Boolean addressEnabled = false;
+}
+```
+
+**配置示例：**
+
+```yaml
+app:
+  name: RuoYi-Plus
+  version: 1.0.0
+  captcha-enabled: true
+  captcha-type: math  # math-数字计算, char-字符验证
+  address-enabled: true
+```
+
+### ThreadPoolProperties
+
+线程池配置属性，支持自定义线程池参数。
+
+```java
+@Data
+@ConfigurationProperties(prefix = "thread-pool")
+public class ThreadPoolProperties {
+
+    /** 是否启用线程池 */
+    private boolean enabled = true;
+
+    /** 核心线程数 */
+    private int corePoolSize = Runtime.getRuntime().availableProcessors();
+
+    /** 最大线程数 */
+    private int maxPoolSize = corePoolSize * 2;
+
+    /** 队列容量 */
+    private int queueCapacity = 500;
+
+    /** 线程存活时间（秒） */
+    private int keepAliveSeconds = 60;
+
+    /** 拒绝策略 */
+    private String rejectedPolicy = "CallerRunsPolicy";
+}
+```
+
+**配置示例：**
+
+```yaml
+thread-pool:
+  enabled: true
+  core-pool-size: 8
+  max-pool-size: 16
+  queue-capacity: 1000
+  keep-alive-seconds: 300
+  rejected-policy: CallerRunsPolicy  # CallerRunsPolicy, AbortPolicy, DiscardPolicy
+```
+
+**拒绝策略说明：**
+
+| 策略 | 说明 |
+|------|------|
+| `CallerRunsPolicy` | 调用者线程执行任务 |
+| `AbortPolicy` | 抛出异常拒绝任务 |
+| `DiscardPolicy` | 静默丢弃任务 |
+| `DiscardOldestPolicy` | 丢弃最旧任务后重试 |
+
+## 常见问题
+
+### Q1: R类的国际化消息如何配置？
+
+国际化消息自动识别以下格式的key：
+
+```java
+// 以下格式会自动翻译
+R.ok("user.create.success");          // key格式
+R.fail("error.user.not.found", userId); // 支持占位符
+
+// 普通消息不翻译
+R.ok("操作成功");
+```
+
+**配置文件 `messages.properties`：**
+
+```properties
+user.create.success=用户创建成功
+error.user.not.found=用户[{0}]不存在
+```
+
+### Q2: 如何在同类方法中调用触发AOP？
+
+使用 `SpringUtils.getAopProxy()` 获取代理对象：
+
+```java
+@Service
+public class UserServiceImpl {
+
+    @Transactional
+    public void methodA() {
+        // 直接调用不会触发AOP
+        // this.methodB();
+
+        // 使用代理对象调用，可触发AOP
+        SpringUtils.getAopProxy(this).methodB();
+    }
+
+    @Transactional
+    public void methodB() {
+        // 事务逻辑
+    }
+}
+```
+
+### Q3: StreamUtils与Java Stream API如何选择？
+
+优先使用 `StreamUtils`，原因：
+
+1. **空值保护**：自动处理null集合，避免NPE
+2. **代码简洁**：方法链更短
+3. **序列化安全**：返回可变List，避免序列化问题
+
+```java
+// 推荐
+List<Long> ids = StreamUtils.toList(users, User::getId);
+
+// 不推荐（可能NPE，返回不可变List）
+List<Long> ids = users.stream().map(User::getId).toList();
+```
+
+### Q4: ServiceException的占位符格式？
+
+使用 `{}` 作为占位符，支持多个参数：
+
+```java
+throw new ServiceException("用户{}在部门{}中不存在", userId, deptId);
+// 输出：用户123在部门456中不存在
+
+throw ServiceException.of("余额不足，当前{}，需要{}", current, required);
+// 输出：余额不足，当前100，需要200
+```
+
+### Q5: 如何自定义校验分组？
+
+创建自定义分组接口：
+
+```java
+// 定义分组
+public interface ImportGroup { }
+public interface ExportGroup { }
+
+// 使用分组
+@Data
+public class FileBo {
+    @NotBlank(groups = ImportGroup.class)
+    private String filePath;
+
+    @NotBlank(groups = ExportGroup.class)
+    private String exportPath;
+}
+
+// 控制器中使用
+@PostMapping("/import")
+public R<Void> importFile(@Validated(ImportGroup.class) @RequestBody FileBo bo) {
+    return R.ok();
+}
+```
+
+### Q6: 虚拟线程模式如何启用？
+
+在 JDK 21+ 环境下，通过配置启用：
+
+```yaml
+spring:
+  threads:
+    virtual:
+      enabled: true
+```
+
+代码中检查虚拟线程状态：
+
+```java
+if (SpringUtils.isVirtual()) {
+    log.info("当前运行在虚拟线程模式");
+}
+```
+
+**虚拟线程优势：**
+
+- 更高的并发能力
+- 更低的内存占用
+- 简化异步编程模型
+
 ## 注意事项
 
 - **线程安全**：所有工具类都是线程安全的
@@ -891,3 +1157,6 @@ List<Long> ids = users.stream().map(User::getId).collect(Collectors.toList());
 - **虚拟线程**：JDK 21+环境下可启用虚拟线程模式
 - **国际化**：`R`类自动识别国际化键并翻译
 - **编码规范**：遵循阿里巴巴Java开发手册
+- **类型转换**：使用内置转换器处理集合类型的数据库存储
+- **配置优先级**：YAML配置优先级高于默认值
+- **异常链**：ServiceException支持异常链，保留原始异常信息

@@ -521,3 +521,783 @@ const totalHeight = statusBarHeight + navigationBarHeight
 - 确认组件路径正确
 - 组件名使用 PascalCase
 - 重启开发服务器
+
+### 5. 类型提示不正确？
+
+**解决方案**：
+- 检查 `src/types/uni-pages.d.ts` 是否存在
+- 确认 `tsconfig.json` 包含类型文件
+- 重新运行开发命令生成类型
+
+### 6. 分包路径跳转失败？
+
+**解决方案**：
+```typescript
+// ❌ 错误：缺少分包根目录前缀
+uni.navigateTo({ url: '/user/user' })
+
+// ✅ 正确：包含完整分包路径
+uni.navigateTo({ url: '/pages-sub/admin/user/user' })
+```
+
+### 7. 热更新后页面配置丢失？
+
+**解决方案**：
+- 确保修改 `pages.config.ts` 而非生成的 `pages.json`
+- 配置正确的 `dts` 输出路径
+- 检查 Vite 插件顺序
+
+## 插件高级配置
+
+### UniPages 插件配置
+
+本项目使用 `@uni-helper/vite-plugin-uni-pages` 插件自动生成路由配置。
+
+#### 完整配置示例
+
+```typescript
+// vite/plugins/uni-pages.ts
+import UniPages from '@uni-helper/vite-plugin-uni-pages'
+
+export default (mode: string) => {
+  return UniPages({
+    // 直接设置主页
+    homePage: 'pages/index/index',
+
+    // 排除的组件路径
+    exclude: ['**/components/**/**.*'],
+
+    // 路由配置块语言
+    routeBlockLang: 'json5',
+
+    // 分包配置
+    subPackages: [
+      'src/pages-sub/admin',
+      // 根据环境条件加载分包
+      ...(mode === 'production' ? [] : ['src/pages-sub/demo']),
+    ],
+
+    // 类型声明文件输出路径
+    dts: 'src/types/uni-pages.d.ts',
+
+    // 页面元数据处理钩子
+    onAfterMergePageMetaData(ctx) {
+      // 处理主包页面
+      ctx.pageMetaData.forEach((page) => {
+        page.layout = 'default'
+      })
+
+      // 处理分包页面
+      if (ctx.subPageMetaData) {
+        ctx.subPageMetaData.forEach((subPackage) => {
+          subPackage.pages.forEach((page) => {
+            // 根据分包根目录设置布局
+            if (subPackage.root === 'pages-sub/admin') {
+              page.layout = 'default'
+            }
+          })
+        })
+      }
+    },
+  })
+}
+```
+
+#### 配置项说明
+
+| 配置项 | 类型 | 说明 |
+|--------|------|------|
+| `homePage` | String | 首页路径，对应入口页面 |
+| `exclude` | String[] | 排除的文件路径模式 |
+| `routeBlockLang` | String | 路由配置块语言（json/json5/yaml） |
+| `subPackages` | String[] | 分包目录列表 |
+| `dts` | String | 类型声明文件输出路径 |
+| `onAfterMergePageMetaData` | Function | 页面元数据合并后的钩子函数 |
+
+### 布局系统集成
+
+#### 布局模板定义
+
+```vue
+<!-- src/layouts/default.vue -->
+<template>
+  <view class="layout-default">
+    <slot />
+  </view>
+</template>
+```
+
+#### 布局分配策略
+
+通过 `onAfterMergePageMetaData` 钩子动态分配布局：
+
+```typescript
+onAfterMergePageMetaData(ctx) {
+  ctx.pageMetaData.forEach((page) => {
+    // 根据路径模式分配布局
+    if (page.path.includes('auth/')) {
+      page.layout = 'auth'        // 认证页面布局
+    } else if (page.path.includes('admin/')) {
+      page.layout = 'admin'       // 管理页面布局
+    } else {
+      page.layout = 'default'     // 默认布局
+    }
+  })
+}
+```
+
+### 类型声明自动生成
+
+插件会自动生成页面路由类型声明文件：
+
+```typescript
+// src/types/uni-pages.d.ts（自动生成）
+interface NavigateToOptions {
+  url: "/pages/index/index" |
+       "/pages/auth/login" |
+       "/pages/auth/register" |
+       "/pages/my/settings" |
+       "/pages-sub/admin/user/user";
+}
+
+interface RedirectToOptions extends NavigateToOptions {}
+interface SwitchTabOptions {}
+type ReLaunchOptions = NavigateToOptions | SwitchTabOptions;
+
+declare interface Uni {
+  navigateTo(options: UniNamespace.NavigateToOptions & NavigateToOptions): void;
+  redirectTo(options: UniNamespace.RedirectToOptions & RedirectToOptions): void;
+  switchTab(options: UniNamespace.SwitchTabOptions & SwitchTabOptions): void;
+  reLaunch(options: UniNamespace.ReLaunchOptions & ReLaunchOptions): void;
+}
+```
+
+**类型安全导航**：
+
+```typescript
+// ✅ IDE 自动补全和类型检查
+uni.navigateTo({ url: '/pages/auth/login' })
+
+// ❌ 类型错误：不存在的路径
+uni.navigateTo({ url: '/pages/not-exist' })
+```
+
+## 页面生命周期配置
+
+### 生命周期钩子
+
+在页面中使用 UniApp 生命周期：
+
+```vue
+<script setup lang="ts">
+import { onLoad, onShow, onHide, onUnload, onPullDownRefresh } from '@dcloudio/uni-app'
+
+// 页面加载
+onLoad((options) => {
+  console.log('页面参数:', options)
+})
+
+// 页面显示
+onShow(() => {
+  console.log('页面显示')
+})
+
+// 页面隐藏
+onHide(() => {
+  console.log('页面隐藏')
+})
+
+// 页面卸载
+onUnload(() => {
+  console.log('页面卸载')
+})
+
+// 下拉刷新
+onPullDownRefresh(() => {
+  // 刷新逻辑
+  setTimeout(() => {
+    uni.stopPullDownRefresh()
+  }, 1000)
+})
+</script>
+```
+
+### 分享配置
+
+在页面中配置分享功能：
+
+```vue
+<script lang="ts" setup>
+const { handleShareAppMessage, handleShareTimeline } = useShare()
+
+defineExpose({
+  onShareAppMessage: handleShareAppMessage,
+  onShareTimeline: handleShareTimeline,
+})
+</script>
+```
+
+## 路由参数处理
+
+### 传递参数
+
+```typescript
+// 传递单个参数
+uni.navigateTo({
+  url: '/pages/user/detail?id=123'
+})
+
+// 传递多个参数
+uni.navigateTo({
+  url: `/pages/order/detail?orderId=${orderId}&type=${type}`
+})
+
+// 传递复杂对象（需编码）
+const params = encodeURIComponent(JSON.stringify({ id: 1, name: 'test' }))
+uni.navigateTo({
+  url: `/pages/detail?params=${params}`
+})
+```
+
+### 接收参数
+
+```vue
+<script setup lang="ts">
+import { onLoad } from '@dcloudio/uni-app'
+
+// 方式一：通过 onLoad 接收
+onLoad((options) => {
+  const id = options?.id
+  const type = options?.type
+})
+
+// 方式二：通过 defineProps 接收（需配合插件）
+const props = defineProps<{
+  id?: string
+  type?: string
+}>()
+</script>
+```
+
+### 复杂参数处理
+
+```typescript
+// 页面 A：传递复杂参数
+const data = { userId: 123, filters: ['a', 'b'] }
+uni.navigateTo({
+  url: `/pages/list?data=${encodeURIComponent(JSON.stringify(data))}`
+})
+
+// 页面 B：接收并解析
+onLoad((options) => {
+  if (options?.data) {
+    const data = JSON.parse(decodeURIComponent(options.data))
+    console.log(data.userId)     // 123
+    console.log(data.filters)    // ['a', 'b']
+  }
+})
+```
+
+## 路由守卫实现
+
+### 全局路由拦截
+
+```typescript
+// utils/router-guard.ts
+import { useAuth } from '@/composables/useAuth'
+
+// 需要登录的页面路径
+const authPages = [
+  '/pages/my/settings',
+  '/pages/order/list',
+  '/pages-sub/admin/user/user'
+]
+
+// 路由拦截器
+export const setupRouterGuard = () => {
+  // 拦截 navigateTo
+  const originalNavigateTo = uni.navigateTo
+  uni.navigateTo = (options) => {
+    if (authPages.some(path => options.url.startsWith(path))) {
+      const auth = useAuth()
+      if (!auth.isLoggedIn.value) {
+        uni.navigateTo({
+          url: `/pages/auth/login?redirect=${encodeURIComponent(options.url)}`
+        })
+        return
+      }
+    }
+    return originalNavigateTo(options)
+  }
+}
+```
+
+### 页面级权限控制
+
+```vue
+<script setup lang="ts">
+import { onLoad } from '@dcloudio/uni-app'
+
+const auth = useAuth()
+
+onLoad(() => {
+  // 检查登录状态
+  if (!auth.isLoggedIn.value) {
+    uni.redirectTo({ url: '/pages/auth/login' })
+    return
+  }
+
+  // 检查权限
+  if (!auth.hasPermission('user:view')) {
+    uni.showToast({ title: '无权限访问', icon: 'none' })
+    uni.navigateBack()
+    return
+  }
+})
+</script>
+```
+
+## 路由动画配置
+
+### 页面切换动画
+
+```typescript
+// 自定义页面切换动画
+uni.navigateTo({
+  url: '/pages/detail/index',
+  animationType: 'slide-in-right',   // 动画类型
+  animationDuration: 300             // 动画时长
+})
+```
+
+### 常用动画类型
+
+| 动画类型 | 说明 |
+|----------|------|
+| `slide-in-right` | 从右侧滑入（默认） |
+| `slide-in-left` | 从左侧滑入 |
+| `slide-in-top` | 从顶部滑入 |
+| `slide-in-bottom` | 从底部滑入 |
+| `fade-in` | 淡入 |
+| `zoom-in` | 缩放进入 |
+| `zoom-fade-in` | 缩放淡入 |
+| `pop-in` | 弹出进入 |
+
+### 返回动画
+
+```typescript
+uni.navigateBack({
+  delta: 1,                          // 返回层数
+  animationType: 'slide-out-right',  // 动画类型
+  animationDuration: 300             // 动画时长
+})
+```
+
+## 多窗口模式
+
+### 页面栈管理
+
+```typescript
+// 获取当前页面栈
+const pages = getCurrentPages()
+const currentPage = pages[pages.length - 1]
+
+// 获取上一页面
+const prevPage = pages[pages.length - 2]
+
+// 向上一页面传递数据
+if (prevPage) {
+  prevPage.$vm.receiveData = { id: 123 }
+}
+```
+
+### 页面栈操作
+
+```typescript
+// 关闭当前页面，返回上一级
+uni.navigateBack({ delta: 1 })
+
+// 关闭当前页面，跳转到指定页面
+uni.redirectTo({ url: '/pages/home/index' })
+
+// 关闭所有页面，打开指定页面
+uni.reLaunch({ url: '/pages/index/index' })
+
+// 跳转到 tabBar 页面（关闭其他非 tabBar 页面）
+uni.switchTab({ url: '/pages/index/index' })
+```
+
+## 性能优化
+
+### 分包加载优化
+
+**1. 合理划分分包**
+
+```typescript
+// 按业务模块划分
+subPackages: [
+  'src/pages-sub/admin',     // 管理模块
+  'src/pages-sub/order',     // 订单模块
+  'src/pages-sub/product',   // 商品模块
+]
+```
+
+**2. 配置预加载**
+
+```typescript
+{
+  preloadRule: {
+    'pages/index/index': {
+      network: 'wifi',
+      packages: ['pages-sub/order']  // 在首页预加载订单分包
+    },
+    'pages/product/list': {
+      network: 'all',
+      packages: ['pages-sub/product'] // 在商品列表预加载商品分包
+    }
+  }
+}
+```
+
+### 页面加载优化
+
+**1. 懒加载组件**
+
+```vue
+<template>
+  <view>
+    <!-- 条件渲染重组件 -->
+    <HeavyComponent v-if="showHeavy" />
+  </view>
+</template>
+
+<script setup lang="ts">
+const showHeavy = ref(false)
+
+onMounted(() => {
+  // 延迟加载重组件
+  setTimeout(() => {
+    showHeavy.value = true
+  }, 100)
+})
+</script>
+```
+
+**2. 骨架屏优化**
+
+```vue
+<template>
+  <view>
+    <!-- 骨架屏 -->
+    <wd-skeleton v-if="loading" :count="5" />
+    <!-- 实际内容 -->
+    <view v-else>
+      <ContentList :data="list" />
+    </view>
+  </view>
+</template>
+```
+
+### 资源加载优化
+
+**1. 图片懒加载**
+
+```vue
+<template>
+  <scroll-view scroll-y>
+    <wd-img
+      v-for="item in images"
+      :key="item.id"
+      :src="item.url"
+      lazy-load
+    />
+  </scroll-view>
+</template>
+```
+
+**2. 按需加载分包资源**
+
+```typescript
+// 分包内的图片资源
+// ✅ 推荐：放在分包目录下
+// pages-sub/admin/static/logo.png
+
+// ❌ 避免：放在主包公共目录
+// static/admin/logo.png
+```
+
+## 调试技巧
+
+### 路由调试
+
+```typescript
+// 打印当前页面栈
+const logPageStack = () => {
+  const pages = getCurrentPages()
+  console.log('页面栈:', pages.map(p => p.route))
+}
+
+// 打印页面参数
+onLoad((options) => {
+  console.log('页面路径:', getCurrentPages().slice(-1)[0].route)
+  console.log('页面参数:', options)
+})
+```
+
+### 配置验证
+
+```bash
+# 查看生成的 pages.json
+cat src/pages.json
+
+# 验证分包配置
+npm run dev:mp-weixin
+# 在微信开发者工具中查看"详情" -> "代码依赖分析"
+```
+
+### 常见调试命令
+
+```bash
+# 重新生成路由配置
+rm src/pages.json && npm run dev:h5
+
+# 清除缓存重启
+rm -rf node_modules/.vite && npm run dev:h5
+
+# 检查类型声明
+cat src/types/uni-pages.d.ts
+```
+
+## 迁移指南
+
+### 从 pages.json 迁移
+
+**1. 创建 pages.config.ts**
+
+```typescript
+// pages.config.ts
+import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
+
+export default defineUniPages({
+  globalStyle: {
+    // 从 pages.json 复制全局样式配置
+  },
+  easycom: {
+    // 从 pages.json 复制 easycom 配置
+  }
+})
+```
+
+**2. 迁移页面配置**
+
+```vue
+<!-- 在页面文件中添加 definePage -->
+<script setup lang="ts">
+definePage({
+  style: {
+    navigationBarTitleText: '页面标题',
+    // 其他样式配置
+  }
+})
+</script>
+```
+
+**3. 删除原 pages.json**
+
+```bash
+rm src/pages.json
+```
+
+### 从其他路由方案迁移
+
+**vue-router 风格迁移**：
+
+```typescript
+// ❌ vue-router 风格
+const routes = [
+  { path: '/user/:id', component: UserDetail }
+]
+
+// ✅ uni-app 风格
+// 1. 创建 pages/user/detail.vue
+// 2. 使用查询参数传递 id
+uni.navigateTo({ url: `/pages/user/detail?id=${id}` })
+```
+
+## 与 TypeScript 集成
+
+### 路由参数类型
+
+```typescript
+// types/router.ts
+export interface UserDetailParams {
+  id: string
+  type?: 'view' | 'edit'
+}
+
+export interface OrderListParams {
+  status?: string
+  page?: number
+}
+```
+
+### 类型安全导航函数
+
+```typescript
+// utils/router.ts
+import type { UserDetailParams, OrderListParams } from '@/types/router'
+
+export const router = {
+  toUserDetail(params: UserDetailParams) {
+    const query = new URLSearchParams(params as any).toString()
+    uni.navigateTo({ url: `/pages/user/detail?${query}` })
+  },
+
+  toOrderList(params?: OrderListParams) {
+    const query = params
+      ? `?${new URLSearchParams(params as any).toString()}`
+      : ''
+    uni.navigateTo({ url: `/pages/order/list${query}` })
+  }
+}
+
+// 使用
+router.toUserDetail({ id: '123', type: 'edit' })
+router.toOrderList({ status: 'pending', page: 1 })
+```
+
+### Props 类型定义
+
+```vue
+<script setup lang="ts">
+interface PageProps {
+  id?: string
+  type?: 'view' | 'edit'
+  redirect?: string
+}
+
+const props = withDefaults(defineProps<PageProps>(), {
+  type: 'view'
+})
+
+// 使用 props
+console.log(props.id, props.type)
+</script>
+```
+
+## 安全配置
+
+### 路由白名单
+
+```typescript
+// 免登录页面白名单
+const whiteList = [
+  '/pages/index/index',
+  '/pages/auth/login',
+  '/pages/auth/register',
+  '/pages/about/index'
+]
+
+// 检查是否需要登录
+const needAuth = (url: string) => {
+  return !whiteList.some(path => url.startsWith(path))
+}
+```
+
+### 敏感页面保护
+
+```typescript
+// 敏感页面配置
+const sensitivePages = [
+  '/pages/my/settings',
+  '/pages/my/security',
+  '/pages-sub/admin/user/user'
+]
+
+// 访问敏感页面时重新验证身份
+const checkSensitivePage = async (url: string) => {
+  if (sensitivePages.some(path => url.startsWith(path))) {
+    const verified = await verifyIdentity()
+    if (!verified) {
+      uni.showToast({ title: '身份验证失败', icon: 'none' })
+      return false
+    }
+  }
+  return true
+}
+```
+
+## 配置示例汇总
+
+### 完整 pages.config.ts 示例
+
+```typescript
+import { defineUniPages } from '@uni-helper/vite-plugin-uni-pages'
+
+export default defineUniPages({
+  globalStyle: {
+    navigationBarTitleText: 'RuoYi Plus',
+    navigationStyle: 'custom',
+    backgroundColor: '#f5f5f5',
+
+    'mp-alipay': {
+      transparentTitle: 'always',
+      titlePenetrate: 'YES'
+    },
+
+    'h5': {
+      titleNView: false
+    },
+
+    'app-plus': {
+      bounce: 'none'
+    }
+  },
+
+  easycom: {
+    autoscan: true,
+    custom: {
+      '^wd-(.*)': '@/wd/components/wd-$1/wd-$1.vue',
+      '^Custom(.*)': '@/components/Custom$1/Custom$1.vue'
+    }
+  }
+})
+```
+
+### 完整插件配置示例
+
+```typescript
+// vite/plugins/uni-pages.ts
+import UniPages from '@uni-helper/vite-plugin-uni-pages'
+
+export default (mode: string) => {
+  const isDev = mode === 'development'
+
+  return UniPages({
+    homePage: 'pages/index/index',
+    exclude: ['**/components/**/**.*'],
+    routeBlockLang: 'json5',
+
+    subPackages: [
+      'src/pages-sub/admin',
+      ...(isDev ? ['src/pages-sub/demo'] : []),
+    ],
+
+    dts: 'src/types/uni-pages.d.ts',
+
+    onAfterMergePageMetaData(ctx) {
+      // 设置默认布局
+      ctx.pageMetaData.forEach((page) => {
+        page.layout = page.layout || 'default'
+      })
+
+      // 处理分包
+      ctx.subPageMetaData?.forEach((sub) => {
+        sub.pages.forEach((page) => {
+          page.layout = page.layout || 'default'
+        })
+      })
+    },
+  })
+}
+```
