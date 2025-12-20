@@ -817,8 +817,1233 @@ if (data) {
 }
 ```
 
-## 扩展阅读
+## 插件架构设计
 
-- Vue 3 Composition API 官方文档
-- UniApp API 文档
-- TypeScript 官方文档
+### 插件分层架构
+
+框架的插件采用分层架构设计，确保职责清晰、易于维护：
+
+```
+┌─────────────────────────────────────────┐
+│              应用层 (Pages)              │
+│  页面组件直接使用 Composables           │
+├─────────────────────────────────────────┤
+│            业务层 (Business)             │
+│  usePayment, useShare, useAuth 等       │
+├─────────────────────────────────────────┤
+│             通用层 (Common)              │
+│  useHttp, useWebSocket, useEventBus 等  │
+├─────────────────────────────────────────┤
+│             基础层 (Core)                │
+│  useToken, useStorage, useConfig 等     │
+├─────────────────────────────────────────┤
+│            平台层 (Platform)             │
+│  平台差异适配、条件编译                  │
+└─────────────────────────────────────────┘
+```
+
+### 依赖注入模式
+
+使用 Vue 3 的 provide/inject 实现依赖注入：
+
+```typescript
+// plugins/injection.ts
+import { InjectionKey, provide, inject } from 'vue'
+
+// 定义注入键
+export const HTTP_KEY: InjectionKey<ReturnType<typeof useHttp>> = Symbol('http')
+export const AUTH_KEY: InjectionKey<ReturnType<typeof useAuth>> = Symbol('auth')
+
+// 提供依赖（在 App.vue 中）
+export const providePlugins = () => {
+  provide(HTTP_KEY, useHttp())
+  provide(AUTH_KEY, useAuth())
+}
+
+// 注入依赖（在任意组件中）
+export const injectHttp = () => {
+  const http = inject(HTTP_KEY)
+  if (!http) {
+    throw new Error('useHttp 未在上层组件中提供')
+  }
+  return http
+}
+```
+
+**使用示例：**
+
+```vue
+<!-- App.vue -->
+<script lang="ts" setup>
+import { providePlugins } from '@/plugins/injection'
+
+providePlugins()
+</script>
+
+<!-- 子组件 -->
+<script lang="ts" setup>
+import { injectHttp } from '@/plugins/injection'
+
+const http = injectHttp()
+const { get } = http
+</script>
+```
+
+### 单例模式实现
+
+对于需要全局共享状态的插件，使用单例模式：
+
+```typescript
+// composables/useSingleton.ts
+import { ref, Ref } from 'vue'
+
+// 创建单例工厂
+function createSingleton<T>(factory: () => T): () => T {
+  let instance: T | null = null
+
+  return () => {
+    if (!instance) {
+      instance = factory()
+    }
+    return instance
+  }
+}
+
+// 单例用户状态
+const createUserState = () => {
+  const user = ref<User | null>(null)
+  const isLoggedIn = ref(false)
+
+  const setUser = (userData: User) => {
+    user.value = userData
+    isLoggedIn.value = true
+  }
+
+  const clearUser = () => {
+    user.value = null
+    isLoggedIn.value = false
+  }
+
+  return {
+    user: readonly(user),
+    isLoggedIn: readonly(isLoggedIn),
+    setUser,
+    clearUser
+  }
+}
+
+export const useUserState = createSingleton(createUserState)
+```
+
+### 插件组合模式
+
+多个插件可以组合使用，形成更复杂的业务逻辑：
+
+```typescript
+// composables/useUserProfile.ts
+import { useHttp } from './useHttp'
+import { useAuth } from './useAuth'
+import { useToast } from './useToast'
+
+/**
+ * 用户资料管理组合插件
+ * 组合了 HTTP、认证、提示等多个基础插件
+ */
+export const useUserProfile = () => {
+  const { get, put } = useHttp()
+  const { isAuthenticated, userId } = useAuth()
+  const { showSuccess, showError } = useToast()
+
+  const profile = ref<UserProfile | null>(null)
+  const loading = ref(false)
+
+  // 获取用户资料
+  const fetchProfile = async () => {
+    if (!isAuthenticated.value) {
+      showError('请先登录')
+      return
+    }
+
+    loading.value = true
+    try {
+      const [err, data] = await get<UserProfile>(`/api/user/${userId.value}/profile`)
+      if (err) {
+        showError('获取资料失败')
+        return
+      }
+      profile.value = data
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // 更新用户资料
+  const updateProfile = async (data: Partial<UserProfile>) => {
+    loading.value = true
+    try {
+      const [err] = await put(`/api/user/${userId.value}/profile`, data)
+      if (err) {
+        showError('更新失败')
+        return false
+      }
+      showSuccess('更新成功')
+      await fetchProfile()
+      return true
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return {
+    profile: readonly(profile),
+    loading: readonly(loading),
+    fetchProfile,
+    updateProfile
+  }
+}
+```
+
+## 插件生命周期
+
+### 生命周期钩子
+
+插件可以响应组件的生命周期事件：
+
+```typescript
+// composables/useLifecyclePlugin.ts
+import { onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
+
+export const useLifecyclePlugin = (options: PluginOptions = {}) => {
+  const { autoInit = true, autoCleanup = true } = options
+
+  const isActive = ref(false)
+  const isInitialized = ref(false)
+
+  // 初始化逻辑
+  const initialize = async () => {
+    if (isInitialized.value) return
+
+    console.log('[Plugin] 初始化')
+    // 执行初始化逻辑
+    isInitialized.value = true
+  }
+
+  // 清理逻辑
+  const cleanup = () => {
+    console.log('[Plugin] 清理')
+    // 执行清理逻辑
+    isInitialized.value = false
+    isActive.value = false
+  }
+
+  // 挂载时自动初始化
+  onMounted(() => {
+    if (autoInit) {
+      initialize()
+    }
+    isActive.value = true
+  })
+
+  // 卸载时自动清理
+  onUnmounted(() => {
+    if (autoCleanup) {
+      cleanup()
+    }
+  })
+
+  // 页面激活时恢复
+  onActivated(() => {
+    isActive.value = true
+    console.log('[Plugin] 页面激活')
+  })
+
+  // 页面失活时暂停
+  onDeactivated(() => {
+    isActive.value = false
+    console.log('[Plugin] 页面失活')
+  })
+
+  return {
+    isActive: readonly(isActive),
+    isInitialized: readonly(isInitialized),
+    initialize,
+    cleanup
+  }
+}
+```
+
+### 异步初始化
+
+处理需要异步初始化的插件：
+
+```typescript
+// composables/useAsyncPlugin.ts
+import { ref, onMounted } from 'vue'
+
+interface AsyncPluginOptions {
+  immediate?: boolean
+  onSuccess?: () => void
+  onError?: (error: Error) => void
+}
+
+export const useAsyncPlugin = (options: AsyncPluginOptions = {}) => {
+  const { immediate = true, onSuccess, onError } = options
+
+  const isReady = ref(false)
+  const isLoading = ref(false)
+  const error = ref<Error | null>(null)
+
+  const initialize = async () => {
+    if (isLoading.value || isReady.value) return
+
+    isLoading.value = true
+    error.value = null
+
+    try {
+      // 模拟异步初始化
+      await performAsyncInit()
+
+      isReady.value = true
+      onSuccess?.()
+    } catch (e) {
+      error.value = e as Error
+      onError?.(e as Error)
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  const reset = () => {
+    isReady.value = false
+    isLoading.value = false
+    error.value = null
+  }
+
+  // 立即初始化
+  if (immediate) {
+    onMounted(initialize)
+  }
+
+  return {
+    isReady: readonly(isReady),
+    isLoading: readonly(isLoading),
+    error: readonly(error),
+    initialize,
+    reset
+  }
+}
+
+// 使用 Promise.withResolvers 实现等待初始化完成
+export const useAwaitablePlugin = () => {
+  let resolveInit: () => void
+  let rejectInit: (reason: any) => void
+
+  const initPromise = new Promise<void>((resolve, reject) => {
+    resolveInit = resolve
+    rejectInit = reject
+  })
+
+  const initialize = async () => {
+    try {
+      await performAsyncInit()
+      resolveInit()
+    } catch (e) {
+      rejectInit(e)
+    }
+  }
+
+  // 等待初始化完成
+  const waitForReady = () => initPromise
+
+  return {
+    initialize,
+    waitForReady
+  }
+}
+```
+
+## 跨平台兼容策略
+
+### 条件编译
+
+使用 UniApp 条件编译处理平台差异：
+
+```typescript
+// composables/usePlatformStorage.ts
+export const usePlatformStorage = () => {
+  const setItem = (key: string, value: string) => {
+    // #ifdef H5
+    localStorage.setItem(key, value)
+    // #endif
+
+    // #ifdef MP-WEIXIN || MP-ALIPAY || APP-PLUS
+    uni.setStorageSync(key, value)
+    // #endif
+  }
+
+  const getItem = (key: string): string | null => {
+    // #ifdef H5
+    return localStorage.getItem(key)
+    // #endif
+
+    // #ifdef MP-WEIXIN || MP-ALIPAY || APP-PLUS
+    return uni.getStorageSync(key) || null
+    // #endif
+  }
+
+  const removeItem = (key: string) => {
+    // #ifdef H5
+    localStorage.removeItem(key)
+    // #endif
+
+    // #ifdef MP-WEIXIN || MP-ALIPAY || APP-PLUS
+    uni.removeStorageSync(key)
+    // #endif
+  }
+
+  return { setItem, getItem, removeItem }
+}
+```
+
+### 平台适配器模式
+
+使用适配器模式统一不同平台的 API：
+
+```typescript
+// composables/adapters/paymentAdapter.ts
+
+// 支付适配器接口
+interface PaymentAdapter {
+  pay(params: PaymentParams): Promise<PaymentResult>
+  queryOrder(orderId: string): Promise<OrderStatus>
+}
+
+// 微信支付适配器
+const wechatPayAdapter: PaymentAdapter = {
+  async pay(params) {
+    return new Promise((resolve, reject) => {
+      // #ifdef MP-WEIXIN
+      wx.requestPayment({
+        ...params,
+        success: (res) => resolve({ success: true, data: res }),
+        fail: (err) => reject(err)
+      })
+      // #endif
+    })
+  },
+
+  async queryOrder(orderId) {
+    // 调用后端查询接口
+    const { get } = useHttp()
+    const [err, data] = await get(`/api/pay/query/${orderId}`)
+    return data
+  }
+}
+
+// 支付宝支付适配器
+const alipayAdapter: PaymentAdapter = {
+  async pay(params) {
+    return new Promise((resolve, reject) => {
+      // #ifdef MP-ALIPAY
+      my.tradePay({
+        ...params,
+        success: (res) => resolve({ success: true, data: res }),
+        fail: (err) => reject(err)
+      })
+      // #endif
+    })
+  },
+
+  async queryOrder(orderId) {
+    const { get } = useHttp()
+    const [err, data] = await get(`/api/pay/alipay/query/${orderId}`)
+    return data
+  }
+}
+
+// 获取当前平台适配器
+export const getPaymentAdapter = (): PaymentAdapter => {
+  // #ifdef MP-WEIXIN
+  return wechatPayAdapter
+  // #endif
+
+  // #ifdef MP-ALIPAY
+  return alipayAdapter
+  // #endif
+
+  throw new Error('当前平台不支持支付')
+}
+```
+
+### 平台能力检测
+
+运行时检测平台能力：
+
+```typescript
+// composables/usePlatformCapability.ts
+export const usePlatformCapability = () => {
+  const capabilities = ref({
+    bluetooth: false,
+    nfc: false,
+    camera: true,
+    location: true,
+    biometric: false,
+    notification: true
+  })
+
+  const checkCapabilities = async () => {
+    // #ifdef APP-PLUS
+    // App 平台检测
+    capabilities.value.bluetooth = !!plus.bluetooth
+    capabilities.value.nfc = !!plus.nfc
+    capabilities.value.biometric = !!plus.fingerprint || !!plus.faceId
+    // #endif
+
+    // #ifdef MP-WEIXIN
+    // 微信小程序检测
+    try {
+      const setting = await uni.getSetting()
+      capabilities.value.location = !!setting.authSetting['scope.userLocation']
+      capabilities.value.camera = !!setting.authSetting['scope.camera']
+    } catch (e) {
+      console.warn('获取设置失败:', e)
+    }
+    // #endif
+
+    // #ifdef H5
+    // H5 平台检测
+    capabilities.value.bluetooth = 'bluetooth' in navigator
+    capabilities.value.notification = 'Notification' in window
+    capabilities.value.biometric = 'credentials' in navigator
+    // #endif
+  }
+
+  // 检查单个能力
+  const hasCapability = (name: keyof typeof capabilities.value) => {
+    return capabilities.value[name]
+  }
+
+  // 请求权限
+  const requestPermission = async (permission: string): Promise<boolean> => {
+    // #ifdef MP-WEIXIN
+    try {
+      await uni.authorize({ scope: permission })
+      return true
+    } catch (e) {
+      return false
+    }
+    // #endif
+
+    // #ifdef H5
+    if (permission === 'notification') {
+      const result = await Notification.requestPermission()
+      return result === 'granted'
+    }
+    return true
+    // #endif
+
+    return false
+  }
+
+  return {
+    capabilities: readonly(capabilities),
+    checkCapabilities,
+    hasCapability,
+    requestPermission
+  }
+}
+```
+
+## 状态管理集成
+
+### 与 Pinia 集成
+
+将插件与 Pinia 状态管理结合：
+
+```typescript
+// stores/usePluginStore.ts
+import { defineStore } from 'pinia'
+import { useHttp } from '@/composables/useHttp'
+
+export const usePluginStore = defineStore('plugin', () => {
+  const { get, post } = useHttp()
+
+  // 状态
+  const plugins = ref<Plugin[]>([])
+  const activePlugin = ref<string | null>(null)
+  const loading = ref(false)
+
+  // 获取插件列表
+  const fetchPlugins = async () => {
+    loading.value = true
+    try {
+      const [err, data] = await get<Plugin[]>('/api/plugins')
+      if (!err && data) {
+        plugins.value = data
+      }
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // 激活插件
+  const activatePlugin = async (pluginId: string) => {
+    const [err] = await post(`/api/plugins/${pluginId}/activate`)
+    if (!err) {
+      activePlugin.value = pluginId
+    }
+    return !err
+  }
+
+  // Getters
+  const getPlugin = (id: string) => {
+    return plugins.value.find(p => p.id === id)
+  }
+
+  const isPluginActive = (id: string) => {
+    return activePlugin.value === id
+  }
+
+  return {
+    plugins,
+    activePlugin,
+    loading,
+    fetchPlugins,
+    activatePlugin,
+    getPlugin,
+    isPluginActive
+  }
+})
+```
+
+### 响应式状态同步
+
+确保插件状态与 Store 同步：
+
+```typescript
+// composables/useSyncedPlugin.ts
+import { watch } from 'vue'
+import { useUserStore } from '@/stores/user'
+
+export const useSyncedPlugin = () => {
+  const userStore = useUserStore()
+  const localState = ref<UserState | null>(null)
+
+  // 同步 Store 状态到本地
+  watch(
+    () => userStore.user,
+    (newUser) => {
+      localState.value = newUser ? { ...newUser } : null
+    },
+    { immediate: true, deep: true }
+  )
+
+  // 更新时同步回 Store
+  const updateState = (data: Partial<UserState>) => {
+    if (localState.value) {
+      Object.assign(localState.value, data)
+      userStore.updateUser(localState.value)
+    }
+  }
+
+  return {
+    state: localState,
+    updateState
+  }
+}
+```
+
+## 错误处理模式
+
+### 全局错误边界
+
+创建插件级别的错误边界：
+
+```typescript
+// composables/usePluginErrorBoundary.ts
+import { ref, onErrorCaptured } from 'vue'
+
+interface ErrorInfo {
+  message: string
+  stack?: string
+  component?: string
+  timestamp: number
+}
+
+export const usePluginErrorBoundary = () => {
+  const errors = ref<ErrorInfo[]>([])
+  const hasError = ref(false)
+
+  // 捕获子组件错误
+  onErrorCaptured((err, instance, info) => {
+    const errorInfo: ErrorInfo = {
+      message: err.message,
+      stack: err.stack,
+      component: instance?.$options.name,
+      timestamp: Date.now()
+    }
+
+    errors.value.push(errorInfo)
+    hasError.value = true
+
+    // 上报错误
+    reportError(errorInfo)
+
+    // 返回 false 阻止错误继续传播
+    return false
+  })
+
+  // 重置错误状态
+  const resetError = () => {
+    hasError.value = false
+  }
+
+  // 清除所有错误
+  const clearErrors = () => {
+    errors.value = []
+    hasError.value = false
+  }
+
+  return {
+    errors: readonly(errors),
+    hasError: readonly(hasError),
+    resetError,
+    clearErrors
+  }
+}
+```
+
+### 重试机制
+
+为插件操作添加自动重试：
+
+```typescript
+// composables/useRetry.ts
+interface RetryOptions {
+  maxRetries?: number
+  delay?: number
+  backoff?: boolean
+  onRetry?: (attempt: number, error: Error) => void
+}
+
+export const useRetry = () => {
+  const retry = async <T>(
+    fn: () => Promise<T>,
+    options: RetryOptions = {}
+  ): Promise<T> => {
+    const {
+      maxRetries = 3,
+      delay = 1000,
+      backoff = true,
+      onRetry
+    } = options
+
+    let lastError: Error
+
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        return await fn()
+      } catch (error) {
+        lastError = error as Error
+
+        if (attempt < maxRetries) {
+          onRetry?.(attempt + 1, lastError)
+
+          // 计算延迟时间（指数退避）
+          const waitTime = backoff
+            ? delay * Math.pow(2, attempt)
+            : delay
+
+          await sleep(waitTime)
+        }
+      }
+    }
+
+    throw lastError!
+  }
+
+  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
+  return { retry }
+}
+
+// 使用示例
+const { retry } = useRetry()
+
+const fetchWithRetry = async () => {
+  return await retry(
+    async () => {
+      const [err, data] = await get('/api/unstable-endpoint')
+      if (err) throw err
+      return data
+    },
+    {
+      maxRetries: 3,
+      delay: 1000,
+      onRetry: (attempt) => {
+        console.log(`重试第 ${attempt} 次...`)
+      }
+    }
+  )
+}
+```
+
+### 降级处理
+
+当插件功能不可用时的降级策略：
+
+```typescript
+// composables/useFallback.ts
+interface FallbackOptions<T> {
+  primary: () => Promise<T>
+  fallback: () => Promise<T>
+  shouldFallback?: (error: Error) => boolean
+}
+
+export const useFallback = () => {
+  const withFallback = async <T>(options: FallbackOptions<T>): Promise<T> => {
+    const {
+      primary,
+      fallback,
+      shouldFallback = () => true
+    } = options
+
+    try {
+      return await primary()
+    } catch (error) {
+      if (shouldFallback(error as Error)) {
+        console.warn('主要方法失败，使用降级方案:', error)
+        return await fallback()
+      }
+      throw error
+    }
+  }
+
+  return { withFallback }
+}
+
+// 使用示例
+const { withFallback } = useFallback()
+
+const getLocation = async () => {
+  return await withFallback({
+    // 主要方法：使用高精度定位
+    primary: async () => {
+      return await uni.getLocation({ type: 'gcj02', isHighAccuracy: true })
+    },
+    // 降级方法：使用 IP 定位
+    fallback: async () => {
+      const { get } = useHttp()
+      const [err, data] = await get('/api/location/ip')
+      return data
+    },
+    // 判断是否需要降级
+    shouldFallback: (error) => {
+      return error.message.includes('定位失败')
+    }
+  })
+}
+```
+
+## 性能优化
+
+### 懒加载插件
+
+按需加载插件以减少初始加载时间：
+
+```typescript
+// composables/useLazyPlugin.ts
+import { shallowRef, triggerRef } from 'vue'
+
+export const useLazyPlugin = <T>(loader: () => Promise<T>) => {
+  const plugin = shallowRef<T | null>(null)
+  const loading = ref(false)
+  const loaded = ref(false)
+
+  const load = async (): Promise<T> => {
+    if (loaded.value && plugin.value) {
+      return plugin.value
+    }
+
+    loading.value = true
+    try {
+      plugin.value = await loader()
+      loaded.value = true
+      triggerRef(plugin)
+      return plugin.value
+    } finally {
+      loading.value = false
+    }
+  }
+
+  return {
+    plugin,
+    loading: readonly(loading),
+    loaded: readonly(loaded),
+    load
+  }
+}
+
+// 使用示例：懒加载地图插件
+const { plugin: mapPlugin, load: loadMap, loaded } = useLazyPlugin(async () => {
+  // 动态导入地图 SDK
+  const { default: AMap } = await import('@amap/amap-jsapi-loader')
+  await AMap.load({
+    key: 'your-key',
+    version: '2.0'
+  })
+  return window.AMap
+})
+
+// 需要时才加载
+const initMap = async () => {
+  const AMap = await loadMap()
+  const map = new AMap.Map('container')
+}
+```
+
+### 缓存策略
+
+为插件数据添加缓存：
+
+```typescript
+// composables/useCachedPlugin.ts
+interface CacheOptions {
+  ttl?: number // 缓存时间（毫秒）
+  key?: string
+  storage?: 'memory' | 'local' | 'session'
+}
+
+const memoryCache = new Map<string, { data: any; expiry: number }>()
+
+export const useCachedPlugin = <T>(options: CacheOptions = {}) => {
+  const {
+    ttl = 5 * 60 * 1000, // 默认5分钟
+    key = 'default',
+    storage = 'memory'
+  } = options
+
+  const getFromCache = (): T | null => {
+    if (storage === 'memory') {
+      const cached = memoryCache.get(key)
+      if (cached && cached.expiry > Date.now()) {
+        return cached.data as T
+      }
+      memoryCache.delete(key)
+      return null
+    }
+
+    const storageObj = storage === 'local' ? localStorage : sessionStorage
+    const cached = storageObj.getItem(key)
+    if (cached) {
+      const { data, expiry } = JSON.parse(cached)
+      if (expiry > Date.now()) {
+        return data as T
+      }
+      storageObj.removeItem(key)
+    }
+    return null
+  }
+
+  const setToCache = (data: T) => {
+    const expiry = Date.now() + ttl
+
+    if (storage === 'memory') {
+      memoryCache.set(key, { data, expiry })
+      return
+    }
+
+    const storageObj = storage === 'local' ? localStorage : sessionStorage
+    storageObj.setItem(key, JSON.stringify({ data, expiry }))
+  }
+
+  const clearCache = () => {
+    if (storage === 'memory') {
+      memoryCache.delete(key)
+      return
+    }
+
+    const storageObj = storage === 'local' ? localStorage : sessionStorage
+    storageObj.removeItem(key)
+  }
+
+  // 带缓存的数据获取
+  const fetchWithCache = async (fetcher: () => Promise<T>): Promise<T> => {
+    // 先检查缓存
+    const cached = getFromCache()
+    if (cached !== null) {
+      return cached
+    }
+
+    // 缓存未命中，获取新数据
+    const data = await fetcher()
+    setToCache(data)
+    return data
+  }
+
+  return {
+    getFromCache,
+    setToCache,
+    clearCache,
+    fetchWithCache
+  }
+}
+```
+
+### 防抖节流
+
+为高频操作添加防抖节流：
+
+```typescript
+// composables/useThrottledPlugin.ts
+import { ref, watch } from 'vue'
+
+interface ThrottleOptions {
+  leading?: boolean
+  trailing?: boolean
+}
+
+export const useThrottledPlugin = () => {
+  // 防抖
+  const debounce = <T extends (...args: any[]) => any>(
+    fn: T,
+    delay: number
+  ): ((...args: Parameters<T>) => void) => {
+    let timer: ReturnType<typeof setTimeout> | null = null
+
+    return (...args: Parameters<T>) => {
+      if (timer) clearTimeout(timer)
+      timer = setTimeout(() => {
+        fn(...args)
+        timer = null
+      }, delay)
+    }
+  }
+
+  // 节流
+  const throttle = <T extends (...args: any[]) => any>(
+    fn: T,
+    interval: number,
+    options: ThrottleOptions = {}
+  ): ((...args: Parameters<T>) => void) => {
+    const { leading = true, trailing = true } = options
+    let lastTime = 0
+    let timer: ReturnType<typeof setTimeout> | null = null
+
+    return (...args: Parameters<T>) => {
+      const now = Date.now()
+
+      if (!lastTime && !leading) {
+        lastTime = now
+      }
+
+      const remaining = interval - (now - lastTime)
+
+      if (remaining <= 0) {
+        if (timer) {
+          clearTimeout(timer)
+          timer = null
+        }
+        fn(...args)
+        lastTime = now
+      } else if (!timer && trailing) {
+        timer = setTimeout(() => {
+          fn(...args)
+          lastTime = leading ? Date.now() : 0
+          timer = null
+        }, remaining)
+      }
+    }
+  }
+
+  // 创建防抖响应式值
+  const useDebouncedRef = <T>(value: T, delay: number) => {
+    const debouncedValue = ref(value) as Ref<T>
+    const rawValue = ref(value) as Ref<T>
+
+    const updateDebounced = debounce((newValue: T) => {
+      debouncedValue.value = newValue
+    }, delay)
+
+    watch(rawValue, (newValue) => {
+      updateDebounced(newValue)
+    })
+
+    return {
+      value: rawValue,
+      debouncedValue: readonly(debouncedValue)
+    }
+  }
+
+  return {
+    debounce,
+    throttle,
+    useDebouncedRef
+  }
+}
+```
+
+## 插件测试
+
+### 单元测试
+
+使用 Vitest 测试插件：
+
+```typescript
+// composables/__tests__/useAuth.test.ts
+import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { useAuth } from '../useAuth'
+
+// Mock HTTP 请求
+vi.mock('../useHttp', () => ({
+  useHttp: () => ({
+    post: vi.fn().mockResolvedValue([null, { token: 'mock-token' }]),
+    get: vi.fn().mockResolvedValue([null, { userId: 1, username: 'admin' }])
+  })
+}))
+
+describe('useAuth', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('should login successfully', async () => {
+    const { login, isAuthenticated } = useAuth()
+
+    await login({ username: 'admin', password: '123456' })
+
+    expect(isAuthenticated.value).toBe(true)
+  })
+
+  it('should logout correctly', async () => {
+    const { login, logout, isAuthenticated } = useAuth()
+
+    await login({ username: 'admin', password: '123456' })
+    logout()
+
+    expect(isAuthenticated.value).toBe(false)
+  })
+
+  it('should check permission correctly', async () => {
+    const { hasPermission, setPermissions } = useAuth()
+
+    setPermissions(['user:read', 'user:write'])
+
+    expect(hasPermission('user:read')).toBe(true)
+    expect(hasPermission('user:delete')).toBe(false)
+  })
+})
+```
+
+### 集成测试
+
+测试插件与组件的集成：
+
+```typescript
+// composables/__tests__/usePayment.integration.test.ts
+import { mount } from '@vue/test-utils'
+import { describe, it, expect, vi } from 'vitest'
+import PaymentButton from '@/components/PaymentButton.vue'
+
+describe('Payment Integration', () => {
+  it('should complete payment flow', async () => {
+    const wrapper = mount(PaymentButton, {
+      props: {
+        orderId: '123',
+        amount: 100
+      }
+    })
+
+    // 点击支付按钮
+    await wrapper.find('button').trigger('click')
+
+    // 等待支付流程完成
+    await wrapper.vm.$nextTick()
+
+    // 验证支付成功
+    expect(wrapper.emitted('success')).toBeTruthy()
+  })
+})
+```
+
+## 调试技巧
+
+### 开发者工具集成
+
+```typescript
+// composables/useDevTools.ts
+export const useDevTools = () => {
+  const isDev = import.meta.env.DEV
+
+  const log = (namespace: string, ...args: any[]) => {
+    if (isDev) {
+      console.log(`[${namespace}]`, ...args)
+    }
+  }
+
+  const warn = (namespace: string, ...args: any[]) => {
+    if (isDev) {
+      console.warn(`[${namespace}]`, ...args)
+    }
+  }
+
+  const time = (label: string) => {
+    if (isDev) {
+      console.time(label)
+    }
+  }
+
+  const timeEnd = (label: string) => {
+    if (isDev) {
+      console.timeEnd(label)
+    }
+  }
+
+  // 性能标记
+  const mark = (name: string) => {
+    if (isDev && performance?.mark) {
+      performance.mark(name)
+    }
+  }
+
+  const measure = (name: string, startMark: string, endMark: string) => {
+    if (isDev && performance?.measure) {
+      performance.measure(name, startMark, endMark)
+    }
+  }
+
+  return {
+    log,
+    warn,
+    time,
+    timeEnd,
+    mark,
+    measure
+  }
+}
+```
+
+## 总结
+
+插件系统的核心要点：
+
+| 特性 | 说明 |
+|------|------|
+| Composition API | 基于 Vue 3 Composition API 实现，代码组织清晰 |
+| TypeScript | 完整的类型定义，提供良好的开发体验 |
+| 响应式 | 充分利用 Vue 3 响应式系统 |
+| 跨平台 | 支持条件编译，适配多平台 |
+| 可组合 | 插件可以相互组合，构建复杂功能 |
+| 可测试 | 易于编写单元测试和集成测试 |
+| 性能优化 | 支持懒加载、缓存、防抖节流等优化策略 |
+| 错误处理 | 完善的错误边界和重试机制 |
+
+**开发建议：**
+
+1. **遵循规范** - 使用 `use` 前缀命名插件
+2. **类型优先** - 定义完整的 TypeScript 类型
+3. **单一职责** - 每个插件只负责一个功能
+4. **组合复用** - 通过组合构建复杂功能
+5. **错误处理** - 始终处理可能的错误情况
+6. **性能意识** - 避免不必要的响应式开销
+7. **测试覆盖** - 为关键功能编写测试

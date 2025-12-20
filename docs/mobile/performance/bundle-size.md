@@ -866,3 +866,1024 @@ onMounted(() => {
 3. **按需导入** - Tree Shaking + ES Module,消除冗余代码
 4. **轻量级替代** - 使用轻量级库,减小依赖体积
 5. **持续监控** - 建立体积预算,定期分析优化
+
+## 14. 高级优化技术
+
+### 14.1 动态导入策略
+
+使用动态导入实现按需加载：
+
+```typescript
+// utils/dynamicImport.ts
+type ModuleLoader<T> = () => Promise<{ default: T }>
+
+interface DynamicImportOptions {
+  timeout?: number
+  onError?: (error: Error) => void
+}
+
+/**
+ * 带超时和错误处理的动态导入
+ */
+export const dynamicImport = async <T>(
+  loader: ModuleLoader<T>,
+  options: DynamicImportOptions = {}
+): Promise<T> => {
+  const { timeout = 10000, onError } = options
+
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    setTimeout(() => reject(new Error('模块加载超时')), timeout)
+  })
+
+  try {
+    const module = await Promise.race([loader(), timeoutPromise])
+    return module.default
+  } catch (error) {
+    onError?.(error as Error)
+    throw error
+  }
+}
+
+// 使用示例
+const loadChartModule = async () => {
+  const Chart = await dynamicImport(
+    () => import('@/components/Chart.vue'),
+    {
+      timeout: 5000,
+      onError: (err) => console.error('图表模块加载失败:', err)
+    }
+  )
+  return Chart
+}
+```
+
+### 14.2 模块预加载
+
+预加载即将使用的模块：
+
+```typescript
+// utils/preload.ts
+const preloadedModules = new Map<string, Promise<any>>()
+
+/**
+ * 预加载模块
+ */
+export const preloadModule = (path: string, loader: () => Promise<any>) => {
+  if (!preloadedModules.has(path)) {
+    preloadedModules.set(path, loader())
+  }
+  return preloadedModules.get(path)!
+}
+
+/**
+ * 获取预加载的模块
+ */
+export const getPreloadedModule = <T>(path: string): Promise<T> | null => {
+  return preloadedModules.get(path) || null
+}
+
+// 使用示例:在用户浏览列表时预加载详情页模块
+const onProductListVisible = () => {
+  // 预加载商品详情页组件
+  preloadModule('ProductDetail', () => import('@/pages/product/detail.vue'))
+
+  // 预加载评论组件
+  preloadModule('Comments', () => import('@/components/Comments.vue'))
+}
+```
+
+### 14.3 代码分割边界
+
+精细控制代码分割边界：
+
+```typescript
+// vite.config.ts
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        // 精细控制 chunk 分割
+        manualChunks(id) {
+          // Vue 核心单独打包
+          if (id.includes('node_modules/vue')) {
+            return 'vue-core'
+          }
+
+          // Pinia 状态管理
+          if (id.includes('pinia')) {
+            return 'state-management'
+          }
+
+          // 工具函数库
+          if (id.includes('lodash') || id.includes('dayjs')) {
+            return 'utils-vendor'
+          }
+
+          // UI 组件库
+          if (id.includes('wd-ui') || id.includes('wot-design')) {
+            return 'ui-components'
+          }
+
+          // 业务分包
+          if (id.includes('pages-sub/admin')) {
+            return 'sub-admin'
+          }
+
+          if (id.includes('pages-sub/mall')) {
+            return 'sub-mall'
+          }
+
+          // 其他 node_modules
+          if (id.includes('node_modules')) {
+            return 'vendor'
+          }
+        },
+
+        // chunk 命名规则
+        chunkFileNames: (chunkInfo) => {
+          const facadeModuleId = chunkInfo.facadeModuleId || ''
+          if (facadeModuleId.includes('pages-sub')) {
+            return 'sub-packages/[name]-[hash].js'
+          }
+          return 'assets/[name]-[hash].js'
+        },
+      },
+    },
+  },
+})
+```
+
+### 14.4 作用域提升
+
+启用 Rollup 作用域提升优化：
+
+```typescript
+// vite.config.ts
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      // 启用作用域提升
+      treeshake: {
+        moduleSideEffects: false,
+        propertyReadSideEffects: false,
+        tryCatchDeoptimization: false,
+      },
+    },
+  },
+})
+```
+
+## 15. 平台专项优化
+
+### 15.1 微信小程序优化
+
+```typescript
+// 微信小程序专属优化配置
+// manifest.json
+{
+  "mp-weixin": {
+    "optimization": {
+      "subPackages": true
+    },
+    "usingComponents": true,
+    "lazyCodeLoading": "requiredComponents",
+    "setting": {
+      "minified": true,
+      "es6": true,
+      "enhance": true
+    }
+  }
+}
+```
+
+**小程序体积限制：**
+
+| 类型 | 限制 | 优化策略 |
+|------|------|---------|
+| 主包 | 2MB | 核心页面 + 公共资源 |
+| 单个分包 | 2MB | 业务功能独立分包 |
+| 总包 | 20MB | 资源 CDN 化 |
+| 插件 | 1MB | 精简插件功能 |
+
+### 15.2 H5 优化
+
+```typescript
+// H5 专属优化
+export default defineConfig({
+  build: {
+    // H5 使用更激进的压缩
+    target: 'esnext',
+
+    rollupOptions: {
+      output: {
+        // 启用 gzip 友好的分割
+        experimentalMinChunkSize: 10000,
+      },
+    },
+  },
+
+  // H5 启用 HTTP/2 推送
+  server: {
+    headers: {
+      'Link': '</assets/main.js>; rel=preload; as=script',
+    },
+  },
+})
+```
+
+### 15.3 App 优化
+
+```typescript
+// App 专属优化配置
+// manifest.json
+{
+  "app-plus": {
+    "optimization": {
+      "subPackages": true
+    },
+    "runmode": "liberate",
+    "usingComponents": true,
+    "compilerVersion": 3,
+    "nvueCompiler": "uni-app",
+    "nvueStyleCompiler": "uni-app"
+  }
+}
+```
+
+## 16. 资源压缩工具链
+
+### 16.1 自动化图片压缩
+
+```typescript
+// scripts/compress-images.ts
+import imagemin from 'imagemin'
+import imageminMozjpeg from 'imagemin-mozjpeg'
+import imageminPngquant from 'imagemin-pngquant'
+import imageminWebp from 'imagemin-webp'
+import { glob } from 'glob'
+import path from 'path'
+
+interface CompressionResult {
+  original: number
+  compressed: number
+  savings: number
+  path: string
+}
+
+const compressImages = async (
+  inputDir: string,
+  outputDir: string
+): Promise<CompressionResult[]> => {
+  const results: CompressionResult[] = []
+
+  // PNG 压缩
+  const pngFiles = await imagemin([`${inputDir}/**/*.png`], {
+    destination: outputDir,
+    plugins: [
+      imageminPngquant({
+        quality: [0.6, 0.8],
+        speed: 1,
+      }),
+    ],
+  })
+
+  // JPG 压缩
+  const jpgFiles = await imagemin([`${inputDir}/**/*.{jpg,jpeg}`], {
+    destination: outputDir,
+    plugins: [
+      imageminMozjpeg({
+        quality: 75,
+      }),
+    ],
+  })
+
+  // 生成 WebP
+  await imagemin([`${inputDir}/**/*.{jpg,jpeg,png}`], {
+    destination: path.join(outputDir, 'webp'),
+    plugins: [
+      imageminWebp({
+        quality: 75,
+      }),
+    ],
+  })
+
+  return results
+}
+
+// 运行压缩
+compressImages('./src/static/images', './dist/images')
+```
+
+### 16.2 SVG 优化
+
+```typescript
+// scripts/optimize-svg.ts
+import { optimize } from 'svgo'
+import fs from 'fs'
+import path from 'path'
+
+const svgoConfig = {
+  plugins: [
+    'removeDoctype',
+    'removeXMLProcInst',
+    'removeComments',
+    'removeMetadata',
+    'removeEditorsNSData',
+    'cleanupAttrs',
+    'mergeStyles',
+    'inlineStyles',
+    'minifyStyles',
+    'cleanupIds',
+    'removeUselessDefs',
+    'cleanupNumericValues',
+    'convertColors',
+    'removeUnknownsAndDefaults',
+    'removeNonInheritableGroupAttrs',
+    'removeUselessStrokeAndFill',
+    'removeViewBox',
+    'cleanupEnableBackground',
+    'removeHiddenElems',
+    'removeEmptyText',
+    'convertShapeToPath',
+    'moveElemsAttrsToGroup',
+    'moveGroupAttrsToElems',
+    'collapseGroups',
+    'convertPathData',
+    'convertTransform',
+    'removeEmptyAttrs',
+    'removeEmptyContainers',
+    'mergePaths',
+    'removeUnusedNS',
+    'sortAttrs',
+    'removeTitle',
+    'removeDesc',
+  ],
+}
+
+const optimizeSvg = (inputPath: string, outputPath: string) => {
+  const svg = fs.readFileSync(inputPath, 'utf8')
+  const result = optimize(svg, svgoConfig)
+  fs.writeFileSync(outputPath, result.data)
+
+  const originalSize = Buffer.byteLength(svg, 'utf8')
+  const optimizedSize = Buffer.byteLength(result.data, 'utf8')
+  const savings = ((originalSize - optimizedSize) / originalSize * 100).toFixed(2)
+
+  console.log(`${path.basename(inputPath)}: ${originalSize}B -> ${optimizedSize}B (节省 ${savings}%)`)
+}
+```
+
+### 16.3 字体子集化
+
+```typescript
+// scripts/subset-font.ts
+import Fontmin from 'fontmin'
+import path from 'path'
+
+interface FontSubsetOptions {
+  input: string
+  output: string
+  text?: string
+  textFile?: string
+}
+
+const subsetFont = async (options: FontSubsetOptions) => {
+  const { input, output, text, textFile } = options
+
+  let subset = text || ''
+  if (textFile) {
+    subset = fs.readFileSync(textFile, 'utf8')
+  }
+
+  // 添加常用字符
+  const commonChars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  const punctuation = ',.!?;:\'\"()[]{}@#$%^&*+-=<>/\\|`~'
+  subset += commonChars + punctuation
+
+  return new Promise((resolve, reject) => {
+    const fontmin = new Fontmin()
+      .src(input)
+      .use(Fontmin.glyph({ text: subset }))
+      .use(Fontmin.ttf2woff2())
+      .use(Fontmin.ttf2woff())
+      .dest(output)
+
+    fontmin.run((err, files) => {
+      if (err) {
+        reject(err)
+      } else {
+        console.log('字体子集化完成:', files.map(f => f.path))
+        resolve(files)
+      }
+    })
+  })
+}
+
+// 使用示例
+subsetFont({
+  input: './fonts/SourceHanSansCN-Regular.ttf',
+  output: './dist/fonts',
+  textFile: './common-chars.txt',
+})
+```
+
+## 17. 体积分析可视化
+
+### 17.1 打包分析插件
+
+```typescript
+// vite.config.ts
+import { visualizer } from 'rollup-plugin-visualizer'
+
+export default defineConfig({
+  plugins: [
+    // 生成体积分析报告
+    visualizer({
+      filename: 'dist/stats.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+      template: 'treemap', // sunburst, treemap, network
+    }),
+  ],
+})
+```
+
+### 17.2 构建报告生成
+
+```typescript
+// scripts/build-report.ts
+import fs from 'fs'
+import path from 'path'
+import { gzipSync, brotliCompressSync } from 'zlib'
+
+interface FileStats {
+  name: string
+  size: number
+  gzipSize: number
+  brotliSize: number
+}
+
+interface BuildReport {
+  timestamp: string
+  totalSize: number
+  totalGzipSize: number
+  totalBrotliSize: number
+  files: FileStats[]
+}
+
+const generateBuildReport = (distDir: string): BuildReport => {
+  const files: FileStats[] = []
+  let totalSize = 0
+  let totalGzipSize = 0
+  let totalBrotliSize = 0
+
+  const processDir = (dir: string) => {
+    const items = fs.readdirSync(dir)
+
+    for (const item of items) {
+      const fullPath = path.join(dir, item)
+      const stat = fs.statSync(fullPath)
+
+      if (stat.isDirectory()) {
+        processDir(fullPath)
+      } else if (item.endsWith('.js') || item.endsWith('.css')) {
+        const content = fs.readFileSync(fullPath)
+        const size = content.length
+        const gzipSize = gzipSync(content).length
+        const brotliSize = brotliCompressSync(content).length
+
+        files.push({
+          name: path.relative(distDir, fullPath),
+          size,
+          gzipSize,
+          brotliSize,
+        })
+
+        totalSize += size
+        totalGzipSize += gzipSize
+        totalBrotliSize += brotliSize
+      }
+    }
+  }
+
+  processDir(distDir)
+
+  // 按大小排序
+  files.sort((a, b) => b.size - a.size)
+
+  return {
+    timestamp: new Date().toISOString(),
+    totalSize,
+    totalGzipSize,
+    totalBrotliSize,
+    files,
+  }
+}
+
+// 生成 HTML 报告
+const generateHtmlReport = (report: BuildReport): string => {
+  const formatBytes = (bytes: number) => {
+    if (bytes < 1024) return `${bytes} B`
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`
+    return `${(bytes / 1024 / 1024).toFixed(2)} MB`
+  }
+
+  return `
+<!DOCTYPE html>
+<html>
+<head>
+  <title>构建报告 - ${report.timestamp}</title>
+  <style>
+    body { font-family: system-ui; padding: 20px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #f5f5f5; }
+    .size-bar { height: 20px; background: #4CAF50; }
+  </style>
+</head>
+<body>
+  <h1>构建报告</h1>
+  <p>生成时间: ${report.timestamp}</p>
+
+  <h2>总体统计</h2>
+  <ul>
+    <li>原始大小: ${formatBytes(report.totalSize)}</li>
+    <li>Gzip 压缩: ${formatBytes(report.totalGzipSize)}</li>
+    <li>Brotli 压缩: ${formatBytes(report.totalBrotliSize)}</li>
+  </ul>
+
+  <h2>文件详情</h2>
+  <table>
+    <tr>
+      <th>文件</th>
+      <th>原始</th>
+      <th>Gzip</th>
+      <th>Brotli</th>
+      <th>占比</th>
+    </tr>
+    ${report.files.map(f => `
+    <tr>
+      <td>${f.name}</td>
+      <td>${formatBytes(f.size)}</td>
+      <td>${formatBytes(f.gzipSize)}</td>
+      <td>${formatBytes(f.brotliSize)}</td>
+      <td>
+        <div class="size-bar" style="width: ${(f.size / report.totalSize * 100).toFixed(1)}%"></div>
+      </td>
+    </tr>
+    `).join('')}
+  </table>
+</body>
+</html>
+  `
+}
+
+// 执行
+const report = generateBuildReport('./dist')
+const html = generateHtmlReport(report)
+fs.writeFileSync('./dist/build-report.html', html)
+console.log('构建报告已生成: dist/build-report.html')
+```
+
+### 17.3 体积趋势监控
+
+```typescript
+// scripts/size-tracker.ts
+import fs from 'fs'
+
+interface SizeRecord {
+  date: string
+  version: string
+  mainBundle: number
+  vendorBundle: number
+  cssBundle: number
+  totalAssets: number
+}
+
+const SIZE_HISTORY_FILE = './size-history.json'
+
+const trackSize = (record: SizeRecord) => {
+  let history: SizeRecord[] = []
+
+  if (fs.existsSync(SIZE_HISTORY_FILE)) {
+    history = JSON.parse(fs.readFileSync(SIZE_HISTORY_FILE, 'utf8'))
+  }
+
+  history.push(record)
+
+  // 保留最近 100 条记录
+  if (history.length > 100) {
+    history = history.slice(-100)
+  }
+
+  fs.writeFileSync(SIZE_HISTORY_FILE, JSON.stringify(history, null, 2))
+
+  // 检查体积变化
+  if (history.length >= 2) {
+    const prev = history[history.length - 2]
+    const current = history[history.length - 1]
+    const diff = current.totalAssets - prev.totalAssets
+
+    if (diff > 50 * 1024) {
+      console.warn(`⚠️ 体积增长过大: +${(diff / 1024).toFixed(2)} KB`)
+    } else if (diff < 0) {
+      console.log(`✅ 体积减小: ${(Math.abs(diff) / 1024).toFixed(2)} KB`)
+    }
+  }
+}
+
+// 在 CI/CD 中调用
+trackSize({
+  date: new Date().toISOString().split('T')[0],
+  version: process.env.VERSION || 'dev',
+  mainBundle: 180 * 1024,
+  vendorBundle: 120 * 1024,
+  cssBundle: 45 * 1024,
+  totalAssets: 345 * 1024,
+})
+```
+
+## 18. 性能预算
+
+### 18.1 预算配置
+
+```typescript
+// budgets.config.ts
+interface Budget {
+  type: 'bundle' | 'asset' | 'total'
+  name: string
+  maxSize: number // bytes
+  warning: number // bytes
+}
+
+export const budgets: Budget[] = [
+  // 主包预算
+  {
+    type: 'bundle',
+    name: 'main',
+    maxSize: 2 * 1024 * 1024, // 2MB
+    warning: 1.5 * 1024 * 1024, // 1.5MB
+  },
+
+  // 第三方库预算
+  {
+    type: 'bundle',
+    name: 'vendor',
+    maxSize: 500 * 1024, // 500KB
+    warning: 400 * 1024, // 400KB
+  },
+
+  // CSS 预算
+  {
+    type: 'asset',
+    name: '*.css',
+    maxSize: 100 * 1024, // 100KB
+    warning: 80 * 1024, // 80KB
+  },
+
+  // 单个图片预算
+  {
+    type: 'asset',
+    name: '*.{png,jpg,jpeg}',
+    maxSize: 50 * 1024, // 50KB
+    warning: 30 * 1024, // 30KB
+  },
+
+  // 总体积预算
+  {
+    type: 'total',
+    name: 'all',
+    maxSize: 5 * 1024 * 1024, // 5MB
+    warning: 4 * 1024 * 1024, // 4MB
+  },
+]
+```
+
+### 18.2 预算检查
+
+```typescript
+// scripts/check-budget.ts
+import fs from 'fs'
+import path from 'path'
+import { glob } from 'glob'
+import { budgets } from './budgets.config'
+
+interface BudgetResult {
+  name: string
+  budget: number
+  actual: number
+  status: 'pass' | 'warning' | 'fail'
+}
+
+const checkBudgets = async (distDir: string): Promise<BudgetResult[]> => {
+  const results: BudgetResult[] = []
+
+  for (const budget of budgets) {
+    let actualSize = 0
+
+    if (budget.type === 'total') {
+      // 计算总体积
+      const files = await glob(`${distDir}/**/*.{js,css,png,jpg,jpeg,woff2}`)
+      for (const file of files) {
+        actualSize += fs.statSync(file).size
+      }
+    } else {
+      // 计算匹配文件体积
+      const pattern = budget.name.includes('*')
+        ? `${distDir}/**/${budget.name}`
+        : `${distDir}/**/${budget.name}*`
+
+      const files = await glob(pattern)
+      for (const file of files) {
+        actualSize += fs.statSync(file).size
+      }
+    }
+
+    let status: 'pass' | 'warning' | 'fail' = 'pass'
+    if (actualSize > budget.maxSize) {
+      status = 'fail'
+    } else if (actualSize > budget.warning) {
+      status = 'warning'
+    }
+
+    results.push({
+      name: budget.name,
+      budget: budget.maxSize,
+      actual: actualSize,
+      status,
+    })
+  }
+
+  return results
+}
+
+// 执行检查
+const run = async () => {
+  const results = await checkBudgets('./dist')
+
+  console.log('\n📊 体积预算检查结果:\n')
+
+  for (const result of results) {
+    const icon = result.status === 'pass' ? '✅' :
+                 result.status === 'warning' ? '⚠️' : '❌'
+    const budget = (result.budget / 1024).toFixed(2)
+    const actual = (result.actual / 1024).toFixed(2)
+
+    console.log(`${icon} ${result.name}: ${actual}KB / ${budget}KB`)
+  }
+
+  const hasFailure = results.some(r => r.status === 'fail')
+  if (hasFailure) {
+    console.error('\n❌ 体积预算检查失败!')
+    process.exit(1)
+  }
+}
+
+run()
+```
+
+## 19. CI/CD 集成
+
+### 19.1 GitHub Actions 配置
+
+```yaml
+# .github/workflows/build.yml
+name: Build and Check Size
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm build
+
+      - name: Check bundle size
+        run: pnpm size-check
+
+      - name: Upload size report
+        uses: actions/upload-artifact@v3
+        with:
+          name: size-report
+          path: dist/build-report.html
+
+      - name: Comment PR with size
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs')
+            const report = JSON.parse(fs.readFileSync('./dist/size-report.json'))
+            const totalKB = (report.totalSize / 1024).toFixed(2)
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `📦 构建体积: ${totalKB} KB`
+            })
+```
+
+### 19.2 体积对比
+
+```typescript
+// scripts/size-compare.ts
+interface SizeComparison {
+  file: string
+  before: number
+  after: number
+  diff: number
+  percent: string
+}
+
+const compareSizes = (
+  beforeDir: string,
+  afterDir: string
+): SizeComparison[] => {
+  const comparisons: SizeComparison[] = []
+
+  const afterFiles = fs.readdirSync(afterDir)
+    .filter(f => f.endsWith('.js') || f.endsWith('.css'))
+
+  for (const file of afterFiles) {
+    const afterPath = path.join(afterDir, file)
+    const afterSize = fs.statSync(afterPath).size
+
+    // 尝试找到对应的 before 文件
+    const beforeFile = fs.readdirSync(beforeDir)
+      .find(f => f.startsWith(file.split('-')[0]))
+
+    let beforeSize = 0
+    if (beforeFile) {
+      beforeSize = fs.statSync(path.join(beforeDir, beforeFile)).size
+    }
+
+    const diff = afterSize - beforeSize
+    const percent = beforeSize > 0
+      ? ((diff / beforeSize) * 100).toFixed(2) + '%'
+      : 'new'
+
+    comparisons.push({
+      file,
+      before: beforeSize,
+      after: afterSize,
+      diff,
+      percent,
+    })
+  }
+
+  return comparisons.sort((a, b) => b.diff - a.diff)
+}
+```
+
+## 20. 更多常见问题
+
+### 20.1 CSS 体积过大
+
+**问题原因：**
+- 未使用 UnoCSS 等原子化方案
+- 引入了完整的 UI 库样式
+- 存在大量未使用的 CSS
+
+**解决方案：**
+
+```typescript
+// 1. 使用 UnoCSS 原子化
+// uno.config.ts
+export default defineConfig({
+  presets: [presetUni()],
+  transformers: [transformerDirectives()],
+})
+
+// 2. 按需引入组件样式
+import 'wot-design-uni/components/wd-button/wd-button.scss'
+
+// 3. PurgeCSS 移除未使用样式
+build: {
+  postcss: {
+    plugins: [
+      purgecss({
+        content: ['./src/**/*.vue', './src/**/*.ts'],
+      }),
+    ],
+  },
+}
+```
+
+### 20.2 JSON 数据过大
+
+**问题原因：**
+- 静态 JSON 文件打包进代码
+- 本地化语言包过大
+
+**解决方案：**
+
+```typescript
+// 1. JSON 外置到 CDN
+const loadConfig = async () => {
+  const response = await fetch('https://cdn.example.com/config.json')
+  return response.json()
+}
+
+// 2. 语言包按需加载
+const loadLocale = async (locale: string) => {
+  const messages = await import(`@/locales/${locale}.json`)
+  return messages.default
+}
+
+// 3. 压缩 JSON
+import jsonminify from 'jsonminify'
+const compressed = jsonminify(JSON.stringify(data))
+```
+
+### 20.3 Source Map 泄露
+
+**问题原因：**
+- 生产环境启用了 Source Map
+- Source Map 文件未删除
+
+**解决方案：**
+
+```typescript
+// vite.config.ts
+export default defineConfig({
+  build: {
+    // 生产环境不生成 source map
+    sourcemap: process.env.NODE_ENV !== 'production',
+  },
+})
+
+// 或仅生成隐藏的 source map
+build: {
+  sourcemap: 'hidden', // 不在生成的 JS 中添加 sourceMappingURL
+}
+```
+
+### 20.4 重复依赖
+
+**问题原因：**
+- 不同版本的相同依赖
+- peerDependencies 冲突
+
+**解决方案：**
+
+```bash
+# 检查重复依赖
+pnpm why lodash
+
+# 使用 pnpm 的 overrides 统一版本
+# package.json
+{
+  "pnpm": {
+    "overrides": {
+      "lodash": "^4.17.21"
+    }
+  }
+}
+
+# 重新安装
+pnpm install
+```
+
+## 总结
+
+包体积优化是持续性工作，需要从多个维度进行优化：
+
+| 优化维度 | 关键技术 | 预期收益 |
+|---------|---------|---------|
+| 代码压缩 | ESBuild、Terser | 30-40% |
+| Tree Shaking | ES Module、按需导入 | 20-30% |
+| 资源优化 | CDN、WebP、压缩 | 40-60% |
+| 依赖优化 | 轻量替代、去重 | 15-25% |
+| 分包加载 | 动态导入、预加载 | 首屏 50%+ |
+| 条件编译 | 平台差异化 | 10-20% |
+
+**优化流程：**
+
+1. **分析** - 使用可视化工具分析体积分布
+2. **识别** - 找出体积大的模块和资源
+3. **优化** - 应用对应的优化策略
+4. **验证** - 检查优化效果和功能正确性
+5. **监控** - 建立体积预算和持续监控

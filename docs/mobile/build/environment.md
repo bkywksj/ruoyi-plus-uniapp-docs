@@ -792,17 +792,590 @@ pnpm dev:h5    # 使用 development
 # 确保前后端密钥对应
 ```
 
+## 多平台环境配置
+
+### 平台特定配置
+
+不同平台可能需要不同的环境配置,可以通过条件编译结合环境变量实现。
+
+#### Vite 配置中的平台检测
+
+```typescript
+// vite.config.ts
+import type { ConfigEnv, UserConfig } from 'vite'
+import path from 'node:path'
+import process from 'node:process'
+import { defineConfig, loadEnv } from 'vite'
+
+export default async ({ command, mode }: ConfigEnv): Promise<UserConfig> => {
+  // 获取当前编译平台
+  const { UNI_PLATFORM } = process.env
+  console.log('当前平台:', UNI_PLATFORM)
+  // mp-weixin - 微信小程序
+  // h5 - H5 网页
+  // app - APP 应用
+  // mp-alipay - 支付宝小程序
+
+  // 加载环境变量
+  const env = loadEnv(mode, path.resolve(process.cwd(), 'env'))
+
+  return defineConfig({
+    // 根据平台定义全局常量
+    define: {
+      __UNI_PLATFORM__: JSON.stringify(UNI_PLATFORM),
+    },
+
+    // 其他配置...
+  })
+}
+```
+
+#### 平台特定环境变量
+
+```bash
+# .env.development
+# H5 开发服务器配置
+VITE_APP_H5_BASE_URL = 'http://localhost:5173'
+
+# 微信小程序 AppID(开发版)
+VITE_APP_WECHAT_APPID_DEV = 'wx1234567890abcdef'
+
+# 支付宝小程序 AppID(开发版)
+VITE_APP_ALIPAY_APPID_DEV = '2021001234567890'
+```
+
+```bash
+# .env.production
+# H5 生产服务器配置
+VITE_APP_H5_BASE_URL = 'https://m.example.com'
+
+# 微信小程序 AppID(生产版)
+VITE_APP_WECHAT_APPID = 'wx0987654321fedcba'
+
+# 支付宝小程序 AppID(生产版)
+VITE_APP_ALIPAY_APPID = '2021009876543210'
+```
+
+#### 代码中使用平台变量
+
+```typescript
+// 使用全局平台常量
+declare const __UNI_PLATFORM__: string
+
+// 获取当前平台
+const platform = __UNI_PLATFORM__
+
+// 根据平台执行不同逻辑
+if (platform === 'h5') {
+  // H5 特定逻辑
+  console.log('H5 平台')
+} else if (platform === 'mp-weixin') {
+  // 微信小程序特定逻辑
+  console.log('微信小程序平台')
+} else if (platform === 'app') {
+  // APP 特定逻辑
+  console.log('APP 平台')
+}
+
+// 获取平台对应的 AppID
+const getAppId = (): string => {
+  const isDev = import.meta.env.DEV
+
+  if (platform === 'mp-weixin') {
+    return isDev
+      ? import.meta.env.VITE_APP_WECHAT_APPID_DEV
+      : import.meta.env.VITE_APP_WECHAT_APPID
+  }
+
+  if (platform === 'mp-alipay') {
+    return isDev
+      ? import.meta.env.VITE_APP_ALIPAY_APPID_DEV
+      : import.meta.env.VITE_APP_ALIPAY_APPID
+  }
+
+  return import.meta.env.VITE_APP_ID
+}
+```
+
+### 条件编译与环境结合
+
+```vue
+<template>
+  <view class="container">
+    <!-- #ifdef H5 -->
+    <view v-if="isDev" class="debug-panel">
+      <text>开发调试面板 (仅 H5 开发环境显示)</text>
+      <text>API: {{ apiUrl }}</text>
+    </view>
+    <!-- #endif -->
+
+    <!-- #ifdef MP-WEIXIN -->
+    <button open-type="getUserInfo" @getuserinfo="handleGetUserInfo">
+      微信登录
+    </button>
+    <!-- #endif -->
+
+    <!-- #ifdef APP -->
+    <button @click="handleNativeScan">
+      原生扫码
+    </button>
+    <!-- #endif -->
+  </view>
+</template>
+
+<script lang="ts" setup>
+const isDev = import.meta.env.DEV
+const apiUrl = import.meta.env.VITE_APP_BASE_API
+</script>
+```
+
+## 环境变量验证
+
+### 启动时验证
+
+创建环境变量验证工具,确保必需的配置项已正确设置:
+
+```typescript
+// utils/env-validator.ts
+
+interface EnvConfig {
+  required: string[]
+  optional: string[]
+}
+
+const envConfig: EnvConfig = {
+  required: [
+    'VITE_APP_ID',
+    'VITE_APP_TITLE',
+    'VITE_APP_BASE_API',
+  ],
+  optional: [
+    'VITE_APP_TIMEOUT',
+    'VITE_APP_WEBSOCKET',
+    'VITE_APP_I18N',
+    'VITE_APP_THEME',
+  ],
+}
+
+export const validateEnv = (): void => {
+  const missingVars: string[] = []
+
+  // 检查必需变量
+  for (const key of envConfig.required) {
+    const value = import.meta.env[key]
+    if (!value || value === '') {
+      missingVars.push(key)
+    }
+  }
+
+  if (missingVars.length > 0) {
+    console.error('❌ 缺少必需的环境变量:')
+    missingVars.forEach((key) => {
+      console.error(`  - ${key}`)
+    })
+
+    if (import.meta.env.PROD) {
+      throw new Error(`缺少必需的环境变量: ${missingVars.join(', ')}`)
+    }
+  }
+
+  // 检查可选变量(仅开发环境警告)
+  if (import.meta.env.DEV) {
+    const missingOptional: string[] = []
+    for (const key of envConfig.optional) {
+      const value = import.meta.env[key]
+      if (!value || value === '') {
+        missingOptional.push(key)
+      }
+    }
+
+    if (missingOptional.length > 0) {
+      console.warn('⚠️ 以下可选环境变量未配置:')
+      missingOptional.forEach((key) => {
+        console.warn(`  - ${key}`)
+      })
+    }
+  }
+
+  console.log('✅ 环境变量验证通过')
+}
+
+// 打印当前环境信息
+export const printEnvInfo = (): void => {
+  if (import.meta.env.DEV) {
+    console.group('📋 环境配置信息')
+    console.log('环境:', import.meta.env.VITE_APP_ENV)
+    console.log('应用ID:', import.meta.env.VITE_APP_ID)
+    console.log('API地址:', import.meta.env.VITE_APP_BASE_API)
+    console.log('加密开关:', import.meta.env.VITE_APP_API_ENCRYPT)
+    console.log('WebSocket:', import.meta.env.VITE_APP_WEBSOCKET)
+    console.groupEnd()
+  }
+}
+```
+
+### 在应用入口使用
+
+```typescript
+// main.ts
+import { validateEnv, printEnvInfo } from '@/utils/env-validator'
+
+// 验证环境变量
+validateEnv()
+
+// 打印环境信息(仅开发环境)
+printEnvInfo()
+
+// 应用初始化...
+```
+
+## 环境配置进阶
+
+### 动态环境配置
+
+在某些场景下,需要在运行时动态获取配置:
+
+```typescript
+// config/env-config.ts
+
+interface RuntimeConfig {
+  apiUrl: string
+  wsUrl: string
+  timeout: number
+  encrypt: boolean
+}
+
+class EnvConfigManager {
+  private static instance: EnvConfigManager
+  private config: RuntimeConfig
+
+  private constructor() {
+    this.config = this.loadConfig()
+  }
+
+  static getInstance(): EnvConfigManager {
+    if (!EnvConfigManager.instance) {
+      EnvConfigManager.instance = new EnvConfigManager()
+    }
+    return EnvConfigManager.instance
+  }
+
+  private loadConfig(): RuntimeConfig {
+    const baseApi = import.meta.env.VITE_APP_BASE_API
+
+    return {
+      apiUrl: baseApi,
+      wsUrl: this.buildWsUrl(baseApi),
+      timeout: Number(import.meta.env.VITE_APP_TIMEOUT) || 20000,
+      encrypt: import.meta.env.VITE_APP_API_ENCRYPT === 'true',
+    }
+  }
+
+  private buildWsUrl(baseApi: string): string {
+    // HTTP -> WS, HTTPS -> WSS
+    return baseApi.replace(/^http/, 'ws') + '/websocket'
+  }
+
+  get apiUrl(): string {
+    return this.config.apiUrl
+  }
+
+  get wsUrl(): string {
+    return this.config.wsUrl
+  }
+
+  get timeout(): number {
+    return this.config.timeout
+  }
+
+  get encrypt(): boolean {
+    return this.config.encrypt
+  }
+
+  // 运行时更新配置(用于特殊场景)
+  updateApiUrl(url: string): void {
+    this.config.apiUrl = url
+    this.config.wsUrl = this.buildWsUrl(url)
+  }
+}
+
+export const envConfig = EnvConfigManager.getInstance()
+```
+
+### 环境配置热更新
+
+支持在不重启应用的情况下更新配置(适用于 H5):
+
+```typescript
+// utils/config-hot-reload.ts
+
+interface RemoteConfig {
+  apiUrl?: string
+  features?: {
+    websocket?: boolean
+    i18n?: boolean
+    theme?: boolean
+  }
+}
+
+export const fetchRemoteConfig = async (): Promise<RemoteConfig | null> => {
+  // 仅在 H5 环境支持
+  // #ifdef H5
+  try {
+    const response = await fetch('/config.json')
+    if (response.ok) {
+      return await response.json()
+    }
+  } catch (error) {
+    console.warn('获取远程配置失败:', error)
+  }
+  // #endif
+  return null
+}
+
+export const applyRemoteConfig = async (): Promise<void> => {
+  const remoteConfig = await fetchRemoteConfig()
+  if (remoteConfig) {
+    // 合并远程配置
+    if (remoteConfig.apiUrl) {
+      envConfig.updateApiUrl(remoteConfig.apiUrl)
+    }
+    console.log('✅ 远程配置已应用')
+  }
+}
+```
+
+## 安全配置最佳实践
+
+### RSA 密钥管理
+
+#### 密钥生成流程
+
+```bash
+# 1. 生成 RSA 私钥 (2048 位)
+openssl genrsa -out private.key 2048
+
+# 2. 从私钥生成公钥
+openssl rsa -in private.key -pubout -out public.key
+
+# 3. 转换为 PKCS#8 格式 (Java 兼容)
+openssl pkcs8 -topk8 -inform PEM -in private.key -outform PEM -nocrypt -out private_pkcs8.key
+
+# 4. 将密钥转为 Base64 单行格式
+cat public.key | grep -v "^-" | tr -d '\n' > public_base64.txt
+cat private_pkcs8.key | grep -v "^-" | tr -d '\n' > private_base64.txt
+```
+
+#### 密钥配置策略
+
+```bash
+# .env (公共配置,可提交)
+# 只配置不敏感的公钥
+VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQAD...'
+
+# .env.local (本地配置,不提交)
+# 配置私钥,仅开发调试使用
+VITE_APP_RSA_PRIVATE_KEY = 'MIIBOwIBAAJBAIrZxEhzVAHKJm7B...'
+```
+
+### 敏感信息保护
+
+#### 配置分级
+
+```bash
+# 第一级: 公共配置(.env) - 可提交
+VITE_APP_ID = 'myapp'
+VITE_APP_TITLE = '我的应用'
+VITE_APP_VERSION = '1.0.0'
+
+# 第二级: 环境配置(.env.development/.env.production) - 可提交
+VITE_APP_BASE_API = 'https://api.example.com'
+VITE_APP_TIMEOUT = '20000'
+
+# 第三级: 本地配置(.env.local) - 不提交
+VITE_APP_RSA_PRIVATE_KEY = '密钥内容'
+VITE_APP_WECHAT_SECRET = '微信密钥'
+VITE_APP_ALIPAY_PRIVATE_KEY = '支付宝私钥'
+```
+
+#### 环境变量加密存储
+
+```typescript
+// 敏感配置加密存储工具
+import CryptoJS from 'crypto-js'
+
+const STORAGE_KEY = 'app_config'
+const ENCRYPT_KEY = import.meta.env.VITE_APP_ID
+
+export const saveSecureConfig = (config: Record<string, any>): void => {
+  const encrypted = CryptoJS.AES.encrypt(
+    JSON.stringify(config),
+    ENCRYPT_KEY
+  ).toString()
+  uni.setStorageSync(STORAGE_KEY, encrypted)
+}
+
+export const loadSecureConfig = (): Record<string, any> | null => {
+  try {
+    const encrypted = uni.getStorageSync(STORAGE_KEY)
+    if (!encrypted) return null
+
+    const bytes = CryptoJS.AES.decrypt(encrypted, ENCRYPT_KEY)
+    const decrypted = bytes.toString(CryptoJS.enc.Utf8)
+    return JSON.parse(decrypted)
+  } catch {
+    return null
+  }
+}
+```
+
+## 完整项目配置示例
+
+### 标准项目配置
+
+#### 目录结构
+
+```
+my-uniapp/
+├── env/
+│   ├── .env                    # 公共配置
+│   ├── .env.development        # 开发环境
+│   ├── .env.test              # 测试环境
+│   ├── .env.staging           # 预发布环境
+│   └── .env.production        # 生产环境
+├── src/
+│   ├── config/
+│   │   └── env.ts             # 环境配置管理
+│   └── utils/
+│       └── env-validator.ts   # 环境验证工具
+├── types/
+│   └── env.d.ts               # 环境变量类型
+├── vite.config.ts             # Vite 配置
+└── .gitignore                 # Git 忽略
+```
+
+#### .env 完整示例
+
+```bash
+# =========================================
+# 公共配置 - 所有环境共享
+# =========================================
+
+# ===== 应用基础信息 =====
+VITE_APP_ID = 'myapp_uniapp'
+VITE_APP_TITLE = '我的应用'
+VITE_APP_VERSION = '1.0.0'
+VITE_APP_DESCRIPTION = '基于RuoYi-Plus的移动端应用'
+
+# ===== 安全配置 =====
+VITE_APP_API_ENCRYPT = 'true'
+VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQAD...'
+
+# ===== 功能开关 =====
+VITE_APP_WEBSOCKET = 'true'
+VITE_APP_I18N = 'true'
+VITE_APP_THEME = 'true'
+VITE_APP_MOCK = 'false'
+
+# ===== 日志配置 =====
+VITE_APP_LOG_LEVEL = 'info'
+```
+
+#### .env.development 完整示例
+
+```bash
+# =========================================
+# 开发环境配置
+# =========================================
+
+VITE_APP_ENV = 'development'
+
+# ===== API 配置 =====
+VITE_APP_BASE_API = 'http://127.0.0.1:5500'
+VITE_APP_TIMEOUT = '30000'
+
+# ===== 构建配置 =====
+VITE_DELETE_CONSOLE = 'false'
+VITE_SHOW_SOURCEMAP = 'true'
+VITE_MINIFY = 'false'
+
+# ===== 调试配置 =====
+VITE_APP_LOG_REQUEST = 'true'
+VITE_APP_LOG_RESPONSE = 'true'
+VITE_APP_LOG_LEVEL = 'debug'
+
+# ===== 开发服务器 =====
+VITE_APP_DEV_PORT = '5173'
+VITE_APP_DEV_OPEN = 'true'
+```
+
+#### .env.production 完整示例
+
+```bash
+# =========================================
+# 生产环境配置
+# =========================================
+
+VITE_APP_ENV = 'production'
+
+# ===== API 配置 =====
+VITE_APP_BASE_API = 'https://api.example.com'
+VITE_APP_TIMEOUT = '20000'
+
+# ===== 构建配置 =====
+VITE_DELETE_CONSOLE = 'true'
+VITE_SHOW_SOURCEMAP = 'false'
+VITE_MINIFY = 'true'
+
+# ===== 日志配置 =====
+VITE_APP_LOG_REQUEST = 'false'
+VITE_APP_LOG_RESPONSE = 'false'
+VITE_APP_LOG_LEVEL = 'error'
+
+# ===== CDN 配置 =====
+VITE_APP_CDN = 'https://cdn.example.com'
+VITE_APP_PUBLIC_BASE = '/'
+
+# ===== 监控配置 =====
+VITE_APP_SENTRY_DSN = 'https://xxx@sentry.io/xxx'
+VITE_APP_PERFORMANCE = 'true'
+```
+
+### package.json 脚本配置
+
+```json
+{
+  "scripts": {
+    "dev:h5": "uni",
+    "dev:mp-weixin": "uni -p mp-weixin",
+    "dev:mp-alipay": "uni -p mp-alipay",
+    "dev:app": "uni -p app",
+
+    "build:h5": "uni build",
+    "build:mp-weixin": "uni build -p mp-weixin",
+    "build:mp-alipay": "uni build -p mp-alipay",
+    "build:app": "uni build -p app",
+
+    "build:h5:test": "uni build --mode test",
+    "build:h5:staging": "uni build --mode staging",
+
+    "type-check": "vue-tsc --noEmit"
+  }
+}
+```
+
 ## 总结
 
 RuoYi-Plus-UniApp 的环境配置系统提供了:
 
 **核心优势:**
 
-1. **多环境支持** - 开发、生产环境独立配置
+1. **多环境支持** - 开发、测试、预发布、生产环境独立配置
 2. **配置分层** - 公共配置 + 环境特定配置,避免重复
 3. **类型安全** - TypeScript 类型定义,编译时检查
 4. **安全可靠** - 敏感信息本地化,密钥管理规范
 5. **灵活扩展** - 支持自定义环境和配置项
+6. **多平台适配** - 支持 H5、小程序、APP 等多平台差异配置
 
 **使用建议:**
 
@@ -811,5 +1384,7 @@ RuoYi-Plus-UniApp 的环境配置系统提供了:
 3. 公共配置提取到 `.env`,避免重复
 4. 生产环境务必使用 HTTPS 和加密传输
 5. 文档化所有环境变量,便于团队协作
+6. 启动时验证必需的环境变量
+7. 使用条件编译处理平台差异
 
 通过合理的环境配置,可以实现多环境无缝切换、配置安全管理、团队协作高效的开发体系。

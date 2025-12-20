@@ -981,6 +981,208 @@ if (stats && stats.usagePercent > 80) {
 - [ ] 定期性能测试
 - [ ] 建立性能基准
 
+## 14. 高级优化技术
+
+### 14.1 Web Worker 优化
+
+对于计算密集型任务，使用 Web Worker 避免阻塞主线程：
+
+```typescript
+// utils/worker.ts - Worker 管理器
+class WorkerManager {
+  private workers: Map<string, Worker> = new Map()
+
+  /**
+   * 创建并执行 Worker 任务
+   */
+  execute<T>(taskId: string, workerScript: string, data: any): Promise<T> {
+    return new Promise((resolve, reject) => {
+      // #ifdef H5
+      const worker = new Worker(workerScript)
+
+      worker.onmessage = (e: MessageEvent) => {
+        resolve(e.data as T)
+        this.terminate(taskId)
+      }
+
+      worker.onerror = (error) => {
+        reject(error)
+        this.terminate(taskId)
+      }
+
+      this.workers.set(taskId, worker)
+      worker.postMessage(data)
+      // #endif
+
+      // #ifndef H5
+      // 非 H5 平台降级为同步执行
+      try {
+        const result = this.executeFallback(data)
+        resolve(result as T)
+      }
+      catch (error) {
+        reject(error)
+      }
+      // #endif
+    })
+  }
+
+  /**
+   * 终止 Worker
+   */
+  terminate(taskId: string): void {
+    const worker = this.workers.get(taskId)
+    if (worker) {
+      worker.terminate()
+      this.workers.delete(taskId)
+    }
+  }
+
+  /**
+   * 非 H5 平台的降级处理
+   */
+  private executeFallback(data: any): any {
+    // 同步执行逻辑
+    return data
+  }
+}
+
+export const workerManager = new WorkerManager()
+```
+
+**使用示例：**
+
+```typescript
+// 大数据处理示例
+async function processLargeData(data: any[]) {
+  const result = await workerManager.execute(
+    'data-process',
+    '/workers/data-processor.js',
+    data,
+  )
+  return result
+}
+```
+
+### 14.2 Performance API 监控
+
+利用浏览器 Performance API 精确测量性能：
+
+```typescript
+// utils/performance-monitor.ts
+class PerformanceMonitor {
+  private marks: Map<string, number> = new Map()
+
+  /**
+   * 标记开始时间
+   */
+  mark(name: string): void {
+    this.marks.set(name, performance.now())
+  }
+
+  /**
+   * 计算耗时
+   */
+  measure(name: string): number {
+    const startTime = this.marks.get(name)
+    if (!startTime) {
+      console.warn(`Mark "${name}" not found`)
+      return 0
+    }
+
+    const duration = performance.now() - startTime
+    this.marks.delete(name)
+
+    // 上报性能数据
+    this.report(name, duration)
+
+    return duration
+  }
+
+  /**
+   * 获取页面加载性能
+   */
+  getNavigationTiming(): NavigationTiming | null {
+    // #ifdef H5
+    const timing = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming
+    if (!timing)
+      return null
+
+    return {
+      dns: timing.domainLookupEnd - timing.domainLookupStart,
+      tcp: timing.connectEnd - timing.connectStart,
+      ttfb: timing.responseStart - timing.requestStart,
+      download: timing.responseEnd - timing.responseStart,
+      domParse: timing.domInteractive - timing.responseEnd,
+      domReady: timing.domContentLoadedEventEnd - timing.navigationStart,
+      load: timing.loadEventEnd - timing.navigationStart,
+    }
+    // #endif
+
+    return null
+  }
+
+  /**
+   * 上报性能数据
+   */
+  private report(name: string, duration: number): void {
+    console.log(`[Performance] ${name}: ${duration.toFixed(2)}ms`)
+
+    // 生产环境上报到监控平台
+    if (import.meta.env.PROD) {
+      // reportToAnalytics({ name, duration })
+    }
+  }
+}
+
+interface NavigationTiming {
+  dns: number
+  tcp: number
+  ttfb: number
+  download: number
+  domParse: number
+  domReady: number
+  load: number
+}
+
+export const performanceMonitor = new PerformanceMonitor()
+```
+
+### 14.3 响应式数据优化
+
+避免不必要的响应式转换：
+
+```typescript
+// ✅ 使用 shallowRef 避免深层响应式
+import { shallowRef } from 'vue'
+
+// 大数据列表使用浅响应
+const largeList = shallowRef<Item[]>([])
+
+// 更新时整体替换
+function updateList(newItems: Item[]) {
+  largeList.value = newItems
+}
+
+// ✅ 使用 markRaw 标记不需要响应式的对象
+import { markRaw } from 'vue'
+
+const rawData = markRaw({
+  // 大型静态数据
+  config: { ... },
+  constants: { ... },
+})
+
+// ✅ 使用 toRaw 获取原始对象进行操作
+import { toRaw } from 'vue'
+
+function processData() {
+  const raw = toRaw(reactiveData)
+  // 直接操作原始对象，避免触发响应式
+  raw.items.forEach(item => { ... })
+}
+```
+
 ## 总结
 
 性能优化是一个持续迭代的过程,需要从构建、代码、运行时、平台等多个维度系统化推进。RuoYi-Plus-UniApp 通过 Vite 6 高速构建、智能代码分包、高效缓存策略、精细化渲染优化等手段,实现了卓越的性能表现。开发者应遵循本文档的最佳实践,结合实际业务场景,持续优化应用性能,为用户提供流畅、快速的使用体验。
@@ -992,3 +1194,4 @@ if (stats && stats.usagePercent > 80) {
 3. **缓存策略关键** - 减少不必要的计算和网络请求
 4. **渲染性能核心** - 虚拟列表、懒加载、条件渲染优化
 5. **持续监控改进** - 建立性能基准,定期分析优化
+6. **响应式优化** - 合理使用 shallowRef、markRaw 减少性能开销
