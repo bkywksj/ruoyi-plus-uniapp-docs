@@ -97,7 +97,7 @@
 
 ### 环境要求
 
-- **JDK**: 21+
+- **JDK**: 17+
 - **Maven**: 3.8+
 - **邮件服务器**: （可选）用于邮件告警
 - **钉钉机器人**: （可选）用于 Webhook 告警
@@ -161,11 +161,11 @@ java -jar target/ruoyi-monitor-admin.jar --spring.profiles.active=dev
 
 ### Dockerfile 说明
 
-项目提供了优化的 Dockerfile，使用 Liberica OpenJDK 21 作为基础镜像：
+项目提供了优化的 Dockerfile，使用 Liberica OpenJDK 17 作为基础镜像：
 
 ```dockerfile
-# 使用贝尔实验室 OpenJDK 21 镜像（支持 CDS 加速启动）
-FROM bellsoft/liberica-openjdk-rocky:21.0.8-cds
+# 使用贝尔实验室 OpenJDK 17 镜像（支持 CDS 加速启动）
+FROM bellsoft/liberica-openjdk-rocky:17-cds
 
 LABEL maintainer="抓蛙师"
 

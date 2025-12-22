@@ -16,7 +16,7 @@ RocketMQ 是阿里巴巴开源的分布式消息队列中间件，具有高性�
 
 | 项目 | 要求 | 说明 |
 |------|------|------|
-| Java | 21+ | RocketMQ 客户端要求 |
+| Java | 17+ | RocketMQ 客户端要求 |
 | RocketMQ Server | 4.9.0+ | 推荐 5.x 版本 |
 | Spring Boot | 3.5.6 | 框架版本 |
 

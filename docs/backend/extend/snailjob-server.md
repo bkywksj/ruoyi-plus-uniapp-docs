@@ -99,8 +99,8 @@
 
 ### 环境要求
 
-- **JDK**: 21+
-- **MySQL**: 8.0+
+- **JDK**: 17+
+- **MySQL**: 5.7+
 - **Maven**: 3.8+
 
 ### 1. 数据库初始化
@@ -203,11 +203,11 @@ java -jar target/ruoyi-snailjob-server.jar --spring.profiles.active=dev
 
 ### Dockerfile 说明
 
-项目提供了优化的 Dockerfile，使用 Liberica OpenJDK 21 作为基础镜像：
+项目提供了优化的 Dockerfile，使用 Liberica OpenJDK 17 作为基础镜像：
 
 ```dockerfile
-# 使用贝尔实验室 OpenJDK 21 镜像（支持 CDS 加速启动）
-FROM bellsoft/liberica-openjdk-rocky:21.0.8-cds
+# 使用贝尔实验室 OpenJDK 17 镜像（支持 CDS 加速启动）
+FROM bellsoft/liberica-openjdk-rocky:17-cds
 
 LABEL maintainer="抓蛙师"
 

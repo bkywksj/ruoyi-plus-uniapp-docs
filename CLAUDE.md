@@ -201,7 +201,7 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 
 | 技术 | 版本 |
 |------|------|
-| Java | 21 |
+| Java | 17 |
 | Spring Boot | 3.5.6 |
 | MyBatis-Plus | 3.5.14 |
 | Sa-Token | 1.44.0 |
@@ -1331,7 +1331,7 @@ del \\?\D:\path\to\nul
 - 📋 新增 ruoyi-common-pay 支付子模块说明
 - 📋 新增 ruoyi-modules 业务模块说明
 - 📋 新增 ruoyi-extend 扩展模块说明
-- 🔧 新增后端技术栈版本表(Java 21、Spring Boot 3.5.6等)
+- 🔧 新增后端技术栈版本表(Java 17、Spring Boot 3.5.6等)
 
 ### v1.3.0 (2025-11-10)
 

@@ -1229,7 +1229,7 @@ ENTRYPOINT ["java", "-jar", "/app.jar"]
 **环境要求**:
 - JDK 17+
 - Maven 3.6+
-- MySQL 8.0+
+- MySQL 5.7+
 - Redis 7.0+
 - IDE: IntelliJ IDEA / Eclipse
 

@@ -8,7 +8,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| Java | 17+ | 支持 JDK 17 及以上版本 (推荐 JDK 21) |
+| Java | 17+ | 支持 JDK 17 及以上版本 |
 | Spring Boot | 3.5.x | 核心框架 |
 | MyBatis-Plus | 3.5.14 | ORM 框架 |
 | Sa-Token | 1.44.0 | 认证授权框架 |

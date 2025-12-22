@@ -110,7 +110,7 @@ RuoYi-Plus-UniApp 是一个全栈框架，采用当前主流的技术栈构建�
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| Java | 21 | LTS 长期支持版本 |
+| Java | 17 | LTS 长期支持版本 |
 | Spring Boot | 3.5.6 | 核心框架 |
 | MyBatis-Plus | 3.5.14 | ORM 增强框架 |
 | Sa-Token | 1.44.0 | 权限认证框架 |
@@ -1116,9 +1116,9 @@ class SysUserControllerTest {
 
 **必需环境：**
 
-- JDK 21+
+- JDK 17+
 - Maven 3.9+
-- MySQL 8.0+
+- MySQL 5.7+
 - Redis 7.0+
 - Node.js 18+
 

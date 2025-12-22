@@ -234,7 +234,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 
 | 依赖 | 版本 | 说明 |
 |------|------|------|
-| Java | 21 | JDK版本要求 |
+| Java | 17 | JDK版本要求 |
 | Spring Boot | 3.5.8 | 核心框架版本 |
 | MyBatis | 3.5.16 | 持久层框架 |
 | MyBatis-Plus | 3.5.14 | MyBatis增强 |
@@ -838,8 +838,8 @@ module-b → module-core
 
 | RuoYi-Plus 版本 | JDK 版本 | Spring Boot 版本 | 说明 |
 |-----------------|----------|------------------|------|
-| 5.5.x | 21+ | 3.5.x | 当前稳定版本 |
-| 5.4.x | 21+ | 3.4.x | 长期支持版本 |
+| 5.5.x | 17+ | 3.5.x | 当前稳定版本 |
+| 5.4.x | 17+ | 3.4.x | 长期支持版本 |
 | 5.3.x | 17+ | 3.3.x | 维护版本 |
 | 5.2.x | 17+ | 3.2.x | 停止维护 |
 
@@ -875,7 +875,7 @@ module-b → module-core
 
 | 数据库 | 最低版本 | 推荐版本 | 备注 |
 |--------|----------|----------|------|
-| MySQL | 8.0 | 8.4+ | 推荐使用 InnoDB 引擎 |
+| MySQL | 5.7 | 8.0+ | 推荐使用 InnoDB 引擎 |
 | PostgreSQL | 14 | 16+ | 完整支持 |
 | Oracle | 19c | 21c+ | 需要 JDBC 驱动 |
 | SQL Server | 2019 | 2022 | 需要额外配置 |
@@ -1207,10 +1207,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up JDK 21
+    - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
-        java-version: '21'
+        java-version: '17'
         distribution: 'temurin'
         cache: maven
 
@@ -1661,7 +1661,7 @@ enterprise-platform/
 **主要变更:**
 
 1. **Spring Boot 版本升级**: 3.4.x → 3.5.x
-2. **JDK 最低版本**: 保持 JDK 21
+2. **JDK 最低版本**: 保持 JDK 17
 3. **新增模块**: `ruoyi-common-mqtt`、`ruoyi-common-message`
 4. **依赖版本更新**: Redisson 3.51.0 → 3.52.0
 
@@ -1712,14 +1712,13 @@ redisson:
 
 **主要变更:**
 
-1. **JDK 版本升级**: JDK 17 → JDK 21
-2. **Spring Boot 版本升级**: 3.3.x → 3.4.x
-3. **Virtual Threads 支持**: 新增虚拟线程配置
+1. **Spring Boot 版本升级**: 3.3.x → 3.4.x
+2. **Virtual Threads 支持**: 新增虚拟线程配置(JDK 17+)
 
-**JDK 21 迁移注意事项:**
+**JDK 17 迁移注意事项:**
 
 ```java
-// 利用 JDK 21 新特性
+// 利用 JDK 17 新特性
 
 // 1. 虚拟线程配置
 @Configuration
@@ -1957,7 +1956,7 @@ BOM 的导入顺序决定版本优先级，后导入的会覆盖先导入的:
 
 | 组件 | 最低版本 | 推荐版本 |
 |------|----------|----------|
-| JDK | 21 | 21.0.3+ |
+| JDK | 17 | 17.0.10+ |
 | Maven | 3.9.0 | 3.9.9+ |
 | Git | 2.30 | 2.45+ |
 | IDE | IntelliJ 2024.1 | 2024.3+ |

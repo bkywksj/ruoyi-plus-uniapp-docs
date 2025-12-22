@@ -12,12 +12,11 @@
 
 ### 核心环境
 - **Java**: JDK 17+
-  - 📥 [JDK 17 下载地址](https://openjdk.org/projects/jdk/17/)
-  - 📥 [JDK 21 下载地址](https://openjdk.org/projects/jdk/21/) (推荐)
-  - 支持 JDK 17 及以上版本，推荐使用 JDK 21
-  
-- **数据库**: 
-  - **MySQL 8.0+** (推荐)
+  - 📥 [JDK 17 下载地址](https://openjdk.org/projects/jdk/17/) (推荐)
+  - 支持 JDK 17 及以上版本
+
+- **数据库**:
+  - **MySQL 5.7+** (推荐)
   - Oracle >= 12c
   - PostgreSQL >=13
   - SQL Server 2017/2019
@@ -108,7 +107,7 @@ ruoyi-plus-uniapp/
 #### 1.2 配置 JDK
 1. 点击菜单 `File` → `Project Structure`
 2. 在左侧选择 `Project Settings` → `Project`
-3. 将 `SDK` 设置为 **JDK 17 或更高版本** (推荐 JDK 21)
+3. 将 `SDK` 设置为 **JDK 17 或更高版本**
 
 ### 步骤2：项目标识符配置（新项目必需）
 

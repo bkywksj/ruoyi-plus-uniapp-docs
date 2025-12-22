@@ -7,7 +7,7 @@
 ### 1. 系统要求
 - JDK 17+
 - Maven 3.6+
-- MySQL 8.0+ / PostgreSQL 12+ / Oracle 11g+ / SQL Server 2012+
+- MySQL 5.7+ / PostgreSQL 12+ / Oracle 11g+ / SQL Server 2012+
 - Node.js 18+（前端开发）
 
 ### 2. 项目依赖

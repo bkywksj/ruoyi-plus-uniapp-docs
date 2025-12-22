@@ -51,7 +51,7 @@ curl -sSL https://resource.fit2cloud.com/1panel/package/quick_start.sh -o quick_
 
 | 服务 | 版本 | 说明 |
 |------|------|------|
-| MySQL | 8.0+ | 数据库,创建 `ryplus_uni_workflow` 数据库 |
+| MySQL | 5.7+ | 数据库,创建 `ryplus_uni_workflow` 数据库 |
 | Redis | 7.0+ | 缓存服务 |
 | Nginx | 最新 | Web 服务器和反向代理 |
 | MinIO | 最新 | 对象存储(可选,用于文件上传) |
@@ -219,8 +219,8 @@ docker exec -it ryplus_uni_workflow /bin/bash
 ### Dockerfile 结构解析
 
 ```dockerfile
-# 基础镜像：Liberica JDK 21 (带 CDS 支持)
-FROM bellsoft/liberica-openjdk-rocky:21.0.8-cds
+# 基础镜像：Liberica JDK 17 (带 CDS 支持)
+FROM bellsoft/liberica-openjdk-rocky:17-cds
 LABEL maintainer="抓蛙师"
 
 # 创建应用目录结构

@@ -13,7 +13,7 @@ RuoYi-Plus 后端采用 Spring Boot 3 + MyBatis-Plus 架构，提供现代化的
 | **Sa-Token** | 1.37+ | 权限认证 |
 | **MyBatis-Plus** | 3.5+ | ORM框架 |
 | **Redis** | 7.0+ | 缓存存储 |
-| **MySQL** | 8.0+ | 数据库 |
+| **MySQL** | 5.7+ | 数据库 |
 | **Hutool** | 5.8+ | 工具库 |
 | **Jackson** | 2.15+ | JSON处理 |
 

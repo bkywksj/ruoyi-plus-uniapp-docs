@@ -30,7 +30,7 @@ Web模块（`ruoyi-common-web`）是系统的 Web 应用基础模块，提供 We
 │  │  (CONNECT/TRACE/TRACK)                                       │  │
 │  └──────────────────────────────────────────────────────────────┘  │
 │  ┌──────────────────────────────────────────────────────────────┐  │
-│  │  VirtualThreadTaskExecutor - 虚拟线程池 (JDK 21+)            │  │
+│  │  VirtualThreadTaskExecutor - 虚拟线程池 (JDK 17+)            │  │
 │  └──────────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────────┘
                                  ↓
@@ -147,7 +147,7 @@ Web模块（`ruoyi-common-web`）是系统的 Web 应用基础模块，提供 We
 | 配置项 | 说明 |
 |--------|------|
 | WebSocket 缓冲区池 | 配置 WebSocket 使用的 `DefaultByteBufferPool` |
-| 虚拟线程池 | 在 JDK 21+ 环境自动启用虚拟线程执行器 |
+| 虚拟线程池 | 在 JDK 17+ 环境自动启用虚拟线程执行器 |
 | HTTP 方法限制 | 禁用 CONNECT、TRACE、TRACK 不安全方法 |
 
 #### 源码实现
@@ -571,7 +571,7 @@ server:
     # 是否使用直接内存
     direct-buffers: true
 
-# 虚拟线程配置 (JDK 21+)
+# 虚拟线程配置 (JDK 17+)
 spring:
   threads:
     virtual:
@@ -747,7 +747,7 @@ public class CustomExceptionHandler {
 
 **启用条件**：
 
-1. JDK 21 或更高版本
+1. JDK 17 或更高版本
 2. 配置 `spring.threads.virtual.enabled=true`
 3. `SpringUtils.isVirtual()` 返回 `true`
 
@@ -943,7 +943,7 @@ server:
 
 ### 虚拟线程最佳实践
 
-在 JDK 21+ 环境下使用虚拟线程：
+在 JDK 17+ 环境下使用虚拟线程：
 
 ```yaml
 spring:

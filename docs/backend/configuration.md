@@ -49,7 +49,7 @@ spring:
     active: @profiles.active@      # 激活的环境配置
   threads:
     virtual:
-      enabled: true                # 启用虚拟线程(JDK21+)
+      enabled: true                # 启用虚拟线程(JDK17+)
 ```
 
 #### 3.2 文件上传配置
