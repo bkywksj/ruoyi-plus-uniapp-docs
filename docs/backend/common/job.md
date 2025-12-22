@@ -1004,3 +1004,1006 @@ MyData data = JsonUtils.parseObject(json, MyData.class);
 2. 使用分布式锁防止并发执行
 3. 在业务层面做去重处理
 4. 检查调度配置是否正确
+
+## SnailJob服务端部署
+
+### 服务端架构
+
+SnailJob服务端是独立部署的调度中心，负责任务的调度、分发和监控。项目中提供了定制化的服务端模块 `ruoyi-snailjob-server`。
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SnailJob 服务端架构                                │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│   ┌─────────────────────────────────────────────────────────────┐   │
+│   │                   ruoyi-snailjob-server                     │   │
+│   │  ┌─────────────────────────────────────────────────────┐    │   │
+│   │  │              SnailJobServer.java                     │    │   │
+│   │  │  • 启动入口类                                        │    │   │
+│   │  │  • 集成 SnailJobServerApplication                    │    │   │
+│   │  │  • 自定义启动日志输出                                │    │   │
+│   │  └─────────────────────────────────────────────────────┘    │   │
+│   │                                                             │   │
+│   │  ┌─────────────────────────────────────────────────────┐    │   │
+│   │  │              SecurityConfig.java                     │    │   │
+│   │  │  • Actuator端点认证                                  │    │   │
+│   │  │  • HTTP Basic认证过滤器                              │    │   │
+│   │  └─────────────────────────────────────────────────────┘    │   │
+│   │                                                             │   │
+│   │  ┌─────────────────────────────────────────────────────┐    │   │
+│   │  │              ActuatorAuthFilter.java                 │    │   │
+│   │  │  • 监控端点安全过滤                                  │    │   │
+│   │  │  • 用户名密码校验                                    │    │   │
+│   │  └─────────────────────────────────────────────────────┘    │   │
+│   └─────────────────────────────────────────────────────────────┘   │
+│                                                                     │
+│   ┌─────────────────────────────────────────────────────────────┐   │
+│   │                     配置文件结构                             │   │
+│   │  ├── application.yml        # 主配置（端口、日志等）        │   │
+│   │  ├── application-dev.yml    # 开发环境（数据库、服务端配置）│   │
+│   │  ├── application-prod.yml   # 生产环境配置                  │   │
+│   │  └── logback-plus.xml       # 日志配置                      │   │
+│   └─────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 服务端启动类
+
+```java
+/**
+ * 任务调度服务端启动程序
+ * SnailJob Server
+ *
+ * @author opensnail
+ * @date 2024-05-17
+ */
+@SpringBootApplication
+public class SnailJobServer {
+
+    public static void main(String[] args) {
+        // 启动Spring Boot应用并获取应用上下文
+        ConfigurableApplicationContext context = SpringApplication.run(
+            com.aizuda.snailjob.server.SnailJobServerApplication.class, args);
+
+        // 获取环境配置
+        Environment env = context.getEnvironment();
+
+        ThreadUtil.sleep(1000);
+        // 打印启动成功信息
+        System.out.printf(
+            "\n(✨◠‿◠)ﾉ♪♫ %s 启动成功！环境: %s 地址: http://127.0.0.1:%s%s\n\n",
+            env.getProperty("spring.application.name"),
+            Arrays.toString(env.getActiveProfiles()),
+            env.getProperty("server.port"),
+            env.getProperty("server.servlet.context-path"));
+    }
+}
+```
+
+### 服务端主配置
+
+```yaml
+# ======================================
+# Snail Job 服务器主配置文件
+# ======================================
+
+# 服务器配置
+server:
+  # 服务端口
+  port: ${SERVER_PORT:8800}
+  servlet:
+    # 应用上下文路径
+    context-path: /snail-job
+
+# Spring 基础配置
+spring:
+  application:
+    # 应用名称
+    name: ruoyi-snailjob-server
+  profiles:
+    # 激活的配置文件（使用环境变量）
+    active: @profiles.active@
+  web:
+    resources:
+      # 静态资源路径（Web控制台）
+      static-locations: classpath:admin/
+
+# MyBatis Plus 配置
+mybatis-plus:
+  typeAliasesPackage: com.aizuda.snailjob.template.datasource.persistence.po
+  global-config:
+    db-config:
+      # 查询条件策略：非空字段才参与查询
+      where-strategy: NOT_EMPTY
+      # 关闭大写命名
+      capital-mode: false
+      # 逻辑删除值
+      logic-delete-value: 1
+      # 逻辑未删除值
+      logic-not-delete-value: 0
+  configuration:
+    # 下划线转驼峰命名
+    map-underscore-to-camel-case: true
+    # 启用二级缓存
+    cache-enabled: true
+
+# 日志配置
+logging:
+  # 日志配置文件
+  config: classpath:logback-plus.xml
+  level:
+    # SnailJob包的日志级别
+    com.aizuda.snailjob: ${LOG_LEVEL:info}
+
+# Spring Boot Actuator 监控端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        # 暴露所有端点
+        include: '*'
+  endpoint:
+    health:
+      # 健康检查显示详细信息
+      show-details: ALWAYS
+    logfile:
+      # 外部日志文件路径
+      external-file: ./logs/ruoyi-snailjob-server/console.log
+```
+
+### 服务端高级配置
+
+```yaml
+# ======================================
+# Snail Job 服务端高级配置
+# ======================================
+
+--- # snail-job 服务端配置
+snail-job:
+  # 服务端节点IP（默认按照NetUtil.getLocalIpStr()自动获取）
+  server-host:
+  # 服务端端口号
+  server-port: ${SNAILJOB_SERVER_PORT:17888}
+  # 合并日志默认保存天数
+  merge-Log-days: 1
+  # 合并日志默认的条数
+  merge-Log-num: 500
+  # 配置每批次拉取重试数据的大小
+  retry-pull-page-size: 100
+  # 配置日志保存时间（单位：天）
+  log-storage: 7
+  # bucket的总数量（用于分布式调度）
+  bucket-total: 128
+  # Dashboard 任务容错天数
+  summary-day: 7
+  # 配置负载均衡周期时间（秒）
+  load-balance-cycle-time: 10
+  # 重试任务拉取的并行度
+  retry-max-pull-parallel: 2
+```
+
+### 服务端配置参数说明
+
+| 参数 | 说明 | 默认值 | 建议值 |
+|------|------|--------|--------|
+| `server-host` | 服务端节点IP | 自动获取 | 集群环境需指定 |
+| `server-port` | 服务端RPC端口 | `17888` | 保持默认 |
+| `merge-Log-days` | 合并日志保存天数 | `1` | 根据日志量调整 |
+| `merge-Log-num` | 合并日志条数阈值 | `500` | 500-1000 |
+| `retry-pull-page-size` | 重试数据拉取批次大小 | `100` | 50-200 |
+| `log-storage` | 日志保存天数 | `7` | 生产环境可延长 |
+| `bucket-total` | 分布式调度桶数量 | `128` | 2的幂次方 |
+| `summary-day` | Dashboard统计天数 | `7` | 7-30 |
+| `load-balance-cycle-time` | 负载均衡周期（秒） | `10` | 10-30 |
+| `retry-max-pull-parallel` | 重试任务并行度 | `2` | CPU核心数/2 |
+
+## 数据库配置
+
+### HikariCP连接池配置
+
+```yaml
+# 数据库配置
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${SNAILJOB_DB_HOST:127.0.0.1}:${SNAILJOB_DB_PORT:3306}/${SNAILJOB_DB_NAME:ryplus_uni_workflow}?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: ${SNAILJOB_DB_USERNAME:root}
+    password: ${SNAILJOB_DB_PASSWORD:root}
+    # HikariCP 连接池配置
+    hikari:
+      # 连接超时时间（毫秒）
+      connection-timeout: 30000
+      # 连接验证超时时间（毫秒）
+      validation-timeout: 5000
+      # 最小空闲连接数
+      minimum-idle: 10
+      # 最大连接池大小
+      maximum-pool-size: 20
+      # 空闲连接超时时间（毫秒）
+      idle-timeout: 600000
+      # 连接最大生命周期（毫秒）
+      max-lifetime: 900000
+      # 连接保活时间（毫秒）
+      keepaliveTime: 30000
+```
+
+### 连接池参数说明
+
+| 参数 | 说明 | 默认值 | 建议值 |
+|------|------|--------|--------|
+| `connection-timeout` | 获取连接超时时间 | `30000ms` | 30秒 |
+| `validation-timeout` | 连接验证超时时间 | `5000ms` | 5秒 |
+| `minimum-idle` | 最小空闲连接数 | `10` | 与CPU核心相关 |
+| `maximum-pool-size` | 最大连接池大小 | `20` | 最小空闲的2倍 |
+| `idle-timeout` | 空闲连接超时 | `600000ms` | 10分钟 |
+| `max-lifetime` | 连接最大生命周期 | `900000ms` | 15分钟 |
+| `keepaliveTime` | 连接保活时间 | `30000ms` | 30秒 |
+
+### 数据库优化建议
+
+1. **索引优化**：确保任务表的关键字段有索引
+
+```sql
+-- 任务表索引
+CREATE INDEX idx_job_status ON sj_job(job_status);
+CREATE INDEX idx_job_next_trigger_time ON sj_job(next_trigger_time);
+CREATE INDEX idx_job_group_name ON sj_job(group_name);
+
+-- 日志表索引
+CREATE INDEX idx_job_log_job_id ON sj_job_log(job_id);
+CREATE INDEX idx_job_log_create_dt ON sj_job_log(create_dt);
+```
+
+2. **定期清理历史数据**：
+
+```sql
+-- 清理30天前的日志数据
+DELETE FROM sj_job_log WHERE create_dt < DATE_SUB(NOW(), INTERVAL 30 DAY);
+
+-- 清理已完成的重试任务
+DELETE FROM sj_retry_task WHERE retry_status = 2 AND create_dt < DATE_SUB(NOW(), INTERVAL 7 DAY);
+```
+
+## 监控与安全配置
+
+### Spring Boot Admin集成
+
+```yaml
+--- # Spring Boot Admin 监控中心配置
+spring.boot.admin.client:
+  # 是否启用监控客户端
+  enabled: ${MONITOR_ENABLED:false}
+  # 监控中心地址
+  url: ${MONITOR_URL:http://127.0.0.1:9090/admin}
+  instance:
+    # 服务主机类型
+    service-host-type: IP
+    metadata:
+      # 监控认证用户名
+      username: ${MONITOR_USERNAME:ruoyi}
+      # 监控认证密码
+      userpassword: ${MONITOR_PASSWORD:123456}
+  # 监控用户名
+  username: ${MONITOR_USERNAME:ruoyi}
+  # 监控密码
+  password: ${MONITOR_PASSWORD:123456}
+```
+
+### Actuator端点安全配置
+
+项目提供了Actuator端点的安全认证配置：
+
+```java
+/**
+ * 安全配置类
+ * 用于配置Actuator端点的认证过滤器
+ *
+ * @author Lion Li
+ */
+@Configuration
+public class SecurityConfig {
+
+    @Value("${spring.boot.admin.client.username}")
+    private String username;
+
+    @Value("${spring.boot.admin.client.password}")
+    private String password;
+
+    /**
+     * 注册Actuator认证过滤器
+     * 为/actuator路径及其子路径添加HTTP Basic认证
+     */
+    @Bean
+    public FilterRegistrationBean<ActuatorAuthFilter> actuatorFilterRegistrationBean() {
+        FilterRegistrationBean<ActuatorAuthFilter> registrationBean =
+            new FilterRegistrationBean<>();
+
+        // 创建认证过滤器实例
+        registrationBean.setFilter(new ActuatorAuthFilter(username, password));
+
+        // 设置过滤器拦截的URL模式
+        registrationBean.addUrlPatterns("/actuator", "/actuator/*");
+
+        return registrationBean;
+    }
+}
+```
+
+### 监控指标说明
+
+| 端点 | 路径 | 说明 |
+|------|------|------|
+| 健康检查 | `/actuator/health` | 服务健康状态 |
+| 信息 | `/actuator/info` | 应用信息 |
+| 指标 | `/actuator/metrics` | 性能指标数据 |
+| 日志文件 | `/actuator/logfile` | 在线查看日志 |
+| 环境 | `/actuator/env` | 环境变量信息 |
+
+## 集群部署架构
+
+### 高可用部署方案
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SnailJob 高可用集群架构                           │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│                        ┌─────────────────┐                          │
+│                        │   负载均衡器     │                          │
+│                        │   (Nginx/SLB)   │                          │
+│                        └────────┬────────┘                          │
+│                                 │                                   │
+│           ┌────────────────────┼────────────────────┐               │
+│           │                    │                    │               │
+│   ┌───────▼───────┐    ┌───────▼───────┐    ┌───────▼───────┐       │
+│   │  SnailJob     │    │  SnailJob     │    │  SnailJob     │       │
+│   │  Server-1     │    │  Server-2     │    │  Server-3     │       │
+│   │  :8800        │    │  :8800        │    │  :8800        │       │
+│   │  :17888       │    │  :17888       │    │  :17888       │       │
+│   └───────┬───────┘    └───────┬───────┘    └───────┬───────┘       │
+│           │                    │                    │               │
+│           └────────────────────┼────────────────────┘               │
+│                                │                                    │
+│                      ┌─────────▼─────────┐                          │
+│                      │   MySQL集群        │                          │
+│                      │   (主从复制)       │                          │
+│                      └───────────────────┘                          │
+│                                                                     │
+│   ┌─────────────────────────────────────────────────────────────┐   │
+│   │                    应用服务集群                               │   │
+│   │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐         │   │
+│   │  │ App-1   │  │ App-2   │  │ App-3   │  │ App-N   │         │   │
+│   │  │ Client  │  │ Client  │  │ Client  │  │ Client  │         │   │
+│   │  └─────────┘  └─────────┘  └─────────┘  └─────────┘         │   │
+│   └─────────────────────────────────────────────────────────────┘   │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 集群配置要点
+
+1. **服务端集群配置**：
+
+```yaml
+snail-job:
+  # 集群环境必须指定服务端IP
+  server-host: 192.168.1.100
+  server-port: 17888
+  # 增加bucket数量以支持更多节点
+  bucket-total: 256
+```
+
+2. **客户端多服务端配置**：
+
+```yaml
+snail-job:
+  enabled: true
+  group: ${app.id}
+  token: "SJ_xxxxxxxxxxxxxxxxxxxxxxxxx"
+  server:
+    # 多服务端地址（逗号分隔）
+    host: 192.168.1.100,192.168.1.101,192.168.1.102
+    port: 17888
+```
+
+3. **Nginx负载均衡配置**：
+
+```nginx
+upstream snailjob_servers {
+    server 192.168.1.100:8800 weight=1;
+    server 192.168.1.101:8800 weight=1;
+    server 192.168.1.102:8800 weight=1;
+}
+
+server {
+    listen 80;
+    server_name snailjob.example.com;
+
+    location / {
+        proxy_pass http://snailjob_servers;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+```
+
+## 性能调优指南
+
+### 1. JVM参数优化
+
+```bash
+# 生产环境JVM参数建议
+JAVA_OPTS="-Xms2g -Xmx2g \
+  -XX:+UseG1GC \
+  -XX:MaxGCPauseMillis=200 \
+  -XX:+HeapDumpOnOutOfMemoryError \
+  -XX:HeapDumpPath=/logs/heapdump.hprof \
+  -XX:+PrintGCDetails \
+  -XX:+PrintGCDateStamps \
+  -Xloggc:/logs/gc.log"
+```
+
+### 2. 任务执行优化
+
+```java
+/**
+ * 高性能任务示例
+ * 采用批量处理和异步执行
+ */
+@Component
+@JobExecutor(name = "highPerformanceJob")
+public class HighPerformanceJob {
+
+    @Autowired
+    private ThreadPoolTaskExecutor taskExecutor;
+
+    @Autowired
+    private DataService dataService;
+
+    public ExecuteResult jobExecute(JobArgs jobArgs) {
+        // 获取分页参数
+        int pageSize = 1000;
+        int totalPages = dataService.getTotalPages(pageSize);
+
+        // 使用CompletableFuture并行处理
+        List<CompletableFuture<Integer>> futures = new ArrayList<>();
+
+        for (int page = 0; page < totalPages; page++) {
+            final int currentPage = page;
+            CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+                List<Data> dataList = dataService.getPageData(currentPage, pageSize);
+                return processBatch(dataList);
+            }, taskExecutor);
+            futures.add(future);
+        }
+
+        // 等待所有任务完成
+        int totalProcessed = futures.stream()
+            .map(CompletableFuture::join)
+            .mapToInt(Integer::intValue)
+            .sum();
+
+        SnailJobLog.REMOTE.info("处理完成，共处理 {} 条数据", totalProcessed);
+
+        return ExecuteResult.success("处理完成: " + totalProcessed);
+    }
+
+    private int processBatch(List<Data> dataList) {
+        // 批量处理逻辑
+        dataService.batchUpdate(dataList);
+        return dataList.size();
+    }
+}
+```
+
+### 3. 线程池配置
+
+```java
+@Configuration
+public class TaskExecutorConfig {
+
+    @Bean("jobTaskExecutor")
+    public ThreadPoolTaskExecutor jobTaskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        // 核心线程数
+        executor.setCorePoolSize(Runtime.getRuntime().availableProcessors());
+        // 最大线程数
+        executor.setMaxPoolSize(Runtime.getRuntime().availableProcessors() * 2);
+        // 队列容量
+        executor.setQueueCapacity(500);
+        // 线程名前缀
+        executor.setThreadNamePrefix("job-task-");
+        // 拒绝策略：调用者运行
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.initialize();
+        return executor;
+    }
+}
+```
+
+### 4. 数据库批量操作
+
+```java
+/**
+ * 批量数据处理任务
+ * 使用MyBatis-Plus批量插入
+ */
+@Component
+@JobExecutor(name = "batchInsertJob")
+public class BatchInsertJob {
+
+    @Autowired
+    private DataMapper dataMapper;
+
+    private static final int BATCH_SIZE = 1000;
+
+    public ExecuteResult jobExecute(JobArgs jobArgs) {
+        List<Data> allData = generateData();
+
+        // 分批处理
+        List<List<Data>> batches = Lists.partition(allData, BATCH_SIZE);
+
+        int inserted = 0;
+        for (List<Data> batch : batches) {
+            // 使用批量插入
+            dataMapper.insertBatch(batch);
+            inserted += batch.size();
+
+            SnailJobLog.REMOTE.info("已插入 {} 条数据", inserted);
+        }
+
+        return ExecuteResult.success("批量插入完成: " + inserted);
+    }
+}
+```
+
+## 日志配置详解
+
+### Logback配置示例
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 日志存储路径 -->
+    <property name="log.path" value="./logs/ruoyi-snailjob-server"/>
+
+    <!-- 控制台输出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 文件输出 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/console.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/console.%i.log.gz</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 任务执行日志 -->
+    <appender name="JOB_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/job-execute.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${log.path}/%d{yyyy-MM-dd}/job-execute.%i.log.gz</fileNamePattern>
+            <maxFileSize>100MB</maxFileSize>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- SnailJob日志级别 -->
+    <logger name="com.aizuda.snailjob" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
+```
+
+### 日志分类说明
+
+| 日志类型 | 文件路径 | 说明 |
+|----------|----------|------|
+| 控制台日志 | `console.log` | 服务端运行日志 |
+| 任务执行日志 | `job-execute.log` | 任务执行详细日志 |
+| GC日志 | `gc.log` | JVM垃圾回收日志 |
+| 错误日志 | `error.log` | 错误级别日志 |
+
+## 环境变量配置
+
+### 服务端环境变量
+
+| 变量名 | 说明 | 默认值 |
+|--------|------|--------|
+| `SERVER_PORT` | HTTP服务端口 | `8800` |
+| `SNAILJOB_SERVER_PORT` | RPC服务端口 | `17888` |
+| `SNAILJOB_DB_HOST` | 数据库主机 | `127.0.0.1` |
+| `SNAILJOB_DB_PORT` | 数据库端口 | `3306` |
+| `SNAILJOB_DB_NAME` | 数据库名称 | `ryplus_uni_workflow` |
+| `SNAILJOB_DB_USERNAME` | 数据库用户名 | `root` |
+| `SNAILJOB_DB_PASSWORD` | 数据库密码 | `root` |
+| `LOG_LEVEL` | 日志级别 | `info` |
+| `MONITOR_ENABLED` | 监控开关 | `false` |
+| `MONITOR_URL` | 监控中心地址 | `http://127.0.0.1:9090/admin` |
+| `MONITOR_USERNAME` | 监控用户名 | `ruoyi` |
+| `MONITOR_PASSWORD` | 监控密码 | `123456` |
+
+### Docker部署配置
+
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  snailjob-server:
+    image: ruoyi/snailjob-server:latest
+    container_name: snailjob-server
+    ports:
+      - "8800:8800"
+      - "17888:17888"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SNAILJOB_DB_HOST=mysql
+      - SNAILJOB_DB_PORT=3306
+      - SNAILJOB_DB_NAME=ryplus_uni_workflow
+      - SNAILJOB_DB_USERNAME=root
+      - SNAILJOB_DB_PASSWORD=root123
+      - LOG_LEVEL=info
+    volumes:
+      - ./logs:/logs
+    depends_on:
+      - mysql
+    networks:
+      - ruoyi-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root123
+      - MYSQL_DATABASE=ryplus_uni_workflow
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - ruoyi-network
+
+volumes:
+  mysql-data:
+
+networks:
+  ruoyi-network:
+    driver: bridge
+```
+
+## 实战案例
+
+### 案例1：订单超时自动取消
+
+```java
+/**
+ * 订单超时取消任务
+ * 每分钟执行一次，取消超过30分钟未支付的订单
+ */
+@Component
+@JobExecutor(name = "orderTimeoutCancelJob")
+public class OrderTimeoutCancelJob {
+
+    @Autowired
+    private OrderService orderService;
+
+    @Autowired
+    private RedissonClient redissonClient;
+
+    public ExecuteResult jobExecute(JobArgs jobArgs) {
+        // 获取超时时间参数（分钟）
+        int timeoutMinutes = Convert.toInt(jobArgs.getJobParams(), 30);
+
+        SnailJobLog.REMOTE.info("开始处理超时订单，超时时间: {} 分钟", timeoutMinutes);
+
+        // 查询超时未支付订单
+        LocalDateTime deadline = LocalDateTime.now().minusMinutes(timeoutMinutes);
+        List<Order> timeoutOrders = orderService.findUnpaidOrdersBefore(deadline);
+
+        if (CollUtil.isEmpty(timeoutOrders)) {
+            return ExecuteResult.success("无超时订单");
+        }
+
+        int cancelCount = 0;
+        for (Order order : timeoutOrders) {
+            // 使用分布式锁防止并发处理
+            String lockKey = "order:cancel:" + order.getOrderNo();
+            RLock lock = redissonClient.getLock(lockKey);
+
+            try {
+                if (lock.tryLock(5, 30, TimeUnit.SECONDS)) {
+                    try {
+                        // 再次检查订单状态
+                        if (orderService.isUnpaid(order.getOrderNo())) {
+                            orderService.cancelOrder(order.getOrderNo(), "超时自动取消");
+                            cancelCount++;
+                            SnailJobLog.REMOTE.info("订单已取消: {}", order.getOrderNo());
+                        }
+                    } finally {
+                        lock.unlock();
+                    }
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                SnailJobLog.REMOTE.warn("订单取消中断: {}", order.getOrderNo());
+            }
+        }
+
+        String message = String.format("处理完成，共取消 %d 个超时订单", cancelCount);
+        SnailJobLog.REMOTE.info(message);
+
+        return ExecuteResult.success(message);
+    }
+}
+```
+
+### 案例2：数据同步任务
+
+```java
+/**
+ * 数据同步任务
+ * 使用MapReduce模式并行同步数据
+ */
+@Component
+@JobExecutor(name = "dataSyncJob")
+public class DataSyncJob {
+
+    @Autowired
+    private DataSyncService dataSyncService;
+
+    /**
+     * Map阶段 - 分片数据
+     */
+    @MapExecutor
+    public ExecuteResult mapExecute(MapArgs mapArgs, MapHandler mapHandler) {
+        // 获取需要同步的数据源列表
+        List<String> dataSources = dataSyncService.getDataSources();
+
+        SnailJobLog.REMOTE.info("开始数据同步，数据源数量: {}", dataSources.size());
+
+        // 按数据源分片
+        return mapHandler.doMap(dataSources, "syncDataSource");
+    }
+
+    /**
+     * 子任务 - 同步单个数据源
+     */
+    @MapExecutor(taskName = "syncDataSource")
+    public ExecuteResult syncDataSource(MapArgs mapArgs) {
+        String dataSource = (String) mapArgs.getMapResult();
+
+        SnailJobLog.REMOTE.info("开始同步数据源: {}", dataSource);
+
+        try {
+            int syncCount = dataSyncService.syncFromSource(dataSource);
+
+            SnailJobLog.REMOTE.info("数据源 {} 同步完成，同步数量: {}", dataSource, syncCount);
+
+            return ExecuteResult.success(syncCount);
+        } catch (Exception e) {
+            SnailJobLog.REMOTE.error("数据源 {} 同步失败", dataSource, e);
+            throw e;
+        }
+    }
+
+    /**
+     * Reduce阶段 - 汇总结果
+     */
+    @ReduceExecutor
+    public ExecuteResult reduceExecute(ReduceArgs reduceArgs) {
+        List<?> results = reduceArgs.getMapResult();
+
+        int totalSync = results.stream()
+            .mapToInt(r -> Integer.parseInt(String.valueOf(r)))
+            .sum();
+
+        String message = String.format("数据同步完成，共同步 %d 条数据", totalSync);
+        SnailJobLog.REMOTE.info(message);
+
+        return ExecuteResult.success(message);
+    }
+}
+```
+
+### 案例3：报表生成任务
+
+```java
+/**
+ * 日报生成任务
+ * 工作流模式：数据采集 -> 数据处理 -> 报表生成 -> 邮件发送
+ */
+@Component
+@JobExecutor(name = "dailyReportCollectTask")
+public class DailyReportCollectTask {
+
+    @Autowired
+    private ReportDataService reportDataService;
+
+    public ExecuteResult jobExecute(JobArgs jobArgs) {
+        // 获取报表日期
+        String reportDate = (String) jobArgs.getWfContext().get("reportDate");
+        if (StrUtil.isEmpty(reportDate)) {
+            reportDate = DateUtil.format(DateUtil.yesterday(), "yyyy-MM-dd");
+        }
+
+        SnailJobLog.REMOTE.info("开始采集 {} 的数据", reportDate);
+
+        // 采集数据
+        Map<String, Object> rawData = reportDataService.collectData(reportDate);
+
+        // 将原始数据放入上下文
+        jobArgs.appendContext("rawData", JsonUtils.toJsonString(rawData));
+        jobArgs.appendContext("reportDate", reportDate);
+
+        return ExecuteResult.success("数据采集完成");
+    }
+}
+
+@Component
+@JobExecutor(name = "dailyReportProcessTask")
+public class DailyReportProcessTask {
+
+    @Autowired
+    private ReportDataService reportDataService;
+
+    public ExecuteResult jobExecute(JobArgs jobArgs) {
+        String rawDataJson = (String) jobArgs.getWfContext("rawData");
+        Map<String, Object> rawData = JsonUtils.parseMap(rawDataJson);
+
+        SnailJobLog.REMOTE.info("开始处理数据");
+
+        // 数据处理
+        Map<String, Object> processedData = reportDataService.processData(rawData);
+
+        // 将处理后的数据放入上下文
+        jobArgs.appendContext("processedData", JsonUtils.toJsonString(processedData));
+
+        return ExecuteResult.success("数据处理完成");
+    }
+}
+
+@Component
+@JobExecutor(name = "dailyReportGenerateTask")
+public class DailyReportGenerateTask {
+
+    @Autowired
+    private ReportGenerateService reportGenerateService;
+
+    public ExecuteResult jobExecute(JobArgs jobArgs) {
+        String processedDataJson = (String) jobArgs.getWfContext("processedData");
+        String reportDate = (String) jobArgs.getWfContext("reportDate");
+
+        Map<String, Object> processedData = JsonUtils.parseMap(processedDataJson);
+
+        SnailJobLog.REMOTE.info("开始生成报表");
+
+        // 生成报表
+        String reportPath = reportGenerateService.generateReport(reportDate, processedData);
+
+        // 将报表路径放入上下文
+        jobArgs.appendContext("reportPath", reportPath);
+
+        return ExecuteResult.success("报表生成完成: " + reportPath);
+    }
+}
+
+@Component
+@JobExecutor(name = "dailyReportSendTask")
+public class DailyReportSendTask {
+
+    @Autowired
+    private MailService mailService;
+
+    public ExecuteResult jobExecute(JobArgs jobArgs) {
+        String reportPath = (String) jobArgs.getWfContext("reportPath");
+        String reportDate = (String) jobArgs.getWfContext("reportDate");
+
+        SnailJobLog.REMOTE.info("开始发送报表邮件");
+
+        // 发送邮件
+        mailService.sendReportEmail(
+            "daily-report@example.com",
+            "日报 - " + reportDate,
+            "请查收附件中的日报。",
+            reportPath
+        );
+
+        return ExecuteResult.success("报表邮件发送完成");
+    }
+}
+```
+
+## 故障排查指南
+
+### 1. 任务不执行排查
+
+**检查步骤：**
+
+1. 确认客户端配置
+   - `snail-job.enabled` 是否为 `true`
+   - `snail-job.group` 是否与服务端配置一致
+   - `snail-job.token` 是否正确
+
+2. 检查网络连通性
+   ```bash
+   telnet <server-host> 17888
+   ```
+
+3. 查看客户端日志
+   - 搜索 `SnailJob` 相关日志
+   - 检查是否有连接失败信息
+
+4. 检查任务执行器
+   - 确认 `@JobExecutor` 注解的 `name` 与后台配置一致
+   - 确认任务类被Spring容器管理
+
+### 2. 任务执行失败排查
+
+**检查步骤：**
+
+1. 查看服务端Web控制台
+   - 任务执行日志
+   - 错误信息
+
+2. 检查客户端日志
+   - `SnailJobLog.REMOTE` 输出
+   - 异常堆栈信息
+
+3. 检查任务逻辑
+   - 是否有空指针异常
+   - 是否有数据库连接问题
+   - 是否有超时问题
+
+### 3. 服务端启动失败排查
+
+**常见问题：**
+
+1. 端口被占用
+   ```bash
+   netstat -ano | findstr 8800
+   netstat -ano | findstr 17888
+   ```
+
+2. 数据库连接失败
+   - 检查数据库配置
+   - 检查数据库服务状态
+   - 检查用户权限
+
+3. 内存不足
+   - 增加JVM内存参数
+   - 检查系统可用内存
+
+### 4. 日志查看命令
+
+```bash
+# 实时查看服务端日志
+tail -f ./logs/ruoyi-snailjob-server/console.log
+
+# 搜索错误日志
+grep -n "ERROR" ./logs/ruoyi-snailjob-server/console.log
+
+# 查看任务执行日志
+tail -f ./logs/ruoyi-snailjob-server/job-execute.log
+
+# 按时间范围查看日志
+sed -n '/2025-01-01 10:00/,/2025-01-01 11:00/p' console.log
+```

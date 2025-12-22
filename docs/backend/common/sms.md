@@ -1005,3 +1005,1015 @@ smsBlend.sendMessage(phone, content);
 - **通道选择**: 验证码使用低价通道，营销使用高到达率通道
 - **失败重试**: 设置合理的重试次数（建议 2-3 次）
 - **缓存策略**: 验证码缓存时间不宜过长（建议 5 分钟）
+
+## 完整配置参考
+
+### 开发环境配置 (application-dev.yml)
+
+```yaml
+sms:
+  # 配置源类型用于标定配置来源(interface,yaml)
+  config-type: yaml
+  # 用于标定yml中的配置是否开启短信拦截，接口配置不受此限制
+  restricted: true
+  # 短信拦截限制单手机号每分钟最大发送，只对开启了拦截的配置有效
+  minute-max: 1
+  # 短信拦截限制单手机号每日最大发送量，只对开启了拦截的配置有效
+  account-max: 30
+  # 以下配置来自于 org.dromara.sms4j.provider.config.BaseConfig类中
+  blends:
+    # 唯一ID 用于发送短信寻找具体配置 随便定义别用中文即可
+    # 可以同时存在两个相同厂商 例如: ali1 ali2 两个不同的阿里短信账号 也可用于区分租户
+    config1:
+      # 框架定义的厂商名称标识，标定此配置是哪个厂商
+      supplier: alibaba
+      # 有些称为accessKey有些称之为apiKey，也有称为sdkKey或者appId
+      access-key-id: ${SMS_ALI_ACCESS_KEY:您的accessKey}
+      # 称为accessSecret有些称之为apiSecret
+      access-key-secret: ${SMS_ALI_ACCESS_SECRET:您的accessKeySecret}
+      signature: ${SMS_ALI_SIGNATURE:您的短信签名}
+      sdk-app-id: ${SMS_ALI_SDK_APP_ID:您的sdkAppId}
+    config2:
+      # 厂商标识，标定此配置是哪个厂商
+      supplier: tencent
+      access-key-id: ${SMS_TENCENT_ACCESS_KEY:您的accessKey}
+      access-key-secret: ${SMS_TENCENT_ACCESS_SECRET:您的accessKeySecret}
+      signature: ${SMS_TENCENT_SIGNATURE:您的短信签名}
+      sdk-app-id: ${SMS_TENCENT_SDK_APP_ID:您的sdkAppId}
+```
+
+### 生产环境配置 (application-prod.yml)
+
+```yaml
+sms:
+  # 配置源类型用于标定配置来源(interface,yaml)
+  config-type: yaml
+  # 用于标定yml中的配置是否开启短信拦截，接口配置不受此限制
+  restricted: true
+  # 生产环境短信发送频率限制
+  minute-max: ${SMS_MINUTE_MAX:1}
+  # 生产环境单用户每日短信限额
+  account-max: ${SMS_ACCOUNT_MAX:30}
+  # 以下配置来自于 org.dromara.sms4j.provider.config.BaseConfig类中
+  blends:
+    # 阿里云短信配置 - 所有敏感信息通过环境变量提供
+    config1:
+      supplier: alibaba
+      access-key-id: ${SMS_ALI_ACCESS_KEY}
+      access-key-secret: ${SMS_ALI_ACCESS_SECRET}
+      signature: ${SMS_ALI_SIGNATURE}
+      sdk-app-id: ${SMS_ALI_SDK_APP_ID}
+    # 腾讯云短信配置 - 所有敏感信息通过环境变量提供
+    config2:
+      supplier: tencent
+      access-key-id: ${SMS_TENCENT_ACCESS_KEY}
+      access-key-secret: ${SMS_TENCENT_ACCESS_SECRET}
+      signature: ${SMS_TENCENT_SIGNATURE}
+      sdk-app-id: ${SMS_TENCENT_SDK_APP_ID}
+```
+
+### 环境变量配置表
+
+| 环境变量 | 说明 | 示例值 |
+|---------|------|--------|
+| `SMS_ALI_ACCESS_KEY` | 阿里云 AccessKey ID | `LTAI5tXXXXXXXXXX` |
+| `SMS_ALI_ACCESS_SECRET` | 阿里云 AccessKey Secret | `XXXXXXXXXXXXXX` |
+| `SMS_ALI_SIGNATURE` | 阿里云短信签名 | `若依框架` |
+| `SMS_ALI_SDK_APP_ID` | 阿里云 SDK AppId（可选） | - |
+| `SMS_TENCENT_ACCESS_KEY` | 腾讯云 SecretId | `AKIDxxxxxx` |
+| `SMS_TENCENT_ACCESS_SECRET` | 腾讯云 SecretKey | `xxxxxxxx` |
+| `SMS_TENCENT_SIGNATURE` | 腾讯云短信签名 | `若依框架` |
+| `SMS_TENCENT_SDK_APP_ID` | 腾讯云 SDK AppId | `1400000000` |
+| `SMS_MINUTE_MAX` | 每分钟发送限制 | `1` |
+| `SMS_ACCOUNT_MAX` | 每日发送限额 | `30` |
+
+## SMS4J 配置参数详解
+
+### 全局配置参数
+
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `config-type` | String | `yaml` | 配置源类型：`yaml`(配置文件) 或 `interface`(数据库) |
+| `restricted` | boolean | `false` | 是否开启短信发送拦截 |
+| `minute-max` | int | `0` | 每分钟最大发送数（0表示不限制） |
+| `account-max` | int | `0` | 每日最大发送数（0表示不限制） |
+| `is-print` | boolean | `false` | 是否打印短信发送日志 |
+| `core-pool-size` | int | `10` | 异步发送线程池核心线程数 |
+| `max-pool-size` | int | `30` | 异步发送线程池最大线程数 |
+| `queue-capacity` | int | `50` | 异步发送队列容量 |
+
+### 服务商配置参数 (blends.xxx)
+
+| 参数 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `supplier` | String | 是 | 服务商标识（详见支持的服务商列表） |
+| `access-key-id` | String | 是 | 访问密钥ID |
+| `access-key-secret` | String | 是 | 访问密钥 |
+| `signature` | String | 是 | 短信签名（需要在服务商控制台申请） |
+| `template-id` | String | 否 | 默认模板ID |
+| `sdk-app-id` | String | 部分 | SDK应用ID（腾讯云必填） |
+| `region` | String | 否 | 区域（阿里云默认 `cn-hangzhou`） |
+| `retry-count` | int | 否 | 失败重试次数，默认 `0` |
+| `retry-interval` | long | 否 | 重试间隔（毫秒），默认 `1000` |
+
+## 更多服务商配置
+
+### 华为云短信
+
+```yaml
+sms:
+  blends:
+    huawei:
+      supplier: huawei
+      # 华为云APP接入地址
+      access-key-id: ${HUAWEI_APP_KEY}
+      access-key-secret: ${HUAWEI_APP_SECRET}
+      # 短信签名通道号
+      signature: ${HUAWEI_SIGNATURE}
+      # 国内短信发送地址
+      sdk-app-id: ${HUAWEI_SENDER}
+      # 可选：状态报告回调地址
+      # callback-url: https://your-domain.com/sms/callback
+```
+
+### 网易云信
+
+```yaml
+sms:
+  blends:
+    netease:
+      supplier: netease
+      access-key-id: ${NETEASE_APP_KEY}
+      access-key-secret: ${NETEASE_APP_SECRET}
+      # 网易云信需要设置模板ID
+      template-id: ${NETEASE_TEMPLATE_ID}
+```
+
+### 云片短信
+
+```yaml
+sms:
+  blends:
+    yunpian:
+      supplier: yunpian
+      # 云片API Key
+      access-key-id: ${YUNPIAN_API_KEY}
+      # 云片不需要签名，签名在模板中
+      signature: ""
+```
+
+### 合一短信 (UniSMS)
+
+```yaml
+sms:
+  blends:
+    unisms:
+      supplier: unisms
+      access-key-id: ${UNISMS_ACCESS_KEY}
+      access-key-secret: ${UNISMS_ACCESS_SECRET}
+      signature: ${UNISMS_SIGNATURE}
+```
+
+### 容联云通讯
+
+```yaml
+sms:
+  blends:
+    cloopen:
+      supplier: cloopen
+      # 账户SID
+      access-key-id: ${CLOOPEN_ACCOUNT_SID}
+      # Auth Token
+      access-key-secret: ${CLOOPEN_AUTH_TOKEN}
+      # 应用ID
+      sdk-app-id: ${CLOOPEN_APP_ID}
+```
+
+### 京东云短信
+
+```yaml
+sms:
+  blends:
+    jdcloud:
+      supplier: jdcloud
+      access-key-id: ${JD_ACCESS_KEY}
+      access-key-secret: ${JD_SECRET_KEY}
+      signature: ${JD_SIGNATURE}
+      # 地域
+      region: cn-north-1
+```
+
+## 验证码短信完整流程
+
+### 发送验证码 API 实现
+
+验证码发送接口完整实现（来自 `CaptchaController`）：
+
+```java
+/**
+ * 获取短信验证码
+ * 生成随机验证码并发送到指定手机号，限制每60秒只能发送1次
+ *
+ * @param phone 用户手机号
+ * @return 发送结果
+ */
+@RateLimiter(key = "#phone", time = 60, count = 1)
+@GetMapping("/smsCode")
+public R<Void> smsCode(@NotBlank(message = I18nKeys.User.PHONE_REQUIRED) String phone) {
+    // 构建缓存键，用于存储验证码
+    String key = GlobalConstants.CAPTCHA_CODE_KEY + phone;
+    // 生成4位随机数字验证码
+    String code = RandomUtil.randomNumbers(4);
+    // 将验证码存入Redis，有效期为配置的过期时间（默认为2分钟）
+    RedisUtils.setCacheObject(key, code, Duration.ofMinutes(Constants.CAPTCHA_EXPIRATION));
+
+    // 验证码模板ID，实际项目中应从配置或数据库中获取
+    String templateId = "";
+    // 构建短信模板参数，将验证码放入map中
+    LinkedHashMap<String, String> map = new LinkedHashMap<>(1);
+    map.put("code", code);
+
+    // 获取短信发送服务实例
+    SmsBlend smsBlend = SmsFactory.getSmsBlend("config1");
+    // 发送短信
+    SmsResponse smsResponse = smsBlend.sendMessage(phone, templateId, map);
+
+    // 检查短信发送结果
+    if (!smsResponse.isSuccess()) {
+        // 发送失败时记录日志
+        log.error("验证码短信发送异常 => {}", smsResponse);
+        // 返回发送失败信息
+        return R.fail(smsResponse.getData().toString());
+    }
+
+    // 发送成功返回
+    return R.ok();
+}
+```
+
+**实现要点:**
+
+1. **限流控制**: 使用 `@RateLimiter` 注解限制每个手机号每 60 秒只能发送 1 次
+2. **验证码生成**: 使用 Hutool 的 `RandomUtil.randomNumbers(4)` 生成 4 位数字验证码
+3. **缓存存储**: 验证码存入 Redis，有效期 2 分钟（`Constants.CAPTCHA_EXPIRATION`）
+4. **模板参数**: 使用 `LinkedHashMap` 保持参数顺序
+5. **错误处理**: 发送失败时记录日志并返回错误信息
+
+### 验证码校验流程
+
+```java
+@Service
+@RequiredArgsConstructor
+public class SmsLoginService {
+
+    /**
+     * 短信验证码登录
+     */
+    public LoginUser smsLogin(String phone, String code) {
+        // 1. 校验验证码
+        String cacheKey = GlobalConstants.CAPTCHA_CODE_KEY + phone;
+        String cachedCode = RedisUtils.getCacheObject(cacheKey);
+
+        if (StringUtils.isBlank(cachedCode)) {
+            throw ServiceException.of("验证码已过期，请重新获取");
+        }
+
+        if (!cachedCode.equals(code)) {
+            // 验证失败，记录错误次数
+            recordFailCount(phone);
+            throw ServiceException.of("验证码错误");
+        }
+
+        // 2. 验证成功，删除验证码
+        RedisUtils.deleteObject(cacheKey);
+
+        // 3. 查询用户信息
+        SysUser user = userService.selectUserByPhone(phone);
+        if (user == null) {
+            // 用户不存在，可以选择自动注册或提示错误
+            throw ServiceException.of("该手机号未注册");
+        }
+
+        // 4. 构建登录用户信息
+        return buildLoginUser(user);
+    }
+
+    /**
+     * 记录验证码错误次数，防止暴力破解
+     */
+    private void recordFailCount(String phone) {
+        String failKey = "sms:fail:" + phone;
+        Integer failCount = RedisUtils.getCacheObject(failKey);
+        failCount = (failCount == null) ? 1 : failCount + 1;
+
+        // 超过5次锁定30分钟
+        if (failCount >= 5) {
+            RedisUtils.setCacheObject(failKey, failCount, Duration.ofMinutes(30));
+            throw ServiceException.of("验证码错误次数过多，请30分钟后再试");
+        }
+
+        RedisUtils.setCacheObject(failKey, failCount, Duration.ofMinutes(5));
+    }
+}
+```
+
+## 订单通知短信实战
+
+### 订单状态变更通知
+
+```java
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class OrderNotifyService {
+
+    private final MessagePushService messagePushService;
+
+    /**
+     * 订单支付成功通知
+     */
+    public void notifyPaySuccess(Order order) {
+        // 构建模板参数
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("orderNo", order.getOrderNo());
+        params.put("amount", order.getAmount().toString());
+        params.put("time", DateUtil.format(order.getPayTime(), "MM-dd HH:mm"));
+
+        // 发送短信
+        sendOrderSms(order.getUserPhone(), "SMS_PAY_SUCCESS", params);
+
+        // 同时推送 WebSocket（如果用户在线）
+        pushOrderMessage(order.getUserId(), "订单支付成功", buildPaySuccessContent(order));
+    }
+
+    /**
+     * 订单发货通知
+     */
+    public void notifyShipped(Order order, String expressNo) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("orderNo", order.getOrderNo());
+        params.put("expressNo", expressNo);
+        params.put("expressName", order.getExpressName());
+
+        sendOrderSms(order.getUserPhone(), "SMS_ORDER_SHIPPED", params);
+    }
+
+    /**
+     * 订单即将超时提醒
+     */
+    public void notifyPaymentTimeout(Order order, int remainMinutes) {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("orderNo", order.getOrderNo());
+        params.put("minutes", String.valueOf(remainMinutes));
+        params.put("amount", order.getAmount().toString());
+
+        sendOrderSms(order.getUserPhone(), "SMS_PAY_TIMEOUT_REMIND", params);
+    }
+
+    /**
+     * 发送订单相关短信
+     */
+    private void sendOrderSms(String phone, String templateId, Map<String, String> params) {
+        try {
+            SmsBlend smsBlend = SmsFactory.getSmsBlend("config1");
+            SmsResponse response = smsBlend.sendMessage(phone, templateId, new LinkedHashMap<>(params));
+
+            if (!response.isSuccess()) {
+                log.error("订单短信发送失败: phone={}, template={}, error={}",
+                    phone, templateId, response.getData());
+                // 发送失败不抛异常，避免影响业务流程
+            } else {
+                log.info("订单短信发送成功: phone={}, template={}", phone, templateId);
+            }
+        } catch (Exception e) {
+            log.error("订单短信发送异常: phone={}", phone, e);
+        }
+    }
+
+    /**
+     * 通过统一消息服务推送（支持智能降级）
+     */
+    private void pushOrderMessage(Long userId, String title, String content) {
+        MessageContext context = MessageContext.of(userId, content)
+            .setTitle(title)
+            .setMessageType("order_notify");
+
+        // 先尝试 WebSocket，失败则降级到短信
+        messagePushService.sendWithFallback(
+            List.of("websocket", "sms"),
+            context
+        );
+    }
+}
+```
+
+### 阿里云短信模板示例
+
+```text
+模板ID: SMS_PAY_SUCCESS
+模板内容: 您的订单${orderNo}已支付成功，金额${amount}元，支付时间${time}。
+
+模板ID: SMS_ORDER_SHIPPED
+模板内容: 您的订单${orderNo}已发货，${expressName}快递单号：${expressNo}，请注意查收。
+
+模板ID: SMS_PAY_TIMEOUT_REMIND
+模板内容: 您的订单${orderNo}（金额${amount}元）将在${minutes}分钟后关闭，请尽快完成支付。
+```
+
+## 营销短信发送
+
+### 营销短信服务
+
+```java
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class MarketingSmsService {
+
+    /**
+     * 发送营销短信（需要用户授权）
+     */
+    @Async
+    public void sendMarketingSms(List<String> phones, String templateId, Map<String, String> params) {
+        // 营销短信使用备用通道，避免影响验证码通道
+        SmsBlend smsBlend = SmsFactory.getSmsBlend("marketing");
+
+        // 统计发送结果
+        AtomicInteger successCount = new AtomicInteger(0);
+        AtomicInteger failCount = new AtomicInteger(0);
+
+        // 控制发送速率，每秒最多发送10条
+        RateLimiter rateLimiter = RateLimiter.create(10);
+
+        for (String phone : phones) {
+            // 等待令牌
+            rateLimiter.acquire();
+
+            try {
+                // 检查用户是否退订
+                if (isUnsubscribed(phone)) {
+                    log.debug("用户已退订营销短信: {}", phone);
+                    continue;
+                }
+
+                SmsResponse response = smsBlend.sendMessage(phone, templateId, new LinkedHashMap<>(params));
+
+                if (response.isSuccess()) {
+                    successCount.incrementAndGet();
+                } else {
+                    failCount.incrementAndGet();
+                    log.warn("营销短信发送失败: phone={}, error={}", phone, response.getData());
+                }
+            } catch (Exception e) {
+                failCount.incrementAndGet();
+                log.error("营销短信发送异常: phone={}", phone, e);
+            }
+        }
+
+        log.info("营销短信发送完成: 成功={}, 失败={}, 总数={}",
+            successCount.get(), failCount.get(), phones.size());
+    }
+
+    /**
+     * 检查用户是否退订
+     */
+    private boolean isUnsubscribed(String phone) {
+        String key = "sms:unsubscribe:" + phone;
+        return RedisUtils.hasKey(key);
+    }
+
+    /**
+     * 用户退订营销短信
+     */
+    public void unsubscribe(String phone) {
+        String key = "sms:unsubscribe:" + phone;
+        RedisUtils.setCacheObject(key, 1, true); // 永久存储
+        log.info("用户退订营销短信: {}", phone);
+    }
+
+    /**
+     * 用户重新订阅
+     */
+    public void resubscribe(String phone) {
+        String key = "sms:unsubscribe:" + phone;
+        RedisUtils.deleteObject(key);
+        log.info("用户重新订阅营销短信: {}", phone);
+    }
+}
+```
+
+### 营销短信配置
+
+```yaml
+sms:
+  blends:
+    # 营销短信专用通道（与验证码通道分离）
+    marketing:
+      supplier: alibaba
+      access-key-id: ${SMS_MARKETING_ACCESS_KEY}
+      access-key-secret: ${SMS_MARKETING_ACCESS_SECRET}
+      signature: ${SMS_MARKETING_SIGNATURE}
+      # 营销短信模板需要包含退订方式
+      # 模板示例：【若依商城】${content}，回复TD退订。
+```
+
+## 多租户短信配置
+
+### 租户级别短信配置
+
+```java
+@Service
+@RequiredArgsConstructor
+public class TenantSmsService {
+
+    /**
+     * 根据租户获取短信配置
+     */
+    public SmsBlend getSmsBlend(String tenantId) {
+        // 优先使用租户专属配置
+        String configId = "tenant_" + tenantId;
+        try {
+            return SmsFactory.getSmsBlend(configId);
+        } catch (Exception e) {
+            // 租户无专属配置，使用默认配置
+            return SmsFactory.getSmsBlend("config1");
+        }
+    }
+
+    /**
+     * 发送短信（自动选择租户配置）
+     */
+    public void sendSms(String phone, String templateId, Map<String, String> params) {
+        String tenantId = TenantHelper.getTenantId();
+        SmsBlend smsBlend = getSmsBlend(tenantId);
+
+        SmsResponse response = smsBlend.sendMessage(phone, templateId, new LinkedHashMap<>(params));
+
+        if (!response.isSuccess()) {
+            throw ServiceException.of("短信发送失败: " + response.getData());
+        }
+    }
+}
+```
+
+### 租户短信配置示例
+
+```yaml
+sms:
+  blends:
+    # 默认配置
+    config1:
+      supplier: alibaba
+      access-key-id: ${SMS_DEFAULT_ACCESS_KEY}
+      access-key-secret: ${SMS_DEFAULT_ACCESS_SECRET}
+      signature: 若依平台
+
+    # 租户A专属配置
+    tenant_100001:
+      supplier: tencent
+      access-key-id: ${SMS_TENANT_A_ACCESS_KEY}
+      access-key-secret: ${SMS_TENANT_A_ACCESS_SECRET}
+      signature: 租户A商城
+      sdk-app-id: ${SMS_TENANT_A_SDK_APP_ID}
+
+    # 租户B专属配置
+    tenant_100002:
+      supplier: alibaba
+      access-key-id: ${SMS_TENANT_B_ACCESS_KEY}
+      access-key-secret: ${SMS_TENANT_B_ACCESS_SECRET}
+      signature: 租户B平台
+```
+
+## 国际短信支持
+
+### 国际短信发送
+
+```java
+@Service
+public class InternationalSmsService {
+
+    /**
+     * 发送国际短信
+     *
+     * @param countryCode 国家代码（如：+86, +1, +44）
+     * @param phone 手机号（不含国家代码）
+     * @param content 短信内容
+     */
+    public void sendInternationalSms(String countryCode, String phone, String content) {
+        // 完整手机号（带国家代码）
+        String fullPhone = countryCode + phone;
+
+        // 根据国家代码选择合适的通道
+        String configId = getConfigByCountry(countryCode);
+        SmsBlend smsBlend = SmsFactory.getSmsBlend(configId);
+
+        SmsResponse response = smsBlend.sendMessage(fullPhone, content);
+
+        if (!response.isSuccess()) {
+            throw ServiceException.of("国际短信发送失败: " + response.getData());
+        }
+    }
+
+    /**
+     * 根据国家代码选择短信通道
+     */
+    private String getConfigByCountry(String countryCode) {
+        return switch (countryCode) {
+            case "+86" -> "china";      // 中国大陆
+            case "+852", "+853", "+886" -> "hmt";  // 港澳台
+            case "+1" -> "america";     // 美国/加拿大
+            case "+44" -> "europe";     // 英国
+            default -> "international"; // 其他国家使用国际通道
+        };
+    }
+}
+```
+
+### 国际短信配置
+
+```yaml
+sms:
+  blends:
+    # 中国大陆短信
+    china:
+      supplier: alibaba
+      access-key-id: ${SMS_CHINA_ACCESS_KEY}
+      access-key-secret: ${SMS_CHINA_ACCESS_SECRET}
+      signature: 若依框架
+
+    # 港澳台短信
+    hmt:
+      supplier: alibaba
+      access-key-id: ${SMS_HMT_ACCESS_KEY}
+      access-key-secret: ${SMS_HMT_ACCESS_SECRET}
+      signature: RuoYi
+      region: cn-hongkong
+
+    # 国际短信通道
+    international:
+      supplier: twilio
+      access-key-id: ${TWILIO_ACCOUNT_SID}
+      access-key-secret: ${TWILIO_AUTH_TOKEN}
+      # Twilio 发送号码
+      sdk-app-id: ${TWILIO_FROM_NUMBER}
+```
+
+## 短信发送日志
+
+### 短信日志记录
+
+```java
+@Aspect
+@Component
+@Slf4j
+public class SmsLogAspect {
+
+    @Autowired
+    private SmsLogRepository smsLogRepository;
+
+    @Around("execution(* org.dromara.sms4j.api.SmsBlend.sendMessage(..))")
+    public Object logSmsSend(ProceedingJoinPoint pjp) throws Throwable {
+        long startTime = System.currentTimeMillis();
+        Object[] args = pjp.getArgs();
+        String phone = (String) args[0];
+
+        SmsLog smsLog = new SmsLog();
+        smsLog.setPhone(desensitizePhone(phone));
+        smsLog.setSendTime(LocalDateTime.now());
+        smsLog.setTenantId(TenantHelper.getTenantId());
+
+        try {
+            Object result = pjp.proceed();
+            SmsResponse response = (SmsResponse) result;
+
+            smsLog.setSuccess(response.isSuccess());
+            smsLog.setConfigId(response.getConfigId());
+            smsLog.setResponse(response.getData() != null ? response.getData().toString() : null);
+            smsLog.setCostTime(System.currentTimeMillis() - startTime);
+
+            return result;
+        } catch (Exception e) {
+            smsLog.setSuccess(false);
+            smsLog.setErrorMsg(e.getMessage());
+            throw e;
+        } finally {
+            // 异步保存日志
+            saveLogAsync(smsLog);
+        }
+    }
+
+    /**
+     * 手机号脱敏（保留前3后4）
+     */
+    private String desensitizePhone(String phone) {
+        if (phone == null || phone.length() < 7) {
+            return phone;
+        }
+        return phone.substring(0, 3) + "****" + phone.substring(phone.length() - 4);
+    }
+
+    @Async
+    void saveLogAsync(SmsLog smsLog) {
+        try {
+            smsLogRepository.save(smsLog);
+        } catch (Exception e) {
+            log.error("保存短信日志失败", e);
+        }
+    }
+}
+```
+
+### 短信日志实体
+
+```java
+@Data
+@TableName("sys_sms_log")
+public class SmsLog {
+
+    @TableId(type = IdType.AUTO)
+    private Long id;
+
+    /** 手机号（脱敏后） */
+    private String phone;
+
+    /** 短信配置ID */
+    private String configId;
+
+    /** 是否发送成功 */
+    private Boolean success;
+
+    /** 响应内容 */
+    private String response;
+
+    /** 错误信息 */
+    private String errorMsg;
+
+    /** 耗时（毫秒） */
+    private Long costTime;
+
+    /** 发送时间 */
+    private LocalDateTime sendTime;
+
+    /** 租户ID */
+    private String tenantId;
+}
+```
+
+## 高可用配置
+
+### 多通道故障转移
+
+```java
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class HighAvailabilitySmsService {
+
+    private static final List<String> SMS_CHANNELS = List.of("alibaba", "tencent", "huawei");
+
+    /**
+     * 高可用短信发送（自动故障转移）
+     */
+    public void sendWithFailover(String phone, String templateId, Map<String, String> params) {
+        Exception lastException = null;
+
+        for (String channel : SMS_CHANNELS) {
+            try {
+                // 检查通道健康状态
+                if (!isChannelHealthy(channel)) {
+                    log.warn("短信通道 {} 不健康，跳过", channel);
+                    continue;
+                }
+
+                SmsBlend smsBlend = SmsFactory.getSmsBlend(channel);
+                SmsResponse response = smsBlend.sendMessage(phone, templateId, new LinkedHashMap<>(params));
+
+                if (response.isSuccess()) {
+                    log.info("短信发送成功: channel={}, phone={}", channel, phone);
+                    return;
+                } else {
+                    log.warn("短信通道 {} 发送失败: {}", channel, response.getData());
+                    markChannelUnhealthy(channel);
+                }
+            } catch (Exception e) {
+                log.error("短信通道 {} 异常", channel, e);
+                lastException = e;
+                markChannelUnhealthy(channel);
+            }
+        }
+
+        // 所有通道都失败
+        throw new ServiceException("短信发送失败，所有通道不可用", lastException);
+    }
+
+    /**
+     * 检查通道健康状态
+     */
+    private boolean isChannelHealthy(String channel) {
+        String key = "sms:unhealthy:" + channel;
+        return !RedisUtils.hasKey(key);
+    }
+
+    /**
+     * 标记通道不健康（熔断5分钟）
+     */
+    private void markChannelUnhealthy(String channel) {
+        String key = "sms:unhealthy:" + channel;
+        RedisUtils.setCacheObject(key, 1, Duration.ofMinutes(5));
+    }
+}
+```
+
+### 短信发送监控告警
+
+```java
+@Component
+@Slf4j
+public class SmsMonitor {
+
+    @Autowired
+    private MeterRegistry meterRegistry;
+
+    @Autowired
+    private AlertService alertService;
+
+    /**
+     * 记录短信发送指标
+     */
+    public void recordSmsMetrics(String channel, boolean success, long costTime) {
+        // 发送计数
+        meterRegistry.counter("sms.send.total",
+            "channel", channel,
+            "result", success ? "success" : "fail"
+        ).increment();
+
+        // 发送耗时
+        meterRegistry.timer("sms.send.duration", "channel", channel)
+            .record(costTime, TimeUnit.MILLISECONDS);
+
+        // 失败率告警
+        checkFailureRate(channel);
+    }
+
+    /**
+     * 检查失败率，超过阈值告警
+     */
+    private void checkFailureRate(String channel) {
+        String successKey = "sms:metrics:" + channel + ":success";
+        String failKey = "sms:metrics:" + channel + ":fail";
+
+        Long successCount = RedisUtils.getCacheObject(successKey);
+        Long failCount = RedisUtils.getCacheObject(failKey);
+
+        if (successCount == null) successCount = 0L;
+        if (failCount == null) failCount = 0L;
+
+        long total = successCount + failCount;
+        if (total >= 100) {
+            double failRate = (double) failCount / total;
+            if (failRate > 0.1) { // 失败率超过10%
+                alertService.sendAlert(
+                    "短信通道告警",
+                    String.format("短信通道 %s 失败率过高: %.2f%%", channel, failRate * 100)
+                );
+            }
+        }
+    }
+}
+```
+
+## 短信模板管理
+
+### 数据库存储短信模板
+
+```java
+@Data
+@TableName("sys_sms_template")
+public class SmsTemplate {
+
+    @TableId(type = IdType.AUTO)
+    private Long id;
+
+    /** 模板编码（业务标识） */
+    private String code;
+
+    /** 模板名称 */
+    private String name;
+
+    /** 服务商模板ID */
+    private String templateId;
+
+    /** 短信服务商 */
+    private String supplier;
+
+    /** 配置ID */
+    private String configId;
+
+    /** 模板内容（预览用） */
+    private String content;
+
+    /** 模板变量（JSON格式） */
+    private String variables;
+
+    /** 状态（0正常 1停用） */
+    private Integer status;
+
+    /** 租户ID */
+    private String tenantId;
+}
+```
+
+### 模板服务
+
+```java
+@Service
+@RequiredArgsConstructor
+public class SmsTemplateService {
+
+    private final SmsTemplateMapper templateMapper;
+
+    // 本地缓存，避免频繁查库
+    private final Cache<String, SmsTemplate> templateCache = Caffeine.newBuilder()
+        .maximumSize(1000)
+        .expireAfterWrite(10, TimeUnit.MINUTES)
+        .build();
+
+    /**
+     * 根据业务编码发送短信
+     */
+    public void sendByCode(String code, String phone, Map<String, String> params) {
+        SmsTemplate template = getTemplateByCode(code);
+
+        if (template == null) {
+            throw ServiceException.of("短信模板不存在: " + code);
+        }
+
+        if (template.getStatus() == 1) {
+            throw ServiceException.of("短信模板已停用: " + code);
+        }
+
+        SmsBlend smsBlend = SmsFactory.getSmsBlend(template.getConfigId());
+        SmsResponse response = smsBlend.sendMessage(phone, template.getTemplateId(), new LinkedHashMap<>(params));
+
+        if (!response.isSuccess()) {
+            throw ServiceException.of("短信发送失败: " + response.getData());
+        }
+    }
+
+    /**
+     * 获取模板（带缓存）
+     */
+    private SmsTemplate getTemplateByCode(String code) {
+        String tenantId = TenantHelper.getTenantId();
+        String cacheKey = tenantId + ":" + code;
+
+        return templateCache.get(cacheKey, key -> {
+            return templateMapper.selectByCode(code, tenantId);
+        });
+    }
+
+    /**
+     * 刷新模板缓存
+     */
+    public void refreshCache(String code) {
+        String tenantId = TenantHelper.getTenantId();
+        String cacheKey = tenantId + ":" + code;
+        templateCache.invalidate(cacheKey);
+    }
+}
+```
+
+### 使用示例
+
+```java
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final SmsTemplateService smsTemplateService;
+
+    /**
+     * 发送注册验证码
+     */
+    public void sendRegisterCode(String phone, String code) {
+        smsTemplateService.sendByCode("REGISTER_CODE", phone, Map.of("code", code));
+    }
+
+    /**
+     * 发送密码重置验证码
+     */
+    public void sendResetPasswordCode(String phone, String code) {
+        smsTemplateService.sendByCode("RESET_PASSWORD_CODE", phone, Map.of("code", code));
+    }
+
+    /**
+     * 发送登录通知
+     */
+    public void sendLoginNotify(String phone, String ip, String location) {
+        smsTemplateService.sendByCode("LOGIN_NOTIFY", phone, Map.of(
+            "time", DateUtil.now(),
+            "ip", ip,
+            "location", location
+        ));
+    }
+}

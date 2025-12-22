@@ -1,10 +1,10 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-12-20
-> **整体完成度**: 68.6% (D+ 评分) - 按1000+行标准
-> **总文档数**: 478 个 (已清理 30 个占位符/重复文档)
-> **总行数**: 550,000+ 行
-> **已完成文档**: 328 个 (≥1000行)
+> **最后更新**: 2025-12-22
+> **整体完成度**: 71.6% (D 评分) - 按1000+行标准
+> **总文档数**: 482 个 (已清理 30 个占位符/重复文档)
+> **总行数**: 571,000+ 行
+> **已完成文档**: 345 个 (≥1000行)
 
 ---
 
@@ -29,10 +29,10 @@
 |------|------|-----------------|-----------------|--------|------|
 | **WD 组件库** | 51 | 51 | 0 | **100%** | A+ |
 | **后端文档** | 71 | 71 | 0 | **100%** | A+ |
-| **前端文档** | 182 | 97 | 85 | **53.3%** | D+ |
-| **移动端文档** | 172 | 105 | 67 | **61.0%** | C- |
+| **前端文档** | 137 | 66 | 71 | **48.2%** | F |
+| **移动端文档** | 172 | 106 | 66 | **61.6%** | C- |
 | **最佳实践** | 51 | 51 | 0 | **100%** | A+ |
-| **总计** | **478** | **328** | **150** | **68.6%** | **D+** |
+| **总计** | **482** | **345** | **137** | **71.6%** | **D** |
 
 **说明**: 完成标准为文档行数 ≥ 1000 行
 
@@ -227,22 +227,34 @@ WD UI 组件文档完成度优秀,平均文档大小 1,700+ 行。**全部完成
 - `docs/backend/common/core.md` - 1,162 行 ✅
 - `docs/backend/common/miniapp.md` - 1,253 行 ✅
 - `docs/backend/common/json.md` - 1,119 行 ✅
-- `docs/backend/common/sms.md` - 1,007 行 ✅
+- `docs/backend/common/sms.md` - 2,019 行 ✅ ✨ **最新完成**
 - `docs/backend/common/message.md` - 1,050 行 ✅
+- `docs/backend/common/job.md` - 2,009 行 ✅
 
 ---
 
 ## 前端文档进度
 
-### 完成状态: 100% (181/181) ✅
+### 完成状态: 38.0% (52/137) ⚠️ 需大幅优化
 
-#### ✅ 架构文档已完成 (1个)
+> **核实说明**: 2025-12-21 重新统计，发现实际完成率远低于之前记录。
+> 已完成文档 52 个 (≥1000行)，待优化文档 85 个 (<1000行)。
+
+#### ✅ 快速入门已完成 (2个)
+
+| 文档 | 路径 | 状态 | 行数 |
+|------|------|------|------|
+| Getting Started | `docs/frontend/getting-started.md` | ✅ 已完成 | 1,577 |
+| Project Structure | `docs/frontend/project-structure.md` | ✅ 已完成 | 1,695 | ✨ **最新完成**
+
+#### ✅ 架构文档已完成 (2个)
 
 | 文档 | 路径 | 状态 | 行数 |
 |------|------|------|------|
 | Directory Structure | `docs/frontend/architecture/directory-structure.md` | ✅ 已完成 | 1,685 |
+| Tech Stack | `docs/frontend/architecture/tech-stack.md` | ✅ 已完成 | 1,748 |
 
-#### ✅ 样式系统已完成 (12个)
+#### ✅ 样式系统已完成 (16个)
 
 | 文档 | 路径 | 状态 | 行数 |
 |------|------|------|------|
@@ -258,8 +270,12 @@ WD UI 组件文档完成度优秀,平均文档大小 1,700+ 行。**全部完成
 | Components Layout | `docs/frontend/styles/components/layout.md` | ✅ 已完成 | 1,384 |
 | Responsive Tablet | `docs/frontend/styles/responsive/tablet.md` | ✅ 已完成 | 1,246 |
 | Animations Transitions | `docs/frontend/styles/animations/transitions.md` | ✅ 已完成 | 2,118 |
+| Color System | `docs/frontend/styles/color-system.md` | ✅ 已完成 | 1,008 |
+| CSS Variables | `docs/frontend/styles/css-variables.md` | ✅ 已完成 | 1,009 |
+| Element Plus Customization | `docs/frontend/styles/element-plus-customization.md` | ✅ 已完成 | 1,379 |
+| SCSS Mixins | `docs/frontend/styles/scss-mixins.md` | ✅ 已完成 | 1,274 |
 
-#### ✅ 组件文档已完成 (8个)
+#### ✅ 组件文档已完成 (9个)
 
 | 文档 | 路径 | 状态 | 行数 |
 |------|------|------|------|
@@ -271,6 +287,7 @@ WD UI 组件文档完成度优秀,平均文档大小 1,700+ 行。**全部完成
 | Custom Development | `docs/frontend/components/custom-dev.md` | ✅ 已完成 | 1,474 |
 | Page Background | `docs/frontend/components/page-background.md` | ✅ 已完成 | 1,327 |
 | Selection Tags | `docs/frontend/components/selection-tags.md` | ✅ 已完成 | 1,252 |
+| Recharge | `docs/frontend/components/business/recharge.md` | ✅ 已完成 | 1,653 | ✨ **最新完成**
 
 #### ✅ 架构文档扩展完成 (1个)
 
@@ -307,11 +324,18 @@ WD UI 组件文档完成度优秀,平均文档大小 1,700+ 行。**全部完成
 | Global Types | `docs/frontend/types/global-types.md` | ✅ 已完成 | 1,186 |
 | API Types | `docs/frontend/types/api-types.md` | ✅ 已完成 | 1,108 |
 
-#### ✅ 路由文档已完成 (1个)
+#### ✅ 布局文档已完成 (1个)
+
+| 文档 | 路径 | 状态 | 行数 |
+|------|------|------|------|
+| Layout Overview | `docs/frontend/layout/layout-overview.md` | ✅ 已完成 | 1,495 | ✨ **最新完成**
+
+#### ✅ 路由文档已完成 (2个)
 
 | 文档 | 路径 | 状态 | 行数 |
 |------|------|------|------|
 | Router Overview | `docs/frontend/router/overview.md` | ✅ 已完成 | 1,061 |
+| Config Guards | `docs/frontend/router/config-guards.md` | ✅ 已完成 | 1,966 | ✨ **最新完成**
 
 #### ✅ 状态管理文档已完成 (6个)
 
@@ -324,11 +348,29 @@ WD UI 组件文档完成度优秀,平均文档大小 1,700+ 行。**全部完成
 | Theme Store | `docs/frontend/stores/theme-store.md` | ✅ 已完成 | 3,342 |
 | TagsView Store | `docs/frontend/stores/tags-view-store.md` | ✅ 已完成 | 2,894 |
 
-#### ✅ 已完成 (160个)
+#### ✅ 已完成 (66个)
 
-包括组件库、工具函数、路由、状态管理、样式系统等核心文档。
+包括样式系统、类型定义、核心工具函数、业务组件等文档。
 
-**前端文档已100%完成! 🎉**
+#### ⚠️ 待优化文档清单 (71个)
+
+**🟡 需要扩展 (300-500行) - 28个**:
+- `use-theme`, `modular-design`, `main-layout`, `iconify-config`, `use-selection`
+- `use-download`, `use-auth`, `configuration`, `home-layout`, `permission`
+- `language-packs`, `iconfont-config`, `use-http`, `tags-view`, `use-dialog`
+- `app-main`, `best-practices(icons)`, `component-i18n`, `use-dict`, `permission-dynamic`
+- `preset-management`, `type-generation`, `detail-dialog`, `sidebar`, `navbar`
+- `settings`, `theme-store`, `oss-media-manager`
+
+**🟢 接近完成 (500-999行) - 43个**:
+- `use-layout`, `component-usage`, `typescript-config`, `object`, `prettier-config`
+- `type-system`, `input`, `tags-view-store`, `i18n-practices`, `debugging`
+- `class`, `vite-config`, `form`, `to`, `pagination`, `performance`
+- `component-types`, `select`, `best-practices(dev)`, `testing`, `dict-tag`
+- `cascader`, `use-print`, `radio`, `tree`, `format`, `scroll`
+- `overview(business)`, `use-permission`, `function`, `use-websocket`, `overview(form)`
+- `tab`, `boolean`, `switch`, `app-store`, `checkbox`, `use-request`
+- `modal`, `cache`, `enums`
 
 ---
 
@@ -377,7 +419,8 @@ UniApp 基础文档已全部完成!
 - ~~调试与测试占位符~~ - 9 个 (tools, device, miniapp-devtools, logging, error-monitoring, unit-testing, integration-testing, compatibility-testing, debugging) ✨ **最新**
 
 **优秀示例 (1000+ 行)**:
-- `docs/mobile/composables/overview.md` - 1,462 行 ✨ **最新完成**
+- `docs/mobile/wd/getting-started.md` - 2,312 行 ✨ **最新完成**
+- `docs/mobile/composables/overview.md` - 1,462 行
 - `docs/mobile/utils/rsa.md` - 1,868 行
 - `docs/mobile/uniapp/app-config.md` - 1,258 行
 - `docs/mobile/utils/boolean.md` - 1,100 行
@@ -390,6 +433,7 @@ UniApp 基础文档已全部完成!
 - `docs/mobile/wd/form/voice-recorder.md` - 1,377 行 ✨ **最新完成**
 - `docs/mobile/composables/use-payment.md` - 3,398 行
 - `docs/mobile/pages/login.md` - 3,239 行
+- `docs/mobile/pages/subpackages.md` - 1,835 行 ✨ **最新完成**
 - `docs/mobile/utils/file.md` - 2,965 行
 - `docs/mobile/utils/validate.md` - 2,969 行
 - `docs/mobile/composables/use-auth.md` - 2,856 行
@@ -406,6 +450,7 @@ UniApp 基础文档已全部完成!
 - `docs/mobile/styles/responsive.md` - 2,206 行
 - `docs/mobile/styles/overview.md` - 2,176 行
 - `docs/mobile/wd/display/curtain.md` - 2,079 行
+- `docs/mobile/wd/feedback/drop-menu.md` - 1,848 行 ✨ **最新完成**
 - `docs/mobile/composables/use-dict.md` - 1,968 行
 - `docs/mobile/utils/storage.md` - 1,914 行
 - `docs/mobile/layouts/overview.md` - 1,853 行
@@ -509,10 +554,28 @@ UniApp 基础文档已全部完成!
 
 ### 🔴 HIGH PRIORITY (紧急 - 本周完成)
 
-#### 1. 后端扩展开发 (已完成 ✅)
+#### 1. 前端文档优化 (78个待优化) ⚠️ 新增
+
+**严重不足 (<300行) - 优先处理 8个**:
+- [x] `components/display/data-card.md` - 183 行 → 1,539 行 ✅
+- [x] `components/layout/i-frame-container.md` - 193 行 → 2,466 行 ✅
+- [x] `components/layout/page-background.md` - 194 行 → 1,854 行 ✅
+- [x] `components/form/icon-select.md` - 231 行 → 1,688 行 ✅
+- [x] `components/form/img-upload.md` - 248 行 → 1,717 行 ✅
+- [x] `components/business/import-excel.md` - 268 行 → 1,930 行 ✅
+- [x] `stores/notice-store.md` - 283 行 → 2,000 行 ✅
+- [x] `composables/use-token.md` - 292 行 → 1,622 行 ✅
+- [x] `router/config-guards.md` - 298 行 → 1,966 行 ✅
+- [x] `composables/use-animation.md` - 302 行 → 1,543 行 ✅
+- [x] `composables/use-i18n.md` - 304 行 → 1,885 行 ✅
+- [x] `composables/use-sse.md` - 307 行 → 1,609 行 ✅
+- [x] `composables/use-table-height.md` - 308 行 → 1,481 行 ✅
+- [x] `components/business/recharge.md` - 317 行 → 1,653 行 ✅
+
+#### 2. 后端扩展开发 (已完成 ✅)
 - [x] `docs/backend/extend/extension-development.md` - ✅ 已完成 2,434 行
 
-#### 2. 前端样式系统 (9个) - ✅ 已完成
+#### 3. 前端样式系统 (9个) - ✅ 已完成
 - [x] `docs/frontend/styles/style-architecture.md` - ✅ 已完成 2,532 行
 - [x] `docs/frontend/styles/global-styles.md` - ✅ 已完成 1,720 行
 - [x] `docs/frontend/styles/theme-system.md` - ✅ 已完成 1,964 行
@@ -673,6 +736,209 @@ UniApp 基础文档已全部完成!
 ---
 
 ## 📝 更新日志
+
+### 2025-12-21 - 前端文档状态核实与进度表修正
+
+**核实结果**:
+- 重新统计前端文档实际行数，发现完成率严重偏差
+- 原记录: 100% (181/181) → 实际: 38.0% (52/137)
+- 待优化文档: 85 个 (<1000行)
+
+**进度表更新**:
+- 修正整体统计表中的前端文档数据
+- 添加待优化文档详细清单 (按严重程度分类)
+- 更新优先级任务清单，新增前端文档优化任务
+- 整体完成度: 69.9% → 68.7%
+
+**待优化文档分类**:
+- 🔴 严重不足 (<300行): 14 个
+- 🟡 需要扩展 (300-500行): 28 个
+- 🟢 接近完成 (500-999行): 43 个
+
+---
+
+### 2025-12-21 - 完善 sms.md 短信模块文档
+
+**完成内容**:
+- `docs/backend/common/sms.md` - 1,007 行 → 2,019 行
+- 新增完整配置参考章节: 开发/生产环境配置、环境变量配置表格
+- 新增 SMS4J 配置参数详解: 全局配置、发送配置参数说明
+- 新增 6 个服务商配置: 华为云、网易云、云片、合一短信、容联云、京东云
+- 新增验证码完整流程: 基于 CaptchaController 的发送与校验实现
+- 新增订单通知短信章节: 订单状态变更、发货物流通知
+- 新增营销短信服务章节: 群发限制、退订管理
+- 新增多租户短信配置章节: 租户级别配置隔离
+- 新增国际短信支持章节: 国家区号路由、多语言模板
+- 新增短信日志切面章节: AOP 记录发送日志
+- 新增高可用配置章节: 服务商故障自动切换
+- 新增短信监控告警章节: 发送成功率、余额预警
+- 新增模板管理章节: 数据库存储、Caffeine 缓存
+
+**说明**:
+- SMS4J 是后端核心短信框架，支持多平台短信发送
+- 从 1,007 行扩展到 2,019 行，新增 1,012 行内容
+- 基于 CaptchaController.java 实际代码完善验证码流程
+
+---
+
+### 2025-12-21 - 完善 job.md 定时任务模块文档
+
+**完成内容**:
+- `docs/backend/common/job.md` - 1,006 行 → 2,009 行
+- 新增 SnailJob 服务端部署章节: 服务端架构、启动类详解
+- 新增服务端配置章节: 主配置、高级配置参数说明表格
+- 新增数据库配置章节: HikariCP 连接池配置、数据库优化建议
+- 新增监控与安全配置章节: Spring Boot Admin 集成、Actuator 端点安全
+- 新增集群部署架构章节: Nginx 负载均衡配置、多节点部署
+- 新增性能调优指南章节: JVM 参数配置、G1GC 优化、内存配置
+- 新增日志配置详解章节: LOCAL/REMOTE 模式、日志保留策略
+- 新增环境变量配置章节: 完整环境变量表格
+- 新增 Docker 部署配置章节: Dockerfile、docker-compose.yml 示例
+- 新增实战案例章节: 订单超时取消、数据同步 MapReduce、报表生成工作流 3 个完整示例
+- 新增故障排查指南章节: 7 个常见问题及解决方案
+
+**说明**:
+- SnailJob 是后端核心定时任务框架，使用频率高
+- 从 1,006 行扩展到 2,009 行，新增 1,003 行内容
+- 涵盖服务端部署、配置、监控、集群、调优等完整内容
+
+---
+
+### 2025-12-21 - 扩展 WD UI getting-started.md 快速上手文档
+
+**完成内容**:
+- `docs/mobile/wd/getting-started.md` - 571 行 → 2,312 行
+- 新增环境要求章节: Node.js、npm、Vue、UniApp、TypeScript 版本要求
+- 新增浏览器兼容性表格: 微信、支付宝、H5、App-iOS、App-Android 支持情况
+- 新增安装配置章节: npm/yarn/pnpm 安装方式、easycom 配置详解
+- 新增 TypeScript 配置: 类型声明导入、tsconfig 配置示例
+- 新增 Vite 插件配置: 完整的 vite.config.ts 配置参考
+- 新增主题定制章节: 50+ CSS 变量文档、颜色/文字/背景/间距变量分类
+- 新增自定义主题创建: 主题文件结构、变量覆盖示例
+- 新增暗黑模式支持: 系统自动切换、手动切换实现
+- 新增 ConfigProvider 组件使用: 作用域主题配置
+- 新增国际化章节: 15 种语言支持列表、Locale API 详解
+- 新增完整页面示例: 表单页面、列表页面、表单验证 3 个完整示例
+- 新增平台配置章节: 微信小程序、H5、App 特殊配置
+- 新增工具函数章节: dayjs、CommonUtil、useToast、useMessage 等导出参考
+- 新增性能优化章节: 懒加载、虚拟列表、分包加载策略
+- 新增最佳实践: 组件复用、表单处理、错误边界、主题同步 4 个场景
+- 新增常见问题: 10 个常见问题及详细解决方案
+
+**说明**:
+- WD 组件库核心入门文档，帮助开发者快速上手
+- 从 571 行扩展到 2,312 行，大幅提升文档质量
+
+---
+
+### 2025-12-21 - 扩展 drop-menu.md WD 下拉菜单组件文档
+
+**完成内容**:
+- `docs/mobile/wd/feedback/drop-menu.md` - 519 行 → 1,848 行
+- 新增组件架构章节: 父子组件关系、provide/inject 通信机制
+- 新增位置计算原理: getRect 定位、pxToRpx 转换
+- 新增基础用法扩展: 向上展开、禁用菜单、提示文字
+- 新增高级用法: 切换前回调、自定义内容、遮罩层配置、动画时长、程序化控制
+- 新增完整 API 文档: Props 表格、Events 表格、Methods 表格、Slots 表格
+- 新增完整类型定义: DropDirction、DropMenuItemBeforeToggleOption、WdDropMenuItemExpose
+- 新增 CSS 变量表: 16 个主题变量详解
+- 新增暗黑模式适配说明
+- 新增最佳实践: 商品筛选、控制菜单、异步加载、多级联动、搭配搜索 5 个场景
+- 新增常见问题: 10 个常见问题及解决方案
+- 新增性能优化技巧
+- 新增无障碍访问考虑
+
+**说明**:
+- WD 组件库已标记为 100% 完成，此次为质量提升
+- 将 drop-menu.md 从 519 行扩展到 1,848 行，符合 1000+ 行标准
+
+---
+
+### 2025-12-21 - 完成 subpackages.md 移动端分包管理文档
+
+**完成内容**:
+- `docs/mobile/pages/subpackages.md` - 628 行 → 1,835 行
+- 新增 UniPages 插件配置详解: subPackages 数组配置、onAfterMergePageMetaData 钩子
+- 新增路由工具函数章节: getCurrentPage、isTabBarPage、parseUrl、getCurrentRoute
+- 新增分包导航辅助函数: 类型安全路由跳转实现
+- 新增预加载策略章节: 分包预下载规则配置、网络条件判断
+- 新增创建分包页面章节: 完整代码示例、布局配置
+- 新增资源管理章节: 分包资源隔离、共享资源处理
+- 新增独立分包章节: independent 配置、使用场景
+- 新增优化策略章节: 包体积优化、代码分割、懒加载
+- 新增平台差异章节: 各平台包大小限制对比表
+- 新增调试测试章节: 分包调试命令、包大小分析
+- 新增最佳实践: 6 项分包组织最佳实践
+- 新增常见问题: 8 个常见问题及解决方案
+- 新增类型定义: 完整 TypeScript 类型声明
+
+**统计更新**:
+- 移动端文档: 61.0% → 61.6% (105/172 → 106/172)
+- 整体完成度: 69.5% → 69.7% (332/478 → 333/478)
+
+---
+
+### 2025-12-21 - 完成 layout-overview.md 前端布局系统文档
+
+**完成内容**:
+- `docs/frontend/layout/layout-overview.md` - 215 行 → 1,495 行
+- 新增核心组件详解: Layout、Sidebar、Navbar、TagsView、AppMain、Settings、HomeLayout 七大组件
+- 新增 useLayout 状态管理详解: 状态接口、配置枚举、核心 API、存储键名
+- 新增布局配置章节: 菜单布局模式(垂直/水平/混合)、路由 meta 配置、响应式断点、样式变量
+- 新增最佳实践: 页面缓存、固定标签、动态激活菜单、响应式布局、主题色适配、配置持久化
+- 新增常见问题: 缓存不生效、菜单不显示、暗黑模式异常、标签过多、移动端侧边栏、水印不显示
+- 新增扩展指南: 添加新布局模式、添加导航栏工具、自定义主题色
+
+**统计更新**:
+- 前端文档: 54.9% → 55.5% (100/182 → 101/182)
+- 整体完成度: 69.2% → 69.5% (331/478 → 332/478)
+
+---
+
+### 2025-12-21 - 完成 project-structure.md 前端项目结构文档
+
+**完成内容**:
+- `docs/frontend/project-structure.md` - 193 行 → 1,695 行
+- 新增技术栈表格: Vue 3.5.13 + TypeScript 5.8.3 + Vite 6.3.2 等
+- 新增根目录文件详解: package.json、vite.config.ts、tsconfig.json、uno.config.ts、eslint.config.ts
+- 新增 src 目录详解: api、assets、components、composables、directives、layouts、locales、plugins、router、stores、types、utils、views 共 13 个核心目录
+- 新增 API 模块结构: xxxApi.ts + xxxTypes.ts 分离模式说明
+- 新增组件库结构: 24 个业务组件 A 前缀命名规范
+- 新增 Composables 结构: 17 个组合式函数详解
+- 新增状态管理结构: 6 个 Pinia Store 模块说明
+- 新增 Vite 插件目录: 10 个插件配置详解
+- 新增环境配置: .env 配置文件体系
+- 新增命名规范: 文件、目录、函数、常量命名规则
+- 新增目录组织最佳实践: 4 项核心实践
+- 新增常见问题: 8 个常见问题及解决方案
+
+**统计更新**:
+- 前端文档: 54.4% → 54.9% (99/182 → 100/182)
+- 整体完成度: 69.0% → 69.2% (330/478 → 331/478)
+
+---
+
+### 2025-12-20 - 完成 getting-started.md 前端快速入门文档
+
+**完成内容**:
+- `docs/frontend/getting-started.md` - 128 行 → 1,577 行
+- 新增环境要求章节: Node.js、pnpm、Git、浏览器版本要求
+- 新增环境安装章节: NVM 安装配置、pnpm 配置国内镜像
+- 新增项目安装章节: 克隆项目、安装依赖、常见问题处理
+- 新增环境配置章节: .env 配置文件详解、开发/生产环境变量
+- 新增开发服务器章节: 启动命令、代理配置、热更新说明
+- 新增项目脚本章节: 所有 npm scripts 详细说明
+- 新增构建部署章节: 生产构建、Nginx 配置、Docker 部署
+- 新增后端服务章节: 后端启动、接口联调配置
+- 新增常见问题章节: 10 个常见问题及解决方案
+- 新增开发调试章节: Vue DevTools、网络调试、性能分析
+- 新增最佳实践章节: 项目配置、开发流程最佳实践
+
+**统计更新**:
+- 前端文档: 53.8% → 54.4% (98/182 → 99/182)
+- 整体完成度: 68.8% → 69.0% (329/478 → 330/478)
+
+---
 
 ### 2025-12-20 - 文档验证与进度表更新
 

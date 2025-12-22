@@ -2820,6 +2820,479 @@ public class UnionpaySignUtil {
 }
 ```
 
+### 银联支付策略详解
+
+`UnionpayStrategy` 实现了完整的银联开放平台支付接口，支持多种交易类型。
+
+#### 支持的交易类型完整列表
+
+| 交易类型 | 枚举值 | 说明 | 适用场景 |
+|---------|--------|------|---------|
+| 二维码支付 | `QRCODE` | PC端展示二维码，用户扫码支付 | 电商PC端、收银台 |
+| WAP支付 | `WAP` | 手机网页支付（H5） | 手机浏览器、移动网页 |
+| APP支付 | `APP` | 移动端APP唤起云闪付支付 | 原生APP |
+| 网关支付 | `WEB` | PC网关支付，跳转银联页面 | 企业网银 |
+| 小程序支付 | `JSAPI` | 微信/支付宝小程序内支付 | 小程序场景 |
+
+#### 二维码支付流程
+
+```java
+/**
+ * 银联二维码支付示例
+ */
+@Service
+@Slf4j
+public class UnionpayQrcodeExample {
+
+    @Autowired
+    private PayService payService;
+
+    /**
+     * 发起二维码支付
+     */
+    public PayResponse createQrcodePay(String orderNo, BigDecimal amount, String description) {
+        PayRequest request = PayRequest.builder()
+            .outTradeNo(orderNo)
+            .totalFee(amount)
+            .body(description)
+            .detail("商品详情")
+            .tradeType("qrcode")  // 二维码支付
+            .clientIp(ServletUtils.getClientIP())
+            .build();
+
+        PayResponse response = payService.pay(DictPaymentMethod.UNIONPAY, request);
+
+        if (response.isSuccess()) {
+            log.info("银联二维码生成成功: orderNo={}", orderNo);
+            log.info("二维码URL: {}", response.getCodeUrl());
+            log.info("二维码Base64: {}", response.getQrCodeBase64());
+        }
+
+        return response;
+    }
+}
+```
+
+#### WAP/H5支付流程
+
+```java
+/**
+ * 银联WAP支付（手机网页）
+ */
+public PayResponse createWapPay(String orderNo, BigDecimal amount,
+        String description, String returnUrl) {
+    PayRequest request = PayRequest.builder()
+        .outTradeNo(orderNo)
+        .totalFee(amount)
+        .body(description)
+        .tradeType("wap")  // WAP支付
+        .returnUrl(returnUrl)  // 前端跳转地址
+        .clientIp(ServletUtils.getClientIP())
+        .build();
+
+    PayResponse response = payService.pay(DictPaymentMethod.UNIONPAY, request);
+
+    if (response.isSuccess()) {
+        // response.getBody() 包含跳转URL
+        log.info("WAP支付下单成功，跳转URL: {}", response.getBody());
+    }
+
+    return response;
+}
+```
+
+#### 小程序支付流程（JSAPI）
+
+```java
+/**
+ * 银联小程序支付（JSAPI）
+ */
+public PayResponse createJsapiPay(String orderNo, BigDecimal amount,
+        String description, String openId) {
+    PayRequest request = PayRequest.builder()
+        .outTradeNo(orderNo)
+        .totalFee(amount)
+        .body(description)
+        .tradeType("jsapi")  // 小程序支付
+        .openId(openId)  // 用户openId
+        .clientIp(ServletUtils.getClientIP())
+        .build();
+
+    PayResponse response = payService.pay(DictPaymentMethod.UNIONPAY, request);
+
+    if (response.isSuccess()) {
+        // response.getBody() 包含小程序调起参数
+        log.info("小程序支付下单成功，调起参数: {}", response.getBody());
+    }
+
+    return response;
+}
+```
+
+#### APP支付流程
+
+```java
+/**
+ * 银联APP支付
+ */
+public PayResponse createAppPay(String orderNo, BigDecimal amount, String description) {
+    PayRequest request = PayRequest.builder()
+        .outTradeNo(orderNo)
+        .totalFee(amount)
+        .body(description)
+        .tradeType("app")  // APP支付
+        .clientIp(ServletUtils.getClientIP())
+        .build();
+
+    PayResponse response = payService.pay(DictPaymentMethod.UNIONPAY, request);
+
+    if (response.isSuccess()) {
+        // response.getBody() 包含APP调起参数
+        log.info("APP支付下单成功，调起参数: {}", response.getBody());
+    }
+
+    return response;
+}
+```
+
+### 银联支付回调处理
+
+#### 回调URL格式
+
+银联支付回调URL遵循统一格式：
+
+```
+{baseApi}/payment/notify/unionpay/{appid}/{type}
+```
+
+| 参数 | 说明 | 示例 |
+|------|------|------|
+| `baseApi` | 系统配置的API基础地址 | `https://api.example.com` |
+| `appid` | 银联应用ID | `UP12345678` |
+| `type` | 回调类型 | `pay`（支付）、`refund`（退款） |
+
+#### 回调处理流程
+
+```java
+/**
+ * 银联支付回调控制器示例
+ */
+@RestController
+@RequestMapping("/payment/notify/unionpay")
+@Slf4j
+public class UnionpayNotifyController {
+
+    @Autowired
+    private PayService payService;
+
+    /**
+     * 支付回调
+     */
+    @PostMapping("/{appid}/pay")
+    public String handlePayNotify(@PathVariable String appid,
+                                   HttpServletRequest request) {
+        log.info("收到银联支付回调: appid={}", appid);
+
+        // 构建回调请求
+        NotifyRequest notifyRequest = NotifyRequest.builder()
+            .mchId(appid)  // mchId字段用于传递appid
+            .formData(getFormData(request))
+            .build();
+
+        // 处理回调
+        NotifyResponse response = payService.handleNotify(
+            DictPaymentMethod.UNIONPAY, notifyRequest);
+
+        // 返回银联要求的响应格式
+        return response.isSuccess() ? "success" : "fail";
+    }
+
+    /**
+     * 退款回调
+     */
+    @PostMapping("/{appid}/refund")
+    public String handleRefundNotify(@PathVariable String appid,
+                                      HttpServletRequest request) {
+        log.info("收到银联退款回调: appid={}", appid);
+
+        NotifyRequest notifyRequest = NotifyRequest.builder()
+            .mchId(appid)
+            .formData(getFormData(request))
+            .build();
+
+        NotifyResponse response = payService.handleNotify(
+            DictPaymentMethod.UNIONPAY, notifyRequest);
+
+        return response.isSuccess() ? "success" : "fail";
+    }
+
+    private Map<String, String> getFormData(HttpServletRequest request) {
+        Map<String, String> params = new HashMap<>();
+        request.getParameterMap().forEach((key, values) -> {
+            if (values != null && values.length > 0) {
+                params.put(key, values[0]);
+            }
+        });
+        return params;
+    }
+}
+```
+
+#### 支付成功事件监听
+
+```java
+/**
+ * 银联支付成功事件监听器
+ */
+@Component
+@Slf4j
+public class UnionpaySuccessListener {
+
+    @EventListener
+    public void onPaySuccess(PaySuccessEvent event) {
+        // 仅处理银联支付
+        if (!DictPaymentMethod.UNIONPAY.getValue().equals(event.getPaymentMethod())) {
+            return;
+        }
+
+        log.info("银联支付成功: outTradeNo={}, transactionId={}, amount={}",
+            event.getOutTradeNo(),
+            event.getTransactionId(),
+            event.getTotalFee());
+
+        // 业务处理：更新订单状态、发送通知等
+        processPaymentSuccess(event);
+    }
+
+    private void processPaymentSuccess(PaySuccessEvent event) {
+        // 1. 更新订单状态
+        // 2. 记录支付日志
+        // 3. 发送支付成功通知
+    }
+}
+```
+
+### 银联签名工具详解
+
+银联支付模块提供完整的签名验签工具，支持 RSA 和 SM2（国密）两种算法。
+
+#### RSA签名方式
+
+```java
+/**
+ * RSA签名示例
+ */
+public class RsaSignExample {
+
+    /**
+     * 生成请求签名
+     */
+    public String signRequest(Map<String, Object> params, String privateKey) {
+        // 使用SHA256withRSA算法签名
+        return UnionpaySignUtil.signWithRsa(params, privateKey);
+    }
+
+    /**
+     * 验证响应签名
+     */
+    public boolean verifyResponse(Map<String, Object> params,
+            String sign, String publicKey) {
+        return UnionpaySignUtil.verifyWithRsa(params, sign, publicKey);
+    }
+}
+```
+
+#### SM2国密签名方式
+
+银联支付支持SM2国密算法，适用于对安全性有特殊要求的场景。
+
+```java
+/**
+ * SM2国密签名示例
+ */
+public class Sm2SignExample {
+
+    /**
+     * 使用SM2生成签名
+     */
+    public String signWithSm2(Map<String, Object> params, String privateKey) {
+        // 使用SM3withSM2算法签名
+        return UnionpaySignUtil.signWithSm2(params, privateKey);
+    }
+
+    /**
+     * 使用SM2验证签名
+     */
+    public boolean verifyWithSm2(Map<String, Object> params,
+            String sign, String publicKey) {
+        return UnionpaySignUtil.verifyWithSm2(params, sign, publicKey);
+    }
+}
+```
+
+#### 签名字符串构建规则
+
+银联签名遵循以下规则：
+
+1. **参数排序**: 按参数名 ASCII 码从小到大排序
+2. **空值过滤**: 排除空值参数和签名字段本身
+3. **拼接格式**: `key1=value1&key2=value2&...`
+
+```java
+/**
+ * 签名字符串构建示例
+ */
+public void buildSignDataExample() {
+    Map<String, Object> params = new LinkedHashMap<>();
+    params.put("appId", "UP12345678");
+    params.put("outTradeNo", "ORDER20231215001");
+    params.put("totalAmount", 10000);
+    params.put("timestamp", "1702627200000");
+    params.put("nonceStr", "abc123def456");
+    params.put("emptyField", "");  // 空值会被过滤
+    params.put("nullField", null);  // null值会被过滤
+
+    // 最终签名字符串（按key排序）:
+    // appId=UP12345678&nonceStr=abc123def456&outTradeNo=ORDER20231215001&timestamp=1702627200000&totalAmount=10000
+}
+```
+
+### 银联测试环境配置
+
+银联提供独立的测试环境用于开发调试。
+
+#### 测试环境网关地址
+
+| 环境 | 网关地址 |
+|------|---------|
+| 生产环境 | `https://open.unionpay.com/gateway/api/` |
+| 测试环境 | `https://open.test.unionpay.com/gateway/api/` |
+
+#### 测试环境配置示例
+
+```yaml
+# application-dev.yml
+ruoyi:
+  pay:
+    unionpay:
+      # 测试环境配置
+      test-mode: true
+      gateway-url: https://open.test.unionpay.com/gateway/api/
+
+      # 测试商户信息（银联提供）
+      app-id: ${UNIONPAY_TEST_APP_ID}
+      mch-id: ${UNIONPAY_TEST_MCH_ID}
+
+      # 证书配置
+      cert-path: classpath:cert/test/unionpay_cert.pem
+      key-path: classpath:cert/test/unionpay_key.pem
+      platform-cert-path: classpath:cert/test/unionpay_platform.pem
+```
+
+### 银联支付自动配置
+
+银联支付模块通过 Spring Boot 自动配置机制自动注册相关组件。
+
+#### 自动注册的Bean
+
+| Bean | 类名 | 说明 |
+|------|------|------|
+| 客户端注册表 | `UnionpayClientRegistry` | 管理银联客户端实例 |
+| 支付策略 | `UnionpayStrategy` | 执行具体支付逻辑 |
+| 支付处理器 | `UnionpayHandler` | 实现 PayHandler 接口 |
+| 初始化器 | `UnionpayInitializer` | 初始化银联配置 |
+
+#### 条件配置
+
+```yaml
+# 启用/禁用银联支付模块
+module:
+  pay-enabled: true  # 默认启用
+```
+
+### 银联支付常见问题
+
+#### 1. 签名失败
+
+**问题原因**:
+- 私钥格式不正确
+- 参数排序错误
+- 包含不可见字符
+
+**解决方案**:
+```java
+// 确保私钥为标准PEM格式
+String privateKey = """
+    -----BEGIN PRIVATE KEY-----
+    MIIEvgIBADANBgkqhkiG9w0B...
+    -----END PRIVATE KEY-----
+    """;
+
+// 或从文件读取
+String privateKey = Files.readString(Path.of("cert/private_key.pem"));
+```
+
+#### 2. 验签失败
+
+**问题原因**:
+- 平台公钥配置错误
+- 响应参数被修改
+- 签名字段未正确排除
+
+**解决方案**:
+```java
+// 确保使用银联平台提供的公钥
+String platformPublicKey = config.getPlatformCertPath();
+
+// 验签前移除sign字段
+Map<String, Object> verifyParams = new HashMap<>(responseParams);
+verifyParams.remove("sign");
+
+boolean verified = UnionpaySignUtil.verifyWithRsa(
+    verifyParams,
+    responseParams.get("sign").toString(),
+    platformPublicKey
+);
+```
+
+#### 3. 回调接收不到
+
+**问题原因**:
+- 回调URL不可访问
+- 防火墙拦截
+- URL格式错误
+
+**解决方案**:
+```java
+// 确保回调URL外网可访问
+// 格式: {baseApi}/payment/notify/unionpay/{appid}/pay
+
+// 检查配置
+@Value("${ruoyi.app.base-api}")
+private String baseApi;
+
+// 确保baseApi为外网地址
+// 正确: https://api.example.com
+// 错误: http://localhost:8080
+```
+
+#### 4. 金额精度问题
+
+**问题原因**:
+- 金额单位不一致
+- 浮点数精度丢失
+
+**解决方案**:
+```java
+// 系统使用元为单位，API使用分为单位
+BigDecimal amountYuan = new BigDecimal("0.01");  // 1分钱
+
+// 转换为分（内部自动处理）
+int amountFen = amountYuan
+    .multiply(new BigDecimal("100"))
+    .intValue();  // 1分
+```
+
 ## 配置管理详解
 
 ### PayConfig 配置类

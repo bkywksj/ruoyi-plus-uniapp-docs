@@ -1955,6 +1955,879 @@ const showAiChat = ref(false)
 - 会话管理
 - 复制/重试功能
 
+## EmbeddingService 向量嵌入服务
+
+### 服务概述
+
+`EmbeddingService` 提供文本向量化能力，将文本转换为高维向量表示，是 RAG 功能的基础组件。
+
+```java
+@Slf4j
+public class EmbeddingService {
+
+    private final LangChain4jProperties properties;
+    private volatile EmbeddingModel embeddingModel;
+
+    /**
+     * 嵌入单个文本
+     */
+    public List<Float> embed(String text) {
+        Response<Embedding> response = getEmbeddingModel().embed(text);
+        return response.content().vectorAsList();
+    }
+
+    /**
+     * 嵌入多个文本
+     */
+    public List<List<Float>> embedAll(List<String> texts) {
+        if (CollUtil.isEmpty(texts)) {
+            return List.of();
+        }
+
+        List<TextSegment> segments = texts.stream()
+            .map(TextSegment::from)
+            .collect(Collectors.toList());
+
+        Response<List<Embedding>> response = getEmbeddingModel().embedAll(segments);
+
+        return response.content().stream()
+            .map(Embedding::vectorAsList)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 批量嵌入文本段落
+     */
+    public List<Embedding> embedSegments(List<TextSegment> segments) {
+        if (CollUtil.isEmpty(segments)) {
+            return List.of();
+        }
+
+        int batchSize = properties.getEmbedding().getBatchSize();
+        List<Embedding> allEmbeddings = CollUtil.newArrayList();
+
+        // 分批处理
+        for (int i = 0; i < segments.size(); i += batchSize) {
+            int end = Math.min(i + batchSize, segments.size());
+            List<TextSegment> batch = segments.subList(i, end);
+
+            Response<List<Embedding>> response = getEmbeddingModel().embedAll(batch);
+            allEmbeddings.addAll(response.content());
+
+            log.debug("Embedded batch {}-{} of {}", i, end, segments.size());
+        }
+
+        return allEmbeddings;
+    }
+
+    /**
+     * 计算余弦相似度
+     */
+    public double cosineSimilarity(List<Float> vector1, List<Float> vector2) {
+        if (vector1.size() != vector2.size()) {
+            throw new IllegalArgumentException("Vector dimensions must match");
+        }
+
+        double dotProduct = 0.0;
+        double norm1 = 0.0;
+        double norm2 = 0.0;
+
+        for (int i = 0; i < vector1.size(); i++) {
+            dotProduct += vector1.get(i) * vector2.get(i);
+            norm1 += vector1.get(i) * vector1.get(i);
+            norm2 += vector2.get(i) * vector2.get(i);
+        }
+
+        return dotProduct / (Math.sqrt(norm1) * Math.sqrt(norm2));
+    }
+}
+```
+
+### 嵌入模型配置
+
+```yaml
+langchain4j:
+  embedding:
+    model-name: text-embedding-3-small  # 嵌入模型名称
+    dimension: 1536                      # 向量维度
+    batch-size: 100                      # 批处理大小
+```
+
+### 使用示例
+
+```java
+@Service
+@RequiredArgsConstructor
+public class DocumentSearchService {
+
+    private final EmbeddingService embeddingService;
+
+    /**
+     * 文本相似度搜索
+     */
+    public double calculateSimilarity(String text1, String text2) {
+        List<Float> vector1 = embeddingService.embed(text1);
+        List<Float> vector2 = embeddingService.embed(text2);
+        return embeddingService.cosineSimilarity(vector1, vector2);
+    }
+
+    /**
+     * 批量向量化文档
+     */
+    public List<List<Float>> embedDocuments(List<String> documents) {
+        return embeddingService.embedAll(documents);
+    }
+}
+```
+
+### 支持的嵌入模型
+
+| 提供商 | 模型名称 | 向量维度 | 说明 |
+|--------|----------|----------|------|
+| OpenAI | text-embedding-3-small | 1536 | 推荐，性价比高 |
+| OpenAI | text-embedding-3-large | 3072 | 更高精度 |
+| OpenAI | text-embedding-ada-002 | 1536 | 旧版模型 |
+| 本地 | all-MiniLM-L6-v2 | 384 | 本地模型，需启用依赖 |
+
+## RagService 检索增强服务
+
+### 服务架构
+
+`RagService` 提供完整的 RAG（检索增强生成）能力，包括文档向量化、存储和检索：
+
+```java
+@Slf4j
+public class RagService {
+
+    private final LangChain4jProperties properties;
+    private final EmbeddingService embeddingService;
+    private final EmbeddingStore<TextSegment> embeddingStore;
+
+    /**
+     * 添加文档到向量库
+     */
+    public void addDocument(String documentId, String content) {
+        // 分割文档
+        List<TextSegment> segments = splitDocument(content, documentId);
+
+        // 批量向量化
+        List<Embedding> embeddings = embeddingService.embedSegments(segments);
+
+        // 存储到向量库
+        embeddingStore.addAll(embeddings, segments);
+
+        log.info("Added document {} with {} segments", documentId, segments.size());
+    }
+
+    /**
+     * 检索相关文档
+     */
+    public List<DocumentReference> retrieve(String query, int maxResults) {
+        // 向量化查询
+        List<Float> queryEmbedding = embeddingService.embed(query);
+
+        // 转换为Embedding对象
+        float[] floatArray = new float[queryEmbedding.size()];
+        for (int i = 0; i < queryEmbedding.size(); i++) {
+            floatArray[i] = queryEmbedding.get(i);
+        }
+        Embedding embedding = new Embedding(floatArray);
+
+        // 执行检索
+        List<EmbeddingMatch<TextSegment>> matches = embeddingStore.search(
+            EmbeddingSearchRequest.builder()
+                .queryEmbedding(embedding)
+                .maxResults(maxResults)
+                .minScore(properties.getRag().getMinScore())
+                .build()
+        ).matches();
+
+        // 转换为响应对象
+        return matches.stream()
+            .map(this::convertToReference)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     * 构建RAG提示词
+     */
+    public String buildRagPrompt(String query, List<DocumentReference> references) {
+        if (CollUtil.isEmpty(references)) {
+            return query;
+        }
+
+        StringBuilder prompt = new StringBuilder();
+        prompt.append("参考以下信息回答问题：\n\n");
+
+        for (int i = 0; i < references.size(); i++) {
+            DocumentReference ref = references.get(i);
+            prompt.append(String.format("[文档%d] %s\n", i + 1, ref.getContent()));
+        }
+
+        prompt.append("\n问题：").append(query);
+        prompt.append("\n\n请基于以上参考信息，准确、详细地回答问题。如果参考信息不足以回答问题，请明确说明。");
+
+        return prompt.toString();
+    }
+
+    /**
+     * 分割文档
+     */
+    private List<TextSegment> splitDocument(String content, String documentId) {
+        Metadata metadata = new Metadata();
+        metadata.put("id", documentId);
+
+        Document document = Document.from(content, metadata);
+
+        DocumentSplitter splitter = DocumentSplitters.recursive(
+            properties.getRag().getChunkSize(),
+            properties.getRag().getChunkOverlap()
+        );
+
+        return splitter.split(document);
+    }
+}
+```
+
+### RAG 配置详解
+
+```yaml
+langchain4j:
+  rag:
+    enabled: true                    # 是否启用RAG
+    max-results: 5                   # 检索结果数量
+    min-score: 0.7                   # 最小相似度分数（0-1）
+    chunk-size: 500                  # 文档分块大小（字符数）
+    chunk-overlap: 50                # 分块重叠大小
+    vector-store-type: memory        # 向量存储类型: memory, milvus, pgvector
+
+    # Milvus 向量数据库配置
+    milvus:
+      host: localhost
+      port: 19530
+      collection-name: documents
+      database-name: default
+```
+
+### KnowledgeDocument 知识文档实体
+
+```java
+@Data
+@Accessors(chain = true)
+public class KnowledgeDocument implements Serializable {
+
+    /**
+     * 文档ID
+     */
+    private Long id;
+
+    /**
+     * 知识库ID
+     */
+    private Long knowledgeBaseId;
+
+    /**
+     * 文档名称
+     */
+    private String name;
+
+    /**
+     * 文档内容
+     */
+    private String content;
+
+    /**
+     * 文件路径
+     */
+    private String filePath;
+
+    /**
+     * 文档类型
+     */
+    private String fileType;
+
+    /**
+     * 文件大小
+     */
+    private Long fileSize;
+
+    /**
+     * 分块数量
+     */
+    private Integer chunkCount;
+
+    /**
+     * 向量化状态: 0-待处理, 1-处理中, 2-已完成, 3-失败
+     */
+    private Integer embeddingStatus;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+}
+```
+
+### DocumentReference 文档引用
+
+```java
+@Data
+public class DocumentReference {
+
+    /**
+     * 文档ID
+     */
+    private Long documentId;
+
+    /**
+     * 匹配内容
+     */
+    private String content;
+
+    /**
+     * 相似度分数 (0-1)
+     */
+    private Double score;
+
+    /**
+     * 元数据
+     */
+    private Map<String, Object> metadata;
+}
+```
+
+### RAG 完整使用示例
+
+```java
+@Service
+@RequiredArgsConstructor
+public class KnowledgeBaseService {
+
+    private final RagService ragService;
+    private final ChatService chatService;
+
+    /**
+     * 添加文档到知识库
+     */
+    public void addDocument(KnowledgeDocument document) {
+        ragService.addDocument(
+            document.getId().toString(),
+            document.getContent()
+        );
+    }
+
+    /**
+     * 知识库问答
+     */
+    public String queryKnowledgeBase(String question) {
+        // 1. 检索相关文档
+        List<DocumentReference> references = ragService.retrieve(question, 5);
+
+        // 2. 构建增强提示词
+        String ragPrompt = ragService.buildRagPrompt(question, references);
+
+        // 3. 调用AI生成回答
+        ChatRequest request = new ChatRequest();
+        request.setMessage(ragPrompt);
+        request.setMode(ChatMode.SINGLE);
+        request.setSystemPrompt("你是一个专业的知识库问答助手，请根据提供的参考资料回答问题。");
+
+        ChatResponse response = chatService.chat(request);
+
+        return response.getContent();
+    }
+
+    /**
+     * 批量导入文档
+     */
+    public void importDocuments(List<KnowledgeDocument> documents) {
+        for (KnowledgeDocument doc : documents) {
+            try {
+                addDocument(doc);
+                doc.setEmbeddingStatus(2); // 已完成
+            } catch (Exception e) {
+                doc.setEmbeddingStatus(3); // 失败
+                log.error("Failed to embed document: {}", doc.getId(), e);
+            }
+        }
+    }
+}
+```
+
+## PromptUtils 提示词工具
+
+### 工具概述
+
+`PromptUtils` 提供丰富的提示词构建能力，支持模板加载、变量替换、少样本学习、思维链等高级提示词技术：
+
+```java
+@Slf4j
+public class PromptUtils {
+
+    /**
+     * 从资源文件加载提示词模板
+     */
+    public static String loadPromptTemplate(String templateName) {
+        String path = "prompts/" + templateName;
+        try (InputStream is = PromptUtils.class.getClassLoader().getResourceAsStream(path)) {
+            if (is == null) {
+                log.warn("Prompt template not found: {}", path);
+                return "";
+            }
+            return IoUtil.read(is, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            log.error("Failed to load prompt template: {}", path, e);
+            return "";
+        }
+    }
+
+    /**
+     * 替换提示词变量
+     *
+     * @param template  模板字符串，使用 {{variableName}} 作为占位符
+     * @param variables 变量映射
+     * @return 替换后的字符串
+     */
+    public static String fillTemplate(String template, Map<String, String> variables) {
+        if (StrUtil.isBlank(template) || variables == null || variables.isEmpty()) {
+            return template;
+        }
+
+        String result = template;
+        for (Map.Entry<String, String> entry : variables.entrySet()) {
+            String placeholder = "{{" + entry.getKey() + "}}";
+            result = result.replace(placeholder, entry.getValue());
+        }
+
+        return result;
+    }
+
+    /**
+     * 构建系统提示词
+     */
+    public static String buildSystemPrompt(String role, String context) {
+        StringBuilder prompt = new StringBuilder();
+
+        if (StrUtil.isNotBlank(role)) {
+            prompt.append("你是").append(role).append("。\n");
+        }
+
+        if (StrUtil.isNotBlank(context)) {
+            prompt.append(context);
+        }
+
+        return prompt.toString();
+    }
+
+    /**
+     * 构建少样本提示词(Few-shot)
+     */
+    public static String buildFewShotPrompt(String instruction, List<Example> examples, String query) {
+        StringBuilder prompt = new StringBuilder();
+
+        if (StrUtil.isNotBlank(instruction)) {
+            prompt.append(instruction).append("\n\n");
+        }
+
+        if (examples != null && !examples.isEmpty()) {
+            prompt.append("示例：\n");
+            for (int i = 0; i < examples.size(); i++) {
+                Example example = examples.get(i);
+                prompt.append("示例").append(i + 1).append("：\n");
+                prompt.append("输入：").append(example.input()).append("\n");
+                prompt.append("输出：").append(example.output()).append("\n\n");
+            }
+        }
+
+        prompt.append("请按照以上示例的格式处理以下输入：\n");
+        prompt.append("输入：").append(query);
+
+        return prompt.toString();
+    }
+
+    /**
+     * 构建思维链提示词(Chain of Thought)
+     */
+    public static String buildCoTPrompt(String query) {
+        return query + "\n\n请一步一步地思考并解释你的推理过程。";
+    }
+
+    /**
+     * 构建角色扮演提示词
+     */
+    public static String buildRolePlayPrompt(String role, String personality, String task) {
+        return StrUtil.format(
+            "你现在扮演{}，性格特点是{}。\n现在请你完成以下任务：{}",
+            role, personality, task
+        );
+    }
+
+    /**
+     * 限制输出格式
+     */
+    public static String addFormatConstraint(String prompt, String format) {
+        return prompt + "\n\n请严格按照以下格式输出：\n" + format;
+    }
+
+    /**
+     * 添加输出长度限制
+     */
+    public static String addLengthConstraint(String prompt, int maxWords) {
+        return prompt + StrUtil.format("\n\n请将回答控制在{}字以内。", maxWords);
+    }
+
+    /**
+     * 示例记录
+     */
+    public record Example(String input, String output) {}
+}
+```
+
+### 提示词模板使用
+
+创建提示词模板文件 `resources/prompts/code-review.txt`：
+
+```text
+你是一名资深的{{language}}代码审查专家。
+
+请审查以下代码并提供改进建议：
+
+代码：
+```{{language}}
+{{code}}
+```
+
+请从以下方面进行审查：
+1. 代码规范性
+2. 性能优化
+3. 安全隐患
+4. 可维护性
+```
+
+使用模板：
+
+```java
+@Service
+public class CodeReviewService {
+
+    public String reviewCode(String language, String code) {
+        // 加载模板
+        String template = PromptUtils.loadPromptTemplate("code-review.txt");
+
+        // 填充变量
+        Map<String, String> variables = Map.of(
+            "language", language,
+            "code", code
+        );
+        String prompt = PromptUtils.fillTemplate(template, variables);
+
+        // 调用AI
+        ChatRequest request = new ChatRequest();
+        request.setMessage(prompt);
+        request.setTemperature(0.3);
+
+        return chatService.chat(request).getContent();
+    }
+}
+```
+
+### 少样本学习示例
+
+```java
+@Service
+public class SentimentAnalysisService {
+
+    public String analyzeSentiment(String text) {
+        // 构建示例
+        List<PromptUtils.Example> examples = List.of(
+            new PromptUtils.Example("这个产品太棒了，强烈推荐！", "正面"),
+            new PromptUtils.Example("质量很差，完全不值这个价格", "负面"),
+            new PromptUtils.Example("还可以吧，没什么特别的", "中性")
+        );
+
+        // 构建少样本提示词
+        String prompt = PromptUtils.buildFewShotPrompt(
+            "请判断以下文本的情感倾向（正面/负面/中性）",
+            examples,
+            text
+        );
+
+        ChatRequest request = new ChatRequest();
+        request.setMessage(prompt);
+        request.setMode(ChatMode.SINGLE);
+        request.setTemperature(0.1);
+
+        return chatService.chat(request).getContent();
+    }
+}
+```
+
+### 思维链推理示例
+
+```java
+@Service
+public class MathSolverService {
+
+    public String solveProblem(String problem) {
+        // 使用思维链提示
+        String cotPrompt = PromptUtils.buildCoTPrompt(problem);
+
+        ChatRequest request = new ChatRequest();
+        request.setMessage(cotPrompt);
+        request.setSystemPrompt("你是一个数学老师，请详细解释每一步的推理过程。");
+        request.setTemperature(0.2);
+
+        return chatService.chat(request).getContent();
+    }
+}
+```
+
+## TokenCounter 工具类
+
+### 功能概述
+
+`TokenCounter` 提供 Token 计数和文本处理能力，帮助控制 API 调用成本：
+
+```java
+public class TokenCounter {
+
+    private static final Tokenizer DEFAULT_TOKENIZER = new OpenAiTokenizer();
+
+    /**
+     * 估算文本的Token数量
+     */
+    public static int estimateTokenCount(String text) {
+        if (StrUtil.isBlank(text)) {
+            return 0;
+        }
+        return DEFAULT_TOKENIZER.estimateTokenCountInText(text);
+    }
+
+    /**
+     * 估算多个文本的总Token数
+     */
+    public static int estimateTokenCount(String... texts) {
+        int total = 0;
+        for (String text : texts) {
+            total += estimateTokenCount(text);
+        }
+        return total;
+    }
+
+    /**
+     * 检查文本是否超过Token限制
+     */
+    public static boolean exceedsLimit(String text, int limit) {
+        return estimateTokenCount(text) > limit;
+    }
+
+    /**
+     * 截断文本以适应Token限制
+     */
+    public static String truncateToTokenLimit(String text, int maxTokens) {
+        if (StrUtil.isBlank(text)) {
+            return text;
+        }
+
+        int currentTokens = estimateTokenCount(text);
+        if (currentTokens <= maxTokens) {
+            return text;
+        }
+
+        // 粗略估算需要保留的字符比例
+        double ratio = (double) maxTokens / currentTokens;
+        int targetLength = (int) (text.length() * ratio * 0.9); // 留10%余量
+
+        return text.substring(0, Math.min(targetLength, text.length()));
+    }
+
+    /**
+     * 计算对话历史的总Token数
+     */
+    public static int calculateConversationTokens(ChatMessage... messages) {
+        int total = 0;
+        for (var message : messages) {
+            total += estimateTokenCount(message.text());
+            total += 4; // 消息格式开销
+        }
+        total += 3; // 对话格式开销
+        return total;
+    }
+
+    /**
+     * 根据中文字符粗略估算Token（1个汉字约等于2个token）
+     */
+    public static int estimateChineseTokens(String text) {
+        if (StrUtil.isBlank(text)) {
+            return 0;
+        }
+
+        int chineseCount = 0;
+        int otherCount = 0;
+
+        for (char c : text.toCharArray()) {
+            if (isChinese(c)) {
+                chineseCount++;
+            } else {
+                otherCount++;
+            }
+        }
+
+        // 中文字符约2个token，其他字符约0.25个token
+        return (int) (chineseCount * 2 + otherCount * 0.25);
+    }
+
+    private static boolean isChinese(char c) {
+        Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
+        return ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
+            || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
+            || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+            || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_B;
+    }
+}
+```
+
+### Token 计数使用示例
+
+```java
+@Service
+@RequiredArgsConstructor
+public class TokenManagementService {
+
+    private static final int MAX_TOKENS = 4096;
+
+    /**
+     * 检查消息是否超限
+     */
+    public boolean isMessageTooLong(String message) {
+        return TokenCounter.exceedsLimit(message, MAX_TOKENS);
+    }
+
+    /**
+     * 安全截断消息
+     */
+    public String safeTruncate(String message, int maxTokens) {
+        return TokenCounter.truncateToTokenLimit(message, maxTokens);
+    }
+
+    /**
+     * 计算预估成本
+     */
+    public double estimateCost(String text, double pricePerThousandTokens) {
+        int tokens = TokenCounter.estimateTokenCount(text);
+        return (tokens / 1000.0) * pricePerThousandTokens;
+    }
+
+    /**
+     * 验证对话历史是否超限
+     */
+    public boolean validateConversationSize(List<String> messages, int maxTokens) {
+        int totalTokens = 0;
+        for (String msg : messages) {
+            totalTokens += TokenCounter.estimateTokenCount(msg);
+            totalTokens += 4; // 消息格式开销
+        }
+        totalTokens += 3; // 对话格式开销
+
+        return totalTokens <= maxTokens;
+    }
+}
+```
+
+### Token 估算规则
+
+| 文本类型 | 估算规则 |
+|----------|----------|
+| 英文 | 约 4 个字符 = 1 个 Token |
+| 中文 | 约 1 个汉字 = 2 个 Token |
+| 代码 | 约 3 个字符 = 1 个 Token |
+| 标点 | 约 1 个标点 = 1 个 Token |
+
+## Maven 依赖说明
+
+### 完整依赖配置
+
+```xml
+<dependencies>
+    <!-- LangChain4j 核心依赖 -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j</artifactId>
+        <version>${langchain4j.version}</version>
+    </dependency>
+
+    <!-- OpenAI 模型支持 (包括 DeepSeek 兼容) -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-open-ai</artifactId>
+        <version>${langchain4j.version}</version>
+    </dependency>
+
+    <!-- Ollama 本地模型支持 -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-ollama</artifactId>
+        <version>${langchain4j.version}</version>
+    </dependency>
+
+    <!-- DashScope 通义千问支持 -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-dashscope</artifactId>
+        <version>${langchain4j.version}</version>
+    </dependency>
+
+    <!-- Anthropic Claude 支持 -->
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-anthropic</artifactId>
+        <version>${langchain4j.version}</version>
+    </dependency>
+
+    <!-- 本地嵌入模型 (可选) -->
+    <!--
+    <dependency>
+        <groupId>dev.langchain4j</groupId>
+        <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
+        <version>${langchain4j.version}</version>
+    </dependency>
+    -->
+
+    <!-- Redis 会话存储 -->
+    <dependency>
+        <groupId>plus.ruoyi</groupId>
+        <artifactId>ruoyi-common-redis</artifactId>
+    </dependency>
+
+    <!-- WebSocket 实时通信 -->
+    <dependency>
+        <groupId>plus.ruoyi</groupId>
+        <artifactId>ruoyi-common-websocket</artifactId>
+    </dependency>
+</dependencies>
+```
+
+### 依赖版本
+
+```xml
+<properties>
+    <langchain4j.version>0.35.0</langchain4j.version>
+</properties>
+```
+
+### 可选依赖
+
+| 依赖 | 用途 | 说明 |
+|------|------|------|
+| langchain4j-embeddings-all-minilm-l6-v2 | 本地嵌入模型 | 无需 API，离线使用 |
+| langchain4j-milvus | Milvus 向量库 | 生产环境推荐 |
+| langchain4j-pgvector | PostgreSQL 向量扩展 | 已有 PG 数据库时使用 |
+
 ## 性能优化
 
 ### 1. 启用 Redis 缓存
