@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vitepress dev docs",
     "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=16384 --expose-gc\" vitepress build docs",
+    "deploy": "edgeone pages deploy -n ruoyi-plus-uniapp-doc docs/.vitepress/dist",
     "preview": "vitepress preview docs",
     "preinstall": "npx only-allow pnpm"
   },
