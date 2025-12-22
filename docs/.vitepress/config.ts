@@ -206,6 +206,17 @@ export default defineConfig({
                                 { text: '商城模块 (mall)', link: '/backend/modules/business/mall' },
                                 { text: '任务调度 (job)', link: '/backend/modules/business/job' }
                             ]
+                        },
+                        {
+                            text: '工作流模块 (workflow) ⭐',
+                            collapsed: true,
+                            items: [
+                                { text: '模块概览', link: '/backend/modules/workflow/' },
+                                { text: '核心概念', link: '/backend/modules/workflow/core-concepts' },
+                                { text: '流程定义', link: '/backend/modules/workflow/definition' },
+                                { text: '流程实例', link: '/backend/modules/workflow/instance' },
+                                { text: '任务管理', link: '/backend/modules/workflow/task' }
+                            ]
                         }
                     ]
                 },
