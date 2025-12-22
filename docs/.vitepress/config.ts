@@ -1019,15 +1019,23 @@ export default defineConfig({
             __COMPONENT_PREVIEW__: true
         },
         build: {
-            // 增大 chunk 大小限制
-            chunkSizeWarningLimit: 5000,
-            // 禁用 source map 减少文件数量
+            // 增大 chunk 大小限制到 10MB
+            chunkSizeWarningLimit: 10000,
+            // 禁用 source map 减少内存使用
             sourcemap: false,
+            // 使用 esbuild 压缩（更快、内存更少）
+            minify: 'esbuild',
             // Rollup 配置优化
             rollupOptions: {
                 output: {
                     // 合并小 chunk，减少文件数量 (20KB 以下的 chunk 会被合并)
-                    experimentalMinChunkSize: 20000
+                    experimentalMinChunkSize: 20000,
+                    // 将依赖分离到 vendor chunk
+                    manualChunks: (id: string) => {
+                        if (id.includes('node_modules')) {
+                            return 'vendor'
+                        }
+                    }
                 }
             }
         },
