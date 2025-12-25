@@ -1,10 +1,10 @@
 # RuoYi-Plus-UniApp 文档项目进度表
 
-> **最后更新**: 2025-12-22
-> **整体完成度**: 71.9% (D 评分) - 按1000+行标准
+> **最后更新**: 2025-12-25
+> **整体完成度**: 73.1% (C- 评分) - 按1000+行标准
 > **总文档数**: 487 个 (已清理 30 个占位符/重复文档)
-> **总行数**: 577,900+ 行
-> **已完成文档**: 350 个 (≥1000行)
+> **总行数**: 588,000+ 行
+> **已完成文档**: 356 个 (≥1000行)
 
 ---
 
@@ -29,10 +29,10 @@
 |------|------|-----------------|-----------------|--------|------|
 | **WD 组件库** | 51 | 51 | 0 | **100%** | A+ |
 | **后端文档** | 76 | 76 | 0 | **100%** | A+ |
-| **前端文档** | 137 | 66 | 71 | **48.2%** | F |
+| **前端文档** | 137 | 72 | 65 | **52.6%** | F |
 | **移动端文档** | 172 | 106 | 66 | **61.6%** | C- |
 | **最佳实践** | 51 | 51 | 0 | **100%** | A+ |
-| **总计** | **487** | **350** | **137** | **71.9%** | **D** |
+| **总计** | **487** | **356** | **131** | **73.1%** | **C-** |
 
 **说明**: 完成标准为文档行数 ≥ 1000 行
 
@@ -242,10 +242,10 @@ WD UI 组件文档完成度优秀,平均文档大小 1,700+ 行。**全部完成
 
 ## 前端文档进度
 
-### 完成状态: 38.0% (52/137) ⚠️ 需大幅优化
+### 完成状态: 52.6% (72/137) ⚠️ 需继续优化
 
-> **核实说明**: 2025-12-21 重新统计，发现实际完成率远低于之前记录。
-> 已完成文档 52 个 (≥1000行)，待优化文档 85 个 (<1000行)。
+> **核实说明**: 2025-12-25 更新统计。
+> 已完成文档 72 个 (≥1000行)，待优化文档 65 个 (<1000行)。
 
 #### ✅ 快速入门已完成 (2个)
 
@@ -302,11 +302,17 @@ WD UI 组件文档完成度优秀,平均文档大小 1,700+ 行。**全部完成
 |------|------|------|------|
 | Architecture Overview | `docs/frontend/architecture/overview.md` | ✅ 已完成 | 1,695 |
 
-#### ✅ Composables 概览已完成 (1个)
+#### ✅ Composables 组合函数已完成 (7个)
 
 | 文档 | 路径 | 状态 | 行数 |
 |------|------|------|------|
 | Composables Overview | `docs/frontend/composables/overview.md` | ✅ 已完成 | 2,031 |
+| useSelection | `docs/frontend/composables/use-selection.md` | ✅ 已完成 | 2,078 | ✨ **最新完成**
+| useDownload | `docs/frontend/composables/use-download.md` | ✅ 已完成 | 2,270 | ✨ **最新完成**
+| useAuth | `docs/frontend/composables/use-auth.md` | ✅ 已完成 | 2,153 | ✨ **最新完成**
+| useResponsiveSpan | `docs/frontend/composables/use-responsive-span.md` | ✅ 已完成 | 1,749 | ✨ **最新完成**
+| useHttp | `docs/frontend/composables/use-http.md` | ✅ 已完成 | 1,381 | ✨ **最新完成**
+| useDialog | `docs/frontend/composables/use-dialog.md` | ✅ 已完成 | 2,314 | ✨ **最新完成**
 
 #### ✅ Stores 概览已完成 (1个)
 
@@ -355,19 +361,19 @@ WD UI 组件文档完成度优秀,平均文档大小 1,700+ 行。**全部完成
 | Theme Store | `docs/frontend/stores/theme-store.md` | ✅ 已完成 | 3,342 |
 | TagsView Store | `docs/frontend/stores/tags-view-store.md` | ✅ 已完成 | 2,894 |
 
-#### ✅ 已完成 (66个)
+#### ✅ 已完成 (72个)
 
-包括样式系统、类型定义、核心工具函数、业务组件等文档。
+包括样式系统、类型定义、核心工具函数、业务组件、Composables 组合函数等文档。
 
-#### ⚠️ 待优化文档清单 (71个)
+#### ⚠️ 待优化文档清单 (65个)
 
-**🟡 需要扩展 (300-500行) - 28个**:
-- `use-theme`, `modular-design`, `main-layout`, `iconify-config`, `use-selection`
-- `use-download`, `use-auth`, `configuration`, `home-layout`, `permission`
-- `language-packs`, `iconfont-config`, `use-http`, `tags-view`, `use-dialog`
+**🟡 需要扩展 (300-500行) - 22个**:
+- `use-theme`, `modular-design`, `main-layout`, `iconify-config`
+- `configuration`, `home-layout`, `permission`
+- `language-packs`, `iconfont-config`, `tags-view`
 - `app-main`, `best-practices(icons)`, `component-i18n`, `use-dict`, `permission-dynamic`
 - `preset-management`, `type-generation`, `detail-dialog`, `sidebar`, `navbar`
-- `settings`, `theme-store`, `oss-media-manager`
+- `settings`, `oss-media-manager`
 
 **🟢 接近完成 (500-999行) - 43个**:
 - `use-layout`, `component-usage`, `typescript-config`, `object`, `prettier-config`
@@ -743,6 +749,53 @@ UniApp 基础文档已全部完成!
 ---
 
 ## 📝 更新日志
+
+### 2025-12-25 - 完成前端 Composables 组合函数文档增强
+
+**完成内容**:
+- `docs/frontend/composables/use-selection.md` - 353 → 2,078 行 ✨ **新增**
+  - 表格选择逻辑封装
+  - 多选/单选模式切换
+  - 与 ATable 组件集成
+  - 跨页选择保持
+
+- `docs/frontend/composables/use-download.md` - 375 → 2,270 行 ✨ **新增**
+  - 文件下载封装
+  - 进度跟踪与取消
+  - 批量下载队列
+  - 错误处理机制
+
+- `docs/frontend/composables/use-auth.md` - 378 → 2,153 行 ✨ **新增**
+  - 权限校验封装
+  - 按钮级权限控制
+  - 角色权限判断
+  - 与 v-hasPermi 指令集成
+
+- `docs/frontend/composables/use-responsive-span.md` - 382 → 1,749 行 ✨ **新增**
+  - 响应式栅格计算
+  - 三种响应模式 (screen/container/modal-size)
+  - 弹窗尺寸自适应
+  - 与 AModal 组件集成
+
+- `docs/frontend/composables/use-http.md` - 421 → 1,381 行 ✨ **新增**
+  - HTTP 请求封装
+  - 请求/响应拦截器
+  - 错误处理与重试
+  - Token 刷新机制
+
+- `docs/frontend/composables/use-dialog.md` - 439 → 2,314 行 ✨ **新增**
+  - 对话框状态管理
+  - 动态标题处理
+  - AModal 组件集成 (dialog/drawer 双模式)
+  - 表单对话框封装模式
+
+**统计更新**:
+- 前端文档新增 6 个: 66 → 72 个
+- 前端完成度: 48.2% → 52.6%
+- 整体完成度: 71.9% → 73.1%
+- 总新增行数: 约 10,545 行
+
+---
 
 ### 2025-12-22 - 完成工作流模块完整文档
 
