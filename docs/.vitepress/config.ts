@@ -785,6 +785,17 @@ export default defineConfig({
                     ]
                 },
                 {
+                    text: '📦 状态管理 (stores)',
+                    collapsed: true,
+                    items: [
+                        { text: '状态管理概览', link: '/mobile/stores/overview' },
+                        { text: 'User 用户状态', link: '/mobile/stores/user' },
+                        { text: 'Dict 字典状态', link: '/mobile/stores/dict' },
+                        { text: 'Feature 功能状态', link: '/mobile/stores/feature' },
+                        { text: 'Tabbar 标签栏状态', link: '/mobile/stores/tabbar' }
+                    ]
+                },
+                {
                     text: '🎨 样式系统 (styles)',
                     collapsed: true,
                     items: [
