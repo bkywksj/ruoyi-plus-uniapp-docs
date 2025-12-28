@@ -705,6 +705,8 @@ export default defineConfig({
                             items: [
                                 { text: 'usePayment 支付处理', link: '/mobile/composables/use-payment' },
                                 { text: 'useShare 分享功能', link: '/mobile/composables/use-share' },
+                                { text: 'useWxShare 微信分享', link: '/mobile/composables/use-wx-share' },
+                                { text: 'useSubscribe 订阅消息', link: '/mobile/composables/use-subscribe' },
                                 { text: 'useScroll 滚动处理', link: '/mobile/composables/use-scroll' },
                                 { text: 'useEventBus 事件总线', link: '/mobile/composables/use-event-bus' },
                                 { text: 'useWebSocket 实时通信', link: '/mobile/composables/use-websocket' }
@@ -759,7 +761,8 @@ export default defineConfig({
                             text: '辅助工具',
                             collapsed: false,
                             items: [
-                                { text: 'to 异步处理', link: '/mobile/utils/to' }
+                                { text: 'to 异步处理', link: '/mobile/utils/to' },
+                                { text: 'logger 日志收集', link: '/mobile/utils/logger' }
                             ]
                         }
                     ]
