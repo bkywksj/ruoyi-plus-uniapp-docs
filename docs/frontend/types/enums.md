@@ -989,3 +989,32 @@ const MENU_ICONS: Record<MenuType, string> = {
 
 const getMenuIcon = (type: MenuType) => MENU_ICONS[type]
 ```
+
+### 3. 枚举类型在 Vue 模板中使用
+
+**问题描述:**
+
+在 Vue 模板中无法直接使用导入的枚举类型进行条件判断。
+
+**问题原因:**
+
+- 枚举未暴露到模板作用域
+- 需要显式声明才能在模板中使用
+
+**解决方案:**
+
+```vue
+<script lang="ts" setup>
+import { MenuType } from '@/api/system/core/menu/menuTypes'
+
+// ✅ 将枚举暴露到模板中使用
+const menuTypes = MenuType
+</script>
+
+<template>
+  <!-- 现在可以在模板中使用 -->
+  <div v-if="item.menuType === menuTypes.M">目录</div>
+  <div v-else-if="item.menuType === menuTypes.C">菜单</div>
+  <div v-else-if="item.menuType === menuTypes.F">按钮</div>
+</template>
+```

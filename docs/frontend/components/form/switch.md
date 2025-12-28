@@ -934,3 +934,183 @@ const confirmDangerousAction = async () => {
 4. **默认值**：为开关设置合理的默认状态
 5. **文本描述**：使用 `activeText` 和 `inactiveText` 让状态更清晰
 6. **无障碍访问**：确保开关有明确的标签和描述信息
+
+## 常见问题
+
+### 1. 开关值类型不匹配
+
+**问题描述:** 开关切换后值不正确，或者表单提交时值类型错误
+
+**问题原因:**
+
+- `activeValue` 和 `inactiveValue` 类型与绑定值类型不一致
+- 默认值为字符串 `'1'` 和 `'0'`，而表单期望布尔值或数字
+
+**解决方案:**
+
+```vue
+<template>
+  <!-- ❌ 错误：类型不匹配 -->
+  <AFormSwitch
+    v-model="form.enabled"
+    label="启用"
+  />
+  <!-- form.enabled 期望布尔值，但默认 activeValue='1' 是字符串 -->
+
+  <!-- ✅ 正确：明确指定类型 -->
+  <AFormSwitch
+    v-model="form.enabled"
+    label="启用"
+    :active-value="true"
+    :inactive-value="false"
+  />
+</template>
+
+<script setup>
+const form = reactive({
+  enabled: false  // 布尔类型，需要配合布尔类型的 activeValue/inactiveValue
+})
+</script>
+```
+
+### 2. 初始化时触发 change 事件
+
+**问题描述:** 组件加载时自动触发了 change 事件，导致不必要的接口调用
+
+**问题原因:**
+
+- 默认行为会在值初始化时触发 change 事件
+- 未启用 `preventInitialChange` 属性
+
+**解决方案:**
+
+```vue
+<template>
+  <!-- ✅ 阻止初始化时的 change 事件 -->
+  <AFormSwitch
+    v-model="form.autoUpdate"
+    label="自动更新"
+    :prevent-initial-change="true"
+    @change="handleAutoUpdateChange"
+  />
+</template>
+
+<script setup>
+// 或者在事件处理中判断是否首次加载
+const isFirstLoad = ref(true)
+
+const handleAutoUpdateChange = (value) => {
+  if (isFirstLoad.value) {
+    isFirstLoad.value = false
+    return
+  }
+  // 正常的变更处理
+  updateSettings(value)
+}
+</script>
+```
+
+### 3. beforeChange 返回值处理不当
+
+**问题描述:** 使用 `beforeChange` 钩子后开关状态异常，取消操作后状态仍然改变
+
+**问题原因:**
+
+- `beforeChange` 需要返回 `Promise` 或布尔值
+- 未正确处理取消情况
+
+**解决方案:**
+
+```vue
+<template>
+  <AFormSwitch
+    v-model="form.dangerous"
+    label="危险操作"
+    :before-change="handleBeforeChange"
+  />
+</template>
+
+<script setup>
+// ❌ 错误：没有返回值
+const handleBeforeChange = () => {
+  showConfirm('确定吗？')
+}
+
+// ✅ 正确：返回 Promise<boolean>
+const handleBeforeChange = (): Promise<boolean> => {
+  return new Promise((resolve) => {
+    showConfirm('确定执行此操作吗？', '提示')
+      .then(() => resolve(true))   // 确认，允许切换
+      .catch(() => resolve(false)) // 取消，阻止切换
+  })
+}
+
+// ✅ 正确：async/await 写法
+const handleBeforeChange = async (): Promise<boolean> => {
+  try {
+    await showConfirm('确定执行此操作吗？', '提示')
+    return true
+  } catch {
+    return false
+  }
+}
+</script>
+```
+
+### 4. 开关联动时状态错乱
+
+**问题描述:** 多个开关联动控制时，子开关状态与父开关不同步
+
+**问题原因:**
+
+- 未正确监听父开关状态变化
+- 子开关状态未及时重置
+
+**解决方案:**
+
+```vue
+<template>
+  <AFormSwitch
+    v-model="masterEnabled"
+    label="总开关"
+    @change="handleMasterChange"
+  />
+
+  <AFormSwitch
+    v-model="form.feature1"
+    label="功能1"
+    :disabled="!masterEnabled"
+  />
+
+  <AFormSwitch
+    v-model="form.feature2"
+    label="功能2"
+    :disabled="!masterEnabled"
+  />
+</template>
+
+<script setup>
+const masterEnabled = ref(true)
+const form = reactive({
+  feature1: false,
+  feature2: false
+})
+
+// ✅ 正确：关闭主开关时重置子开关
+const handleMasterChange = (enabled: boolean) => {
+  if (!enabled) {
+    form.feature1 = false
+    form.feature2 = false
+  }
+}
+
+// ✅ 使用 watch 确保状态同步
+watch(masterEnabled, (enabled) => {
+  if (!enabled) {
+    Object.keys(form).forEach(key => {
+      form[key] = false
+    })
+  }
+})
+</script>
+```

@@ -973,3 +973,77 @@ const enhancedGet = <T>(key: string): T | null => {
 - **JSON序列化**：大对象的序列化/反序列化会影响性能
 - **频繁操作**：避免频繁的存储操作
 - **数据大小**：单个存储项不宜过大
+
+## ❓ 常见问题
+
+### 1. 缓存数据丢失
+
+**问题描述：**
+
+在某些情况下，存储的缓存数据会意外丢失。
+
+**可能原因：**
+- 用户清除了浏览器数据
+- 隐私模式下 localStorage 不持久化
+- 缓存设置了过期时间已到期
+- 存储空间已满导致写入失败
+
+**解决方案：**
+
+```typescript
+// 检查缓存是否可用
+const isCacheAvailable = (): boolean => {
+  try {
+    const testKey = '__cache_test__'
+    localStorage.setItem(testKey, 'test')
+    localStorage.removeItem(testKey)
+    return true
+  } catch {
+    return false
+  }
+}
+
+// 使用前检查
+if (!isCacheAvailable()) {
+  console.warn('本地存储不可用，将使用内存缓存')
+  // 降级到内存缓存
+}
+```
+
+### 2. 跨域缓存隔离
+
+**问题描述：**
+
+不同子域名之间无法共享 localStorage 缓存数据。
+
+**解决方案：**
+
+```typescript
+// 使用 postMessage 跨域通信
+window.parent.postMessage({
+  type: 'CACHE_SYNC',
+  key: 'sharedData',
+  value: data
+}, 'https://parent-domain.com')
+```
+
+### 3. JSON 解析失败
+
+**问题描述：**
+
+获取缓存数据时 JSON.parse 抛出异常。
+
+**解决方案：**
+
+```typescript
+// 安全的 JSON 解析
+const safeGetJSON = <T>(key: string, fallback: T): T => {
+  try {
+    const value = localCache.getJSON<T>(key)
+    return value ?? fallback
+  } catch {
+    localCache.remove(key) // 清除损坏的数据
+    return fallback
+  }
+}
+```

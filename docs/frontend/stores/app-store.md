@@ -934,6 +934,148 @@ const layout = useLayout()
 </script>
 ```
 
+### 5. 暗黑模式切换闪烁
+
+**问题描述:** 页面刷新时暗黑模式会出现短暂的亮色闪烁
+
+**问题原因:**
+
+- CSS 加载早于 JavaScript 执行
+- 暗黑模式类名在 JS 初始化后才添加
+
+**解决方案:**
+
+```typescript
+// index.html 中添加内联脚本，在 head 中优先执行
+<script>
+  (function() {
+    try {
+      const config = localStorage.getItem('layout-config')
+      if (config) {
+        const parsed = JSON.parse(config)
+        if (parsed.dark) {
+          document.documentElement.classList.add('dark')
+        }
+      }
+    } catch (e) {}
+  })()
+</script>
+
+// 或者使用 CSS 媒体查询作为默认值
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --bg-color: #1a1a1a;
+    --text-color: #e5eaf3;
+  }
+}
+```
+
+### 6. 多标签页数据不同步
+
+**问题描述:** 同一用户在多个浏览器标签页操作时，布局配置不同步
+
+**问题原因:**
+
+- localStorage 的 storage 事件监听未实现
+- 各标签页状态独立管理
+
+**解决方案:**
+
+```typescript
+// 监听 storage 事件实现跨标签页同步
+import { onMounted, onUnmounted } from 'vue'
+import { useLayout } from '@/composables/useLayout'
+import { localCache } from '@/utils/cache'
+
+const layout = useLayout()
+
+const handleStorageChange = (event: StorageEvent) => {
+  if (event.key === 'layout-config' && event.newValue) {
+    try {
+      const newConfig = JSON.parse(event.newValue)
+      // 同步主题配置
+      if (newConfig.dark !== layout.dark.value) {
+        layout.toggleDark(newConfig.dark)
+      }
+      // 同步语言配置
+      if (newConfig.language !== layout.language.value) {
+        layout.changeLanguage(newConfig.language)
+      }
+    } catch (e) {
+      console.error('配置同步失败:', e)
+    }
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('storage', handleStorageChange)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('storage', handleStorageChange)
+})
+```
+
+### 7. 移动端侧边栏遮罩层问题
+
+**问题描述:** 移动端打开侧边栏后，点击遮罩层无法关闭，或者遮罩层不显示
+
+**问题原因:**
+
+- 遮罩层事件未绑定
+- z-index 层级设置不正确
+- 设备类型判断逻辑错误
+
+**解决方案:**
+
+```vue
+<template>
+  <div class="app-wrapper" :class="{ mobile: isMobile }">
+    <!-- 移动端遮罩层 -->
+    <div
+      v-if="isMobile && layout.sidebar.value.opened"
+      class="drawer-bg"
+      @click="handleCloseSidebar"
+    />
+    <sidebar />
+    <div class="main-container">
+      <app-main />
+    </div>
+  </div>
+</template>
+
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { useLayout } from '@/composables/useLayout'
+
+const layout = useLayout()
+
+const isMobile = computed(() => layout.device.value === 'mobile')
+
+const handleCloseSidebar = () => {
+  layout.closeSideBar(false)
+}
+</script>
+
+<style lang="scss" scoped>
+.drawer-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+
+.mobile {
+  .sidebar-container {
+    z-index: 1001;
+  }
+}
+</style>
+```
+
 ## 总结
 
 `useLayout` composable 核心要点:

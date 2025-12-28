@@ -952,3 +952,140 @@ const preferenceOptions = [
 3. **用户体验**：提供全选/反选功能，显示已选数量
 4. **表单验证**：确保验证规则的 `type` 设置为 `array`
 5. **无障碍访问**：为复选框组提供清晰的组标签和描述
+
+## 常见问题
+
+### 1. 表单验证不生效
+
+**问题描述：** 设置了 `required: true` 的验证规则，但即使没有选择任何选项，表单验证仍然通过。
+
+**问题原因：**
+- 验证规则的 `type` 未设置为 `array`
+- `modelValue` 初始值为 `undefined` 或 `null` 而非空数组
+- 验证规则的 `trigger` 设置不正确
+
+**解决方案：**
+
+```typescript
+// ✅ 正确：设置 type 为 array，并使用 min 限制
+const rules = {
+  hobbies: [
+    {
+      required: true,
+      type: 'array',
+      min: 1,
+      message: '请至少选择一项',
+      trigger: 'change'
+    }
+  ]
+}
+
+// ✅ 正确：确保初始值为空数组
+const form = reactive({
+  hobbies: []  // 不要使用 undefined 或 null
+})
+
+// ❌ 错误：缺少 type: 'array'
+const badRules = {
+  hobbies: [
+    { required: true, message: '请选择', trigger: 'change' }
+  ]
+}
+```
+
+### 2. 单个复选框绑定值异常
+
+**问题描述：** 使用 `singleCheckbox` 模式时，绑定的布尔值无法正确切换，或显示为数组形式。
+
+**问题原因：**
+- 未设置 `returnArray: false`，导致返回值始终为数组
+- `options` 配置的 `value` 不是期望的布尔值
+
+**解决方案：**
+
+```vue
+<template>
+  <!-- ✅ 正确：单个复选框绑定布尔值 -->
+  <AFormCheckbox
+    v-model="form.agreeTerms"
+    :options="[{ label: '我同意服务条款', value: true }]"
+    :single-checkbox="true"
+    :return-array="false"
+    :show-form-item="false"
+  />
+</template>
+
+<script setup>
+const form = reactive({
+  agreeTerms: false  // 布尔类型初始值
+})
+
+// 现在 form.agreeTerms 会在 true/false 之间切换
+</script>
+```
+
+```vue
+<!-- ❌ 错误：未设置 returnArray，值会变成 [true] 或 [] -->
+<AFormCheckbox
+  v-model="form.agreeTerms"
+  :options="[{ label: '我同意', value: true }]"
+  :single-checkbox="true"
+/>
+```
+
+### 3. 自定义字段映射后选项禁用不生效
+
+**问题描述：** 使用 `valueField` 和 `labelField` 自定义字段后，部分选项应该被禁用但仍可选择。
+
+**问题原因：**
+- `disabledField` 未正确配置或字段名不匹配
+- `disabledValue` 的判断逻辑与实际数据不符
+- 选项对象中没有对应的禁用标识字段
+
+**解决方案：**
+
+```vue
+<template>
+  <AFormCheckbox
+    v-model="form.roles"
+    :options="roleOptions"
+    value-field="roleId"
+    label-field="roleName"
+    disabled-field="isActive"
+    :disabled-value="false"
+  />
+</template>
+
+<script setup>
+// ✅ 数据结构中包含禁用标识字段
+const roleOptions = [
+  { roleId: 1, roleName: '管理员', isActive: true },
+  { roleId: 2, roleName: '编辑', isActive: true },
+  { roleId: 3, roleName: '访客', isActive: false }  // 此选项将被禁用
+]
+
+// ✅ 使用函数判断复杂禁用条件
+const complexOptions = {
+  disabledValue: (item) => {
+    return item.status === 'inactive' || item.level > currentLevel
+  }
+}
+</script>
+```
+
+```typescript
+// ✅ 多条件禁用：使用数组
+<AFormCheckbox
+  :disabled-value="['0', 'disabled', 'inactive']"
+/>
+
+// ✅ 直接使用选项的 disabled 属性
+const optionsWithDisabled = [
+  { label: '可选项', value: 'a', disabled: false },
+  { label: '禁用项', value: 'b', disabled: true }
+]
+<AFormCheckbox
+  :options="optionsWithDisabled"
+  :use-item-disabled="true"
+/>
+```

@@ -971,3 +971,118 @@ const loadingManager = new LoadingManager()
 3. **用户体验**：避免过度使用弹窗，影响用户体验
 4. **移动端适配**：在移动设备上测试弹窗显示效果
 5. **国际化**：考虑多语言环境下的文本显示
+
+## ❓ 常见问题
+
+### 1. 加载遮罩无法关闭
+
+**问题描述：** 调用 `showLoading()` 后，即使调用 `hideLoading()` 遮罩也无法关闭。
+
+**问题原因：**
+- 多次调用 `showLoading()` 但只调用了一次 `hideLoading()`
+- 异步操作中发生异常，导致 `hideLoading()` 未被执行
+
+**解决方案：**
+
+```typescript
+// ✅ 推荐：使用 try-finally 确保遮罩关闭
+async function fetchData() {
+  showLoading('加载中...')
+  try {
+    const [err, data] = await to(apiCall())
+    if (err) {
+      showMsgError('加载失败')
+      return
+    }
+    return data
+  } finally {
+    hideLoading() // 无论成功失败都会执行
+  }
+}
+
+// ✅ 推荐：封装加载状态管理器处理多次调用
+class LoadingManager {
+  private count = 0
+
+  show(text?: string) {
+    if (this.count === 0) showLoading(text || '加载中...')
+    this.count++
+  }
+
+  hide() {
+    this.count = Math.max(0, this.count - 1)
+    if (this.count === 0) hideLoading()
+  }
+
+  forceHide() {
+    this.count = 0
+    hideLoading()
+  }
+}
+```
+
+### 2. 确认框返回值判断错误
+
+**问题描述：** 使用 `showConfirm` 时，用户点击确认按钮却执行了取消逻辑。
+
+**问题原因：**
+- Result 格式 `[err, result]` 中，`err` 为 `null` 表示用户确认，`err` 不为 `null` 表示用户取消
+- 错误地使用了 `if (result)` 而非 `if (!err)` 进行判断
+
+**解决方案：**
+
+```typescript
+// ❌ 错误：直接判断 result
+const [err, result] = await showConfirm('确定删除吗？')
+if (result) {  // result 可能为 undefined，导致判断失败
+  deleteItem()
+}
+
+// ✅ 正确：判断 err 是否为 null
+const [err] = await showConfirm('确定删除吗？')
+if (!err) {  // err 为 null 表示用户确认
+  deleteItem()
+}
+
+// ✅ 正确：提前返回模式
+const [err] = await showConfirm('确定删除吗？')
+if (err) return  // 用户取消，直接返回
+deleteItem()  // 用户确认，继续执行
+```
+
+### 3. 通知消息堆叠过多
+
+**问题描述：** 短时间内触发多个通知，导致界面右上角堆满通知消息。
+
+**问题原因：**
+- 循环或批量操作中为每条数据单独显示通知
+- 未设置合理的 `duration` 自动关闭时间
+
+**解决方案：**
+
+```typescript
+// ❌ 不推荐：每条数据都显示通知
+items.forEach(item => {
+  showNotifySuccess(`${item.name} 处理成功`)
+})
+
+// ✅ 推荐：批量操作后显示汇总通知
+const results = await Promise.all(items.map(processItem))
+const successCount = results.filter(r => r.success).length
+showNotifySuccess(
+  `批量处理完成：成功 ${successCount} 条，失败 ${items.length - successCount} 条`,
+  '处理结果',
+  { duration: 5000 }
+)
+
+// ✅ 推荐：使用防抖合并通知
+import { useDebounceFn } from '@vueuse/core'
+
+const showDebouncedNotify = useDebounceFn((messages: string[]) => {
+  showNotify({
+    title: '批量操作结果',
+    message: messages.join('\n'),
+    duration: 5000
+  })
+}, 500)
+```

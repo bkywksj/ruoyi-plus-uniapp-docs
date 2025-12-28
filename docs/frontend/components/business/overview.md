@@ -762,6 +762,978 @@ const userIds = ref<string[]>([]) // 返回 ID 数组
 
 **解决方案:** 确保表单项足够多(至少能形成 2 行)，或检查 `collapsible` 属性是否为 `true`。
 
+---
+
+### 5. AModal 弹窗内容闪烁或初始化不正确
+
+**问题描述**
+
+打开 AModal 弹窗时，内容出现闪烁，或者表单数据显示上一次的旧值而不是新值。
+
+```vue
+<!-- 点击编辑时，弹窗中显示的是上一次编辑的数据 -->
+<template>
+  <AModal v-model="visible" title="编辑用户">
+    <el-form :model="form">
+      <AFormInput label="用户名" v-model="form.userName" />
+    </el-form>
+  </AModal>
+</template>
+```
+
+**问题原因**
+
+- `destroyOnClose` 默认为 `true`，但表单数据没有在打开时正确初始化
+- 异步数据加载和弹窗渲染时序问题
+- v-model 的响应式更新延迟
+
+**解决方案**
+
+在打开弹窗时正确初始化表单数据：
+
+```vue
+<!-- ❌ 错误：直接赋值对象引用 -->
+<script setup lang="ts">
+const form = ref({})
+
+const handleEdit = (row: UserVo) => {
+  form.value = row // 错误：直接引用会导致修改影响原数据
+  visible.value = true
+}
+</script>
+
+<!-- ✅ 正确：深拷贝数据并等待DOM更新 -->
+<script setup lang="ts">
+import { cloneDeep } from 'lodash-es'
+
+const form = ref({})
+const formRef = ref()
+
+const handleEdit = async (row: UserVo) => {
+  // 深拷贝数据
+  form.value = cloneDeep(row)
+  visible.value = true
+
+  // 等待弹窗渲染完成后清除表单验证状态
+  await nextTick()
+  formRef.value?.clearValidate()
+}
+
+const handleAdd = async () => {
+  // 重置表单为初始状态
+  form.value = {
+    userName: '',
+    email: '',
+    phone: '',
+    status: '0'
+  }
+  visible.value = true
+
+  await nextTick()
+  formRef.value?.clearValidate()
+}
+</script>
+```
+
+使用 `@opened` 事件确保数据加载时机正确：
+
+```vue
+<template>
+  <AModal
+    v-model="visible"
+    title="编辑用户"
+    @opened="handleOpened"
+    @closed="handleClosed"
+  >
+    <el-form :model="form" ref="formRef" v-loading="loading">
+      <AFormInput label="用户名" v-model="form.userName" />
+    </el-form>
+  </AModal>
+</template>
+
+<script setup lang="ts">
+const loading = ref(false)
+const currentId = ref<string>('')
+
+const openEdit = (id: string) => {
+  currentId.value = id
+  visible.value = true
+}
+
+// 弹窗完全打开后加载数据
+const handleOpened = async () => {
+  if (currentId.value) {
+    loading.value = true
+    const [err, data] = await getUserDetail(currentId.value)
+    if (!err) {
+      form.value = data
+    }
+    loading.value = false
+  }
+}
+
+// 弹窗关闭后清理状态
+const handleClosed = () => {
+  currentId.value = ''
+  form.value = {}
+  formRef.value?.resetFields()
+}
+</script>
+```
+
+---
+
+### 6. AFormTreeSelect 数据回显不正确
+
+**问题描述**
+
+使用 `AFormTreeSelect` 时，编辑模式下已选中的值无法正确显示，显示的是ID而不是对应的标签。
+
+```vue
+<!-- 编辑用户时，部门显示的是 "102" 而不是 "研发部" -->
+<template>
+  <AFormTreeSelect
+    label="所属部门"
+    v-model="form.deptId"
+    :options="deptTree"
+  />
+</template>
+```
+
+**问题原因**
+
+- 树形数据和表单值的加载时序问题：表单值先于树形数据加载完成
+- 树形数据的节点配置 `props` 不正确
+- 数据类型不匹配（字符串 vs 数字）
+
+**解决方案**
+
+确保树形数据先于表单数据加载：
+
+```vue
+<script setup lang="ts">
+const deptTree = ref([])
+const form = ref({})
+const loading = ref(false)
+
+// 方案1: 页面初始化时优先加载树形数据
+onMounted(async () => {
+  // 先加载树形数据
+  const [err, data] = await getDeptTree()
+  if (!err) {
+    deptTree.value = data
+  }
+})
+
+const handleEdit = async (row: UserVo) => {
+  // 确保树形数据已加载
+  if (deptTree.value.length === 0) {
+    const [err, data] = await getDeptTree()
+    if (!err) {
+      deptTree.value = data
+    }
+  }
+
+  // 然后设置表单数据
+  form.value = cloneDeep(row)
+  visible.value = true
+}
+
+// 方案2: 使用 watch 监听数据变化
+watch(
+  () => [deptTree.value, form.value.deptId],
+  ([tree, deptId]) => {
+    if (tree.length > 0 && deptId) {
+      // 数据都准备好了，可以正确回显
+      console.log('树形数据和表单值都已就绪')
+    }
+  }
+)
+</script>
+```
+
+确保 props 配置正确：
+
+```vue
+<template>
+  <AFormTreeSelect
+    label="所属部门"
+    v-model="form.deptId"
+    :options="deptTree"
+    :props="{
+      value: 'deptId',
+      label: 'deptName',
+      children: 'children',
+      disabled: 'disabled'
+    }"
+    check-strictly
+    value-key="deptId"
+  />
+</template>
+```
+
+处理数据类型不匹配问题：
+
+```typescript
+// 后端返回的 deptId 可能是数字类型
+// 但树形数据的 deptId 是字符串类型
+
+// 方案1: 统一转换为字符串
+const handleEdit = (row: UserVo) => {
+  form.value = {
+    ...cloneDeep(row),
+    deptId: String(row.deptId) // 统一转换
+  }
+  visible.value = true
+}
+
+// 方案2: 在树形数据中统一类型
+const normalizeTree = (tree: any[]): any[] => {
+  return tree.map(node => ({
+    ...node,
+    deptId: String(node.deptId),
+    children: node.children ? normalizeTree(node.children) : undefined
+  }))
+}
+
+const loadDeptTree = async () => {
+  const [err, data] = await getDeptTree()
+  if (!err) {
+    deptTree.value = normalizeTree(data)
+  }
+}
+```
+
+---
+
+### 7. DictTag 在表格中性能问题
+
+**问题描述**
+
+表格中大量使用 `DictTag` 组件时，页面渲染缓慢，滚动卡顿。
+
+```vue
+<!-- 表格有500行，每行3个DictTag，总共1500个组件实例 -->
+<template>
+  <el-table :data="tableData">
+    <el-table-column label="性别">
+      <template #default="{ row }">
+        <DictTag :options="sys_user_sex" :value="row.sex" />
+      </template>
+    </el-table-column>
+    <el-table-column label="状态">
+      <template #default="{ row }">
+        <DictTag :options="sys_enable_status" :value="row.status" />
+      </template>
+    </el-table-column>
+    <el-table-column label="类型">
+      <template #default="{ row }">
+        <DictTag :options="sys_user_type" :value="row.userType" />
+      </template>
+    </el-table-column>
+  </el-table>
+</template>
+```
+
+**问题原因**
+
+- 每个 DictTag 都是独立的组件实例，大量实例导致内存和渲染开销
+- 每次渲染都会遍历 options 数组查找匹配项
+- 表格虚拟滚动未启用
+
+**解决方案**
+
+方案一：使用函数式渲染代替组件：
+
+```vue
+<template>
+  <el-table :data="tableData">
+    <el-table-column label="状态">
+      <template #default="{ row }">
+        <!-- 直接使用函数渲染，避免组件实例开销 -->
+        <el-tag :type="getStatusTag(row.status).type">
+          {{ getStatusTag(row.status).label }}
+        </el-tag>
+      </template>
+    </el-table-column>
+  </el-table>
+</template>
+
+<script setup lang="ts">
+import { useDictMap } from '@/composables/use-dict'
+
+// 预先构建字典Map，O(1)查找
+const statusMap = useDictMap('sys_enable_status')
+
+const getStatusTag = (value: string) => {
+  return statusMap.value.get(value) || { label: value, type: 'info' }
+}
+</script>
+```
+
+方案二：创建轻量级的字典标签：
+
+```typescript
+// composables/use-dict-tag.ts
+export function useDictTag(dictType: string) {
+  const { proxy } = getCurrentInstance()!
+  const dict = proxy.$dict[dictType] || []
+
+  // 构建Map缓存
+  const dictMap = new Map<string, { label: string; tagType: string }>()
+
+  dict.forEach((item: any) => {
+    dictMap.set(String(item.value), {
+      label: item.label,
+      tagType: item.tagType || 'info'
+    })
+  })
+
+  const getLabel = (value: string | number) => {
+    const item = dictMap.get(String(value))
+    return item?.label || String(value)
+  }
+
+  const getTagType = (value: string | number) => {
+    const item = dictMap.get(String(value))
+    return item?.tagType || 'info'
+  }
+
+  return {
+    getLabel,
+    getTagType,
+    dictMap
+  }
+}
+```
+
+方案三：启用表格虚拟滚动：
+
+```vue
+<template>
+  <el-table-v2
+    :columns="columns"
+    :data="tableData"
+    :width="tableWidth"
+    :height="500"
+    fixed
+  />
+</template>
+
+<script setup lang="ts">
+import { TableV2FixedDir } from 'element-plus'
+
+const columns = [
+  {
+    key: 'status',
+    title: '状态',
+    dataKey: 'status',
+    width: 100,
+    cellRenderer: ({ cellData }) => {
+      const tag = getStatusTag(cellData)
+      return h(ElTag, { type: tag.type }, () => tag.label)
+    }
+  }
+]
+</script>
+```
+
+---
+
+### 8. AFormEditor 富文本编辑器图片上传失败
+
+**问题描述**
+
+在 `AFormEditor` 中插入图片时，上传失败或图片无法显示。
+
+```vue
+<template>
+  <AFormEditor
+    label="文章内容"
+    v-model="form.content"
+    :span="24"
+  />
+</template>
+```
+
+**问题原因**
+
+- 上传接口配置不正确或未配置
+- 图片格式或大小不符合要求
+- 跨域问题导致上传失败
+- Token 认证问题
+
+**解决方案**
+
+配置正确的上传选项：
+
+```vue
+<template>
+  <AFormEditor
+    label="文章内容"
+    v-model="form.content"
+    :upload-options="uploadOptions"
+    :span="24"
+  />
+</template>
+
+<script setup lang="ts">
+import { getToken } from '@/utils/auth'
+
+const uploadOptions = {
+  // 上传地址
+  action: import.meta.env.VITE_API_URL + '/resource/oss/upload',
+
+  // 请求头（包含认证信息）
+  headers: {
+    Authorization: 'Bearer ' + getToken()
+  },
+
+  // 文件大小限制（单位：MB）
+  maxSize: 5,
+
+  // 允许的文件类型
+  accept: 'image/jpeg,image/png,image/gif,image/webp',
+
+  // 上传成功回调
+  onSuccess: (response: any, file: File) => {
+    if (response.code === 200) {
+      return response.data.url
+    }
+    ElMessage.error('上传失败：' + response.msg)
+    return null
+  },
+
+  // 上传失败回调
+  onError: (error: Error) => {
+    console.error('上传错误:', error)
+    ElMessage.error('图片上传失败，请重试')
+  },
+
+  // 上传前验证
+  beforeUpload: (file: File) => {
+    const isValidType = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'].includes(file.type)
+    const isValidSize = file.size / 1024 / 1024 < 5
+
+    if (!isValidType) {
+      ElMessage.error('只支持 JPG/PNG/GIF/WebP 格式的图片')
+      return false
+    }
+
+    if (!isValidSize) {
+      ElMessage.error('图片大小不能超过 5MB')
+      return false
+    }
+
+    return true
+  }
+}
+</script>
+```
+
+处理跨域问题（需后端配合）：
+
+```typescript
+// 如果使用代理，确保 vite.config.ts 配置正确
+export default defineConfig({
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, '')
+      }
+    }
+  }
+})
+```
+
+使用 Base64 方式（不推荐用于大图）：
+
+```vue
+<template>
+  <AFormEditor
+    label="文章内容"
+    v-model="form.content"
+    :upload-options="{ mode: 'base64' }"
+    :span="24"
+  />
+</template>
+```
+
+---
+
+### 9. 表单组件在动态切换时状态残留
+
+**问题描述**
+
+使用 `v-if` 动态切换表单组件时，组件内部状态残留，导致数据显示错误。
+
+```vue
+<!-- 切换表单类型时，输入框的值没有清除 -->
+<template>
+  <div>
+    <el-radio-group v-model="formType">
+      <el-radio-button label="user">用户表单</el-radio-button>
+      <el-radio-button label="dept">部门表单</el-radio-button>
+    </el-radio-group>
+
+    <div v-if="formType === 'user'">
+      <AFormInput label="用户名" v-model="userForm.userName" />
+    </div>
+    <div v-else>
+      <AFormInput label="部门名" v-model="deptForm.deptName" />
+    </div>
+  </div>
+</template>
+```
+
+**问题原因**
+
+- Vue 的组件复用机制导致 DOM 节点被复用
+- 表单组件内部状态未正确重置
+- 相同位置的组件被 Vue 认为是同一个组件
+
+**解决方案**
+
+使用 `key` 强制重新创建组件：
+
+```vue
+<template>
+  <div>
+    <el-radio-group v-model="formType">
+      <el-radio-button label="user">用户表单</el-radio-button>
+      <el-radio-button label="dept">部门表单</el-radio-button>
+    </el-radio-group>
+
+    <!-- 使用 key 确保组件重新创建 -->
+    <div v-if="formType === 'user'" key="user-form">
+      <AFormInput label="用户名" v-model="userForm.userName" />
+    </div>
+    <div v-else key="dept-form">
+      <AFormInput label="部门名" v-model="deptForm.deptName" />
+    </div>
+  </div>
+</template>
+```
+
+或者使用动态组件配合 key：
+
+```vue
+<template>
+  <component
+    :is="currentFormComponent"
+    :key="formType"
+    v-model="currentFormData"
+  />
+</template>
+
+<script setup lang="ts">
+import UserForm from './UserForm.vue'
+import DeptForm from './DeptForm.vue'
+
+const formType = ref('user')
+
+const currentFormComponent = computed(() => {
+  return formType.value === 'user' ? UserForm : DeptForm
+})
+
+const currentFormData = computed({
+  get: () => formType.value === 'user' ? userForm.value : deptForm.value,
+  set: (val) => {
+    if (formType.value === 'user') {
+      userForm.value = val
+    } else {
+      deptForm.value = val
+    }
+  }
+})
+</script>
+```
+
+监听类型变化并重置表单：
+
+```vue
+<script setup lang="ts">
+watch(formType, (newType, oldType) => {
+  if (newType !== oldType) {
+    // 切换时重置表单
+    if (newType === 'user') {
+      userForm.value = { userName: '', email: '' }
+    } else {
+      deptForm.value = { deptName: '', leader: '' }
+    }
+  }
+})
+</script>
+```
+
+---
+
+### 10. 图表组件在隐藏后显示尺寸异常
+
+**问题描述**
+
+图表组件放在 Tab 页或可折叠面板中，初始隐藏后再显示时，图表尺寸不正确（宽度为0或高度为0）。
+
+```vue
+<template>
+  <el-tabs v-model="activeTab">
+    <el-tab-pane label="基本信息" name="info">
+      <!-- 基本信息内容 -->
+    </el-tab-pane>
+    <el-tab-pane label="统计图表" name="charts">
+      <!-- 初始隐藏，显示时尺寸异常 -->
+      <ALineChart :xData="xData" :series="series" height="300px" />
+    </el-tab-pane>
+  </el-tabs>
+</template>
+```
+
+**问题原因**
+
+- ECharts 在容器隐藏时无法获取正确的容器尺寸
+- 图表初始化时容器 `display: none`，导致宽高为0
+- Tab 切换后没有触发图表重新渲染
+
+**解决方案**
+
+方案一：使用 `v-if` 延迟渲染：
+
+```vue
+<template>
+  <el-tabs v-model="activeTab">
+    <el-tab-pane label="基本信息" name="info">
+      <!-- 基本信息内容 -->
+    </el-tab-pane>
+    <el-tab-pane label="统计图表" name="charts">
+      <!-- 只有激活时才渲染 -->
+      <ALineChart
+        v-if="activeTab === 'charts'"
+        :xData="xData"
+        :series="series"
+        height="300px"
+      />
+    </el-tab-pane>
+  </el-tabs>
+</template>
+```
+
+方案二：使用 `lazy` 属性（Element Plus Tabs）：
+
+```vue
+<template>
+  <el-tabs v-model="activeTab">
+    <el-tab-pane label="基本信息" name="info">
+      <!-- 基本信息内容 -->
+    </el-tab-pane>
+    <el-tab-pane label="统计图表" name="charts" lazy>
+      <ALineChart :xData="xData" :series="series" height="300px" />
+    </el-tab-pane>
+  </el-tabs>
+</template>
+```
+
+方案三：监听显示状态并手动触发 resize：
+
+```vue
+<template>
+  <el-tabs v-model="activeTab" @tab-change="handleTabChange">
+    <el-tab-pane label="统计图表" name="charts">
+      <ALineChart ref="chartRef" :xData="xData" :series="series" height="300px" />
+    </el-tab-pane>
+  </el-tabs>
+</template>
+
+<script setup lang="ts">
+const chartRef = ref()
+
+const handleTabChange = (tabName: string) => {
+  if (tabName === 'charts') {
+    // 延迟执行，确保DOM已更新
+    nextTick(() => {
+      chartRef.value?.resize()
+    })
+  }
+}
+</script>
+```
+
+方案四：使用 ResizeObserver 自动处理：
+
+```vue
+<template>
+  <div ref="chartContainer" class="chart-container">
+    <ALineChart :xData="xData" :series="series" height="100%" auto-resize />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { useResizeObserver } from '@vueuse/core'
+
+const chartContainer = ref<HTMLElement>()
+
+useResizeObserver(chartContainer, (entries) => {
+  // 容器尺寸变化时，图表会自动调整
+  console.log('容器尺寸变化:', entries[0].contentRect)
+})
+</script>
+
+<style scoped>
+.chart-container {
+  width: 100%;
+  height: 300px;
+}
+</style>
+```
+
+---
+
+### 11. ASearchForm 搜索条件无法重置
+
+**问题描述**
+
+点击重置按钮后，搜索条件没有恢复到初始值，或者部分字段没有被重置。
+
+```vue
+<template>
+  <ASearchForm v-model="queryParams" @reset="handleReset">
+    <AFormInput label="用户名" prop="userName" v-model="queryParams.userName" />
+    <AFormSelect label="状态" prop="status" v-model="queryParams.status" :options="statusOptions" />
+    <AFormDate label="创建时间" prop="dateRange" v-model="queryParams.dateRange" type="daterange" />
+  </ASearchForm>
+</template>
+
+<script setup lang="ts">
+const queryParams = ref({
+  userName: '',
+  status: '',
+  dateRange: []
+})
+
+const handleReset = () => {
+  // 重置后 dateRange 仍然保留旧值
+}
+</script>
+```
+
+**问题原因**
+
+- 重置时只清空了简单类型字段，复杂类型（数组、对象）引用未变化
+- 没有正确定义初始值状态
+- 自定义字段没有被表单组件正确跟踪
+
+**解决方案**
+
+定义并使用初始值对象：
+
+```vue
+<script setup lang="ts">
+import { cloneDeep } from 'lodash-es'
+
+// 定义初始值常量
+const INITIAL_QUERY = {
+  userName: '',
+  status: '',
+  dateRange: [],
+  pageNum: 1,
+  pageSize: 10
+}
+
+// 使用深拷贝创建响应式对象
+const queryParams = ref(cloneDeep(INITIAL_QUERY))
+
+const handleReset = () => {
+  // 深拷贝初始值进行重置
+  queryParams.value = cloneDeep(INITIAL_QUERY)
+
+  // 重置后重新查询
+  getList()
+}
+</script>
+```
+
+使用工厂函数创建初始值：
+
+```vue
+<script setup lang="ts">
+// 使用工厂函数确保每次都是新对象
+const createInitialQuery = () => ({
+  userName: '',
+  status: '',
+  dateRange: [] as string[],
+  deptId: null as number | null,
+  pageNum: 1,
+  pageSize: 10
+})
+
+const queryParams = ref(createInitialQuery())
+
+const handleReset = () => {
+  // 使用工厂函数重置
+  queryParams.value = createInitialQuery()
+  getList()
+}
+
+// 也可以在组件卸载时重置
+onUnmounted(() => {
+  queryParams.value = createInitialQuery()
+})
+</script>
+```
+
+结合表单 ref 进行重置：
+
+```vue
+<template>
+  <ASearchForm
+    ref="searchFormRef"
+    v-model="queryParams"
+    @reset="handleReset"
+  >
+    <!-- 表单项 -->
+  </ASearchForm>
+</template>
+
+<script setup lang="ts">
+const searchFormRef = ref()
+
+const handleReset = () => {
+  // 使用表单组件的重置方法
+  searchFormRef.value?.resetFields()
+
+  // 手动处理自定义字段
+  queryParams.value.dateRange = []
+  queryParams.value.customField = null
+
+  getList()
+}
+</script>
+```
+
+---
+
+### 12. UserSelect 初始化时获取不到用户名
+
+**问题描述**
+
+`UserSelect` 组件在编辑模式下，传入用户ID后无法正确显示用户名，显示的是ID数字。
+
+```vue
+<template>
+  <!-- 显示 "123" 而不是 "张三" -->
+  <UserSelect v-model="form.userId" :initial-user-names="form.userName" />
+</template>
+
+<script setup lang="ts">
+const form = ref({
+  userId: 123,
+  userName: '' // 后端没有返回用户名
+})
+</script>
+```
+
+**问题原因**
+
+- 后端接口只返回了用户ID，没有返回关联的用户名
+- `initial-user-names` 属性没有正确设置
+- 组件内部的用户信息查询失败
+
+**解决方案**
+
+方案一：后端接口返回完整用户信息：
+
+```typescript
+// 建议后端在返回关联用户时同时返回用户名
+interface OrderVo {
+  orderId: string
+  orderNo: string
+  userId: number
+  userName: string // 同时返回用户名
+}
+```
+
+方案二：使用 initial-user-names 属性：
+
+```vue
+<template>
+  <UserSelect
+    v-model="form.userId"
+    :initial-user-names="form.userName"
+  />
+</template>
+
+<script setup lang="ts">
+// 确保 userName 有值
+const form = ref({
+  userId: 123,
+  userName: '张三'
+})
+</script>
+```
+
+方案三：组件加载后查询用户名：
+
+```vue
+<template>
+  <UserSelect
+    v-model="form.userId"
+    :initial-user-names="displayUserName"
+  />
+</template>
+
+<script setup lang="ts">
+const displayUserName = ref('')
+
+// 监听 userId 变化，查询对应的用户名
+watch(
+  () => form.value.userId,
+  async (userId) => {
+    if (userId && !form.value.userName) {
+      const [err, user] = await getUserById(userId)
+      if (!err) {
+        displayUserName.value = user.userName
+      }
+    } else {
+      displayUserName.value = form.value.userName
+    }
+  },
+  { immediate: true }
+)
+</script>
+```
+
+方案四：使用用户对象作为 v-model：
+
+```vue
+<template>
+  <!-- 传入完整用户对象，组件自动解析用户名 -->
+  <UserSelect v-model="selectedUser" />
+</template>
+
+<script setup lang="ts">
+import type { SysUserVo } from '@/api/system/core/user/userModel'
+
+// 使用完整用户对象
+const selectedUser = ref<SysUserVo | null>(null)
+
+// 编辑时设置完整对象
+const handleEdit = async (row: OrderVo) => {
+  // 先查询用户详情
+  const [err, user] = await getUserById(row.userId)
+  if (!err) {
+    selectedUser.value = user
+  }
+}
+
+// 提交时获取用户ID
+const handleSubmit = () => {
+  const userId = selectedUser.value?.userId
+  // ...
+}
+</script>
+```
+
 ## 总结
 
 RuoYi-Plus-UniApp 前端业务组件库提供了完整的后台管理系统开发解决方案:

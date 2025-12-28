@@ -685,3 +685,1868 @@ const [userResult, ordersResult, prefsResult] = await toAll([
 - **性能优化**：支持并行、串行、条件执行等多种模式
 
 通过使用这些工具函数，可以显著提高代码的可读性、可维护性和健壮性，是现代前端开发中处理异步操作的最佳实践。
+
+---
+
+## 常见问题
+
+### 1. to()函数返回值类型判断导致类型收窄失败
+
+**问题描述:**
+
+使用 `to()` 函数后，即使检查了 `err` 为 `null`，TypeScript 仍然认为 `data` 可能是 `null`：
+
+```typescript
+// ❌ 类型收窄失败
+const [err, user] = await to(fetchUser(id))
+if (err) return
+
+// TypeScript 报错: user 可能是 null
+console.log(user.name)  // Object is possibly 'null'
+```
+
+**问题原因:**
+
+1. **元组类型的独立性** - `[Error | null, T | null]` 中两个元素在类型系统中是独立的
+2. **TypeScript 无法推导关联性** - 编译器不知道 `err === null` 时 `data` 一定不为 `null`
+3. **to() 的返回类型定义** - 为了覆盖所有情况，返回类型必须包含 `null`
+
+**解决方案:**
+
+```typescript
+// ✅ 方案1: 使用非空断言(确信数据存在时)
+const [err, user] = await to(fetchUser(id))
+if (err) {
+  handleError(err)
+  return
+}
+console.log(user!.name)  // 使用 ! 断言
+
+// ✅ 方案2: 再次检查 data
+const [err, user] = await to(fetchUser(id))
+if (err || !user) {
+  handleError(err || new Error('用户数据为空'))
+  return
+}
+// 此时 user 类型自动收窄为非 null
+console.log(user.name)
+```
+
+```typescript
+// ✅ 方案3: 创建类型安全的包装函数
+type SafeResult<T> =
+  | { success: true; data: T; error: null }
+  | { success: false; data: null; error: Error }
+
+async function toSafe<T>(promise: Promise<T>): Promise<SafeResult<T>> {
+  try {
+    const data = await promise
+    return { success: true, data, error: null }
+  } catch (e) {
+    return {
+      success: false,
+      data: null,
+      error: e instanceof Error ? e : new Error(String(e))
+    }
+  }
+}
+
+// 使用时类型完全安全
+const result = await toSafe(fetchUser(id))
+if (!result.success) {
+  handleError(result.error)
+  return
+}
+// result.data 自动推导为 User 类型,非 null
+console.log(result.data.name)
+```
+
+```typescript
+// ✅ 方案4: 使用泛型约束确保返回值
+async function toRequired<T>(promise: Promise<T>): Promise<[Error, null] | [null, T]> {
+  try {
+    const data = await promise
+    if (data === null || data === undefined) {
+      return [new Error('返回值为空'), null]
+    }
+    return [null, data]
+  } catch (e) {
+    return [e instanceof Error ? e : new Error(String(e)), null]
+  }
+}
+
+// 使用
+const [err, user] = await toRequired(fetchUser(id))
+if (err) {
+  return handleError(err)
+}
+// user 类型收窄正确
+console.log(user.name)
+```
+
+```typescript
+// ✅ 方案5: 使用类型守卫函数
+function hasData<T>(result: [Error | null, T | null]): result is [null, T] {
+  return result[0] === null && result[1] !== null
+}
+
+function hasError<T>(result: [Error | null, T | null]): result is [Error, null] {
+  return result[0] !== null
+}
+
+// 使用
+const result = await to(fetchUser(id))
+if (hasError(result)) {
+  const [error] = result
+  handleError(error)  // error 类型是 Error
+  return
+}
+if (hasData(result)) {
+  const [, user] = result
+  console.log(user.name)  // user 类型是 User
+}
+```
+
+### 2. toValidate()与不同UI框架的表单验证不兼容
+
+**问题描述:**
+
+`toValidate()` 专门针对 Element Plus 设计，与其他 UI 框架（如 Ant Design Vue、Naive UI、Vant）的表单验证 API 不兼容：
+
+```typescript
+// ❌ 与 Ant Design Vue 不兼容
+const [err, isValid] = await toValidate(antFormRef.value)
+// 报错: antFormRef.value.validate 不是预期的格式
+
+// ❌ 与 Naive UI 不兼容
+const [err, isValid] = await toValidate(naiveFormRef.value)
+// validate 返回 Promise<void> 或抛出错误
+```
+
+**问题原因:**
+
+1. **API 设计差异** - 不同 UI 框架的表单验证 API 差异很大
+2. **返回值格式不同** - 有的返回布尔值，有的抛出错误，有的返回验证结果对象
+3. **回调 vs Promise** - 部分框架使用回调，部分使用 Promise
+
+**解决方案:**
+
+```typescript
+// ✅ 方案1: 创建适配不同框架的验证函数
+
+// Element Plus 适配器
+async function toValidateElementPlus(
+  formRef: Ref<FormInstance | undefined>
+): Promise<[Error | null, boolean]> {
+  if (!formRef.value) {
+    return [new Error('表单引用不存在'), false]
+  }
+  try {
+    const valid = await formRef.value.validate()
+    return [null, valid]
+  } catch (e) {
+    return [e instanceof Error ? e : new Error('验证失败'), false]
+  }
+}
+
+// Ant Design Vue 适配器
+async function toValidateAntd(
+  formRef: Ref<FormInstance | undefined>
+): Promise<[Error | null, boolean]> {
+  if (!formRef.value) {
+    return [new Error('表单引用不存在'), false]
+  }
+  try {
+    await formRef.value.validate()
+    return [null, true]
+  } catch (e) {
+    // Ant Design Vue 验证失败会抛出 errorInfo
+    const errorInfo = e as { errorFields: Array<{ name: string[]; errors: string[] }> }
+    const firstError = errorInfo.errorFields?.[0]?.errors?.[0]
+    return [new Error(firstError || '验证失败'), false]
+  }
+}
+
+// Naive UI 适配器
+async function toValidateNaive(
+  formRef: Ref<FormInst | undefined>
+): Promise<[Error | null, boolean]> {
+  if (!formRef.value) {
+    return [new Error('表单引用不存在'), false]
+  }
+  try {
+    await formRef.value.validate()
+    return [null, true]
+  } catch (e) {
+    // Naive UI 验证失败会抛出错误数组
+    const errors = e as Array<{ message: string }>
+    const firstError = errors?.[0]?.message
+    return [new Error(firstError || '验证失败'), false]
+  }
+}
+
+// Vant 适配器
+async function toValidateVant(
+  formRef: Ref<FormInstance | undefined>
+): Promise<[Error | null, boolean]> {
+  if (!formRef.value) {
+    return [new Error('表单引用不存在'), false]
+  }
+  try {
+    await formRef.value.validate()
+    return [null, true]
+  } catch (e) {
+    // Vant 验证失败返回第一个错误信息
+    return [new Error(String(e) || '验证失败'), false]
+  }
+}
+```
+
+```typescript
+// ✅ 方案2: 创建统一的表单验证适配器工厂
+type FormLibrary = 'element-plus' | 'antd' | 'naive-ui' | 'vant'
+
+interface ValidateAdapter {
+  validate: (formRef: any) => Promise<[Error | null, boolean]>
+}
+
+function createValidateAdapter(library: FormLibrary): ValidateAdapter {
+  const adapters: Record<FormLibrary, ValidateAdapter> = {
+    'element-plus': {
+      async validate(formRef) {
+        if (!formRef?.value) return [new Error('表单引用不存在'), false]
+        try {
+          const valid = await formRef.value.validate()
+          return [null, valid !== false]
+        } catch (e) {
+          return [e instanceof Error ? e : new Error('验证失败'), false]
+        }
+      }
+    },
+    'antd': {
+      async validate(formRef) {
+        if (!formRef?.value) return [new Error('表单引用不存在'), false]
+        try {
+          await formRef.value.validate()
+          return [null, true]
+        } catch (e: any) {
+          const msg = e?.errorFields?.[0]?.errors?.[0] || '验证失败'
+          return [new Error(msg), false]
+        }
+      }
+    },
+    'naive-ui': {
+      async validate(formRef) {
+        if (!formRef?.value) return [new Error('表单引用不存在'), false]
+        try {
+          await formRef.value.validate()
+          return [null, true]
+        } catch (e: any) {
+          const msg = e?.[0]?.message || '验证失败'
+          return [new Error(msg), false]
+        }
+      }
+    },
+    'vant': {
+      async validate(formRef) {
+        if (!formRef?.value) return [new Error('表单引用不存在'), false]
+        try {
+          await formRef.value.validate()
+          return [null, true]
+        } catch (e) {
+          return [new Error(String(e) || '验证失败'), false]
+        }
+      }
+    }
+  }
+
+  return adapters[library]
+}
+
+// 使用
+const validateAdapter = createValidateAdapter('antd')
+const [err, isValid] = await validateAdapter.validate(formRef)
+```
+
+```typescript
+// ✅ 方案3: 使用通用的验证包装器
+async function toValidateUniversal<T>(
+  validateFn: () => Promise<T>,
+  successPredicate: (result: T) => boolean = () => true
+): Promise<[Error | null, boolean]> {
+  try {
+    const result = await validateFn()
+    return [null, successPredicate(result)]
+  } catch (e) {
+    // 尝试从不同格式的错误中提取信息
+    let message = '验证失败'
+    if (e instanceof Error) {
+      message = e.message
+    } else if (typeof e === 'object' && e !== null) {
+      const errorObj = e as any
+      message =
+        errorObj.message ||
+        errorObj.errorFields?.[0]?.errors?.[0] ||
+        errorObj[0]?.message ||
+        String(e)
+    }
+    return [new Error(message), false]
+  }
+}
+
+// 使用 - 适用于任何框架
+// Element Plus
+const [err1, valid1] = await toValidateUniversal(
+  () => elementFormRef.value!.validate()
+)
+
+// Ant Design Vue
+const [err2, valid2] = await toValidateUniversal(
+  () => antFormRef.value!.validate()
+)
+
+// Naive UI
+const [err3, valid3] = await toValidateUniversal(
+  () => naiveFormRef.value!.validate()
+)
+```
+
+### 3. toWithRetry()重试策略配置不当导致请求堆积
+
+**问题描述:**
+
+不合理的重试配置会导致请求堆积、服务器压力增大、用户体验变差：
+
+```typescript
+// ❌ 问题配置
+const [err, data] = await toWithRetry(
+  () => fetch('/api/data'),
+  10,     // 重试10次太多
+  100     // 间隔100ms太短
+)
+// 可能在短时间内发送10多次请求,造成服务器压力
+```
+
+**问题原因:**
+
+1. **重试次数过多** - 对于已经不可用的服务，重试只是浪费资源
+2. **重试间隔过短** - 服务器可能需要恢复时间
+3. **缺少指数退避** - 固定间隔可能不适合所有场景
+4. **未区分错误类型** - 有些错误不应该重试（如 401、404）
+
+**解决方案:**
+
+```typescript
+// ✅ 方案1: 实现指数退避策略
+interface RetryOptions {
+  maxRetries?: number
+  baseDelay?: number
+  maxDelay?: number
+  backoffFactor?: number
+  retryableErrors?: (error: Error) => boolean
+  onRetry?: (error: Error, attempt: number) => void
+}
+
+async function toWithExponentialBackoff<T>(
+  promiseFactory: () => Promise<T>,
+  options: RetryOptions = {}
+): Promise<[Error | null, T | null]> {
+  const {
+    maxRetries = 3,
+    baseDelay = 1000,
+    maxDelay = 30000,
+    backoffFactor = 2,
+    retryableErrors = () => true,
+    onRetry
+  } = options
+
+  let lastError: Error | null = null
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      const result = await promiseFactory()
+      return [null, result]
+    } catch (e) {
+      lastError = e instanceof Error ? e : new Error(String(e))
+
+      // 检查是否应该重试
+      if (attempt >= maxRetries || !retryableErrors(lastError)) {
+        break
+      }
+
+      // 计算延迟时间 (指数退避 + 随机抖动)
+      const delay = Math.min(
+        baseDelay * Math.pow(backoffFactor, attempt) + Math.random() * 1000,
+        maxDelay
+      )
+
+      onRetry?.(lastError, attempt + 1)
+
+      await new Promise(resolve => setTimeout(resolve, delay))
+    }
+  }
+
+  return [lastError, null]
+}
+
+// 使用示例
+const [err, data] = await toWithExponentialBackoff(
+  () => fetch('/api/data').then(r => r.json()),
+  {
+    maxRetries: 3,
+    baseDelay: 1000,
+    maxDelay: 10000,
+    backoffFactor: 2,
+    retryableErrors: (error) => {
+      // 只重试网络错误和 5xx 错误
+      if (error.message.includes('network')) return true
+      if (error.message.includes('500')) return true
+      if (error.message.includes('502')) return true
+      if (error.message.includes('503')) return true
+      return false
+    },
+    onRetry: (error, attempt) => {
+      console.log(`重试第 ${attempt} 次，原因: ${error.message}`)
+    }
+  }
+)
+```
+
+```typescript
+// ✅ 方案2: 根据HTTP状态码决定是否重试
+interface HttpError extends Error {
+  status?: number
+  code?: string
+}
+
+function isRetryableHttpError(error: Error): boolean {
+  const httpError = error as HttpError
+  const status = httpError.status
+
+  // 不重试的情况
+  const nonRetryableStatuses = [
+    400, // Bad Request - 请求参数错误
+    401, // Unauthorized - 认证失败
+    403, // Forbidden - 权限不足
+    404, // Not Found - 资源不存在
+    422, // Unprocessable Entity - 业务逻辑错误
+  ]
+
+  if (status && nonRetryableStatuses.includes(status)) {
+    return false
+  }
+
+  // 可重试的情况
+  const retryableStatuses = [
+    408, // Request Timeout
+    429, // Too Many Requests
+    500, // Internal Server Error
+    502, // Bad Gateway
+    503, // Service Unavailable
+    504, // Gateway Timeout
+  ]
+
+  if (status && retryableStatuses.includes(status)) {
+    return true
+  }
+
+  // 网络错误可重试
+  if (error.message.includes('network') || error.message.includes('fetch')) {
+    return true
+  }
+
+  return false
+}
+
+// 使用
+const [err, data] = await toWithExponentialBackoff(
+  () => apiRequest('/api/data'),
+  {
+    maxRetries: 3,
+    retryableErrors: isRetryableHttpError
+  }
+)
+```
+
+```typescript
+// ✅ 方案3: 带取消功能的重试
+class RetryController {
+  private aborted = false
+  private abortReason: string | null = null
+
+  abort(reason = '用户取消') {
+    this.aborted = true
+    this.abortReason = reason
+  }
+
+  get isAborted() {
+    return this.aborted
+  }
+
+  get reason() {
+    return this.abortReason
+  }
+
+  reset() {
+    this.aborted = false
+    this.abortReason = null
+  }
+}
+
+async function toWithCancellableRetry<T>(
+  promiseFactory: () => Promise<T>,
+  controller: RetryController,
+  options: RetryOptions = {}
+): Promise<[Error | null, T | null]> {
+  const { maxRetries = 3, baseDelay = 1000 } = options
+  let lastError: Error | null = null
+
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    // 检查是否已取消
+    if (controller.isAborted) {
+      return [new Error(controller.reason || '操作已取消'), null]
+    }
+
+    try {
+      const result = await promiseFactory()
+      return [null, result]
+    } catch (e) {
+      lastError = e instanceof Error ? e : new Error(String(e))
+
+      if (attempt < maxRetries && !controller.isAborted) {
+        const delay = baseDelay * Math.pow(2, attempt)
+        await new Promise(resolve => setTimeout(resolve, delay))
+      }
+    }
+  }
+
+  return [lastError, null]
+}
+
+// 使用示例
+const retryController = new RetryController()
+
+// 开始请求
+const requestPromise = toWithCancellableRetry(
+  () => fetch('/api/slow-data'),
+  retryController,
+  { maxRetries: 5, baseDelay: 2000 }
+)
+
+// 用户点击取消按钮
+cancelButton.onclick = () => {
+  retryController.abort('用户取消了请求')
+}
+
+const [err, data] = await requestPromise
+if (err) {
+  if (err.message.includes('取消')) {
+    console.log('用户取消了操作')
+  } else {
+    console.error('请求失败:', err.message)
+  }
+}
+```
+
+### 4. toAll()部分失败时无法区分成功和失败的请求
+
+**问题描述:**
+
+使用 `toAll()` 并行请求时，难以追踪哪些请求成功、哪些失败：
+
+```typescript
+// ❌ 难以追踪哪个请求失败
+const results = await toAll([
+  fetchUser(userId),
+  fetchOrders(userId),
+  fetchPreferences(userId)
+])
+
+// results 是 [[err1, data1], [err2, data2], [err3, data3]]
+// 需要手动对应每个结果
+```
+
+**解决方案:**
+
+```typescript
+// ✅ 方案1: 使用带标签的结果包装
+interface TaggedResult<T> {
+  tag: string
+  error: Error | null
+  data: T | null
+  success: boolean
+}
+
+async function toAllTagged<T>(
+  requests: Array<{ tag: string; promise: Promise<T> }>
+): Promise<TaggedResult<T>[]> {
+  const results = await Promise.all(
+    requests.map(async ({ tag, promise }) => {
+      try {
+        const data = await promise
+        return { tag, error: null, data, success: true }
+      } catch (e) {
+        return {
+          tag,
+          error: e instanceof Error ? e : new Error(String(e)),
+          data: null,
+          success: false
+        }
+      }
+    })
+  )
+  return results
+}
+
+// 使用
+const results = await toAllTagged([
+  { tag: 'user', promise: fetchUser(userId) },
+  { tag: 'orders', promise: fetchOrders(userId) },
+  { tag: 'preferences', promise: fetchPreferences(userId) }
+])
+
+// 轻松查找特定请求的结果
+const userResult = results.find(r => r.tag === 'user')
+if (userResult?.success) {
+  console.log('用户信息:', userResult.data)
+}
+
+// 统计成功和失败
+const successCount = results.filter(r => r.success).length
+const failedTags = results.filter(r => !r.success).map(r => r.tag)
+console.log(`成功: ${successCount}, 失败: ${failedTags.join(', ')}`)
+```
+
+```typescript
+// ✅ 方案2: 返回对象形式的结果
+type PromiseMap<T> = Record<string, Promise<T>>
+type ResultMap<T> = Record<string, { error: Error | null; data: T | null }>
+
+async function toAllNamed<T extends PromiseMap<any>>(
+  promiseMap: T
+): Promise<{ [K in keyof T]: { error: Error | null; data: Awaited<T[K]> | null } }> {
+  const keys = Object.keys(promiseMap)
+  const promises = Object.values(promiseMap)
+
+  const results = await Promise.all(
+    promises.map(async (promise) => {
+      try {
+        const data = await promise
+        return { error: null, data }
+      } catch (e) {
+        return {
+          error: e instanceof Error ? e : new Error(String(e)),
+          data: null
+        }
+      }
+    })
+  )
+
+  const resultMap: any = {}
+  keys.forEach((key, index) => {
+    resultMap[key] = results[index]
+  })
+
+  return resultMap
+}
+
+// 使用 - 类型安全,按名称访问结果
+const results = await toAllNamed({
+  user: fetchUser(userId),
+  orders: fetchOrders(userId),
+  preferences: fetchPreferences(userId)
+})
+
+// 直接按名称访问
+if (!results.user.error) {
+  console.log('用户:', results.user.data)
+}
+if (!results.orders.error) {
+  console.log('订单:', results.orders.data)
+}
+```
+
+```typescript
+// ✅ 方案3: 分离成功和失败的结果
+interface PartitionedResults<T> {
+  succeeded: Array<{ index: number; data: T }>
+  failed: Array<{ index: number; error: Error }>
+  all: Array<{ index: number; success: boolean; data: T | null; error: Error | null }>
+}
+
+async function toAllPartitioned<T>(
+  promises: Promise<T>[]
+): Promise<PartitionedResults<T>> {
+  const results = await Promise.all(
+    promises.map(async (promise, index) => {
+      try {
+        const data = await promise
+        return { index, success: true, data, error: null }
+      } catch (e) {
+        return {
+          index,
+          success: false,
+          data: null,
+          error: e instanceof Error ? e : new Error(String(e))
+        }
+      }
+    })
+  )
+
+  return {
+    succeeded: results
+      .filter(r => r.success)
+      .map(r => ({ index: r.index, data: r.data! })),
+    failed: results
+      .filter(r => !r.success)
+      .map(r => ({ index: r.index, error: r.error! })),
+    all: results
+  }
+}
+
+// 使用
+const filePromises = files.map(file => uploadFile(file))
+const { succeeded, failed, all } = await toAllPartitioned(filePromises)
+
+console.log(`上传完成: ${succeeded.length} 成功, ${failed.length} 失败`)
+
+// 处理成功的文件
+succeeded.forEach(({ index, data }) => {
+  console.log(`文件 ${files[index].name} 上传成功:`, data.url)
+})
+
+// 处理失败的文件
+failed.forEach(({ index, error }) => {
+  console.error(`文件 ${files[index].name} 上传失败:`, error.message)
+})
+```
+
+```typescript
+// ✅ 方案4: 带重试的批量请求
+interface BatchRequestOptions {
+  concurrency?: number
+  retryFailed?: boolean
+  maxRetries?: number
+}
+
+async function toAllWithRetry<T>(
+  promiseFactories: Array<() => Promise<T>>,
+  options: BatchRequestOptions = {}
+): Promise<{
+  results: Array<{ success: boolean; data: T | null; error: Error | null }>
+  retried: number
+}> {
+  const { concurrency = 5, retryFailed = true, maxRetries = 2 } = options
+
+  const results: Array<{ success: boolean; data: T | null; error: Error | null }> = []
+  let retriedCount = 0
+
+  // 分批执行
+  for (let i = 0; i < promiseFactories.length; i += concurrency) {
+    const batch = promiseFactories.slice(i, i + concurrency)
+    const batchResults = await Promise.all(
+      batch.map(async (factory) => {
+        let lastError: Error | null = null
+        let retries = 0
+
+        while (retries <= maxRetries) {
+          try {
+            const data = await factory()
+            return { success: true, data, error: null }
+          } catch (e) {
+            lastError = e instanceof Error ? e : new Error(String(e))
+            if (retryFailed && retries < maxRetries) {
+              retriedCount++
+              retries++
+              await new Promise(r => setTimeout(r, 1000 * retries))
+            } else {
+              break
+            }
+          }
+        }
+
+        return { success: false, data: null, error: lastError }
+      })
+    )
+
+    results.push(...batchResults)
+  }
+
+  return { results, retried: retriedCount }
+}
+
+// 使用
+const uploadFactories = files.map(file => () => uploadFile(file))
+const { results, retried } = await toAllWithRetry(uploadFactories, {
+  concurrency: 3,
+  retryFailed: true,
+  maxRetries: 2
+})
+
+console.log(`共重试 ${retried} 次`)
+const successCount = results.filter(r => r.success).length
+console.log(`最终结果: ${successCount}/${files.length} 成功`)
+```
+
+### 5. 嵌套使用to()导致代码冗余和错误处理重复
+
+**问题描述:**
+
+在复杂业务流程中，连续使用 `to()` 会产生大量重复的错误处理代码：
+
+```typescript
+// ❌ 冗余的错误处理
+const [userErr, user] = await to(fetchUser(id))
+if (userErr) {
+  showError(userErr.message)
+  return
+}
+
+const [ordersErr, orders] = await to(fetchOrders(user.id))
+if (ordersErr) {
+  showError(ordersErr.message)
+  return
+}
+
+const [prefsErr, prefs] = await to(fetchPreferences(user.id))
+if (prefsErr) {
+  showError(prefsErr.message)
+  return
+}
+
+const [saveErr] = await to(saveUserData(user, orders, prefs))
+if (saveErr) {
+  showError(saveErr.message)
+  return
+}
+```
+
+**解决方案:**
+
+```typescript
+// ✅ 方案1: 创建链式执行器
+class AsyncChain<T> {
+  private result: T | null = null
+  private error: Error | null = null
+
+  static start<U>(promise: Promise<U>): AsyncChain<U> {
+    return new AsyncChain<U>(promise)
+  }
+
+  private constructor(private promise: Promise<T>) {
+    this.init()
+  }
+
+  private async init() {
+    try {
+      this.result = await this.promise
+    } catch (e) {
+      this.error = e instanceof Error ? e : new Error(String(e))
+    }
+  }
+
+  async then<U>(fn: (data: T) => Promise<U>): Promise<AsyncChain<U>> {
+    await this.init()
+    if (this.error || !this.result) {
+      return AsyncChain.fromError(this.error || new Error('No data'))
+    }
+    return AsyncChain.start(fn(this.result))
+  }
+
+  async catch(handler: (error: Error) => void): Promise<T | null> {
+    await this.init()
+    if (this.error) {
+      handler(this.error)
+    }
+    return this.result
+  }
+
+  async unwrap(): Promise<[Error | null, T | null]> {
+    await this.init()
+    return [this.error, this.result]
+  }
+
+  static fromError<U>(error: Error): AsyncChain<U> {
+    const chain = new AsyncChain<U>(Promise.reject(error))
+    chain.error = error
+    return chain
+  }
+}
+
+// 使用 - 链式调用
+const result = await AsyncChain
+  .start(fetchUser(id))
+  .then(user => fetchOrders(user.id))
+  .then(orders => processOrders(orders))
+  .catch(err => showError(err.message))
+```
+
+```typescript
+// ✅ 方案2: 使用管道模式
+type AsyncStep<I, O> = (input: I) => Promise<O>
+
+async function toPipe<T>(
+  initialValue: T,
+  ...steps: AsyncStep<any, any>[]
+): Promise<[Error | null, any]> {
+  let currentValue: any = initialValue
+
+  for (const step of steps) {
+    try {
+      currentValue = await step(currentValue)
+    } catch (e) {
+      return [e instanceof Error ? e : new Error(String(e)), null]
+    }
+  }
+
+  return [null, currentValue]
+}
+
+// 使用 - 管道执行
+const [err, finalData] = await toPipe(
+  userId,
+  (id) => fetchUser(id),
+  (user) => fetchOrders(user.id),
+  (orders) => calculateTotalAmount(orders),
+  (total) => generateReport(total)
+)
+
+if (err) {
+  showError(err.message)
+  return
+}
+console.log('报告生成完成:', finalData)
+```
+
+```typescript
+// ✅ 方案3: 创建统一的错误处理中间件
+type ErrorHandler = (error: Error, context: string) => void
+
+function createToWithContext(
+  defaultHandler: ErrorHandler
+) {
+  return async function<T>(
+    promise: Promise<T>,
+    context: string,
+    customHandler?: ErrorHandler
+  ): Promise<T | null> {
+    try {
+      return await promise
+    } catch (e) {
+      const error = e instanceof Error ? e : new Error(String(e))
+      const handler = customHandler || defaultHandler
+      handler(error, context)
+      return null
+    }
+  }
+}
+
+// 创建带默认处理器的 to 函数
+const toWithHandler = createToWithContext((error, context) => {
+  console.error(`[${context}] 错误:`, error.message)
+  ElMessage.error(`${context}失败: ${error.message}`)
+})
+
+// 使用 - 自动处理错误
+const user = await toWithHandler(fetchUser(id), '获取用户信息')
+if (!user) return
+
+const orders = await toWithHandler(fetchOrders(user.id), '获取订单列表')
+if (!orders) return
+
+const result = await toWithHandler(processOrders(orders), '处理订单')
+if (!result) return
+
+console.log('流程完成:', result)
+```
+
+```typescript
+// ✅ 方案4: 使用 Result 类实现
+class Result<T, E = Error> {
+  private constructor(
+    private readonly _value: T | null,
+    private readonly _error: E | null
+  ) {}
+
+  static ok<T>(value: T): Result<T, never> {
+    return new Result<T, never>(value, null)
+  }
+
+  static err<E>(error: E): Result<never, E> {
+    return new Result<never, E>(null, error)
+  }
+
+  static async from<T>(promise: Promise<T>): Promise<Result<T, Error>> {
+    try {
+      const value = await promise
+      return Result.ok(value)
+    } catch (e) {
+      return Result.err(e instanceof Error ? e : new Error(String(e)))
+    }
+  }
+
+  isOk(): boolean {
+    return this._error === null
+  }
+
+  isErr(): boolean {
+    return this._error !== null
+  }
+
+  unwrap(): T {
+    if (this._error) throw this._error
+    return this._value!
+  }
+
+  unwrapOr(defaultValue: T): T {
+    return this._error ? defaultValue : this._value!
+  }
+
+  map<U>(fn: (value: T) => U): Result<U, E> {
+    if (this._error) return Result.err(this._error)
+    return Result.ok(fn(this._value!))
+  }
+
+  async andThen<U>(fn: (value: T) => Promise<Result<U, Error>>): Promise<Result<U, Error | E>> {
+    if (this._error) return Result.err(this._error)
+    return fn(this._value!)
+  }
+
+  match<U>(handlers: { ok: (value: T) => U; err: (error: E) => U }): U {
+    return this._error ? handlers.err(this._error) : handlers.ok(this._value!)
+  }
+}
+
+// 使用
+const userResult = await Result.from(fetchUser(id))
+const finalResult = await userResult
+  .andThen(user => Result.from(fetchOrders(user.id)))
+  .then(result => result.andThen(orders => Result.from(processOrders(orders))))
+
+finalResult.match({
+  ok: (data) => console.log('成功:', data),
+  err: (error) => console.error('失败:', error.message)
+})
+```
+
+### 6. 异步操作组件卸载后继续执行导致内存泄漏
+
+**问题描述:**
+
+组件卸载后，`to()` 包装的异步操作仍在执行，导致内存泄漏和错误：
+
+```typescript
+// ❌ 组件卸载后异步操作仍会执行
+const loadData = async () => {
+  const [err, data] = await to(fetchHeavyData())
+  if (err) return
+
+  // 组件已卸载,但这里仍会执行
+  state.value = data  // 警告: 更新已卸载组件的状态
+  showNotification('数据加载完成')  // 可能报错
+}
+
+onMounted(() => {
+  loadData()
+})
+```
+
+**解决方案:**
+
+```typescript
+// ✅ 方案1: 使用 AbortController 取消请求
+import { onMounted, onUnmounted, ref } from 'vue'
+
+function useAbortableRequest() {
+  const abortController = ref<AbortController | null>(null)
+
+  const execute = async <T>(
+    requestFn: (signal: AbortSignal) => Promise<T>
+  ): Promise<[Error | null, T | null]> => {
+    // 取消之前的请求
+    abortController.value?.abort()
+
+    // 创建新的控制器
+    abortController.value = new AbortController()
+    const signal = abortController.value.signal
+
+    try {
+      const data = await requestFn(signal)
+      return [null, data]
+    } catch (e) {
+      if (e instanceof Error && e.name === 'AbortError') {
+        return [new Error('请求已取消'), null]
+      }
+      return [e instanceof Error ? e : new Error(String(e)), null]
+    }
+  }
+
+  const abort = () => {
+    abortController.value?.abort()
+    abortController.value = null
+  }
+
+  onUnmounted(() => {
+    abort()
+  })
+
+  return { execute, abort }
+}
+
+// 在组件中使用
+const { execute, abort } = useAbortableRequest()
+
+const loadData = async () => {
+  const [err, data] = await execute((signal) =>
+    fetch('/api/heavy-data', { signal }).then(r => r.json())
+  )
+
+  if (err) {
+    if (err.message === '请求已取消') return  // 组件卸载,静默处理
+    showError(err.message)
+    return
+  }
+
+  state.value = data
+}
+```
+
+```typescript
+// ✅ 方案2: 创建可取消的 to 函数
+import { onUnmounted, shallowRef } from 'vue'
+
+interface CancellablePromise<T> {
+  promise: Promise<T>
+  cancel: () => void
+}
+
+function makeCancellable<T>(promise: Promise<T>): CancellablePromise<T> {
+  let isCancelled = false
+
+  const wrappedPromise = new Promise<T>((resolve, reject) => {
+    promise.then(
+      value => !isCancelled && resolve(value),
+      error => !isCancelled && reject(error)
+    )
+  })
+
+  return {
+    promise: wrappedPromise,
+    cancel: () => { isCancelled = true }
+  }
+}
+
+function useCancellableTo() {
+  const pending = shallowRef<Array<() => void>>([])
+
+  const toWithCancel = async <T>(
+    promise: Promise<T>
+  ): Promise<[Error | null, T | null, boolean]> => {
+    const { promise: cancellablePromise, cancel } = makeCancellable(promise)
+    pending.value.push(cancel)
+
+    try {
+      const data = await cancellablePromise
+      return [null, data, false]
+    } catch (e) {
+      return [e instanceof Error ? e : new Error(String(e)), null, false]
+    }
+  }
+
+  const cancelAll = () => {
+    pending.value.forEach(cancel => cancel())
+    pending.value = []
+  }
+
+  onUnmounted(() => {
+    cancelAll()
+  })
+
+  return { to: toWithCancel, cancelAll }
+}
+
+// 使用
+const { to: safeTo } = useCancellableTo()
+
+const loadData = async () => {
+  const [err, data] = await safeTo(fetchHeavyData())
+  // 如果组件已卸载,这里不会执行
+  if (!err && data) {
+    state.value = data
+  }
+}
+```
+
+```typescript
+// ✅ 方案3: 使用 VueUse 的 useAsyncState
+import { useAsyncState } from '@vueuse/core'
+
+// 在组件中
+const { state, isLoading, error, execute } = useAsyncState(
+  () => fetchHeavyData(),
+  null,  // 初始值
+  {
+    immediate: true,
+    resetOnExecute: true,
+    onError: (e) => {
+      console.error('加载失败:', e)
+    }
+  }
+)
+
+// useAsyncState 会自动处理组件卸载的情况
+```
+
+```typescript
+// ✅ 方案4: 封装带生命周期感知的 to 函数
+import { getCurrentInstance, onUnmounted } from 'vue'
+
+function useLifecycleAwareTo() {
+  const instance = getCurrentInstance()
+  let isUnmounted = false
+
+  onUnmounted(() => {
+    isUnmounted = true
+  })
+
+  return async function<T>(
+    promise: Promise<T>
+  ): Promise<[Error | null, T | null, boolean]> {
+    const [err, data] = await to(promise)
+
+    // 返回第三个参数表示组件是否已卸载
+    return [err, data, isUnmounted]
+  }
+}
+
+// 使用
+const toSafe = useLifecycleAwareTo()
+
+const loadData = async () => {
+  const [err, data, isUnmounted] = await toSafe(fetchHeavyData())
+
+  // 组件已卸载,停止后续操作
+  if (isUnmounted) return
+
+  if (err) {
+    showError(err.message)
+    return
+  }
+
+  state.value = data
+}
+```
+
+### 7. toWithTimeout()超时后原始Promise仍在执行消耗资源
+
+**问题描述:**
+
+`toWithTimeout()` 超时后只是返回错误，但原始 Promise 仍在后台执行：
+
+```typescript
+// ❌ 超时后原始请求仍在执行
+const [err, data] = await toWithTimeout(
+  fetch('/api/heavy-computation'),  // 这个请求仍在后台执行
+  5000
+)
+
+if (err) {
+  console.log('请求超时')
+  // 但实际上请求可能还在执行,浪费带宽和服务器资源
+}
+```
+
+**解决方案:**
+
+```typescript
+// ✅ 方案1: 使用 AbortController 实现真正的超时取消
+async function toWithAbortableTimeout<T>(
+  requestFn: (signal: AbortSignal) => Promise<T>,
+  timeoutMs: number,
+  timeoutMessage = '请求超时'
+): Promise<[Error | null, T | null]> {
+  const controller = new AbortController()
+  const { signal } = controller
+
+  const timeoutId = setTimeout(() => {
+    controller.abort()
+  }, timeoutMs)
+
+  try {
+    const result = await requestFn(signal)
+    clearTimeout(timeoutId)
+    return [null, result]
+  } catch (e) {
+    clearTimeout(timeoutId)
+
+    if (e instanceof Error && e.name === 'AbortError') {
+      return [new Error(timeoutMessage), null]
+    }
+
+    return [e instanceof Error ? e : new Error(String(e)), null]
+  }
+}
+
+// 使用
+const [err, data] = await toWithAbortableTimeout(
+  (signal) => fetch('/api/heavy-computation', { signal }).then(r => r.json()),
+  5000,
+  '计算超时，请稍后重试'
+)
+```
+
+```typescript
+// ✅ 方案2: 封装支持取消的请求函数
+interface CancellableRequest<T> {
+  execute: () => Promise<[Error | null, T | null]>
+  cancel: (reason?: string) => void
+}
+
+function createCancellableRequest<T>(
+  requestFn: (signal: AbortSignal) => Promise<T>,
+  options: {
+    timeout?: number
+    timeoutMessage?: string
+  } = {}
+): CancellableRequest<T> {
+  const controller = new AbortController()
+  const { signal } = controller
+
+  let timeoutId: NodeJS.Timeout | null = null
+
+  const execute = async (): Promise<[Error | null, T | null]> => {
+    if (options.timeout) {
+      timeoutId = setTimeout(() => {
+        controller.abort()
+      }, options.timeout)
+    }
+
+    try {
+      const result = await requestFn(signal)
+      if (timeoutId) clearTimeout(timeoutId)
+      return [null, result]
+    } catch (e) {
+      if (timeoutId) clearTimeout(timeoutId)
+
+      if (e instanceof Error && e.name === 'AbortError') {
+        return [new Error(options.timeoutMessage || '请求被取消'), null]
+      }
+
+      return [e instanceof Error ? e : new Error(String(e)), null]
+    }
+  }
+
+  const cancel = (reason = '用户取消') => {
+    if (timeoutId) clearTimeout(timeoutId)
+    controller.abort()
+  }
+
+  return { execute, cancel }
+}
+
+// 使用
+const request = createCancellableRequest(
+  (signal) => fetch('/api/data', { signal }).then(r => r.json()),
+  { timeout: 5000, timeoutMessage: '请求超时' }
+)
+
+// 开始请求
+const [err, data] = await request.execute()
+
+// 或者在某个时刻取消
+// request.cancel('用户点击了取消按钮')
+```
+
+```typescript
+// ✅ 方案3: 使用 Promise.race 配合资源清理
+async function toWithTimeoutAndCleanup<T>(
+  promise: Promise<T>,
+  timeoutMs: number,
+  cleanup?: () => void,
+  timeoutMessage = '操作超时'
+): Promise<[Error | null, T | null]> {
+  let timeoutId: NodeJS.Timeout
+
+  const timeoutPromise = new Promise<never>((_, reject) => {
+    timeoutId = setTimeout(() => {
+      cleanup?.()  // 执行清理操作
+      reject(new Error(timeoutMessage))
+    }, timeoutMs)
+  })
+
+  try {
+    const result = await Promise.race([promise, timeoutPromise])
+    clearTimeout(timeoutId!)
+    return [null, result]
+  } catch (e) {
+    clearTimeout(timeoutId!)
+    return [e instanceof Error ? e : new Error(String(e)), null]
+  }
+}
+
+// 使用 - WebSocket 连接超时
+const ws = new WebSocket('wss://example.com')
+
+const [err, connection] = await toWithTimeoutAndCleanup(
+  new Promise<WebSocket>((resolve, reject) => {
+    ws.onopen = () => resolve(ws)
+    ws.onerror = (e) => reject(e)
+  }),
+  5000,
+  () => ws.close(),  // 超时时关闭连接
+  '连接超时'
+)
+```
+
+```typescript
+// ✅ 方案4: 创建超时管理器
+class TimeoutManager {
+  private activeRequests = new Map<string, AbortController>()
+
+  createRequest<T>(
+    id: string,
+    requestFn: (signal: AbortSignal) => Promise<T>,
+    timeoutMs: number
+  ): {
+    execute: () => Promise<[Error | null, T | null]>
+    cancel: () => void
+  } {
+    // 取消之前的同ID请求
+    this.cancel(id)
+
+    const controller = new AbortController()
+    this.activeRequests.set(id, controller)
+
+    const execute = async (): Promise<[Error | null, T | null]> => {
+      const timeoutId = setTimeout(() => {
+        this.cancel(id)
+      }, timeoutMs)
+
+      try {
+        const result = await requestFn(controller.signal)
+        clearTimeout(timeoutId)
+        this.activeRequests.delete(id)
+        return [null, result]
+      } catch (e) {
+        clearTimeout(timeoutId)
+        this.activeRequests.delete(id)
+
+        if (e instanceof Error && e.name === 'AbortError') {
+          return [new Error('请求超时或被取消'), null]
+        }
+        return [e instanceof Error ? e : new Error(String(e)), null]
+      }
+    }
+
+    return {
+      execute,
+      cancel: () => this.cancel(id)
+    }
+  }
+
+  cancel(id: string) {
+    const controller = this.activeRequests.get(id)
+    if (controller) {
+      controller.abort()
+      this.activeRequests.delete(id)
+    }
+  }
+
+  cancelAll() {
+    this.activeRequests.forEach(controller => controller.abort())
+    this.activeRequests.clear()
+  }
+
+  get activeCount() {
+    return this.activeRequests.size
+  }
+}
+
+// 全局实例
+const timeoutManager = new TimeoutManager()
+
+// 使用
+const searchRequest = timeoutManager.createRequest(
+  'user-search',
+  (signal) => fetch(`/api/users?q=${query}`, { signal }).then(r => r.json()),
+  3000
+)
+
+const [err, users] = await searchRequest.execute()
+
+// 用户快速输入时,自动取消之前的搜索请求
+```
+
+### 8. 复杂业务流程中to()的错误类型丢失和上下文信息缺失
+
+**问题描述:**
+
+在复杂业务流程中，难以追踪错误发生的具体位置和上下文：
+
+```typescript
+// ❌ 错误信息丢失上下文
+const [err1, user] = await to(fetchUser(id))
+if (err1) return handleError(err1)  // 不知道是哪个步骤失败
+
+const [err2, orders] = await to(fetchOrders(user.id))
+if (err2) return handleError(err2)  // 错误信息可能很模糊
+
+const [err3, result] = await to(processOrders(orders))
+if (err3) return handleError(err3)  // 难以定位问题
+```
+
+**解决方案:**
+
+```typescript
+// ✅ 方案1: 创建带上下文的错误类型
+class ContextualError extends Error {
+  constructor(
+    message: string,
+    public readonly context: string,
+    public readonly step: string,
+    public readonly originalError?: Error,
+    public readonly metadata?: Record<string, any>
+  ) {
+    super(`[${context}:${step}] ${message}`)
+    this.name = 'ContextualError'
+  }
+
+  toJSON() {
+    return {
+      name: this.name,
+      message: this.message,
+      context: this.context,
+      step: this.step,
+      metadata: this.metadata,
+      stack: this.stack
+    }
+  }
+}
+
+async function toWithContext<T>(
+  promise: Promise<T>,
+  context: string,
+  step: string,
+  metadata?: Record<string, any>
+): Promise<[ContextualError | null, T | null]> {
+  try {
+    const data = await promise
+    return [null, data]
+  } catch (e) {
+    const originalError = e instanceof Error ? e : new Error(String(e))
+    const contextualError = new ContextualError(
+      originalError.message,
+      context,
+      step,
+      originalError,
+      metadata
+    )
+    return [contextualError, null]
+  }
+}
+
+// 使用
+const [err, user] = await toWithContext(
+  fetchUser(id),
+  '用户管理',
+  '获取用户信息',
+  { userId: id }
+)
+
+if (err) {
+  console.error('错误上下文:', err.context)
+  console.error('失败步骤:', err.step)
+  console.error('元数据:', err.metadata)
+  console.error('原始错误:', err.originalError)
+  return
+}
+```
+
+```typescript
+// ✅ 方案2: 创建业务流程追踪器
+interface FlowStep<T> {
+  name: string
+  execute: () => Promise<T>
+  onError?: (error: Error) => void
+  onSuccess?: (data: T) => void
+}
+
+interface FlowResult<T> {
+  success: boolean
+  data: T | null
+  error: Error | null
+  failedStep: string | null
+  completedSteps: string[]
+  duration: number
+}
+
+async function executeFlow<T>(
+  flowName: string,
+  steps: FlowStep<any>[],
+  initialData?: any
+): Promise<FlowResult<T>> {
+  const startTime = Date.now()
+  const completedSteps: string[] = []
+  let currentData: any = initialData
+
+  for (const step of steps) {
+    try {
+      console.log(`[${flowName}] 执行步骤: ${step.name}`)
+      currentData = await step.execute()
+      completedSteps.push(step.name)
+      step.onSuccess?.(currentData)
+    } catch (e) {
+      const error = e instanceof Error ? e : new Error(String(e))
+      step.onError?.(error)
+
+      return {
+        success: false,
+        data: null,
+        error: new Error(`[${flowName}] 步骤 "${step.name}" 失败: ${error.message}`),
+        failedStep: step.name,
+        completedSteps,
+        duration: Date.now() - startTime
+      }
+    }
+  }
+
+  return {
+    success: true,
+    data: currentData,
+    error: null,
+    failedStep: null,
+    completedSteps,
+    duration: Date.now() - startTime
+  }
+}
+
+// 使用
+const result = await executeFlow<ProcessedOrder[]>('订单处理流程', [
+  {
+    name: '获取用户信息',
+    execute: () => fetchUser(userId),
+    onError: (e) => console.error('获取用户失败:', e)
+  },
+  {
+    name: '获取订单列表',
+    execute: async () => {
+      const user = await fetchUser(userId)
+      return fetchOrders(user.id)
+    },
+    onSuccess: (orders) => console.log(`获取到 ${orders.length} 个订单`)
+  },
+  {
+    name: '处理订单数据',
+    execute: () => processOrders(orders)
+  },
+  {
+    name: '保存处理结果',
+    execute: () => saveResults(processedOrders)
+  }
+])
+
+if (!result.success) {
+  console.error('流程失败:', result.error?.message)
+  console.log('已完成步骤:', result.completedSteps.join(' → '))
+  console.log('失败步骤:', result.failedStep)
+  console.log('耗时:', result.duration, 'ms')
+
+  // 可以根据失败步骤进行回滚
+  if (result.failedStep === '保存处理结果') {
+    await rollbackProcessing()
+  }
+}
+```
+
+```typescript
+// ✅ 方案3: 创建错误边界和恢复机制
+interface ErrorBoundary<T> {
+  try: <U>(fn: () => Promise<U>, stepName: string) => ErrorBoundary<U>
+  catch: (handler: (error: Error, step: string) => T | Promise<T>) => Promise<T>
+  finally: (callback: () => void) => ErrorBoundary<T>
+}
+
+function createErrorBoundary<T>(): ErrorBoundary<T> {
+  let chain: Promise<any> = Promise.resolve()
+  let catchHandler: ((error: Error, step: string) => T | Promise<T>) | null = null
+  let finallyCallback: (() => void) | null = null
+  let failedStep: string | null = null
+
+  const boundary: ErrorBoundary<T> = {
+    try<U>(fn: () => Promise<U>, stepName: string): ErrorBoundary<U> {
+      chain = chain.then(async () => {
+        try {
+          return await fn()
+        } catch (e) {
+          failedStep = stepName
+          throw e
+        }
+      })
+      return boundary as unknown as ErrorBoundary<U>
+    },
+
+    catch(handler: (error: Error, step: string) => T | Promise<T>): Promise<T> {
+      catchHandler = handler
+      return chain.catch(async (e) => {
+        const error = e instanceof Error ? e : new Error(String(e))
+        return catchHandler!(error, failedStep || 'unknown')
+      }).finally(() => {
+        finallyCallback?.()
+      })
+    },
+
+    finally(callback: () => void): ErrorBoundary<T> {
+      finallyCallback = callback
+      return boundary
+    }
+  }
+
+  return boundary
+}
+
+// 使用
+const result = await createErrorBoundary<null>()
+  .try(() => fetchUser(userId), '获取用户')
+  .try((user) => fetchOrders(user.id), '获取订单')
+  .try((orders) => processOrders(orders), '处理订单')
+  .try((processed) => saveResults(processed), '保存结果')
+  .finally(() => {
+    console.log('流程结束')
+  })
+  .catch((error, step) => {
+    console.error(`步骤 "${step}" 失败:`, error.message)
+
+    // 根据失败步骤采取不同的恢复策略
+    switch (step) {
+      case '获取用户':
+        showError('用户信息获取失败，请重试')
+        break
+      case '获取订单':
+        showError('订单数据加载失败')
+        break
+      case '处理订单':
+        // 可以返回部分结果
+        return partialResults
+      case '保存结果':
+        // 保存失败，提供重试选项
+        showRetryDialog()
+        break
+    }
+
+    return null
+  })
+```
+
+```typescript
+// ✅ 方案4: 集成日志和监控
+interface TrackedOperation<T> {
+  id: string
+  name: string
+  startTime: number
+  endTime?: number
+  status: 'pending' | 'success' | 'error'
+  error?: Error
+  result?: T
+  parentId?: string
+}
+
+class OperationTracker {
+  private operations: Map<string, TrackedOperation<any>> = new Map()
+  private currentParentId: string | null = null
+
+  startOperation(name: string): string {
+    const id = `${name}-${Date.now()}-${Math.random().toString(36).slice(2)}`
+    this.operations.set(id, {
+      id,
+      name,
+      startTime: Date.now(),
+      status: 'pending',
+      parentId: this.currentParentId || undefined
+    })
+    return id
+  }
+
+  completeOperation<T>(id: string, result: T) {
+    const op = this.operations.get(id)
+    if (op) {
+      op.endTime = Date.now()
+      op.status = 'success'
+      op.result = result
+    }
+  }
+
+  failOperation(id: string, error: Error) {
+    const op = this.operations.get(id)
+    if (op) {
+      op.endTime = Date.now()
+      op.status = 'error'
+      op.error = error
+    }
+  }
+
+  async track<T>(name: string, fn: () => Promise<T>): Promise<[Error | null, T | null]> {
+    const id = this.startOperation(name)
+    const previousParent = this.currentParentId
+    this.currentParentId = id
+
+    try {
+      const result = await fn()
+      this.completeOperation(id, result)
+      return [null, result]
+    } catch (e) {
+      const error = e instanceof Error ? e : new Error(String(e))
+      this.failOperation(id, error)
+      return [error, null]
+    } finally {
+      this.currentParentId = previousParent
+    }
+  }
+
+  getReport(): {
+    total: number
+    success: number
+    failed: number
+    pending: number
+    avgDuration: number
+    failedOperations: TrackedOperation<any>[]
+  } {
+    const ops = Array.from(this.operations.values())
+    const completed = ops.filter(o => o.endTime)
+    const durations = completed.map(o => o.endTime! - o.startTime)
+
+    return {
+      total: ops.length,
+      success: ops.filter(o => o.status === 'success').length,
+      failed: ops.filter(o => o.status === 'error').length,
+      pending: ops.filter(o => o.status === 'pending').length,
+      avgDuration: durations.length > 0
+        ? durations.reduce((a, b) => a + b, 0) / durations.length
+        : 0,
+      failedOperations: ops.filter(o => o.status === 'error')
+    }
+  }
+
+  clear() {
+    this.operations.clear()
+  }
+}
+
+// 全局追踪器
+const tracker = new OperationTracker()
+
+// 使用
+const [err1, user] = await tracker.track('获取用户', () => fetchUser(id))
+if (err1) return
+
+const [err2, orders] = await tracker.track('获取订单', () => fetchOrders(user.id))
+if (err2) return
+
+const [err3, result] = await tracker.track('处理订单', () => processOrders(orders))
+if (err3) {
+  // 查看完整报告
+  const report = tracker.getReport()
+  console.log('操作报告:', report)
+  console.log('失败的操作:', report.failedOperations)
+  return
+}
+```

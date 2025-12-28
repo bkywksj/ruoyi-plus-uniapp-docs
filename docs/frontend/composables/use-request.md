@@ -972,3 +972,119 @@ export function useRequestQueue(maxConcurrent = 6) {
 ```
 
 useRequest组合函数为Vue3应用提供了完整的HTTP请求管理解决方案，支持缓存、重试、轮询、分页、无限滚动等各种复杂场景。
+
+## ❓ 常见问题
+
+### 1. 组件卸载后请求仍在执行导致警告
+
+**问题描述：** 组件卸载后，异步请求返回时尝试更新状态，控制台出现 "Cannot update a component that was unmounted" 警告。
+
+**问题原因：**
+- 请求发出后，用户快速切换页面导致组件卸载
+- 请求完成时组件已不存在，但回调仍尝试更新响应式状态
+
+**解决方案：**
+
+```typescript
+// ✅ useRequest 内部已处理：通过 requestId 机制取消过期请求
+const { data, loading, run } = useRequest(fetchData, {
+  // 组件卸载时自动取消请求
+  // onUnmounted 中会调用 cancel() 方法
+})
+
+// ✅ 手动处理：在组件卸载前主动取消
+const { cancel } = useRequest(fetchData)
+
+onBeforeUnmount(() => {
+  cancel() // 取消所有进行中的请求
+})
+
+// ✅ 使用 immediate: false 避免组件初始化时的竞态
+const { run } = useRequest(fetchData, {
+  immediate: false,
+  manual: true
+})
+
+onMounted(() => {
+  // 确保组件已挂载后再发起请求
+  run()
+})
+```
+
+### 2. 缓存数据不更新
+
+**问题描述：** 设置了 `cacheKey` 后，即使数据已变化，页面仍显示旧的缓存数据。
+
+**问题原因：**
+- `staleTime` 设置过长，数据在过期时间内不会重新请求
+- `cacheTime` 设置过长，缓存数据长时间有效
+- 未正确配置动态缓存键，导致不同参数共用同一缓存
+
+**解决方案：**
+
+```typescript
+// ✅ 合理配置缓存时间
+const { data, refresh } = useRequest(fetchUserList, {
+  cacheKey: 'userList',
+  cacheTime: 5 * 60 * 1000,  // 缓存5分钟
+  staleTime: 30 * 1000,      // 30秒后视为过期，会重新请求
+})
+
+// ✅ 使用动态缓存键区分不同参数
+const { data } = useRequest(
+  (id: number) => fetchUser(id),
+  {
+    getCacheKey: (id) => `user_${id}`, // 每个用户ID独立缓存
+    cacheTime: 60 * 1000,
+  }
+)
+
+// ✅ 手动刷新强制更新数据
+const handleRefresh = () => {
+  refresh() // 忽略缓存，强制重新请求
+}
+
+// ✅ 数据变更后清除相关缓存
+const { mutate } = useRequest(fetchData, { cacheKey: 'myData' })
+// 更新数据后手动设置新值
+mutate(newData)
+```
+
+### 3. 轮询请求在页面隐藏时仍在执行
+
+**问题描述：** 设置了 `pollingInterval` 后，即使用户切换到其他标签页，请求仍在持续发送，浪费资源。
+
+**问题原因：**
+- 默认情况下轮询不会检测页面可见性
+- 未配置 `pollingWhenHidden: false`
+
+**解决方案：**
+
+```typescript
+// ✅ 配置页面隐藏时停止轮询
+const { data, startPolling, clearPolling } = useRequest(fetchStatus, {
+  pollingInterval: 5000,       // 5秒轮询一次
+  pollingWhenHidden: false,    // 页面隐藏时停止轮询
+  pollingWhenOffline: false,   // 网络断开时停止轮询
+})
+
+// ✅ 手动控制轮询开关
+const isPolling = ref(true)
+
+watch(isPolling, (val) => {
+  if (val) {
+    startPolling()
+  } else {
+    clearPolling()
+  }
+})
+
+// ✅ 结合页面生命周期控制
+onActivated(() => {
+  startPolling() // 页面激活时开始轮询
+})
+
+onDeactivated(() => {
+  clearPolling() // 页面失活时停止轮询
+})
+```

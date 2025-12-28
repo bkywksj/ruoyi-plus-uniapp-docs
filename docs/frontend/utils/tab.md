@@ -865,3 +865,364 @@ const safeTabOperation = async (operation: () => Promise<any>, operationName: st
 3. **缓存策略**：合理设置页面缓存，避免内存泄漏
 4. **性能考虑**：限制同时打开的标签页数量
 5. **用户体验**：提供合适的加载状态和错误提示
+
+## 常见问题
+
+### 1. 页面刷新后标签页数据丢失
+
+**问题描述:** 刷新浏览器后，之前打开的标签页全部消失
+
+**问题原因:**
+
+- 标签页状态存储在内存中（Pinia Store）
+- 页面刷新后 Pinia 状态会重置
+- 未实现持久化存储机制
+
+**解决方案:**
+
+```typescript
+// 在 TagsViewStore 中添加持久化支持
+import { defineStore } from 'pinia'
+
+export const useTagsViewStore = defineStore('tagsView', {
+  state: () => ({
+    visitedViews: [] as RouteLocationNormalized[],
+    cachedViews: [] as string[]
+  }),
+
+  actions: {
+    // 初始化时从 localStorage 恢复
+    initFromStorage() {
+      try {
+        const saved = localStorage.getItem('tagsView')
+        if (saved) {
+          const data = JSON.parse(saved)
+          // 验证数据有效期（如24小时）
+          if (Date.now() - data.timestamp < 24 * 60 * 60 * 1000) {
+            this.visitedViews = data.visitedViews || []
+            this.cachedViews = data.cachedViews || []
+          }
+        }
+      } catch (e) {
+        console.warn('恢复标签页失败:', e)
+      }
+    },
+
+    // 保存到 localStorage
+    saveToStorage() {
+      const data = {
+        visitedViews: this.visitedViews.map(v => ({
+          path: v.path,
+          fullPath: v.fullPath,
+          name: v.name,
+          meta: v.meta,
+          query: v.query
+        })),
+        cachedViews: this.cachedViews,
+        timestamp: Date.now()
+      }
+      localStorage.setItem('tagsView', JSON.stringify(data))
+    }
+  }
+})
+
+// 在 App.vue 中初始化
+onMounted(() => {
+  const tagsViewStore = useTagsViewStore()
+  tagsViewStore.initFromStorage()
+})
+
+// 监听变化自动保存
+watch(
+  () => tagsViewStore.visitedViews,
+  () => tagsViewStore.saveToStorage(),
+  { deep: true }
+)
+```
+
+### 2. refreshPage 刷新无效
+
+**问题描述:** 调用 `refreshPage()` 后页面内容未更新
+
+**问题原因:**
+
+- 组件未设置 `name` 属性，导致无法正确从缓存中移除
+- keep-alive 的 `include` 配置与组件名不匹配
+- redirect 路由未正确配置
+
+**解决方案:**
+
+```typescript
+// 1. 确保组件有正确的 name
+// UserList.vue
+<script lang="ts">
+export default {
+  name: 'UserList'  // 必须与路由配置的 name 一致
+}
+</script>
+
+<script lang="ts" setup>
+// setup 代码
+</script>
+
+// 2. 确保路由配置正确
+{
+  path: '/system/user',
+  name: 'UserList',  // 与组件 name 一致
+  component: () => import('@/views/system/user/index.vue'),
+  meta: { title: '用户管理', noCache: false }
+}
+
+// 3. 确保 redirect 路由存在
+{
+  path: '/redirect/:path(.*)',
+  component: () => import('@/views/redirect/index.vue'),
+  hidden: true
+}
+
+// 4. redirect 组件实现
+// views/redirect/index.vue
+<script lang="ts" setup>
+import { onBeforeMount } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+
+onBeforeMount(() => {
+  const { params, query } = route
+  const { path } = params
+  router.replace({ path: '/' + path, query })
+})
+</script>
+```
+
+### 3. closePage 后跳转到错误页面
+
+**问题描述:** 关闭当前标签页后，没有正确跳转到上一个标签页
+
+**问题原因:**
+
+- 关闭后未处理跳转逻辑
+- 标签页列表为空时未跳转到默认页面
+
+**解决方案:**
+
+```typescript
+// ❌ 错误：直接关闭不处理跳转
+await closePage()
+
+// ✅ 正确：关闭后智能跳转
+const smartClosePage = async (targetRoute?: RouteLocationNormalized) => {
+  const route = targetRoute || useRoute()
+  const router = useRouter()
+  const tagsViewStore = useTagsViewStore()
+
+  // 获取当前页面在列表中的索引
+  const index = tagsViewStore.visitedViews.findIndex(
+    v => v.path === route.path
+  )
+
+  // 关闭页面
+  const { visitedViews } = await closePage(route)
+
+  // 智能跳转
+  if (visitedViews.length === 0) {
+    // 没有其他标签页，跳转首页
+    await router.push('/dashboard')
+  } else if (route.path === useRoute().path) {
+    // 关闭的是当前页面，需要跳转
+    // 优先跳转到右边的标签页，否则跳转左边
+    const targetIndex = Math.min(index, visitedViews.length - 1)
+    const targetView = visitedViews[targetIndex]
+    await router.push(targetView.fullPath)
+  }
+}
+
+// 使用
+await smartClosePage()
+```
+
+### 4. 标签页缓存导致数据不更新
+
+**问题描述:** 从列表页进入详情页编辑后返回，列表页数据未刷新
+
+**问题原因:**
+
+- keep-alive 缓存了列表页组件
+- 返回时使用了缓存的旧数据
+
+**解决方案:**
+
+```typescript
+// 方案1：使用 onActivated 钩子刷新数据
+// UserList.vue
+<script lang="ts" setup>
+import { onActivated } from 'vue'
+
+const loadData = async () => {
+  // 加载列表数据
+}
+
+// 组件激活时刷新数据
+onActivated(() => {
+  loadData()
+})
+</script>
+
+// 方案2：通过路由参数判断是否需要刷新
+// 编辑页保存后跳转
+closeOpenPage({
+  path: '/system/user',
+  query: { refresh: Date.now().toString() }
+})
+
+// 列表页监听
+watch(
+  () => route.query.refresh,
+  (newVal) => {
+    if (newVal) {
+      loadData()
+    }
+  }
+)
+
+// 方案3：关闭列表页缓存后再跳转
+const saveAndBack = async () => {
+  await saveData()
+
+  // 先删除列表页缓存
+  const tagsViewStore = useTagsViewStore()
+  tagsViewStore.delCachedView({ name: 'UserList' })
+
+  // 再跳转回列表页
+  closeOpenPage({ path: '/system/user' })
+}
+```
+
+### 5. 动态路由标签页显示异常
+
+**问题描述:** 同一个路由不同参数打开多个标签页时显示混乱
+
+**问题原因:**
+
+- 动态路由使用相同的 `path`，导致标签页去重
+- 标签页 title 显示相同
+
+**解决方案:**
+
+```typescript
+// 1. 使用 fullPath 作为标签页唯一标识
+// TagsView.vue
+<el-tag
+  v-for="tag in visitedViews"
+  :key="tag.fullPath"  // 使用 fullPath 而非 path
+  :class="{ active: isActive(tag) }"
+>
+  {{ tag.meta?.title }}
+</el-tag>
+
+// 2. 动态设置标签页标题
+// UserDetail.vue
+<script lang="ts" setup>
+import { watch } from 'vue'
+import { useRoute } from 'vue-router'
+
+const route = useRoute()
+
+// 根据数据动态更新标题
+watch(
+  () => route.params.id,
+  async (id) => {
+    const user = await fetchUser(id)
+    // 更新标签页标题
+    await updatePage({
+      ...route,
+      meta: {
+        ...route.meta,
+        title: `用户详情 - ${user.name}`
+      }
+    })
+  },
+  { immediate: true }
+)
+</script>
+
+// 3. 路由配置支持动态标题
+{
+  path: '/system/user/:id',
+  name: 'UserDetail',
+  component: () => import('@/views/system/user/detail.vue'),
+  meta: {
+    title: '用户详情',
+    activeMenu: '/system/user',
+    noCache: true  // 动态路由建议不缓存
+  }
+}
+```
+
+### 6. 标签页过多导致性能问题
+
+**问题描述:** 打开大量标签页后，页面响应变慢，内存占用高
+
+**问题原因:**
+
+- keep-alive 缓存了过多组件实例
+- 每个缓存的组件都占用内存
+- DOM 节点过多影响渲染性能
+
+**解决方案:**
+
+```typescript
+// 1. 限制缓存数量
+// App.vue
+<router-view v-slot="{ Component }">
+  <keep-alive :max="10" :include="cachedViews">
+    <component :is="Component" :key="route.fullPath" />
+  </keep-alive>
+</router-view>
+
+// 2. 智能清理机制
+class TabsMemoryManager {
+  private maxTabs = 15
+  private checkInterval = 5 * 60 * 1000 // 5分钟检查一次
+
+  constructor() {
+    this.startMonitoring()
+  }
+
+  startMonitoring() {
+    setInterval(() => this.checkMemory(), this.checkInterval)
+  }
+
+  async checkMemory() {
+    const tagsStore = useTagsViewStore()
+
+    if (tagsStore.visitedViews.length > this.maxTabs) {
+      // 获取最久未访问的标签页
+      const sortedViews = [...tagsStore.visitedViews]
+        .filter(v => !v.meta?.affix) // 排除固定标签
+        .sort((a, b) =>
+          (a.meta?.lastVisited || 0) - (b.meta?.lastVisited || 0)
+        )
+
+      // 关闭最久未访问的标签页
+      const toClose = sortedViews.slice(0, sortedViews.length - this.maxTabs + 5)
+      for (const view of toClose) {
+        await closePage(view)
+      }
+
+      ElMessage.info(`已自动清理 ${toClose.length} 个闲置标签页`)
+    }
+  }
+}
+
+// 3. 记录标签页访问时间
+router.afterEach((to) => {
+  const tagsStore = useTagsViewStore()
+  const view = tagsStore.visitedViews.find(v => v.path === to.path)
+  if (view) {
+    view.meta = { ...view.meta, lastVisited: Date.now() }
+  }
+})
+```

@@ -806,6 +806,636 @@ const handleSubmit = async () => {
 <AFormSelect v-model="form.status" dict-type="sys_normal_disable" />
 ```
 
+### 7. 表单重置后值没有清空
+
+**问题:** 调用 `resetFields()` 后，表单字段值没有被清空。
+
+**原因:** 表单字段的初始值不是空值，`resetFields()` 会将字段重置为初始值而不是清空。
+
+**解决:**
+
+```vue
+<template>
+  <el-form :model="form" ref="formRef">
+    <AFormInput v-model="form.userName" label="用户名" prop="userName" />
+    <AFormInput v-model="form.email" label="邮箱" prop="email" />
+    <el-button @click="handleReset">重置</el-button>
+  </el-form>
+</template>
+
+<script setup lang="ts">
+import type { FormInstance } from 'element-plus'
+
+const formRef = ref<FormInstance>()
+
+// ❌ 错误：表单在编辑时已有初始值，重置只会恢复到这些值
+const form = reactive({
+  userName: 'admin',  // 重置后仍为 'admin'
+  email: 'admin@example.com'  // 重置后仍为 'admin@example.com'
+})
+
+// ✅ 正确方案1：定义空初始值
+const initForm = () => ({
+  userName: '',
+  email: ''
+})
+
+const form = reactive(initForm())
+
+// 完全重置表单
+const handleReset = () => {
+  formRef.value?.resetFields()
+  Object.assign(form, initForm())
+}
+
+// ✅ 正确方案2：区分新增和编辑模式
+const isEdit = ref(false)
+const originalData = ref({})
+
+const handleEdit = async (userId: string) => {
+  isEdit.value = true
+  const data = await getUserInfo(userId)
+  Object.assign(form, data)
+  originalData.value = { ...data }
+}
+
+const handleReset = () => {
+  if (isEdit.value) {
+    // 编辑模式：重置为原始数据
+    Object.assign(form, originalData.value)
+  } else {
+    // 新增模式：清空表单
+    formRef.value?.resetFields()
+  }
+}
+</script>
+```
+
+### 8. 级联选择器显示 ID 而不是标签
+
+**问题:** 级联选择器选中后，输入框中显示的是 value 值而不是 label 标签。
+
+**原因:** 选项数据的 `label` 和 `value` 字段名配置错误，或者选项数据为异步加载但回显时数据还未加载完成。
+
+**解决:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- ❌ 错误：字段名不匹配 -->
+    <AFormCascader
+      v-model="form.region"
+      label="地区"
+      :options="regionOptions"
+    />
+
+    <!-- ✅ 正确：配置正确的字段名 -->
+    <AFormCascader
+      v-model="form.region"
+      label="地区"
+      :options="regionOptions"
+      :props="{
+        label: 'name',
+        value: 'id',
+        children: 'subList'
+      }"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+// 数据格式不一致时需要配置 props
+const regionOptions = ref([
+  {
+    id: '330000',      // value 字段
+    name: '浙江省',    // label 字段
+    subList: [         // children 字段
+      {
+        id: '330100',
+        name: '杭州市',
+        subList: []
+      }
+    ]
+  }
+])
+
+// ✅ 异步加载时确保数据加载完成后再设置值
+const loadRegionOptions = async () => {
+  regionOptions.value = await getRegionTree()
+}
+
+const handleEdit = async (id: string) => {
+  // 先加载选项数据
+  await loadRegionOptions()
+  // 再设置表单值
+  const data = await getDetail(id)
+  form.region = data.region
+}
+
+// ❌ 错误：同时加载，可能数据未加载完成
+const handleEditWrong = async (id: string) => {
+  const [_, data] = await Promise.all([
+    loadRegionOptions(),
+    getDetail(id)
+  ])
+  form.region = data.region  // 此时选项可能未加载完成
+}
+</script>
+```
+
+### 9. 日期选择器时区问题
+
+**问题:** 日期选择器选择的日期与服务器保存的日期不一致，相差一天或几小时。
+
+**原因:** 前端选择的是本地时间，后端接收的是 UTC 时间，或者 `value-format` 配置不正确。
+
+**解决:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- ❌ 错误：不指定 value-format，默认返回 Date 对象 -->
+    <AFormDate v-model="form.birthday" label="生日" type="date" />
+
+    <!-- ✅ 正确：明确指定 value-format -->
+    <AFormDate
+      v-model="form.birthday"
+      label="生日"
+      type="date"
+      value-format="YYYY-MM-DD"
+    />
+
+    <!-- ✅ 日期时间格式 -->
+    <AFormDate
+      v-model="form.createTime"
+      label="创建时间"
+      type="datetime"
+      value-format="YYYY-MM-DD HH:mm:ss"
+    />
+
+    <!-- ✅ 日期范围格式 -->
+    <AFormDate
+      v-model="form.dateRange"
+      label="日期范围"
+      type="daterange"
+      value-format="YYYY-MM-DD"
+      start-placeholder="开始日期"
+      end-placeholder="结束日期"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+// ✅ 处理日期范围参数
+const handleQuery = () => {
+  const params: any = { ...form }
+
+  if (form.dateRange && form.dateRange.length === 2) {
+    // 将日期范围转换为 beginTime 和 endTime
+    params.beginTime = form.dateRange[0]
+    params.endTime = form.dateRange[1]
+    delete params.dateRange
+  }
+
+  return params
+}
+
+// ✅ 回显日期范围
+const handleEdit = async (id: string) => {
+  const data = await getDetail(id)
+  Object.assign(form, data)
+
+  // 如果后端返回 beginTime 和 endTime，需要转换为数组
+  if (data.beginTime && data.endTime) {
+    form.dateRange = [data.beginTime, data.endTime]
+  }
+}
+</script>
+```
+
+### 10. 文件上传进度不显示或上传失败
+
+**问题:** 文件上传时进度条不显示，或者上传成功但显示失败。
+
+**原因:** 上传接口返回格式与组件预期不一致，或者没有正确配置上传相关属性。
+
+**解决:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- ❌ 错误：未配置必要属性 -->
+    <AFormFileUpload v-model="form.file" label="附件" />
+
+    <!-- ✅ 正确：完整配置 -->
+    <AFormFileUpload
+      v-model="form.file"
+      label="附件"
+      :action="uploadAction"
+      :headers="uploadHeaders"
+      :limit="5"
+      :file-size="10"
+      accept=".pdf,.doc,.docx,.xls,.xlsx"
+      :on-success="handleUploadSuccess"
+      :on-error="handleUploadError"
+      :on-progress="handleUploadProgress"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+import { getToken } from '@/utils/auth'
+
+// 上传地址
+const uploadAction = `${import.meta.env.VITE_API_BASE_URL}/common/upload`
+
+// 上传请求头（需要携带 token）
+const uploadHeaders = computed(() => ({
+  Authorization: `Bearer ${getToken()}`
+}))
+
+// 上传成功回调
+const handleUploadSuccess = (response: any, file: any, fileList: any) => {
+  if (response.code === 200) {
+    // 根据后端返回格式获取文件 URL
+    form.file = response.data.url || response.data.fileName
+    ElMessage.success('上传成功')
+  } else {
+    ElMessage.error(response.msg || '上传失败')
+  }
+}
+
+// 上传失败回调
+const handleUploadError = (error: any, file: any, fileList: any) => {
+  console.error('上传失败:', error)
+  ElMessage.error('上传失败，请重试')
+}
+
+// 上传进度回调
+const handleUploadProgress = (event: any, file: any, fileList: any) => {
+  console.log(`上传进度: ${Math.round(event.percent)}%`)
+}
+
+// ✅ 处理后端返回格式差异
+const normalizeFileResponse = (response: any) => {
+  // 不同后端返回格式可能不同
+  // 格式1: { code: 200, data: { url: 'xxx', fileName: 'xxx' } }
+  // 格式2: { code: 200, url: 'xxx', fileName: 'xxx' }
+  // 格式3: { code: 200, data: 'xxx' }
+
+  if (response.data?.url) return response.data.url
+  if (response.url) return response.url
+  if (typeof response.data === 'string') return response.data
+  return ''
+}
+</script>
+```
+
+### 11. 富文本编辑器内容获取异常
+
+**问题:** 富文本编辑器的内容无法正确获取或提交，或者内容回显不正确。
+
+**原因:** 富文本编辑器的初始化时机问题，或者内容格式处理不正确。
+
+**解决:**
+
+```vue
+<template>
+  <el-form :model="form" ref="formRef">
+    <!-- ❌ 错误：直接使用，可能有初始化时机问题 -->
+    <AFormEditor v-model="form.content" label="内容" />
+
+    <!-- ✅ 正确：确保编辑器准备就绪 -->
+    <AFormEditor
+      v-model="form.content"
+      label="内容"
+      :height="400"
+      @ready="handleEditorReady"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+const editorReady = ref(false)
+
+const handleEditorReady = () => {
+  editorReady.value = true
+}
+
+// ✅ 编辑模式：确保编辑器初始化完成后再设置内容
+const handleEdit = async (id: string) => {
+  const data = await getDetail(id)
+
+  // 等待编辑器准备就绪
+  if (!editorReady.value) {
+    await new Promise(resolve => {
+      const unwatch = watch(editorReady, (ready) => {
+        if (ready) {
+          unwatch()
+          resolve(true)
+        }
+      })
+    })
+  }
+
+  // 设置内容
+  form.content = data.content
+}
+
+// ✅ 提交前处理内容
+const handleSubmit = async () => {
+  await formRef.value?.validate()
+
+  // 处理富文本内容
+  const submitData = {
+    ...form,
+    // 去除多余空白
+    content: form.content?.trim() || ''
+  }
+
+  // 检查内容是否为空（富文本可能包含空标签）
+  const tempDiv = document.createElement('div')
+  tempDiv.innerHTML = submitData.content
+  const textContent = tempDiv.textContent?.trim()
+
+  if (!textContent) {
+    ElMessage.warning('请输入内容')
+    return
+  }
+
+  await saveData(submitData)
+}
+
+// ✅ 内容安全处理（防止 XSS）
+const sanitizeContent = (html: string) => {
+  // 使用 DOMPurify 或类似库处理
+  return DOMPurify.sanitize(html, {
+    ALLOWED_TAGS: ['p', 'br', 'strong', 'em', 'u', 'h1', 'h2', 'h3', 'ul', 'ol', 'li', 'a', 'img'],
+    ALLOWED_ATTR: ['href', 'src', 'alt', 'title']
+  })
+}
+</script>
+```
+
+### 12. 多选模式下选中值被意外清空
+
+**问题:** 多选下拉框或多选复选框的选中值在某些操作后被意外清空。
+
+**原因:** 选项数据变化时导致已选值失效，或者响应式数据处理不当。
+
+**解决:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- ❌ 错误：选项更新可能清空已选值 -->
+    <AFormSelect
+      v-model="form.roleIds"
+      label="角色"
+      multiple
+      :options="roleOptions"
+    />
+
+    <!-- ✅ 正确：使用 value-key 确保值匹配 -->
+    <AFormSelect
+      v-model="form.roleIds"
+      label="角色"
+      multiple
+      :options="roleOptions"
+      value-key="value"
+      :reserve-keyword="true"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+// ❌ 错误：直接替换数组引用
+const updateRoleOptions = async () => {
+  roleOptions.value = await getRoleList()  // 整个数组被替换
+}
+
+// ✅ 正确：保持选项稳定性
+const updateRoleOptions = async () => {
+  const newOptions = await getRoleList()
+
+  // 保留已存在的选项，只添加新选项
+  const existingValues = new Set(roleOptions.value.map(o => o.value))
+  const addedOptions = newOptions.filter(o => !existingValues.has(o.value))
+
+  roleOptions.value.push(...addedOptions)
+}
+
+// ✅ 处理选项数据变化时保留已选值
+const handleOptionsChange = (newOptions: any[]) => {
+  // 过滤出仍然有效的已选值
+  const validValues = new Set(newOptions.map(o => o.value))
+  const currentValues = form.roleIds || []
+
+  // 只保留在新选项中存在的值
+  form.roleIds = currentValues.filter(v => validValues.has(v))
+}
+
+// ✅ 多选值的深度监听
+watch(
+  () => form.roleIds,
+  (newVal, oldVal) => {
+    console.log('角色选择变化:', oldVal, '->', newVal)
+  },
+  { deep: true }
+)
+
+// ✅ 正确初始化多选值
+const initForm = () => ({
+  roleIds: [] as string[]  // 明确类型为数组
+})
+
+const form = reactive(initForm())
+
+// 编辑时确保已选值是数组
+const handleEdit = async (id: string) => {
+  const data = await getDetail(id)
+  Object.assign(form, {
+    ...data,
+    // 确保 roleIds 是数组
+    roleIds: Array.isArray(data.roleIds) ? data.roleIds : []
+  })
+}
+</script>
+```
+
+### 13. 树形选择器节点无法展开或选择
+
+**问题:** 树形选择器的节点无法展开，或者选择后值不正确。
+
+**原因:** 树形数据的 `nodeKey` 或 `props` 配置错误，或者数据结构不符合组件要求。
+
+**解决:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- ❌ 错误：配置不完整 -->
+    <AFormTreeSelect
+      v-model="form.deptId"
+      label="部门"
+      :data="deptTree"
+    />
+
+    <!-- ✅ 正确：完整配置 -->
+    <AFormTreeSelect
+      v-model="form.deptId"
+      label="部门"
+      :data="deptTree"
+      node-key="id"
+      :props="{
+        label: 'name',
+        children: 'children',
+        disabled: 'disabled'
+      }"
+      :default-expand-all="false"
+      :expand-on-click-node="false"
+      check-strictly
+      filterable
+      :filter-node-method="filterNode"
+    />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+// ✅ 正确的树形数据结构
+interface TreeNode {
+  id: string | number
+  name: string
+  children?: TreeNode[]
+  disabled?: boolean
+}
+
+const deptTree = ref<TreeNode[]>([])
+
+// ✅ 加载树形数据
+const loadDeptTree = async () => {
+  const data = await getDeptTree()
+  deptTree.value = normalizeTree(data)
+}
+
+// ✅ 标准化树形数据
+const normalizeTree = (data: any[]): TreeNode[] => {
+  return data.map(item => ({
+    id: item.deptId || item.id,
+    name: item.deptName || item.name || item.label,
+    disabled: item.status === '1',  // 停用状态禁止选择
+    children: item.children ? normalizeTree(item.children) : undefined
+  }))
+}
+
+// ✅ 过滤节点方法
+const filterNode = (value: string, data: TreeNode) => {
+  if (!value) return true
+  return data.name.includes(value)
+}
+
+// ✅ 获取选中节点的完整路径
+const getSelectedPath = (nodeId: string | number) => {
+  const path: string[] = []
+
+  const findPath = (nodes: TreeNode[], targetId: string | number): boolean => {
+    for (const node of nodes) {
+      if (node.id === targetId) {
+        path.push(node.name)
+        return true
+      }
+      if (node.children && findPath(node.children, targetId)) {
+        path.unshift(node.name)
+        return true
+      }
+    }
+    return false
+  }
+
+  findPath(deptTree.value, nodeId)
+  return path.join(' / ')
+}
+</script>
+```
+
+### 14. 表单提交时数据类型不匹配
+
+**问题:** 表单提交后后端报错，提示数据类型不匹配（如期望数字但收到字符串）。
+
+**原因:** 表单组件绑定的值类型与后端接口期望的类型不一致。
+
+**解决:**
+
+```vue
+<template>
+  <el-form :model="form">
+    <!-- 数字类型字段 -->
+    <AFormInput v-model="form.age" label="年龄" type="number" />
+
+    <!-- 开关类型字段 -->
+    <AFormSwitch v-model="form.status" label="状态" :active-value="0" :inactive-value="1" />
+
+    <!-- 多选字段 -->
+    <AFormSelect v-model="form.roleIds" label="角色" multiple :options="roleOptions" />
+  </el-form>
+</template>
+
+<script setup lang="ts">
+// ✅ 定义表单接口，明确类型
+interface FormData {
+  age: number | null
+  status: number
+  roleIds: number[]
+  amount: number
+  enabled: boolean
+}
+
+const form = reactive<FormData>({
+  age: null,
+  status: 0,
+  roleIds: [],
+  amount: 0,
+  enabled: true
+})
+
+// ✅ 提交前转换数据类型
+const handleSubmit = async () => {
+  await formRef.value?.validate()
+
+  // 转换数据类型
+  const submitData = {
+    ...form,
+    // 确保数字类型
+    age: form.age ? Number(form.age) : null,
+    amount: Number(form.amount) || 0,
+    // 确保布尔转数字（如果后端期望 0/1）
+    enabled: form.enabled ? 1 : 0,
+    // 确保数组中的元素是正确类型
+    roleIds: form.roleIds.map(id => Number(id))
+  }
+
+  await saveData(submitData)
+}
+
+// ✅ 回显时转换类型
+const handleEdit = async (id: string) => {
+  const data = await getDetail(id)
+
+  Object.assign(form, {
+    ...data,
+    // 后端返回字符串，转为数字
+    age: data.age ? Number(data.age) : null,
+    // 后端返回 0/1，转为布尔
+    enabled: data.enabled === 1 || data.enabled === '1',
+    // 确保是数组
+    roleIds: Array.isArray(data.roleIds)
+      ? data.roleIds.map((id: any) => Number(id))
+      : []
+  })
+}
+</script>
+```
+
 ---
 
 ## 总结

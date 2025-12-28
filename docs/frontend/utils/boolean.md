@@ -923,3 +923,158 @@ console.log(processedUser)
 3. **默认值处理**：为undefined或null的布尔值设置合理的默认值
 4. **性能考虑**：频繁的类型转换可能影响性能，考虑缓存或批量处理
 5. **调试友好**：在开发环境下记录布尔值转换的日志，便于调试
+
+## 常见问题
+
+### 1. 数字2被判断为假值
+
+**问题描述:** 使用 `isTrue(2)` 返回 `false`，但期望非零数字都是真值
+
+**问题原因:**
+
+- `isTrue` 函数只将数字 `1` 视为真值
+- 设计目的是严格匹配常见的布尔表示形式
+
+**解决方案:**
+
+```typescript
+// ❌ 错误：期望任意非零数字为真
+isTrue(2)      // false
+isTrue(100)    // false
+
+// ✅ 正确：先转换为布尔值再判断
+const isNonZero = (value: number) => value !== 0
+
+// 或者扩展判断逻辑
+const isTrueExtended = (value: any): boolean => {
+  // 对于数字类型，非零即为真
+  if (typeof value === 'number') {
+    return value !== 0
+  }
+  // 其他类型使用标准判断
+  return isTrue(value)
+}
+
+isTrueExtended(2)    // true
+isTrueExtended(0)    // false
+isTrueExtended(-1)   // true
+```
+
+### 2. 字符串大小写敏感问题
+
+**问题描述:** `isTrue('TRUE')` 和 `isTrue('True')` 结果不一致
+
+**问题原因:**
+
+- 工具函数已支持常见大小写变体
+- 但某些非标准格式可能不被识别
+
+**解决方案:**
+
+```typescript
+// 已支持的格式
+isTrue('true')   // true
+isTrue('TRUE')   // true
+isTrue('True')   // true
+isTrue('yes')    // true
+isTrue('YES')    // true
+isTrue('Yes')    // true
+
+// 如果遇到不支持的格式，先统一转换
+const normalizeAndCheck = (value: string): boolean => {
+  if (typeof value === 'string') {
+    return isTrue(value.toLowerCase())
+  }
+  return isTrue(value)
+}
+
+// 或者在使用前统一预处理
+const preprocessValue = (value: any): any => {
+  if (typeof value === 'string') {
+    return value.toLowerCase().trim()
+  }
+  return value
+}
+
+isTrue(preprocessValue('  TRUE  '))  // true
+isTrue(preprocessValue('  Yes  '))   // true
+```
+
+### 3. API返回值类型不匹配
+
+**问题描述:** 后端返回 `"1"` 字符串，但前端期望布尔值进行条件判断
+
+**问题原因:**
+
+- 后端通常返回字符串格式的布尔值
+- 前端直接使用字符串进行条件判断可能出错
+
+**解决方案:**
+
+```typescript
+// ❌ 错误：字符串 "0" 在 JavaScript 中是真值
+const apiResponse = { enabled: "0" }
+if (apiResponse.enabled) {
+  console.log('已启用')  // 会输出，因为 "0" 是非空字符串
+}
+
+// ✅ 正确：使用 toBool 转换后判断
+const apiResponse = { enabled: "0" }
+if (toBool(apiResponse.enabled)) {
+  console.log('已启用')  // 不会输出
+}
+
+// ✅ 推荐：在数据层统一转换
+interface ApiResponse {
+  enabled: string  // API返回 "1" 或 "0"
+}
+
+interface ProcessedData {
+  enabled: boolean
+}
+
+const processApiResponse = (data: ApiResponse): ProcessedData => ({
+  enabled: toBool(data.enabled)
+})
+
+const rawData = { enabled: "1" }
+const processedData = processApiResponse(rawData)
+if (processedData.enabled) {
+  console.log('已启用')  // 正确判断
+}
+```
+
+### 4. toggleStatus 与原始值类型不一致
+
+**问题描述:** 使用 `toggleStatus` 后返回字符串，但原始值是布尔类型
+
+**问题原因:**
+
+- `toggleStatus` 始终返回字符串 `'1'` 或 `'0'`
+- 如果原始值是布尔类型，切换后类型会改变
+
+**解决方案:**
+
+```typescript
+// ❌ 问题：类型不一致
+let enabled = true
+enabled = toggleStatus(enabled)  // enabled 变成字符串 '0'
+console.log(typeof enabled)       // 'string'
+
+// ✅ 方案1：使用 toBool 转回布尔类型
+let enabled = true
+enabled = toBool(toggleStatus(enabled))  // false (布尔值)
+
+// ✅ 方案2：创建类型保持的切换函数
+const toggleBool = (value: boolean): boolean => {
+  return toBool(toggleStatus(value))
+}
+
+let enabled = true
+enabled = toggleBool(enabled)  // false (布尔值)
+enabled = toggleBool(enabled)  // true (布尔值)
+
+// ✅ 方案3：直接使用逻辑非
+let enabled = true
+enabled = !enabled  // false (布尔值)
+```
