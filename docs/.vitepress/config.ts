@@ -109,6 +109,7 @@ export default defineConfig({
                             ]
                         },
                         { text: 'Excel处理 (excel)', link: '/backend/common/excel' },
+                        { text: '文档模板 (doctemplate)', link: '/backend/common/doctemplate' },
                         { text: '幂等处理 (idempotent)', link: '/backend/common/idempotent' },
                         { text: '任务调度 (job)', link: '/backend/common/job' },
                         { text: 'JSON处理 (json)', link: '/backend/common/json' },

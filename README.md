@@ -114,6 +114,15 @@
 - 增加并实现代码生成表字段的默认值功能
 - 处理 Excel 导入更新实现和参数传递
 
+#### 文档模板系统
+
+- 新增 ruoyi-common-doctemplate 模块，基于 POI-TL 1.12.2 实现 Word 文档模板处理
+- 采用 Builder 模式设计，提供流畅的链式调用 API
+- 支持多种占位符语法：文本 `{{name}}`、对象属性 `{{obj.field}}`、图片 `{{@imgKey}}`、表格循环 `{{#tableKey}}`
+- 支持多种输入源：File、InputStream、byte[]、URL
+- 支持多种输出方式：byte[]、File、OutputStream
+- 适用于合同生成、报表导出、证书批量生成等业务场景
+
 ### 1.8 国际化系统
 
 #### 消息国际化

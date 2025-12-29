@@ -1,7 +1,7 @@
 # RuoYi-Plus-UniApp 文档进度清单
 
 > **最后更新**: 2025-12-29
-> **整体完成度**: 100% (497/497)
+> **整体完成度**: 100% (498/498)
 > **总行数**: 762,000+ 行
 >
 > 按照 `config.ts` 导航顺序整理，用于复查和维护
@@ -14,13 +14,13 @@
 
 | 模块 | 总数 | 已完成 | 完成率 |
 |------|------|--------|--------|
-| 后端文档 | 97 | 97 | **100%** |
+| 后端文档 | 98 | 98 | **100%** |
 | 前端文档 | 141 | 141 | **100%** |
 | 移动端文档 | 129 | 129 | **100%** |
 | WD 组件库 | 83 | 83 | **100%** |
 | 最佳实践 | 43 | 43 | **100%** |
 | 首页与其他 | 4 | 4 | **100%** |
-| **总计** | **497** | **497** | **100%** |
+| **总计** | **498** | **498** | **100%** |
 
 ---
 
@@ -85,6 +85,7 @@
 | 数据库字段加密 | `backend/common/encrypt/database-encryption.md` | ✅ |
 | API接口加密 | `backend/common/encrypt/api-encryption.md` | ✅ |
 | Excel处理 | `backend/common/excel.md` | ✅ |
+| 文档模板 (doctemplate) | `backend/common/doctemplate.md` | ✅ |
 | 幂等处理 | `backend/common/idempotent.md` | ✅ |
 | 任务调度 (job) | `backend/common/job.md` | ✅ |
 | JSON处理 | `backend/common/json.md` | ✅ |

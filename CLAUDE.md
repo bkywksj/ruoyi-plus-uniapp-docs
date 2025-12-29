@@ -134,13 +134,14 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 
 ### 后端模块详细结构
 
-#### ruoyi-common 通用模块 (31个子模块)
+#### ruoyi-common 通用模块 (32个子模块)
 
 | 模块名称 | 说明 |
 |---------|------|
 | `ruoyi-common-bom` | 依赖版本管理(BOM) |
 | `ruoyi-common-core` | 核心工具类、基础配置 |
 | `ruoyi-common-doc` | 接口文档配置(SpringDoc) |
+| `ruoyi-common-doctemplate` | Word文档模板(POI-TL) |
 | `ruoyi-common-encrypt` | 数据加密模块 |
 | `ruoyi-common-excel` | Excel导入导出(FastExcel) |
 | `ruoyi-common-http` | HTTP客户端(Forest) |
