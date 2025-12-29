@@ -704,7 +704,7 @@ ignore: {
 
 将 `.generated.ts` 文件添加到 `.gitignore`：
 
-```gitignore
+```txt
 # OpenAPI 生成的备份文件
 **/*.generated.ts
 ```

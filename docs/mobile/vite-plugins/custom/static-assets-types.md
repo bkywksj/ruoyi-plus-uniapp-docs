@@ -738,7 +738,7 @@ interface ComponentProps {
 
 将生成的类型文件纳入版本控制：
 
-```gitignore
+```txt
 # 不要忽略这个文件，应该提交到仓库
 # src/types/static-assets.d.ts
 ```

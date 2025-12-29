@@ -1050,7 +1050,7 @@ src/nativeResources/
 
 对于较大的原生库文件，使用 Git LFS 管理：
 
-```gitattributes
+```txt
 # .gitattributes
 src/nativeResources/**/*.aar filter=lfs diff=lfs merge=lfs -text
 src/nativeResources/**/*.framework/** filter=lfs diff=lfs merge=lfs -text
@@ -1084,7 +1084,7 @@ const configFile = `app.${env === 'production' ? 'prod' : 'dev'}.json`
 
 对于包含敏感信息的文件（如证书、密钥），建议：
 
-```gitignore
+```txt
 # .gitignore
 src/nativeResources/common/certificates/
 src/nativeResources/**/*.p12
