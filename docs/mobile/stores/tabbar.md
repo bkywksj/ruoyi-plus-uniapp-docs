@@ -2,15 +2,122 @@
 
 ## 介绍
 
-`useTabbarStore` 是 RuoYi-Plus-UniApp 移动端的底部标签栏状态管理模块，用于管理标签页的状态、徽标显示和页面跳转功能。通过统一的状态管理，实现标签页之间的平滑切换和消息徽标的动态更新。
+`useTabbarStore` 是 RuoYi-Plus-UniApp 移动端的底部标签栏状态管理模块，用于管理标签页的状态、徽标显示和页面跳转功能。通过统一的状态管理，实现标签页之间的平滑切换和消息徽标的动态更新。该模块采用 Pinia 组合式 API 风格，与 WdTabbar 组件深度集成，提供了完整的标签栏交互解决方案。
 
 **核心特性:**
 
-- **标签页管理** - 统一管理底部标签页的配置和激活状态
-- **智能导航** - 根据当前页面环境自动选择切换或跳转方式
-- **徽章系统** - 支持数字徽章和小红点两种提示方式
-- **懒加载标记** - 标记页面加载状态，支持按需加载优化
-- **参数传递** - 支持跳转时携带自定义参数
+- **标签页管理** - 统一管理底部标签页的配置和激活状态，支持动态配置修改
+- **智能导航** - 根据当前页面环境自动选择切换或跳转方式，智能判断页面栈状态
+- **徽章系统** - 支持数字徽章和小红点两种提示方式，自动处理互斥逻辑
+- **懒加载标记** - 标记页面加载状态，支持按需加载优化，减少首屏渲染压力
+- **参数传递** - 支持跳转时携带自定义参数，自动序列化为 URL 查询字符串
+- **边界保护** - 内置索引边界检查，防止无效操作导致错误
+- **类型安全** - 完整的 TypeScript 类型定义，提供良好的开发体验
+
+## 架构设计
+
+### Store 结构
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    useTabbarStore                           │
+├─────────────────────────────────────────────────────────────┤
+│  状态 (State)                                                │
+│  ├── currentTab: Ref<number>        // 当前激活标签索引       │
+│  └── tabs: Ref<WdTabbarItemProps[]> // 标签配置列表           │
+├─────────────────────────────────────────────────────────────┤
+│  方法 (Actions)                                              │
+│  ├── toTab()      // 跳转到指定标签页                         │
+│  ├── updateDot()  // 更新小红点状态                          │
+│  ├── updateBadge() // 更新数字徽章                           │
+│  └── clearBadge() // 清除所有徽标                            │
+├─────────────────────────────────────────────────────────────┤
+│  常量 (Constants)                                            │
+│  └── TABBAR_PAGE_PATH = 'pages/index/index'                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 依赖关系
+
+```
+useTabbarStore
+    │
+    ├── WdTabbarItemProps (组件类型)
+    │   └── wd-tabbar-item.vue
+    │
+    ├── getCurrentPage (路由工具)
+    │   └── utils/route.ts
+    │
+    ├── objectToQuery (字符串工具)
+    │   └── utils/string.ts
+    │
+    └── isDef (通用工具)
+        └── wd/components/common/util.ts
+```
+
+### 状态流转
+
+```
+┌──────────────┐     toTab(index)      ┌──────────────────────┐
+│  其他页面     │ ───────────────────▶ │  判断当前页面环境      │
+└──────────────┘                       └──────────────────────┘
+                                                │
+                    ┌───────────────────────────┴───────────────────────────┐
+                    ▼                                                       ▼
+          ┌─────────────────┐                                    ┌─────────────────┐
+          │ 在 Tabbar 页面   │                                    │  在其他页面       │
+          └─────────────────┘                                    └─────────────────┘
+                    │                                                       │
+                    ▼                                                       ▼
+          ┌─────────────────┐                                    ┌─────────────────┐
+          │ 直接切换 Tab     │                                    │ navigateTo 跳转  │
+          │ currentTab = n  │                                    │ 携带 tab 参数    │
+          └─────────────────┘                                    └─────────────────┘
+                    │                                                       │
+                    └───────────────────────────┬───────────────────────────┘
+                                                ▼
+                                    ┌─────────────────────────┐
+                                    │ 标记页面已加载            │
+                                    │ tabs[n].loaded = true   │
+                                    └─────────────────────────┘
+                                                │
+                                                ▼
+                                    ┌─────────────────────────┐
+                                    │ 清除目标标签徽标          │
+                                    │ clearBadge(index)       │
+                                    └─────────────────────────┘
+```
+
+### 徽章互斥机制
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    徽章状态管理                               │
+├─────────────────────────────────────────────────────────────┤
+│                                                             │
+│   updateBadge(value)                updateDot(isDot)        │
+│         │                                  │                │
+│         ▼                                  ▼                │
+│   ┌─────────────┐                  ┌─────────────┐          │
+│   │ value > 0   │                  │ isDot = true│          │
+│   └─────────────┘                  └─────────────┘          │
+│         │                                  │                │
+│         ▼                                  ▼                │
+│   ┌─────────────┐                  ┌─────────────┐          │
+│   │ isDot = false│                 │ value = 0   │          │
+│   │ 数字优先     │                  │ 红点优先     │          │
+│   └─────────────┘                  └─────────────┘          │
+│                                                             │
+│                  clearBadge()                               │
+│                       │                                     │
+│                       ▼                                     │
+│               ┌─────────────┐                               │
+│               │ value = 0   │                               │
+│               │ isDot = false│                               │
+│               └─────────────┘                               │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
 
 ## 基本用法
 
@@ -794,4 +901,914 @@ const formatBadgeValue = (value: number): string | number => {
   return value
 }
 </script>
+```
+
+## 与 WdTabbar 组件集成
+
+### 组件属性映射
+
+Tabbar Store 的 `tabs` 数组直接对应 `WdTabbarItem` 组件的属性，实现了状态与视图的完美绑定：
+
+```typescript
+// WdTabbarItemProps 完整定义
+interface WdTabbarItemProps {
+  /** 自定义根节点样式 */
+  customStyle?: string
+  /** 自定义根节点样式类 */
+  customClass?: string
+  /** 标签页的标题 */
+  title?: string
+  /** 唯一标识符 */
+  name?: string | number
+  /** 图标名称 */
+  icon?: IconName
+  /** 激活状态的图标名称 */
+  activeIcon?: string
+  /** 徽标显示值 */
+  value?: number | string | null
+  /** 是否点状徽标 */
+  isDot?: boolean
+  /** 徽标最大值 */
+  max?: number
+  /** 徽标属性，透传给 Badge 组件 */
+  badgeProps?: Partial<WdBadgeProps>
+  /** 页面是否已加载（用于懒加载） */
+  loaded?: boolean
+  /** 图标大小 */
+  iconSize?: string | number
+  /** 文字大小 */
+  fontSize?: string | number
+}
+```
+
+### 完整集成示例
+
+```vue
+<template>
+  <view class="tabbar-page">
+    <!-- 页面内容区域 -->
+    <view class="content-area">
+      <!-- 首页 - 默认展示 -->
+      <template v-if="tabs[0].loaded">
+        <home-content v-show="currentTab === 0" />
+      </template>
+
+      <!-- 分类页 - 懒加载 -->
+      <template v-if="tabs[1].loaded">
+        <category-content v-show="currentTab === 1" />
+      </template>
+
+      <!-- 购物车页 - 懒加载 -->
+      <template v-if="tabs[2].loaded">
+        <cart-content v-show="currentTab === 2" />
+      </template>
+
+      <!-- 我的页面 - 懒加载 -->
+      <template v-if="tabs[3].loaded">
+        <profile-content v-show="currentTab === 3" />
+      </template>
+    </view>
+
+    <!-- 底部标签栏 -->
+    <wd-tabbar
+      v-model="currentTab"
+      fixed
+      bordered
+      placeholder
+      safe-area-inset-bottom
+      :active-color="activeColor"
+      :inactive-color="inactiveColor"
+      @change="handleTabChange"
+    >
+      <wd-tabbar-item
+        v-for="(tab, index) in tabs"
+        :key="index"
+        :title="tab.title"
+        :icon="tab.icon"
+        :active-icon="tab.activeIcon"
+        :is-dot="tab.isDot"
+        :value="tab.value"
+        :badge-props="{ max: 99 }"
+      >
+        <!-- 自定义图标插槽 -->
+        <template #icon="{ active }">
+          <image
+            v-if="customIcons[index]"
+            :src="active ? customIcons[index].active : customIcons[index].inactive"
+            class="custom-icon"
+          />
+        </template>
+      </wd-tabbar-item>
+    </wd-tabbar>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { ref, computed, onMounted } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useTabbarStore } from '@/stores/modules/tabbar'
+import { useThemeStore } from '@/stores/modules/theme'
+
+const tabbarStore = useTabbarStore()
+const themeStore = useThemeStore()
+
+const { currentTab, tabs } = storeToRefs(tabbarStore)
+
+// 主题相关颜色
+const activeColor = computed(() => themeStore.primaryColor)
+const inactiveColor = computed(() => themeStore.isDark ? '#999' : '#7d7e80')
+
+// 自定义图标配置
+const customIcons = ref<Record<number, { active: string; inactive: string }>>({})
+
+// 标签切换处理
+const handleTabChange = (index: number) => {
+  // 标记页面为已加载
+  tabs.value[index].loaded = true
+
+  // 执行页面切换动画或其他逻辑
+  console.log(`切换到标签 ${index}`)
+}
+
+// 页面加载时处理路由参数
+onLoad((options) => {
+  if (options?.tab) {
+    const tabIndex = Number(options.tab)
+    if (!isNaN(tabIndex) && tabIndex >= 0 && tabIndex < tabs.value.length) {
+      tabbarStore.toTab(tabIndex)
+    }
+  }
+})
+
+// 页面显示时刷新徽章
+onShow(() => {
+  refreshBadges()
+})
+
+// 刷新所有徽章
+const refreshBadges = async () => {
+  // 刷新购物车数量
+  const [cartErr, cartData] = await getCartCount()
+  if (!cartErr && cartData) {
+    tabbarStore.updateBadge(2, cartData.count)
+  }
+
+  // 刷新未读消息
+  const [msgErr, msgData] = await getUnreadCount()
+  if (!msgErr && msgData) {
+    if (msgData.count > 0) {
+      tabbarStore.updateDot(3, true)
+    } else {
+      tabbarStore.clearBadge(3)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.tabbar-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content-area {
+  flex: 1;
+  overflow: hidden;
+}
+
+.custom-icon {
+  width: 48rpx;
+  height: 48rpx;
+}
+</style>
+```
+
+### 动态图标切换
+
+支持根据激活状态切换不同图标：
+
+```vue
+<template>
+  <wd-tabbar v-model="currentTab">
+    <wd-tabbar-item
+      v-for="(tab, index) in tabs"
+      :key="index"
+      :title="tab.title"
+      :icon="getIconName(tab, index)"
+    />
+  </wd-tabbar>
+</template>
+
+<script lang="ts" setup>
+const getIconName = (tab: WdTabbarItemProps, index: number) => {
+  const isActive = currentTab.value === index
+
+  // 返回激活或非激活状态的图标
+  if (isActive && tab.activeIcon) {
+    return tab.activeIcon
+  }
+  return tab.icon
+}
+</script>
+```
+
+## 性能优化
+
+### 1. 懒加载策略
+
+利用 `loaded` 属性实现页面懒加载，减少首屏渲染压力：
+
+```vue
+<template>
+  <view class="page-wrapper">
+    <!-- 使用 v-if 控制组件创建 -->
+    <template v-for="(tab, index) in tabs" :key="index">
+      <keep-alive>
+        <component
+          v-if="tab.loaded"
+          v-show="currentTab === index"
+          :is="getComponent(index)"
+        />
+      </keep-alive>
+    </template>
+  </view>
+</template>
+
+<script lang="ts" setup>
+import { markRaw, shallowRef } from 'vue'
+import HomePage from './components/HomePage.vue'
+import CategoryPage from './components/CategoryPage.vue'
+import CartPage from './components/CartPage.vue'
+import ProfilePage from './components/ProfilePage.vue'
+
+// 使用 shallowRef 避免深度响应
+const componentMap = shallowRef({
+  0: markRaw(HomePage),
+  1: markRaw(CategoryPage),
+  2: markRaw(CartPage),
+  3: markRaw(ProfilePage),
+})
+
+const getComponent = (index: number) => {
+  return componentMap.value[index]
+}
+</script>
+```
+
+### 2. 徽章更新节流
+
+避免频繁更新徽章导致性能问题：
+
+```typescript
+import { useDebounceFn } from '@vueuse/core'
+import { useTabbarStore } from '@/stores/modules/tabbar'
+
+export function useBadgeUpdater() {
+  const tabbarStore = useTabbarStore()
+
+  // 使用防抖优化频繁更新
+  const debouncedUpdateBadge = useDebounceFn((index: number, value: number) => {
+    tabbarStore.updateBadge(index, value)
+  }, 300)
+
+  // 批量更新优化
+  const batchUpdateBadges = (updates: Array<{ index: number; value: number }>) => {
+    // 使用 nextTick 批量更新
+    nextTick(() => {
+      updates.forEach(({ index, value }) => {
+        tabbarStore.updateBadge(index, value)
+      })
+    })
+  }
+
+  return {
+    debouncedUpdateBadge,
+    batchUpdateBadges,
+  }
+}
+```
+
+### 3. 状态缓存优化
+
+使用 computed 缓存派生状态：
+
+```typescript
+import { computed } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useTabbarStore } from '@/stores/modules/tabbar'
+
+export function useTabbarComputed() {
+  const tabbarStore = useTabbarStore()
+  const { currentTab, tabs } = storeToRefs(tabbarStore)
+
+  // 缓存当前标签信息
+  const currentTabInfo = computed(() => tabs.value[currentTab.value])
+
+  // 缓存是否有徽章显示
+  const hasAnyBadge = computed(() =>
+    tabs.value.some(tab => tab.value > 0 || tab.isDot)
+  )
+
+  // 缓存已加载的页面数量
+  const loadedCount = computed(() =>
+    tabs.value.filter(tab => tab.loaded).length
+  )
+
+  // 缓存各标签的徽章总数
+  const totalBadgeCount = computed(() =>
+    tabs.value.reduce((sum, tab) => sum + (tab.value || 0), 0)
+  )
+
+  return {
+    currentTabInfo,
+    hasAnyBadge,
+    loadedCount,
+    totalBadgeCount,
+  }
+}
+```
+
+### 4. 减少不必要的响应式
+
+```typescript
+// 静态配置使用 Object.freeze 避免响应式开销
+const STATIC_TAB_CONFIG = Object.freeze({
+  HOME: { title: '首页', icon: 'home' },
+  CATEGORY: { title: '分类', icon: 'category' },
+  CART: { title: '购物车', icon: 'cart' },
+  PROFILE: { title: '我的', icon: 'user' },
+})
+
+// 初始化时使用
+const initTabs = () => {
+  tabs.value = [
+    { ...STATIC_TAB_CONFIG.HOME, isDot: false, value: 0, loaded: true },
+    { ...STATIC_TAB_CONFIG.CATEGORY, isDot: false, value: 0, loaded: false },
+    { ...STATIC_TAB_CONFIG.CART, isDot: false, value: 0, loaded: false },
+    { ...STATIC_TAB_CONFIG.PROFILE, isDot: false, value: 0, loaded: false },
+  ]
+}
+```
+
+## 高级用法
+
+### 1. 动态标签配置
+
+根据用户角色或权限动态配置标签：
+
+```typescript
+import { useTabbarStore } from '@/stores/modules/tabbar'
+import { useUserStore } from '@/stores/modules/user'
+
+export function useDynamicTabs() {
+  const tabbarStore = useTabbarStore()
+  const userStore = useUserStore()
+
+  // 根据用户角色配置标签
+  const configureTabsByRole = () => {
+    const baseConfig = [
+      { title: '首页', icon: 'home', isDot: false, value: 0, loaded: true },
+      { title: '我的', icon: 'user', isDot: false, value: 0, loaded: false },
+    ]
+
+    // 商家用户增加店铺管理
+    if (userStore.isMerchant) {
+      baseConfig.splice(1, 0, {
+        title: '店铺',
+        icon: 'shop',
+        isDot: false,
+        value: 0,
+        loaded: false,
+      })
+    }
+
+    // VIP 用户增加特权入口
+    if (userStore.isVip) {
+      baseConfig.splice(1, 0, {
+        title: 'VIP',
+        icon: 'vip',
+        isDot: false,
+        value: 0,
+        loaded: false,
+      })
+    }
+
+    tabbarStore.tabs = baseConfig
+  }
+
+  return { configureTabsByRole }
+}
+```
+
+### 2. 徽章动画效果
+
+结合 CSS 动画增强徽章视觉效果：
+
+```vue
+<template>
+  <wd-tabbar v-model="currentTab">
+    <wd-tabbar-item
+      v-for="(tab, index) in tabs"
+      :key="index"
+      :class="{ 'badge-bounce': hasBadgeAnimation[index] }"
+      v-bind="tab"
+    />
+  </wd-tabbar>
+</template>
+
+<script lang="ts" setup>
+import { ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useTabbarStore } from '@/stores/modules/tabbar'
+
+const tabbarStore = useTabbarStore()
+const { tabs } = storeToRefs(tabbarStore)
+
+// 动画状态
+const hasBadgeAnimation = ref<Record<number, boolean>>({})
+
+// 监听徽章变化触发动画
+watch(
+  () => tabs.value.map(t => t.value),
+  (newValues, oldValues) => {
+    newValues.forEach((value, index) => {
+      if (value > (oldValues?.[index] || 0)) {
+        // 徽章增加时触发动画
+        hasBadgeAnimation.value[index] = true
+        setTimeout(() => {
+          hasBadgeAnimation.value[index] = false
+        }, 300)
+      }
+    })
+  }
+)
+</script>
+
+<style lang="scss" scoped>
+.badge-bounce {
+  animation: bounce 0.3s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+</style>
+```
+
+### 3. 标签切换钩子
+
+实现切换前后的钩子函数：
+
+```typescript
+import { useTabbarStore } from '@/stores/modules/tabbar'
+
+export function useTabbarHooks() {
+  const tabbarStore = useTabbarStore()
+
+  // 切换前钩子
+  const beforeTabChange = async (
+    from: number,
+    to: number
+  ): Promise<boolean> => {
+    // 检查是否需要登录
+    if (to === 3 && !isLoggedIn()) {
+      uni.navigateTo({ url: '/pages/auth/login' })
+      return false
+    }
+
+    // 检查是否有未保存的数据
+    if (from === 2 && hasUnsavedData()) {
+      const confirmed = await showConfirmDialog('离开将丢失未保存的数据')
+      return confirmed
+    }
+
+    return true
+  }
+
+  // 切换后钩子
+  const afterTabChange = (index: number) => {
+    // 记录页面访问
+    trackPageView(index)
+
+    // 触发页面刷新事件
+    uni.$emit('tabChanged', { index })
+  }
+
+  // 包装 toTab 方法
+  const safeToTab = async (
+    index: number,
+    params?: Record<string, any>
+  ) => {
+    const currentIndex = tabbarStore.currentTab
+    const canChange = await beforeTabChange(currentIndex, index)
+
+    if (canChange) {
+      await tabbarStore.toTab(index, params)
+      afterTabChange(index)
+    }
+  }
+
+  return {
+    beforeTabChange,
+    afterTabChange,
+    safeToTab,
+  }
+}
+```
+
+### 4. 多租户标签配置
+
+支持根据租户配置不同的标签：
+
+```typescript
+import { useTabbarStore } from '@/stores/modules/tabbar'
+import { useTenantStore } from '@/stores/modules/tenant'
+
+export function useTenantTabs() {
+  const tabbarStore = useTabbarStore()
+  const tenantStore = useTenantStore()
+
+  // 租户标签配置映射
+  const tenantTabConfigs: Record<string, WdTabbarItemProps[]> = {
+    // 餐饮租户
+    restaurant: [
+      { title: '首页', icon: 'home', isDot: false, value: 0, loaded: true },
+      { title: '菜单', icon: 'menu', isDot: false, value: 0, loaded: false },
+      { title: '订单', icon: 'order', isDot: false, value: 0, loaded: false },
+      { title: '我的', icon: 'user', isDot: false, value: 0, loaded: false },
+    ],
+    // 零售租户
+    retail: [
+      { title: '首页', icon: 'home', isDot: false, value: 0, loaded: true },
+      { title: '商品', icon: 'goods', isDot: false, value: 0, loaded: false },
+      { title: '购物车', icon: 'cart', isDot: false, value: 0, loaded: false },
+      { title: '我的', icon: 'user', isDot: false, value: 0, loaded: false },
+    ],
+    // 默认配置
+    default: [
+      { title: '首页', icon: 'home', isDot: false, value: 0, loaded: true },
+      { title: '发现', icon: 'explore', isDot: false, value: 0, loaded: false },
+      { title: '我的', icon: 'user', isDot: false, value: 0, loaded: false },
+    ],
+  }
+
+  // 根据租户配置标签
+  const configureByTenant = () => {
+    const tenantType = tenantStore.tenantInfo?.type || 'default'
+    const config = tenantTabConfigs[tenantType] || tenantTabConfigs.default
+    tabbarStore.tabs = [...config]
+  }
+
+  return { configureByTenant }
+}
+```
+
+### 5. 标签状态持久化
+
+将标签状态持久化到本地存储：
+
+```typescript
+import { watch } from 'vue'
+import { useTabbarStore } from '@/stores/modules/tabbar'
+
+export function useTabbarPersist() {
+  const tabbarStore = useTabbarStore()
+  const STORAGE_KEY = 'tabbar_state'
+
+  // 保存状态到本地
+  const saveState = () => {
+    const state = {
+      currentTab: tabbarStore.currentTab,
+      loadedTabs: tabbarStore.tabs.map(t => t.loaded),
+    }
+    uni.setStorageSync(STORAGE_KEY, JSON.stringify(state))
+  }
+
+  // 从本地恢复状态
+  const restoreState = () => {
+    try {
+      const stored = uni.getStorageSync(STORAGE_KEY)
+      if (stored) {
+        const state = JSON.parse(stored)
+
+        // 恢复当前标签
+        if (typeof state.currentTab === 'number') {
+          tabbarStore.currentTab = state.currentTab
+        }
+
+        // 恢复加载状态
+        if (Array.isArray(state.loadedTabs)) {
+          state.loadedTabs.forEach((loaded: boolean, index: number) => {
+            if (tabbarStore.tabs[index]) {
+              tabbarStore.tabs[index].loaded = loaded
+            }
+          })
+        }
+      }
+    } catch (error) {
+      console.warn('恢复 Tabbar 状态失败:', error)
+    }
+  }
+
+  // 监听状态变化自动保存
+  const enableAutoSave = () => {
+    watch(
+      () => [tabbarStore.currentTab, tabbarStore.tabs.map(t => t.loaded)],
+      () => saveState(),
+      { deep: true }
+    )
+  }
+
+  return {
+    saveState,
+    restoreState,
+    enableAutoSave,
+  }
+}
+```
+
+## 调试技巧
+
+### 1. 状态监控
+
+```typescript
+import { watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useTabbarStore } from '@/stores/modules/tabbar'
+
+export function useTabbarDebug() {
+  const tabbarStore = useTabbarStore()
+  const { currentTab, tabs } = storeToRefs(tabbarStore)
+
+  // 监控当前标签变化
+  watch(currentTab, (newVal, oldVal) => {
+    console.log(`[Tabbar] 标签切换: ${oldVal} -> ${newVal}`)
+  })
+
+  // 监控徽章变化
+  watch(
+    () => tabs.value.map(t => ({ value: t.value, isDot: t.isDot })),
+    (newVals, oldVals) => {
+      newVals.forEach((newVal, index) => {
+        const oldVal = oldVals?.[index]
+        if (JSON.stringify(newVal) !== JSON.stringify(oldVal)) {
+          console.log(`[Tabbar] 标签 ${index} 徽章变化:`, oldVal, '->', newVal)
+        }
+      })
+    },
+    { deep: true }
+  )
+
+  // 获取当前状态快照
+  const getSnapshot = () => {
+    return {
+      currentTab: currentTab.value,
+      tabs: tabs.value.map(t => ({
+        title: t.title,
+        value: t.value,
+        isDot: t.isDot,
+        loaded: t.loaded,
+      })),
+    }
+  }
+
+  return { getSnapshot }
+}
+```
+
+### 2. DevTools 集成
+
+Pinia DevTools 自动支持状态调试：
+
+```typescript
+// 在开发环境启用调试
+if (import.meta.env.DEV) {
+  const tabbarStore = useTabbarStore()
+
+  // 添加自定义操作到 DevTools
+  tabbarStore.$onAction(({ name, args, after, onError }) => {
+    console.log(`[Tabbar Action] ${name}`, args)
+
+    after((result) => {
+      console.log(`[Tabbar Action] ${name} 完成`, result)
+    })
+
+    onError((error) => {
+      console.error(`[Tabbar Action] ${name} 错误`, error)
+    })
+  })
+}
+```
+
+### 3. 状态重置
+
+```typescript
+import { useTabbarStore } from '@/stores/modules/tabbar'
+
+export function useTabbarReset() {
+  const tabbarStore = useTabbarStore()
+
+  // 重置到初始状态
+  const resetToInitial = () => {
+    tabbarStore.currentTab = 0
+    tabbarStore.tabs = [
+      { title: '首页', icon: 'home', isDot: false, value: 0, loaded: true },
+      { title: '点餐', icon: 'shop', isDot: false, value: 0, loaded: false },
+      { title: '我的', icon: 'user', isDot: false, value: 0, loaded: false },
+    ]
+  }
+
+  // 清除所有徽章
+  const clearAllBadges = () => {
+    tabbarStore.tabs.forEach((_, index) => {
+      tabbarStore.clearBadge(index)
+    })
+  }
+
+  // 重置加载状态（除首页外）
+  const resetLoadedState = () => {
+    tabbarStore.tabs.forEach((tab, index) => {
+      tab.loaded = index === 0
+    })
+  }
+
+  return {
+    resetToInitial,
+    clearAllBadges,
+    resetLoadedState,
+  }
+}
+```
+
+### 4. 日志追踪
+
+```typescript
+// utils/tabbar-logger.ts
+type LogLevel = 'info' | 'warn' | 'error'
+
+interface TabbarLog {
+  timestamp: number
+  level: LogLevel
+  action: string
+  data: any
+}
+
+class TabbarLogger {
+  private logs: TabbarLog[] = []
+  private maxLogs = 100
+
+  log(level: LogLevel, action: string, data?: any) {
+    const log: TabbarLog = {
+      timestamp: Date.now(),
+      level,
+      action,
+      data,
+    }
+
+    this.logs.push(log)
+
+    // 保持日志数量限制
+    if (this.logs.length > this.maxLogs) {
+      this.logs.shift()
+    }
+
+    // 开发环境输出到控制台
+    if (import.meta.env.DEV) {
+      const prefix = `[Tabbar ${level.toUpperCase()}]`
+      console[level](prefix, action, data)
+    }
+  }
+
+  getLogs() {
+    return [...this.logs]
+  }
+
+  clear() {
+    this.logs = []
+  }
+
+  export() {
+    return JSON.stringify(this.logs, null, 2)
+  }
+}
+
+export const tabbarLogger = new TabbarLogger()
+```
+
+## 注意事项
+
+### 1. 索引边界检查
+
+所有方法都内置了索引边界检查，传入无效索引时会静默忽略：
+
+```typescript
+// 源码中的边界检查
+const clearBadge = (index: number) => {
+  if (index < 0 || index >= tabs.value.length) return
+  // ...
+}
+
+const toTab = async (index: number | string, params?: Record<string, any>) => {
+  index = isDef(index) ? (typeof index === 'string' ? Number(index) : index) : 0
+  if (index < 0 || index >= tabs.value.length) return
+  // ...
+}
+```
+
+### 2. 徽章互斥逻辑
+
+数字徽章和小红点是互斥的，设置一个会自动清除另一个：
+
+```typescript
+// 设置数字徽章时清除小红点
+const updateBadge = (index: number, value: number) => {
+  tabs.value[index].value = Math.max(0, value)
+  if (value > 0) {
+    tabs.value[index].isDot = false  // 自动清除小红点
+  }
+}
+
+// 设置小红点时清除数字徽章
+const updateDot = (index: number, isDot: boolean) => {
+  tabs.value[index].isDot = isDot
+  if (isDot) {
+    tabs.value[index].value = 0  // 自动清除数字
+  }
+}
+```
+
+### 3. 页面跳转行为
+
+`toTab` 方法会根据当前页面环境自动选择跳转方式：
+
+```typescript
+// 在 Tabbar 页面内 -> 直接切换
+// 在其他页面 -> navigateTo 跳转到 Tabbar 页面
+
+const isInTabbar = getCurrentPage()?.route === TABBAR_PAGE_PATH
+
+if (!isInTabbar) {
+  await uni.navigateTo({
+    url: `/${TABBAR_PAGE_PATH}?${query}`,
+  })
+}
+```
+
+### 4. 类型转换
+
+`toTab` 方法支持字符串和数字两种索引类型，内部会自动转换：
+
+```typescript
+index = isDef(index) ? (typeof index === 'string' ? Number(index) : index) : 0
+```
+
+### 5. 负数处理
+
+`updateBadge` 方法会自动将负数处理为 0：
+
+```typescript
+tabs.value[index].value = Math.max(0, value)  // 确保不会出现负数
+```
+
+### 6. 首页始终标记为已加载
+
+默认配置中，首页的 `loaded` 属性为 `true`，确保应用启动时首页立即可用：
+
+```typescript
+const tabs = ref<WdTabbarItemProps[]>([
+  { title: '首页', icon: 'home', isDot: false, value: 0, loaded: true },  // 默认加载
+  { title: '点餐', icon: 'shop', isDot: false, value: 0, loaded: false },
+  { title: '我的', icon: 'user', isDot: false, value: 0, loaded: false },
+])
+```
+
+### 7. 跳转时自动清除徽标
+
+`toTab` 方法在跳转完成后会自动调用 `clearBadge` 清除目标标签的徽标：
+
+```typescript
+const toTab = async (index: number | string, params?: Record<string, any>) => {
+  // ... 跳转逻辑
+
+  // 清除徽标
+  clearBadge(index)
+}
+```
+
+### 8. 使用 storeToRefs 保持响应性
+
+从 Store 解构状态时，必须使用 `storeToRefs` 保持响应性：
+
+```typescript
+// 正确方式
+const { currentTab, tabs } = storeToRefs(tabbarStore)
+
+// 错误方式 - 会丢失响应性
+const { currentTab, tabs } = tabbarStore
 ```

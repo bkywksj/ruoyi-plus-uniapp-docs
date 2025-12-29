@@ -244,6 +244,8 @@ export default defineConfig({
                     text: '🏗️ 项目架构',
                     collapsed: true,
                     items: [
+                        { text: '架构概览', link: '/frontend/architecture/overview' },
+                        { text: '目录结构', link: '/frontend/architecture/directory-structure' },
                         { text: '技术栈介绍', link: '/frontend/architecture/tech-stack' },
                         { text: '模块化设计', link: '/frontend/architecture/modular-design' },
                         { text: 'TypeScript配置', link: '/frontend/architecture/typescript-config' },
@@ -268,7 +270,9 @@ export default defineConfig({
                         { text: '用户状态 (user)', link: '/frontend/stores/user-store' },
                         { text: '权限状态 (permission)', link: '/frontend/stores/permission-store' },
                         { text: '字典状态 (dict)', link: '/frontend/stores/dict-store' },
-                        { text: '通知状态 (notice)', link: '/frontend/stores/notice-store' }
+                        { text: '通知状态 (notice)', link: '/frontend/stores/notice-store' },
+                        { text: 'AI对话状态 (aiChat)', link: '/frontend/stores/ai-chat-store' },
+                        { text: '功能开关状态 (feature)', link: '/frontend/stores/feature-store' }
                     ]
                 },
                 {
@@ -397,7 +401,7 @@ export default defineConfig({
                             items: [
                                 { text: 'useAuth 认证管理', link: '/frontend/composables/use-auth' },
                                 { text: 'useDict 字典管理', link: '/frontend/composables/use-dict' },
-                                { text: 'useHttp 请求管理', link: '/frontend/composables/use-http' },
+                                { text: 'useHttp 请求封装', link: '/frontend/composables/use-http' },
                                 { text: 'useToken 令牌管理', link: '/frontend/composables/use-token' },
                                 { text: 'useI18n 国际化', link: '/frontend/composables/use-i18n' }
                             ]
@@ -422,7 +426,8 @@ export default defineConfig({
                                 { text: 'useDownload 下载管理', link: '/frontend/composables/use-download' },
                                 { text: 'usePrint 打印功能', link: '/frontend/composables/use-print' },
                                 { text: 'useSSE 服务端事件', link: '/frontend/composables/use-sse' },
-                                { text: 'useWS WebSocket通信', link: '/frontend/composables/use-websocket' }
+                                { text: 'useWS WebSocket通信', link: '/frontend/composables/use-websocket' },
+                                { text: 'useAiChat AI对话', link: '/frontend/composables/use-ai-chat' }
                             ]
                         }
                     ]
@@ -432,6 +437,7 @@ export default defineConfig({
                     collapsed: true,
                     items: [
                         { text: '工具函数概览', link: '/frontend/utils/utils-overview' },
+                        { text: '颜色工具', link: '/frontend/utils/colors' },
                         { text: '字符串工具', link: '/frontend/utils/string' },
                         { text: '对象工具', link: '/frontend/utils/object' },
                         { text: '日期工具', link: '/frontend/utils/date' },
@@ -447,7 +453,8 @@ export default defineConfig({
                         { text: '树形工具', link: '/frontend/utils/tree' },
                         { text: '模态框工具', link: '/frontend/utils/modal' },
                         { text: '标签页工具', link: '/frontend/utils/tab' },
-                        { text: 'To工具类', link: '/frontend/utils/to' }
+                        { text: 'To工具类', link: '/frontend/utils/to' },
+                        { text: '主题动画', link: '/frontend/utils/theme-animation' }
                     ]
                 },
                 {
