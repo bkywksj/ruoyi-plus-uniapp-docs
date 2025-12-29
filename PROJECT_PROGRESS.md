@@ -1,7 +1,7 @@
 # RuoYi-Plus-UniApp 文档进度清单
 
 > **最后更新**: 2025-12-29
-> **整体完成度**: 100% (492/492)
+> **整体完成度**: 100% (497/497)
 > **总行数**: 762,000+ 行
 >
 > 按照 `config.ts` 导航顺序整理，用于复查和维护
@@ -14,12 +14,13 @@
 
 | 模块 | 总数 | 已完成 | 完成率 |
 |------|------|--------|--------|
-| WD 组件库 | 51 | 51 | **100%** |
-| 后端文档 | 76 | 76 | **100%** |
-| 前端文档 | 142 | 142 | **100%** |
-| 移动端文档 | 172 | 172 | **100%** |
-| 最佳实践 | 51 | 51 | **100%** |
-| **总计** | **492** | **492** | **100%** |
+| 后端文档 | 97 | 97 | **100%** |
+| 前端文档 | 141 | 141 | **100%** |
+| 移动端文档 | 129 | 129 | **100%** |
+| WD 组件库 | 83 | 83 | **100%** |
+| 最佳实践 | 43 | 43 | **100%** |
+| 首页与其他 | 4 | 4 | **100%** |
+| **总计** | **497** | **497** | **100%** |
 
 ---
 
@@ -34,13 +35,32 @@
 | 项目结构 | `backend/project-structure.md` | ✅ |
 | 配置文件 | `backend/configuration.md` | ✅ |
 
-### 1.2 主应用 (ruoyi-admin)
+### 1.2 架构设计
 
 | 文档 | 路径 | 状态 |
 |------|------|------|
-| 模块解析 | `backend/ruoyi-admin/module-resolution.md` | ✅ |
+| 架构概览 | `backend/architecture/overview.md` | ✅ |
 
-### 1.3 公共模块 (ruoyi-common)
+### 1.3 核心组件
+
+| 文档 | 路径 | 状态 |
+|------|------|------|
+| BaseMapper 增强 | `backend/core/base-mapper.md` | ✅ |
+| 全局异常处理 | `backend/core/exception-handler.md` | ✅ |
+
+### 1.4 主应用 (ruoyi-admin)
+
+| 文档 | 路径 | 状态 |
+|------|------|------|
+| 模块概览 | `backend/ruoyi-admin/overview.md` | ✅ |
+| 模块解析 | `backend/ruoyi-admin/module-resolution.md` | ✅ |
+| 启动配置 | `backend/ruoyi-admin/startup.md` | ✅ |
+| 配置管理 | `backend/ruoyi-admin/configuration.md` | ✅ |
+| 安全配置 | `backend/ruoyi-admin/security.md` | ✅ |
+| 日志配置 | `backend/ruoyi-admin/logging.md` | ✅ |
+| 国际化 | `backend/ruoyi-admin/i18n.md` | ✅ |
+
+### 1.5 公共模块 (ruoyi-common)
 
 #### 核心模块 (core)
 
@@ -134,7 +154,7 @@
 | Web组件 | `backend/common/web.md` | ✅ |
 | 通讯 (websocket) | `backend/common/websocket.md` | ✅ |
 
-### 1.4 业务模块 (ruoyi-modules)
+### 1.6 业务模块 (ruoyi-modules)
 
 #### 系统模块 (system)
 
@@ -168,7 +188,7 @@
 | 商城模块 | `backend/modules/business/mall.md` | ✅ |
 | 任务调度 | `backend/modules/business/job.md` | ✅ |
 
-### 1.5 扩展模块 (ruoyi-extend)
+### 1.7 扩展模块 (ruoyi-extend)
 
 | 文档 | 路径 | 状态 |
 |------|------|------|
@@ -464,7 +484,9 @@
 | PasswordInput 密码 | `mobile/wd/form/password-input.md` | ✅ |
 | Search 搜索 | `mobile/wd/form/search.md` | ✅ |
 | Checkbox 复选框 | `mobile/wd/form/checkbox.md` | ✅ |
+| CheckboxGroup 复选框组 | `mobile/wd/form/checkbox-group.md` | ✅ |
 | Radio 单选框 | `mobile/wd/form/radio.md` | ✅ |
+| RadioGroup 单选框组 | `mobile/wd/form/radio-group.md` | ✅ |
 | Switch 开关 | `mobile/wd/form/switch.md` | ✅ |
 | Rate 评分 | `mobile/wd/form/rate.md` | ✅ |
 | Slider 滑块 | `mobile/wd/form/slider.md` | ✅ |
@@ -478,6 +500,7 @@
 | CalendarView 日历板 | `mobile/wd/form/calendar-view.md` | ✅ |
 | Upload 上传 | `mobile/wd/form/upload.md` | ✅ |
 | Form 表单 | `mobile/wd/form/form.md` | ✅ |
+| FormItem 表单项 | `mobile/wd/form/form-item.md` | ✅ |
 | Signature 签名 | `mobile/wd/form/signature.md` | ✅ |
 | Recorder 录音 | `mobile/wd/form/voice-recorder.md` | ✅ |
 | Keyboard 虚拟键盘 | `mobile/wd/form/keyboard.md` | ✅ |
@@ -564,7 +587,17 @@
 | to 异步处理 | `mobile/utils/to.md` | ✅ |
 | logger 日志系统 | `mobile/utils/logger.md` | ✅ |
 
-### 3.6 页面开发
+### 3.6 状态管理
+
+| 文档 | 路径 | 状态 |
+|------|------|------|
+| 状态管理概览 | `mobile/stores/overview.md` | ✅ |
+| 用户状态 | `mobile/stores/user.md` | ✅ |
+| 字典状态 | `mobile/stores/dict.md` | ✅ |
+| 标签栏状态 | `mobile/stores/tabbar.md` | ✅ |
+| 功能开关 | `mobile/stores/feature.md` | ✅ |
+
+### 3.7 页面开发
 
 | 文档 | 路径 | 状态 |
 |------|------|------|
@@ -572,7 +605,7 @@
 | 登录页面 | `mobile/pages/login.md` | ✅ |
 | 分包页面管理 | `mobile/pages/subpackages.md` | ✅ |
 
-### 3.7 布局系统
+### 3.8 布局系统
 
 | 文档 | 路径 | 状态 |
 |------|------|------|
@@ -582,7 +615,7 @@
 | 标签栏配置 | `mobile/layouts/tabbar.md` | ✅ |
 | 胶囊组件 | `mobile/layouts/capsule.md` | ✅ |
 
-### 3.8 样式系统
+### 3.9 样式系统
 
 | 文档 | 路径 | 状态 |
 |------|------|------|
@@ -596,7 +629,7 @@
 | 组件样式 | `mobile/styles/components.md` | ✅ |
 | 样式最佳实践 | `mobile/styles/best-practices.md` | ✅ |
 
-### 3.9 组件开发
+### 3.10 组件开发
 
 | 文档 | 路径 | 状态 |
 |------|------|------|
@@ -606,7 +639,7 @@
 | 组件生命周期 | `mobile/components/lifecycle.md` | ✅ |
 | 组件测试 | `mobile/components/testing.md` | ✅ |
 
-### 3.10 平台适配
+### 3.11 平台适配
 
 | 文档 | 路径 | 状态 |
 |------|------|------|
@@ -615,7 +648,7 @@
 | 微信小程序适配 | `mobile/platform/wechat.md` | ✅ |
 | 支付宝小程序适配 | `mobile/platform/alipay.md` | ✅ |
 
-### 3.11 性能优化
+### 3.12 性能优化
 
 | 文档 | 路径 | 状态 |
 |------|------|------|
@@ -626,7 +659,7 @@
 | 图片优化 | `mobile/performance/image.md` | ✅ |
 | 分包加载优化 | `mobile/performance/subpackage.md` | ✅ |
 
-### 3.12 打包发布
+### 3.13 打包发布
 
 | 文档 | 路径 | 状态 |
 |------|------|------|
@@ -634,6 +667,41 @@
 | 环境配置 | `mobile/build/environment.md` | ✅ |
 | H5打包发布 | `mobile/build/h5-deploy.md` | ✅ |
 | 微信小程序发布 | `mobile/build/wechat-deploy.md` | ✅ |
+
+### 3.14 原生插件
+
+| 文档 | 路径 | 状态 |
+|------|------|------|
+| 插件概览 | `mobile/plugins/overview.md` | ✅ |
+| 支付插件 | `mobile/plugins/payment.md` | ✅ |
+| 分享插件 | `mobile/plugins/share.md` | ✅ |
+| 推送通知 | `mobile/plugins/push.md` | ✅ |
+| 相机插件 | `mobile/plugins/camera.md` | ✅ |
+| 地图插件 | `mobile/plugins/map.md` | ✅ |
+| 权限管理 | `mobile/plugins/permission.md` | ✅ |
+| 网络请求 | `mobile/plugins/request.md` | ✅ |
+| 数据统计 | `mobile/plugins/analytics.md` | ✅ |
+| 自定义开发 | `mobile/plugins/custom-dev.md` | ✅ |
+
+### 3.15 Vite 插件
+
+| 文档 | 路径 | 状态 |
+|------|------|------|
+| 插件概览 | `mobile/vite-plugins/overview.md` | ✅ |
+| UnoCSS 样式 | `mobile/vite-plugins/style/unocss.md` | ✅ |
+| 自动导入 | `mobile/vite-plugins/auto/auto-import.md` | ✅ |
+| 组件注册 | `mobile/vite-plugins/auto/components.md` | ✅ |
+| 包体积优化 | `mobile/vite-plugins/auto/bundle-optimizer.md` | ✅ |
+| uni-app 主插件 | `mobile/vite-plugins/uni/vite-plugin-uni.md` | ✅ |
+| 页面路由 | `mobile/vite-plugins/uni/uni-pages.md` | ✅ |
+| 布局系统 | `mobile/vite-plugins/uni/uni-layouts.md` | ✅ |
+| 组件注册 | `mobile/vite-plugins/uni/uni-components.md` | ✅ |
+| 配置生成 | `mobile/vite-plugins/uni/uni-manifest.md` | ✅ |
+| 平台适配 | `mobile/vite-plugins/uni/uni-platform.md` | ✅ |
+| 静态资源类型 | `mobile/vite-plugins/custom/static-assets-types.md` | ✅ |
+| 原生资源复制 | `mobile/vite-plugins/custom/copy-native-res.md` | ✅ |
+| OpenAPI 生成 | `mobile/vite-plugins/custom/openapi.md` | ✅ |
+| 开发热重载 | `mobile/vite-plugins/dev/vite-restart.md` | ✅ |
 
 ---
 
@@ -719,6 +787,17 @@
 
 ---
 
+## 五、首页与其他
+
+| 文档 | 路径 | 状态 |
+|------|------|------|
+| 文档首页 | `index.md` | ✅ |
+| 更新日志 | `changelog.md` | ✅ |
+| 演示示例 | `demo.md` | ✅ |
+| 视频教程 | `video.md` | ✅ |
+
+---
+
 ## 复查指南
 
 ### 使用方法
@@ -741,6 +820,7 @@
 
 | 日期 | 里程碑 |
 |------|--------|
+| 2025-12-29 | 📊 全面更新进度清单，实际统计 497 篇文档 |
 | 2025-12-29 | 🎉 项目 100% 完成，精简合并进度文件 |
 | 2025-12-29 | 移动端文档 100% 完成 (logger.md) |
 | 2025-12-18 | 初始创建文档清单 |
