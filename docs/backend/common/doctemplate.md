@@ -6,10 +6,10 @@
 
 **核心特性：**
 
-- **文本替换** - 使用 `{{name}}` 语法替换文本占位符
-- **对象属性** - 支持 `{{obj.field}}` 访问对象属性
-- **图片插入** - 使用 `{{@imgKey}}` 插入图片，支持多种图片来源和尺寸控制
-- **表格循环** - 使用 `{{tableKey}}` + `[field]` 语法实现表格行动态循环
+- **文本替换** - 使用 <code v-pre>{{name}}</code> 语法替换文本占位符
+- **对象属性** - 支持 <code v-pre>{{obj.field}}</code> 访问对象属性
+- **图片插入** - 使用 <code v-pre>{{@imgKey}}</code> 插入图片，支持多种图片来源和尺寸控制
+- **表格循环** - 使用 <code v-pre>{{tableKey}}</code> + `[field]` 语法实现表格行动态循环
 - **多种输入源** - 支持文件、文件路径、字节数组、输入流、URL 加载模板
 - **多种输出方式** - 输出到字节数组、文件、输出流
 - **链式调用** - 建造者模式设计，代码简洁易读
@@ -54,9 +54,9 @@ DocTemplateBuilder.of(new File("template.docx"))
 
 ### 文本占位符
 
-在 Word 模板中使用 `{{key}}` 语法定义文本占位符：
+在 Word 模板中使用 <code v-pre>{{key}}</code> 语法定义文本占位符：
 
-```
+```text
 尊敬的 {{name}} 先生/女士：
 
 您好！感谢您于 {{date}} 提交的申请。
@@ -73,9 +73,9 @@ DocTemplateBuilder.of(templateFile)
 
 ### 对象属性访问
 
-支持使用点语法访问对象属性 `{{obj.field}}`：
+支持使用点语法访问对象属性 <code v-pre>{{obj.field}}</code>：
 
-```
+```text
 用户信息：
 - 姓名：{{user.name}}
 - 年龄：{{user.age}}
@@ -104,10 +104,10 @@ DocTemplateBuilder.of(templateFile)
 
 ### 图片占位符
 
-使用 `{{@key}}` 语法定义图片占位符。在 Word 模板中，可以通过以下方式设置图片占位符：
+使用 <code v-pre>{{@key}}</code> 语法定义图片占位符。在 Word 模板中，可以通过以下方式设置图片占位符：
 
-1. 直接在文本中输入 `{{@logo}}`
-2. 或插入一张占位图片，在图片的"替代文字"中填写 `{{@logo}}`
+1. 直接在文本中输入 <code v-pre>{{@logo}}</code>
+2. 或插入一张占位图片，在图片的"替代文字"中填写 <code v-pre>{{@logo}}</code>
 
 **从 URL 插入图片：**
 
@@ -153,15 +153,19 @@ DocTemplateBuilder.of(templateFile)
 
 **模板格式要求：**
 
+<div v-pre>
+
 | 序号 | 名称 | 金额 |
 |------|------|------|
-| `{{items}}` | | |
-| `[no]` | `[name]` | `[amount]` |
+| {{items}} | | |
+| [no] | [name] | [amount] |
+
+</div>
 
 **结构说明：**
 
 - **第1行（表头行）**：正常的表格标题
-- **第2行（标记行）**：第一列放 `{{items}}`，其他列留空，渲染后此行会被删除
+- **第2行（标记行）**：第一列放 <code v-pre>{{items}}</code>，其他列留空，渲染后此行会被删除
 - **第3行（模板行）**：使用 `[字段名]` 格式引用数据属性，此行会被循环复制
 
 **替换代码：**
@@ -368,9 +372,9 @@ public class DocumentService {
 
 ### 1. 模板设计规范
 
-- 占位符命名使用小驼峰格式：`{{userName}}`、`{{orderDate}}`
-- 图片占位符添加 `@` 前缀：`{{@logo}}`、`{{@signature}}`
-- 表格循环使用3行结构：标记行 `{{items}}` + 模板行 `[field]`
+- 占位符命名使用小驼峰格式：<code v-pre>{{userName}}</code>、<code v-pre>{{orderDate}}</code>
+- 图片占位符添加 `@` 前缀：<code v-pre>{{@logo}}</code>、<code v-pre>{{@signature}}</code>
+- 表格循环使用3行结构：标记行 <code v-pre>{{items}}</code> + 模板行 `[field]`
 - 在 Word 中预先设置好字体、字号、对齐方式等样式
 
 ### 2. 图片处理建议
@@ -425,7 +429,7 @@ DocTemplateBuilder.of(templateFile)
 **解决方案：**
 - 在 Word 中选中整个占位符，删除后重新输入
 - 使用"查找替换"功能统一替换占位符
-- 确保占位符格式正确：`{{key}}`
+- 确保占位符格式正确：<code v-pre>{{key}}</code>
 
 ### 2. 图片无法显示
 
@@ -437,7 +441,7 @@ DocTemplateBuilder.of(templateFile)
 **解决方案：**
 - 检查图片 URL 是否可访问
 - 确保图片格式为 PNG、JPG 等常见格式
-- 图片占位符使用 `{{@key}}` 格式
+- 图片占位符使用 <code v-pre>{{@key}}</code> 格式
 
 ### 3. 表格循环不生效
 
@@ -450,7 +454,7 @@ DocTemplateBuilder.of(templateFile)
 
 1. 确保表格采用3行结构：
    - 第1行：表头
-   - 第2行：标记行（第一列放 `{{items}}`，其他列留空）
+   - 第2行：标记行（第一列放 <code v-pre>{{items}}</code>，其他列留空）
    - 第3行：模板行（使用 `[field]` 格式引用字段）
 
 2. 使用 `table()` 方法而非 `data()` 方法绑定列表数据：
