@@ -4,6 +4,7 @@
 1. **[AI编程时代来临 - 为什么你需要Claude Code](https://www.bilibili.com/video/BV1DDySBqE2h)**
 2. **[你的 AI 可能白用了！为什么你的 Claude Code 总是"失忆"？90% 的人不知道的项目管理致命错误！！！](https://www.bilibili.com/video/BV1Y6CTBnEUD)**
 3. **[Claude Code Skills 实战教程 - 打造专属AI编程知识库](https://www.bilibili.com/video/BV1WmSKBEEtt/)**
+4. **[25% → 90%！别让 Skills 吃灰：Hooks + Commands + Agents 协同激活 AI 全部能力：Claude Code 工程化实践](https://www.bilibili.com/video/BV1rnBKB2EME/)**
 
 ### ruoyi-plus-uniapp简单入门实战课程- OA系统开发课程
 **[【RuoYi-Plus-UniApp实战】企业OA办公系统开发教程 - Vue3全栈开发完整指南（配合claude实战）](https://www.bilibili.com/video/BV1AJacz3EXG)**
