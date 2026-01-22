@@ -12,6 +12,9 @@ hero:
     - theme: brand
       text: 开始使用
       link: /backend/getting-started
+    - theme: brand
+      text: AI 开发体验
+      link: /practices/ai/claude-code
     - theme: alt
       text: 介绍视频
       link: https://www.bilibili.com/video/BV1YrtMzvEaT/
@@ -20,6 +23,10 @@ hero:
       link: /demo
 
 features:
+  - icon: 🤖
+    title: Claude Code 深度集成 (NEW)
+    details: 首个 AI 原生全栈框架！29+ 专业技能、12 个智能命令、3 个自动化钩子，让 AI 真正理解你的代码架构。自动遵循项目规范，智能生成符合标准的代码，开发效率提升 10 倍
+    link: /practices/ai/claude-code
   - icon: 🚀
     title: 后端重大重构
     details: 四层架构（Controller-Service-DAO-Mapper）设计，DAO层统一查询构建，MyBatis Plus增强查询，多租户系统，权限控制，智能代码生成，主子表，支付集成，小程序/公众号集成
@@ -94,7 +101,14 @@ highlights:
       **消息队列** - RocketMQ 集成，异步解耦、削峰填谷、最终一致性
       **多媒体处理** - 海报生成引擎、GIF合成、火山引擎TTS语音合成
       **页面设计器** - 可视化拖拽设计、30+组件、AI智能生成、一键代码导出
-      **智能开发** - Claude Code上下文工程，AI辅助开发体验升级
+
+  - title: 🤖 Claude Code 原生支持
+    details: |
+      **29+ 专业技能** - 覆盖后端CRUD、前端组件、移动端开发、数据库设计等全栈场景
+      **12 个智能命令** - /dev开发、/crud生成、/check检查、/progress进度追踪
+      **3 个自动化钩子** - 技能强制评估、工具调用拦截、会话结束处理
+      **完整上下文工程** - CLAUDE.md + AGENTS.md 双配置，AI深度理解项目架构
+      **规范自动遵循** - 四层架构、命名规范、代码风格100%自动化执行
 ---
 
 ## 🌟 为什么选择 ruoyi-plus-uniapp？
