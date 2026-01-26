@@ -18,7 +18,7 @@ aside: false
 
 ## 💰 授权定价
 
-选择适合您的版本，开启高效开发之旅
+选择适合您的版本，开启高效开发之旅（三个版本代码完全一样，仅授权主体和开发人员数量差异，企业版须有营业执照方可购买）
 
 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 40px 0;">
 
