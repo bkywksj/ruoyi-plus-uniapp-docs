@@ -1,4 +1,4 @@
-# Claude Code 深度集成文档
+# Claude Code 深度集成文档 1
 
 ## 介绍
 Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开发、文档与协作的工程化体系。它通过 `CLAUDE.md` 与 `AGENTS.md` 双配置沉淀语言规范、架构约束与技能激活流程，并结合 `.claude/skills`、`.claude/commands`、`.claude/hooks` 形成可执行的工作流。开发者给出目标后，Claude Code 先做技能评估，再按命令流程执行扫描、设计、生成和同步，确保产出严格贴合 `plus.ruoyi` 架构与四层分层设计。本文档基于 workflow 项目真实文件整理，系统化说明技能体系、命令体系、钩子机制与实战方法，帮助团队在复杂业务下保持一致性与可追溯性。
