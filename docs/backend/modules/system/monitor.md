@@ -2,7 +2,7 @@
 
 ## 概述
 
-监控模块是系统的重要组成部分，提供对系统运行状态、用户行为、缓存性能等多方面的监控功能。该模块主要包含缓存监控、登录日志监控、操作日志监控和在线用户监控四大功能模块。
+监控模块是系统的重要组成部分，提供对系统运行状态、用户行为、缓存性能、异常错误等多方面的监控功能。该模块主要包含缓存监控、登录日志监控、操作日志监控、在线用户监控和错误日志监控五大功能模块。
 
 ## 模块结构
 
@@ -10,29 +10,40 @@
 plus.ruoyi.system.monitor
 ├── controller/          # 控制层
 │   ├── CacheController.java
+│   ├── SysErrorLogController.java
 │   ├── SysLoginLogController.java
 │   ├── SysOperlogController.java
 │   └── SysUserOnlineController.java
+├── dao/                 # 数据访问层
+│   ├── ISysErrorLogDao.java
+│   └── impl/
+│       └── SysErrorLogDaoImpl.java
 ├── domain/              # 领域层
 │   ├── bo/              # 业务对象
+│   │   ├── SysErrorLogBo.java
 │   │   ├── SysLoginLogBo.java
 │   │   └── SysOperLogBo.java
-│   ├── entity/          # 实体对象
-│   │   ├── SysLoginLog.java
-│   │   └── SysOperLog.java
+│   ├── SysErrorLog.java
+│   ├── SysLoginLog.java
+│   └── SysOperLog.java
 │   └── vo/              # 视图对象
 │       ├── CacheMonitorVo.java
+│       ├── SysErrorLogVo.java
 │       ├── SysLoginLogVo.java
 │       └── SysOperLogVo.java
 ├── mapper/              # 数据访问层
+│   ├── SysErrorLogMapper.java
+│   ├── SysErrorLogMapper.xml
 │   ├── SysLoginLogMapper.java
 │   ├── SysLoginLogMapper.xml
 │   ├── SysOperLogMapper.java
 │   └── SysOperLogMapper.xml
 └── service/             # 服务层
+    ├── ISysErrorLogService.java
     ├── ISysLoginLogService.java
     ├── ISysOperLogService.java
     └── impl/
+        ├── SysErrorLogServiceImpl.java
         ├── SysLoginLogServiceImpl.java
         └── SysOperLogServiceImpl.java
 ```
@@ -234,6 +245,105 @@ public R<Void> removeCurrentDevice(@PathVariable String tokenId)
 - 自动过滤已过期的token
 - 支持多设备登录管理
 
+### 5. 错误日志监控模块
+
+**核心组件：** `SysErrorLogController`、`SysErrorLogServiceImpl`、`SysErrorLogDaoImpl`
+
+**主要功能：**
+- 系统异常自动捕获和记录
+- 错误日志查询和管理
+- 错误处理状态跟踪
+- 智能去重和统计分析
+
+**核心接口：**
+
+#### 分页查询错误日志
+```java
+@GetMapping("/pageErrorLogs")
+public R<PageResult<SysErrorLogVo>> pageErrorLogs(SysErrorLogBo bo, PageQuery pageQuery)
+```
+
+#### 获取错误日志详情
+```java
+@GetMapping("/getErrorLog/{id}")
+public R<SysErrorLogVo> getErrorLog(@PathVariable Long id)
+```
+
+#### 更新错误处理状态
+```java
+@PutMapping("/updateHandleStatus")
+public R<Void> updateHandleStatus(@RequestBody SysErrorLogBo bo)
+```
+
+#### 批量删除错误日志
+```java
+@DeleteMapping("/deleteErrorLogs/{ids}")
+public R<Void> deleteErrorLogs(@PathVariable Long[] ids)
+```
+
+#### 清空错误日志
+```java
+@DeleteMapping("/clearErrorLogs")
+public R<Void> clearErrorLogs()
+```
+
+#### 导出错误日志
+```java
+@PostMapping("/exportErrorLogs")
+public void exportErrorLogs(SysErrorLogBo bo, PageQuery pageQuery, HttpServletResponse response)
+```
+
+**数据模型：**
+
+**SysErrorLog 实体字段：**
+- `id`: 主键ID
+- `tenantId`: 租户ID
+- `errorLevel`: 严重级别（ERROR/WARN/FATAL）
+- `errorType`: 异常类名
+- `errorCode`: 业务错误码
+- `errorMessage`: 错误消息
+- `errorStack`: 异常堆栈
+- `requestUri`: 请求URI
+- `requestMethod`: 请求方法
+- `requestParams`: 请求参数
+- `requestIp`: 请求IP
+- `userAgent`: User-Agent
+- `userId`: 用户ID
+- `userName`: 用户名
+- `deptId`: 部门ID
+- `clientType`: 平台类型（PC/WECHAT/ANDROID/IOS/H5）
+- `clientVersion`: 客户端版本
+- `moduleName`: 模块名称
+- `businessType`: 业务类型
+- `businessKey`: 业务关键字
+- `traceId`: 链路追踪ID
+- `serverName`: 服务器名称
+- `serverIp`: 服务器IP
+- `appVersion`: 应用版本
+- `sqlStatement`: SQL语句
+- `sqlParams`: SQL参数
+- `sqlDuration`: SQL耗时(ms)
+- `occurrenceCount`: 发生次数
+- `firstTime`: 首次发生时间
+- `lastTime`: 最后发生时间
+- `handleStatus`: 处理状态（0待处理/1已处理/2已忽略）
+- `handleBy`: 处理人
+- `handleTime`: 处理时间
+- `handleRemark`: 处理备注
+- `createTime`: 创建时间
+- `remark`: 备注
+
+**特殊功能：**
+- **异步记录机制**：使用 @Async 注解异步记录所有后端异常，不影响主业务流程性能
+- **智能去重机制**：基于 Redis 实现 1 分钟窗口去重，相同错误（异常类型+URI+消息）只记录一次，重复时自动增加 occurrence_count 计数
+- **全面信息采集**：记录异常堆栈、请求信息（URI/方法/参数/IP）、用户信息（ID/姓名/部门/租户）、服务器环境（主机名/IP/版本）等完整上下文
+- **双场景支持**：通过 resolveToken() 方法同时支持 OpenAPI 请求（从 JUST_CREATED 属性获取 token）和普通请求（从请求头获取 token）的用户信息解析
+- **完整管理功能**：提供分页查询、详情查看、处理状态更新、批量删除、清空日志等完整的错误日志管理能力
+- 支持按严重级别、异常类型、用户名、平台类型、处理状态等多维度查询
+- 支持时间范围查询和模糊搜索
+- 自动获取IP地址对应的地理位置信息
+- 支持错误统计和趋势分析
+
 ## 权限配置
 
 | 功能模块 | 所需权限 | 说明 |
@@ -248,6 +358,10 @@ public R<Void> removeCurrentDevice(@PathVariable String tokenId)
 | 操作日志导出 | `monitor:operLog:export` | 导出操作日志 |
 | 在线用户查询 | `monitor:online:query` | 查看在线用户 |
 | 强制下线 | `monitor:online:forceLogout` | 强制用户下线 |
+| 错误日志查询 | `monitor:errorLog:query` | 查询错误日志 |
+| 错误日志更新 | `monitor:errorLog:update` | 更新错误处理状态 |
+| 错误日志删除 | `monitor:errorLog:delete` | 删除和清理错误日志 |
+| 错误日志导出 | `monitor:errorLog:export` | 导出错误日志 |
 
 ## 技术特性
 
@@ -281,6 +395,7 @@ public R<Void> removeCurrentDevice(@PathVariable String tokenId)
 确保以下数据表存在：
 - `sys_login_log`: 登录日志表
 - `sys_oper_log`: 操作日志表
+- `sys_error_log`: 错误日志表
 
 ### 2. Redis配置
 确保Redis服务正常运行，并配置Redisson连接工厂。
