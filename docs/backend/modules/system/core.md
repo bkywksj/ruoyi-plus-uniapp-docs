@@ -1,466 +1,941 @@
-# 核心功能 (core)
+# 系统核心模块 (System Core)
 
-## 概述
+## 模块概述
 
-系统核心包(`plus.ruoyi.system.core`)是整个系统的核心业务模块，负责处理用户管理、权限控制、部门组织、菜单管理、角色管理等基础功能。该模块采用经典的三层架构设计，包含控制器层(Controller)、服务层(Service)、数据访问层(Mapper)以及数据传输对象(BO/VO/Entity)。
+系统核心模块(`ruoyi-system/core`)是 RuoYi-Plus 框架的基础业务模块,负责处理用户管理、角色权限、部门组织、菜单管理、岗位管理等核心功能。该模块采用经典的分层架构设计,提供完整的 RBAC(基于角色的访问控制)权限体系,支持多租户隔离、数据权限控制、动态路由生成等企业级特性。
+
+**核心特性:**
+
+- **完整的 RBAC 权限体系** - 支持用户、角色、菜单、部门、岗位的多维度权限控制
+- **灵活的数据权限** - 提供 6 种数据权限范围,支持自定义数据权限规则
+- **多租户支持** - 基于租户 ID 的数据隔离,支持租户套餐菜单控制
+- **动态路由生成** - 根据用户权限动态构建前端路由配置
+- **树形组织结构** - 支持无限层级的部门树和菜单树
+- **社交登录集成** - 支持第三方社交账号绑定和登录
+- **角色邀请机制** - 支持通过邀请码快速分配角色权限
+- **数据缓存优化** - 使用 Redis 缓存提升查询性能
+- **操作审计日志** - 记录关键操作的审计日志
 
 ## 模块结构
 
+系统核心模块采用标准的三层架构设计,包含以下目录结构:
+
 ```
 plus.ruoyi.system.core/
-├── controller/          # 控制器层 - RESTful API接口
+├── controller/          # 控制器层 - RESTful API 接口
+│   ├── SysUserController.java           # 用户管理接口
+│   ├── SysRoleController.java           # 角色管理接口
+│   ├── SysDeptController.java           # 部门管理接口
+│   ├── SysMenuController.java           # 菜单管理接口
+│   ├── SysPostController.java           # 岗位管理接口
+│   ├── SysProfileController.java        # 个人信息接口
+│   ├── SysUserRoleController.java       # 用户角色授权接口
+│   ├── SysSocialController.java         # 社交关系接口
+│   └── SysRoleInviteController.java     # 角色邀请接口
+│
 ├── service/            # 服务层 - 业务逻辑处理
-│   └── impl/          # 服务层实现类
-├── mapper/            # 数据访问层 - MyBatis映射器
-├── domain/            # 数据模型层
-│   ├── entity/        # 实体类 - 数据库表映射
-│   ├── bo/            # 业务对象 - Business Object
-│   └── vo/            # 视图对象 - View Object
-└── listener/          # 事件监听器
+│   ├── ISysUserService.java             # 用户服务接口
+│   ├── ISysRoleService.java             # 角色服务接口
+│   ├── ISysDeptService.java             # 部门服务接口
+│   ├── ISysMenuService.java             # 菜单服务接口
+│   ├── ISysPostService.java             # 岗位服务接口
+│   ├── ISysSocialService.java           # 社交服务接口
+│   ├── ISysRoleInviteService.java       # 角色邀请服务接口
+│   ├── ISysPermissionService.java       # 权限服务接口
+│   ├── ISysDataScopeService.java        # 数据权限服务接口
+│   └── impl/                            # 服务实现类
+│
+├── dao/                # 数据访问层 - 数据库操作
+│   ├── ISysUserDao.java                 # 用户数据访问接口
+│   ├── ISysRoleDao.java                 # 角色数据访问接口
+│   ├── ISysDeptDao.java                 # 部门数据访问接口
+│   ├── ISysMenuDao.java                 # 菜单数据访问接口
+│   ├── ISysPostDao.java                 # 岗位数据访问接口
+│   ├── ISysSocialDao.java               # 社交数据访问接口
+│   ├── ISysUserRoleDao.java             # 用户角色关联数据访问接口
+│   ├── ISysRoleMenuDao.java             # 角色菜单关联数据访问接口
+│   ├── ISysRoleDeptDao.java             # 角色部门关联数据访问接口
+│   ├── ISysUserPostDao.java             # 用户岗位关联数据访问接口
+│   └── impl/                            # 数据访问实现类
+│
+├── domain/             # 数据模型层
+│   ├── SysUser.java                     # 用户实体
+│   ├── SysRole.java                     # 角色实体
+│   ├── SysDept.java                     # 部门实体
+│   ├── SysMenu.java                     # 菜单实体
+│   ├── SysPost.java                     # 岗位实体
+│   ├── SysSocial.java                   # 社交关系实体
+│   ├── SysUserRole.java                 # 用户角色关联实体
+│   ├── SysRoleMenu.java                 # 角色菜单关联实体
+│   ├── SysRoleDept.java                 # 角色部门关联实体
+│   ├── SysUserPost.java                 # 用户岗位关联实体
+│   ├── SysCache.java                    # 缓存配置实体
+│   ├── bo/                              # 业务对象(Business Object)
+│   │   ├── SysUserBo.java
+│   │   ├── SysRoleBo.java
+│   │   ├── SysDeptBo.java
+│   │   ├── SysMenuBo.java
+│   │   ├── SysPostBo.java
+│   │   ├── SysSocialBo.java
+│   │   ├── SysUserProfileBo.java
+│   │   ├── SysUserPasswordBo.java
+│   │   ├── CreateRoleInviteBo.java
+│   │   └── RoleInviteQueryBo.java
+│   └── vo/                              # 视图对象(View Object)
+│       ├── SysUserVo.java
+│       ├── SysRoleVo.java
+│       ├── SysDeptVo.java
+│       ├── SysMenuVo.java
+│       ├── SysPostVo.java
+│       ├── SysSocialVo.java
+│       ├── SysUserExportVo.java
+│       ├── SysUserInfoVo.java
+│       ├── UserInfoVo.java
+│       ├── RouterVo.java
+│       └── MetaVo.java
+│
+├── mapper/             # MyBatis Mapper 接口(XML 映射)
+│   └── ...
+│
+└── listener/           # 事件监听器
+    └── SysUserImportListener.java       # 用户导入监听器
 ```
+
+## 技术架构
+
+### 分层架构设计
+
+系统核心模块采用经典的三层架构模式,各层职责清晰:
+
+**1. 控制器层(Controller)**
+- 负责接收 HTTP 请求,处理请求参数
+- 调用服务层完成业务逻辑
+- 返回统一的响应格式 `R<T>`
+- 使用 `@SaCheckPermission` 注解进行权限控制
+- 使用 `@Log` 注解记录操作日志
+- 使用 `@RepeatSubmit` 注解防止重复提交
+
+**2. 服务层(Service)**
+- 实现核心业务逻辑
+- 处理事务管理
+- 进行数据验证和业务规则校验
+- 调用数据访问层完成数据操作
+- 处理缓存更新和失效
+
+**3. 数据访问层(Dao)**
+- 封装数据库操作
+- 提供基础的 CRUD 方法
+- 处理复杂的关联查询
+- 支持分页查询和条件构造
+
+### 核心技术栈
+
+**框架集成:**
+- **Spring Boot 3.5.6** - 应用框架和依赖注入
+- **MyBatis-Plus 3.5.14** - ORM 框架,提供强大的 CRUD 和查询构造器
+- **Sa-Token 1.44.0** - 权限认证框架,支持多端登录和权限控制
+- **Redisson 3.51.0** - Redis 客户端,提供分布式锁和缓存支持
+- **Hutool 5.8.40** - Java 工具库,提供丰富的工具方法
+
+**数据模型:**
+- **Entity** - 实体类,直接映射数据库表结构
+- **BO(Business Object)** - 业务对象,用于接收前端请求参数
+- **VO(View Object)** - 视图对象,用于前端展示和数据导出
+
+**注解支持:**
+- `@TableName` - 指定数据库表名
+- `@TableId` - 主键标识
+- `@TableLogic` - 逻辑删除标识
+- `@TableField` - 字段配置
+- `@SaCheckPermission` - 权限校验
+- `@Log` - 操作日志记录
+- `@Cacheable` / `@CacheEvict` - 缓存管理
+
+### 数据权限体系
+
+系统支持 6 种数据权限范围,通过角色配置实现灵活的数据访问控制:
+
+1. **全部数据权限** - 可查看所有数据,不受部门限制
+2. **自定数据权限** - 可查看指定部门的数据,通过角色-部门关联配置
+3. **本部门数据权限** - 只能查看本部门的数据
+4. **本部门及以下数据权限** - 可查看本部门及下级部门的数据
+5. **仅本人数据权限** - 只能查看自己创建的数据
+6. **部门及以下或本人数据权限** - 可查看部门数据或个人数据
+
+数据权限通过 SQL 拦截器实现,在查询时自动添加数据权限过滤条件,确保用户只能访问授权范围内的数据。
+
+### 多租户支持
+
+系统核心模块全面支持多租户架构:
+
+**租户隔离机制:**
+- 所有核心实体继承 `TenantEntity`,自动包含 `tenantId` 字段
+- 数据查询自动添加租户过滤条件,确保数据隔离
+- 租户套餐控制菜单权限范围,限制租户可访问的功能模块
+
+**租户管理特性:**
+- 租户套餐菜单分配,过滤系统核心管理功能
+- 租户管理员权限控制,防止越权操作
+- 跨租户数据隔离保证,确保数据安全
+
+**超级管理员:**
+- 超级管理员不受租户限制,可管理所有租户数据
+- 支持动态切换租户上下文,方便运维管理
 
 ## 核心领域实体
 
-### 用户管理(User)
-- **SysUser** - 用户实体，包含用户基本信息、状态、部门关联等
-- **SysUserBo** - 用户业务对象，用于接收和传递用户业务数据
-- **SysUserVo** - 用户视图对象，用于前端展示和数据导出
-- **SysUserExportVo** - 用户导出专用视图对象
+系统核心模块包含多个领域实体,每个实体都对应数据库中的一张表,通过 MyBatis-Plus 注解进行映射。所有实体都继承自 `TenantEntity` 或 `BaseEntity`,自动获得租户隔离、创建时间、更新时间等公共字段。
 
-### 角色管理(Role)
-- **SysRole** - 角色实体，定义系统角色及其权限范围
-- **SysRoleBo** - 角色业务对象，包含角色信息和关联的菜单、部门权限
-- **SysRoleVo** - 角色视图对象，用于前端展示
+### 用户实体(SysUser)
 
-### 部门管理(Dept)
-- **SysDept** - 部门实体，支持树形组织结构
-- **SysDeptBo** - 部门业务对象，包含部门信息和验证规则
-- **SysDeptVo** - 部门视图对象，支持树形结构展示
+用户实体是系统的核心实体之一,存储用户的基本信息和状态。
 
-### 菜单管理(Menu)
-- **SysMenu** - 菜单实体，定义系统菜单和权限结构
-- **SysMenuBo** - 菜单业务对象，包含菜单配置和验证
-- **SysMenuVo** - 菜单视图对象，支持树形菜单展示
+**主要字段:**
+- `userId` - 用户ID,主键
+- `deptId` - 部门ID,关联部门表
+- `userName` - 用户账号,登录用名,唯一
+- `nickName` - 用户昵称,显示名称
+- `userType` - 用户类型,区分系统用户和普通用户
+- `email` - 用户邮箱,唯一,可用于登录
+- `phone` - 手机号码,唯一,可用于登录
+- `gender` - 用户性别
+- `avatar` - 用户头像地址
+- `password` - 密码,BCrypt 加密存储
+- `status` - 账号状态,正常/停用
+- `isDeleted` - 逻辑删除标识
+- `loginIp` - 最后登录IP
+- `loginDate` - 最后登录时间
+- `tenantId` - 租户ID,继承自 TenantEntity
 
-### 岗位管理(Post)
-- **SysPost** - 岗位实体，定义用户岗位信息
-- **SysPostBo** - 岗位业务对象
-- **SysPostVo** - 岗位视图对象
+**特性:**
+- 继承 `TenantEntity`,支持多租户隔离
+- 使用 `@TableLogic` 注解实现逻辑删除
+- 密码字段使用 `@TableField` 配置插入和更新策略
+- 支持用户名、邮箱、手机号三种登录方式
+
+### 角色实体(SysRole)
+
+角色实体定义系统中的角色信息和权限范围。
+
+**主要字段:**
+- `roleId` - 角色ID,主键
+- `roleName` - 角色名称
+- `roleKey` - 角色权限字符串,用于权限标识
+- `roleSort` - 显示顺序
+- `dataScope` - 数据范围,控制数据权限
+- `menuCheckStrictly` - 菜单树选择项是否关联显示
+- `deptCheckStrictly` - 部门树选择项是否关联显示
+- `status` - 角色状态,正常/停用
+- `isDeleted` - 逻辑删除标识
+- `remark` - 备注
+- `tenantId` - 租户ID
+
+**特性:**
+- 支持 6 种数据权限范围配置
+- 通过 `roleKey` 进行权限标识,如 `admin`、`common`
+- 支持菜单权限和数据权限的独立配置
+- 角色可以关联多个菜单和部门
+
+### 部门实体(SysDept)
+
+部门实体定义组织架构的树形结构。
+
+**主要字段:**
+- `deptId` - 部门ID,主键
+- `parentId` - 父部门ID,构建树形结构
+- `ancestors` - 祖级列表,存储所有父级ID,用逗号分隔
+- `deptName` - 部门名称
+- `orderNum` - 显示顺序
+- `leader` - 负责人
+- `phone` - 联系电话
+- `email` - 邮箱
+- `status` - 部门状态,正常/停用
+- `isDeleted` - 逻辑删除标识
+- `tenantId` - 租户ID
+
+**特性:**
+- 支持无限层级的树形结构
+- 通过 `ancestors` 字段快速查询所有上级部门
+- 父部门停用时,子部门自动停用
+- 删除部门时检查是否存在子部门和关联用户
+
+### 菜单实体(SysMenu)
+
+菜单实体定义系统的菜单结构和权限标识。
+
+**主要字段:**
+- `menuId` - 菜单ID,主键
+- `menuName` - 菜单名称
+- `parentId` - 父菜单ID,构建树形结构
+- `orderNum` - 显示顺序
+- `path` - 路由地址
+- `component` - 组件路径
+- `queryParam` - 路由参数
+- `isFrame` - 是否为外链
+- `isCache` - 是否缓存
+- `menuType` - 菜单类型,目录(M)/菜单(C)/按钮(F)
+- `visible` - 显示状态,显示/隐藏
+- `status` - 菜单状态,正常/停用
+- `perms` - 权限标识,如 `system:user:list`
+- `icon` - 菜单图标
+- `i18nKey` - 国际化键
+- `remark` - 备注
+
+**特性:**
+- 支持三级菜单结构:目录→菜单→按钮
+- 通过 `perms` 字段定义权限标识,用于按钮级权限控制
+- 支持外链菜单和内部路由
+- 支持菜单缓存配置,提升页面切换性能
+- 支持国际化菜单标题
+
+### 岗位实体(SysPost)
+
+岗位实体定义用户的岗位信息。
+
+**主要字段:**
+- `postId` - 岗位ID,主键
+- `deptId` - 部门ID,岗位归属部门
+- `postCode` - 岗位编码,唯一
+- `postName` - 岗位名称
+- `postSort` - 显示顺序
+- `status` - 状态,正常/停用
+- `remark` - 备注
+- `tenantId` - 租户ID
+
+**特性:**
+- 岗位归属于特定部门
+- 一个用户可以拥有多个岗位
+- 岗位编码唯一,用于业务标识
+- 支持岗位排序和状态控制
+
+### 社交关系实体(SysSocial)
+
+社交关系实体存储用户与第三方社交平台的绑定关系。
+
+**主要字段:**
+- `id` - 主键ID
+- `userId` - 用户ID,关联系统用户
+- `tenantId` - 租户ID
+- `authId` - 第三方平台的用户唯一ID
+- `source` - 第三方平台标识,如 `gitee`、`github`、`wechat`
+- `openId` - 第三方平台的 OpenID
+- `userName` - 第三方平台的用户名
+- `nickName` - 第三方平台的昵称
+- `email` - 第三方平台的邮箱
+- `avatar` - 第三方平台的头像
+- `accessToken` - 访问令牌
+- `expireIn` - 令牌过期时间
+- `refreshToken` - 刷新令牌
+- `accessCode` - 授权码
+- `unionId` - 第三方平台的 UnionID
+
+**特性:**
+- 支持多种第三方社交平台绑定
+- 一个用户可以绑定多个社交账号
+- 支持社交账号登录和绑定
+- 存储第三方平台的令牌信息,支持自动刷新
 
 ### 关联关系实体
-- **SysUserRole** - 用户角色关联关系
-- **SysRoleMenu** - 角色菜单权限关联关系
-- **SysRoleDept** - 角色部门数据权限关联关系
-- **SysUserPost** - 用户岗位关联关系
-- **SysSocial** - 社会化登录关联关系
+
+系统通过多个关联关系实体实现用户、角色、菜单、部门、岗位之间的多对多关系。
+
+**SysUserRole - 用户角色关联**
+- `userId` - 用户ID
+- `roleId` - 角色ID
+- 一个用户可以拥有多个角色
+- 一个角色可以分配给多个用户
+
+**SysRoleMenu - 角色菜单关联**
+- `roleId` - 角色ID
+- `menuId` - 菜单ID
+- 定义角色可以访问的菜单和按钮权限
+- 一个角色可以关联多个菜单
+- 一个菜单可以分配给多个角色
+
+**SysRoleDept - 角色部门关联**
+- `roleId` - 角色ID
+- `deptId` - 部门ID
+- 定义角色的数据权限范围
+- 仅在数据权限为"自定数据权限"时使用
+- 一个角色可以关联多个部门
+
+**SysUserPost - 用户岗位关联**
+- `userId` - 用户ID
+- `postId` - 岗位ID
+- 一个用户可以拥有多个岗位
+- 一个岗位可以分配给多个用户
 
 ## 服务层架构
 
-### 基础服务接口
+服务层是系统核心模块的业务逻辑层,负责处理所有的业务规则、数据验证、事务管理和缓存控制。每个服务接口都定义了清晰的业务方法,由对应的实现类完成具体的业务逻辑。
 
-#### ISysUserService - 用户管理服务
-**核心功能：**
-- 用户CRUD操作：增删改查、批量操作
-- 用户认证：登录验证、密码管理、状态控制
-- 用户关联：角色分配、岗位分配、部门归属
-- 数据导入导出：Excel批量导入导出用户信息
-- 用户查询：按部门、角色、岗位等维度查询用户
+### 用户服务(ISysUserService)
 
-**关键方法：**
-- `listUsersByDeptId()` - 根据部门查询用户
-- `listUsersByRoleIds()` / `listUsersByPostIds()` - 根据角色/岗位查询用户
-- `checkUserNameUnique()` / `checkEmailUnique()` / `checkPhoneUnique()` - 用户信息唯一性校验
-- `insertUser()` / `updateUser()` / `deleteUserByIds()` - 用户增删改操作
-- `resetPwd()` / `updateUserProfile()` - 密码重置和个人信息更新
+用户服务是系统最核心的服务之一,提供完整的用户管理功能。
 
-#### ISysRoleService - 角色管理服务
-**核心功能：**
-- 角色CRUD操作和权限管理
-- 角色菜单权限分配和数据权限控制
-- 用户角色关联管理
-- 角色状态管理和数据范围控制
+**核心功能:**
 
-**关键方法：**
-- `listRolesByUserId()` - 查询用户拥有的角色
-- `listRolePermissionsByUserId()` - 查询用户角色权限
-- `insertRole()` / `updateRole()` - 角色增删改，包含权限分配
-- `authDataScope()` - 角色数据权限授权
-- `insertAuthUsers()` / `deleteAuthUsers()` - 角色用户授权管理
+**1. 用户查询**
+- `pageUsers()` - 分页查询用户列表,支持多条件筛选
+- `pageUserExports()` - 分页查询用户导出列表,用于 Excel 导出
+- `pageRoleAuthorizedUsers()` - 分页查询已分配角色的用户列表
+- `pageRoleUnauthorizedUsers()` - 分页查询未分配角色的用户列表
+- `getUserByUserName()` - 通过用户名查询用户
+- `getUserByPhone()` - 通过手机号查询用户
+- `getUserByEmail()` - 通过邮箱查询用户
+- `getUserById()` - 通过用户ID查询用户
+- `getUserByNameKeyword()` - 根据用户名或昵称模糊查询用户
+- `getUserWithRolesById()` - 通过用户ID查询用户(带角色信息)
+- `listUsersByIdsAndDeptId()` - 通过用户ID串和部门ID查询用户列表
+- `listUsersByDeptId()` - 通过部门ID查询当前部门所有用户
 
-#### ISysDeptService - 部门管理服务
-**核心功能：**
-- 部门树形结构管理
-- 部门CRUD操作和层级关系维护
-- 部门数据权限校验
-- 部门用户关联查询
+**2. 用户管理**
+- `insertUser()` - 新增用户信息,包含角色和岗位分配
+- `registerPcUser()` - 注册PC端用户信息
+- `updateUser()` - 修改用户信息,包含角色和岗位更新
+- `assignUserRoles()` - 分配用户角色
+- `updateUserStatus()` - 修改用户状态(启用/停用)
+- `updateUserProfile()` - 修改用户基本信息
+- `updateUserAvatar()` - 修改用户头像
+- `updateUserNickNameAvatar()` - 更新用户昵称和头像
+- `resetUserPwd()` - 重置用户密码
+- `deleteUserById()` - 通过用户ID删除用户
+- `deleteUserByIds()` - 批量删除用户信息
 
-**关键方法：**
-- `getDeptTree()` - 获取部门树结构
-- `buildDeptTreeSelect()` - 构建前端下拉树
-- `checkDeptNameUnique()` - 部门名称唯一性校验
-- `hasChildByDeptId()` / `checkDeptExistUser()` - 部门关联关系检查
-- `checkDeptDataScope()` - 部门数据权限校验
+**3. 用户验证**
+- `isUserNameUnique()` - 判断用户名称是否唯一
+- `isPhoneUnique()` - 判断手机号码是否唯一
+- `isEmailUnique()` - 判断邮箱是否唯一
+- `checkUserAllowed()` - 判断用户是否允许操作
+- `checkUserDataScope()` - 校验用户是否有数据权限
 
-#### ISysMenuService - 菜单管理服务
-**核心功能：**
-- 菜单树形结构管理
-- 前端路由配置生成
-- 用户菜单权限查询
-- 租户菜单权限控制
+**4. 用户关联查询**
+- `getUserRoleGroup()` - 根据用户ID查询用户所属角色组
+- `getUserPostGroup()` - 根据用户ID查询用户所属岗位组
 
-**关键方法：**
-- `listMenuByUserId()` - 根据用户查询可访问菜单
-- `buildRouters()` - 构建前端路由配置
-- `listMenuPermissionsByUserId()` - 查询用户菜单权限
-- `buildMenuTreeOptions()` - 构建菜单树选择器
-- `buildTenantPackageMenuTreeOptions()` - 构建租户套餐菜单树
+### 角色服务(ISysRoleService)
+
+角色服务负责角色管理和权限分配功能。
+
+**核心功能:**
+
+**1. 角色查询**
+- `get()` - 根据ID查询角色详情
+- `list()` - 查询角色列表,支持条件筛选
+- `page()` - 分页查询角色列表
+- `getRoleById()` - 通过角色ID查询角色
+- `listRolesByUserId()` - 根据用户ID查询角色列表
+- `listRolesWithAuthByUserId()` - 根据用户ID查询角色列表(包含被授权状态)
+- `listRolesByIds()` - 根据角色ID列表批量查询角色
+
+**2. 角色管理**
+- `insertRole()` - 新增角色,包含菜单权限和数据权限配置
+- `updateRole()` - 修改角色,包含权限更新
+- `updateRoleDataScope()` - 修改角色数据权限范围
+- `updateRoleStatus()` - 修改角色状态
+- `batchDelete()` - 批量删除角色
+- `batchSave()` - 批量保存角色
+
+**3. 角色权限查询**
+- `listRolePermissionsByUserId()` - 根据用户ID查询角色权限标识集合
+- `listRoleIdsByUserId()` - 根据用户ID获取角色ID列表
+- `listMenuIdsByRoleId()` - 根据角色ID查询菜单ID列表
+
+**4. 角色验证**
+- `isRoleNameUnique()` - 判断角色名称是否唯一
+- `isRoleKeyUnique()` - 判断角色权限字符串是否唯一
+- `checkRoleAllowed()` - 判断角色是否允许操作
+- `checkRoleDataScope()` - 校验角色是否有数据权限
+
+### 菜单服务(ISysMenuService)
+
+菜单服务负责菜单管理和动态路由生成功能。
+
+**核心功能:**
+
+**1. 菜单查询**
+- `listMenuByUserId()` - 根据用户查询系统菜单列表
+- `listMenus()` - 查询菜单列表,支持条件筛选
+- `listMenuTreeByUserId()` - 根据用户ID查询菜单树信息
+- `getMenuById()` - 根据菜单ID查询菜单详情
+
+**2. 菜单权限查询**
+- `listMenuPermissionsByUserId()` - 根据用户ID查询权限标识集合
+- `listMenuPermissionsByRoleId()` - 根据角色ID查询权限标识集合
+- `listMenuIdsByRoleId()` - 根据角色ID查询菜单ID列表
+- `listMenuIdsByPackageId()` - 根据租户套餐ID查询菜单ID列表
+
+**3. 菜单树构建**
+- `buildRouters()` - 构建前端路由所需要的菜单树
+- `buildMenuTreeOptions()` - 构建菜单下拉树选择器
+- `buildRoleMenuTree()` - 构建角色菜单树(用于角色授权)
+- `buildTenantPackageMenuTree()` - 构建租户套餐菜单树
+
+**4. 菜单管理**
+- `insertMenu()` - 新增菜单
+- `updateMenu()` - 修改菜单
+- `deleteMenuById()` - 删除菜单
+- `isMenuNameUnique()` - 判断菜单名称是否唯一
+- `hasChildByMenuId()` - 是否存在子菜单
+
+### 部门服务(ISysDeptService)
+
+部门服务负责组织架构的树形结构管理。
+
+**核心功能:**
+
+**1. 部门查询**
+- `list()` - 查询部门列表,支持条件筛选
+- `getDeptById()` - 根据部门ID查询部门详情
+- `listNormalDeptsByIds()` - 根据部门ID列表查询正常状态的部门
+- `listDeptsByUserId()` - 根据用户ID查询部门列表
+
+**2. 部门树构建**
+- `buildDeptTree()` - 构建部门树结构
+- `buildDeptTreeOptions()` - 构建部门下拉树选择器
+- `buildRoleDeptTree()` - 构建角色部门树(用于数据权限配置)
+
+**3. 部门管理**
+- `insertDept()` - 新增部门,自动维护祖先路径
+- `updateDept()` - 修改部门,更新子部门的祖先路径
+- `deleteDeptById()` - 删除部门,检查子部门和关联用户
+- `updateDeptStatus()` - 修改部门状态,级联更新子部门
+
+**4. 部门验证**
+- `isDeptNameUnique()` - 判断部门名称是否唯一
+- `hasChildByDeptId()` - 是否存在子部门
+- `checkDeptExistUser()` - 检查部门是否存在用户
+- `checkDeptDataScope()` - 校验部门数据权限
+
+### 岗位服务(ISysPostService)
+
+岗位服务负责岗位信息管理。
+
+**核心功能:**
+- `list()` - 查询岗位列表
+- `page()` - 分页查询岗位列表
+- `getPostById()` - 根据岗位ID查询岗位详情
+- `listPostIdsByUserId()` - 根据用户ID查询岗位ID列表
+- `insertPost()` - 新增岗位
+- `updatePost()` - 修改岗位
+- `deletePostByIds()` - 批量删除岗位
+- `isPostCodeUnique()` - 判断岗位编码是否唯一
+- `isPostNameUnique()` - 判断岗位名称是否唯一
+
+### 其他核心服务
+
+**ISysSocialService - 社交关系服务**
+- 管理用户与第三方社交平台的绑定关系
+- 支持社交账号登录和解绑
+- 查询用户的社交绑定列表
+
+**ISysRoleInviteService - 角色邀请服务**
+- 创建角色邀请码,快速分配角色权限
+- 查询和管理邀请码
+- 通过邀请码加入角色
+
+**ISysPermissionService - 权限服务**
+- 刷新用户权限缓存
+- 获取用户的菜单权限和角色权限
+- 权限验证和校验
+
+**ISysDataScopeService - 数据权限服务**
+- 获取用户的数据权限范围
+- 构建数据权限SQL过滤条件
+- 数据权限拦截和过滤
 
 ## 控制器层设计
 
-### RESTful API设计原则
-所有控制器都遵循统一的RESTful API设计规范：
+控制器层是系统核心模块的接口层,负责接收HTTP请求、处理请求参数、调用服务层完成业务逻辑、返回统一的响应格式。所有控制器都遵循RESTful API设计规范,使用Sa-Token进行权限控制,使用统一的响应格式`R<T>`。
 
-#### SysUserController - 用户管理API
-**主要端点：**
-- `GET /system/user/getUserInfo` - 获取当前用户信息
+### 统一响应格式
+
+所有API接口都返回统一的响应格式:
+
+```java
+public class R<T> {
+    private int code;        // 响应码,200表示成功
+    private String message;  // 响应消息
+    private T data;          // 响应数据
+}
+```
+
+**响应示例:**
+```json
+{
+  "code": 200,
+  "message": "操作成功",
+  "data": {
+    "userId": 1,
+    "userName": "admin",
+    "nickName": "管理员"
+  }
+}
+```
+
+### 用户管理控制器(SysUserController)
+
+用户管理控制器提供完整的用户管理API接口。
+
+**主要端点:**
+
+**1. 用户信息查询**
+- `GET /system/user/getUserInfo` - 获取当前登录用户信息
 - `GET /system/user/pageUsers` - 分页查询用户列表
-- `GET /system/user/getUser/{userId}` - 根据用户编号获取详细信息
-- `GET /system/user/getUserWithRoles/{userId}` - 根据用户编号获取授权角色
+- `GET /system/user/getUser/{userId}` - 根据用户ID获取详细信息
+- `GET /system/user/getUserWithRoles/{userId}` - 根据用户ID获取用户及角色信息
 - `GET /system/user/getUserOptions` - 根据用户ID串批量获取用户基础信息
 - `GET /system/user/listUsersByDeptId/{deptId}` - 获取部门下的所有用户信息
+
+**2. 用户管理操作**
 - `POST /system/user/addUser` - 新增用户
 - `PUT /system/user/updateUser` - 修改用户
-- `PUT /system/user/resetUserPwd` - 重置密码
-- `PUT /system/user/changeUserStatus` - 状态修改
-- `DELETE /system/user/deleteUsers/{userIds}` - 删除用户
-- `POST /system/user/exportUsers` - 导出用户列表
-- `POST /system/user/templateUsers` - 获取导入模板
-- `POST /system/user/importUsers` - 导入数据
+- `PUT /system/user/resetUserPwd` - 重置用户密码
+- `PUT /system/user/changeUserStatus` - 修改用户状态
+- `DELETE /system/user/deleteUsers/{userIds}` - 批量删除用户
 
-#### SysRoleController - 角色管理API
-**主要端点：**
-- `GET /system/role/pageRoles` - 获取角色信息列表
-- `GET /system/role/getRole/{roleId}` - 根据角色编号获取详细信息
+**3. 用户数据导入导出**
+- `POST /system/user/exportUsers` - 导出用户列表到Excel
+- `POST /system/user/templateUsers` - 下载用户导入模板
+- `POST /system/user/importUsers` - 从Excel导入用户数据
+
+**权限控制:**
+- 使用`@SaCheckPermission`注解进行权限校验
+- 支持多权限组合,如`@SaCheckPermission(value = {"system:user:query", "system:notice:add"}, mode = SaMode.OR)`
+- 自动校验用户数据权限,确保只能操作授权范围内的数据
+
+### 角色管理控制器(SysRoleController)
+
+角色管理控制器提供角色和权限管理API接口。
+
+**主要端点:**
+- `GET /system/role/pageRoles` - 分页查询角色列表
+- `GET /system/role/getRole/{roleId}` - 根据角色ID获取详细信息
 - `GET /system/role/getRoleOptions` - 获取角色选择框列表
-- `GET /system/role/getRoleDeptTree/{roleId}` - 获取对应角色部门树列表
+- `GET /system/role/getRoleDeptTree/{roleId}` - 获取角色部门树列表(数据权限)
 - `POST /system/role/addRole` - 新增角色
-- `PUT /system/role/updateRole` - 修改保存角色
-- `PUT /system/role/updateRoleDataScope` - 修改保存数据权限
-- `PUT /system/role/changeRoleStatus` - 状态修改
-- `DELETE /system/role/deleteRoles/{roleIds}` - 删除角色
-- `POST /system/role/exportRoles` - 导出角色信息列表
+- `PUT /system/role/updateRole` - 修改角色
+- `PUT /system/role/updateRoleDataScope` - 修改角色数据权限
+- `PUT /system/role/changeRoleStatus` - 修改角色状态
+- `DELETE /system/role/deleteRoles/{roleIds}` - 批量删除角色
+- `POST /system/role/exportRoles` - 导出角色列表
 
-#### SysDeptController - 部门管理API
-**主要端点：**
+### 部门管理控制器(SysDeptController)
+
+部门管理控制器提供组织架构管理API接口。
+
+**主要端点:**
 - `GET /system/dept/listDepts` - 获取部门列表
-- `GET /system/dept/listDeptsExcludeChild/{deptId}` - 查询部门列表(排除节点)
-- `GET /system/dept/getDept/{deptId}` - 根据部门编号获取详细信息
-- `GET /system/dept/listNormalDeptsByIds` - 获取部门选择框列表
-- `GET /system/dept/getDeptTreeOptions` - 获取部门树列表
+- `GET /system/dept/listDeptsExcludeChild/{deptId}` - 查询部门列表(排除指定节点及其子节点)
+- `GET /system/dept/getDept/{deptId}` - 根据部门ID获取详细信息
+- `GET /system/dept/listNormalDeptsByIds` - 获取正常状态的部门列表
+- `GET /system/dept/getDeptTreeOptions` - 获取部门树选择器
 - `POST /system/dept/addDept` - 新增部门
 - `PUT /system/dept/updateDept` - 修改部门
 - `DELETE /system/dept/deleteDept/{deptId}` - 删除部门
 
-#### SysMenuController - 菜单管理API
-**主要端点：**
-- `GET /system/menu/getRouters` - 获取路由信息
+### 菜单管理控制器(SysMenuController)
+
+菜单管理控制器提供菜单和路由管理API接口。
+
+**主要端点:**
+- `GET /system/menu/getRouters` - 获取当前用户的路由信息(用于前端动态路由)
 - `GET /system/menu/listMenus` - 获取菜单列表
-- `GET /system/menu/getMenu/{menuId}` - 根据菜单编号获取详细信息
+- `GET /system/menu/getMenu/{menuId}` - 根据菜单ID获取详细信息
 - `GET /system/menu/getMenuTreeOptions` - 获取菜单下拉树列表
-- `GET /system/menu/getRoleMenuTree/{roleId}` - 加载对应角色菜单列表树
-- `GET /system/menu/getTenantPackageMenuTree/{packageId}` - 加载对应租户套餐菜单列表树
+- `GET /system/menu/getRoleMenuTree/{roleId}` - 加载角色菜单列表树(用于角色授权)
+- `GET /system/menu/getTenantPackageMenuTree/{packageId}` - 加载租户套餐菜单列表树
 - `POST /system/menu/addMenu` - 新增菜单
 - `PUT /system/menu/updateMenu` - 修改菜单
 - `DELETE /system/menu/deleteMenu/{menuId}` - 删除菜单
 
-#### SysPostController - 岗位管理API
-**主要端点：**
-- `GET /system/post/pagePosts` - 获取岗位列表
-- `GET /system/post/getPost/{postId}` - 根据岗位编号获取详细信息
+### 岗位管理控制器(SysPostController)
+
+岗位管理控制器提供岗位信息管理API接口。
+
+**主要端点:**
+- `GET /system/post/pagePosts` - 分页查询岗位列表
+- `GET /system/post/getPost/{postId}` - 根据岗位ID获取详细信息
 - `GET /system/post/getPostOptions` - 获取岗位选择框列表
 - `POST /system/post/addPost` - 新增岗位
 - `PUT /system/post/updatePost` - 修改岗位
-- `DELETE /system/post/deletePosts/{postIds}` - 删除岗位
+- `DELETE /system/post/deletePosts/{postIds}` - 批量删除岗位
 - `POST /system/post/exportPosts` - 导出岗位列表
 
-#### SysUserRoleController - 用户角色授权API
-**主要端点：**
+### 其他控制器
+
+**SysProfileController - 个人信息控制器**
+- `GET /system/user/getUserProfile` - 获取个人信息
+- `PUT /system/user/updateUserProfile` - 修改个人信息
+- `PUT /system/user/updateUserPassword` - 修改密码
+- `POST /system/user/uploadAvatar` - 上传头像
+
+**SysUserRoleController - 用户角色授权控制器**
 - `GET /system/user-role/pageRoleAuthorizedUsers` - 分页查询角色已授权用户列表
-- `GET /system/user-role/pageRoleUnauthorizedUsers` - 查询角色未授权用户列表
+- `GET /system/user-role/pageRoleUnauthorizedUsers` - 分页查询角色未授权用户列表
 - `PUT /system/user-role/revokeUserRole` - 撤销用户角色
 - `PUT /system/user-role/batchRevokeUserRoles` - 批量撤销用户角色
 - `PUT /system/user-role/batchGrantUserRoles` - 批量授权用户角色
 - `PUT /system/user-role/assignUserRoles` - 用户授权角色
 
-#### SysProfileController - 个人信息API
-**主要端点：**
-- `GET /system/user/getUserProfile` - 个人信息
-- `PUT /system/user/updateUserProfile` - 修改用户信息
-- `PUT /system/user/updateUserPassword` - 修改密码
-- `POST /system/user/uploadAvatar` - 头像上传
+**SysSocialController - 社交关系控制器**
+- `GET /system/social/getSocialBindingList` - 查询社交关系列表
+- `DELETE /system/social/unbindSocial/{socialId}` - 解绑社交账号
 
-#### SysSocialController - 社会化关系API
-**主要端点：**
-- `GET /system/social/getSocialBindingList` - 查询社会化关系列表
-
-### 统一响应格式
-所有API接口都返回统一的响应格式`R<T>`：
-```json
-{
-  "code": 200,
-  "message": "操作成功",
-  "data": { ... }
-}
-```
-
-## 数据传输对象设计
-
-### 三层数据对象架构
-
-#### Entity - 实体类
-直接映射数据库表结构，使用MyBatis-Plus注解：
-- `@TableName` - 指定数据库表名
-- `@TableId` - 主键标识
-- `@TableLogic` - 逻辑删除标识
-- 继承`TenantEntity`或`BaseEntity`获得公共字段
-
-#### BO - 业务对象(Business Object)
-用于接收前端请求参数和业务逻辑处理：
-- 包含数据验证注解(`@NotBlank`, `@Size`, `@Email`等)
-- 使用`@AutoMapper`自动映射到Entity
-- 继承`BaseEntity`获得创建时间、更新时间等公共字段
-
-#### VO - 视图对象(View Object)
-用于前端展示和数据导出：
-- 使用`@ExcelProperty`支持Excel导出
-- 使用`@ExcelDictFormat`支持字典数据转换
-- 使用`@AutoMapper`从Entity自动映射
-- 实现`Serializable`接口支持序列化
-
-### 特殊视图对象
-
-#### RouterVo - 路由配置对象
-用于构建前端动态路由：
-```java
-public class RouterVo {
-    private String name;        // 路由名字
-    private String path;        // 路由地址  
-    private String component;   // 组件地址
-    private MetaVo meta;        // 路由元信息
-    private List<RouterVo> children; // 子路由
-}
-```
-
-#### MetaVo - 路由元信息对象
-定义路由在前端的展示属性：
-```java
-public class MetaVo {
-    private String title;       // 路由显示名称
-    private String icon;        // 菜单图标
-    private boolean noCache;    // 是否缓存
-    private String link;        // 外链地址
-    private String i18nKey;     // 国际化键
-}
-```
+**SysRoleInviteController - 角色邀请控制器**
+- `POST /system/role-invite/createInvite` - 创建角色邀请码
+- `GET /system/role-invite/pageInvites` - 分页查询邀请码列表
+- `POST /system/role-invite/joinByInvite` - 通过邀请码加入角色
 
 ## 数据访问层设计
 
-### MyBatis-Plus集成
-所有Mapper接口都继承`BaseMapperPlus<Entity, Vo>`，提供：
-- 基础CRUD操作的泛型实现
-- 自动实体到VO的映射转换
-- 分页查询支持
-- 条件构造器支持
+数据访问层(Dao)负责封装数据库操作,提供基础的CRUD方法和复杂的关联查询。系统采用MyBatis-Plus作为ORM框架,通过Dao接口和实现类完成数据访问。
 
-### 主要Mapper接口
-- **SysUserMapper** - 用户数据访问，包含复杂的用户角色关联查询
-- **SysRoleMapper** - 角色数据访问，支持权限相关的复杂查询
-- **SysDeptMapper** - 部门数据访问，支持树形结构查询
-- **SysMenuMapper** - 菜单数据访问，支持用户权限菜单查询
-- **SysRoleMenuMapper** - 角色菜单关联关系数据访问
-- **SysUserRoleMapper** - 用户角色关联关系数据访问
+### Dao接口设计
 
-### XML映射文件
-位于`resources/mapper/system`目录下，定义复杂的SQL查询：
-- 支持动态SQL和结果映射
-- 处理多表关联查询
-- 优化查询性能
+所有Dao接口都继承自MyBatis-Plus的基础接口,提供通用的数据库操作方法。
+
+**核心Dao接口:**
+- `ISysUserDao` - 用户数据访问接口
+- `ISysRoleDao` - 角色数据访问接口
+- `ISysDeptDao` - 部门数据访问接口
+- `ISysMenuDao` - 菜单数据访问接口
+- `ISysPostDao` - 岗位数据访问接口
+- `ISysSocialDao` - 社交关系数据访问接口
+- `ISysUserRoleDao` - 用户角色关联数据访问接口
+- `ISysRoleMenuDao` - 角色菜单关联数据访问接口
+- `ISysRoleDeptDao` - 角色部门关联数据访问接口
+- `ISysUserPostDao` - 用户岗位关联数据访问接口
+
+### 数据访问特性
+
+**1. 基础CRUD操作**
+- 继承MyBatis-Plus提供的基础方法
+- 支持单条和批量的增删改查操作
+- 自动处理租户隔离和逻辑删除
+
+**2. 条件查询**
+- 使用LambdaQueryWrapper构建查询条件
+- 支持动态SQL和复杂条件组合
+- 自动添加数据权限过滤条件
+
+**3. 分页查询**
+- 集成MyBatis-Plus分页插件
+- 支持物理分页和性能优化
+- 返回`PageResult<T>`统一分页结果
+
+**4. 关联查询**
+- 通过XML映射文件定义复杂的关联查询
+- 支持一对多、多对多关系查询
+- 优化查询性能,避免N+1问题
 
 ## 核心业务特性
 
+系统核心模块实现了多个重要的业务特性,为整个系统提供基础支撑。
+
 ### 权限控制体系
 
-#### 菜单权限
-- 三级菜单结构：目录(M) → 菜单(C) → 按钮(F)
+系统实现了完整的RBAC权限控制体系,包括菜单权限、数据权限和按钮权限。
+
+**1. 菜单权限**
+- 三级菜单结构:目录(M) → 菜单(C) → 按钮(F)
 - 基于角色的菜单权限分配
-- 动态路由生成，根据用户权限加载对应菜单
+- 动态路由生成,根据用户权限加载对应菜单
+- 支持菜单显示/隐藏控制
+- 支持外链菜单和内部路由
 
-#### 数据权限
-支持6种数据权限范围：
-1. **全部数据权限** - 可查看所有数据
-2. **自定数据权限** - 可查看指定部门的数据
-3. **本部门数据权限** - 只能查看本部门数据
-4. **本部门及以下数据权限** - 可查看本部门及下级部门数据
-5. **仅本人数据权限** - 只能查看自己的数据
-6. **部门及以下或本人数据权限** - 部门数据或个人数据
+**2. 数据权限**
 
-#### 按钮权限
-通过权限标识(`perms`)控制页面按钮的显示和操作权限，格式：`模块:功能:操作`
-例如：`system:user:query`, `system:role:add`, `system:dept:edit`
+系统支持6种数据权限范围,通过角色配置实现灵活的数据访问控制:
 
-### 多租户支持
+- **全部数据权限** - 可查看所有数据,不受部门限制
+- **自定数据权限** - 可查看指定部门的数据,通过角色-部门关联配置
+- **本部门数据权限** - 只能查看本部门的数据
+- **本部门及以下数据权限** - 可查看本部门及下级部门的数据
+- **仅本人数据权限** - 只能查看自己创建的数据
+- **部门及以下或本人数据权限** - 可查看部门数据或个人数据
 
-#### 租户隔离
-- 所有核心实体继承`TenantEntity`，自动包含租户ID
-- 数据查询自动添加租户过滤条件
-- 租户套餐控制菜单权限范围
+数据权限通过MyBatis-Plus拦截器实现,在查询时自动添加数据权限过滤条件,确保用户只能访问授权范围内的数据。
 
-#### 租户管理特性
-- 租户套餐菜单分配，过滤系统核心管理功能
-- 租户管理员权限控制
-- 跨租户数据隔离保证
+**3. 按钮权限**
+
+通过权限标识(`perms`)控制页面按钮的显示和操作权限:
+- 权限标识格式:`模块:功能:操作`
+- 示例:`system:user:query`、`system:role:add`、`system:dept:edit`
+- 前端通过权限标识控制按钮显示
+- 后端通过`@SaCheckPermission`注解校验操作权限
 
 ### 缓存策略
 
-#### Redis缓存集成
-使用Spring Cache注解实现缓存管理：
+系统使用Redis缓存提升查询性能,减少数据库访问。
+
+**缓存配置:**
+- **用户缓存** - 缓存用户基本信息和权限信息
+- **部门缓存** - 缓存部门信息和部门树结构
+- **角色缓存** - 缓存角色权限和用户角色关系
+- **菜单缓存** - 缓存菜单树和路由信息
+
+**缓存管理:**
+- 使用Spring Cache注解管理缓存
 - `@Cacheable` - 查询结果缓存
 - `@CacheEvict` - 缓存失效清理
 - `@Caching` - 复杂缓存操作组合
-
-#### 主要缓存配置
-- **用户缓存** - `CacheNames.SYS_USER_NAME`：用户基本信息缓存
-- **部门缓存** - `CacheNames.SYS_DEPT`：部门信息和部门树结构缓存
-- **角色缓存** - 角色权限和用户角色关系缓存
+- 数据更新时自动清理相关缓存
 
 ### 数据验证体系
 
-#### 业务对象验证
-BO类使用JSR-303注解进行数据验证：
+系统实现了完整的数据验证机制,确保数据的准确性和一致性。
+
+**1. 参数验证**
+
+使用JSR-303注解进行参数验证:
 - `@NotBlank` - 非空字符串验证
 - `@NotNull` - 非空对象验证
 - `@Size` - 字符串长度验证
 - `@Email` - 邮箱格式验证
 - `@Pattern` - 正则表达式验证
 
-#### 业务逻辑验证
-Service层实现复杂的业务规则验证：
-- 唯一性校验：用户名、邮箱、手机号唯一性
-- 关联关系校验：删除前检查是否存在关联数据
-- 权限校验：数据权限和操作权限验证
-- 状态校验：父级状态对子级的影响验证
+**2. 业务规则验证**
 
-## 核心业务流程
+Service层实现复杂的业务规则验证:
+- **唯一性校验** - 用户名、邮箱、手机号唯一性
+- **关联关系校验** - 删除前检查是否存在关联数据
+- **权限校验** - 数据权限和操作权限验证
+- **状态校验** - 父级状态对子级的影响验证
 
-### 用户管理流程
+### 事务管理
 
-#### 用户注册/新增
-1. **数据验证** - 验证用户信息格式和唯一性
-2. **密码加密** - 使用BCrypt对密码进行加密
-3. **默认角色** - 分配默认角色和部门
-4. **数据保存** - 保存用户基本信息
-5. **关联关系** - 建立用户-角色、用户-岗位关联关系
-6. **缓存更新** - 清理相关缓存
+系统使用Spring事务管理确保数据一致性。
 
-#### 用户权限查询
-1. **用户验证** - 验证用户身份和状态
-2. **角色查询** - 查询用户关联的所有角色
-3. **权限合并** - 合并多个角色的菜单权限
-4. **数据权限** - 根据角色确定数据访问范围
-5. **菜单构建** - 构建用户可访问的菜单树
-6. **路由生成** - 生成前端动态路由配置
+**事务配置:**
+- Service层方法使用`@Transactional`注解
+- 支持事务传播和隔离级别配置
+- 异常回滚机制,确保数据完整性
+- 嵌套事务支持,处理复杂业务场景
 
-### 角色权限管理流程
-
-#### 角色权限分配
-1. **角色验证** - 验证角色信息和权限
-2. **菜单权限** - 分配角色可访问的菜单和按钮
-3. **数据权限** - 设置角色的数据访问范围
-4. **关联更新** - 更新角色-菜单、角色-部门关联关系
-5. **权限生效** - 清理缓存，权限立即生效
-6. **用户通知** - 通知相关用户权限变更
-
-### 部门组织管理流程
-
-#### 部门结构调整
-1. **结构验证** - 验证部门层级关系的合理性
-2. **权限检查** - 检查当前用户对部门的操作权限
-3. **关联影响** - 分析对用户、角色数据权限的影响
-4. **祖先路径** - 自动维护部门的ancestors祖先路径
-5. **缓存更新** - 更新部门树相关的所有缓存
-6. **权限重算** - 重新计算受影响用户的数据权限
-
-## 技术特性
-
-### 框架集成
-- **Spring Boot** - 应用框架和依赖注入
-- **MyBatis-Plus** - ORM框架，提供强大的CRUD和查询构造器
-- **Sa-Token** - 权限认证框架，支持多端登录和权限控制
-- **Hutool** - Java工具库，提供丰富的工具方法
-- **MapStruct** - 对象映射框架，自动生成BO/VO转换代码
-
-### 性能优化
-- **分页查询** - 所有列表查询都支持分页，避免大数据量问题
-- **懒加载** - 关联数据按需加载，减少不必要的数据库查询
-- **批量操作** - 支持批量插入、更新、删除操作
-- **查询优化** - 使用索引优化常用查询，合理使用缓存
+**事务最佳实践:**
+- 事务方法尽量简短,避免长事务
+- 避免在事务中调用外部服务
+- 合理使用事务传播级别
+- 注意事务失效场景(如自调用)
 
 ### 安全特性
-- **SQL注入防护** - MyBatis预编译SQL防止注入攻击
-- **权限注解** - `@SaCheckPermission`注解确保接口访问权限
-- **数据脱敏** - 敏感信息的加密存储和传输
-- **操作审计** - `@Log`注解记录重要操作日志
 
-## 配置和扩展
+系统实现了多层次的安全防护机制。
 
-### 国际化支持
-- 支持多语言菜单标题和提示信息
-- 使用`i18nKey`字段实现前端国际化
-- 统一的国际化键命名规范
+**1. 密码安全**
+- 使用BCrypt算法加密存储密码
+- 支持密码强度策略配置
+- 密码重置需要验证身份
+- 定期提醒用户修改密码
 
-### 自定义扩展
-- **验证规则扩展** - 可在BO类中添加自定义验证注解
-- **业务逻辑扩展** - Service层提供`beforeSave`、`beforeDelete`等钩子方法
-- **权限规则扩展** - 支持自定义数据权限过滤规则
+**2. SQL注入防护**
+- MyBatis预编译SQL防止注入攻击
+- 参数化查询,避免拼接SQL
+- 输入参数验证和过滤
 
-### 监听器机制
-- **SysUserImportListener** - 用户导入数据处理监听器
-- 支持自定义业务事件监听器扩展
+**3. 操作审计**
+- 使用`@Log`注解记录重要操作
+- 记录操作人、操作时间、操作内容
+- 支持操作日志查询和导出
 
-## 最佳实践建议
+## 最佳实践
 
 ### 开发规范
-1. **分层职责明确** - Controller只处理请求响应，Service处理业务逻辑，Mapper只负责数据访问
-2. **异常处理统一** - 使用`ServiceException`处理业务异常，统一异常响应格式
-3. **事务管理** - 在Service层方法上使用`@Transactional`确保数据一致性
-4. **权限控制严格** - 每个接口都要配置合适的权限注解
 
-### 性能建议
-1. **合理使用缓存** - 对频繁查询的数据进行缓存，注意缓存更新策略
-2. **避免N+1查询** - 使用关联查询代替循环查询
-3. **分页查询** - 大数据量查询必须使用分页
-4. **索引优化** - 为常用查询字段建立合适的数据库索引
+**1. 分层职责明确**
+- Controller只处理请求响应,不包含业务逻辑
+- Service处理业务逻辑,不直接操作数据库
+- Dao只负责数据访问,不包含业务判断
+- 避免跨层调用,保持架构清晰
+
+**2. 异常处理统一**
+- 使用`ServiceException`处理业务异常
+- 统一异常响应格式
+- 避免在Controller层捕获异常
+- 记录异常日志,便于问题排查
+
+**3. 事务管理规范**
+- 在Service层方法上使用`@Transactional`
+- 事务方法尽量简短,避免长事务
+- 注意事务传播级别的选择
+- 避免事务失效场景
+
+**4. 权限控制严格**
+- 每个接口都要配置合适的权限注解
+- 使用`@SaCheckPermission`进行权限校验
+- 数据权限自动过滤,确保数据安全
+- 敏感操作需要二次验证
+
+### 性能优化建议
+
+**1. 合理使用缓存**
+- 对频繁查询的数据进行缓存
+- 注意缓存更新策略,避免脏数据
+- 使用缓存预热,提升首次访问速度
+- 设置合理的缓存过期时间
+
+**2. 避免N+1查询**
+- 使用关联查询代替循环查询
+- 批量查询优化,减少数据库访问
+- 使用MyBatis-Plus的批量操作方法
+
+**3. 分页查询必须**
+- 大数据量查询必须使用分页
+- 合理设置分页大小,避免一次查询过多数据
+- 使用物理分页,提升查询性能
+
+**4. 索引优化**
+- 为常用查询字段建立索引
+- 避免在索引字段上使用函数
+- 定期分析慢查询,优化SQL
 
 ### 安全建议
-1. **权限最小化** - 按照最小权限原则分配用户权限
-2. **数据权限** - 严格控制用户的数据访问范围
-3. **密码安全** - 使用强密码策略和安全的加密算法
-4. **操作审计** - 记录重要操作的审计日志
 
-## 依赖关系
+**1. 权限最小化**
+- 按照最小权限原则分配用户权限
+- 定期审查用户权限,及时回收不必要的权限
+- 避免直接分配超级管理员权限
 
-### 内部依赖
-- `plus.ruoyi.common.core` - 公共核心组件
-- `plus.ruoyi.common.mybatis` - MyBatis增强组件
-- `plus.ruoyi.common.satoken` - 权限认证组件
-- `plus.ruoyi.common.tenant` - 多租户组件
-- `plus.ruoyi.common.redis` - Redis缓存组件
+**2. 数据权限控制**
+- 严格控制用户的数据访问范围
+- 使用数据权限过滤,防止越权访问
+- 敏感数据需要额外的权限控制
 
-### 外部依赖
-- Spring Boot Web - Web开发框架
-- MyBatis-Plus - ORM增强框架
-- Sa-Token - 权限认证框架
-- Hutool - Java工具库
-- MapStruct - 对象映射框架
+**3. 密码安全策略**
+- 使用强密码策略,要求密码复杂度
+- 定期提醒用户修改密码
+- 密码错误次数限制,防止暴力破解
+- 重要操作需要二次验证
 
-该模块是整个系统的基础，为其他业务模块提供用户认证、权限控制、组织管理等核心服务支撑。所有的业务功能都需要依赖core模块提供的基础能力。
+**4. 操作审计完整**
+- 记录重要操作的审计日志
+- 包含操作人、操作时间、操作内容、操作结果
+- 定期审查操作日志,发现异常行为
+- 审计日志不可篡改,确保可追溯性
+
+### 代码质量建议
+
+**1. 代码规范**
+- 遵循阿里巴巴Java开发手册
+- 使用统一的代码格式化工具
+- 变量命名清晰,见名知意
+- 添加必要的注释,说明复杂逻辑
+
+**2. 单元测试**
+- 为核心业务逻辑编写单元测试
+- 测试覆盖率达到70%以上
+- 使用Mock框架隔离依赖
+- 定期运行测试,确保代码质量
+
+**3. 代码审查**
+- 重要功能需要代码审查
+- 关注代码质量、性能、安全性
+- 及时发现和修复潜在问题
+- 分享最佳实践,提升团队水平
+
+## 总结
+
+系统核心模块是RuoYi-Plus框架的基础,提供了完整的用户管理、角色权限、部门组织、菜单管理等核心功能。模块采用经典的三层架构设计,实现了完整的RBAC权限体系,支持多租户隔离、数据权限控制、动态路由生成等企业级特性。
+
+通过合理使用缓存、优化查询、严格的权限控制和完善的数据验证,系统核心模块为整个应用提供了稳定、安全、高效的基础服务。开发者在使用时应遵循最佳实践,确保代码质量和系统安全。

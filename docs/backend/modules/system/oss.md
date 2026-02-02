@@ -93,30 +93,39 @@ public class SysOssDirectory extends TenantEntity {
 
 #### 2.2.1 ISysOssService - 文件服务接口
 ```java
-public interface ISysOssService extends IBaseService<SysOss, SysOssBo, SysOssVo> {
-    
-    // 文件上传
-    SysOssVo upload(Long directoryId, MultipartFile file);
-    SysOssVo upload(Long directoryId, File file);
-    
+public interface ISysOssService {
+
+    // 基础CRUD操作
+    SysOssVo get(Long ossId);
+    List<SysOssVo> list(SysOssBo bo);
+    PageResult<SysOssVo> page(SysOssBo bo, PageQuery pageQuery);
+    Long add(SysOssBo bo);
+    int update(SysOssBo bo);
+    int batchDelete(Collection<Long> ids);
+    int batchSave(List<SysOssBo> boList);
+
+    // 文件上传(支持模块名称和目录路径)
+    SysOssVo upload(String moduleName, Long directoryId, String directoryPath, MultipartFile file);
+    SysOssVo upload(String moduleName, Long directoryId, String directoryPath, File file);
+
     // 文件下载
     void download(Long ossId, HttpServletResponse response) throws IOException;
-    
+
     // 文件替换
     SysOssVo replace(Long ossId, MultipartFile file);
-    
-    // 远程图片保存
-    SysOssVo saveRemoteImageToOss(Long directoryId, String url);
-    
-    // 预签名URL
-    PresignedUrlVo generatePresignedUrl(String fileName, String fileType, Long directoryId);
-    SysOssVo confirmDirectUpload(String fileName, String fileKey, String fileUrl, Long directoryId, Long fileSize);
-    
+
+    // 远程图片保存(支持模块名称和目录路径)
+    SysOssVo saveRemoteImageToOss(String moduleName, Long directoryId, String directoryPath, String url);
+
+    // 预签名URL(支持模块名称和目录路径)
+    PresignedUrlVo generatePresignedUrl(String fileName, String fileType, String moduleName, Long directoryId, String directoryPath);
+    SysOssVo confirmDirectUpload(String fileName, String fileKey, String fileUrl, String moduleName, Long directoryId, String directoryPath, Long fileSize);
+
     // 文件查询
     SysOssVo getOssById(Long ossId);
     List<SysOssVo> listOssByIds(Collection<Long> ossIds);
-    SysOss getOssByUrl(String url);
-    
+    OssDTO getOssByUrl(String url);
+
     // 其他功能
     SysOssVo matchingUrl(SysOssVo oss);
     boolean deleteByUrls(String urls);
@@ -143,22 +152,33 @@ public interface ISysOssDirectoryService extends IBaseService<SysOssDirectory, S
 ```java
 @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 public R<SysOssUploadVo> upload(@RequestPart("file") MultipartFile file,
-                               @RequestParam(value = "directoryId", required = false) Long directoryId)
+                               @RequestParam(value = "moduleName", required = false) String moduleName,
+                               @RequestParam(value = "directoryId", required = false) Long directoryId,
+                               @RequestParam(value = "directoryPath", required = false) String directoryPath)
 ```
 
 **功能说明：**
-- 支持指定目录上传
+- 支持指定模块名称和目录上传
+- 支持通过目录ID或目录路径指定存储位置
 - 自动生成唯一文件名
 - 支持多种文件类型
 - 自动处理文件后缀名
 
+**参数说明：**
+- `file`: 要上传的文件(必需)
+- `moduleName`: 模块名称,用于文件分类管理(可选)
+- `directoryId`: 目录ID,指定文件存储的目录(可选)
+- `directoryPath`: 目录路径,如"/文档/办公",可替代directoryId使用(可选)
+
 **实现流程：**
-1. 获取原始文件名并处理特殊格式
-2. 提取文件后缀名
-3. 获取OSS客户端实例
-4. 执行文件上传
-5. 构建并保存文件记录
-6. 返回文件信息
+1. 验证上传文件不为空
+2. 获取原始文件名并处理特殊格式
+3. 提取文件后缀名
+4. 根据模块名称和目录信息确定存储路径
+5. 获取OSS客户端实例
+6. 执行文件上传到对象存储
+7. 构建并保存文件记录到数据库
+8. 返回文件信息(包含URL和originalUrl)
 
 #### 3.1.2 预签名上传（直传）
 ```java
@@ -172,12 +192,21 @@ public R<PresignedUrlVo> getPresignedUrl(@Validated @RequestBody PresignedUrlBo 
 - 提升上传效率
 - 支持大文件上传
 
+**请求参数(PresignedUrlBo)：**
+- `fileName`: 文件名(必需)
+- `fileType`: 文件类型(必需)
+- `moduleName`: 模块名称,用于文件分类管理(可选)
+- `directoryId`: 目录ID,指定文件存储的目录(可选)
+- `directoryPath`: 目录路径,如"/文档/办公",可替代directoryId使用(可选)
+
 **实现流程：**
-1. 生成唯一文件键
-2. 调用存储客户端生成预签名URL
-3. 返回预签名信息
-4. 客户端直接上传到存储服务
-5. 上传完成后确认并保存记录
+1. 接收预签名请求参数
+2. 根据模块名称和目录信息确定存储路径
+3. 生成唯一文件键
+4. 调用存储客户端生成预签名URL
+5. 返回预签名信息(包含presignedUrl、fileKey、fileUrl等)
+6. 客户端使用预签名URL直接上传到存储服务
+7. 上传完成后调用confirmDirectUpload接口确认并保存记录
 
 ### 3.2 文件替换功能
 
@@ -201,21 +230,34 @@ public SysOssVo replace(Long ossId, MultipartFile file)
 ### 3.3 远程图片保存
 
 ```java
-public SysOssVo saveRemoteImageToOss(Long directoryId, String url)
+@PostMapping("/saveRemoteImageToOss")
+public R<SysOssUploadVo> convertImageUrl(String imageUrl,
+                                         @RequestParam(value = "moduleName", required = false) String moduleName,
+                                         @RequestParam(value = "directoryId", required = false) Long directoryId,
+                                         @RequestParam(value = "directoryPath", required = false) String directoryPath)
 ```
 
 **功能说明：**
 - 下载远程图片到本地存储
 - 支持多种图片格式
 - 自动处理微信图片等特殊场景
-- 防重复下载机制
+- 防重复下载机制(检查URL是否已存在)
+
+**请求参数：**
+- `imageUrl`: 远程图片URL(必需)
+- `moduleName`: 模块名称,用于文件分类管理(可选)
+- `directoryId`: 目录ID,指定文件存储的目录(可选)
+- `directoryPath`: 目录路径,如"/文档/办公",可替代directoryId使用(可选)
 
 **实现逻辑：**
-1. 配置HTTP请求头模拟浏览器
-2. 处理特殊网站的防盗链
-3. 下载图片到临时文件
-4. 上传到OSS存储
-5. 清理临时文件
+1. 验证图片URL不为空
+2. 检查是否已存在相同URL的记录,如果存在则直接返回
+3. 配置HTTP请求头模拟浏览器
+4. 处理特殊网站的防盗链
+5. 下载图片到临时文件
+6. 根据模块名称和目录信息上传到OSS存储
+7. 清理临时文件
+8. 返回文件信息
 
 ### 3.4 目录管理功能
 
@@ -252,19 +294,33 @@ public boolean moveOss(Long directoryId, List<Long> ossIds)
 - **权限**: `system:oss:upload`
 - **参数**:
     - `file`: MultipartFile（必需）
+    - `moduleName`: String（可选，模块名称）
     - `directoryId`: Long（可选，目录ID）
+    - `directoryPath`: String（可选，目录路径，如"/文档/办公"）
 - **响应**: SysOssUploadVo
 
 #### 获取预签名URL
 - **URL**: `POST /resource/oss/getPresignedUrl`
 - **权限**: `system:oss:upload`
 - **请求体**: PresignedUrlBo
+  - `fileName`: String（必需，文件名）
+  - `fileType`: String（必需，文件类型）
+  - `moduleName`: String（可选，模块名称）
+  - `directoryId`: Long（可选，目录ID）
+  - `directoryPath`: String（可选，目录路径）
 - **响应**: PresignedUrlVo
 
 #### 确认直传上传
 - **URL**: `POST /resource/oss/confirmDirectUpload`
 - **权限**: `system:oss:upload`
 - **请求体**: ConfirmDirectUploadBo
+  - `fileName`: String（必需，文件名）
+  - `fileKey`: String（必需，文件键）
+  - `fileUrl`: String（必需，文件URL）
+  - `moduleName`: String（可选，模块名称）
+  - `directoryId`: Long（可选，目录ID）
+  - `directoryPath`: String（可选，目录路径）
+  - `fileSize`: Long（可选，文件大小）
 - **响应**: SysOssUploadVo
 
 #### 文件下载
@@ -284,8 +340,10 @@ public boolean moveOss(Long directoryId, List<Long> ossIds)
 #### 保存远程图片
 - **URL**: `POST /resource/oss/saveRemoteImageToOss`
 - **参数**:
-    - `directoryId`: Long（可选）
-    - `imageUrl`: String（必需）
+    - `imageUrl`: String（必需，远程图片URL）
+    - `moduleName`: String（可选，模块名称）
+    - `directoryId`: Long（可选，目录ID）
+    - `directoryPath`: String（可选，目录路径，如"/文档/办公"）
 - **响应**: SysOssUploadVo
 
 #### 删除文件
@@ -310,6 +368,12 @@ public boolean moveOss(Long directoryId, List<Long> ossIds)
 - **URL**: `GET /resource/oss/getOssByUrl`
 - **参数**: `url`: String
 - **响应**: ossId
+
+#### 导出文件列表
+- **URL**: `POST /resource/oss/exportOss`
+- **权限**: `system:oss:export`
+- **参数**: SysOssBo + PageQuery
+- **响应**: Excel文件流
 
 ### 4.2 目录管理接口
 
@@ -519,11 +583,13 @@ public class SysOssBo extends BaseEntity {
 public class PresignedUrlBo {
     @NotBlank(message = "文件名不能为空")
     private String fileName;      // 文件名
-    
+
     @NotBlank(message = "文件类型不能为空")
     private String fileType;      // 文件类型
-    
+
+    private String moduleName;    // 模块名称（可选）
     private Long directoryId;     // 目录ID（可选）
+    private String directoryPath; // 目录路径（可选）
 }
 ```
 
@@ -537,14 +603,16 @@ public class PresignedUrlBo {
 public class ConfirmDirectUploadBo {
     @NotBlank(message = "文件名不能为空")
     private String fileName;      // 文件名
-    
+
     @NotBlank(message = "文件键不能为空")
     private String fileKey;       // 文件键
-    
+
     @NotBlank(message = "文件URL不能为空")
     private String fileUrl;       // 文件URL
-    
+
+    private String moduleName;    // 模块名称（可选）
     private Long directoryId;     // 目录ID（可选）
+    private String directoryPath; // 目录路径（可选）
     private Long fileSize;        // 文件大小（可选）
 }
 ```
@@ -605,7 +673,18 @@ public class PresignedUrlVo {
  */
 @Data
 public class SysOssUploadVo {
-    private String url;         // URL地址
+    /**
+     * URL地址（预览用，私有库会自动生成预签名URL）
+     */
+    @SerialMap(converter = SerialMapConstant.PRESIGNED_URL)
+    private String url;
+
+    /**
+     * 原始URL地址（存储用，不含预签名参数）
+     * 前端上传组件应使用此字段作为存储值
+     */
+    private String originalUrl;
+
     private String fileName;    // 文件名
     private String ossId;       // 对象存储主键
     private Date updateTime;    // 更新时间
