@@ -123,7 +123,7 @@ highlights:
 ### 📈 项目规模
 
 <div style="text-align: center; margin: 30px 0;">
-  <ImagePreview src="/images/commit.jpg" :width="800" object-fit="contain" />
+  <ImagePreview src="/images/commit.jpg" :width="800" :height="300" object-fit="contain" />
 </div>
 
 **站在巨人的肩膀上，打造更优秀的全栈框架**
