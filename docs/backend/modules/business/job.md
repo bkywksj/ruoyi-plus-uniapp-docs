@@ -42,7 +42,7 @@ public class TestAnnoJobExecutor {
 #### 定时任务
 - **Cron表达式**：支持标准Cron表达式定义执行时间
 - **固定间隔**：支持固定时间间隔执行
-- **延时任务**：支持延时指定时间后执行
+- **固定延迟**：支持固定延迟时间执行（上次执行完成后延迟指定时间再执行）
 
 #### 异步任务
 - **即时执行**：任务提交后立即异步执行
@@ -435,81 +435,142 @@ public class TaskMonitorExecutor {
 ### 🔄 与订单模块集成
 
 #### 订单超时处理
-```java
-// 在订单创建时注册超时取消任务
-public CreateOrderVo createOrder(CreateOrderBo bo) {
-    // 创建订单
-    CreateOrderVo order = orderService.createOrder(bo);
-    
-    // 注册30分钟后的超时取消任务
-    scheduleOrderTimeoutTask(order.getOrderNo(), 30);
-    
-    return order;
-}
 
-private void scheduleOrderTimeoutTask(String orderNo, int timeoutMinutes) {
-    JobArgs jobArgs = new JobArgs();
-    jobArgs.setArgsStr(orderNo);
-    
-    // 计算执行时间
-    LocalDateTime executeTime = LocalDateTime.now().plusMinutes(timeoutMinutes);
-    
-    // 提交延时任务
-    snailJobClient.submitDelayTask(
-        "orderTimeoutCancelExecutor", 
-        jobArgs, 
-        executeTime
-    );
+> **注意**：SnailJob 是定时任务调度框架，不支持延迟任务。订单超时取消通常采用定时任务轮询的方式实现。
+
+```java
+/**
+ * 订单超时取消定时任务
+ * 通过 Cron 表达式定时执行，每分钟检查一次超时订单
+ * 在 SnailJob 管理后台配置: 0 * * * * ? (每分钟执行)
+ */
+@Component
+@JobExecutor(name = "orderTimeoutCancelExecutor")
+public class OrderTimeoutCancelExecutor {
+
+    private final IOrderService orderService;
+
+    // 订单超时时间（分钟）
+    private static final int ORDER_TIMEOUT_MINUTES = 30;
+
+    public ExecuteResult execute(JobArgs jobArgs) {
+        try {
+            SnailJobLog.REMOTE.info("开始执行订单超时取消任务");
+
+            // 计算超时时间点
+            LocalDateTime timeoutPoint = LocalDateTime.now().minusMinutes(ORDER_TIMEOUT_MINUTES);
+
+            // 查询超时未支付的订单（创建时间早于超时时间点且状态为待支付）
+            List<OrderVo> timeoutOrders = orderService.findUnpaidOrdersBeforeTime(timeoutPoint);
+
+            int cancelCount = 0;
+            for (OrderVo order : timeoutOrders) {
+                try {
+                    orderService.cancelOrder(order.getId(), "订单超时自动取消");
+                    cancelCount++;
+                    SnailJobLog.REMOTE.info("取消超时订单: {}", order.getOrderNo());
+                } catch (Exception e) {
+                    SnailJobLog.REMOTE.error("取消订单失败: {}", order.getOrderNo(), e);
+                }
+            }
+
+            return ExecuteResult.success(String.format("成功取消%d个超时订单", cancelCount));
+        } catch (Exception e) {
+            SnailJobLog.REMOTE.error("订单超时取消任务执行失败", e);
+            return ExecuteResult.failure("任务执行失败: " + e.getMessage());
+        }
+    }
 }
 ```
 
 #### 支付成功后续处理
+
+> **说明**：支付成功后的后续处理（库存扣减、积分赠送、消息通知等）建议使用 Spring 的异步机制或消息队列，而非 SnailJob。SnailJob 主要用于定时任务调度。
+
 ```java
-@EventListener
-public void handlePaymentSuccess(PaySuccessEvent event) {
-    // 更新订单状态
-    orderService.updateOrderByOutTradeNo(event.getOutTradeNo(), 
-        DictOrderStatus.PAID.getValue(), event.getTransactionId());
-    
-    // 异步执行后续业务处理
-    JobArgs jobArgs = new JobArgs();
-    jobArgs.setArgsStr(event.getOutTradeNo());
-    
-    // 提交异步任务处理库存扣减、积分赠送等
-    snailJobClient.submitAsyncTask("paymentPostProcessExecutor", jobArgs);
-    
-    // 提交通知任务
-    snailJobClient.submitAsyncTask("paymentNotifyExecutor", jobArgs);
+@Component
+public class PaymentSuccessHandler {
+
+    private final IOrderService orderService;
+    private final IStockService stockService;
+    private final IPointService pointService;
+    private final IMessageService messageService;
+
+    @Async("asyncExecutor")
+    @EventListener
+    public void handlePaymentSuccess(PaySuccessEvent event) {
+        String orderNo = event.getOutTradeNo();
+
+        // 更新订单状态
+        orderService.updateOrderByOutTradeNo(orderNo,
+            DictOrderStatus.PAID.getValue(), event.getTransactionId());
+
+        // 扣减库存
+        stockService.deductStock(orderNo);
+
+        // 赠送积分
+        pointService.grantPoints(orderNo);
+
+        // 发送支付成功通知
+        messageService.sendPaymentSuccessNotify(orderNo);
+    }
 }
 ```
 
 ### 📈 数据统计集成
 
 #### 定时统计任务
+
+> **说明**：以下任务均通过 SnailJob 管理后台配置 Cron 表达式触发，无需在代码中使用 `@Scheduled` 注解。
+
 ```java
-// 每日凌晨2点执行销售数据统计
-@Scheduled(cron = "0 0 2 * * ?")
-public void scheduleDailySalesStats() {
-    JobArgs jobArgs = new JobArgs();
-    jobArgs.setArgsStr(LocalDate.now().minusDays(1).toString());
-    
-    snailJobClient.submitAsyncTask("salesDataStatExecutor", jobArgs);
+/**
+ * 销售数据统计任务
+ * SnailJob 配置: 0 0 2 * * ? (每日凌晨2点执行)
+ */
+@Component
+@JobExecutor(name = "salesDataStatExecutor")
+public class SalesDataStatExecutor {
+
+    public ExecuteResult execute(JobArgs jobArgs) {
+        String dateStr = jobArgs.getArgsStr();
+        LocalDate statDate = StringUtils.isNotBlank(dateStr) ?
+            LocalDate.parse(dateStr) : LocalDate.now().minusDays(1);
+
+        SnailJobLog.REMOTE.info("开始统计{}的销售数据", statDate);
+        // 执行统计逻辑...
+        return ExecuteResult.success("销售数据统计成功");
+    }
 }
 
-// 每周一凌晨3点执行周报统计
-@Scheduled(cron = "0 0 3 ? * MON")
-public void scheduleWeeklyReport() {
-    JobArgs jobArgs = new JobArgs();
-    
-    snailJobClient.submitAsyncTask("weeklyReportExecutor", jobArgs);
+/**
+ * 周报统计任务
+ * SnailJob 配置: 0 0 3 ? * MON (每周一凌晨3点执行)
+ */
+@Component
+@JobExecutor(name = "weeklyReportExecutor")
+public class WeeklyReportExecutor {
+
+    public ExecuteResult execute(JobArgs jobArgs) {
+        SnailJobLog.REMOTE.info("开始生成周报");
+        // 执行周报生成逻辑...
+        return ExecuteResult.success("周报生成成功");
+    }
 }
 
-// 每月1号凌晨4点执行月报统计
-@Scheduled(cron = "0 0 4 1 * ?")
-public void scheduleMonthlyReport() {
-    JobArgs jobArgs = new JobArgs();
-    
-    snailJobClient.submitAsyncTask("monthlyReportExecutor", jobArgs);
+/**
+ * 月报统计任务
+ * SnailJob 配置: 0 0 4 1 * ? (每月1号凌晨4点执行)
+ */
+@Component
+@JobExecutor(name = "monthlyReportExecutor")
+public class MonthlyReportExecutor {
+
+    public ExecuteResult execute(JobArgs jobArgs) {
+        SnailJobLog.REMOTE.info("开始生成月报");
+        // 执行月报生成逻辑...
+        return ExecuteResult.success("月报生成成功");
+    }
 }
 ```
 
