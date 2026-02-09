@@ -178,7 +178,7 @@ highlights:
 
 <APricingCard
   plan="个人版"
-  :price="2180"
+  :price="2218"
   description="适合个人开发者"
   :features="[
     '📦 完整源码交付',
@@ -195,8 +195,8 @@ highlights:
 
 <APricingCard
   plan="企业标准版"
-  :price="2880"
-  :original-price="3280"
+  :price="2888"
+  :original-price="3288"
   saving-text="节省 ¥400"
   description="开发团队 < 10人"
   :features="[
@@ -215,8 +215,8 @@ highlights:
 
 <APricingCard
   plan="企业高级版"
-  :price="3880"
-  :original-price="4580"
+  :price="3888"
+  :original-price="4588"
   saving-text="节省 ¥700"
   description="开发团队 ≥ 10人"
   :features="[
