@@ -7,7 +7,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - [x] 介绍内容已完成，覆盖双配置与三大机制的整体定位
 - [x] 核心特性已完成，包含技能规模、命令入口与钩子机制
 - [x] 上下文工程已完成，说明 `CLAUDE.md` 与 `AGENTS.md` 协同方式
-- [x] 技能系统已完成，包含 32 个技能的场景与示例
+- [x] 技能系统已完成，包含 44 个技能的场景与示例
 - [x] 命令系统已完成，按 12 个使用入口拆解
 - [x] 钩子系统已完成，覆盖三类 JS 钩子的触发与输出
 - [x] 最佳实践已完成，强调规范优先与流程闭环
@@ -16,8 +16,8 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - [x] 续写提示已保留，如需扩展可追加更多技能场景或案例
 
 ## 核心特性
-- 技能体系：`.claude/skills` 目录现有 32 个技能目录，覆盖架构、后端、前端、移动端、AI、协作与工程规范
-- 命令体系：`.claude/commands` 提供 11 个命令文件，`/init-docs` 内含两种模式，`sync-local` 提供本地工作流同步变体，合计 12 个使用入口
+- 技能体系：`.claude/skills` 目录现有 44 个技能目录，覆盖架构、后端、前端、移动端、AI、协作、工程规范、中间件集成与物联网
+- 命令体系：`.claude/commands` 提供 13 个命令文件，`/init-docs` 内含两种模式，`sync-local`、`sync-wot-local`、`sync-unibest-local` 分别同步三个上游框架，合计 14 个使用入口
 - 钩子体系：`.claude/hooks` 提供 3 个 JavaScript 钩子，分别负责技能强制评估、工具安全拦截与结束收尾
 - 配置入口：`.claude/settings.json` 统一绑定 `UserPromptSubmit`、`PreToolUse`、`Stop` 三类触发点
 - 规则底座：`CLAUDE.md` 与 `AGENTS.md` 约束语言、架构、流程、命令与文档生成边界
@@ -61,10 +61,11 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 技能文件包含 YAML 头部，记录 `name`、`description`、触发场景与触发词
 - 强制技能评估流程由钩子注入，未匹配技能时需明确说明
 
-### 分类总览
-- 业务与架构：crud-development、api-development、architecture-design、workflow-engine
-- 后端能力：backend-annotations、data-permission、error-handler、security-guard
-- 前端与移动：ui-pc、ui-mobile、ui-design-mobile、store-pc、store-mobile、uniapp-platform
+### 分类总览（44 个技能）
+- 业务与架构：crud-development、api-development、architecture-design
+- 后端能力：backend-annotations、data-permission、error-handler、security-guard、multi-tenant、json-serialization、test-development
+- 前端与移动：ui-pc、ui-mobile、ui-design-mobile、store-pc、store-mobile、uniapp-platform、i18n-development
+- 中间件与集成：redis-cache、scheduled-jobs、realtime-communication、notification-system、message-queue、iot-mqtt、third-party-api、social-login
 - 工程与质量：code-patterns、git-workflow、project-navigator、utils-toolkit、performance-doctor
 - AI 与协作：ai-langchain4j、collaborating-with-codex、collaborating-with-gemini、banana-image、task-tracker
 - 业务集成：payment-integration、wechat-integration、file-oss-management、media-processing
@@ -1133,6 +1134,411 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 用户: 需要启动工作流程（发起审批、提交申请）
 - 用户: 需要办理任务（审批通过、驳回、转办、委派）
 
+### i18n-development
+
+定位
+- 国际化开发技能，涵盖后端 MessageSource、PC 端 Vue i18n、移动端 useI18n 完整实现。
+
+触发场景
+- 后端国际化配置（MessageSource、property files）
+- PC 端多语言切换（Vue i18n）
+- 移动端国际化（UniApp i18n）
+- 动态语言切换
+- 语言包管理
+
+触发词
+- `国际化`
+- `多语言`
+- `i18n`
+- `翻译`
+- `t()`
+- `语言切换`
+- `MessageUtils`
+- `content-language`
+- `LanguageCode`
+- `useI18n`
+- `messages.properties`
+- `locale`
+- `$t`
+- `zh_CN`
+- `en_US`
+
+示例
+- 用户: 怎么给后端接口加国际化
+- 用户: 移动端怎么切换语言
+
+### scheduled-jobs
+
+定位
+- 定时任务开发指南。涵盖 Redisson 延迟队列、@Scheduled、SnailJob 三种方案，支持分布式任务调度、失败重试、工作流编排。
+
+触发场景
+- 订单自动取消、支付回调重试等事件驱动场景（Redisson 延迟队列）
+- 每日数据汇总、定期清理等周期性任务（@Scheduled）
+- 分布式复杂业务、失败重试、可视化管理（SnailJob）
+- 任务分片、MapReduce 分布式计算
+
+触发词
+- `定时任务`
+- `SnailJob`
+- `延迟队列`
+- `@Scheduled`
+- `任务调度`
+- `重试机制`
+- `工作流编排`
+- `@JobExecutor`
+- `Redisson`
+- `分布式任务`
+
+示例
+- 用户: 订单超时自动取消怎么实现
+- 用户: 怎么配置分布式定时任务
+
+### json-serialization
+
+定位
+- 当需要处理 JSON 序列化、反序列化、数据类型转换、日期处理、大数字精度保护时自动使用此 Skill。
+
+触发场景
+- JSON 序列化/反序列化操作
+- 大数字精度问题（Long/BigInteger/BigDecimal）
+- 日期时间格式化与转换
+- 复杂泛型类型转换
+- JSON 格式验证
+
+触发词
+- `JSON`
+- `序列化`
+- `反序列化`
+- `JsonUtils`
+- `日期格式`
+- `精度`
+- `BigDecimal`
+- `Long`
+- `类型转换`
+- `JSON验证`
+
+示例
+- 用户: Long 类型前端精度丢失怎么办
+- 用户: 日期格式怎么统一
+
+### redis-cache
+
+定位
+- 当需要使用 Redis 缓存、分布式锁、限流等功能时自动使用此 Skill。包含 RedisUtils/CacheUtils 工具类、缓存注解使用规范、分布式锁实现、缓存 key 命名规范等。
+
+触发场景
+- 使用 Redis 缓存数据
+- 配置 Spring Cache 缓存注解
+- 实现分布式锁
+- 实现接口限流
+- Redis 发布订阅
+- 缓存穿透/雪崩/击穿问题
+
+触发词
+- `Redis`
+- `缓存`
+- `Cache`
+- `@Cacheable`
+- `@CacheEvict`
+- `@CachePut`
+- `RedisUtils`
+- `CacheUtils`
+- `分布式锁`
+- `RLock`
+- `限流`
+- `RateLimiter`
+- `发布订阅`
+- `缓存穿透`
+- `缓存雪崩`
+- `缓存击穿`
+
+注意事项
+- @Cacheable 返回值不能使用不可变集合（List.of()、Set.of()、Map.of()）
+- 分布式锁必须在 finally 中释放
+- keys() 和 deleteKeys() 会忽略租户隔离
+
+示例
+- 用户: 怎么给接口加缓存
+- 用户: 分布式锁怎么实现
+
+### multi-tenant
+
+定位
+- 当需要进行多租户开发、租户数据隔离、租户管理时自动使用此 Skill。
+
+触发场景
+- 新建业务表需要支持多租户隔离
+- 需要临时忽略租户过滤查询全量数据
+- 需要动态切换到其他租户执行操作
+- 配置租户排除表
+- 排查租户数据隔离不生效的问题
+
+触发词
+- `多租户`
+- `租户隔离`
+- `tenant_id`
+- `TenantEntity`
+- `租户切换`
+- `TenantHelper`
+- `动态租户`
+- `排除表`
+- `DEFAULT_TENANT_ID`
+
+示例
+- 用户: 怎么让某些表不走租户隔离
+- 用户: 怎么临时查全部租户的数据
+
+### test-development
+
+定位
+- 测试开发技能，编写单元测试、集成测试、Controller 测试。包含 JUnit5、Mockito、AssertJ 完整规范。
+
+触发场景
+- 编写单元测试（工具类、Service、Controller、DAO）
+- 创建测试数据
+- Mock 外部依赖
+- 集成测试（Spring 容器、数据库）
+- 参数化测试
+- 测试覆盖率提升
+
+触发词
+- `测试`
+- `单元测试`
+- `@Test`
+- `JUnit5`
+- `Mockito`
+- `Mock`
+- `断言`
+- `测试用例`
+- `测试覆盖率`
+- `@SpringBootTest`
+- `AssertJ`
+- `@ParameterizedTest`
+
+注意事项
+- 本项目使用 ruoyi-common-test 模块提供统一测试基类。
+
+示例
+- 用户: 帮这个 Service 写单元测试
+- 用户: Controller 怎么写集成测试
+
+### realtime-communication
+
+定位
+- 当需要实现实时通信功能时自动使用此 Skill。包含 WebSocket 双向通信和 SSE 服务端推送的完整开发指南。
+
+触发场景
+- 需要实现 WebSocket 实时双向通信（聊天、在线状态）
+- 需要实现 SSE 服务端推送（AI 流式响应、通知推送）
+- 需要选择 WebSocket 还是 SSE 方案
+- 需要向指定用户或全局推送消息
+- 需要在集群环境下分发实时消息
+
+触发词
+- `WebSocket`
+- `SSE`
+- `实时推送`
+- `在线聊天`
+- `消息推送`
+- `双向通信`
+- `服务端推送`
+- `流式响应`
+- `EventSource`
+- `心跳`
+- `在线状态`
+- `WebSocketUtils`
+- `SseMessageUtils`
+- `publishMessage`
+- `useWS`
+- `useSSE`
+- `useWebSocket`
+
+示例
+- 用户: 怎么实现 WebSocket 消息推送
+- 用户: AI 流式响应用 SSE 怎么做
+
+### notification-system
+
+定位
+- 当需要发送通知消息、短信验证码、邮件通知、统一消息推送时自动使用此 Skill。
+
+触发场景
+- 需要发送短信（验证码、通知、营销）
+- 需要发送邮件（验证码、通知、HTML 邮件）
+- 需要使用统一消息推送服务（多通道路由、降级、广播）
+- 需要为业务模块集成消息推送能力
+- 需要配置短信/邮件服务
+
+触发词
+- `短信`
+- `SMS`
+- `邮件`
+- `Mail`
+- `Email`
+- `消息推送`
+- `MessagePushService`
+- `MessageChannel`
+- `通知`
+- `验证码`
+- `SmsFactory`
+- `MailUtils`
+- `sendText`
+- `sendHtml`
+- `统一消息`
+- `消息路由`
+- `多通道`
+
+示例
+- 用户: 怎么发送短信验证码
+- 用户: 怎么给用户发邮件通知
+
+### message-queue
+
+定位
+- 当需要使用 RocketMQ 消息队列进行异步通信、系统解耦、削峰填谷时自动使用此 Skill。
+
+触发场景
+- 需要发送异步消息（同步/异步/单向/延迟/事务消息）
+- 需要实现消息消费者监听处理
+- 需要管理 Topic（创建/删除/查询/验证路由）
+- 需要延迟消息实现定时业务（订单超时取消等）
+- 需要事务消息保证分布式数据一致性
+
+触发词
+- `RocketMQ`
+- `消息队列`
+- `MQ`
+- `异步消息`
+- `延迟消息`
+- `事务消息`
+- `RMSendUtil`
+- `RMTopicUtil`
+- `DelayLevel`
+- `Topic`
+- `消费者`
+- `生产者`
+- `削峰填谷`
+- `系统解耦`
+- `sendAsync`
+- `sendDelay`
+- `sendTransaction`
+- `RocketMQMessageListener`
+
+示例
+- 用户: 怎么发送异步消息
+- 用户: 订单超时取消用延迟消息怎么做
+
+### social-login
+
+定位
+- 当需要实现第三方社交登录、OAuth2 认证、账号绑定/解绑时自动使用此 Skill。
+
+触发场景
+- 需要接入第三方社交登录（微信/QQ/GitHub/Gitee/钉钉等）
+- 需要实现 OAuth2 授权流程（获取授权 URL、回调处理、令牌交换）
+- 需要管理社交账号绑定与解绑
+- 需要处理企业级 SSO 集成（MaxKey/TopIAM/企业微信）
+
+触发词
+- `社交登录`
+- `第三方登录`
+- `OAuth2`
+- `微信登录`
+- `QQ登录`
+- `GitHub登录`
+- `Gitee登录`
+- `钉钉登录`
+- `企业微信`
+- `SSO`
+- `单点登录`
+- `JustAuth`
+- `SocialUtils`
+- `socialBind`
+- `socialUnbind`
+- `授权回调`
+- `AuthRequest`
+- `socialCallback`
+- `MaxKey`
+- `TopIAM`
+- `账号绑定`
+
+示例
+- 用户: 怎么接入微信扫码登录
+- 用户: 第三方登录账号怎么绑定
+
+### third-party-api
+
+定位
+- 当需要集成第三方外部 API 服务、使用 Forest 声明式 HTTP 客户端、调用高德地图或火山引擎 TTS 时自动使用此 Skill。
+
+触发场景
+- 需要调用高德地图 API（IP 定位、地理编码、天气查询、距离计算）
+- 需要调用火山引擎 TTS 语音合成服务
+- 需要使用 Forest 框架定义新的第三方 API 客户端
+- 需要为第三方 API 配置拦截器、认证、超时
+- 需要扩展新的第三方服务集成
+
+触发词
+- `高德地图`
+- `火山引擎`
+- `TTS`
+- `语音合成`
+- `地理编码`
+- `逆地理编码`
+- `IP定位`
+- `天气查询`
+- `距离计算`
+- `第三方API`
+- `HTTP客户端`
+- `Forest`
+- `GaodeMapClient`
+- `VolcengineTtsClient`
+- `声明式HTTP`
+- `ForestInterceptor`
+- `外部服务集成`
+
+示例
+- 用户: 怎么调用高德地图 IP 定位
+- 用户: 怎么用 Forest 对接新的第三方 API
+
+### iot-mqtt
+
+定位
+- 当需要使用 MQTT 协议进行物联网设备通信、消息发布订阅、设备状态管理时自动使用此 Skill。
+
+触发场景
+- 需要与 IoT 设备进行 MQTT 消息通信（发布/订阅）
+- 需要配置 MQTT 客户端连接（Broker、认证、SSL）
+- 需要实现设备数据采集和指令下发
+- 需要处理设备上下线状态监控
+- 需要在集群环境下部署 MQTT 客户端（共享订阅）
+
+触发词
+- `MQTT`
+- `物联网`
+- `IoT`
+- `设备通信`
+- `设备消息`
+- `mica-mqtt`
+- `MqttClientTemplate`
+- `publish`
+- `subscribe`
+- `QoS`
+- `Topic`
+- `EMQX`
+- `Mosquitto`
+- `共享订阅`
+- `设备上线`
+- `设备离线`
+- `遗嘱消息`
+- `保留消息`
+- `传感器数据`
+
+示例
+- 用户: 怎么接收 IoT 设备的 MQTT 消息
+- 用户: 设备上下线状态怎么监控
+
 ### 技能触发词索引
 以下索引用于快速定位触发词，便于在大规模任务中快速匹配技能。
 
@@ -1628,6 +2034,211 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - `GlobalListener`
 - `ProcessEvent`
 
+#### i18n-development
+- `国际化`
+- `多语言`
+- `i18n`
+- `翻译`
+- `t()`
+- `语言切换`
+- `MessageUtils`
+- `content-language`
+- `LanguageCode`
+- `useI18n`
+- `messages.properties`
+- `locale`
+- `$t`
+- `zh_CN`
+- `en_US`
+
+#### scheduled-jobs
+- `定时任务`
+- `SnailJob`
+- `延迟队列`
+- `@Scheduled`
+- `任务调度`
+- `重试机制`
+- `工作流编排`
+- `@JobExecutor`
+- `Redisson`
+- `分布式任务`
+
+#### json-serialization
+- `JSON`
+- `序列化`
+- `反序列化`
+- `JsonUtils`
+- `日期格式`
+- `精度`
+- `BigDecimal`
+- `Long`
+- `类型转换`
+- `JSON验证`
+
+#### redis-cache
+- `Redis`
+- `缓存`
+- `Cache`
+- `@Cacheable`
+- `@CacheEvict`
+- `@CachePut`
+- `RedisUtils`
+- `CacheUtils`
+- `分布式锁`
+- `RLock`
+- `限流`
+- `RateLimiter`
+- `发布订阅`
+- `缓存穿透`
+- `缓存雪崩`
+- `缓存击穿`
+
+#### multi-tenant
+- `多租户`
+- `租户隔离`
+- `tenant_id`
+- `TenantEntity`
+- `租户切换`
+- `TenantHelper`
+- `动态租户`
+- `排除表`
+- `DEFAULT_TENANT_ID`
+
+#### test-development
+- `测试`
+- `单元测试`
+- `@Test`
+- `JUnit5`
+- `Mockito`
+- `Mock`
+- `断言`
+- `测试用例`
+- `测试覆盖率`
+- `@SpringBootTest`
+- `AssertJ`
+- `@ParameterizedTest`
+
+#### realtime-communication
+- `WebSocket`
+- `SSE`
+- `实时推送`
+- `在线聊天`
+- `消息推送`
+- `双向通信`
+- `服务端推送`
+- `流式响应`
+- `EventSource`
+- `心跳`
+- `在线状态`
+- `WebSocketUtils`
+- `SseMessageUtils`
+- `publishMessage`
+- `useWS`
+- `useSSE`
+- `useWebSocket`
+
+#### notification-system
+- `短信`
+- `SMS`
+- `邮件`
+- `Mail`
+- `Email`
+- `消息推送`
+- `MessagePushService`
+- `MessageChannel`
+- `通知`
+- `验证码`
+- `SmsFactory`
+- `MailUtils`
+- `sendText`
+- `sendHtml`
+- `统一消息`
+- `消息路由`
+- `多通道`
+
+#### message-queue
+- `RocketMQ`
+- `消息队列`
+- `MQ`
+- `异步消息`
+- `延迟消息`
+- `事务消息`
+- `RMSendUtil`
+- `RMTopicUtil`
+- `DelayLevel`
+- `Topic`
+- `消费者`
+- `生产者`
+- `削峰填谷`
+- `系统解耦`
+- `sendAsync`
+- `sendDelay`
+- `sendTransaction`
+- `RocketMQMessageListener`
+
+#### social-login
+- `社交登录`
+- `第三方登录`
+- `OAuth2`
+- `微信登录`
+- `QQ登录`
+- `GitHub登录`
+- `Gitee登录`
+- `钉钉登录`
+- `企业微信`
+- `SSO`
+- `单点登录`
+- `JustAuth`
+- `SocialUtils`
+- `socialBind`
+- `socialUnbind`
+- `授权回调`
+- `AuthRequest`
+- `socialCallback`
+- `MaxKey`
+- `TopIAM`
+- `账号绑定`
+
+#### third-party-api
+- `高德地图`
+- `火山引擎`
+- `TTS`
+- `语音合成`
+- `地理编码`
+- `逆地理编码`
+- `IP定位`
+- `天气查询`
+- `距离计算`
+- `第三方API`
+- `HTTP客户端`
+- `Forest`
+- `GaodeMapClient`
+- `VolcengineTtsClient`
+- `声明式HTTP`
+- `ForestInterceptor`
+- `外部服务集成`
+
+#### iot-mqtt
+- `MQTT`
+- `物联网`
+- `IoT`
+- `设备通信`
+- `设备消息`
+- `mica-mqtt`
+- `MqttClientTemplate`
+- `publish`
+- `subscribe`
+- `QoS`
+- `Topic`
+- `EMQX`
+- `Mosquitto`
+- `共享订阅`
+- `设备上线`
+- `设备离线`
+- `遗嘱消息`
+- `保留消息`
+- `传感器数据`
+
 ### 技能触发场景索引
 以下索引用于快速浏览技能场景，帮助在任务拆解时做初步匹配。
 
@@ -1863,9 +2474,93 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 监听工作流事件（流程状态变更通知）
 - 配置办理人（用户、角色、部门、岗位、SpEL表达式）
 
+#### i18n-development
+- 后端国际化配置（MessageSource、property files）
+- PC 端多语言切换（Vue i18n）
+- 移动端国际化（UniApp i18n）
+- 动态语言切换
+- 语言包管理
+
+#### scheduled-jobs
+- 订单自动取消、支付回调重试等事件驱动场景（Redisson 延迟队列）
+- 每日数据汇总、定期清理等周期性任务（@Scheduled）
+- 分布式复杂业务、失败重试、可视化管理（SnailJob）
+- 任务分片、MapReduce 分布式计算
+
+#### json-serialization
+- JSON 序列化/反序列化操作
+- 大数字精度问题（Long/BigInteger/BigDecimal）
+- 日期时间格式化与转换
+- 复杂泛型类型转换
+- JSON 格式验证
+
+#### redis-cache
+- 使用 Redis 缓存数据
+- 配置 Spring Cache 缓存注解
+- 实现分布式锁
+- 实现接口限流
+- Redis 发布订阅
+- 缓存穿透/雪崩/击穿问题
+
+#### multi-tenant
+- 新建业务表需要支持多租户隔离
+- 需要临时忽略租户过滤查询全量数据
+- 需要动态切换到其他租户执行操作
+- 配置租户排除表
+- 排查租户数据隔离不生效的问题
+
+#### test-development
+- 编写单元测试（工具类、Service、Controller、DAO）
+- 创建测试数据
+- Mock 外部依赖
+- 集成测试（Spring 容器、数据库）
+- 参数化测试
+- 测试覆盖率提升
+
+#### realtime-communication
+- 需要实现 WebSocket 实时双向通信（聊天、在线状态）
+- 需要实现 SSE 服务端推送（AI 流式响应、通知推送）
+- 需要选择 WebSocket 还是 SSE 方案
+- 需要向指定用户或全局推送消息
+- 需要在集群环境下分发实时消息
+
+#### notification-system
+- 需要发送短信（验证码、通知、营销）
+- 需要发送邮件（验证码、通知、HTML 邮件）
+- 需要使用统一消息推送服务（多通道路由、降级、广播）
+- 需要为业务模块集成消息推送能力
+- 需要配置短信/邮件服务
+
+#### message-queue
+- 需要发送异步消息（同步/异步/单向/延迟/事务消息）
+- 需要实现消息消费者监听处理
+- 需要管理 Topic（创建/删除/查询/验证路由）
+- 需要延迟消息实现定时业务（订单超时取消等）
+- 需要事务消息保证分布式数据一致性
+
+#### social-login
+- 需要接入第三方社交登录（微信/QQ/GitHub/Gitee/钉钉等）
+- 需要实现 OAuth2 授权流程（获取授权 URL、回调处理、令牌交换）
+- 需要管理社交账号绑定与解绑
+- 需要处理企业级 SSO 集成（MaxKey/TopIAM/企业微信）
+
+#### third-party-api
+- 需要调用高德地图 API（IP 定位、地理编码、天气查询、距离计算）
+- 需要调用火山引擎 TTS 语音合成服务
+- 需要使用 Forest 框架定义新的第三方 API 客户端
+- 需要为第三方 API 配置拦截器、认证、超时
+- 需要扩展新的第三方服务集成
+
+#### iot-mqtt
+- 需要与 IoT 设备进行 MQTT 消息通信（发布/订阅）
+- 需要配置 MQTT 客户端连接（Broker、认证、SSL）
+- 需要实现设备数据采集和指令下发
+- 需要处理设备上下线状态监控
+- 需要在集群环境下部署 MQTT 客户端（共享订阅）
+
 ## 命令系统
 ### 命令入口总览
-命令文件位于 `.claude/commands/`，当前共 11 个文件。以下按 12 个使用入口展开，覆盖不同模式与同步变体。
+命令文件位于 `.claude/commands/`，当前共 13 个文件。以下按 14 个使用入口展开，覆盖不同模式与上游同步变体。
 
 | 使用入口 | 定位 | 关键输入 | 主要输出 |
 | --- | --- | --- | --- |
@@ -1880,7 +2575,9 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 | `/add-todo` | 快速添加待办 | 任务描述 | 待办清单与状态联动 |
 | `/update-status` | 增量更新状态 | 无 | 三文档联动更新报告 |
 | `/sync` | 文档全量同步 | 无 | 三文档一致性同步 |
-| `/sync-local` | 工作流代码同步 | 起始点与提交选择 | 工作流改动适配与合并建议 |
+| `/sync-local` | 后端上游代码同步 | 起始点与提交选择 | 上游改动适配与合并建议 |
+| `/sync-wot-local` | WOT Design Uni 组件库同步 | 无 | WD UI 组件更新清单 |
+| `/sync-unibest-local` | Unibest 移动端框架同步 | 无 | 移动端框架更新清单 |
 
 ### /start
 定位
@@ -2013,15 +2710,41 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 
 ### /sync-local
 定位
-- 工作流代码同步助手，仅同步 warm-flow 相关改动
+- 后端上游代码同步助手，同步 RuoYi-Vue-Plus 后端改动
 输入
 - 起始日期或提交 ID，或从 `.claude/sync-history-local.json` 恢复
 流程
-- 拉取上游 `plus-admin/dev` 与 `plus-ui/dev` 的工作流提交
+- 拉取上游 `plus-admin/dev` 与 `plus-ui/dev` 的提交
 - 分类提交并逐条分析，提供适配建议
 - 强制用户确认后再执行合并
 输出
-- 提交分类报告与适配清单，避免非工作流改动混入
+- 提交分类报告与适配清单
+
+### /sync-wot-local
+定位
+- WOT Design Uni 组件库同步助手，同步 WD UI 组件更新
+输入
+- 无显式参数，自动对比本地 WD UI 版本与上游版本
+流程
+- 检查上游 WOT Design Uni 仓库的最新变更
+- 对比本地 `plus-uniapp/src/wd/` 目录中的组件
+- 分析变更影响范围，提供迁移建议
+- 用户确认后执行更新
+输出
+- 组件变更清单与迁移注意事项
+
+### /sync-unibest-local
+定位
+- Unibest 移动端框架同步助手，同步 Unibest 框架更新
+输入
+- 无显式参数，自动对比本地框架版本与上游版本
+流程
+- 检查上游 Unibest 仓库的最新变更
+- 对比本地 `plus-uniapp/` 中的框架文件（配置、工具、拦截器等）
+- 分析变更影响范围，避免覆盖业务代码
+- 用户确认后执行更新
+输出
+- 框架变更清单与兼容性提示
 
 ## 钩子系统
 ### 钩子注册方式

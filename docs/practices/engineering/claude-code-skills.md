@@ -43,50 +43,91 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 
 ## 项目已有 Skills 清单
 
-本项目包含 **23 个 Skills**，按功能分为 5 大类：
+本项目包含 **44 个 Skills**，按功能分为 8 大类：
 
-### 核心开发（5个）
+### 后端开发类（8 个）
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
-| **crud-development** | CRUD、增删改查、Entity、Service | 全栈 CRUD 代码生成 |
-| **database-ops** | 数据库、建表、SQL | 数据库设计与操作 |
+| **crud-development** | CRUD、增删改查、Entity、Service、DAO | 全栈四层架构 CRUD 代码生成 |
 | **api-development** | API、接口、RESTful | API 设计规范 |
-| **backend-annotations** | 注解、权限、限流 | 后端高级注解使用 |
-| **project-navigator** | 项目结构、文件在哪 | 快速定位代码位置 |
+| **database-ops** | 数据库、建表、SQL | 数据库设计与多库操作 |
+| **backend-annotations** | SerialMap、限流、脱敏 | 后端高级注解使用 |
+| **error-handler** | 异常处理、ServiceException | 全局异常处理机制 |
+| **utils-toolkit** | 工具类、MapstructUtils | 全栈工具类速查 |
+| **json-serialization** | JSON、序列化、BigDecimal | JSON 处理规范 |
+| **test-development** | 单元测试、JUnit5、Mockito | 测试开发规范 |
 
-### 前端与移动端（4个）
-
-| Skill | 触发词 | 说明 |
-|-------|--------|------|
-| **component-library** | 组件、Element Plus、WD UI | UI 组件使用指南 |
-| **state-management** | Store、Pinia、状态管理 | 状态管理最佳实践 |
-| **uniapp-platform** | 条件编译、跨平台、小程序 | UniApp 多端开发 |
-| **code-patterns** | 编码规范、命名、代码风格 | 代码规范指南 |
-
-### 业务集成（5个）
+### 安全与权限类（4 个）
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
-| **payment-integration** | 支付、微信支付、退款 | 支付渠道对接 |
-| **wechat-integration** | 微信、小程序登录、分享 | 微信生态集成 |
-| **file-oss-management** | 文件上传、OSS、云存储 | 文件存储方案 |
-| **ai-langchain4j** | AI、大模型、ChatGPT | AI 能力集成 |
-| **media-processing** | 图片处理、二维码、Excel | 媒体文件处理 |
+| **security-guard** | Sa-Token、权限、加密 | 认证授权和数据安全 |
+| **data-permission** | 数据权限、部门隔离 | 行级数据权限控制 |
+| **multi-tenant** | 多租户、TenantEntity | 多租户数据隔离 |
+| **social-login** | OAuth2、微信登录、JustAuth | 第三方社交登录 |
 
-### 工程支持（9个）
+### 中间件与集成类（9 个）
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
-| **utils-toolkit** | 工具类、StringUtils | 项目工具类速查 |
+| **redis-cache** | Redis、缓存、@Cacheable | 缓存策略和分布式锁 |
+| **scheduled-jobs** | 定时任务、SnailJob、@Scheduled | 定时任务开发（3 种方案） |
+| **realtime-communication** | WebSocket、SSE、实时推送 | 实时通信（双向 + 单向） |
+| **file-oss-management** | 文件上传、OSS、MinIO | 文件存储管理 |
+| **notification-system** | 短信、邮件、消息推送 | 短信 + 邮件 + 统一消息 |
+| **message-queue** | RocketMQ、消息队列 | 消息队列开发 |
+| **iot-mqtt** | MQTT、物联网、IoT | MQTT 设备通信 |
+| **third-party-api** | 高德地图、Forest、HTTP | 第三方 API 集成 |
+| **ai-langchain4j** | AI、大模型、ChatGPT | LangChain4j AI 集成 |
+
+### 前端开发类（2 个）
+
+| Skill | 触发词 | 说明 |
+|-------|--------|------|
+| **ui-pc** | AForm、AModal、Element Plus | PC 端 71 个自定义组件 |
+| **store-pc** | Pinia、useUserStore | PC 端状态管理 |
+
+### 移动端开发类（4 个）
+
+| Skill | 触发词 | 说明 |
+|-------|--------|------|
+| **ui-mobile** | wd- 组件、WD UI | 移动端 99+ 组件 |
+| **ui-design-mobile** | 页面布局、间距、大气 | 移动端设计思维 |
+| **store-mobile** | useAuth、Composable | 移动端状态管理 |
+| **uniapp-platform** | 条件编译、ifdef | 多端条件编译 |
+
+### 微信与支付类（2 个）
+
+| Skill | 触发词 | 说明 |
+|-------|--------|------|
+| **payment-integration** | 微信支付、支付宝、退款 | 多渠道支付集成 |
+| **wechat-integration** | 小程序登录、订阅消息 | 微信生态集成 |
+
+### 质量与排查类（4 个）
+
+| Skill | 触发词 | 说明 |
+|-------|--------|------|
+| **bug-detective** | Bug、报错、异常排查 | Bug 排查方法论 |
+| **performance-doctor** | 性能、慢查询、优化 | 性能诊断和优化 |
+| **code-patterns** | 代码规范、命名 | 全栈编码规范速查 |
+| **media-processing** | 图片处理、二维码、Excel | 媒体处理工具 |
+
+### 规划与协作类（11 个）
+
+| Skill | 触发词 | 说明 |
+|-------|--------|------|
+| **architecture-design** | 架构、模块划分、重构 | 系统架构规划 |
+| **tech-decision** | 技术选型、方案对比 | 技术决策分析 |
+| **brainstorm** | 头脑风暴、方案设计 | 创意方案探索 |
+| **i18n-development** | 国际化、多语言、i18n | 全栈国际化方案 |
+| **project-navigator** | 项目结构、文件在哪 | 项目导航和定位 |
 | **git-workflow** | Git、提交、分支 | Git 工作流规范 |
-| **bug-detective** | Bug、报错、异常 | 问题排查指南 |
-| **error-handler** | 异常处理、日志 | 异常处理规范 |
-| **performance-doctor** | 性能、优化、慢查询 | 性能优化方案 |
-| **security-guard** | 安全、加密、XSS | 安全最佳实践 |
-| **architecture-design** | 架构、设计、模块 | 架构设计指导 |
-| **tech-decision** | 技术选型、方案对比 | 技术决策辅助 |
-| **brainstorm** | 头脑风暴、创意 | 创意思考引导 |
+| **task-tracker** | 任务跟踪、记录进度 | 开发任务持久化跟踪 |
+| **add-skill** | 添加技能、创建技能 | 扩展技能系统 |
+| **collaborating-with-codex** | Codex、算法分析 | 委托 Codex 处理任务 |
+| **collaborating-with-gemini** | Gemini、UI 设计 | 委托 Gemini 处理任务 |
+| **banana-image** | 生成图片、海报、4K | AI 图片生成 |
 
 ---
 
