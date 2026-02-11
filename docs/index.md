@@ -218,7 +218,7 @@ highlights:
   :price="3888"
   :original-price="4588"
   saving-text="节省 ¥700"
-  description="开发团队 ≥ 10人"
+  description="开发团队 10~30人"
   :features="[
     '📦 完整源码交付',
     '🔄 持续更新服务',
