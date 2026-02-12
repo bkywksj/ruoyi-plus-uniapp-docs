@@ -93,7 +93,7 @@ $ARGUMENTS
 
 ## 本项目命令清单
 
-本项目在 `.claude/commands/` 目录下定义了 **13 个自定义命令**，分为 3 大类：
+本项目在 `.claude/commands/` 目录下定义了 **10 个自定义命令**，分为 2 大类：
 
 ### 核心开发命令（6 个）
 
@@ -114,14 +114,6 @@ $ARGUMENTS
 | `/update-status` | 更新项目状态 | 完成功能后更新三文档（项目状态 + 需求 + 待办） |
 | `/add-todo` | 添加待办事项 | 快速记录待完成任务 |
 | `/sync` | 同步项目文档 | 定期全量同步三文档一致性 |
-
-### 上游同步命令（3 个）
-
-| 命令 | 用途 | 使用时机 |
-|------|------|---------|
-| `/sync-local` | 后端上游代码同步 | 同步 RuoYi-Vue-Plus 后端代码更新 |
-| `/sync-wot-local` | WOT Design Uni 组件库同步 | 同步 WD UI 组件库更新 |
-| `/sync-unibest-local` | Unibest 框架同步 | 同步 Unibest 移动端框架更新 |
 
 ---
 
