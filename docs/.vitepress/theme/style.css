@@ -26,9 +26,45 @@
     margin: 16px 0;
 }
 
+/* 企业信赖展示区 */
+.trusted-companies {
+    max-width: 960px;
+    margin: 24px auto 0;
+}
+
+.company-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.company-tag {
+    display: inline-block;
+    padding: 6px 16px;
+    background: var(--vp-c-bg-soft);
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--vp-c-text-2);
+    white-space: nowrap;
+    transition: all 0.25s ease;
+}
+
+.company-tag:hover {
+    color: var(--vp-c-brand-1);
+    border-color: var(--vp-c-brand-1);
+    background: color-mix(in srgb, var(--vp-c-brand-1) 8%, transparent);
+}
+
 /* 响应式调整 */
 @media (max-width: 768px) {
     .VPNavBar .title {
         font-size: 18px;
+    }
+
+    .company-tag {
+        font-size: 12px;
+        padding: 4px 12px;
     }
 }

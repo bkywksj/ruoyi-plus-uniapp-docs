@@ -242,6 +242,77 @@ highlights:
 - ⚠️ **使用限制**：仅禁止框架二次销售和扩散传播
 :::
 
+## 🏢 企业信赖
+
+以下企业已选择 ruoyi-plus-uniapp 作为技术底座，覆盖医疗、教育、金融、农业、物联网、电商等多个行业
+
+<div class="trusted-companies">
+  <div class="company-grid">
+    <span class="company-tag">湛江移动公司</span>
+    <span class="company-tag">中运交投（深圳）投资集团有限公司</span>
+    <span class="company-tag">淮沪煤电有限公司田集发电厂</span>
+    <span class="company-tag">山重建机有限公司</span>
+    <span class="company-tag">江门市得实计算机外部设备有限公司</span>
+    <span class="company-tag">北京国泰大华科技有限公司</span>
+    <span class="company-tag">华创旗晟（华东）科技有限公司</span>
+    <span class="company-tag">山东仰泰新能源有限公司</span>
+    <span class="company-tag">美幻（上海）电子商务有限公司</span>
+    <span class="company-tag">北京渐健医疗科技有限公司</span>
+    <span class="company-tag">幸智健康科技服务（深圳）有限公司</span>
+    <span class="company-tag">黑龙江医创智联科技有限公司</span>
+    <span class="company-tag">南京畅百则物联网科技有限公司</span>
+    <span class="company-tag">苏州德孚信息科技有限公司</span>
+    <span class="company-tag">青岛海川信息技术有限公司</span>
+    <span class="company-tag">深圳市宏丰软件技术有限公司</span>
+    <span class="company-tag">武汉浙科友通软件有限公司</span>
+    <span class="company-tag">武汉智深源科技有限公司</span>
+    <span class="company-tag">武汉邦拓信息科技有限公司</span>
+    <span class="company-tag">武汉盛锦汇科技有限公司</span>
+    <span class="company-tag">武汉市十庆智能科技有限公司</span>
+    <span class="company-tag">贵州中科易联科技有限公司</span>
+    <span class="company-tag">北京惟舍之旅科技有限公司</span>
+    <span class="company-tag">北京启天和科技有限公司</span>
+    <span class="company-tag">河北优狐教育科技有限公司</span>
+    <span class="company-tag">山东容微数字科技有限公司</span>
+    <span class="company-tag">山东军创科技服务有限公司</span>
+    <span class="company-tag">山东简单派科技有限公司</span>
+    <span class="company-tag">山东亚新塑料包装有限公司</span>
+    <span class="company-tag">合肥昊微信息科技有限公司</span>
+    <span class="company-tag">合肥识渊智能科技有限公司</span>
+    <span class="company-tag">合肥伊福徕信息技术有限公司</span>
+    <span class="company-tag">重庆禹霖韬略网络科技有限责任公司</span>
+    <span class="company-tag">杭州锲意达科技有限公司</span>
+    <span class="company-tag">嘉兴想天信息科技有限公司</span>
+    <span class="company-tag">金华市智维工艺品有限公司</span>
+    <span class="company-tag">厦门识相科技有限公司</span>
+    <span class="company-tag">广州课官科技有限公司</span>
+    <span class="company-tag">广西南宁木鱼电子科技有限公司</span>
+    <span class="company-tag">南宁星铁科技有限公司</span>
+    <span class="company-tag">深圳市铠硕达科技有限公司</span>
+    <span class="company-tag">深圳市尚古堂食品发展有限公司</span>
+    <span class="company-tag">深圳市简易网络科技</span>
+    <span class="company-tag">九紫离火（福州）科技有限公司</span>
+    <span class="company-tag">盐城零一软件科技有限公司</span>
+    <span class="company-tag">天津粮道农业科技有限公司</span>
+    <span class="company-tag">郑州市五阳软件开发有限公司</span>
+    <span class="company-tag">河南新好信息科技有限公司</span>
+    <span class="company-tag">河南校园终端有限公司</span>
+    <span class="company-tag">安阳泽康网络科技有限公司</span>
+    <span class="company-tag">临汾市名典新语文化科技有限公司</span>
+    <span class="company-tag">兰州宏知汇点信息技术有限公司</span>
+    <span class="company-tag">内蒙古敖然科技有限责任公司</span>
+    <span class="company-tag">云南有块田农业科技有限公司</span>
+    <span class="company-tag">云南原信科技有限公司</span>
+    <span class="company-tag">四川森唯科技有限公司</span>
+    <span class="company-tag">燚朗科技有限公司</span>
+    <span class="company-tag">兰山区星河手机电脑店</span>
+  </div>
+</div>
+
+<div style="text-align: center; margin-top: 16px; color: #999; font-size: 14px;">
+  持续更新中... 共 <strong>60+</strong> 家企业选择信赖
+</div>
+
 ## 💬 技术支持
 
 - 📧 **联系方式**: 770492966 (微信/QQ)
