@@ -309,8 +309,9 @@ setTheme('dark')
 
 ```typescript
 import { useI18n } from '@/composables/useI18n'
+import { LanguageCode } from '@/systemConfig'
 
-const { locale, t, setLocale } = useI18n()
+const { currentLanguage, t, setLanguage } = useI18n()
 
 // 翻译文本
 const title = t('common.title')
@@ -319,7 +320,7 @@ const title = t('common.title')
 const welcome = t('common.welcome', { name: '张三' })
 
 // 切换语言
-setLocale('en')
+setLanguage(LanguageCode.en_US)
 ```
 
 ### 应用生命周期插件

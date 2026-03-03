@@ -831,14 +831,15 @@ LanguageCode.en_US  // 'en-US'
 
 ```typescript
 import { useI18n } from '@/composables/useI18n'
+import { LanguageCode } from '@/systemConfig'
 
-const { t, locale, setLocale, isChinese, isEnglish } = useI18n()
+const { t, currentLanguage, setLanguage, isChinese, isEnglish } = useI18n()
 
 // 获取翻译文案
 const text = t('common.confirm')
 
 // 切换语言
-setLocale('en-US')
+setLanguage(LanguageCode.en_US)
 
 // 检查当前语言
 if (isChinese.value) {
