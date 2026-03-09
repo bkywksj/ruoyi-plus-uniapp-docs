@@ -16,10 +16,10 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - [x] 续写提示已保留，如需扩展可追加更多技能场景或案例
 
 ## 核心特性
-- 技能体系：`.claude/skills` 目录现有 44 个技能目录，覆盖架构、后端、前端、移动端、AI、协作、工程规范、中间件集成与物联网
-- 命令体系：`.claude/commands` 提供 13 个命令文件，`/init-docs` 内含两种模式，`sync-local`、`sync-wot-local`、`sync-unibest-local` 分别同步三个上游框架，合计 14 个使用入口
+- 技能体系：`.claude/skills` 目录现有 48 个技能目录，覆盖架构、后端、前端、移动端、APP原生、AI、协作、工程规范、中间件集成与物联网
+- 命令体系：`.claude/commands` 提供 10 个命令文件，`/init-docs` 内含两种模式，合计 11 个使用入口（不含 local 相关的上游同步命令，这些命令仅在源码项目中使用）
 - 钩子体系：`.claude/hooks` 提供 3 个 JavaScript 钩子，分别负责技能强制评估、工具安全拦截与结束收尾
-- 配置入口：`.claude/settings.json` 统一绑定 `UserPromptSubmit`、`PreToolUse`、`Stop` 三类触发点
+- 配置入口：`.claude/settings.json` 统一绑定 `UserPromptSubmit`、`PreToolUse`（5s超时）、`Stop`（10s超时）三类触发点
 - 规则底座：`CLAUDE.md` 与 `AGENTS.md` 约束语言、架构、流程、命令与文档生成边界
 
 ## 上下文工程
@@ -61,15 +61,17 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 技能文件包含 YAML 头部，记录 `name`、`description`、触发场景与触发词
 - 强制技能评估流程由钩子注入，未匹配技能时需明确说明
 
-### 分类总览（44 个技能）
+### 分类总览（48 个技能）
 - 业务与架构：crud-development、api-development、architecture-design
 - 后端能力：backend-annotations、data-permission、error-handler、security-guard、multi-tenant、json-serialization、test-development
 - 前端与移动：ui-pc、ui-mobile、ui-design-mobile、store-pc、store-mobile、uniapp-platform、i18n-development
+- APP原生：app-adapter
 - 中间件与集成：redis-cache、scheduled-jobs、realtime-communication、notification-system、message-queue、iot-mqtt、third-party-api、social-login
-- 工程与质量：code-patterns、git-workflow、project-navigator、utils-toolkit、performance-doctor
+- 工程与质量：code-patterns、git-workflow、project-navigator、utils-toolkit、performance-doctor、icon-management
 - AI 与协作：ai-langchain4j、collaborating-with-codex、collaborating-with-gemini、banana-image、task-tracker
 - 业务集成：payment-integration、wechat-integration、file-oss-management、media-processing
 - 诊断与规划：bug-detective、brainstorm、tech-decision
+- 迁移与扩展：project-migration、add-skill
 
 ### ai-langchain4j
 
@@ -1134,6 +1136,126 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 用户: 需要启动工作流程（发起审批、提交申请）
 - 用户: 需要办理任务（审批通过、驳回、转办、委派）
 
+### app-adapter
+
+定位
+- plus-app（原生APP项目）开发适配指南。提供 plus-app 与 plus-uniapp 开发页面、组件、API 时的差异说明，以及原生插件支持。
+
+触发场景
+- 用户明确提到 plus-app 或 APP 端开发
+- 需要使用原生插件（nativeplugins）
+- 需要 HBuilderX 打包或真机调试
+- 需要鸿蒙 APP 适配
+- 需要 APP 专属配置（地图、客服、分享域名）
+
+触发词
+- `plus-app`
+- `APP端`
+- `原生APP`
+- `原生插件`
+- `HBuilderX`
+- `鸿蒙APP`
+- `harmony`
+- `nativeplugins`
+- `APP打包`
+- `真机调试`
+- `APP专属`
+- `APP配置`
+
+示例
+- 用户: plus-app 和 plus-uniapp 有什么区别
+- 用户: APP 端怎么使用原生插件
+
+### icon-management
+
+定位
+- 选择菜单图标、管理项目图标库、添加或替换图标时使用。处理 PC 端和移动端两套独立的图标体系。
+
+触发场景
+- 创建新菜单需要选择合适的图标
+- 向项目图标库添加新图标
+- 替换现有图标
+- 查看可用图标列表
+- 了解 PC 端和移动端图标体系
+
+触发词
+- `图标`
+- `icon`
+- `菜单图标`
+- `换图标`
+- `加图标`
+- `图标管理`
+- `IconSelect`
+- `wd-icon`
+- `iconfont`
+- `图标选择`
+
+示例
+- 用户: 新菜单用什么图标合适
+- 用户: 怎么给项目添加新图标
+
+### project-migration
+
+定位
+- 将其他项目迁移/重构为 ruoyi-plus-uniapp 架构。提供完整的迁移方法论、分步流程、差异映射规则和跨会话协调机制。
+
+触发场景
+- 将其他 Java 项目迁移到本项目架构
+- 从 RuoYi/RuoYi-Vue-Plus/SpringBlade 等框架重构代码
+- 继续之前中断的迁移任务
+- 扫描和分析源项目的模块、表、API、页面
+- 生成迁移蓝图和映射文档
+- 对比架构差异
+
+触发词
+- `迁移项目`
+- `项目迁移`
+- `重构项目`
+- `代码迁移`
+- `继续迁移`
+- `迁移进度`
+- `迁移蓝图`
+- `架构迁移`
+- `框架迁移`
+- `项目重构`
+- `导入项目`
+- `搬迁代码`
+- `从xxx迁移`
+
+示例
+- 用户: 怎么把 SpringBlade 项目迁移过来
+- 用户: 继续上次的迁移任务
+
+### add-skill
+
+定位
+- 向框架添加新技能、修改现有技能、编写技能文档。将实现步骤转化为可复用的技能。
+
+触发场景
+- 为新模块添加技能
+- 为新功能编写技能文档
+- 扩展框架的技能系统
+- 将实现步骤转化为可复用的技能
+- 修改现有技能内容并同步到两套系统
+- 重命名或删除现有技能
+
+触发词
+- `添加技能`
+- `创建技能`
+- `新技能`
+- `技能开发`
+- `写技能`
+- `技能文档`
+- `skill创建`
+- `修改技能`
+- `更新技能`
+- `同步技能`
+- `技能同步`
+
+示例
+- 用户: 给这个新模块添加一个技能
+- 用户: 帮我修改 crud-development 技能的内容
+
 ### i18n-development
 
 定位
@@ -1556,6 +1678,19 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - `Embedding`
 - `langchain4j`
 
+#### add-skill
+- `添加技能`
+- `创建技能`
+- `新技能`
+- `技能开发`
+- `写技能`
+- `技能文档`
+- `skill创建`
+- `修改技能`
+- `更新技能`
+- `同步技能`
+- `技能同步`
+
 #### api-development
 - `API设计`
 - `接口规范`
@@ -1567,6 +1702,20 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - `统一响应`
 - `接口命名`
 - `端点设计`
+
+#### app-adapter
+- `plus-app`
+- `APP端`
+- `原生APP`
+- `原生插件`
+- `HBuilderX`
+- `鸿蒙APP`
+- `harmony`
+- `nativeplugins`
+- `APP打包`
+- `真机调试`
+- `APP专属`
+- `APP配置`
 
 #### architecture-design
 - `架构设计`
@@ -1756,6 +1905,18 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - `版本`
 - `历史`
 
+#### icon-management
+- `图标`
+- `icon`
+- `菜单图标`
+- `换图标`
+- `加图标`
+- `图标管理`
+- `IconSelect`
+- `wd-icon`
+- `iconfont`
+- `图标选择`
+
 #### media-processing
 - `图片`
 - `缩放`
@@ -1798,6 +1959,21 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - `加载慢`
 - `响应慢`
 - `渲染优化`
+
+#### project-migration
+- `迁移项目`
+- `项目迁移`
+- `重构项目`
+- `代码迁移`
+- `继续迁移`
+- `迁移进度`
+- `迁移蓝图`
+- `架构迁移`
+- `框架迁移`
+- `项目重构`
+- `导入项目`
+- `搬迁代码`
+- `从xxx迁移`
 
 #### project-navigator
 - `项目结构`
@@ -2249,12 +2425,26 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 知识库 RAG 集成
 - 函数调用实现
 
+#### add-skill
+- 为新模块添加技能
+- 为新功能编写技能文档
+- 扩展框架的技能系统
+- 将实现步骤转化为可复用的技能
+- 修改现有技能内容并同步到两套系统
+
 #### api-development
 - 设计新的 API 接口路径
 - 定义 RESTful 规范
 - 前后端接口对接约定
 - 接口命名规范
 - `R<T> 响应格式设计`
+
+#### app-adapter
+- 用户明确提到 plus-app 或 APP 端开发
+- 需要使用原生插件（nativeplugins）
+- 需要 HBuilderX 打包或真机调试
+- 需要鸿蒙 APP 适配
+- 需要 APP 专属配置（地图、客服、分享域名）
 
 #### architecture-design
 - 系统架构设计
@@ -2354,6 +2544,13 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 解决冲突
 - 回滚代码
 
+#### icon-management
+- 创建新菜单需要选择合适的图标
+- 向项目图标库添加新图标
+- 替换现有图标
+- 查看可用图标列表
+- 了解 PC 端和移动端图标体系
+
 #### media-processing
 - 图片处理（缩放、水印、滤镜）
 - 二维码生成
@@ -2377,6 +2574,14 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - N+1 查询问题
 - 内存泄漏排查
 - 前端渲染卡顿
+
+#### project-migration
+- 将其他 Java 项目迁移到本项目架构
+- 从 RuoYi/RuoYi-Vue-Plus/SpringBlade 等框架重构代码
+- 继续之前中断的迁移任务
+- 扫描和分析源项目的模块、表、API、页面
+- 生成迁移蓝图和映射文档
+- 对比架构差异
 
 #### project-navigator
 - 不知道文件在哪里
@@ -2560,7 +2765,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 
 ## 命令系统
 ### 命令入口总览
-命令文件位于 `.claude/commands/`，当前共 13 个文件。以下按 14 个使用入口展开，覆盖不同模式与上游同步变体。
+命令文件位于 `.claude/commands/`，当前共 10 个命令文件（不含 local 相关的上游同步命令）。以下按 11 个使用入口展开。
 
 | 使用入口 | 定位 | 关键输入 | 主要输出 |
 | --- | --- | --- | --- |
@@ -2575,9 +2780,8 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 | `/add-todo` | 快速添加待办 | 任务描述 | 待办清单与状态联动 |
 | `/update-status` | 增量更新状态 | 无 | 三文档联动更新报告 |
 | `/sync` | 文档全量同步 | 无 | 三文档一致性同步 |
-| `/sync-local` | 后端上游代码同步 | 起始点与提交选择 | 上游改动适配与合并建议 |
-| `/sync-wot-local` | WOT Design Uni 组件库同步 | 无 | WD UI 组件更新清单 |
-| `/sync-unibest-local` | Unibest 移动端框架同步 | 无 | 移动端框架更新清单 |
+
+> **说明**：源码项目中还包含 `/sync-local`、`/sync-wot-local`、`/sync-unibest-local` 等上游同步命令，这些命令仅在源码开发项目中使用，不属于本文档项目的范畴，因此不在此处列出。
 
 ### /start
 定位
@@ -2708,44 +2912,6 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 输出
 - 同步报告与冲突提示
 
-### /sync-local
-定位
-- 后端上游代码同步助手，同步 RuoYi-Vue-Plus 后端改动
-输入
-- 起始日期或提交 ID，或从 `.claude/sync-history-local.json` 恢复
-流程
-- 拉取上游 `plus-admin/dev` 与 `plus-ui/dev` 的提交
-- 分类提交并逐条分析，提供适配建议
-- 强制用户确认后再执行合并
-输出
-- 提交分类报告与适配清单
-
-### /sync-wot-local
-定位
-- WOT Design Uni 组件库同步助手，同步 WD UI 组件更新
-输入
-- 无显式参数，自动对比本地 WD UI 版本与上游版本
-流程
-- 检查上游 WOT Design Uni 仓库的最新变更
-- 对比本地 `plus-uniapp/src/wd/` 目录中的组件
-- 分析变更影响范围，提供迁移建议
-- 用户确认后执行更新
-输出
-- 组件变更清单与迁移注意事项
-
-### /sync-unibest-local
-定位
-- Unibest 移动端框架同步助手，同步 Unibest 框架更新
-输入
-- 无显式参数，自动对比本地框架版本与上游版本
-流程
-- 检查上游 Unibest 仓库的最新变更
-- 对比本地 `plus-uniapp/` 中的框架文件（配置、工具、拦截器等）
-- 分析变更影响范围，避免覆盖业务代码
-- 用户确认后执行更新
-输出
-- 框架变更清单与兼容性提示
-
 ## 钩子系统
 ### 钩子注册方式
 - 钩子在 `.claude/settings.json` 中注册
@@ -2797,7 +2963,6 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 每次提交前运行 `/check`，提前暴露规范问题
 - 使用 `/add-todo` 记录任务，避免临时口头约定
 - 频繁更新时使用 `/update-status`，阶段性整理用 `/sync`
-- 工作流同步必须走 `/sync-local`，确保只合并 warm-flow 相关提交
 - 技能评估必须完整执行，严禁跳过 Skill 激活步骤
 - 遇到性能与 Bug 问题时分别使用 performance-doctor 与 bug-detective
 - 任务复杂且需跨会话时使用 task-tracker 记录上下文
@@ -2869,23 +3034,4 @@ Claude: 输出项目状态、需求与待办文档
 产出
 - `docs/项目状态.md`、`docs/需求文档.md`、`docs/待办清单.md`
 
-### 案例四：工作流代码同步
-场景
-- 需要从上游仓库同步 warm-flow 相关改动
-使用命令
-- `/sync-local`
-触发技能
-- workflow-engine、architecture-design、code-patterns
-关键步骤
-1. 拉取上游提交并筛选工作流相关改动
-2. 分类提交并逐条分析需要适配的内容
-3. 用户确认后再合并，确保只同步工作流改动
-示例对话
-```
-用户: /sync-local
-用户: 起始点 2025-11-01
-Claude: 输出提交分类与适配建议清单
-```
-产出
-- 仅引入 warm-flow 相关更新，保留本项目架构一致性
 

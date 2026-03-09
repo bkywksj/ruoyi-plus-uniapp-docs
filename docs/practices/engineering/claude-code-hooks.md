@@ -19,11 +19,11 @@ Hooks（钩子）是 Claude Code 的自动化机制，允许你在工具执行�
 
 | 事件类型 | 触发时刻 | 典型用途 |
 |---------|---------|---------|
-| **PreToolUse** | 工具执行前 | 验证参数、拦截危险操作、修改输入 |
+| **PreToolUse** | 工具执行前 | 验证参数、拦截危险操作、修改输入（推荐超时5s） |
 | **PostToolUse** | 工具执行完成后 | 处理输出、记录日志、触发后续操作 |
-| **UserPromptSubmit** | 用户提交提示时 | 验证提示、预处理输入 |
+| **UserPromptSubmit** | 用户提交提示时 | 验证提示、预处理输入、技能评估注入 |
 | **PermissionRequest** | 请求工具权限时 | 自动批准/拒绝权限请求 |
-| **Stop** | Claude 完成响应时 | 清理资源、生成报告 |
+| **Stop** | Claude 完成响应时 | 清理资源、生成报告、播放提示音（推荐超时10s） |
 | **SubagentStop** | 子代理完成时 | 处理子代理结果 |
 | **SessionEnd** | 会话终止时 | 最终清理、日志记录 |
 
@@ -322,6 +322,62 @@ NPM 命令完成后发送通知：
 
 ## 完整配置示例
 
+### 本项目实际配置
+
+ruoyi-plus-uniapp-workflow 项目使用三个 JavaScript 钩子文件实现自动化流程：
+
+```json
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/skill-forced-eval.js"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/pre-tool-use.js",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .claude/hooks/stop.js",
+            "timeout": 10000
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+**三个钩子的职责：**
+
+| 钩子文件 | 事件类型 | 核心功能 |
+|---------|---------|---------|
+| `skill-forced-eval.js` | UserPromptSubmit | 注入48个技能评估流程，强制逐个激活匹配技能 |
+| `pre-tool-use.js` | PreToolUse | 拦截危险Bash命令（`rm -rf /`、`drop database`等），警告敏感文件写入 |
+| `stop.js` | Stop | 清理误创建的 `nul` 文件，播放完成提示音（跨平台） |
+
+### 通用配置示例
+
 ```json
 {
   "hooks": {
@@ -331,7 +387,7 @@ NPM 命令完成后发送通知：
         "hooks": [
           {
             "type": "command",
-            "command": "echo '🚫 危险命令已被拦截' && exit 1"
+            "command": "echo '危险命令已被拦截' && exit 1"
           }
         ]
       },

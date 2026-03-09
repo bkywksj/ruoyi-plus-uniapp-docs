@@ -1255,6 +1255,15 @@ del \\?\D:\path\to\nul
 ```
 - 更新整体完成度
 
+#### 11. ⚠️ Claude Code 文档中排除 local 相关命令(重要)
+
+- 编写 Claude Code 相关文档时，**禁止**包含 local 相关的上游同步命令
+- 以下命令仅在源码开发项目中使用，不属于本文档项目的范畴：
+  - `/sync-local` - 后端上游代码同步
+  - `/sync-wot-local` - WOT Design Uni 组件库同步
+  - `/sync-unibest-local` - Unibest 移动端框架同步
+- 文档中如需提及这些命令的存在，应注明"仅在源码项目中使用"
+
 ### 💡 最佳实践
 
 #### 1. 编写文档前

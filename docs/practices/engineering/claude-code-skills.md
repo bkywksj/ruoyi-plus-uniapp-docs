@@ -43,7 +43,7 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 
 ## 项目已有 Skills 清单
 
-本项目包含 **44 个 Skills**，按功能分为 8 大类：
+本项目包含 **48 个 Skills**，按功能分为 10 大类：
 
 ### 后端开发类（8 个）
 
@@ -97,6 +97,12 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 | **store-mobile** | useAuth、Composable | 移动端状态管理 |
 | **uniapp-platform** | 条件编译、ifdef | 多端条件编译 |
 
+### APP原生类（1 个）
+
+| Skill | 触发词 | 说明 |
+|-------|--------|------|
+| **app-adapter** | plus-app、APP端、原生插件、HBuilderX | plus-app 原生 APP 适配指南 |
+
 ### 微信与支付类（2 个）
 
 | Skill | 触发词 | 说明 |
@@ -104,7 +110,7 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 | **payment-integration** | 微信支付、支付宝、退款 | 多渠道支付集成 |
 | **wechat-integration** | 小程序登录、订阅消息 | 微信生态集成 |
 
-### 质量与排查类（4 个）
+### 质量与排查类（5 个）
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
@@ -112,8 +118,9 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 | **performance-doctor** | 性能、慢查询、优化 | 性能诊断和优化 |
 | **code-patterns** | 代码规范、命名 | 全栈编码规范速查 |
 | **media-processing** | 图片处理、二维码、Excel | 媒体处理工具 |
+| **icon-management** | 图标、菜单图标、IconSelect | PC 端与移动端图标管理 |
 
-### 规划与协作类（11 个）
+### 规划与协作类（12 个）
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
@@ -125,6 +132,7 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 | **git-workflow** | Git、提交、分支 | Git 工作流规范 |
 | **task-tracker** | 任务跟踪、记录进度 | 开发任务持久化跟踪 |
 | **add-skill** | 添加技能、创建技能 | 扩展技能系统 |
+| **project-migration** | 迁移项目、架构迁移、框架迁移 | 项目迁移与重构方法论 |
 | **collaborating-with-codex** | Codex、算法分析 | 委托 Codex 处理任务 |
 | **collaborating-with-gemini** | Gemini、UI 设计 | 委托 Gemini 处理任务 |
 | **banana-image** | 生成图片、海报、4K | AI 图片生成 |
