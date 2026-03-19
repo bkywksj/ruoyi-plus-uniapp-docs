@@ -1737,9 +1737,13 @@ public class UserService {
 ### 5. 事务管理
 
 **规范:**
-- 使用@Transactional注解
-- 指定rollbackFor = Exception.class
-- 避免大事务
+- 使用`@Transactional`注解,指定`rollbackFor = Exception.class`
+- 避免大事务,将耗时的非事务操作移出事务边界
+- 同类内部调用带`@Transactional`的方法时,必须通过`SpringUtils.getAopProxy(this)`获取代理对象调用,否则事务不生效
+
+**事务失效的常见原因:**
+
+Spring的`@Transactional`是基于AOP代理实现的。当在同一个类中直接调用带`@Transactional`注解的方法时,调用不经过Spring代理,事务注解不会被拦截处理,导致事务不生效。框架提供了`SpringUtils.getAopProxy()`工具方法来解决这个问题。
 
 **示例:**
 
@@ -1772,7 +1776,7 @@ public class OrderService {
         // 会长时间占用数据库连接
     }
 
-    // ✅ 拆分事务
+    // ✅ 拆分事务 - 将耗时操作移出事务边界
     public void processOrder(Long orderId) {
         // 1. 非事务操作
         OrderVo order = orderMapper.selectById(orderId);
@@ -1780,14 +1784,22 @@ public class OrderService {
         // 2. 调用外部API(非事务)
         PaymentResult result = paymentService.pay(order);
 
-        // 3. 事务操作
+        // 3. 事务操作 - 必须通过代理对象调用,否则@Transactional不生效
+        SpringUtils.getAopProxy(this).updateOrderStatus(orderId, result);
+    }
+
+    // ❌ 错误: 同类内部直接调用,事务不生效
+    public void processOrderWrong(Long orderId) {
+        OrderVo order = orderMapper.selectById(orderId);
+        PaymentResult result = paymentService.pay(order);
+        // 直接调用 this.updateOrderStatus() 不经过Spring代理,@Transactional无效
         updateOrderStatus(orderId, result);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void updateOrderStatus(Long orderId, PaymentResult result) {
-        // 只在这里使用事务
         orderMapper.updateStatus(orderId, result.getStatus());
+        orderLogMapper.insert(new OrderLog(orderId, "状态变更: " + result.getStatus()));
     }
 }
 ```
