@@ -129,7 +129,7 @@ highlights:
 **站在巨人的肩膀上，打造更优秀的全栈框架**
 
 - **200万+ 行代码** - 基于成熟开源项目深度重构，继承社区多年积累
-- **3619+ 次提交** - 持续迭代优化，每一次提交都是品质的提升
+- **3800+ 次提交** - 持续迭代优化，每一次提交都是品质的提升
 - **1年+ 深度重构** - 地毯式重构优化，统一规范，提升开发体验
 - **开源社区协作** - 继承开源精神，吸收社区智慧，持续改进
 
@@ -306,11 +306,21 @@ highlights:
     <span class="company-tag">四川森唯科技有限公司</span>
     <span class="company-tag">燚朗科技有限公司</span>
     <span class="company-tag">兰山区星河手机电脑店</span>
+    <span class="company-tag">北京女娲补天科技信息技术有限公司</span>
+    <span class="company-tag">东莞市码载网络科技有限公司</span>
+    <span class="company-tag">奇妙科技有限公司</span>
+    <span class="company-tag">绵阳能创科技有限责任公司</span>
+    <span class="company-tag">湖北锦恒网络科技有限公司</span>
+    <span class="company-tag">上海约格信息技术有限公司</span>
+    <span class="company-tag">重庆金芯科技有限公司</span>
+    <span class="company-tag">武汉顺为起点软件技术咨询有限公司</span>
+    <span class="company-tag">易必佩（温州）技术有限公司</span>
+    <span class="company-tag">广州享元数字科技有限公司</span>
   </div>
 </div>
 
 <div style="text-align: center; margin-top: 16px; color: #999; font-size: 14px;">
-  持续更新中... 共 <strong>60+</strong> 家企业选择信赖
+  持续更新中... 共 <strong>80+</strong> 家企业选择信赖
 </div>
 
 ## 💬 技术支持
