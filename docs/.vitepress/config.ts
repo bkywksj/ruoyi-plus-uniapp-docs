@@ -1,34 +1,71 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-    title: 'ruoyi-plus-uniapp 开发文档',
-    description: '全栈开发文档 - 后端、前端、移动端完整指南',
+    title: 'RuoYi-Plus-UniApp 全栈开发文档 — Spring Boot 3 + Vue 3 企业级框架',
+    description: 'RuoYi-Plus-UniApp 全栈开发文档 — 基于 Spring Boot 3 + Vue 3 + UniApp 的企业级快速开发框架，涵盖后端架构、前端组件、移动端开发、AI 集成、多租户、支付等完整指南。',
+    lang: 'zh-CN',
     base: '/',
     lastUpdated: false,
     cleanUrls: false,
 
     head: [
         ['link', { rel: 'icon', href: '/favicon.ico' }],
-        ['meta', { name: 'theme-color', content: '#8b5cf6' }], // 调整为紫色主题
+        ['link', { rel: 'canonical', href: 'https://ruoyi.plus/' }],
+        ['meta', { name: 'theme-color', content: '#8b5cf6' }],
+        ['meta', { name: 'keywords', content: 'RuoYi,RuoYi-Plus,UniApp,Spring Boot 3,Vue 3,企业级框架,快速开发,全栈开发,后台管理系统,多租户,SaaS,代码生成器,MyBatis Plus,Element Plus,微信小程序' }],
+        // OG 标签
         ['meta', { property: 'og:type', content: 'website' }],
         ['meta', { property: 'og:locale', content: 'zh-CN' }],
-        ['meta', { property: 'og:title', content: 'ruoyi-plus-uniapp 开发文档' }],
-        ['meta', { property: 'og:site_name', content: 'ruoyi-plus-uniapp-docs' }],
-        ['meta', { property: 'og:description', content: '框架即文档，提供最优雅的开发体验' }],
-        ['meta', { property: 'og:image', content: '/logo.png' }],
-        // 添加 ICP 备案信息
+        ['meta', { property: 'og:title', content: 'RuoYi-Plus-UniApp 全栈开发文档' }],
+        ['meta', { property: 'og:site_name', content: 'RuoYi-Plus-UniApp' }],
+        ['meta', { property: 'og:description', content: '基于 Spring Boot 3 + Vue 3 + UniApp 的企业级快速开发框架，涵盖后端、前端、移动端完整指南' }],
+        ['meta', { property: 'og:image', content: 'https://ruoyi.plus/logo.png' }],
+        ['meta', { property: 'og:url', content: 'https://ruoyi.plus/' }],
+        // Twitter Card
+        ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+        ['meta', { name: 'twitter:title', content: 'RuoYi-Plus-UniApp 全栈开发文档' }],
+        ['meta', { name: 'twitter:description', content: '基于 Spring Boot 3 + Vue 3 + UniApp 的企业级快速开发框架' }],
+        ['meta', { name: 'twitter:image', content: 'https://ruoyi.plus/logo.png' }],
+        // ICP 备案信息
         ['meta', { name: 'icp', content: '粤ICP备2021091549号-5' }],
         ['link', { rel: 'license', href: 'https://beian.miit.gov.cn/' }],
         // 百度统计代码
         ['script', { async: '', src: 'https://hm.baidu.com/hm.js?c5543d0699fa3d232a032fd56c45b460' }],
-        // 添加站点地图
+        // 站点地图
         ['link', { rel: 'sitemap', href: '/sitemap.xml' }],
-        ['meta', { name: 'mobile-web-app-capable', content: 'yes' }], // ✅ 使用现代标准
-        ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }], // ✅ 改进状态栏样式
-        // 可选：添加更完整的PWA支持
-        ['meta', { name: 'application-name', content: 'ruoyi-plus-uniapp-docs' }],
-        ['meta', { name: 'apple-mobile-web-app-title', content: 'ruoyi-docs' }],
+        ['meta', { name: 'mobile-web-app-capable', content: 'yes' }],
+        ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }],
+        ['meta', { name: 'application-name', content: 'RuoYi-Plus-UniApp' }],
+        ['meta', { name: 'apple-mobile-web-app-title', content: 'RuoYi-Plus' }],
         ['link', { rel: 'apple-touch-icon', href: '/logo.png' }],
+        // 结构化数据 JSON-LD
+        ['script', { type: 'application/ld+json' }, JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "RuoYi-Plus-UniApp",
+            "url": "https://ruoyi.plus",
+            "description": "基于 Spring Boot 3 + Vue 3 + UniApp 的企业级全栈快速开发框架文档",
+            "inLanguage": "zh-CN",
+            "publisher": {
+                "@type": "Organization",
+                "name": "抓蛙师",
+                "url": "https://ruoyi.plus"
+            }
+        })],
+        ['script', { type: 'application/ld+json' }, JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "RuoYi-Plus-UniApp",
+            "applicationCategory": "DeveloperApplication",
+            "operatingSystem": "Cross-platform",
+            "description": "企业级全栈快速开发框架，基于 Spring Boot 3 + Vue 3 + UniApp",
+            "url": "https://ruoyi.plus",
+            "offers": {
+                "@type": "Offer",
+                "price": "2218",
+                "priceCurrency": "CNY"
+            }
+        })],
     ],
 
     themeConfig: {

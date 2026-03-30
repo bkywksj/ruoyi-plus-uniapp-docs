@@ -123,7 +123,7 @@ highlights:
 ### 📈 项目规模
 
 <div style="text-align: center; margin: 30px 0;">
-  <ImagePreview src="/images/commit.jpg" :width="800" :height="300" object-fit="contain" />
+  <ImagePreview src="/images/commit.jpg" :width="800" :height="300" object-fit="contain" alt="RuoYi-Plus-UniApp 项目提交记录" />
 </div>
 
 **站在巨人的肩膀上，打造更优秀的全栈框架**
@@ -332,22 +332,22 @@ highlights:
 
 <div style="display: flex; gap: 30px; margin: 20px 0; flex-wrap: wrap; align-items: flex-start;">
   <div style="text-align: center;">
-    <ImagePreview src="/gzh.png" :width="240" :height="320" object-fit="contain" />
+    <ImagePreview src="/gzh.png" :width="240" :height="320" object-fit="contain" alt="RuoYi-Plus 微信公众号二维码" />
     <p style="margin-top: 10px;"><strong>微信公众号</strong></p>
     <p style="margin-top: 5px; color: #666;">获取最新技术资讯</p>
   </div>
   <div style="text-align: center;">
-    <ImagePreview src="/wx.jpg" :width="240" :height="320" object-fit="contain" />
+    <ImagePreview src="/wx.jpg" :width="240" :height="320" object-fit="contain" alt="RuoYi-Plus 微信联系方式" />
     <p style="margin-top: 10px;"><strong>微信联系</strong></p>
     <p style="margin-top: 5px; color: #666;">一对一技术咨询</p>
   </div>
   <div style="text-align: center;">
-    <ImagePreview src="/wxq.jpg" :width="240" :height="320" object-fit="contain" />
+    <ImagePreview src="/wxq.jpg" :width="240" :height="320" object-fit="contain" alt="RuoYi-Plus 技术交流群二维码" />
     <p style="margin-top: 10px;"><strong>技术交流群</strong></p>
     <p style="margin-top: 5px; color: #666;">与开发者交流讨论</p>
   </div>
   <div style="text-align: center;">
-    <ImagePreview src="/软著.png" :width="240" :height="320" object-fit="contain" />
+    <ImagePreview src="/软著.png" :width="240" :height="320" object-fit="contain" alt="RuoYi-Plus-UniApp 软件著作权证书" />
     <p style="margin-top: 10px;"><strong>软件著作权</strong></p>
     <p style="margin-top: 5px; color: #666;">国家版权局认证</p>
   </div>
