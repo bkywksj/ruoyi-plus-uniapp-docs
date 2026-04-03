@@ -58,6 +58,16 @@ const instructions = `## 强制技能激活流程（必须执行）
 可用技能：
 - deploy: 部署/开始部署/发布/上线/打包发布/构建部署
 - update-docs: 更新文档/同步文档/检查文档是否需要更新
+- doc-writer: 写文档/新建文档/添加文档/写一篇文档/撰写文档
+- sidebar-manager: 侧边栏/更新侧边栏/添加到导航/调整菜单/导航配置
+- link-checker: 检查链接/死链/链接检查/broken link/链接扫描
+- doc-review: 审查文档/检查文档质量/review/文档审查/质量检查
+- component-doc: 写组件文档/WD组件/组件文档/wd-/WD UI
+- changelog-gen: 更新日志/changelog/版本记录/更新记录/release notes
+- doc-search: 搜索文档/哪些文档提到/查找文档/文档搜索/引用分析
+- doc-stats: 文档统计/覆盖率/文档状态/stats/文档报告/健康报告
+- version-migrate: 版本升级/迁移文档/升级指南/版本变更/依赖升级
+- preview-server: 预览/启动预览/本地预览/dev server/构建/build
 
 ### 步骤 2 - 激活（逐个调用，等待每个完成）
 

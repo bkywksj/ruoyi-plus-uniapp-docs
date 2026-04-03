@@ -942,6 +942,48 @@ interface WdButtonProps {
 
 ---
 
+## AI 技能体系
+
+### 技能清单（12 个）
+
+| # | 技能 | 触发词 | 用途 |
+|---|------|--------|------|
+| 1 | `update-docs` | 更新文档、同步文档 | 基于源码 Git 提交增量同步文档 |
+| 2 | `deploy` | 部署、发布、上线 | 一键部署到腾讯云 EdgeOne |
+| 3 | `doc-writer` | 写文档、新建文档 | 按项目规范撰写新文档页 |
+| 4 | `sidebar-manager` | 侧边栏、更新侧边栏 | 管理 VitePress 侧边栏/导航配置 |
+| 5 | `link-checker` | 检查链接、死链 | 全站死链检测与修复 |
+| 6 | `doc-review` | 审查文档、文档质量 | 文档质量审查（格式/准确性/完整性） |
+| 7 | `component-doc` | WD组件、组件文档 | WD UI 组件文档专用生成器 |
+| 8 | `changelog-gen` | 更新日志、changelog | 自动生成格式化更新日志 |
+| 9 | `doc-search` | 搜索文档、查找文档 | 跨模块内容搜索与引用分析 |
+| 10 | `doc-stats` | 文档统计、覆盖率 | 文档覆盖率统计与健康报告 |
+| 11 | `version-migrate` | 版本升级、迁移文档 | 框架依赖升级时的文档迁移辅助 |
+| 12 | `preview-server` | 预览、本地预览 | 启动本地预览服务器 |
+
+### 快捷命令（8 个）
+
+| 命令 | 映射技能 | 用法示例 |
+|------|---------|---------|
+| `/update-docs` | update-docs | `/update-docs backend --dry-run` |
+| `/deploy` | deploy | `/deploy --skip-qr` |
+| `/write` | doc-writer | `/write backend/common/新模块 数据加密` |
+| `/sidebar` | sidebar-manager | `/sidebar add backend 数据加密` |
+| `/check-links` | link-checker | `/check-links mobile/ --fix` |
+| `/review` | doc-review | `/review frontend/components/` |
+| `/stats` | doc-stats | `/stats backend` |
+| `/wd` | component-doc | `/wd form/rate` |
+
+### 自动化钩子（3 个）
+
+| 钩子 | 触发时机 | 作用 |
+|------|---------|------|
+| `skill-forced-eval.cjs` | 用户输入时 | 强制技能评估，自动路由到匹配技能 |
+| `pre-tool-use.cjs` | Bash/Write 工具使用前 | 前置安全验证 |
+| `stop.cjs` | 停止命令时 | 清理资源，更新检查点 |
+
+---
+
 ## 常用命令
 
 ### 文档开发
