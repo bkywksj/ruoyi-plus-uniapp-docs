@@ -57,6 +57,32 @@
     background: color-mix(in srgb, var(--vp-c-brand-1) 8%, transparent);
 }
 
+/* 首页产品预览卡片 */
+.product-preview-card {
+    display: block;
+    padding: 24px;
+    background: var(--vp-c-bg-soft);
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.product-preview-card,
+.product-preview-card:hover,
+.product-preview-card h4,
+.product-preview-card p {
+    text-decoration: none !important;
+}
+
+.product-preview-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    border-color: var(--vp-c-brand-1);
+}
+
 /* 响应式调整 */
 @media (max-width: 768px) {
     .VPNavBar .title {

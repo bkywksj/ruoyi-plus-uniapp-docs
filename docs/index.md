@@ -242,6 +242,35 @@ highlights:
 - ⚠️ **使用限制**：仅禁止框架二次销售和扩散传播
 :::
 
+## 🎯 更多产品
+
+抓蛙师出品，覆盖全栈开发、AI 效率工具、桌面应用三大场景
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0;">
+
+<a href="https://ai-workstation.ruoyi.plus/" target="_blank" rel="noopener noreferrer" class="product-preview-card">
+  <div style="font-size: 40px; margin-bottom: 12px;">🤖</div>
+  <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">AI 全能工作站</h4>
+  <p style="margin: 0 0 8px; font-size: 13px; color: #0B6EF0; font-weight: 500;">一句话搞定一切 · 44个模块 · 730+ AI技能</p>
+  <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">八大领域全覆盖 | 智能路由 | 42集视频教程</p>
+</a>
+
+<a href="https://aicoder.ruoyi.plus/" target="_blank" rel="noopener noreferrer" class="product-preview-card">
+  <div style="font-size: 40px; margin-bottom: 12px;">⚡</div>
+  <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">智码 AiCoder</h4>
+  <p style="margin: 0 0 8px; font-size: 13px; color: #8B5CF6; font-weight: 500;">给 Claude Code、Codex、Gemini CLI 一个统一的家</p>
+  <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">多标签会话 | Token费用追踪 | 零额外开销</p>
+</a>
+
+<a href="https://tauri.ruoyi.plus/" target="_blank" rel="noopener noreferrer" class="product-preview-card">
+  <div style="font-size: 40px; margin-bottom: 12px;">🖥️</div>
+  <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">灵动桌面框架</h4>
+  <p style="margin: 0 0 8px; font-size: 13px; color: #10B981; font-weight: 500;">React 19 + Rust + TypeScript · AI驱动跨平台</p>
+  <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">Tauri 2.x | 33个AI技能 | 三引擎协同</p>
+</a>
+
+</div>
+
 ## 🏢 企业信赖
 
 以下企业已选择 ruoyi-plus-uniapp 作为技术底座，覆盖医疗、教育、金融、农业、物联网、电商等多个行业

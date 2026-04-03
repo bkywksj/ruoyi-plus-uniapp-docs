@@ -1,0 +1,134 @@
+{
+  "products": [
+    {
+      "id": "ruoyi-plus-uniapp",
+      "name": "RuoYi-Plus-UniApp",
+      "icon": "🚀",
+      "slogan": "Spring Boot 3 + Vue 3 + UniApp 企业级全栈框架",
+      "description": "基于成熟开源项目深度重构的企业级全栈快速开发框架，四层架构设计，涵盖后端、前端管理端、移动端。多租户、支付集成、AI能力、代码生成器，减少代码量70%。",
+      "theme": "blue",
+      "badge": "",
+      "highlights": [
+        "四层架构：Controller-Service-DAO-Mapper，职责清晰分明",
+        "Claude Code深度集成：29+专业技能、12个智能命令",
+        "企业级能力：多租户、支付、小程序/公众号、AI大模型集成",
+        "移动端覆盖：UniApp跨平台，支持微信小程序、H5、App",
+        "80+企业信赖，3800+次提交，持续迭代优化"
+      ],
+      "actions": [
+        { "text": "访问官网", "link": "https://ruoyi.plus/" }
+      ],
+      "preview": {
+        "color": "#0B6EF0",
+        "tagline": "Spring Boot 3 + Vue 3 + UniApp 全栈框架",
+        "summary": "四层架构 | 多租户 | AI集成 | 80+企业信赖"
+      },
+      "site": {
+        "docsPath": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-docs",
+        "configPath": "docs/.vitepress/config.ts",
+        "themePath": "docs/.vitepress/theme",
+        "indexPath": "docs/index.md",
+        "productsPath": "docs/products.md",
+        "stylePath": "docs/.vitepress/theme/style.css"
+      }
+    },
+    {
+      "id": "ai-workstation",
+      "name": "AI 全能工作站",
+      "icon": "🤖",
+      "slogan": "一句话搞定一切 · 44个专业模块 · 730+ AI技能",
+      "description": "覆盖内容创作、办公效率、多媒体处理、商业财务、设计策略、数据分析、运营协作、效率工具八大领域。用自然语言描述需求，两级智能路由自动识别意图，跨工具协作完成复杂任务。",
+      "theme": "blue",
+      "badge": "42集教程",
+      "highlights": [
+        "八大领域44个模块：封面设计、视频制作、PPT/Excel/Word、图片处理、音频合成等",
+        "智能路由系统：自然语言交互，自动匹配最佳工具完成任务",
+        "多模型协同：Claude + Codex + Gemini 三引擎协作、交叉审查",
+        "技能工厂：内置引擎持续生成新技能，工作站能力不断增长",
+        "邀请好友注册，试用天数 +1，持续体验"
+      ],
+      "actions": [
+        { "text": "访问官网", "link": "https://ai-workstation.ruoyi.plus/" },
+        { "text": "视频教程", "link": "https://www.bilibili.com/video/BV17cXNBkEEV" },
+        { "text": "MCP 试用", "link": "https://ai-workstation-mcp.agilefr.com/" }
+      ],
+      "preview": {
+        "color": "#0B6EF0",
+        "tagline": "一句话搞定一切 · 44个模块 · 730+ AI技能",
+        "summary": "八大领域全覆盖 | 智能路由 | 42集视频教程"
+      },
+      "site": {
+        "docsPath": "E:/my/AI工作站资料/ai-workstation-site",
+        "configPath": "docs/.vitepress/config.ts",
+        "themePath": "docs/.vitepress/theme",
+        "indexPath": "docs/index.md",
+        "productsPath": "docs/products.md",
+        "stylePath": "docs/.vitepress/theme/style.css"
+      }
+    },
+    {
+      "id": "aicoder",
+      "name": "智码 AiCoder",
+      "icon": "⚡",
+      "slogan": "给 Claude Code、Codex、Gemini CLI 一个统一的家",
+      "description": "内置真实PTY伪终端，CLI原生运行，不拦截、不修改、不转发任何API请求，零额外开销。像浏览器一样管理AI对话，按项目分组、收藏标记、颜色区分。",
+      "theme": "purple",
+      "badge": "30天免费",
+      "highlights": [
+        "多标签会话管理：按项目分组、收藏标记、颜色区分、模糊搜索",
+        "多账号完全隔离：独立登录凭据、API Key、会话记录和数据库",
+        "Token费用实时追踪：输入/输出/缓存分别统计，趋势图、180天热力图",
+        "代码片段一键复用：常用Prompt存为片段，支持模板变量",
+        "MCP Server可视化管理：自动检测AI工具、一键切换"
+      ],
+      "actions": [
+        { "text": "访问官网", "link": "https://aicoder.ruoyi.plus/" }
+      ],
+      "preview": {
+        "color": "#8B5CF6",
+        "tagline": "给 Claude Code、Codex、Gemini CLI 一个统一的家",
+        "summary": "多标签会话 | Token费用追踪 | 零额外开销"
+      },
+      "site": {
+        "docsPath": "E:/my/桌面软件tauri/tauri-cc-docs",
+        "configPath": "docs/.vitepress/config.ts",
+        "themePath": "docs/.vitepress/theme",
+        "indexPath": "docs/index.md",
+        "productsPath": "docs/products.md",
+        "stylePath": "docs/.vitepress/theme/style.css"
+      }
+    },
+    {
+      "id": "tauri-desktop",
+      "name": "灵动桌面框架",
+      "icon": "🖥️",
+      "slogan": "React 19 + Rust + TypeScript · AI驱动 · 轻量安全 · 高性能跨平台",
+      "description": "基于Tauri 2.x的企业级桌面应用开发框架，内置33个AI专业技能，Claude + Codex + Gemini三引擎协同。双进程架构，WebView前端与Rust后端通过IPC高效通信。",
+      "theme": "green",
+      "badge": "",
+      "highlights": [
+        "双进程架构：WebView前端 + Rust后端，IPC高效通信",
+        "AI驱动开发：内置33个AI专业技能，三引擎协同",
+        "现代技术栈：React 19 + TypeScript 5.8 + Ant Design 6 + TailwindCSS 4",
+        "安全权限控制：Capabilities权限声明机制，细粒度API访问控制",
+        "多平台打包：Windows (NSIS/MSI)、macOS (DMG)、Linux (DEB/AppImage)"
+      ],
+      "actions": [
+        { "text": "访问官网", "link": "https://tauri.ruoyi.plus/" }
+      ],
+      "preview": {
+        "color": "#10B981",
+        "tagline": "React 19 + Rust + TypeScript · AI驱动跨平台",
+        "summary": "Tauri 2.x | 33个AI技能 | 三引擎协同"
+      },
+      "site": {
+        "docsPath": "E:/my/桌面软件tauri/tauri-docs",
+        "configPath": "docs/.vitepress/config.ts",
+        "themePath": "docs/.vitepress/theme",
+        "indexPath": "docs/index.md",
+        "productsPath": "docs/products.md",
+        "stylePath": "docs/.vitepress/theme/style.css"
+      }
+    }
+  ]
+}

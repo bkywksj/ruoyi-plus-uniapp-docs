@@ -5,6 +5,7 @@ import type { Theme } from 'vitepress'
 import PreviewFrame from './components/PreviewFrame.vue'
 import ImagePreview from './components/ImagePreview.vue'
 import APricingCard from './components/APricingCard.vue'
+import AProductCard from './components/AProductCard.vue'
 import './style.css'
 
 export default {
@@ -19,5 +20,6 @@ export default {
         app.component('PreviewFrame', PreviewFrame)
         app.component('ImagePreview', ImagePreview)
         app.component('APricingCard', APricingCard)
+        app.component('AProductCard', AProductCard)
     }
 } satisfies Theme
