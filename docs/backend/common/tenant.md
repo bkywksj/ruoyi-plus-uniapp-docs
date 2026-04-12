@@ -93,7 +93,7 @@ ruoyi-common-tenant/
 │                      Storage Layer                               │
 │  ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐   │
 │  │    MySQL        │ │     Redis       │ │     Redis       │   │
-│  │  tenant_id字段  │ │  tenant:key     │ │ global::satoken │   │
+│  │  tenant_id字段  │ │  tenant:key     │ │ global:satoken │   │
 │  └─────────────────┘ └─────────────────┘ └─────────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -605,7 +605,7 @@ public class TenantKeyPrefixHandler extends KeyPrefixHandler {
 原始键名              转换后键名
 user:info:123    →   000000:user:info:123
 order:detail:456 →   tenant123:order:detail:456
-global::config   →   global::config  (全局键不转换)
+global:config   →   global:config  (全局键不转换)
 ```
 
 ### TenantSpringCacheManager
@@ -655,11 +655,11 @@ public class UserService {
         return userMapper.selectById(userId);
     }
 
-    // 全局缓存 - 使用global::前缀，不添加租户前缀
-    @Cacheable(value = "global::systemConfig", key = "#key")
+    // 全局缓存 - 使用global:前缀，不添加租户前缀
+    @Cacheable(value = "global:systemConfig", key = "#key")
     public String getSystemConfig(String key) {
         return TenantHelper.ignore(() -> {
-            // 实际缓存键：global::systemConfig::key
+            // 实际缓存键：global:systemConfig::key
             return configMapper.selectByKey(key);
         });
     }
@@ -708,8 +708,8 @@ public class TenantSaTokenDao extends PlusSaTokenDao {
 
 ```
 原始键名                    存储键名
-satoken:login:token:xxx  →  global::satoken:login:token:xxx
-satoken:login:session:1  →  global::satoken:login:session:1
+satoken:login:token:xxx  →  global:satoken:login:token:xxx
+satoken:login:session:1  →  global:satoken:login:session:1
 ```
 
 ## TenantEntity 实体基类
@@ -909,7 +909,7 @@ public class ReportService {
     }
 
     // 生成全局报表（所有租户汇总）
-    @Cacheable(value = "global::report", key = "#type + ':' + #month")
+    @Cacheable(value = "global:report", key = "#type + ':' + #month")
     public Report generateGlobalReport(String type, String month) {
         return TenantHelper.ignore(() -> {
             return reportGenerator.generateGlobal(type, month);
@@ -955,7 +955,7 @@ public class SystemService {
     }
 
     // 获取系统配置（带缓存）
-    @Cacheable(value = "global::config", key = "#key")
+    @Cacheable(value = "global:config", key = "#key")
     public String getSystemConfig(String key) {
         return TenantHelper.ignore(() -> {
             return configMapper.selectValueByKey(key);
@@ -1140,8 +1140,8 @@ public class CacheService {
         return userMapper.selectById(userId);
     }
 
-    // ✅ 正确：全局缓存，使用global::前缀
-    @Cacheable(value = "global::systemConfig", key = "#key")
+    // ✅ 正确：全局缓存，使用global:前缀
+    @Cacheable(value = "global:systemConfig", key = "#key")
     public String getSystemConfig(String key) {
         return TenantHelper.ignore(() -> {
             return configMapper.selectValueByKey(key);
@@ -1237,22 +1237,22 @@ if (!tenantId.equals(order.getTenantId())) {
 ### 2. 缓存数据错乱
 
 **问题原因**：
-- 全局缓存没有使用 `global::` 前缀
+- 全局缓存没有使用 `global:` 前缀
 - 在忽略模式下写入了租户缓存
 - 缓存键没有正确添加租户前缀
 
 **解决方案**：
 
 ```java
-// ✅ 正确：全局缓存使用global::前缀
-@Cacheable(value = "global::systemConfig", key = "#key")
+// ✅ 正确：全局缓存使用global:前缀
+@Cacheable(value = "global:systemConfig", key = "#key")
 public String getSystemConfig(String key) {
     return TenantHelper.ignore(() -> {
         return configMapper.selectValueByKey(key);
     });
 }
 
-// ✅ 正确：租户缓存不使用global::前缀
+// ✅ 正确：租户缓存不使用global:前缀
 @Cacheable(value = "userData", key = "#userId")
 public UserData getUserData(Long userId) {
     return userMapper.selectById(userId);
@@ -1260,7 +1260,7 @@ public UserData getUserData(Long userId) {
 
 // 手动检查Redis键
 // 租户缓存：000000:userData::1
-// 全局缓存：global::systemConfig::key
+// 全局缓存：global:systemConfig::key
 ```
 
 ### 3. 认证会话异常
@@ -1279,8 +1279,8 @@ log.info("SaTokenDao类型: {}", saTokenDao.getClass().getName());
 // 应该是: TenantSaTokenDao
 
 // 检查认证数据Redis键
-// 正确格式：global::satoken:login:token:xxx
-String key = "global::satoken:login:token:" + token;
+// 正确格式：global:satoken:login:token:xxx
+String key = "global:satoken:login:token:" + token;
 String value = RedisUtils.getCacheObject(key);
 ```
 
@@ -1388,8 +1388,8 @@ public class TenantDebugController {
 redis-cli keys "*:userData:*"
 
 # 查看全局键
-redis-cli keys "global::*"
+redis-cli keys "global:*"
 
 # 查看动态租户键
-redis-cli keys "global::dynamicTenant:*"
+redis-cli keys "global:dynamicTenant:*"
 ```
