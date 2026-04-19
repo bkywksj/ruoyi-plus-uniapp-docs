@@ -1007,7 +1007,7 @@ const setStage = (newStage: Stage) => {
 
 | 参数 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
-| type | 加载指示器类型 | `'ring' \| 'outline'` | `'ring'` |
+| type | 加载指示器类型，`spinner` 为一圈辐条状旋转指示器，适合工具类场景 | `'ring' \| 'outline' \| 'spinner'` | `'ring'` |
 | color | 加载指示器颜色,支持任意 CSS 颜色值 | `string` | `'#4D80F0'` |
 | size | 加载指示器尺寸,数字默认 rpx,支持带单位字符串 | `string \| number` | `45` |
 | custom-style | 自定义根节点内联样式 | `string` | `''` |

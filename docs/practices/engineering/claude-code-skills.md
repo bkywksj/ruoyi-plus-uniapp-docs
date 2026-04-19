@@ -43,9 +43,9 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 
 ## 项目已有 Skills 清单
 
-本项目包含 **48 个 Skills**，按功能分为 10 大类：
+本项目包含 **54 个 Skills**，按功能分为 11 大类：
 
-### 后端开发类（8 个）
+### 后端开发类（10 个）
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
@@ -57,6 +57,8 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 | **utils-toolkit** | 工具类、MapstructUtils | 全栈工具类速查 |
 | **json-serialization** | JSON、序列化、BigDecimal | JSON 处理规范 |
 | **test-development** | 单元测试、JUnit5、Mockito | 测试开发规范 |
+| **log-audit** | 操作日志、@Log、审计追踪 | `@Log` 注解、操作类型、登录日志、敏感参数脱敏 |
+| **workflow-engine** | 工作流、WarmFlow、审批、流程 | 基于 WarmFlow 的流程定义、实例、任务管理 |
 
 ### 安全与权限类（4 个）
 
@@ -120,7 +122,14 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 | **media-processing** | 图片处理、二维码、Excel | 媒体处理工具 |
 | **icon-management** | 图标、菜单图标、IconSelect | PC 端与移动端图标管理 |
 
-### 规划与协作类（12 个）
+### 部署运维类（2 个）
+
+| Skill | 触发词 | 说明 |
+|-------|--------|------|
+| **deployment-guide** | 部署、上线、Docker、Nginx、1Panel、生产环境 | 生产环境部署、一键自动化部署脚本、构建 JAR/前端/小程序/APP、密钥轮换 |
+| **env-config** | 环境配置、profile、application.yml、.env、多环境 | 后端 Spring Boot 多 profile、前端/移动端 `.env` 文件、环境变量占位符 |
+
+### 规划与协作类（13 个）
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
@@ -132,10 +141,18 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 | **git-workflow** | Git、提交、分支 | Git 工作流规范 |
 | **task-tracker** | 任务跟踪、记录进度 | 开发任务持久化跟踪 |
 | **add-skill** | 添加技能、创建技能 | 扩展技能系统 |
-| **project-migration** | 迁移项目、架构迁移、框架迁移 | 项目迁移与重构方法论 |
+| **project-init** | 新项目、初始化项目、independent deployment | 基于框架模板创建独立业务项目，含标识符替换、Git 仓库创建、数据库初始化 |
+| **project-migration** | 迁移项目、架构迁移、框架迁移 | 项目迁移与重构方法论，支持浅/标准/深度三种策略 |
+| **framework-sync** | 框架同步、upstream、拉取更新、合并上游 | 将 ruoyi-plus-uniapp 框架原仓库更新同步到子项目（多分支、选择性合并） |
+| **exp-sediment** | 沉淀经验、总结会话、/exp | 将本次会话或最近提交的隐性知识沉淀为 Skills/Memory/CLAUDE.md 资产 |
+| **html-to-code** | HTML转代码、设计稿转换、原型转代码 | HTML/Tailwind 设计稿转换为 plus-ui 或 plus-uniapp/plus-app 代码 |
+
+### AI 协作类（2 个）
+
+| Skill | 触发词 | 说明 |
+|-------|--------|------|
 | **collaborating-with-codex** | Codex、算法分析 | 委托 Codex 处理任务 |
 | **collaborating-with-gemini** | Gemini、UI 设计 | 委托 Gemini 处理任务 |
-| **banana-image** | 生成图片、海报、4K | AI 图片生成 |
 
 ---
 

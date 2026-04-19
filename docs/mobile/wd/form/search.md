@@ -820,8 +820,9 @@ const selectSuggest = (item: string) => {
 | focus | 输入框获得焦点时触发 | `{ value: string }` |
 | blur | 输入框失去焦点时触发 | `{ value: string }` |
 | cancel | 点击取消按钮时触发 | `{ value: string }` |
+| click | 点击整个搜索框区域时触发（**仅在 `disabled` 为 `true` 时触发**，常用于跳转至独立搜索页） | - |
 
-参考: src/wd/components/wd-search/wd-search.vue:132-148
+参考: src/wd/components/wd-search/wd-search.vue:132-150, 331-340
 
 ### Slots
 

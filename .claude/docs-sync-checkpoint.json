@@ -1,12 +1,49 @@
 {
-  "lastSyncCommit": "a2bff84f7a8c298b341b32b04feb7e55533267b4",
-  "lastSyncDate": "2026-03-01T00:11:57+08:00",
+  "lastSyncCommit": "9cbe0727de93e43901fceda7874ae0aff2ee8dfa",
+  "lastSyncDate": "2026-04-18T22:48:50+08:00",
   "syncHistory": [
     {
       "commit": "a2bff84f7a8c298b341b32b04feb7e55533267b4",
       "date": "2026-03-16T01:50:00+08:00",
       "summary": "初始化节点 - 从5.5.3版本号更新提交开始追踪",
       "updatedDocs": []
+    },
+    {
+      "commit": "9cbe0727de93e43901fceda7874ae0aff2ee8dfa",
+      "date": "2026-04-19T00:00:00+08:00",
+      "summary": "全量处理 94 个上游提交。Batch 1 技能/命令：更新 3 篇 Claude Code 文档，新增 8 个技能章节 + 3 个命令条目，删除 banana-image，排除 local 上游同步命令；更新 wd-button getRealtimePhoneNumber 开放能力、ConfigProvider 重构说明。Batch 2 WD 组件增强：更新 11 个组件文档（cell/cell-group/calendar/curtain/drop-menu/input/swiper/tabs/textarea/rate/search/keyboard/loading/picker-view/status-tip）。Batch 3 WD 新组件：新建 avatar 与 slide-verify 组件文档，侧边栏加入导航。Batch 4 后端重大特性：平台配置集群同步（miniapp.md）、OSS URL 缓存（oss.md）、生产环境 API 文档默认关闭（doc.md）。Batch 5 后端修复：SNAIL_JOB 环境变量前缀统一为 SERVER_HOST/SERVER_PORT（startup/configuration/job 3 篇）。Batch 6 前端：AFormSelect option 插槽文档（select.md）、字典编码字段命名统一（dict.md）",
+      "updatedDocs": [
+        "docs/practices/engineering/claude-code-skills.md",
+        "docs/practices/engineering/claude-code-commands.md",
+        "docs/practices/ai/claude-code.md",
+        "docs/mobile/wd/basic/button.md",
+        "docs/mobile/wd/basic/config-provider.md",
+        "docs/mobile/wd/display/cell.md",
+        "docs/mobile/wd/display/curtain.md",
+        "docs/mobile/wd/display/swiper.md",
+        "docs/mobile/wd/form/calendar.md",
+        "docs/mobile/wd/form/input.md",
+        "docs/mobile/wd/form/textarea.md",
+        "docs/mobile/wd/form/rate.md",
+        "docs/mobile/wd/form/search.md",
+        "docs/mobile/wd/form/keyboard.md",
+        "docs/mobile/wd/form/picker-view.md",
+        "docs/mobile/wd/feedback/drop-menu.md",
+        "docs/mobile/wd/feedback/loading.md",
+        "docs/mobile/wd/feedback/status-tip.md",
+        "docs/mobile/wd/navigation/tabs.md",
+        "docs/mobile/wd/display/avatar.md",
+        "docs/mobile/wd/form/slide-verify.md",
+        "docs/.vitepress/config.ts",
+        "docs/backend/modules/system/oss.md",
+        "docs/backend/common/miniapp.md",
+        "docs/backend/common/doc.md",
+        "docs/backend/ruoyi-admin/startup.md",
+        "docs/backend/ruoyi-admin/configuration.md",
+        "docs/backend/modules/business/job.md",
+        "docs/backend/modules/system/dict.md",
+        "docs/frontend/components/form/select.md"
+      ]
     }
   ]
 }

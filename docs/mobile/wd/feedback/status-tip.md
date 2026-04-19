@@ -747,6 +747,7 @@ const searchByTag = (tag: string) => {
 | 名称 | 说明 |
 |------|------|
 | image | 自定义图片内容，使用此插槽时 image 属性无效 |
+| bottom | 底部区域（位于提示文字下方，默认 `margin-top: 20rpx` 并水平居中），常用于放置刷新或跳转按钮 |
 
 ### 预设图片类型
 

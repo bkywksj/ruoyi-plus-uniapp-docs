@@ -157,6 +157,37 @@ const userList = [
 </template>
 ```
 
+### 自定义选项内容（`option` 插槽）
+
+需要在下拉选项里额外展示头像、部门或标签等信息时，使用 `option` 插槽自行组织每一项的渲染内容。插槽提供 `item` / `label` / `value` / `disabled` 四个参数：
+
+```vue
+<template>
+  <AFormSelect
+    v-model="form.userId"
+    :options="userList"
+    value-field="id"
+    label-field="name"
+    label="用户"
+    :span="12"
+  >
+    <template #option="{ item, label, value, disabled }">
+      <div style="display: flex; align-items: center; gap: 8px">
+        <el-avatar :size="24" :src="item.avatar" />
+        <span>{{ label }}</span>
+        <span style="color: #8492a6; font-size: 0.8em">{{ item.dept }}</span>
+      </div>
+    </template>
+  </AFormSelect>
+</template>
+```
+
+**使用说明：**
+
+- 未声明 `option` 插槽时，组件仍走默认的 `label`/`value` 渲染逻辑，保持向下兼容
+- 插槽参数 `item` 为原始数据对象，`label`/`value` 已按 `labelField`/`valueField` 解析
+- 如果同时设置了 `disabled-field`，`disabled` 参数会在插槽内可用，便于自定义禁用态样式
+
 ### 条件禁用选项
 
 ```vue

@@ -709,6 +709,29 @@ OSS模块完整支持多租户架构：
 public SysOssVo getOssById(Long ossId)
 ```
 
+#### 7.2.1.1 URL 查询结果缓存（防止 @SerialMap 重复查库）
+
+```java
+/**
+ * 根据 URL 查询 OSS 文件信息
+ * 使用缓存避免 @SerialMap(PRESIGNED_URL) 序列化时每次查询数据库
+ */
+@Cacheable(cacheNames = CacheNames.SYS_OSS, key = "'url:' + #url")
+@Override
+public OssDTO getOssByUrl(String url) {
+    SysOss entity = ossDao.getByUrl(url);
+    return ...;
+}
+```
+
+**场景说明：** VO 中的 `url` 字段通过 `@SerialMap(PRESIGNED_URL)` 自动换成预签名访问 URL。在列表查询大量返回时，每条数据的 `@SerialMap` 都会回查 `getOssByUrl` 取密钥信息，导致数据库被重复访问。通过将 `getOssByUrl` 的结果按 `url:<实际URL>` 做 key 缓存，同一 URL 只查一次数据库。
+
+**注意事项：**
+
+- `cacheNames` 与 `getOssById` 共用 `CacheNames.SYS_OSS`，TTL 一致
+- key 前缀 `'url:'` 避免与 `#ossId` 的整型 key 发生冲突
+- 当调用 `deleteByUrls(...)` 删除文件时，需要同时驱逐这两类 key（参考 7.2.4 缓存失效策略）
+
 #### 7.2.2 目录信息缓存
 ```java
 @Cacheable(cacheNames = CacheNames.SYS_OSS_DIRECTORY, key = "#directoryId")

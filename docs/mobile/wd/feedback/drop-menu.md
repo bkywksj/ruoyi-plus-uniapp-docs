@@ -830,6 +830,7 @@ const options = ref([
 | custom-icon | 自定义图标样式类 | `string` | - |
 | custom-popup-class | 自定义弹出层样式类 | `string` | - |
 | custom-popup-style | 自定义弹出层样式 | `string` | - |
+| popup-height | 弹出层高度，设置后选项区域会切换为 `scroll-view` 以支持内部滚动，避免与页面下拉刷新冲突（如 `'600rpx'`） | `string` | `''` |
 
 ### DropMenuItem Events
 

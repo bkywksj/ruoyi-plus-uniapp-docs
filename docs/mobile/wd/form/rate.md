@@ -797,10 +797,11 @@ const handleReset = () => {
 | icon | 未选中的图标名称 | `IconName` | `'star'` |
 | active-icon | 选中的图标名称 | `IconName` | `'star-fill'` |
 | allow-half | 是否允许半选 | `boolean` | `false` |
+| clearable | 是否允许清空评分（再次点击当前值时清零） | `boolean` | `false` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:56-86, 99-114
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:56-90, 99-116
 
 ### Events
 

@@ -1126,7 +1126,21 @@ type EasingType =
 
 | 插槽名 | 说明 | 插槽参数 |
 |--------|------|----------|
+| `default` | 自定义每个轮播项的内容（覆盖内置的 `image` / `video` / `text` 渲染） | `{ item: any; index: number }` |
 | `indicator` | 自定义指示器内容 | `{ current: number; total: number }` |
+
+**默认插槽示例：**
+
+```vue
+<wd-swiper :list="list">
+  <template #default="{ item, index }">
+    <view class="custom-item" @click="handleClick(index, item)">
+      <image :src="item.cover" mode="aspectFill" />
+      <view class="overlay">{{ item.title }}</view>
+    </view>
+  </template>
+</wd-swiper>
+```
 
 ### WdSwiperNavProps 类型
 

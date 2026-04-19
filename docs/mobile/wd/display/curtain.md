@@ -946,6 +946,8 @@ const handleClickModal = () => {
 | custom-class | 自定义根节点样式类 | `string` | - |
 | custom-close-class | 自定义关闭按钮的类名 | `string` | - |
 | custom-close-style | 自定义关闭按钮的样式 | `string` | - |
+| show-menu-by-longpress | 是否开启长按识别小程序码（透传到原生 `image` 的 `show-menu-by-longpress`，微信小程序） | `boolean` | `false` |
+| close-on-click | 点击图片时是否自动关闭幕帘 | `boolean` | `true` |
 | value | 绑定值(已废弃,请使用 modelValue) | `boolean` | `false` |
 
 ### ClosePosition 关闭按钮位置

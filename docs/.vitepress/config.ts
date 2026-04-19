@@ -653,7 +653,7 @@ export default defineConfig({
                             ]
                         },
                         {
-                            text: '表单组件 (24个)',
+                            text: '表单组件 (25个)',
                             collapsed: false,
                             items: [
                                 { text: 'Input 输入框', link: '/mobile/wd/form/input' },
@@ -679,14 +679,16 @@ export default defineConfig({
                                 { text: 'Signature 签名', link: '/mobile/wd/form/signature' },
                                 { text: 'Recorder 录音', link: '/mobile/wd/form/voice-recorder' },
                                 { text: 'Keyboard 虚拟键盘', link: '/mobile/wd/form/keyboard' },
-                                { text: 'NumberKeyboard 数字键盘', link: '/mobile/wd/form/number-keyboard' }
+                                { text: 'NumberKeyboard 数字键盘', link: '/mobile/wd/form/number-keyboard' },
+                                { text: 'SlideVerify 滑动验证', link: '/mobile/wd/form/slide-verify' }
                             ]
                         },
                         {
-                            text: '展示组件 (14个)',
+                            text: '展示组件 (15个)',
                             collapsed: false,
                             items: [
                                 { text: 'Cell 单元格', link: '/mobile/wd/display/cell' },
+                                { text: 'Avatar 头像', link: '/mobile/wd/display/avatar' },
                                 { text: 'Badge 徽标', link: '/mobile/wd/display/badge' },
                                 { text: 'Tag 标签', link: '/mobile/wd/display/tag' },
                                 { text: 'Card 卡片', link: '/mobile/wd/display/card' },

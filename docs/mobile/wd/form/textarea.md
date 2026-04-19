@@ -713,6 +713,7 @@ const value2 = ref('')
 | placeholder-class | 占位符类名 | `string` | `''` |
 | inputmode | 输入模式 | `'none'` \| `'text'` \| `'tel'` \| `'url'` \| `'email'` \| `'numeric'` \| `'decimal'` \| `'search'` \| `'password'` | `'text'` |
 | ignore-composition-event | 是否忽略组件内文本合成事件 | `boolean` | `true` |
+| enable-native | 是否使用原生键盘（仅支付宝小程序生效） | `boolean` | `true` |
 | custom-class | 根节点自定义类名 | `string` | `''` |
 | custom-style | 根节点自定义样式 | `string` | `''` |
 | custom-textarea-container-class | 文本域容器自定义类名 | `string` | `''` |

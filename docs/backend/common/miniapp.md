@@ -744,6 +744,111 @@ public boolean validateConfig(String appid) {
 }
 ```
 
+## 集群部署下的配置同步
+
+### 为什么需要同步
+
+`MiniappConfigInitializer` / `MpConfigInitializer` / `PayConfigInitializer` 都是**在单个 JVM 内部维护的内存配置**：应用启动时从数据库加载，后续通过 Controller 的 `addConfig` / `removeConfig` 刷新。集群部署时，如果只在 A 节点修改了平台配置，其他节点的内存还是旧的，就会出现"同一租户在 B 节点下单却走了旧的 AppID"。
+
+### 解决方案：`PlatformConfigSyncListener`
+
+通过 Redis 发布订阅通知所有节点：
+
+```java
+@Slf4j
+@Component
+public class PlatformConfigSyncListener implements ApplicationRunner {
+
+    /** Redis 发布订阅频道名称 */
+    public static final String PLATFORM_CONFIG_TOPIC = "global:platform:config";
+
+    /** 当前节点唯一标识（UUID，防止自身重复处理） */
+    public static final String NODE_ID = UUID.randomUUID().toString();
+
+    @Override
+    public void run(ApplicationArguments args) {
+        RedisUtils.subscribe(
+            PLATFORM_CONFIG_TOPIC,
+            PlatformConfigChangeDTO.class,
+            this::handleMessage
+        );
+    }
+
+    /** 处理收到的配置变更消息 */
+    private void handleMessage(PlatformConfigChangeDTO message) {
+        // 跳过本节点发出的消息（发布前已在本节点处理过）
+        if (NODE_ID.equals(message.getSourceNodeId())) return;
+
+        switch (message.getAction()) {
+            case ACTION_ADD       -> handleAddConfig(message.getAppid(), message.getTenantId());
+            case ACTION_REMOVE    -> handleRemoveConfig(message.getAppid(), message.getTenantId());
+            case ACTION_REFRESH_PAY -> handleRefreshPay(message.getTenantId());
+        }
+    }
+}
+```
+
+### 消息 DTO
+
+`PlatformConfigChangeDTO` 位于 `ruoyi-common-core` 下，三种操作类型由常量控制：
+
+```java
+@Data
+public class PlatformConfigChangeDTO implements Serializable {
+    /** 操作类型：add-添加, remove-移除, refresh_pay-刷新支付配置 */
+    private String action;
+
+    /** 小程序/公众号 appid（refresh_pay 不需要） */
+    private String appid;
+
+    /** 租户 ID */
+    private String tenantId;
+
+    /** 发布节点标识，等于 PlatformConfigSyncListener.NODE_ID */
+    private String sourceNodeId;
+
+    public static final String ACTION_ADD          = "add";
+    public static final String ACTION_REMOVE       = "remove";
+    public static final String ACTION_REFRESH_PAY  = "refresh_pay";
+}
+```
+
+### Controller 发布时机
+
+`PlatformController` 在变更小程序/公众号配置后、`PaymentController` 在重载支付配置后都会调用静态发布方法：
+
+```java
+// PlatformController.handlePlatformConfigChange
+if (shouldRemoveConfig(...)) {
+    removePlatformConfig(oldAppid);
+    PlatformConfigSyncListener.publishRemove(oldAppid, currentTenantId);
+}
+if (shouldAddConfig(...)) {
+    addPlatformConfig(newAppid);
+    PlatformConfigSyncListener.publishAdd(newAppid, currentTenantId);
+}
+refreshPaymentConfigs();
+PlatformConfigSyncListener.publishRefreshPay(currentTenantId);
+
+// PaymentController.reloadPaymentConfig
+String tenantId = TenantHelper.getTenantId();
+SpringUtils.getBean(PayConfigInitializer.class).initByTenant(tenantId);
+PlatformConfigSyncListener.publishRefreshPay(tenantId);
+```
+
+### 幂等与防抖
+
+- **自环屏蔽**：发布前把 `NODE_ID` 写入 `sourceNodeId`，其他节点收到后发现相同则直接 return，避免本节点重复加载。
+- **租户上下文**：消费端通过 `TenantHelper.dynamic(tenantId, ...)` 切换租户，再调用 `MiniappConfigInitializer.addConfig(...)` / `removeConfig(...)` / `PayConfigInitializer.initByTenant(...)`。
+- **移除兜底**：当 `handleRemoveConfig` 查不到平台配置（已物理删除）时，会尝试同时从 `MiniappConfigInitializer` 和 `MpConfigInitializer` 中移除，防止孤儿配置残留。
+
+### 部署注意事项
+
+1. 该监听器依赖 `RedisUtils.subscribe`，要求集群共用同一套 Redis
+2. 如果启用了 Redis 哨兵 / 集群模式，需要保证所有节点都能连到发布订阅的频道
+3. 事件是异步广播，新节点上线时**不会补发历史变更**，首次加载仍依赖 `MiniappConfigInitializer.init()`
+4. `sourceNodeId` 基于 UUID 进程级唯一，容器重启后会变更，这是预期行为
+
 ## 最佳实践
 
 ### 1. 多小程序切换

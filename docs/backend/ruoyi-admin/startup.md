@@ -460,8 +460,8 @@ docker-compose up -d --build
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
 | SNAIL_JOB_ENABLED | 定时任务开关 | false(dev)/true(prod) |
-| SNAIL_JOB_HOST | 调度中心主机 | 127.0.0.1 |
-| SNAIL_JOB_PORT | 调度中心端口 | 17888 |
+| SNAIL_JOB_SERVER_HOST | 调度中心主机（⚠️ 必须带 SERVER 前缀，避免 Relaxed Binding 覆盖客户端 `snail-job.host`） | 127.0.0.1 |
+| SNAIL_JOB_SERVER_PORT | 调度中心端口（同理，避免覆盖客户端 `snail-job.port`） | 17888 |
 | SNAIL_JOB_TOKEN | 接入令牌 | - |
 
 ### 消息队列配置

@@ -667,10 +667,12 @@ const rate = ref(4)
 | title-bold | 标题是否加粗 | `boolean` | `false` |
 | value-color | 右侧内容颜色,右侧图标跟随此颜色 | `string` | `''` |
 | right-flex | 右侧区域的 flex 值 | `number \| string` | `1` |
+| arrow-direction | 右侧箭头方向（仅在 `is-link` 为 `true` 时生效） | `'left' \| 'up' \| 'down' \| 'right'` | `'right'` |
+| icon-size | 左侧图标大小，透传到 `wd-icon` 的 `size` 属性 | `string \| number` | - |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:95-159, 170-191
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:95-163, 170-195
 
 ### Events
 
@@ -691,6 +693,24 @@ const rate = ref(4)
 | right-icon | 自定义右侧图标,替代箭头 |
 
 参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:20-68
+
+### CellGroup Props
+
+配合 `wd-cell` 使用的分组容器 `wd-cell-group` 提供以下 Props：
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| title | 分组标题 | `string` | - |
+| value | 分组标题右侧内容 | `string` | - |
+| use-slot | 是否使用标题插槽 | `boolean` | `false` |
+| border | 是否展示边框线 | `boolean` | `false` |
+| insert | 是否使用圆角卡片风格（外边距 + 圆角包裹） | `boolean` | `false` |
+| custom-class | 自定义根节点样式类 | `string` | `''` |
+| custom-style | 自定义根节点样式 | `string` | `''` |
+
+> `insert` 开启后会套用 CSS 变量 `--wot-cell-group-insert-radius`（默认 `16rpx`）和 `--wot-cell-group-insert-margin`（默认 `0 24rpx`），可在 ConfigProvider 中统一覆盖。
+
+参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell-group/wd-cell-group.vue:55-70, 141-147
 
 ## 主题定制
 

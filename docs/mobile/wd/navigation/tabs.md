@@ -435,6 +435,7 @@ const tabsRef = ref<TabsInstance>()
 | animated | 是否开启切换标签内容时的过渡动画 | `boolean` | `false` |
 | duration | 切换动画过渡时间，单位毫秒 | `number` | `300` |
 | slidable | 滚动导航模式 | `'auto' \| 'always'` | `'auto'` |
+| showScrollbar | 横向滚动时是否显示原生滚动条（`false` 时自动隐藏 `::-webkit-scrollbar`） | `boolean` | `false` |
 
 ### Tab Props
 

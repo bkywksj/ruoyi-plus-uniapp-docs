@@ -687,6 +687,7 @@ const handleReset = () => {
 | value-key | 选项对象中 value 对应的 key | `string` | `value` |
 | label-key | 选项对象中展示文本对应的 key | `string` | `label` |
 | immediate-change | 是否在手指松开时立即触发 change 事件（仅微信/支付宝小程序） | `boolean` | `false` |
+| item-height | 单行选项高度（transformed 为 `picker-view` 的 `indicator-style` 与滚动计算基准） | `number` | `35` |
 | column-change | 列变化回调函数，用于实现列间联动 | `PickerViewColumnChange` | - |
 | custom-class | 自定义根节点样式类 | `string` | - |
 | custom-style | 自定义根节点样式 | `string` | - |

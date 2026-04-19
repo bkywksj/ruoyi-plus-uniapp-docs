@@ -802,6 +802,7 @@ const value2 = ref('')
 | inputmode | 输入模式 | `'none'` \| `'text'` \| `'decimal'` \| `'numeric'` \| `'tel'` \| `'search'` \| `'email'` \| `'url'` | `'text'` |
 | ignore-composition-event | 是否忽略组件内文本合成事件 | `boolean` | `true` |
 | error-message-offset | 错误信息的左边距偏移 | `string` \| `number` | `'0'` |
+| enable-native | 是否使用原生键盘（仅支付宝小程序生效） | `boolean` | `true` |
 | custom-class | 根节点自定义类名 | `string` | `''` |
 | custom-style | 根节点自定义样式 | `string` | `''` |
 | custom-input-class | 输入框包装器自定义类名 | `string` | `''` |

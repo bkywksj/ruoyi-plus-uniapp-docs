@@ -308,8 +308,8 @@ snail-job:
   
   # 调度中心服务器配置
   server:
-    host: ${SNAIL_JOB_HOST:127.0.0.1}    # 调度中心地址
-    port: ${SNAIL_JOB_PORT:17888}         # 调度中心端口
+    host: ${SNAIL_JOB_SERVER_HOST:127.0.0.1}    # 调度中心地址（⚠️ 必须带 SERVER 前缀，避免覆盖客户端 snail-job.host）
+    port: ${SNAIL_JOB_SERVER_PORT:17888}         # 调度中心端口（同理，避免覆盖客户端端口）
   
   # 命名空间UUID - 详见 script/sql/ry_job.sql `sj_namespace`表`unique_id`字段
   namespace: ${spring.profiles.active}
@@ -328,8 +328,8 @@ snail-job:
 ```bash
 # .env 或系统环境变量
 SNAIL_JOB_ENABLED=true
-SNAIL_JOB_HOST=192.168.1.100
-SNAIL_JOB_PORT=17888
+SNAIL_JOB_SERVER_HOST=192.168.1.100   # ⚠️ 必须带 SERVER 前缀
+SNAIL_JOB_SERVER_PORT=17888           # ⚠️ 必须带 SERVER 前缀
 SNAIL_JOB_TOKEN=your-custom-token
 SNAIL_JOB_CLIENT_HOST=192.168.1.101
 ```

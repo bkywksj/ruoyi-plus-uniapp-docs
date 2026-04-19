@@ -1021,8 +1021,12 @@ const closeKeyboard = () => {
 | lock-scroll | 是否锁定页面滚动 | `boolean` | `true` |
 | safe-area-inset-bottom | 是否适配底部安全区域 | `boolean` | `true` |
 | extra-key | 额外按键,default模式支持字符串,custom模式支持字符串数组 | `string \| string[]` | - |
+| car-lang | 车牌键盘语言（受控模式），支持 v-model:car-lang | `'zh' \| 'en'` | - |
+| auto-switch-lang | 车牌模式下是否自动切换语言：输入第一位后切到英文；删除到空后切回中文 | `boolean` | `true` |
 | custom-class | 自定义根节点样式类 | `string` | - |
 | custom-style | 自定义根节点样式 | `string` | - |
+
+> **车牌键盘文案变更**：切换按钮从 `'ABC'`/`'返回'` 调整为 `'ABC'`/`'省份'`，更直观地表示当前正在输入的内容类型。
 
 ### Events
 
@@ -1030,6 +1034,7 @@ const closeKeyboard = () => {
 |--------|------|----------|
 | update:visible | 键盘显示状态变化时触发 | `visible: boolean` |
 | update:modelValue | 绑定值变化时触发 | `value: string` |
+| update:carLang | 车牌键盘语言变化时触发（点击切换键或自动切换时） | `value: 'zh' \| 'en'` |
 | input | 按键输入时触发 | `text: string` |
 | delete | 点击删除键时触发 | - |
 | close | 关闭键盘时触发 | - |

@@ -1044,8 +1044,10 @@ const handleConfirm = ({ value }: any) => {
 |--------|------|
 | default | 完全自定义选择器内容 |
 | label | 自定义标签内容 |
+| confirm-left | 确认按钮左侧区域（与确认按钮同一弹性容器，`display: flex; align-items: center;`） |
+| confirm-right | 确认按钮右侧区域，常用于放置辅助按钮（如"清除"/"今天"） |
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:5, 19
+参考: src/wd/components/wd-calendar/wd-calendar.vue:5, 19, 114-121
 
 ### Methods
 

@@ -616,9 +616,9 @@ snail-job:
   token: ${SNAIL_JOB_TOKEN:SJ_cKqBTPzCsWA3VyuCfFoccmuIEGXjr5KT}
   server:
     # 调度中心地址
-    host: ${SNAIL_JOB_HOST:127.0.0.1}
+    host: ${SNAIL_JOB_SERVER_HOST:127.0.0.1}
     # 调度中心端口
-    port: ${SNAIL_JOB_PORT:17888}
+    port: ${SNAIL_JOB_SERVER_PORT:17888}
   # 命名空间
   namespace: ${spring.profiles.active}
   # 客户端端口（随主应用端口漂移）

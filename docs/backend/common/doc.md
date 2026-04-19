@@ -121,8 +121,22 @@ public class DocAutoConfiguration {
 | 特性 | 说明 |
 |------|------|
 | 配置优先级 | 在 `SpringDocConfiguration` 之前加载，确保自定义配置生效 |
-| 启用条件 | `springdoc.api-docs.enabled=true`，默认开启 |
+| 启用条件 | `springdoc.api-docs.enabled=true`，开发/测试环境默认开启；**生产环境默认关闭** |
 | 属性绑定 | 通过 `SpringDocProperties` 绑定 YAML 配置 |
+
+**生产环境默认关闭（`application-prod.yml`）：**
+
+```yaml
+################## API 文档配置 ##################
+--- # SpringDoc API 文档（生产环境默认关闭）
+springdoc:
+  api-docs:
+    enabled: ${SPRINGDOC_ENABLED:false}
+```
+
+- 默认值 `false`：生产环境部署时，`api-docs` 与 Swagger UI 均不对外暴露，减少接口被扫描与字段泄露风险
+- 紧急排障需临时开启：注入环境变量 `SPRINGDOC_ENABLED=true` 重启即可恢复
+- 开发/测试 `application-dev.yml` / `application-test.yml` 未设置该属性，`@ConditionalOnProperty(..., matchIfMissing = true)` 会自动启用
 
 ### OpenAPI Bean 配置
 

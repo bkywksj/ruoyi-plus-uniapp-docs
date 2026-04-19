@@ -7,8 +7,8 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - [x] 介绍内容已完成，覆盖双配置与三大机制的整体定位
 - [x] 核心特性已完成，包含技能规模、命令入口与钩子机制
 - [x] 上下文工程已完成，说明 `CLAUDE.md` 与 `AGENTS.md` 协同方式
-- [x] 技能系统已完成，包含 44 个技能的场景与示例
-- [x] 命令系统已完成，按 12 个使用入口拆解
+- [x] 技能系统已完成，包含 54 个技能的场景与示例
+- [x] 命令系统已完成，按 13 个使用入口拆解
 - [x] 钩子系统已完成，覆盖三类 JS 钩子的触发与输出
 - [x] 最佳实践已完成，强调规范优先与流程闭环
 - [x] 实战案例已完成，覆盖新功能、文档同步、工作流同步
@@ -16,8 +16,8 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - [x] 续写提示已保留，如需扩展可追加更多技能场景或案例
 
 ## 核心特性
-- 技能体系：`.claude/skills` 目录现有 48 个技能目录，覆盖架构、后端、前端、移动端、APP原生、AI、协作、工程规范、中间件集成与物联网
-- 命令体系：`.claude/commands` 提供 10 个命令文件，`/init-docs` 内含两种模式，合计 11 个使用入口（不含 local 相关的上游同步命令，这些命令仅在源码项目中使用）
+- 技能体系：`.claude/skills` 目录现有 54 个技能目录，覆盖架构、后端、前端、移动端、APP原生、AI、协作、工程规范、部署运维、中间件集成与物联网
+- 命令体系：`.claude/commands` 提供 13 个命令文件，`/init-docs` 内含两种模式，合计 14 个使用入口（不含 local 相关的上游同步命令，这些命令仅在源码项目中使用）
 - 钩子体系：`.claude/hooks` 提供 3 个 JavaScript 钩子，分别负责技能强制评估、工具安全拦截与结束收尾
 - 配置入口：`.claude/settings.json` 统一绑定 `UserPromptSubmit`、`PreToolUse`（5s超时）、`Stop`（10s超时）三类触发点
 - 规则底座：`CLAUDE.md` 与 `AGENTS.md` 约束语言、架构、流程、命令与文档生成边界
@@ -61,17 +61,18 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 技能文件包含 YAML 头部，记录 `name`、`description`、触发场景与触发词
 - 强制技能评估流程由钩子注入，未匹配技能时需明确说明
 
-### 分类总览（48 个技能）
-- 业务与架构：crud-development、api-development、architecture-design
-- 后端能力：backend-annotations、data-permission、error-handler、security-guard、multi-tenant、json-serialization、test-development
+### 分类总览（54 个技能）
+- 业务与架构：crud-development、api-development、architecture-design、workflow-engine
+- 后端能力：backend-annotations、data-permission、error-handler、security-guard、multi-tenant、json-serialization、test-development、log-audit
 - 前端与移动：ui-pc、ui-mobile、ui-design-mobile、store-pc、store-mobile、uniapp-platform、i18n-development
 - APP原生：app-adapter
 - 中间件与集成：redis-cache、scheduled-jobs、realtime-communication、notification-system、message-queue、iot-mqtt、third-party-api、social-login
 - 工程与质量：code-patterns、git-workflow、project-navigator、utils-toolkit、performance-doctor、icon-management
-- AI 与协作：ai-langchain4j、collaborating-with-codex、collaborating-with-gemini、banana-image、task-tracker
+- 部署运维：deployment-guide、env-config
+- AI 与协作：ai-langchain4j、collaborating-with-codex、collaborating-with-gemini、task-tracker
 - 业务集成：payment-integration、wechat-integration、file-oss-management、media-processing
-- 诊断与规划：bug-detective、brainstorm、tech-decision
-- 迁移与扩展：project-migration、add-skill
+- 诊断与规划：bug-detective、brainstorm、tech-decision、html-to-code
+- 迁移与扩展：project-init、project-migration、framework-sync、add-skill、exp-sediment
 
 ### ai-langchain4j
 
@@ -198,27 +199,6 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 示例
 - 用户: 需要数据序列化映射（ID转名称、字典转标签）
 - 用户: 需要接口限流配置
-
-### banana-image
-
-定位
-- 【触发条件】当用户要求生成图片、创建海报、制作缩略图、编辑图片时使用。
-
-触发场景
-- 以技能描述中声明的场景为准
-
-触发词
-- `生成图片`
-- `/image`
-- `产品图`
-- `海报`
-- `缩略图`
-- `4K`
-- `高清。`
-
-示例
-- 用户: 生成图片相关需求怎么落地
-- 用户: /image相关需求怎么落地
 
 ### brainstorm
 
@@ -1661,6 +1641,205 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 用户: 怎么接收 IoT 设备的 MQTT 消息
 - 用户: 设备上下线状态怎么监控
 
+### deployment-guide
+
+定位
+- 当需要部署项目到生产环境、构建前端/移动端发布包、管理安全密钥、配置 Docker 容器编排时自动使用此 Skill。覆盖 JAR 部署、Docker Compose、Nginx、1Panel、一键自动化部署脚本。
+
+触发场景
+- 将后端 JAR 或 Docker 镜像部署到生产服务器
+- 构建 PC 管理端、H5、小程序、APP 发布包
+- 轮换生产环境 JWT / RSA / AES 密钥
+- 生成 Docker Compose 本地配置
+- 配置 Nginx 反向代理和负载均衡
+
+触发词
+- `部署`
+- `上线`
+- `发布`
+- `生产环境`
+- `Docker`
+- `Compose`
+- `构建`
+- `build`
+- `打包`
+- `JAR`
+- `密钥`
+- `Nginx`
+- `1Panel`
+- `一键部署`
+- `deploy.py`
+
+示例
+- 用户: 项目第一次上线要做哪些密钥替换
+- 用户: 怎么用一键部署脚本构建 Docker 镜像
+
+### env-config
+
+定位
+- 当需要配置多环境（开发/测试/生产）、修改 `application-*.yml` 或 `.env.*` 文件、切换后端 profile、设置前端/移动端环境变量时自动使用此 Skill。
+
+触发场景
+- 配置后端 Spring Boot 多 profile
+- 修改前端 `.env.development` / `.env.production`
+- 修改移动端（plus-uniapp / plus-app）`.env`
+- 切换开发/生产环境的 API 地址、端口、密钥
+- 处理 `${ENV_VAR:default}` 占位符
+
+触发词
+- `环境配置`
+- `profile`
+- `application.yml`
+- `application-dev.yml`
+- `application-prod.yml`
+- `.env`
+- `.env.development`
+- `.env.production`
+- `VITE_APP_`
+- `多环境`
+- `环境变量`
+- `SPRING_PROFILES_ACTIVE`
+
+示例
+- 用户: 前端生产环境的接口地址在哪里配
+- 用户: 后端怎么切换到 prod profile
+
+### log-audit
+
+定位
+- 当需要为业务接口添加操作日志、配置审计追踪、排查日志内容时自动使用此 Skill。涵盖 `@Log` 注解、操作类型、登录日志、敏感参数脱敏。
+
+触发场景
+- 为 Controller 接口添加 `@Log` 注解
+- 配置 `@Log` 的操作类型（`DictOperType`）
+- 排除敏感参数（密码、Token）不写入日志
+- 查询或导出 `sys_oper_log` 操作日志表
+- 配置登录日志（`sys_logininfor`）
+
+触发词
+- `操作日志`
+- `登录日志`
+- `审计`
+- `@Log`
+- `sys_oper_log`
+- `sys_logininfor`
+- `DictOperType`
+- `LogAspect`
+- `excludeParamNames`
+- `日志脱敏`
+
+示例
+- 用户: 某个接口需要记录操作日志并排除密码字段
+- 用户: 登录日志表里怎么记录失败原因
+
+### html-to-code
+
+定位
+- 当需要将 HTML/Tailwind 设计稿（UI 原型）转换为符合框架规范的前端或移动端代码时自动使用此 Skill。支持整页转换和单组件/区块转换。
+
+触发场景
+- 将 MCP 生成的 HTML 设计稿转换为 plus-ui 前端页面
+- 将 HTML 原型转换为 plus-uniapp / plus-app 移动端页面
+- 将 HTML 某个区块单独转换为框架组件
+- 将 Tailwind CSS 设计稿适配为项目 UnoCSS 风格
+
+触发词
+- `HTML转代码`
+- `设计稿转换`
+- `原型转代码`
+- `HTML转前端`
+- `HTML转移动端`
+- `HTML转Vue`
+- `区块转换`
+- `组件转换`
+
+示例
+- 用户: 把这个 HTML 页面转成 plus-ui 的 Vue 页面
+- 用户: 设计稿的顶部区块能不能直接转成组件
+
+### exp-sediment
+
+定位
+- 当需要沉淀本次会话或最近提交中产生的经验、将隐性知识转化为可复用资产（Skills、CLAUDE.md、Memory、docs）时自动使用此 Skill。对应 `/exp` 命令的详细执行指南。
+
+触发场景
+- 用户说"沉淀经验 / 总结本次会话 / 把这个记下来"
+- 用户说"这个以后还会遇到 / 避免下次再踩坑"
+- 从 git log 中抽取可复用模式
+- 识别现有技能的漏洞并补强
+- 审计经验资产健康度（过时/冗余/孤岛）
+
+触发词
+- `沉淀经验`
+- `经验沉淀`
+- `总结会话`
+- `记下来`
+- `记录经验`
+- `/exp`
+- `exp review`
+- `反哺框架`
+- `经验审计`
+- `技能漏洞`
+- `避免再踩坑`
+
+示例
+- 用户: 今天踩的坑能不能沉淀成技能
+- 用户: /exp 复盘最近一周的提交
+
+### project-init
+
+定位
+- 当用户需要基于本框架创建新项目、初始化新项目时自动使用此 Skill。提供交互式项目初始化流程：模板更新检测、分支选择、移动端选择、标识符替换、目录复制、Git 仓库创建、数据库初始化、启动引导。
+
+触发场景
+- 用户说"我要开发一个新项目"或"创建一个新项目"
+- 基于 ruoyi-plus-uniapp 框架初始化新的业务系统
+- 修改项目唯一标识符和端口配置
+- 为新项目创建 Git 仓库并推送代码
+- 初始化新项目的数据库
+
+触发词
+- `新项目`
+- `创建项目`
+- `初始化项目`
+- `开新项目`
+- `项目初始化`
+- `new project`
+- `init project`
+- `新建项目`
+- `独立部署`
+
+示例
+- 用户: 我要基于框架新建一个叫 plus-shop 的项目
+- 用户: 怎么把端口和标识符一起替换
+
+### framework-sync
+
+定位
+- 当需要从框架原仓库（ruoyi-plus-uniapp）同步更新到基于框架创建的子项目时自动使用此 Skill。支持多分支（master/single/workflow）、逐提交分析、选择性合并、标识符自动替换。
+
+触发场景
+- 从 ruoyi-plus-uniapp 框架同步最新代码到子项目
+- 查看框架有哪些新提交可以合并
+- 配置 upstream remote 用于后续同步
+- 查看或更新框架同步历史记录
+
+触发词
+- `框架同步`
+- `upstream`
+- `同步框架`
+- `framework-sync`
+- `拉取更新`
+- `合并上游`
+- `同步上游`
+- `框架更新`
+- `upstream sync`
+- `同步原仓库`
+
+示例
+- 用户: 上游框架又更新了，怎么把新功能合到子项目
+- 用户: 只想合并框架里新增的 workflow 改动
+
 ### 技能触发词索引
 以下索引用于快速定位触发词，便于在大规模任务中快速匹配技能。
 
@@ -1744,15 +1923,6 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - `ID转名称`
 - `字典转换`
 - `OSS转URL`
-
-#### banana-image
-- `生成图片`
-- `/image`
-- `产品图`
-- `海报`
-- `缩略图`
-- `4K`
-- `高清。`
 
 #### brainstorm
 - `头脑风暴`
@@ -2765,7 +2935,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 
 ## 命令系统
 ### 命令入口总览
-命令文件位于 `.claude/commands/`，当前共 10 个命令文件（不含 local 相关的上游同步命令）。以下按 11 个使用入口展开。
+命令文件位于 `.claude/commands/`，当前共 13 个命令文件（不含 local 相关的上游同步命令）。以下按 14 个使用入口展开。
 
 | 使用入口 | 定位 | 关键输入 | 主要输出 |
 | --- | --- | --- | --- |
@@ -2780,6 +2950,9 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 | `/add-todo` | 快速添加待办 | 任务描述 | 待办清单与状态联动 |
 | `/update-status` | 增量更新状态 | 无 | 三文档联动更新报告 |
 | `/sync` | 文档全量同步 | 无 | 三文档一致性同步 |
+| `/deploy` | 一键自动化部署 | 部署目标（服务器/Docker） | 构建与部署执行报告 |
+| `/framework-sync` | 框架同步 | 目标分支 / 提交范围 | 从 ruoyi-plus-uniapp 框架原仓库合并更新到子项目 |
+| `/exp` | 经验沉淀 | 会话上下文或提交范围 | 抽取可复用模式到 Skills / Memory / docs |
 
 > **说明**：源码项目中还包含 `/sync-local`、`/sync-wot-local`、`/sync-unibest-local` 等上游同步命令，这些命令仅在源码开发项目中使用，不属于本文档项目的范畴，因此不在此处列出。
 
@@ -2911,6 +3084,42 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 同步已完成、进行中与待办任务，并检测冲突
 输出
 - 同步报告与冲突提示
+
+### /deploy
+定位
+- 一键自动化部署，将项目发布到生产服务器或 Docker 环境
+输入
+- 部署目标（JAR / Docker）与可选的密钥轮换参数
+流程
+- 检查构建产物（后端 `jar`、前端 `dist`、移动端 `unpackage`）是否就绪
+- 调用 `deploy.py` 或 Docker Compose 执行构建、上传与重启
+- 对生产环境密钥（JWT/RSA/AES）进行校验与提示
+输出
+- 构建与部署执行报告，包含版本号、耗时与回滚方式
+
+### /framework-sync
+定位
+- 将 ruoyi-plus-uniapp 框架原仓库的更新同步到基于模板创建的子项目
+输入
+- 目标分支（master / single / workflow）与可选的提交范围
+流程
+- 读取 `.claude/framework-config.json` 中的 upstream 配置
+- 逐提交列出框架最新改动，标注标识符替换项
+- 按选择性策略合并到当前子项目，保留子项目定制
+输出
+- 同步清单、冲突提示与标识符替换报告
+
+### /exp
+定位
+- 会话末尾的经验沉淀入口，把隐性知识转化为可复用资产
+输入
+- 无显式参数，可附带提交范围
+流程
+- 扫描最近会话消息与 `git log`，抽取可复用模式
+- 识别现有技能的漏洞并生成补强建议
+- 评估经验资产健康度（过时 / 冗余 / 孤岛）
+输出
+- 沉淀建议清单，指引更新 Skills / Memory / CLAUDE.md / docs
 
 ## 钩子系统
 ### 钩子注册方式

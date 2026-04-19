@@ -632,8 +632,9 @@ const handleChooseAvatar = (detail: any) => {
 | `chooseAvatar` | 选择用户头像 | 微信小程序 |
 | `getAuthorize` | 支付宝授权 | 支付宝小程序 |
 | `agreePrivacyAuthorization` | 同意隐私协议 | 微信小程序 |
+| `getRealtimePhoneNumber` | 获取用户实时手机号 | 微信小程序 |
 
-参考: src/wd/components/wd-button/wd-button.vue:219-246
+参考: src/wd/components/wd-button/wd-button.vue:219-248
 
 ## 高级用法
 
@@ -807,8 +808,9 @@ const handleButtonClick = () => {
 | `chooseAvatar` | 获取用户头像 | 微信 |
 | `getAuthorize` | 支付宝授权 | 支付宝 |
 | `agreePrivacyAuthorization` | 同意隐私协议 | 微信 |
+| `getRealtimePhoneNumber` | 获取用户实时手机号（需基础库 2.21.2+） | 微信 |
 
-参考: src/wd/components/wd-button/wd-button.vue:219-246
+参考: src/wd/components/wd-button/wd-button.vue:219-248
 
 ### Events
 
@@ -823,8 +825,9 @@ const handleButtonClick = () => {
 | opensetting | 在打开授权设置页后回调 | `detail: any` |
 | chooseavatar | 获取用户头像回调 | `detail: any` |
 | agreeprivacyauthorization | 用户同意隐私协议事件回调 | `detail: any` |
+| getrealtimephonenumber | 获取用户实时手机号回调（`open-type="getRealtimePhoneNumber"`） | `detail: any` |
 
-参考: src/wd/components/wd-button/wd-button.vue:180-199, 372-444
+参考: src/wd/components/wd-button/wd-button.vue:180-201, 372-454
 
 ### Slots
 

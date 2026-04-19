@@ -77,7 +77,7 @@ plus.ruoyi.system.dict/
 |--------|------|------|------|
 | dict_id | Long | 字典主键 | 主键,自增 |
 | dict_name | String | 字典名称 | 非空,用于显示 |
-| dict_type | String | 字典类型 | 非空,唯一,用于标识 |
+| dict_type | String | 字典编码 | 非空,唯一,用于标识（前端表单统一显示为"字典编码"，避免与模块名混淆） |
 | status | String | 状态 | 0=正常,1=停用 |
 | is_system | String | 是否系统级字典 | 0=租户自定义,1=系统级 |
 | remark | String | 备注 | 可选 |

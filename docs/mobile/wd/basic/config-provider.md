@@ -42,18 +42,41 @@ ConfigProvider 通过以下机制实现全局配置:
 
 ### CSS 变量映射
 
-组件内部将驼峰命名的主题变量转换为 CSS 变量:
+主题变量映射逻辑已抽离到独立的 `useConfigProvider` composable，组件只负责调用并通过 `provide` 把计算结果向子组件注入。驼峰命名的主题变量会被转换为 `--wot-` 前缀的 CSS 变量：
 
 ```typescript
+// 文件: plus-uniapp/src/wd/components/composables/useConfigProvider.ts
+export const CONFIG_PROVIDER_KEY: InjectionKey<ConfigProviderContext> = Symbol('wd-config-provider')
+
 // colorTheme → --wot-color-theme
 // buttonPrimaryBgColor → --wot-button-primary-bg-color
-const mapThemeVarsToCSSVars = (themeVars) => {
-  const cssVars = {}
+export const mapThemeVarsToCSSVars = (themeVars: ConfigProviderThemeVars): string => {
+  const segments: string[] = []
   Object.keys(themeVars).forEach((key) => {
-    cssVars[`--wot-${kebabCase(key)}`] = themeVars[key]
+    const value = themeVars[key as keyof ConfigProviderThemeVars]
+    if (value !== undefined) {
+      segments.push(`--wot-${kebabCase(key)}:${value}`)
+    }
   })
-  return cssVars
+  return segments.join(';')
 }
+```
+
+组件内部使用方式：
+
+```vue
+<script lang="ts" setup>
+import { computed, provide } from 'vue'
+import { CONFIG_PROVIDER_KEY, mapThemeVarsToCSSVars } from '../composables/useConfigProvider'
+
+const cssVarsStyle = computed(() => {
+  if (!props.themeVars || Object.keys(props.themeVars).length === 0) return ''
+  return mapThemeVarsToCSSVars(props.themeVars)
+})
+
+// 通过 provide 向子组件注入，避免逐层传递
+provide(CONFIG_PROVIDER_KEY, { style: cssVarsStyle })
+</script>
 ```
 
 ### 样式优先级
@@ -66,7 +89,10 @@ const mapThemeVarsToCSSVars = (themeVars) => {
 </view>
 ```
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:3-6,2050-2081
+子组件可通过 `inject(CONFIG_PROVIDER_KEY)` 获取最近一层 ConfigProvider 的主题样式，实现跨层级主题覆盖。
+
+参考: src/wd/components/wd-config-provider/wd-config-provider.vue:3-6,2046-2068
+参考: src/wd/components/composables/useConfigProvider.ts:1-108
 
 ## 基本用法
 
