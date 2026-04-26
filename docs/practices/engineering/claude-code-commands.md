@@ -128,7 +128,11 @@ $ARGUMENTS
 
 | 命令 | 用途 | 使用时机 |
 |------|------|---------|
-| `/exp` | 经验沉淀 | 会话结束前把隐性知识转化为 Skills / Memory / CLAUDE.md 资产 |
+| `/exp` | 经验沉淀 | 会话结束前把隐性知识转化为 Skills / Memory / CLAUDE.md / `.claude/docs/experience/` 资产;支持 `/exp review` 子命令做季度审计(过时/冗余/孤岛/腐化) |
+
+> **沉淀目录**:摘要、最佳实践、反哺候选、审计报告均写入 `.claude/docs/experience/`(项目独立、不污染 `docs/` 业务文档目录)。首次运行 `/exp` 会自动创建 `YYYY-MM/` 与 `review-reports/` 子目录,子项目模式额外创建 `feedback-to-framework.md`。
+>
+> **去重机制**:每次执行前先读取最近 1 条 `*-exp-summary.md`,避免重复识别相同候选;连续 2 次跳过的候选自动追加到 `.claude/exp.ignore` 永久跳过列表。
 
 ---
 

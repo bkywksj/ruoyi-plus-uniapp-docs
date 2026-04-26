@@ -135,7 +135,7 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 |-------|--------|------|
 | **architecture-design** | 架构、模块划分、重构 | 系统架构规划 |
 | **tech-decision** | 技术选型、方案对比 | 技术决策分析 |
-| **brainstorm** | 头脑风暴、方案设计 | 创意方案探索 |
+| **brainstorm** | 头脑风暴、方案设计、业界怎么做 | 创意方案探索,内置 5 种发散方法(类比/反向/约束/跨界 + 联网借鉴法按需查最新最佳实践) |
 | **i18n-development** | 国际化、多语言、i18n | 全栈国际化方案 |
 | **project-navigator** | 项目结构、文件在哪 | 项目导航和定位 |
 | **git-workflow** | Git、提交、分支 | Git 工作流规范 |
@@ -144,7 +144,7 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 | **project-init** | 新项目、初始化项目、independent deployment | 基于框架模板创建独立业务项目，含标识符替换、Git 仓库创建、数据库初始化 |
 | **project-migration** | 迁移项目、架构迁移、框架迁移 | 项目迁移与重构方法论，支持浅/标准/深度三种策略 |
 | **framework-sync** | 框架同步、upstream、拉取更新、合并上游 | 将 ruoyi-plus-uniapp 框架原仓库更新同步到子项目（多分支、选择性合并） |
-| **exp-sediment** | 沉淀经验、总结会话、/exp | 将本次会话或最近提交的隐性知识沉淀为 Skills/Memory/CLAUDE.md 资产 |
+| **exp-sediment** | 沉淀经验、总结会话、/exp、以前怎么处理、之前的方案、查记录、历史经验、查笔记、上次怎么解决、类似问题 | 双向触发(产出/消费):产出经验时将本次会话或最近提交的隐性知识沉淀到 Skills/Memory/CLAUDE.md/`.claude/docs/experience/`;消费经验时按主题 grep 历史踩坑记录避免重蹈覆辙,提供"轻量/按主题/全量"三档读取深度策略 |
 | **html-to-code** | HTML转代码、设计稿转换、原型转代码 | HTML/Tailwind 设计稿转换为 plus-ui 或 plus-uniapp/plus-app 代码 |
 
 ### AI 协作类（2 个）

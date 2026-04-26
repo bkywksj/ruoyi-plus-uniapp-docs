@@ -25,7 +25,7 @@ hero:
 features:
   - icon: 🤖
     title: Claude Code 深度集成 (NEW)
-    details: 首个 AI 原生全栈框架！29+ 专业技能、12 个智能命令、3 个自动化钩子，让 AI 真正理解你的代码架构。自动遵循项目规范，智能生成符合标准的代码，开发效率提升 10 倍
+    details: 首个 AI 原生全栈框架！54+ 专业技能、15+ 智能命令、3 个自动化钩子，让 AI 真正理解你的代码架构。自动遵循项目规范，智能生成符合标准的代码，开发效率提升 10 倍
     link: /practices/ai/claude-code
   - icon: 🚀
     title: 后端重大重构
@@ -104,8 +104,8 @@ highlights:
 
   - title: 🤖 Claude Code 原生支持
     details: |
-      **29+ 专业技能** - 覆盖后端CRUD、前端组件、移动端开发、数据库设计等全栈场景
-      **12 个智能命令** - /dev开发、/crud生成、/check检查、/progress进度追踪
+      **54+ 专业技能** - 覆盖后端CRUD、前端组件、移动端开发、数据库设计等全栈场景
+      **15+ 智能命令** - /dev开发、/crud生成、/check检查、/exp经验沉淀、/progress进度追踪
       **3 个自动化钩子** - 技能强制评估、工具调用拦截、会话结束处理
       **完整上下文工程** - CLAUDE.md + AGENTS.md 双配置，AI深度理解项目架构
       **规范自动遵循** - 四层架构、命名规范、代码风格100%自动化执行
@@ -349,7 +349,7 @@ highlights:
 </div>
 
 <div style="text-align: center; margin-top: 16px; color: #999; font-size: 14px;">
-  持续更新中... 共 <strong>80+</strong> 家企业选择信赖
+  持续更新中... 共 <strong>100+</strong> 家企业选择信赖
 </div>
 
 ## 💬 技术支持

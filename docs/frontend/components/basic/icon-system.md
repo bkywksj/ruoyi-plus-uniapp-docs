@@ -2,40 +2,53 @@
 
 ## 介绍
 
-RuoYi-Plus 前端项目采用双图标系统架构，整合 Iconfont 字体图标和 Iconify 图标方案，共内置 817 个精选图标，覆盖系统管理、用户权限、文件操作、状态指示等常用场景。图标系统基于 TypeScript 构建，提供完整的类型安全支持，配合 Vite 插件实现类型定义自动生成，开发者可获得智能代码提示和编译期类型检查。
+RuoYi-Plus 前端项目采用三图标源架构，整合 Iconfont 字体图标、Iconify 图标方案与本地 SVG sprite，800+ 内置图标加上"放文件即用"的本地 SVG 通道,可覆盖系统管理、用户权限、文件操作、状态指示与品牌 logo 等所有场景。图标系统基于 TypeScript 构建，提供完整的类型安全支持，配合 Vite 插件实现类型定义自动生成，开发者可获得智能代码提示和编译期类型检查。
 
 **核心特性:**
 
-- **双图标系统** - 同时支持 Iconfont (644个) 和 Iconify (173个) 图标，满足不同场景需求
-- **类型安全** - 基于 TypeScript 的完整类型定义，`IconCode` 类型包含全部 817 个图标代码，提供代码提示和类型检查
-- **自动类型生成** - Vite 插件自动扫描图标资源并生成 `icons.d.ts` 类型定义文件
+- **三种图标源** - 同时支持 Iconfont 字体图标、Iconify SVG 图标与本地 SVG sprite,按 `iconfont > iconify > svg` 优先级自动匹配
+- **类型安全** - 基于 TypeScript 的完整类型定义，`IconCode` 类型包含全部预设图标代码,并提供 `isSvgIcon()` 等类型守卫
+- **自动类型生成** - Vite 插件自动扫描三个图标资源目录并生成 `icons.d.ts` 类型定义文件,svg 文件新增/修改触发 HMR 重建
 - **丰富尺寸系统** - 6 种预设尺寸 (xs/sm/md/lg/xl/2xl)，支持自定义数值和 CSS 单位
 - **内置动画效果** - 6 种 CSS 动画 (shake/rotate180/moveUp/expand/shrink/breathing)，适用于各种交互场景
 - **图标选择器** - 支持关键词搜索、中文名称搜索和实时预览的 IconSelect 组件
-- **智能图标识别** - 自动识别 Iconfont 和 Iconify 图标类型，统一使用 `code` 属性
+- **智能图标识别** - 自动识别 Iconfont、Iconify 与本地 SVG sprite,统一使用 `code` 属性
 
 ## 架构设计
 
-### 双图标系统对比
+### 三种图标源对比
 
-系统采用 Iconfont + Iconify 双图标架构，两种方案各有优势，互为补充。
+系统采用 Iconfont + Iconify + 本地 SVG sprite 的三源架构，三种方案各有侧重，互为补充。
 
-| 特性 | Iconfont | Iconify |
-|------|----------|---------|
-| 图标数量 | 644 | 173 |
-| 加载方式 | 字体文件一次性加载 | SVG 按需渲染 |
-| 颜色支持 | 单色（继承 color） | 多色支持 |
-| 文件大小 | woff2 约 50KB | 无额外文件 |
-| 浏览器兼容 | IE9+ 极好 | 现代浏览器 |
-| 渲染方式 | 字体渲染 | SVG 渲染 |
-| 缩放质量 | 字体渲染，极佳 | 矢量渲染，极佳 |
-| 使用场景 | 常用系统图标 | 特殊图标、多色图标 |
+| 特性 | Iconfont | Iconify | 本地 SVG sprite |
+|------|----------|---------|----------------|
+| 来源 | `src/assets/icons/system/` 字体文件 | `src/assets/icons/iconify/preset.json` | `src/assets/icons/svg/*.svg` |
+| 用法 | `<Icon code="user" />` | `<Icon value="i-mdi:github" />` | `<Icon code="dingtalk" />` |
+| 加载方式 | 字体文件一次性加载 | SVG 按需渲染（UnoCSS 编译） | 构建时合并为 sprite |
+| 颜色支持 | 单色（继承 color） | 多色支持 | 单色（需 `fill="currentColor"`） |
+| 浏览器兼容 | IE9+ 极好 | 现代浏览器 | 现代浏览器 |
+| 渲染方式 | 字体渲染 | SVG 渲染 | SVG `<use>` 引用 |
+| 新增成本 | 去 iconfont.cn 项目更新字体 | 直接写 `i-xxx` 即可 | 把 `.svg` 文件放进 svg/ 目录 |
+| 使用场景 | 常用系统图标 | 海量图标集 / 多色图标 | 品牌 logo / 自定义单色矢量 |
 
 **选择建议:**
 
 1. **优先使用 Iconfont** - 性能好、兼容性强、首屏加载后无额外请求
 2. **Iconfont 无合适图标时使用 Iconify** - 图标库更丰富，支持多色
 3. **需要多色图标时使用 Iconify** - Iconfont 仅支持单色
+4. **品牌 logo / iconify 无对应图源时用本地 SVG sprite** - 拷贝 `.svg` 文件即可,无需注册
+
+### 优先级匹配规则
+
+同一个 `code` 在三种图标源中可能同时存在,组件按 `iconfont > iconify > svg sprite` 顺序自动匹配第一个命中的源:
+
+```typescript
+// 1. value 属性以 'i-' 开头 → 强制 Iconify(用于规避优先级)
+// 2. code 在 Iconfont 列表 → Iconfont 字体渲染
+// 3. code 在 Iconify 预设 → Iconify(UnoCSS 类)
+// 4. code 在 SVG sprite 清单 → <use xlink:href="#icon-xxx">
+// 5. 其他情况 → 兜底尝试作为 Iconify 处理(i-{code})
+```
 
 ### 文件结构
 
@@ -49,13 +62,18 @@ src/
 │   │   ├── iconfont.json         # 图标元数据（代码、名称）
 │   │   ├── iconfont.woff2        # 字体文件（主要）
 │   │   └── iconfont.ttf          # 字体文件（兼容）
-│   └── iconify/
-│       └── preset.json           # Iconify 预设图标配置
+│   ├── iconify/
+│   │   └── preset.json           # Iconify 预设图标配置
+│   └── svg/                       # 本地 SVG sprite 源目录
+│       ├── README.md             # 使用说明
+│       ├── dingtalk.svg          # 钉钉 logo 示例
+│       ├── maxkey.svg            # MaxKey logo 示例
+│       └── topiam.svg            # TopIAM logo 示例
 ├── components/Icon/
 │   ├── Icon.vue                  # 图标渲染组件
 │   └── IconSelect.vue            # 图标选择器组件
 ├── types/
-│   └── icons.d.ts                # 自动生成的类型定义（817个图标）
+│   └── icons.d.ts                # 自动生成的类型定义(三种来源合并)
 └── plugins/
     └── elementIcons.ts           # Element Plus 图标注册插件
 ```
@@ -66,16 +84,22 @@ Icon 组件通过智能识别机制自动判断图标类型：
 
 ```typescript
 // 识别优先级
-// 1. value 属性以 'i-' 开头 → Iconify 图标
-// 2. code 属性在 Iconfont 列表中 → Iconfont 图标
-// 3. code 属性在 Iconify 预设中 → Iconify 图标
-// 4. 其他情况 → 尝试作为 Iconify 图标处理
+// 1. value 属性以 'i-' 开头 → Iconify 图标(强制走 iconify)
+// 2. code 属性在 Iconfont 列表中 → Iconfont 字体图标
+// 3. code 属性在 Iconify 预设中 → Iconify SVG 图标
+// 4. code 属性在本地 SVG sprite 列表中 → SVG sprite 渲染
+// 5. 其他情况 → 兜底尝试作为 Iconify 图标处理(i-{code})
 
 // Iconfont 图标渲染
 <div class="iconfont icon-{code}"></div>
 
 // Iconify 图标渲染
 <div class="i-{iconify-value}"></div>
+
+// 本地 SVG sprite 渲染(symbolId='icon-[name]')
+<svg class="icon-svg-sprite">
+  <use xlink:href="#icon-{code}" fill="currentColor" />
+</svg>
 ```
 
 ### 类型系统架构
@@ -83,18 +107,19 @@ Icon 组件通过智能识别机制自动判断图标类型：
 类型定义文件 `src/types/icons.d.ts` 由 Vite 插件自动生成，包含完整的类型支持：
 
 ```typescript
-// 图标代码类型（817 个图标的联合类型）
+// 图标代码类型(三种来源合并的联合类型)
 declare type IconCode =
   | 'account' | 'activity' | 'add' | 'admin' | 'alarm'
   | 'announcement' | 'application' | 'arrow-down' | 'arrow-left'
-  // ... 省略 800+ 个图标代码
+  // ... 省略大量 iconfont/iconify 图标代码
+  | 'dingtalk' | 'maxkey' | 'topiam'  // 本地 SVG sprite 图标
   | 'zip'
 
 // 图标项接口
 interface IconItem {
-  code: string              // 图标代码（如 'user'）
-  name: string              // 中文名称（如 '用户'）
-  type: 'iconfont' | 'iconify'  // 图标类型
+  code: string                            // 图标代码（如 'user'）
+  name: string                            // 中文名称（如 '用户'）
+  type: 'iconfont' | 'iconify' | 'svg'    // 图标类型(svg 表示本地 sprite)
 }
 
 // 带有完整信息的 Iconify 图标项
@@ -106,9 +131,11 @@ interface IconifyPresetItem {
 
 // 工具函数类型
 declare const ALL_ICONS: readonly IconItem[]
+declare const SVG_ICONS: readonly IconItem[]   // 本地 svg/ 目录扫描得到
 declare function isValidIconCode(code: string): code is IconCode
 declare function isIconfontIcon(code: string): boolean
 declare function isIconifyIcon(code: string): boolean
+declare function isSvgIcon(code: string): boolean         // SVG sprite 类型守卫
 declare function getIconifyValue(code: string): string | undefined
 declare function getIconName(code: IconCode): string
 declare function searchIcons(query: string): IconItem[]
@@ -1030,6 +1057,30 @@ const icon2 = ref('#')
 
 3. **重启开发服务器**
 
+#### 添加本地 SVG sprite 图标
+
+1. **放置 SVG 文件**
+   ```
+   src/assets/icons/svg/
+   ├── feishu.svg       # 文件名即 code
+   └── wecom.svg
+   ```
+
+2. **确保 SVG 内使用 currentColor**
+   ```xml
+   <!-- ✅ 正确:可响应 color 属性 -->
+   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+     <path d="M..." fill="currentColor" />
+   </svg>
+
+   <!-- ❌ 错误:固定 fill 颜色无法变色 -->
+   <svg><path d="M..." fill="#0089FF" /></svg>
+   ```
+
+3. **无需重启,HMR 自动重建类型**
+   - `iconfont-types` 插件监听 `assets/icons` 变化
+   - `vite-plugin-svg-icons-ng` 实时合并新 sprite
+
 #### 使用自定义图标
 
 ```vue
@@ -1039,6 +1090,9 @@ const icon2 = ref('#')
 
   <!-- 自定义 Iconify 图标 -->
   <Icon code="my-icon" />
+
+  <!-- 自定义 SVG sprite 图标 -->
+  <Icon code="feishu" color="#00D6B9" />
 </template>
 ```
 

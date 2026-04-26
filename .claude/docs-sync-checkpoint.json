@@ -1,6 +1,6 @@
 {
-  "lastSyncCommit": "9cbe0727de93e43901fceda7874ae0aff2ee8dfa",
-  "lastSyncDate": "2026-04-18T22:48:50+08:00",
+  "lastSyncCommit": "580046f4b1299167749d291ce1c477f2e4bc2b28",
+  "lastSyncDate": "2026-04-26T17:33:28+08:00",
   "syncHistory": [
     {
       "commit": "a2bff84f7a8c298b341b32b04feb7e55533267b4",
@@ -43,6 +43,18 @@
         "docs/backend/modules/business/job.md",
         "docs/backend/modules/system/dict.md",
         "docs/frontend/components/form/select.md"
+      ]
+    },
+    {
+      "commit": "580046f4b1299167749d291ce1c477f2e4bc2b28",
+      "date": "2026-04-26T17:33:28+08:00",
+      "summary": "增量处理 5 个上游提交（2026-04-22 → 2026-04-26）。重点 1：Icon 组件重大特性 feat(382e63e) - 新增本地 SVG sprite 图标源（vite-plugin-svg-icons-ng + iconfont-types 协同），同步更新 icon.md 与 icon-system.md：三种图标源对比表、优先级匹配规则、添加 SVG 流程、SVG_ICONS / isSvgIcon 类型扩展、Vite 插件配置。重点 2：brainstorm 新增「联网借鉴法」（按需触发）- 同步 claude-code-skills.md 与 claude-code.md 中的发散方法。重点 3：/exp 经验沉淀机制升级 - 沉淀目录从 docs/experience 迁移到 .claude/docs/experience，新增首次运行初始化、消费经验触发场景（10 个新触发词）、读取深度三档策略、.claude/exp.ignore 永久跳过列表，同步 claude-code-skills.md / claude-code-commands.md / claude-code.md 三处。跳过：workflow toast i18n key 修复（580046f4，未影响文档）、登录页 icon 切换（3cbe1cc3，已包含在 icon 文档更新内）。",
+      "updatedDocs": [
+        "docs/frontend/components/basic/icon.md",
+        "docs/frontend/components/basic/icon-system.md",
+        "docs/practices/engineering/claude-code-skills.md",
+        "docs/practices/engineering/claude-code-commands.md",
+        "docs/practices/ai/claude-code.md"
       ]
     }
   ]

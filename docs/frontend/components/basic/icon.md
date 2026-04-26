@@ -2,15 +2,16 @@
 
 ## 介绍
 
-Icon 图标组件是 RuoYi-Plus 前端框架中的核心 UI 组件,提供统一的图标展示能力。该组件整合了 Iconfont 字体图标和 Iconify SVG 图标两大图标体系,支持类型安全的图标代码、灵活的尺寸设置、自定义颜色以及丰富的动画效果。
+Icon 图标组件是 RuoYi-Plus 前端框架中的核心 UI 组件,提供统一的图标展示能力。该组件整合了 Iconfont 字体图标、Iconify SVG 图标与本地 SVG sprite 三种图标源,支持类型安全的图标代码、灵活的尺寸设置、自定义颜色以及丰富的动画效果。
 
 **核心特性:**
 
-- **双图标体系** - 同时支持 Iconfont 字体图标(644个)和 Iconify SVG 图标(173个),共计 817 个预设图标
-- **类型安全** - 通过自动生成的 TypeScript 类型定义,提供完整的图标代码智能提示和类型检查
+- **三种图标源** - 同时支持 Iconfont 字体图标、Iconify SVG 图标(共计 800+ 预设图标)和本地 SVG sprite(放置 `.svg` 文件即可使用),覆盖通用图标、海量图标集与品牌 logo 三类场景
+- **优先级匹配** - 同一个 `code` 按 `iconfont > iconify > svg sprite` 顺序匹配,可通过 `value="i-xxx"` 强制走 iconify
+- **类型安全** - 通过自动生成的 TypeScript 类型定义,提供完整的图标代码智能提示和类型检查(包含 `isSvgIcon()` 判定)
 - **灵活尺寸** - 支持预设尺寸(xs/sm/md/lg/xl/2xl)、数字像素值和自定义 CSS 尺寸
 - **动画效果** - 内置 6 种悬停动画效果,包括抖动、旋转、移动、缩放和呼吸等
-- **自动识别** - 组件自动识别图标类型,无需手动指定使用 Iconfont 还是 Iconify
+- **自动识别** - 组件自动识别图标类型,无需手动指定使用 Iconfont、Iconify 还是 SVG sprite
 - **图标选择器** - 提供可视化的图标选择组件,支持搜索过滤和实时预览
 
 ## 基本用法
@@ -73,6 +74,38 @@ import Icon from '@/components/Icon/Icon.vue'
 - 以 `i-` 开头的值被识别为 Iconify 图标格式
 - 其他值作为普通 CSS 类名处理
 - `value` 属性的优先级高于 `code` 属性
+
+### 使用本地 SVG sprite
+
+将任意 `.svg` 文件放入 `src/assets/icons/svg/` 目录,文件名即图标 `code`,无需任何额外注册即可在 `<Icon />` 中使用,适合 iconfont 找不到的品牌 logo 与单色自定义图标:
+
+```vue
+<template>
+  <div class="demo">
+    <!-- 对应 src/assets/icons/svg/dingtalk.svg -->
+    <Icon code="dingtalk" color="#0089FF" size="lg" />
+
+    <!-- 对应 src/assets/icons/svg/maxkey.svg -->
+    <Icon code="maxkey" :size="32" />
+
+    <!-- 通过 currentColor 继承父元素颜色 -->
+    <Icon code="topiam" color="currentColor" />
+  </div>
+</template>
+
+<script lang="ts" setup>
+import Icon from '@/components/Icon/Icon.vue'
+</script>
+```
+
+**使用说明:**
+
+- 直接把 `xxx.svg` 放到 `src/assets/icons/svg/` 根目录,文件名(去掉扩展名)即 `code`
+- 构建时由 `vite-plugin-svg-icons-ng` 自动合并为 SVG sprite,运行时通过 `<use xlink:href="#icon-xxx">` 引用
+- SVG 源文件内必须使用 `fill="currentColor"` 或 `stroke="currentColor"`,组件会自动把 `color` 属性映射到 `currentColor` 实现变色
+- 优先级低于 iconfont 与 iconify,如需强制使用 sprite 须确保 `code` 不在前两者中存在
+- HMR 监听 svg 目录变化,新增/修改 SVG 文件自动重建类型,免重启
+- 内置三个示例品牌 logo:`dingtalk`(钉钉)、`maxkey`(MaxKey)、`topiam`(TopIAM)
 
 ### 图标尺寸
 
@@ -318,8 +351,8 @@ interface IconItem {
   /** 图标名称 */
   name: string
   /** 图标类型 */
-  type: 'iconfont' | 'iconify'
-  /** Iconify 图标的完整值 */
+  type: 'iconfont' | 'iconify' | 'svg'
+  /** Iconify 图标的完整值,svg 类型则为 sprite symbolId(`icon-[name]`) */
   value?: string
 }
 ```
@@ -332,33 +365,39 @@ interface IconItem {
 import {
   isIconfontIcon,
   isIconifyIcon,
+  isSvgIcon,
   getIconifyValue,
   getIconName,
   searchIcons,
   ALL_ICONS,
   ICONFONT_ICONS,
-  ICONIFY_ICONS
+  ICONIFY_ICONS,
+  SVG_ICONS
 } from '@/types/icons.d'
 
 // 检查是否为 Iconfont 图标
-const isFont = isIconfontIcon('user')  // true
+const isFont = isIconfontIcon('user')      // true
 
 // 检查是否为 Iconify 图标
-const isSvg = isIconifyIcon('button')  // true
+const isIconify = isIconifyIcon('button')  // true
+
+// 检查是否为本地 SVG sprite 图标
+const isSvg = isSvgIcon('dingtalk')        // true
 
 // 获取 Iconify 图标的完整值
-const value = getIconifyValue('button')  // 'i-fluent:button-16-regular'
+const value = getIconifyValue('button')    // 'i-fluent:button-16-regular'
 
 // 获取图标名称
-const name = getIconName('user')  // '用户'
+const name = getIconName('user')           // '用户'
 
 // 搜索图标
-const results = searchIcons('user')  // 返回匹配的图标数组
+const results = searchIcons('user')        // 返回匹配的图标数组
 
-// 访问图标列表
-console.log(ALL_ICONS.length)       // 817
-console.log(ICONFONT_ICONS.length)  // 644
-console.log(ICONIFY_ICONS.length)   // 173
+// 访问图标列表(数量随项目实际资源动态变化)
+console.log(ALL_ICONS.length)
+console.log(ICONFONT_ICONS.length)
+console.log(ICONIFY_ICONS.length)
+console.log(SVG_ICONS.length)              // 本地 svg/ 目录扫描得到
 ```
 
 ### 使用类型检查
@@ -570,6 +609,13 @@ function isIconfontIcon(code: string): boolean
 function isIconifyIcon(code: string): boolean
 
 /**
+ * 检查是否为本地 SVG sprite 图标
+ * @param code 图标代码(对应 src/assets/icons/svg/<code>.svg 文件名)
+ * @returns 是否为本地 SVG 图标
+ */
+function isSvgIcon(code: string): boolean
+
+/**
  * 获取 Iconify 图标的完整值
  * @param code 图标代码
  * @returns Iconify 图标值,如 'i-fluent:button-16-regular'
@@ -593,16 +639,37 @@ function searchIcons(query: string): IconItem[]
 /**
  * 图标列表常量
  */
-const ALL_ICONS: IconItem[]       // 所有图标 (817个)
-const ICONFONT_ICONS: IconItem[]  // Iconfont 图标 (644个)
-const ICONIFY_ICONS: IconItem[]   // Iconify 图标 (173个)
+const ALL_ICONS: IconItem[]       // 所有图标(三种来源合并)
+const ICONFONT_ICONS: IconItem[]  // Iconfont 图标
+const ICONIFY_ICONS: IconItem[]   // Iconify 图标
+const SVG_ICONS: IconItem[]       // 本地 SVG sprite 图标(扫描 src/assets/icons/svg/*.svg)
 ```
 
 ## 自动化类型生成
 
 ### Vite 插件配置
 
-项目使用自定义 Vite 插件自动生成图标类型定义:
+项目使用两个协同的 Vite 插件:
+
+1. **`createSvgIcon`** - 基于 `vite-plugin-svg-icons-ng`,扫描 `src/assets/icons/svg/*.svg` 并合并为 SVG sprite,运行时通过 `<use xlink:href="#icon-xxx">` 引用,sprite 注入位置 `body-first` 避免被 App 挂载前的空 DOM 覆盖
+2. **`createIconfontTypes`** - 自定义插件,扫描三个图标资源目录并自动生成 TypeScript 类型定义,包含 `SVG_ICONS` 列表与 `isSvgIcon()` 类型守卫
+
+```typescript
+// vite/plugins/svg-icon.ts
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons-ng'
+import path from 'node:path'
+
+export default () => {
+  return createSvgIconsPlugin({
+    // 仅扫描 svg/ 根目录,避免误收 custom/iconify 等图标的残留 svg
+    iconDirs: [path.resolve(process.cwd(), 'src/assets/icons/svg')],
+    // symbolId 规则:去掉 [dir],只用文件名(与移动端 SOCIAL_CONFIGS 的 icon 字段对齐)
+    symbolId: 'icon-[name]',
+    // 注入到 body 之前,避免被 App 挂载前的空 DOM 覆盖
+    inject: 'body-first'
+  })
+}
+```
 
 ```typescript
 // vite/plugins/iconfont-types.ts
@@ -613,13 +680,13 @@ export function createIconfontTypes(): Plugin {
     name: 'vite-plugin-iconfont-types',
 
     buildStart() {
-      // 扫描 src/assets/icons 目录
-      // 解析 iconfont.json 和 preset.json
-      // 生成 src/types/icons.d.ts
+      // 扫描 src/assets/icons 三个目录:system / iconify / svg
+      // 解析 iconfont.json、preset.json 与 svg/*.svg 文件名
+      // 生成 src/types/icons.d.ts(含 SVG_ICONS、isSvgIcon)
     },
 
     handleHotUpdate({ file }) {
-      // 监听图标文件变化,自动重新生成类型
+      // 监听图标资源变化,新增/删除/修改 .svg 自动重建类型
       if (file.includes('assets/icons')) {
         this.buildStart()
       }
@@ -638,8 +705,13 @@ src/assets/icons/
 │   ├── iconfont.ttf          # 字体文件
 │   ├── iconfont.woff         # 字体文件
 │   └── iconfont.woff2        # 字体文件
-└── iconify/                   # Iconify 预设图标
-    └── preset.json           # 预设图标配置
+├── iconify/                   # Iconify 预设图标
+│   └── preset.json           # 预设图标配置
+└── svg/                       # 本地静态 SVG 源
+    ├── README.md             # 使用说明
+    ├── dingtalk.svg          # 钉钉 logo 示例
+    ├── maxkey.svg            # MaxKey logo 示例
+    └── topiam.svg            # TopIAM logo 示例
 ```
 
 ### 添加新图标
@@ -668,6 +740,13 @@ src/assets/icons/
 ```
 
 3. 运行 `pnpm dev` 自动生成类型
+
+**添加本地 SVG sprite 图标:**
+
+1. 把 `xxx.svg` 文件放到 `src/assets/icons/svg/` 根目录(子目录中的 SVG 不会被收集,避免误收 iconfont/iconify 残留 svg)
+2. 文件名即 `code`,例如 `feishu.svg` → `<Icon code="feishu" />`
+3. SVG 内使用 `fill="currentColor"` 或 `stroke="currentColor"` 才能响应 `color` 属性变色
+4. HMR 自动监听新增/修改,无需重启 dev server,类型也会同步刷新
 
 ## 主题定制
 
