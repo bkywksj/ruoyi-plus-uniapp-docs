@@ -251,7 +251,7 @@ highlights:
 <a href="https://ai-workstation.ruoyi.plus/" target="_blank" rel="noopener noreferrer" class="product-preview-card">
   <div style="font-size: 40px; margin-bottom: 12px;">🤖</div>
   <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">AI 全能工作站</h4>
-  <p style="margin: 0 0 8px; font-size: 13px; color: #0B6EF0; font-weight: 500;">一句话搞定一切 · 56个模块 · 900 AI技能</p>
+  <p style="margin: 0 0 8px; font-size: 13px; color: #0B6EF0; font-weight: 500;">一句话搞定一切 · 58个模块 · 1134 AI技能</p>
   <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">八大领域全覆盖 | 智能路由 | 42集视频教程</p>
 </a>
 
