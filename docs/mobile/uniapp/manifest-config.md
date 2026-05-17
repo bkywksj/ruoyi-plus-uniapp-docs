@@ -185,7 +185,9 @@ location / {
 {
   "app-plus": {
     "usingComponents": true,
+    "nvueCompiler": "uni-app",
     "nvueStyleCompiler": "uni-app",
+    "nvueLaunchMode": "fast",
     "compilerVersion": 3,
     "splashscreen": {
       "alwaysShowBeforeRender": true,
@@ -220,6 +222,90 @@ onLaunch(() => {
   })
 })
 ```
+
+### NVUE 原生渲染配置
+
+NVUE（Native Vue）是 uni-app 提供的原生渲染方案，基于 Weex 引擎将 Vue 模板编译为原生 UI 控件，绕过 WebView 直接在 iOS/Android 上以原生组件呈现。在长列表滚动、复杂动画、大量绘制场景中性能显著优于 vue 页面，适用于首页、商品流、视频流、地图、原生导航栏等关键路径。
+
+`plus-app` 子项目在 `manifest.json` 的 `app-plus` 段开启了完整的 NVUE 编译配置：
+
+```json
+{
+  "app-plus": {
+    "usingComponents": true,
+    "nvueCompiler": "uni-app",
+    "nvueStyleCompiler": "uni-app",
+    "nvueLaunchMode": "fast",
+    "compilerVersion": 3
+  }
+}
+```
+
+**核心配置项:**
+
+| 配置项 | 类型 | 可选值 | 说明 |
+|--------|------|--------|------|
+| `nvueCompiler` | string | `uni-app` / `weex` | NVUE 编译器。`uni-app` 编译器支持完整 Vue 语法、组件、生命周期；`weex` 编译器仅支持子集，已不推荐 |
+| `nvueStyleCompiler` | string | `uni-app` / `weex` | NVUE 样式编译器。`uni-app` 支持 CSS 单位 `rpx` 与百分比；`weex` 仅支持 `px` 与 `wx` |
+| `nvueLaunchMode` | string | `fast` / `normal` | 启动模式。`fast` 在 App 启动时预加载 NVUE 引擎，首屏冷启动更快；`normal` 按需加载，包体更小但首屏稍慢 |
+| `compilerVersion` | number | `3` / `2` | uni-app 编译器主版本，`3` 即 Vue 3 模式 |
+
+**配置组合推荐:**
+
+- **推荐组合（plus-app 当前采用）**：`uni-app` 编译器 + `uni-app` 样式编译器 + `fast` 启动模式 + 编译器 v3。该组合可以让 NVUE 页面完全使用 Vue 3 语法（`<script setup>`、`ref`、`reactive`），并与 vue 页面共享组件库 / Composables / Pinia 状态，无需为 NVUE 单独维护代码分支。
+- **不推荐**：`weex` 编译器组合。已不再迭代，遇到 Vue 3 新特性会直接编译失败。
+
+**NVUE 页面识别:**
+
+NVUE 页面以 `.nvue` 为扩展名，与 `.vue` 页面共存于 `pages/` 目录。`pages.json` 中通过文件后缀自动识别：
+
+```json
+{
+  "pages": [
+    { "path": "pages/index/index" },
+    { "path": "pages/feed/list", "style": { "navigationStyle": "custom" } }
+  ]
+}
+```
+
+`pages/feed/list.nvue` 将被识别为 NVUE 页面，使用原生渲染；`pages/index/index.vue` 仍走 WebView 渲染。两者通过 `uni.navigateTo` 互相跳转时，平台自动衔接渲染层。
+
+**NVUE 限制与替代:**
+
+| 限制项 | vue 页面 | NVUE 页面 | 替代方案 |
+|--------|----------|-----------|----------|
+| `<div>` / `<span>` / `<p>` | ✅ 支持 | ❌ 不支持 | 使用 `<view>` / `<text>` |
+| CSS 选择器 | ✅ 全部 | ⚠️ 仅类选择器 | 拆分类名，避免后代选择器 |
+| `flex` 布局 | ✅ 自由组合 | ⚠️ 默认 `flex-direction: column` | 显式声明 `flex-direction` |
+| `position: fixed` | ✅ 支持 | ❌ 不支持 | 使用 `<cover-view>` 或独立组件 |
+| 浏览器 API（`window` / `document`） | ✅ 支持 | ❌ 不支持 | 使用 `uni.*` API 或原生模块 |
+| WD UI 组件 | ✅ 完全支持 | ⚠️ 部分支持 | 优先使用 WD 原生兼容组件，复杂组件保留在 vue 页面 |
+
+**性能对照:**
+
+| 场景 | vue 页面（WebView） | NVUE 页面（原生） |
+|------|---------------------|-------------------|
+| 长列表滚动（1000+ item） | 30-45 FPS，滑动卡顿明显 | 55-60 FPS，平滑 |
+| 大图片滑动（视频流） | 内存占用高，易触发回收 | 内存可控，原生图片缓存 |
+| 复杂动画 | 主线程阻塞 | GPU 加速，独立渲染线程 |
+| 冷启动首屏 | 较慢（含 WebView 初始化） | 快（`fast` 模式预热引擎） |
+| 包体增量 | 基础 | 增加约 2-3 MB（NVUE 引擎） |
+
+**接入步骤:**
+
+1. 确认 `manifest.json` 的 `app-plus` 段已配置 `nvueCompiler: "uni-app"` 与 `nvueLaunchMode: "fast"`
+2. 将关键路径页面（首页、商品流、视频流）的扩展名从 `.vue` 改为 `.nvue`
+3. 替换不支持的标签：`<div>` → `<view>`，`<span>` → `<text>`
+4. 检查样式选择器，将后代/嵌套选择器拆分为单一类
+5. 真机预览验证（`pnpm dev:app` 或 HBuilderX 运行到手机），关注 Android / iOS 双端表现
+6. 性能监控接入 `uni.requestPerformance` 或 `uni.getPerformance` API，记录关键指标
+
+**注意事项:**
+
+- NVUE 仅在 App 端生效。H5、小程序端会回退为普通 vue 渲染（小程序）或编译失败（H5），需要做条件编译
+- 使用条件编译 `#ifdef APP-NVUE` 包裹原生平台专属逻辑，避免 H5 端报错
+- 自定义组件如果需要在 NVUE 中使用，组件本身也必须是 `.nvue` 或纯 JS 组件，不能引用浏览器 API
+- 调试时注意 NVUE 不支持 Chrome DevTools，需要使用 HBuilderX 的"运行到 App 真机"调试
 
 ### Android 配置
 
