@@ -161,6 +161,7 @@ export default defineConfig({
                                 { text: '快速开始', link: '/backend/common/langchain4j/quick-start' },
                                 { text: '模型工厂', link: '/backend/common/langchain4j/model-factory' },
                                 { text: '聊天服务', link: '/backend/common/langchain4j/chat-service' },
+                                { text: '深度思考 ⭐', link: '/backend/common/langchain4j/thinking' },
                                 { text: 'RAG检索增强', link: '/backend/common/langchain4j/rag' },
                                 { text: '向量存储', link: '/backend/common/langchain4j/vector-store' },
                                 { text: 'WebSocket流式对话', link: '/backend/common/langchain4j/websocket' }
