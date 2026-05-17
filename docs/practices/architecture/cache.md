@@ -512,7 +512,7 @@ public class SysUserController {
 
 ### 缓存Key设计
 
-```
+```text
 # 格式: {业务模块}:{实体}:{ID}:{属性}
 user:info:1001                    # 用户信息
 user:permissions:1001             # 用户权限

@@ -17,7 +17,7 @@ RuoYi-Plus-UI 提供了一套实用的 SCSS 混合器（Mixins）函数集，封
 
 Mixins 定义在 `src/assets/styles/abstracts/_mixins.scss` 文件中：
 
-```
+```text
 src/assets/styles/
 ├── abstracts/
 │   ├── _variables.scss    # 变量定义

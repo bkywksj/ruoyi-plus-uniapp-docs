@@ -18,7 +18,7 @@ RuoYi-Plus 框架基于 FastExcel（原 EasyExcel）封装了功能完善的 Exc
 
 ### 模块结构
 
-```
+```text
 ruoyi-common-excel/
 ├── annotation/                # 注解定义
 │   ├── ExcelDictFormat.java  # 字典格式化注解

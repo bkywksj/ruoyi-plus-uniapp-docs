@@ -51,7 +51,7 @@ export default async ({ command, mode, env }) => {
 
 在 H5 开发模式下，访问以下地址触发代码生成：
 
-```
+```text
 http://localhost:端口/__openapi_generate
 ```
 
@@ -134,7 +134,7 @@ output: 'src/api'
 
 生成的文件会按模块分组存放：
 
-```
+```text
 src/api/
 ├── app/
 │   ├── home/
@@ -327,7 +327,7 @@ createOpenApiPlugin({
 
 插件根据 API 路径自动组织目录结构：
 
-```
+```text
 src/api/
 ├── app/                      # /app/* 路径
 │   ├── home/                 # /app/home/*
@@ -490,7 +490,7 @@ export const deleteAds = (ids: string | number | Array<string | number>): Result
 
 ### 更新流程
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                     文件更新决策                          │
 ├─────────────────────────────────────────────────────────┤
@@ -516,7 +516,7 @@ export const deleteAds = (ids: string | number | Array<string | number>): Result
 
 直接创建新文件：
 
-```
+```text
 ✍️  生成类型文件: app/home/homeTypes.ts (文件不存在，创建新文件)
 ✍️  生成 API 文件: app/home/homeApi.ts (3 个函数, 文件不存在，创建新文件)
 ```
@@ -525,7 +525,7 @@ export const deleteAds = (ids: string | number | Array<string | number>): Result
 
 跳过生成，避免不必要的文件写入：
 
-```
+```text
 ⏭️  跳过生成: app/home/homeTypes.ts (文件内容相同，跳过生成)
 ⏭️  跳过生成: app/home/homeApi.ts (文件内容相同，跳过生成)
 ```
@@ -534,7 +534,7 @@ export const deleteAds = (ids: string | number | Array<string | number>): Result
 
 生成 `.generated.ts` 备份文件，保护用户的手动修改：
 
-```
+```text
 ✍️  生成类型文件: app/home/homeTypes.generated.ts (文件内容已变更，生成 .generated.ts)
 ✍️  生成 API 文件: app/home/homeApi.generated.ts (3 个函数, 文件内容已变更，生成 .generated.ts)
 ```
@@ -566,7 +566,7 @@ function getFileHash(filePath: string): string {
 
 插件运行时会输出详细的日志信息：
 
-```
+```text
 🚀 OpenAPI 代码生成开始...
 📄 文档地址: http://127.0.0.1:5500/v3/api-docs/business
 📁 输出目录: src/api

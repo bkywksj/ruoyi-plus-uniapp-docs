@@ -20,7 +20,7 @@ RuoYi-Plus 框架基于 Sa-Token 实现了完善的权限控制体系,提供了�
 
 框架采用标准的 RBAC(Role-Based Access Control)权限模型:
 
-```
+```text
 用户(User) ←→ 角色(Role) ←→ 菜单/权限(Menu/Permission)
     │              │                    │
     │              │                    │
@@ -46,7 +46,7 @@ sys_role_menu ──────────────────────
 
 ### 权限数据流
 
-```
+```text
 1. 用户登录
    ↓
 2. 查询用户角色(sys_user_role)
@@ -453,7 +453,7 @@ String openid = LoginHelper.getOpenid();
 
 权限标识采用三段式命名: `模块:功能:操作`
 
-```
+```text
 system:user:query    # 系统模块-用户功能-查询操作
 system:user:add      # 系统模块-用户功能-新增操作
 system:user:edit     # 系统模块-用户功能-编辑操作
@@ -479,7 +479,7 @@ system:user:import   # 系统模块-用户功能-导入操作
 
 **系统管理模块:**
 
-```
+```text
 system:user:query     # 用户查询
 system:user:add       # 用户新增
 system:user:edit      # 用户编辑
@@ -501,7 +501,7 @@ system:menu:delete    # 菜单删除
 
 **业务模块:**
 
-```
+```text
 mall:goods:query      # 商品查询
 mall:goods:add        # 商品新增
 mall:goods:edit       # 商品编辑

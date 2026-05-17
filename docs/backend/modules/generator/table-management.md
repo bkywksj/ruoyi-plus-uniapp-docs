@@ -42,7 +42,7 @@ private static final String[] TABLE_IGNORE = {
 
 #### 3.3 搜索过滤
 支持按表名和表注释进行模糊搜索：
-```
+```text
 搜索条件：user
 匹配结果：
 - demo_user (演示用户表)
@@ -54,7 +54,7 @@ private static final String[] TABLE_IGNORE = {
 
 可以同时选择多个表进行批量导入：
 
-```
+```text
 1. 勾选要导入的表（支持全选/反选）
 2. 点击"确定"按钮
 3. 系统自动分析表结构并生成基础配置
@@ -86,7 +86,7 @@ interface SearchParams {
 ```
 
 **搜索示例：**
-```
+```text
 全局搜索："用户" 
 匹配结果：
 - demo_user (演示用户表)
@@ -99,21 +99,21 @@ interface SearchParams {
 支持的批量操作包括：
 
 #### 3.1 批量删除
-```
+```text
 1. 勾选要删除的表
 2. 点击"删除"按钮
 3. 确认删除（会同时删除表和字段配置）
 ```
 
 #### 3.2 批量生成代码
-```
+```text
 1. 勾选要生成代码的表
 2. 点击"生成代码"按钮
 3. 下载包含所有表代码的ZIP包
 ```
 
 #### 3.3 批量导出配置
-```
+```text
 1. 勾选要导出的表
 2. 点击"导出"按钮
 3. 下载表配置的Excel文件
@@ -135,7 +135,7 @@ interface BasicInfo {
 ```
 
 **配置示例：**
-```
+```text
 表名: demo_user
 表描述: 演示用户管理
 实体类名称: DemoUser
@@ -161,7 +161,7 @@ interface GenerateInfo {
 ```
 
 **配置示例：**
-```
+```text
 生成包路径: plus.ruoyi.business.demo
 生成模块名: demo
 生成业务名: demoUser
@@ -190,13 +190,13 @@ interface OtherOptions {
 **配置选项：**
 
 #### 3.1 生成方式
-```
+```text
 选项1: zip压缩包 - 生成代码打包下载
 选项2: 自定义路径 - 生成到指定目录
 ```
 
 #### 3.2 生成路径
-```
+```text
 当选择"自定义路径"时需要指定：
 - 绝对路径: /opt/code/generate/
 - 相对路径: ./generate/
@@ -204,7 +204,7 @@ interface OtherOptions {
 ```
 
 #### 3.3 上级菜单选择
-```
+```text
 系统工具 (ID: 3)
 ├── 代码生成 (ID: 116)
 ├── 系统接口 (ID: 3)
@@ -227,7 +227,7 @@ interface TreeConfig {
 ```
 
 **配置示例（部门表）：**
-```
+```text
 树编码字段: deptId
 树父编码字段: parentId  
 树名称字段: deptName
@@ -251,7 +251,7 @@ interface SubTableConfig {
 ```
 
 **配置示例（订单-明细）：**
-```
+```text
 子表名称: order_detail
 子表外键字段名: order_id
 ```
@@ -314,7 +314,7 @@ interface SubTableValidation {
 
 当数据库表结构发生变化时，可以使用同步功能更新配置：
 
-```
+```text
 操作步骤：
 1. 在表列表中点击"同步"按钮
 2. 系统对比数据库当前结构与已配置结构
@@ -373,7 +373,7 @@ List<GenTableColumn> delColumns = StreamUtils.filter(
 
 可以将表配置导出为Excel文件，便于备份和迁移：
 
-```
+```text
 导出内容包括：
 - 表基本信息
 - 字段详细配置
@@ -386,7 +386,7 @@ List<GenTableColumn> delColumns = StreamUtils.filter(
 
 支持从Excel文件导入表配置：
 
-```
+```text
 导入步骤：
 1. 下载配置模板
 2. 填写表和字段配置信息

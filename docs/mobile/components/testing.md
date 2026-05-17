@@ -760,7 +760,7 @@ export default defineConfig({
 
 ### 1. 测试文件组织
 
-```
+```text
 src/
 ├── components/
 │   ├── Button/

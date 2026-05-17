@@ -981,7 +981,7 @@ logging:
 
 日志输出示例:
 
-```
+```text
 Creating new transaction with name [xxx.service.impl.UserServiceImpl.createUser]: PROPAGATION_REQUIRED,ISOLATION_DEFAULT,timeout_-1,readOnly_false
 Acquired Connection [HikariProxyConnection@123456] for JDBC transaction
 Switching JDBC Connection [HikariProxyConnection@123456] to manual commit

@@ -14,7 +14,7 @@ RuoYi-Plus-UniApp 框架采用 TypeScript 5.x 作为开发语言，通过完善�
 
 ## 配置文件结构
 
-```
+```text
 📁 plus-ui/
 ├── 📄 tsconfig.json           # 主要 TypeScript 配置文件
 ├── 📁 src/types/              # 类型定义目录

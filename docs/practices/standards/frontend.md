@@ -34,7 +34,7 @@ RuoYi-Plus-UniApp 前端项目基于 Vue 3 + TypeScript + Element Plus 技术栈
 
 ### 目录结构
 
-```
+```text
 plus-ui/
 ├── .vscode/                    # VS Code 配置
 ├── bin/                        # 脚本文件
@@ -94,7 +94,7 @@ plus-ui/
 2. **连字符分隔**: 多个单词使用连字符分隔
 3. **语义化**: 目录名称应清晰表达其用途
 
-```
+```text
 ✅ 正确
 src/components/
 src/views/system/
@@ -110,7 +110,7 @@ src/api/Business_Base/   # 不应使用下划线
 
 API 目录按业务模块组织,每个模块包含接口文件和类型定义文件:
 
-```
+```text
 src/api/
 ├── system/                    # 系统模块
 │   ├── auth/                  # 认证相关
@@ -492,7 +492,7 @@ defineExpose({
 
 #### 文件命名
 
-```
+```text
 ✅ 正确
 AAiAssistant.vue          # 业务组件（A 前缀）
 ASearchForm.vue           # 业务组件
@@ -1023,7 +1023,7 @@ const { sys_user_gender, sys_enable_status, dictLoading } = useDict(
 
 ### 文件组织
 
-```
+```text
 src/utils/
 ├── boolean.ts      # 布尔值处理
 ├── cache.ts        # 缓存工具
@@ -1090,7 +1090,7 @@ export const formatFileSize = (bytes: number): string => {
 
 ### 全局样式结构
 
-```
+```text
 src/assets/styles/
 ├── main.scss           # 样式入口
 ├── variables.scss      # CSS 变量
@@ -1264,7 +1264,7 @@ const handleScroll = useThrottleFn(() => {
 
 **A:** 对于复杂组件,建议拆分为多个子组件和组合式函数:
 
-```
+```text
 components/UserManagement/
 ├── index.vue           # 主组件
 ├── UserTable.vue       # 表格组件

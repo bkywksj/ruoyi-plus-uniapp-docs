@@ -214,7 +214,7 @@ public enum BusinessStatusEnum {
 
 ### 流程实例状态流转图
 
-```
+```text
                     ┌─────────────┐
                     │   草稿      │
                     │   (draft)   │
@@ -606,7 +606,7 @@ public class FlowNode {
 - 根据条件表达式判断
 - 支持 SpEL 表达式
 
-```
+```text
           ┌─────────────┐
           │   排他网关   │
           └──────┬──────┘
@@ -629,7 +629,7 @@ public class FlowNode {
 - 等待所有分支完成
 - 支持分支和汇聚
 
-```
+```text
                     ┌─────────────┐
                     │   并行分支   │
                     └──────┬──────┘
@@ -1514,7 +1514,7 @@ public class FlowHisTaskVo {
 
 ### 表关系图
 
-```
+```text
 flow_definition (流程定义)
     │
     ├── flow_node (节点定义)

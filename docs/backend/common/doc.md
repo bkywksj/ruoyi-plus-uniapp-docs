@@ -15,7 +15,7 @@
 
 ## 模块架构
 
-```
+```text
 ruoyi-common-doc
 ├── config/
 │   └── DocAutoConfiguration.java      # 自动配置类
@@ -27,7 +27,7 @@ ruoyi-common-doc
 
 ### 架构设计图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           SpringDoc 接口文档模块架构                          │
 ├─────────────────────────────────────────────────────────────────────────────┤
@@ -248,7 +248,7 @@ public static class PlusPaths extends Paths {
 
 **处理流程：**
 
-```
+```text
 原始路径: /user/list
     │
     ▼

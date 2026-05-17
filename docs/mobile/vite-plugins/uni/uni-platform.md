@@ -35,7 +35,7 @@ export default async ({ command, mode, env }) => {
 
 通过在文件名中添加平台后缀来创建平台特定文件：
 
-```
+```text
 src/
 ├── components/
 │   ├── MyButton.vue           # 通用实现
@@ -385,7 +385,7 @@ const handleWxPay = async () => {
 
 当存在多个同名文件时，插件按以下优先级选择：
 
-```
+```text
 1. 精确平台匹配  →  MyComponent.mp-weixin.vue
 2. 通用实现      →  MyComponent.vue
 ```
@@ -405,7 +405,7 @@ const handleWxPay = async () => {
 
 ### 按功能组织
 
-```
+```text
 src/
 ├── components/
 │   ├── common/           # 通用组件
@@ -433,7 +433,7 @@ src/
 
 ### 按平台组织
 
-```
+```text
 src/
 ├── components/
 │   ├── Button.vue
@@ -482,7 +482,7 @@ console.log('微信小程序')
 
 适用于整体实现差异较大的场景：
 
-```
+```text
 # 当整个组件逻辑都不同时，使用平台文件更清晰
 MyComponent.vue          # 通用
 MyComponent.h5.vue       # H5 完全不同的实现
@@ -502,7 +502,7 @@ MyComponent.mp-weixin.vue # 微信完全不同的实现
 
 ## 工作原理
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                  uni-platform 工作流程                        │
 ├─────────────────────────────────────────────────────────────┤
@@ -685,7 +685,7 @@ import Button from '@/components/Button.mp-weixin.vue'
 
 **解决方案：**
 
-```
+```text
 # 必须有通用文件作为降级
 Button.vue           # ✅ 必需的通用实现
 Button.h5.vue        # ✅ H5 专属

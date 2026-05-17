@@ -16,7 +16,7 @@
 
 ### 生命周期图示
 
-```
+```text
 创建阶段
     │
     ▼
@@ -698,7 +698,7 @@ const reportError = (error: string) => {
 
 ### 页面首次加载
 
-```
+```text
 App onLaunch
     ↓
 App onShow
@@ -716,7 +716,7 @@ Page onReady
 
 ### 页面跳转
 
-```
+```text
 当前页面 onHide
     ↓
 新页面 setup
@@ -732,7 +732,7 @@ Page onReady
 
 ### 页面返回
 
-```
+```text
 当前页面 onUnload
     ↓
 当前页面 onUnmounted
@@ -742,7 +742,7 @@ Page onReady
 
 ### 应用切到后台
 
-```
+```text
 当前页面 onHide
     ↓
 App onHide
@@ -750,7 +750,7 @@ App onHide
 
 ### 应用切回前台
 
-```
+```text
 App onShow
     ↓
 当前页面 onShow
@@ -940,7 +940,7 @@ onUnmounted(() => {
 
 ### 3. 子组件的生命周期执行顺序？
 
-```
+```text
 父组件 setup
     ↓
 父组件 onBeforeMount

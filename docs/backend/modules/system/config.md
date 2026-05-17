@@ -765,7 +765,7 @@ public <T> T getConfigObject(String configKey, Class<T> clazz) {
 - `module.`: 模块级配置前缀
 
 **示例命名**:
-```
+```text
 system.account.register-enabled     # 注册开关
 system.captcha.enabled             # 验证码开关
 business.order.auto-confirm        # 订单自动确认

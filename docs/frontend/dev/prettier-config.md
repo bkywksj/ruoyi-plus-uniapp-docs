@@ -6,7 +6,7 @@
 
 ### 文件位置
 
-```
+```text
 plus-ui/
 ├── .prettierrc.js     # Prettier 配置
 └── .prettierignore    # 忽略文件配置
@@ -295,7 +295,7 @@ const count = ref(0)
 
 **自动识别换行符**
 
-```
+```text
 LF (\n)    - Linux/Mac
 CRLF (\r\n) - Windows
 CR (\r)    - 旧 Mac
@@ -315,7 +315,7 @@ CR (\r)    - 旧 Mac
 
 ### .prettierignore
 
-```
+```text
 # 构建输出
 /dist/*
 
@@ -509,7 +509,7 @@ export default defineConfigWithVueTs(
 
 ### 工作流程
 
-```
+```text
 编写代码 → ESLint 检查语法 → Prettier 格式化 → 提交代码
 ```
 
@@ -1677,7 +1677,7 @@ $theme-colors: (
 特殊格式的代码块
   保持原有缩进
     不被格式化
-```
+```text
 <!-- prettier-ignore-end -->
 ```
 

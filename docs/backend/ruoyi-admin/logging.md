@@ -61,7 +61,7 @@ ruoyi-admin 使用 Logback 作为日志框架，提供了完善的日志管理�
 | 默认 | 日志消息 | 实际日志内容 |
 
 **示例输出：**
-```
+```text
 2025-01-15 10:30:45 [req-123456] [http-nio-5503-exec-1] INFO  p.r.s.u.SysUserService
  - 用户登录成功: admin
 ```
@@ -271,7 +271,7 @@ SQL执行日志，用于数据库性能分析。
 
 ### 生产环境日志目录结构
 
-```
+```text
 logs/
 ├── sys-console.log              # 当前控制台日志
 ├── sys-console.2025-01-14.log   # 昨天的控制台日志
@@ -451,7 +451,7 @@ MDC.remove("requestId");
 
 同一个请求的日志会有相同的requestId：
 
-```
+```text
 2025-01-15 10:30:45 [req-abc123] [http-nio-5503-exec-1] INFO  p.r.c.AuthController - 开始登录验证
 2025-01-15 10:30:45 [req-abc123] [http-nio-5503-exec-1] DEBUG p.r.s.SysUserService - 查询用户: admin
 2025-01-15 10:30:46 [req-abc123] [http-nio-5503-exec-1] INFO  p.r.c.AuthController - 登录成功

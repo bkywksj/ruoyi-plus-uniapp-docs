@@ -769,7 +769,7 @@ public class FlowVariableBo {
 
 ### 状态转换规则
 
-```
+```text
                     ┌─────────────┐
                     │   草稿      │
                     │   (draft)   │

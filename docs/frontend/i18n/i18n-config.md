@@ -23,7 +23,7 @@ RuoYi-Plus-UniApp 前端项目采用 Vue I18n 作为国际化解决方案,提供
 
 国际化相关文件组织在 `src/locales/` 目录下:
 
-```
+```text
 src/locales/
 ├── i18n.ts           # i18n 实例配置和导出
 ├── zh_CN.ts          # 中文语言包

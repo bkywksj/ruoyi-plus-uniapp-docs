@@ -66,7 +66,7 @@ ruoyi-common-tenant/
 
 ### 架构图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                        Application Layer                         │
 ├─────────────────────────────────────────────────────────────────┤
@@ -286,7 +286,7 @@ public static String getTenantId() {
 
 ### 租户ID获取优先级
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                  getTenantId() 获取优先级                    │
 ├─────────────────────────────────────────────────────────────┤
@@ -601,7 +601,7 @@ public class TenantKeyPrefixHandler extends KeyPrefixHandler {
 
 **Redis键转换示例**：
 
-```
+```text
 原始键名              转换后键名
 user:info:123    →   000000:user:info:123
 order:detail:456 →   tenant123:order:detail:456
@@ -706,7 +706,7 @@ public class TenantSaTokenDao extends PlusSaTokenDao {
 
 **认证数据存储示例**：
 
-```
+```text
 原始键名                    存储键名
 satoken:login:token:xxx  →  global:satoken:login:token:xxx
 satoken:login:session:1  →  global:satoken:login:session:1

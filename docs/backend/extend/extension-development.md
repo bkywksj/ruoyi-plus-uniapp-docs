@@ -19,7 +19,7 @@ RuoYi-Plus-UniApp 扩展模块(`ruoyi-extend`)提供系统核心功能之外的�
 
 ### 目录结构
 
-```
+```text
 ruoyi-extend/
 ├── pom.xml
 ├── ruoyi-monitor-admin/        # 应用监控服务

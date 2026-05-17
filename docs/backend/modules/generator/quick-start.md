@@ -102,7 +102,7 @@ INSERT INTO `demo_user` (`username`, `nickname`, `email`, `phone`, `gender`, `st
 
 在弹出的对话框中选择数据源（默认为master）：
 
-```
+```text
 数据源: [master ▼]
 ```
 
@@ -124,7 +124,7 @@ INSERT INTO `demo_user` (`username`, `nickname`, `email`, `phone`, `gender`, `st
 
 #### 4.1 基本信息配置
 
-```
+```text
 表名称: demo_user
 表描述: 演示用户表
 实体类名称: DemoUser
@@ -133,7 +133,7 @@ INSERT INTO `demo_user` (`username`, `nickname`, `email`, `phone`, `gender`, `st
 
 #### 4.2 生成信息配置
 
-```
+```text
 生成包路径: plus.ruoyi.business.demo
 生成模块名: demo
 生成业务名: demoUser
@@ -142,7 +142,7 @@ INSERT INTO `demo_user` (`username`, `nickname`, `email`, `phone`, `gender`, `st
 
 #### 4.3 其他选项
 
-```
+```text
 生成代码方式: zip压缩包
 上级菜单: 系统工具
 ```
@@ -205,7 +205,7 @@ INSERT INTO `demo_user` (`username`, `nickname`, `email`, `phone`, `gender`, `st
 
 解压后的目录结构如下：
 
-```
+```text
 ruoyi/
 ├── main/java/plus/ruoyi/business/demo/
 │   ├── controller/
@@ -387,7 +387,7 @@ DELETE /demo/demoUser/deleteDemoUsers/1
 
 可以同时选择多个表进行批量生成：
 
-```
+```text
 1. 导入多个表
 2. 在列表中勾选多个表
 3. 点击批量生成代码
@@ -398,7 +398,7 @@ DELETE /demo/demoUser/deleteDemoUsers/1
 
 可以设置自定义的代码生成路径：
 
-```
+```text
 生成代码方式: 自定义路径
 生成路径: /your/custom/path/
 ```
@@ -407,7 +407,7 @@ DELETE /demo/demoUser/deleteDemoUsers/1
 
 可以修改Velocity模板来定制生成的代码风格：
 
-```
+```text
 src/main/resources/vm/java/controller.java.vm
 src/main/resources/vm/vue/index.vue.vm
 ```
@@ -492,7 +492,7 @@ gen:
 
 为每个表分别配置生成参数：
 
-```
+```text
 demo_user:
   - 生成包路径: plus.ruoyi.business.demo
   - 生成模块名: demo
@@ -519,7 +519,7 @@ GET /tool/gen/batchGenerateCodes?tableIdStr=1,2,3,4
 
 浏览器会下载一个包含所有表代码的ZIP压缩包：
 
-```
+```text
 ruoyi.zip
 ├── demo_user/
 │   ├── java/
@@ -543,7 +543,7 @@ ruoyi.zip
 
 将相关的表放在一起批量生成：
 
-```
+```text
 用户模块:
   - sys_user
   - sys_user_role
@@ -559,7 +559,7 @@ ruoyi.zip
 
 确保所有表遵循统一的命名规范：
 
-```
+```text
 表前缀: demo_
 字段前缀: 无
 
@@ -576,7 +576,7 @@ ruoyi.zip
 
 批量生成前，检查配置是否一致：
 
-```
+```text
 ✓ 包路径统一: plus.ruoyi.business.demo
 ✓ 模块名统一: demo
 ✓ 作者统一: 抓蛙师
@@ -723,7 +723,7 @@ ${packageName}.${moduleName}
 
 生成器使用Velocity模板引擎，可以自定义模板：
 
-```
+```text
 ruoyi-modules/ruoyi-generator/src/main/resources/vm/
 ├── java/
 │   ├── controller.java.vm      # 控制器模板
@@ -843,7 +843,7 @@ VALUES
 
 适用于一对多关系的表结构：
 
-```
+```text
 订单表 (demo_order)          1:N        订单明细表 (demo_order_item)
 ├── id                       ←──────── ├── id
 ├── order_no                           ├── order_id (外键)
@@ -884,7 +884,7 @@ CREATE TABLE `demo_order_item` (
 
 在主表(demo_order)的编辑页面：
 
-```
+```text
 生成模板: 主子表
 子表名称: demo_order_item
 子表外键: order_id
@@ -894,7 +894,7 @@ CREATE TABLE `demo_order_item` (
 
 在子表(demo_order_item)的编辑页面：
 
-```
+```text
 关联主表: demo_order
 外键字段: order_id
 关联主键: id
@@ -942,7 +942,7 @@ public boolean addDemoOrder(DemoOrderBo bo) {
 
 适用于层级结构的表：
 
-```
+```text
 分类表 (demo_category)
 ├── id              主键
 ├── parent_id       父级ID
@@ -980,7 +980,7 @@ INSERT INTO `demo_category` VALUES
 
 在编辑页面配置：
 
-```
+```text
 生成模板: 树表
 树编码字段: id
 树父编码字段: parent_id
@@ -1038,7 +1038,7 @@ private void recursionFn(List<DemoCategory> list, DemoCategory t) {
 
 ### 错误1: 生成代码编译错误 - 包名冲突
 
-```
+```text
 错误信息: java: 程序包plus.ruoyi.business.demo不存在
 ```
 
@@ -1067,7 +1067,7 @@ mvn clean install
 
 ### 错误2: 前端页面空白 - 路由配置错误
 
-```
+```text
 错误信息: 页面显示空白，控制台无错误
 ```
 
@@ -1119,7 +1119,7 @@ const routes = [
 
 ### 错误3: 权限控制失效 - 菜单SQL未执行
 
-```
+```text
 错误信息: 403 Forbidden - 您没有访问权限
 ```
 
@@ -1149,7 +1149,7 @@ SELECT menu_name, perms FROM sys_menu WHERE menu_name LIKE '%演示用户%';
 
 ### 错误4: MyBatis XML映射错误
 
-```
+```text
 错误信息: Invalid bound statement (not found): plus.ruoyi.business.demo.mapper.DemoUserMapper.selectDemoUserList
 ```
 
@@ -1190,7 +1190,7 @@ mvn clean compile
 
 ### 错误5: 字典数据未加载
 
-```
+```text
 错误信息: 下拉框显示空白，无选项
 ```
 

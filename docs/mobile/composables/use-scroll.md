@@ -544,7 +544,7 @@ const progress = computed(() => getScrollProgress(maxScrollTop.value))
 
 **计算公式:**
 
-```
+```text
 进度 = (当前滚动位置 / 最大滚动高度) × 100
 最大滚动高度 = 内容高度 - 窗口高度
 ```
@@ -1093,7 +1093,7 @@ onPageScroll((e) => {
 - 如需页面独立状态,可以在页面组件内部使用局部 `ref`
 
 **页面栈场景:**
-```
+```text
 页面栈: [首页, 列表页, 详情页]
         ↑     ↑       ↑
        未激活 未激活   激活
@@ -1144,7 +1144,7 @@ const showBtn3 = computed(() => shouldShowBacktop(300))
 | 滚动指示器 | 50-100 | 100-200 |
 
 **设备换算公式:**
-```
+```text
 px = rpx * (设备宽度 / 750)
 rpx = px * (750 / 设备宽度)
 

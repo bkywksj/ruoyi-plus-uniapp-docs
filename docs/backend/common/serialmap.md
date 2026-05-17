@@ -615,7 +615,7 @@ public class UserVo {
 ```
 
 #### 转换器分包管理
-```
+```text
 com.example.converter/
 ├── user/           # 用户相关转换器
 │   ├── UserStatusConverter.java
@@ -730,7 +730,7 @@ public class UserConverter implements SerialMapInterface<String> {
 
 ### 11.1 架构设计
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    序列化映射模块架构                         │
 ├─────────────────────────────────────────────────────────────┤

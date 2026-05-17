@@ -6,7 +6,7 @@ RuoYi-Plus 提供了四个测试基类，采用分层设计，每个基类针对
 
 **测试基类层次:**
 
-```
+```text
 BaseUnitTest (单元测试基类)
     ↓ 继承
 BaseSpringTest (Spring 测试基类)
@@ -66,7 +66,7 @@ class StringUtilsTest extends BaseUnitTest {
 ```
 
 **测试输出:**
-```
+```text
 ▶ 开始测试: 测试 isBlank 方法
 ✓ 测试 isBlank 方法 完成,耗时: 8ms
 ▶ 开始测试: 测试 format 方法
@@ -98,7 +98,7 @@ class ComplexAlgorithmTest extends BaseUnitTest {
 ```
 
 **性能警告输出:**
-```
+```text
 ⚠️ 性能警告: 测试复杂排序算法 执行时间 6543ms 超过阈值 5000ms
 ```
 

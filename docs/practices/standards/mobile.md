@@ -46,7 +46,7 @@ plus-uniapp 是 RuoYi-Plus-UniApp 体系的移动端实现,基于 UniApp + Vue 3
 
 ### 目录结构
 
-```
+```text
 plus-uniapp/
 ├── env/                         # 环境变量配置
 │   ├── .env.development        # 开发环境
@@ -115,7 +115,7 @@ plus-uniapp/
 3. **语义化** - 目录名应清晰表达其用途
 4. **复数与单数** - 资源型目录用复数(`pages`、`components`、`stores`、`utils`),功能型目录用单数(`types`、`api`)
 
-```
+```text
 ✅ 正确
 src/components/
 src/pages/system/
@@ -136,7 +136,7 @@ UniApp 在小程序场景下需要严格控制主包体积(默认 2MB),通过分
 - `src/pages/` - **主包**,放高频访问的核心页面(首页、登录、个人中心等)
 - `src/pages-sub/` - **分包目录**,按业务域再分子目录,延迟加载
 
-```
+```text
 src/
 ├── pages/                       # 主包(默认上限 2MB)
 │   ├── index/index.vue         # 首页
@@ -156,7 +156,7 @@ src/
 
 API 目录按业务模块组织,每个模块的接口与类型定义独立成文件:
 
-```
+```text
 src/api/
 ├── system/                      # 系统模块
 │   ├── auth/
@@ -568,7 +568,7 @@ UniApp 模板必须使用 UniApp 内置基础组件而非 HTML 标签,因为小�
 
 每个页面建议独占一个目录,目录名与文件名一致,便于平铺资源:
 
-```
+```text
 src/pages/
 ├── login/
 │   ├── login.vue              # 主文件
@@ -957,7 +957,7 @@ const dict = useDict('sys_normal_disable', 'sys_user_sex')
 
 `utils/` 按职能拆分小文件,单个文件聚焦一个领域:
 
-```
+```text
 src/utils/
 ├── boolean.ts       # 布尔类工具
 ├── cache.ts         # 缓存(uni.setStorage 包装)

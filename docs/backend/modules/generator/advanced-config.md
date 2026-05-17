@@ -9,7 +9,7 @@
 代码生成器基于Apache Velocity模板引擎，支持完全自定义的代码模板。
 
 #### 模板目录结构
-```
+```text
 src/main/resources/vm/
 ├── java/                    # Java后端模板
 │   ├── controller.java.vm   # 控制器模板
@@ -39,7 +39,7 @@ src/main/resources/vm/
 
 #### 1. 模板语法基础
 
-```
+```text
 ## 这是注释
 ## 变量引用
 ${packageName}
@@ -65,7 +65,7 @@ $!{StringUtils.capitalize($column.javaField)}
 
 #### 2. 可用的模板变量
 
-```
+```text
 ## 表基本信息
 ${tableName}          ## 数据库表名
 ${tableComment}       ## 表注释
@@ -109,7 +109,7 @@ ${subTableFkName}   ## 子表外键名
 
 #### 3. 自定义Service模板示例
 
-```
+```java
 package ${packageName}.service.impl;
 
 import lombok.RequiredArgsConstructor;
@@ -260,7 +260,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s \
 
 # 启动应用
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"]
-```
+```text
 
 ```yaml
 # docker-compose.yml
@@ -312,7 +312,7 @@ volumes:
 networks:
   generator-network:
     driver: bridge
-```
+```text
 
 ## 安全配置
 
@@ -388,7 +388,7 @@ public class CodeGenerationPermissionEvaluator {
             .anyMatch(pattern -> tableName.toLowerCase().startsWith(pattern.toLowerCase()));
     }
 }
-```
+```text
 
 ### 代码生成审计
 
@@ -440,7 +440,7 @@ public class CodeGenerationAuditService {
         return generateAuditReport(logs);
     }
 }
-```
+```text
 
 ### 敏感信息保护
 
@@ -516,7 +516,7 @@ public class SensitiveFieldProcessor {
         }
     }
 }
-```
+```text
 
 ## 监控和运维配置
 
@@ -592,7 +592,7 @@ public class GeneratorPerformanceAspect {
         return ThreadPoolTaskExecutor.getActiveCount();
     }
 }
-```
+```text
 
 ### 健康检查配置
 
@@ -697,7 +697,7 @@ public class GeneratorHealthIndicator implements HealthIndicator {
         }
     }
 }
-```
+```text
 
 ### 日志配置
 
@@ -770,7 +770,7 @@ public class GeneratorHealthIndicator implements HealthIndicator {
         <appender-ref ref="FILE"/>
     </root>
 </configuration>
-```
+```text
 
 ## 配置最佳实践
 
@@ -843,7 +843,7 @@ generator:
   performance:
     maxConcurrentGenerations: 5
     timeoutSeconds: 300
-```
+```text
 
 ### 配置验证
 
@@ -931,7 +931,7 @@ public class GeneratorProperties {
         }
     }
 }
-```
+```text
 
 ### 配置热更新
 
@@ -980,7 +980,7 @@ public class GeneratorConfigurationRefresher {
         });
     }
 }
-```
+```text
 
 ## 故障排除
 
@@ -1083,7 +1083,7 @@ public class GeneratorDiagnosticController {
         return R.ok(report);
     }
 }
-```
+```text
 
 ### 问题解决指南
 
@@ -1770,7 +1770,7 @@ public class AsyncCodeGeneratorService {
 
 ### Gradle插件集成
 
-```
+```text
 // build.gradle
 plugins {
     id 'plus.ruoyi.generator' version '1.0.0'

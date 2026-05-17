@@ -34,7 +34,7 @@ ruoyi-common-media 是一个功能强大的媒体处理模块,提供了图片处
 
 ### 1.3 模块结构
 
-```
+```text
 ruoyi-common-media/
 ├── builder/                    # Builder 构建器
 │   ├── ImageBuilder.java      # 图片处理构建器

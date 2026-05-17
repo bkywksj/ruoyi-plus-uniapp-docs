@@ -513,7 +513,7 @@ if (typeof value === 'string') {
 
 ### 目录组织
 
-```
+```text
 src/
 ├── api/              # API 接口
 │   ├── user.ts

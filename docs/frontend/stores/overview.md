@@ -49,7 +49,7 @@ app.mount('#app')
 
 项目状态管理模块按照业务领域划分为以下 7 个核心模块:
 
-```
+```text
 stores/
 ├── store.ts          # Pinia 实例创建
 └── modules/

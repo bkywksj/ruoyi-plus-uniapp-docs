@@ -17,7 +17,7 @@
 
 ## 组件架构
 
-```
+```text
 Sidebar/
 ├── Sidebar.vue           # 侧边栏主容器组件
 ├── SidebarItem.vue       # 递归菜单项组件
@@ -36,7 +36,7 @@ Sidebar/
 
 ### 数据流向
 
-```
+```text
                     ┌─────────────────┐
                     │  permissionStore │
                     │  (权限路由数据)   │

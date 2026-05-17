@@ -15,7 +15,7 @@ Sub-Agents（子代理）是 Claude Code 中的专业化 AI 助手，可以被�
 
 ### 工作流程
 
-```
+```text
 用户请求
     ↓
 主 Agent 分析请求
@@ -37,7 +37,7 @@ Sub-Agent 在独立上下文中执行任务
 
 ## 目录结构
 
-```
+```text
 项目根目录/
 ├── .claude/
 │   └── agents/                    # 子代理配置目录
@@ -433,7 +433,7 @@ class XxxServiceTest {
         // Then: 验证结果
     }
 }
-```
+```text
 
 ### 测试用例设计原则
 
@@ -629,7 +629,7 @@ description: |
 
 ### 测试代理效果
 
-```
+```text
 用户：帮我审查这段代码 [粘贴代码]
 
 # 观察是否正确调用 code-review 代理
@@ -676,7 +676,7 @@ description: |
 
 Sub-Agents 与 Skills 系统互补工作：
 
-```
+```text
 用户提问
     ↓
 强制技能评估 Hook 注入

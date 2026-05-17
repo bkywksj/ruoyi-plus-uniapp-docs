@@ -15,7 +15,7 @@
 
 项目采用 **Conventional Commits** 规范，提交消息格式如下：
 
-```
+```text
 <type>(<scope>): <subject>
 
 <body>
@@ -363,7 +363,7 @@ git commit -m "feat(user): 添加用户管理功能"
 
 采用 **语义化版本**（Semantic Versioning）：
 
-```
+```text
 主版本号.次版本号.修订号[-预发布标识]
 MAJOR.MINOR.PATCH[-PRERELEASE]
 ```
@@ -597,7 +597,7 @@ npx husky add .husky/commit-msg 'npx --no-install commitlint --edit $1'
 
 ### 识别冲突
 
-```
+```text
 <<<<<<< HEAD
 // 当前分支的代码
 const name = '张三'

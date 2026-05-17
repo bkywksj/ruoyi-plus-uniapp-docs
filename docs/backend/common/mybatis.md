@@ -17,7 +17,7 @@
 
 ## 模块架构
 
-```
+```text
 ruoyi-common-mybatis/
 ├── annotation/                          # 注解定义
 │   ├── DataPermission.java             # 数据权限组注解

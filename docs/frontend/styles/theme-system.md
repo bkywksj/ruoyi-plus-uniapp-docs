@@ -164,7 +164,7 @@ html.dark {
 
 ### 主题文件组织
 
-```
+```text
 src/assets/styles/
 ├── themes/
 │   ├── _light.scss          # 亮色主题定义

@@ -54,7 +54,7 @@
 
 ## 目录结构
 
-```
+```text
 src/
 ├── pages/                    # 主包页面
 │   ├── index/
@@ -572,7 +572,7 @@ export const navigateToWithParams = (
 
 ### 预加载策略
 
-```
+```text
 用户行为预测流程:
 首页加载 → 预加载商城分包 → 用户点击商品 → 秒开详情页
 设置页加载 → WiFi下预加载管理分包 → 用户进入管理 → 无需等待
@@ -874,7 +874,7 @@ import GoodsCard from '../components/goods-card.vue'
 
 ### 静态资源组织
 
-```
+```text
 pages-sub/
 └── mall/
     ├── goods/
@@ -1165,7 +1165,7 @@ onUnmounted(() => {
 
 ### 1. 合理划分分包
 
-```
+```text
 推荐的分包划分原则：
 
 按业务模块划分：
@@ -1464,7 +1464,7 @@ export default (mode: string) => {
 
 ### 1. 分包规划原则
 
-```
+```text
 ✅ 推荐做法:
 - 按业务模块划分分包
 - 高频页面配置预加载
@@ -1495,7 +1495,7 @@ uni.navigateTo({ url: '/pages-sub/mall/goods/detail?id=123' })
 
 ### 3. 资源管理规范
 
-```
+```text
 ✅ 推荐:
 - 大图使用 CDN
 - 小图标使用 base64 或字体图标

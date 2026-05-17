@@ -423,7 +423,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 
 ### 🏗️ 模块化设计
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                    ruoyi-admin (入口层)                  │
 ├─────────────────────────────────────────────────────────┤
@@ -449,7 +449,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 
 每个业务模块采用标准分层结构:
 
-```
+```text
 📁 module
 ├── 📁 controller          // 控制层 - 接收请求、参数校验
 ├── 📁 service             // 服务层 - 业务逻辑
@@ -466,7 +466,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 
 ### 🔄 依赖关系
 
-```
+```text
 ruoyi-admin
     ├── ruoyi-system
     ├── ruoyi-business

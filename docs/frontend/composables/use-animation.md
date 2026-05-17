@@ -19,7 +19,7 @@
 
 ### 整体架构
 
-```
+```text
 useAnimation
 ├── 常量导出 (模块级别)
 │   ├── ANIMATE_PREFIX          # 动画类名前缀

@@ -23,7 +23,7 @@ ruoyi-admin 是 RuoYi-Plus 框架的**系统入口模块**，作为整个后端�
 
 ## 目录结构
 
-```
+```text
 ruoyi-admin/
 ├── src/
 │   ├── main/
@@ -58,7 +58,7 @@ ruoyi-admin/
 
 `banner.txt` 定义了应用启动时显示的 ASCII 艺术字和版本信息：
 
-```
+```text
 Application Version: ${revision}
 Spring Boot Version: ${spring-boot.version}
                              _                _                                     _
@@ -81,7 +81,7 @@ Spring Boot Version: ${spring-boot.version}
 
 ruoyi-admin 作为入口模块，集成了以下功能模块：
 
-```
+```text
 ruoyi-admin
 │
 ├── 核心业务模块
@@ -160,7 +160,7 @@ module:
 
 ruoyi-admin 采用分层配置策略，通过 Spring Profiles 实现环境隔离：
 
-```
+```text
 application.yml          # 基础配置（所有环境共享）
     ↓ 继承
 application-dev.yml      # 开发环境（本地开发使用）
@@ -191,7 +191,7 @@ java -jar ruoyi-admin.jar --spring.profiles.active=prod
 
 ruoyi-admin 包含完整的测试代码，支持单元测试和集成测试：
 
-```
+```text
 src/test/java/plus/ruoyi/
 ├── business/
 │   ├── service/                    # 业务服务单元测试

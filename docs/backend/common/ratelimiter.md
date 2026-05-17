@@ -15,7 +15,7 @@ ruoyi-common-ratelimiter 是基于 Redis 和 Redisson 令牌桶算法实现的�
 
 ## 模块架构
 
-```
+```text
 ruoyi-common-ratelimiter
 ├── src/main/java/plus/ruoyi/common/ratelimiter
 │   ├── annotation/
@@ -300,7 +300,7 @@ public class RateLimiterAspect {
 
 **Key格式:**
 
-```
+```text
 rate_limit:请求URI:限流标识:自定义key
 ```
 
@@ -404,7 +404,7 @@ public static long rateLimiter(String key, RateType rateType, int rate, int rate
 
 ### 令牌桶算法原理
 
-```
+```text
                     ┌─────────────────────────────────────┐
                     │           令牌桶 (Token Bucket)      │
                     │                                     │
@@ -653,7 +653,7 @@ public void login() { }
 
 限流切面自动记录限流信息:
 
-```
+```text
 INFO  - 限制令牌 => 10, 剩余令牌 => 5, 缓存key => 'rate_limit:/api/user/info:192.168.1.100:getUserInfo'
 ```
 
@@ -910,7 +910,7 @@ public R<Long> createOrder(@RequestBody OrderBo bo) {
 
 **执行顺序**：
 
-```
+```text
 请求 → 限流检查 → 防重检查 → 业务逻辑 → 响应
 ```
 
@@ -1257,7 +1257,7 @@ redis-cli info memory | grep used_memory_human
 
 本模块使用 Redisson 的令牌桶算法实现：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                        令牌桶工作原理                             │
 ├─────────────────────────────────────────────────────────────────┤

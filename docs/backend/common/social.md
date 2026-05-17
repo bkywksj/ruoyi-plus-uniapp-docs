@@ -16,7 +16,7 @@
 
 ### 目录结构
 
-```
+```text
 ruoyi-common-social/
 ├── src/main/java/
 │   ├── me/zhyd/oauth/request/           # JustAuth 扩展请求

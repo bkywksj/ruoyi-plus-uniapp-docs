@@ -125,7 +125,7 @@ public class OrderController {
 
 ### 防重机制
 
-```
+```text
 工作流程:
 1. 请求到达 → 生成唯一标识(URL + Token + 参数MD5)
 2. 检查Redis是否存在该标识
@@ -140,7 +140,7 @@ public class OrderController {
 
 ### 签名流程
 
-```
+```text
 1. 客户端生成时间戳
 2. 计算签名: MD5(appKey + timestamp + appSecret)
 3. 发送请求，携带appKey、timestamp、sign
@@ -253,7 +253,7 @@ public class SecureController {
 
 ### 混合加密流程
 
-```
+```text
 请求加密:
 1. 前端生成32位随机AES密钥
 2. 使用AES密钥加密请求数据

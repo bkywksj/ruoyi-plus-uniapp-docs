@@ -22,7 +22,7 @@ RuoYi-Plus 框架提供了完善的异常处理体系,通过统一的异常处�
 
 框架采用三层异常类设计:
 
-```
+```text
 RuntimeException
   └── BaseException                  # 基础异常类
         ├── BaseBusinessException    # 业务异常基类

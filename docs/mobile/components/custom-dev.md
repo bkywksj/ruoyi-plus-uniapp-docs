@@ -6,7 +6,7 @@
 
 ### 目录结构
 
-```
+```text
 src/
 ├── wd/                              # WD UI 组件库
 │   ├── components/                  # 组件目录

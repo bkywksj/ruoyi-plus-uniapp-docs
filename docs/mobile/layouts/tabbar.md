@@ -487,7 +487,7 @@ const tabbarItems = ref([
 
 RuoYi-Plus-UniApp 项目将 Tabbar 的每个标签页拆分为独立的 Vue 组件，放置在 `src/components/tabbar/` 目录下：
 
-```
+```text
 src/components/tabbar/
 ├── Home.vue    # 首页标签内容
 ├── Menu.vue    # 菜单/点餐标签内容

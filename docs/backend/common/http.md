@@ -16,7 +16,7 @@ ruoyi-common-http 是基于 Forest 框架封装的声明式 HTTP 客户端模块
 
 ## 模块架构
 
-```
+```text
 ruoyi-common-http
 ├── src/main/java/plus/ruoyi/common/http
 │   ├── config/                              # 自动配置

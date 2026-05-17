@@ -35,7 +35,7 @@ RuoYi-Plus-UniApp 前端项目采用完整的 SCSS 模块化样式架构，基�
 
 ## 目录结构
 
-```
+```text
 src/assets/styles/
 ├── main.scss                # 主入口文件
 ├── abstracts/               # 抽象层

@@ -17,7 +17,7 @@
 
 ## 目录结构
 
-```
+```text
 项目根目录/
 ├── .claude/
 │   └── commands/                  # 项目级命令（仅当前项目可用）
@@ -285,7 +285,7 @@ description: "生成规范的 Git 提交"
 <body>
 
 <footer>
-```
+```text
 
 ## Type 类型
 
@@ -311,7 +311,7 @@ description: "生成规范的 Git 提交"
 
 通过子目录创建命名空间，避免命令名冲突：
 
-```
+```text
 .claude/commands/
 ├── backend/
 │   ├── crud.md        # /backend__crud
@@ -345,7 +345,7 @@ MCP 服务器可以暴露提示作为斜杠命令：
 
 Claude 可以在对话中使用 SlashCommand 工具程序化执行自定义命令：
 
-```
+```text
 用户：帮我审查这个 PR 并生成测试用例
 
 Claude：[调用 /review 命令] → 审查完成

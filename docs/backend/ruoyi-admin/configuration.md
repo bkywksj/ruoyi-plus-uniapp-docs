@@ -4,7 +4,7 @@
 
 ruoyi-admin 采用分层配置策略，通过 Spring Profiles 实现环境隔离：
 
-```
+```text
 resources/
 ├── application.yml           # 主配置（所有环境共享）
 ├── application-dev.yml       # 开发环境配置

@@ -98,7 +98,7 @@ pnpm build:h5
 
 构建成功后的目录结构:
 
-```
+```text
 dist/
 └── build/
     └── h5/
@@ -819,7 +819,7 @@ server {
 **2. DNS 解析**
 
 添加 A 记录:
-```
+```text
 类型: A
 主机记录: app (或 @)
 记录值: 服务器IP
@@ -827,7 +827,7 @@ TTL: 600
 ```
 
 添加 CNAME 记录(如果使用 CDN):
-```
+```text
 类型: CNAME
 主机记录: app
 记录值: xxx.cdn.com

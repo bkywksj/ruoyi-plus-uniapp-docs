@@ -385,7 +385,7 @@ const getAllIcons = (iconsPath: string) => {
 
 **扫描流程**：
 
-```
+```text
 src/assets/icons/
 ├── system/
 │   └── iconfont.json    ← 解析为 iconfont
@@ -795,7 +795,7 @@ handleHotUpdate({ file }) {
 
 **输出示例**：
 
-```
+```text
 检测到图标文件变化: src/assets/icons/iconify/preset.json
 发现 iconify 图标文件: D:\project\plus-ui\src\assets\icons\iconify\preset.json, 图标数量: 173
 图标扫描完成 - iconfont: 644, iconify: 173, 总计: 817
@@ -804,7 +804,7 @@ handleHotUpdate({ file }) {
 
 ### 开发工作流
 
-```
+```text
 1. 编辑 preset.json 添加新图标
    ↓
 2. Vite 检测到文件变化
@@ -1344,7 +1344,7 @@ const parseFilesInParallel = async (files: string[]) => {
 
 ### 3. 组织目录结构
 
-```
+```text
 src/assets/icons/
 ├── system/              # 系统级图标
 │   └── iconfont.json    # Iconfont 图标

@@ -427,7 +427,7 @@ pnpm uvm
 
 ## 📁 项目结构
 
-```
+```text
 plus-uniapp/
 ├── env/                          # 环境变量配置
 │   ├── .env                      # 基础配置(所有环境共享)
@@ -1230,7 +1230,7 @@ pnpm dev:mp-weixin
 
 **问题表现：**
 
-```
+```text
 Access to XMLHttpRequest blocked by CORS policy
 ```
 
@@ -1382,7 +1382,7 @@ du -sh dist/build/mp-weixin/*
 
 **问题表现：**
 
-```
+```text
 Cannot find module '@/xxx' or its corresponding type declarations
 ```
 

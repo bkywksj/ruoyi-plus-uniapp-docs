@@ -35,7 +35,7 @@ RuoYi-Plus-UniApp 项目集成了多种第三方服务，为企业应用提供�
 
 **模块结构:**
 
-```
+```text
 ruoyi-common-pay/
 ├── ruoyi-common-pay-core/          # 支付核心模块
 │   ├── PayConfig.java              # 支付配置

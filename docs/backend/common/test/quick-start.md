@@ -74,7 +74,7 @@ class StringUtilsTest extends BaseUnitTest {
 ```
 
 **测试输出:**
-```
+```text
 ▶ 开始测试: 测试字符串非空判断
 ✓ 测试字符串非空判断 完成,耗时: 5ms
 ```

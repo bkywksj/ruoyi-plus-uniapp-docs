@@ -17,7 +17,7 @@
 
 ### 配置分层架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                     应用配置系统架构                              │
 ├─────────────────────────────────────────────────────────────────┤
@@ -49,7 +49,7 @@
 
 ### 配置加载流程
 
-```
+```text
 应用启动
     │
     ▼
@@ -85,7 +85,7 @@
 
 ## 文件结构
 
-```
+```text
 src/
 ├── systemConfig.ts          # 应用配置主文件
 ├── uni.scss                 # 全局样式变量
@@ -491,7 +491,7 @@ const apiUrl = SystemConfig.api.baseUrl
 
 ### 文件位置
 
-```
+```text
 src/uni.scss
 ```
 
@@ -951,7 +951,7 @@ const changeTheme = (theme: 'default' | 'green' | 'purple') => {
 
 以 iPhone 6 为例（屏幕宽度 375px）:
 
-```
+```text
 750rpx = 375px（屏幕宽度）
 1rpx = 0.5px
 2rpx = 1px
@@ -1200,7 +1200,7 @@ export const SystemConfig = deepFreeze({
 
 建议创建多个环境文件:
 
-```
+```text
 env/
 ├── .env              # 通用配置
 ├── .env.development  # 开发环境

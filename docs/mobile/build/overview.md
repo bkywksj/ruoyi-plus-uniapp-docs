@@ -91,7 +91,7 @@ pnpm build:app
 
 ### 配置文件结构
 
-```
+```text
 plus-app/
 ├── vite.config.ts           # Vite 主配置文件
 ├── env/                     # 环境变量目录
@@ -543,7 +543,7 @@ export default (mode: string) => {
 
 **文件结构:**
 
-```
+```text
 pages/
 ├── index/
 │   └── index.vue       → pages/index/index
@@ -808,7 +808,7 @@ if (isH5()) {
 
 ### 完整构建流程
 
-```
+```text
 1. 加载环境变量
    ↓
 2. 识别构建平台(UNI_PLATFORM)
@@ -836,7 +836,7 @@ if (isH5()) {
 
 ### H5 构建产物
 
-```
+```text
 dist/
 └── build/
     └── h5/
@@ -853,7 +853,7 @@ dist/
 
 ### 小程序构建产物
 
-```
+```text
 dist/
 └── build/
     └── mp-weixin/
@@ -871,7 +871,7 @@ dist/
 
 ### APP 构建产物
 
-```
+```text
 dist/
 └── build/
     └── app/
@@ -1131,7 +1131,7 @@ VITE_APP_RSA_PRIVATE_KEY='本地测试密钥'
 
 **.gitignore 配置:**
 
-```
+```text
 .env.local
 .env.*.local
 ```
@@ -1162,7 +1162,7 @@ VITE_APP_RSA_PRIVATE_KEY='本地测试密钥'
 
 创建多个环境文件:
 
-```
+```text
 env/
 ├── .env                 # 公共配置
 ├── .env.development     # 开发环境

@@ -48,7 +48,7 @@ public class UserServiceImpl implements IUserService {
 
 ### 层次关系
 
-```
+```text
 Service 层
     ↓ 调用
 DAO 接口 (IXxxDao)

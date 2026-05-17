@@ -8,7 +8,7 @@
 
 ### 2.1 整体架构设计
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                        系统模块 (system)                     │
 ├─────────────────────────────────────────────────────────────┤
@@ -68,7 +68,7 @@
 
 ### 3.1 模块包结构
 
-```
+```text
 plus.ruoyi.system/
 ├── auth/                           # 认证授权模块
 │   ├── controller/                 # 认证相关控制器
@@ -301,7 +301,7 @@ public class SysUserVo implements Serializable {
 - 组织架构的层级管理
 
 **核心实体关系**:
-```
+```text
 用户 (SysUser) ←→ 角色 (SysRole) ←→ 菜单 (SysMenu)
     ↓                                    ↑
 部门 (SysDept) ←→ 岗位 (SysPost)          权限字符串
@@ -1094,7 +1094,7 @@ public class SysUserBo {
 ### 16.1 单体部署
 
 **标准部署结构**:
-```
+```text
 Application Server
 ├── Spring Boot Application (Main)
 ├── System Module

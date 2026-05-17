@@ -377,7 +377,7 @@ CREATE TABLE `demo_user` (
 
 **生成配置:**
 
-```
+```text
 生成模板: 单表(增删改查)
 生成包路径: plus.ruoyi.business.demo
 生成模块名: demo
@@ -412,7 +412,7 @@ CREATE TABLE `sys_dept` (
 
 **生成配置:**
 
-```
+```text
 生成模板: 树表(左树右表)
 树编码字段: id
 树父编码字段: parent_id
@@ -449,7 +449,7 @@ CREATE TABLE `order_item` (
 
 **生成配置:**
 
-```
+```text
 主表生成模板: 主子表(一对多)
 子表名称: order_item
 子表外键: order_id

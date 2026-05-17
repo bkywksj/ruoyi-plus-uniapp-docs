@@ -19,7 +19,7 @@
 
 多租户模块采用分层架构设计：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    Controller Layer                          │
 │     SysTenantController / SysTenantPackageController        │
@@ -46,7 +46,7 @@
 
 ### 1.3 模块结构
 
-```
+```text
 ruoyi-common-tenant/                    # 多租户通用模块
 ├── config/
 │   └── TenantAutoConfiguration.java   # 自动配置类
@@ -353,7 +353,7 @@ private String generateTenantId(List<String> tenantIds) {
 
 系统支持多种租户识别方式，按优先级从高到低：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    租户识别优先级                            │
 ├─────────────────────────────────────────────────────────────┤
@@ -371,7 +371,7 @@ private String generateTenantId(List<String> tenantIds) {
 
 **域名识别示例：**
 
-```
+```text
 tenant1.example.com → 租户ID: 123456
 tenant2.example.com → 租户ID: 789012
 api.example.com    → 请求头 X-Tenant-Id: 654321
@@ -682,7 +682,7 @@ public class TenantKeyPrefixHandler implements NameMapper {
 
 **缓存键示例：**
 
-```
+```text
 # 租户 123456 的用户缓存
 ruoyi:123456:sys_user:1
 
@@ -932,7 +932,7 @@ public void syncTenantConfigs() {
 
 ### 6.1 权限层级
 
-```
+```text
 超级管理员 (superadmin)
 ├── 租户管理权限（创建、修改、删除租户）
 ├── 套餐管理权限（创建、修改、删除套餐）

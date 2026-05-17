@@ -18,7 +18,7 @@ RuoYi-Plus-UniApp 移动端采用多环境配置方案,通过 Vite 的环境变�
 
 ### 文件组织
 
-```
+```text
 plus-app/
 ├── env/                          # 环境变量目录
 │   ├── .env                      # 公共配置(所有环境)
@@ -35,7 +35,7 @@ plus-app/
 
 环境变量的加载遵循以下优先级(从高到低):
 
-```
+```text
 1. .env.[mode].local     # 本地环境特定配置(最高优先级)
    ↓
 2. .env.[mode]           # 环境特定配置
@@ -1235,7 +1235,7 @@ export const loadSecureConfig = (): Record<string, any> | null => {
 
 #### 目录结构
 
-```
+```text
 my-uniapp/
 ├── env/
 │   ├── .env                    # 公共配置

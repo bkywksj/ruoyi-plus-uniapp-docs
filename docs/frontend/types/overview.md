@@ -21,7 +21,7 @@ RuoYi-Plus-UniApp 前端项目采用 TypeScript 构建完整的类型系统,通�
 
 ### 核心类型文件结构
 
-```
+```text
 src/types/
 ├── global.d.ts           # 全局类型定义 (API、分页、UI 等)
 ├── router.d.ts           # Vue Router 类型扩展

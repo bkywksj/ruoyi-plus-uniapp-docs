@@ -78,7 +78,7 @@ export default defineUniPages({
 
 ### 目录结构
 
-```
+```text
 src/
 ├── pages/                    # 主包页面目录
 │   ├── index/
@@ -427,7 +427,7 @@ UniPages({
 
 ### 分包目录结构
 
-```
+```text
 src/
 ├── pages/                    # 主包
 │   └── index/
@@ -673,7 +673,7 @@ UniPages({
 
 分包目录应该与 pages 目录平级：
 
-```
+```text
 src/
 ├── pages/          # 主包
 └── pages-sub/      # 分包（与 pages 平级）
@@ -722,7 +722,7 @@ UniPages({
 
 确保 uni-layouts 插件已正确配置，且布局文件存在：
 
-```
+```text
 src/
 └── layouts/
     ├── default.vue

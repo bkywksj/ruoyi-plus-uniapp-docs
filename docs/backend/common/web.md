@@ -18,7 +18,7 @@ Web模块（`ruoyi-common-web`）是系统的 Web 应用基础模块，提供 We
 
 ### 整体架构图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         客户端请求                                    │
 └─────────────────────────────────────────────────────────────────────┘
@@ -224,7 +224,7 @@ public class XssProperties {
 
 #### 过滤器工作流程
 
-```
+```text
 请求进入
     ↓
 ┌────────────────────────┐
@@ -331,7 +331,7 @@ private String convertJavaTypeToFriendly(String javaType) {
 
 **错误示例**：
 
-```
+```text
 // 参数类型不匹配
 原始: Cannot deserialize value of type `java.lang.Integer` from String "abc"
 友好: 参数[age]格式错误，应为整数类型，实际输入：abc
@@ -353,7 +353,7 @@ private String convertJavaTypeToFriendly(String javaType) {
 
 #### 日志格式
 
-```
+```json
 [PLUS]开始请求 => URL[POST /api/user/create],参数类型[json],参数:[{"name":"张三","age":25}]
 [PLUS]结束请求 => URL[POST /api/user/create],耗时:[156]毫秒
 
@@ -587,13 +587,13 @@ logging:
 
 模块通过 Spring Boot 自动配置机制装载，配置文件位于：
 
-```
+```text
 META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
 ```
 
 **自动配置类列表**：
 
-```
+```text
 plus.ruoyi.common.web.config.CaptchaConfiguration
 plus.ruoyi.common.web.config.FilterConfiguration
 plus.ruoyi.common.web.config.I18nConfiguration

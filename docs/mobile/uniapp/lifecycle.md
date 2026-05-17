@@ -580,7 +580,7 @@ watch(() => props.userId, (newId) => {
 
 ### 应用启动流程
 
-```
+```text
 App.vue: onLaunch
   ↓
 App.vue: onShow
@@ -596,7 +596,7 @@ App.vue: onShow
 
 **navigateTo（保留当前页）**：
 
-```
+```text
 新页面: onLoad
   ↓
 当前页: onHide
@@ -608,7 +608,7 @@ App.vue: onShow
 
 **返回上一页**：
 
-```
+```text
 当前页: onUnload
   ↓
 上一页: onShow
@@ -616,7 +616,7 @@ App.vue: onShow
 
 **redirectTo（关闭当前页）**：
 
-```
+```text
 当前页: onUnload
   ↓
 新页面: onLoad
@@ -628,7 +628,7 @@ App.vue: onShow
 
 **switchTab（切换 TabBar）**：
 
-```
+```text
 当前页: onHide
   ↓
 TabBar页: onShow（如已加载）

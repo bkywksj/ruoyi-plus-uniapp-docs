@@ -6,7 +6,7 @@
 
 ## 模块结构
 
-```
+```text
 plus.ruoyi.system.monitor
 ├── controller/          # 控制层
 │   ├── CacheController.java

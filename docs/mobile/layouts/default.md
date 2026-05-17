@@ -23,7 +23,7 @@ Default 布局是应用中使用最广泛的布局,适用于登录页、详情�
 
 Default 布局采用三层嵌套结构:
 
-```
+```text
 wd-config-provider (主题容器)
   └─ slot (页面内容插槽)
   └─ wd-toast (轻提示)

@@ -15,7 +15,7 @@
 
 ### 模块定位
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                        HTTP请求入口                              │
 └─────────────────────────────────────────────────────────────────┘
@@ -67,7 +67,7 @@
 
 ### 依赖关系图
 
-```
+```text
 ruoyi-common-security
     └── ruoyi-common-satoken
             ├── sa-token-spring-boot3-starter (Sa-Token核心)
@@ -79,7 +79,7 @@ ruoyi-common-security
 
 ### 整体架构设计
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────────┐
 │                          安全模块架构                                 │
 ├──────────────────────────────────────────────────────────────────────┤
@@ -423,7 +423,7 @@ security:
 
 模块通过Spring Boot 3.x的自动配置机制加载：
 
-```
+```text
 # META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
 plus.ruoyi.common.security.config.SecurityAutoConfiguration
 ```
@@ -441,7 +441,7 @@ public class SecurityAutoConfiguration implements WebMvcConfigurer {
 
 ### Bean注册顺序
 
-```
+```text
 1. SecurityProperties (配置属性绑定)
        ↓
 2. AllUrlHandler (URL路径收集，依赖Spring容器初始化完成)
@@ -886,7 +886,7 @@ security:
 #### 1. 路径无法访问（401错误）
 
 **问题现象**：
-```
+```text
 HTTP/1.1 401 Unauthorized
 {"code": 401, "msg": "未能读取到有效Token"}
 ```
@@ -952,7 +952,7 @@ public class UrlDebugger {
 #### 3. Actuator认证失败
 
 **问题现象**：
-```
+```text
 HTTP/1.1 401 Unauthorized
 访问 /actuator/health 需要认证
 ```
@@ -983,7 +983,7 @@ spring:
 #### 4. SSE路径被拦截
 
 **问题现象**：
-```
+```text
 SSE连接被401拒绝
 ```
 

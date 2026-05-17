@@ -145,7 +145,7 @@ meta: {
 
 ## 🗂️ 文件结构
 
-```
+```text
 src/router/
 ├── router.ts               # 路由实例配置
 ├── guard.ts                # 路由守卫

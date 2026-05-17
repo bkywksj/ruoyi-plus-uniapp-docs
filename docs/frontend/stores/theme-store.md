@@ -50,7 +50,7 @@ export const useLayout = () => {
 
 **主题色设置流程：**
 
-```
+```text
 用户操作 → useTheme.setTheme(color)
          → useLayout.theme.value = color
          → applyThemeColors(color)
@@ -63,7 +63,7 @@ export const useLayout = () => {
 
 **暗黑模式切换流程：**
 
-```
+```text
 用户切换 → useLayout.toggleDark(value)
          → dark.value = value
          → watch 触发同步
@@ -75,7 +75,7 @@ export const useLayout = () => {
 
 ### 响应式设计流程
 
-```
+```text
 窗口 resize → useWindowSize().width 变化
            → watch 触发
            → 判断是否小于 992px 断点

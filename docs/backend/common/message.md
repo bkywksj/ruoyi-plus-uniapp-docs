@@ -16,7 +16,7 @@
 
 **架构设计:**
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                    MessagePushService                           │
 │                   (统一消息调度服务)                               │
@@ -1029,7 +1029,7 @@ public MessageResult send(MessageContext context) {
 
 ## 模块依赖
 
-```
+```text
 ruoyi-common-message
     └── ruoyi-common-core (消息接口定义)
 

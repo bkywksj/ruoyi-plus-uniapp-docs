@@ -123,7 +123,7 @@ RuoYi-Plus-UniApp 是一个全栈框架，采用当前主流的技术栈构建�
 
 ### 后端模块架构
 
-```
+```text
 ruoyi-plus-uniapp-workflow/
 ├── ruoyi-admin/                 # 后端主模块(启动入口)
 ├── ruoyi-common/                # 通用模块(31个子模块)
@@ -179,7 +179,7 @@ ruoyi-plus-uniapp-workflow/
 
 RuoYi-Plus 采用经典的三层架构设计，各层职责明确。
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                    Controller 层                         │
 │    职责：请求接收、参数校验、权限控制、结果封装              │

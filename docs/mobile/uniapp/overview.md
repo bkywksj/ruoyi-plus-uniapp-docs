@@ -484,7 +484,7 @@ const filteredList = computed(() =>
 
 推荐的项目目录结构：
 
-```
+```text
 src/
 ├── api/                  # API 接口定义
 │   ├── modules/          # 按模块分类的 API

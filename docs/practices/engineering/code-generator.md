@@ -25,7 +25,7 @@
 
 ### 核心模块结构
 
-```
+```text
 ruoyi-generator/
 ├── domain/                          # 实体类
 │   ├── GenTable.java               # 代码生成业务表（354行）
@@ -281,14 +281,14 @@ gen:
 
 **表前缀处理:**
 
-```
+```text
 原表名: sys_user  → 去除前缀 → user → 类名: SysUser
 原表名: a_order   → 去除前缀 → order → 类名: AOrder
 ```
 
 **生成路径规则:**
 
-```
+```text
 # 后端路径
 {projectRoot}/{backendModuleName}/src/main/java/{packageName替换为路径}/
 
@@ -515,7 +515,7 @@ CREATE TABLE t_order_detail (
 
 **生成菜单结构:**
 
-```
+```text
 上级菜单
 └── 用户管理                 # 自动创建
     ├── 用户查询             # 按钮权限

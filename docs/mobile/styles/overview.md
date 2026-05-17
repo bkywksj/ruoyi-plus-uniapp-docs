@@ -19,7 +19,7 @@ RuoYi-Plus-UniApp 移动端采用了完善的样式系统架构,结合 UniApp �
 
 ### 目录结构
 
-```
+```text
 plus-app/
 ├── style/
 │   └── index.scss                    # 全局样式入口(主题定制)
@@ -50,7 +50,7 @@ plus-app/
 
 ### 样式继承关系
 
-```
+```text
 uni.scss (UniApp 基础)
     ↓
 _config.scss (BEM 配置)
@@ -224,7 +224,7 @@ $state-prefix: 'is-';             // 状态前缀
 
 #### 命名结构
 
-```
+```text
 .wd-{block}                       // 块
 .wd-{block}__{element}           // 元素
 .wd-{block}--{modifier}          // 修饰符

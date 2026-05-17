@@ -28,7 +28,7 @@ ruoyi-common-test 是 RuoYi-Plus 框架的**测试支持模块**，提供了一�
 
 模块提供四个分层设计的测试基类，覆盖从单元测试到集成测试的全部场景：
 
-```
+```text
 BaseUnitTest (单元测试基类)
     │   - 不启动 Spring 容器
     │   - 极快启动 (< 1秒)
@@ -68,7 +68,7 @@ TestDataBuilder 提供丰富的随机测试数据生成能力：
 - **可配置阈值** - 默认 3 秒，可自定义
 - **可选关闭** - 支持禁用性能监控
 
-```
+```text
 ▶ 开始测试: 测试添加用户
 ✓ 测试添加用户 完成,耗时: 156ms
 
@@ -111,7 +111,7 @@ TestConfig 提供统一的测试目录管理：
 
 ruoyi-common-test 自动引入以下测试依赖：
 
-```
+```text
 ruoyi-common-test
 ├── spring-boot-starter-test      # Spring Boot 测试框架
 │   ├── junit-jupiter             # JUnit 5 测试引擎
@@ -142,7 +142,7 @@ ruoyi-common-test
 
 ### 目录结构
 
-```
+```text
 ruoyi-common-test/
 ├── src/main/java/plus/ruoyi/common/test/
 │   ├── TestApplication.java              # 测试启动类

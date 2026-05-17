@@ -581,7 +581,7 @@ export function useStaticImage(initialKey?: StaticImageKey) {
 
 插件会监听静态资源目录下的文件变化：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                     热更新流程                           │
 ├─────────────────────────────────────────────────────────┤
@@ -609,7 +609,7 @@ export function useStaticImage(initialKey?: StaticImageKey) {
 
 ### 控制台输出
 
-```
+```text
 🔄 检测到静态资源变化: src/static/icons/new-icon.png
 ✨ 静态资源类型已生成: src/types/static-assets.d.ts (11 个文件)
 ```
@@ -673,7 +673,7 @@ const plugin = createStaticAssetsTypes(options?: StaticAssetsTypesOptions): Plug
 
 ### 1. 合理组织静态资源目录
 
-```
+```text
 src/static/
 ├── logo.png              # 应用 logo
 ├── icons/                # 图标目录
@@ -813,7 +813,7 @@ pnpm dev:h5
 
 重命名文件以避免冲突：
 
-```
+```text
 src/static/
 ├── icons/
 │   └── icon-logo.png     # 改为 ICON_LOGO

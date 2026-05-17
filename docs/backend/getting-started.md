@@ -84,7 +84,7 @@
 
 ## 📁 项目结构
 
-```
+```text
 ruoyi-plus-uniapp/
 ├── ruoyi-admin/              # 后端主应用模块
 ├── ruoyi-common/             # 公共模块

@@ -46,7 +46,7 @@ const userInfo = reactive({ name: 'John', age: 30 })
 ```
 
 DevTools 中显示：
-```
+```text
 count: 0
 userInfo: { name: 'John', age: 30 }
 ```
@@ -61,7 +61,7 @@ userInfo: { name: 'John', age: 30 }
 ```
 
 Props 面板显示：
-```
+```text
 name: "John"
 age: 30
 ```
@@ -110,7 +110,7 @@ Pinia 面板显示：
 #### Routes 面板
 
 **当前路由信息**：
-```
+```text
 path: /system/user
 name: SystemUser
 params: {}
@@ -200,26 +200,26 @@ function processData() {
 #### 常见问题排查
 
 **404 Not Found**：
-```
+```text
 请求 URL: http://localhost/api/user/list
 检查: 后端路由是否正确
 检查: API 代理配置是否正确
 ```
 
 **401 Unauthorized**：
-```
+```text
 检查: Token 是否过期
 检查: 请求头是否携带 Authorization
 ```
 
 **500 Internal Server Error**：
-```
+```text
 检查: 后端日志
 检查: 请求参数是否正确
 ```
 
 **请求超时**：
-```
+```text
 检查: 后端服务是否启动
 检查: 网络连接是否正常
 检查: 代理配置是否正确
@@ -607,7 +607,7 @@ if (import.meta.env.MODE === 'development') {
 
 安装 Vue DevTools 扩展后，无法在 DevTools 中看到 Vue 面板，或者面板提示 "Vue.js not detected"：
 
-```
+```text
 Vue.js not detected
 
 Make sure you are running a Vue.js app in development mode.
@@ -877,7 +877,7 @@ console.log('Current context:', {
 
 调试时 DevTools 显示的是编译后的代码而不是源代码，错误堆栈指向压缩后的文件：
 
-```
+```text
 Error: Something went wrong
     at c (app.d7f8a.js:1:12345)
     at e (app.d7f8a.js:1:23456)
@@ -2237,7 +2237,7 @@ console.log('当前状态:', trackedPromise.getStatus())
 
 用户报告的问题在本地开发环境无法复现，只在生产环境出现：
 
-```
+```text
 用户报告: "点击提交按钮没有反应"
 开发环境: 一切正常
 生产环境: 确实有问题

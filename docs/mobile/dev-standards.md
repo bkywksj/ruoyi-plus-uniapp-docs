@@ -29,7 +29,7 @@
 
 ### 目录结构
 
-```
+```text
 src/
 ├── api/                    # API接口定义
 │   ├── system/            # 系统模块API

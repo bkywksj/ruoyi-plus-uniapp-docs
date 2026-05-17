@@ -16,7 +16,7 @@ RuoYi-Plus-UI 提供了一套完整的企业级组件库，基于 Vue 3 和 Elem
 
 ## 组件目录结构
 
-```
+```text
 src/components/
 ├── AAi/                    # AI 相关组件
 │   └── AFormInputWithAi.vue

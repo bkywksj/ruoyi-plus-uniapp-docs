@@ -21,7 +21,7 @@
 
 ## 模块结构
 
-```
+```text
 plus.ruoyi.system.dict/
 ├── controller/                          # 控制层
 │   ├── SysDictTypeController.java      # 字典类型控制器

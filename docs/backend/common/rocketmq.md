@@ -30,7 +30,7 @@ RocketMQ 消息队列模块 (`ruoyi-common-rocketmq`) 是基于 Apache RocketMQ 
 
 ### 核心组件
 
-```
+```text
 ruoyi-common-rocketmq/
 ├── config/
 │   ├── RocketMQAutoConfiguration.java    # 自动配置类
@@ -453,7 +453,7 @@ RMDiagnosticUtil.checkBrokerRegistration("127.0.0.1:9876");
 
 **诊断输出示例：**
 
-```
+```text
 ========================================
 🔍 开始诊断 RocketMQ 连接状态...
 ========================================

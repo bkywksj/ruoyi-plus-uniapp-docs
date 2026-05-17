@@ -25,7 +25,7 @@
 
 ### 模块结构
 
-```
+```text
 ruoyi-generator/
 ├── src/main/java/
 │   └── plus/ruoyi/generator/
@@ -93,7 +93,7 @@ ruoyi-generator/
 ## 生成代码结构
 
 ### Java后端代码
-```
+```text
 generated-code/
 ├── domain/
 │   ├── entity/          # 实体类
@@ -106,7 +106,7 @@ generated-code/
 ```
 
 ### 前端代码
-```
+```text
 frontend-code/
 ├── api/               # API接口定义
 │   ├── xxxApi.ts      # 接口调用方法

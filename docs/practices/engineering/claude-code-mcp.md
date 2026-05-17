@@ -468,7 +468,7 @@ POSTGRES_CONNECTION_STRING=postgresql://readonly_user:xxx@localhost/db
 
 ### Exa 搜索
 
-```
+```text
 用户：搜索 Vue 3 组合式 API 的最佳实践
 
 Claude：[使用 mcp__exa__web_search_exa 工具]
@@ -477,7 +477,7 @@ Claude：[使用 mcp__exa__web_search_exa 工具]
 
 ### Chrome DevTools
 
-```
+```text
 用户：帮我检查页面的网络请求
 
 Claude：[使用 mcp__chrome-devtools__list_network_requests 工具]
@@ -486,7 +486,7 @@ Claude：[使用 mcp__chrome-devtools__list_network_requests 工具]
 
 ### Context7 文档
 
-```
+```text
 用户：查询 Element Plus 的 Table 组件用法
 
 Claude：[使用 mcp__context7__get-library-docs 工具]

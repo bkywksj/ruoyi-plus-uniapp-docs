@@ -28,7 +28,7 @@
 
 ### 插件系统架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                           Vite 构建流程                                  │
 ├─────────────────────────────────────────────────────────────────────────┤
@@ -66,7 +66,7 @@
 
 ### 资源复制流程
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                        copyNativeRes 执行流程                            │
 ├─────────────────────────────────────────────────────────────────────────┤
@@ -117,7 +117,7 @@
 
 ### 目录映射关系
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                          目录映射关系图                                   │
 ├──────────────────────────────────────────────────────────────────────────┤
@@ -243,7 +243,7 @@ copyNativeRes 使用 `enforce: 'post'` 确保在所有其他插件处理完毕�
 
 #### 2. writeBundle 钩子时机
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    Rollup 构建钩子顺序                               │
 ├─────────────────────────────────────────────────────────────────────┤
@@ -338,7 +338,7 @@ export default async ({ command, mode, env }) => {
 
 在项目根目录下创建 `src/nativeResources` 目录，放置需要复制的原生资源：
 
-```
+```text
 src/
 └── nativeResources/           # 原生资源目录
     ├── android/               # Android 平台资源
@@ -361,7 +361,7 @@ src/
 构建完成后，原生资源会被复制到对应的输出目录：
 
 **开发环境：**
-```
+```text
 dist/dev/app/nativeResources/
 ├── android/
 ├── ios/
@@ -369,7 +369,7 @@ dist/dev/app/nativeResources/
 ```
 
 **生产环境：**
-```
+```text
 dist/build/app/nativeResources/
 ├── android/
 ├── ios/
@@ -406,7 +406,7 @@ if (command === 'build' && UNI_PLATFORM === 'app') {
 
 ### 执行流程
 
-```
+```text
 ┌─────────────────────────────────────────────────────────┐
 │                   插件执行流程                           │
 ├─────────────────────────────────────────────────────────┤
@@ -483,7 +483,7 @@ return {
 
 ### 推荐的目录结构
 
-```
+```text
 src/nativeResources/
 ├── android/                      # Android 平台专用资源
 │   ├── libs/                     # 原生库
@@ -552,7 +552,7 @@ src/nativeResources/
 
 #### Android 平台资源
 
-```
+```text
 src/nativeResources/android/
 ├── libs/                         # 库文件目录
 │   ├── xxx.aar                  # Android Archive
@@ -584,7 +584,7 @@ src/nativeResources/android/
 
 #### iOS 平台资源
 
-```
+```text
 src/nativeResources/ios/
 ├── Frameworks/                   # 框架目录
 │   ├── XXX.framework/           # 动态框架
@@ -615,7 +615,7 @@ src/nativeResources/ios/
 
 ### 集成推送插件资源
 
-```
+```text
 src/nativeResources/
 └── plugins/
     └── push/
@@ -648,7 +648,7 @@ src/nativeResources/
 
 ### 集成地图 SDK
 
-```
+```text
 src/nativeResources/
 └── plugins/
     └── map/
@@ -681,7 +681,7 @@ src/nativeResources/
 
 ### 集成支付 SDK
 
-```
+```text
 src/nativeResources/
 └── plugins/
     └── payment/
@@ -699,7 +699,7 @@ src/nativeResources/
 
 ### 自定义原生模块
 
-```
+```text
 src/nativeResources/
 └── modules/
     └── custom-module/
@@ -740,7 +740,7 @@ src/nativeResources/
 
 ### 初始数据库
 
-```
+```text
 src/nativeResources/
 └── common/
     └── data/
@@ -773,20 +773,20 @@ src/nativeResources/
 
 ### 正常执行
 
-```
+```text
 [copyNativeRes] 确保目标目录存在：/project/dist/build/app/nativeResources
 [copyNativeRes] 成功将 nativeResources 目录中的资源移动到构建目录：/project/dist/build/app/nativeResources
 ```
 
 ### 源目录不存在
 
-```
+```text
 [copyNativeRes] 警告：源目录 "/project/src/nativeResources" 不存在，跳过复制操作。
 ```
 
 ### 复制失败
 
-```
+```text
 [copyNativeRes] 复制资源失败：Error: EACCES: permission denied
 ```
 
@@ -999,7 +999,7 @@ export default (options: CopyNativeResOptions = {}): Plugin => {
 
 将不同平台的资源分开存放，便于管理和维护：
 
-```
+```text
 src/nativeResources/
 ├── android/    # Android 专用
 ├── ios/        # iOS 专用
@@ -1022,7 +1022,7 @@ if (UNI_PLATFORM === 'app') {
 
 在资源目录中包含版本信息，便于追踪和更新：
 
-```
+```text
 src/nativeResources/
 └── plugins/
     └── push/
@@ -1036,7 +1036,7 @@ src/nativeResources/
 
 为复杂的原生资源添加说明文档：
 
-```
+```text
 src/nativeResources/
 └── plugins/
     └── map/
@@ -1063,7 +1063,7 @@ src/nativeResources/**/*.xcframework/** filter=lfs diff=lfs merge=lfs -text
 
 为不同环境准备不同的配置文件：
 
-```
+```text
 src/nativeResources/
 └── common/
     └── config/
@@ -1094,7 +1094,7 @@ src/nativeResources/**/*.keystore
 
 使用 `.gitignore.example` 提供模板：
 
-```
+```text
 # .gitignore.example
 # 复制为 .gitignore 并根据需要调整
 src/nativeResources/common/certificates/push.p12
@@ -1105,7 +1105,7 @@ src/nativeResources/common/certificates/sign.keystore
 
 为重要的原生资源添加校验文件：
 
-```
+```text
 src/nativeResources/
 └── plugins/
     └── sdk/
@@ -1135,7 +1135,7 @@ src/nativeResources/
 
 uni-app 支持本地原生插件，插件资源可以放在 `nativeResources` 目录：
 
-```
+```text
 src/nativeResources/
 └── nativeplugins/
     └── MyPlugin/
@@ -1187,7 +1187,7 @@ src/nativeResources/
 
 对于云端原生插件的本地资源，也可以通过此插件复制：
 
-```
+```text
 src/nativeResources/
 └── cloud-plugins/
     └── xxx-plugin/
@@ -1424,7 +1424,7 @@ pnpm build:app
 
 确保遵循推荐的目录结构：
 
-```
+```text
 src/nativeResources/
 ├── android/
 ├── ios/
@@ -1469,7 +1469,7 @@ rm -rf dist/ && pnpm build:app
 
 严格按平台分离资源目录：
 
-```
+```text
 src/nativeResources/
 ├── android/   # 仅 Android
 ├── ios/       # 仅 iOS

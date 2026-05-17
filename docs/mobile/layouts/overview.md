@@ -23,7 +23,7 @@
 
 布局系统采用三层架构设计：
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │           Vite Plugin Layer             │
 │    (UniLayouts 插件 - 构建时处理)        │
@@ -598,7 +598,7 @@ export const useTheme = (localOverrides?: Partial<ConfigProviderThemeVars>) => {
 
 **主题优先级：**
 
-```
+```text
 局部覆盖 (最高) > 全局覆盖 > 默认主题 (最低)
 ```
 
@@ -821,7 +821,7 @@ const switchToLightTheme = () => {
 
 **配置优先级：**
 
-```
+```text
 页面 route 块配置 > pages.json 页面配置 > globalStyle 全局配置
 ```
 
@@ -951,7 +951,7 @@ const handleTabClick = (item) => {
 
 项目将 Tabbar 的每个标签页拆分为独立的 Vue 组件，便于维护和管理。
 
-```
+```text
 src/components/tabbar/
 ├── Home.vue    # 首页标签内容
 ├── Menu.vue    # 菜单标签内容
@@ -1084,7 +1084,7 @@ const currentLayout = computed(() => {
 
 为不同分包创建专属的布局模板，减少不必要的全局组件加载：
 
-```
+```text
 layouts/
 ├── default.vue      # 主包默认布局
 ├── admin.vue        # 管理分包布局
@@ -1426,7 +1426,7 @@ const showToast = () => {
 
 **推荐命名：**
 
-```
+```text
 layouts/
 ├── default.vue       # 默认布局（包含所有全局组件）
 ├── simple.vue        # 简洁布局（仅包含主题配置）
@@ -1437,7 +1437,7 @@ layouts/
 
 **不推荐命名：**
 
-```
+```text
 layouts/
 ├── default.vue
 ├── layout1.vue      # ❌ 命名不明确
@@ -1505,7 +1505,7 @@ vitePlugins.push(UniLayouts())  // 确保插件已添加
 
 **检查布局文件：**
 
-```
+```text
 src/layouts/
 ├── default.vue    # ✅ 正确：文件名小写，.vue 后缀
 ├── custom.vue     # ✅ 正确
@@ -1787,7 +1787,7 @@ console.log('授权弹窗状态:', userStore.authModalVisible)
 
 **理解配置优先级：**
 
-```
+```text
 页面 route 块配置（最高）> pages.json 页面配置 > globalStyle 全局配置（最低）
 ```
 

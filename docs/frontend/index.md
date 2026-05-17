@@ -70,7 +70,7 @@ RuoYi-Plus-UniApp 前端是一个基于 Vue 3 + TypeScript 的现代化企业级
 
 ### 目录结构
 
-```
+```text
 src/
 ├── api/                    # 接口集中管理
 │   ├── business/          # 业务模块接口

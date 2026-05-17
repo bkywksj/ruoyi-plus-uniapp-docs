@@ -4,7 +4,7 @@
 
 ## 模块结构
 
-```
+```text
 base/
 ├── controller/          # 控制器层
 │   ├── AdController.java
@@ -730,7 +730,7 @@ public class DataGeneratorService {
 
 #### 架构层次
 
-```
+```text
 Controller 层
     ↓
 Service 层
@@ -1181,7 +1181,7 @@ logging:
 
 #### 错误1: 平台配置未找到
 
-```
+```text
 错误信息: ServiceException: 未找到平台配置
 ```
 
@@ -1202,7 +1202,7 @@ System.out.println("查询到的平台配置: " + JsonUtils.toJsonString(platfor
 
 #### 错误2: 认证策略未找到
 
-```
+```text
 错误信息: No bean named 'miniappAuthStrategy' available
 ```
 
@@ -1221,7 +1221,7 @@ public class MiniappAuthStrategy implements IAuthStrategy {
 
 #### 错误3: 多租户数据泄露
 
-```
+```text
 错误信息: 查询到了其他租户的数据
 ```
 

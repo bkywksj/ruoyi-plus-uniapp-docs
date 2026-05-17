@@ -1494,7 +1494,7 @@ onLoad((options) => {
 
 同时创建自定义 tabBar 组件目录（小程序要求）：
 
-```
+```text
 src/
 ├── custom-tab-bar/        # 小程序自定义 tabBar 目录
 │   └── index.js           # 空文件或简单占位

@@ -18,7 +18,7 @@
 
 ### 整体架构图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        应用层 Application                            │
 │  ┌──────────────────────────────────────────────────────────────┐  │
@@ -134,7 +134,7 @@ String cacheKey = "repeat_submit::" + requestURI + submitKey;
 
 **最终 Key 格式**：
 
-```
+```text
 repeat_submit::/api/user/create{32位MD5哈希值}
 ```
 
@@ -490,7 +490,7 @@ function addPending(config: RequestConfig) {
 
 **双重保护机制**：
 
-```
+```text
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
 │   用户点击   │ ──→ │  前端防重   │ ──→ │  后端防重   │
 │             │     │  (即时拦截) │     │ (分布式锁)  │
@@ -671,7 +671,7 @@ logging:
 
 **日志输出示例**：
 
-```
+```text
 DEBUG RepeatSubmitAspect - 防重复提交检查: uri=/api/user/create, key=repeat_submit::/api/user/create{md5}
 DEBUG RepeatSubmitAspect - 设置防重锁成功: key=repeat_submit::/api/user/create{md5}, interval=5000ms
 DEBUG RepeatSubmitAspect - 业务执行成功，保留防重锁
@@ -729,7 +729,7 @@ const handleSubmit = debounce(async (data) => {
 
 **架构示意**：
 
-```
+```text
 ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
 │  服务实例 A  │     │  服务实例 B  │     │  服务实例 C  │
 └──────┬───────┘     └──────┬───────┘     └──────┬───────┘
@@ -894,7 +894,7 @@ Redis 缓存 Key 采用惰性删除策略，无需额外维护：
 
 采用分层 Key 结构，便于管理和监控：
 
-```
+```text
 repeat_submit::{uri}{md5_hash}
      |           |      |
      |           |      └── 用户+参数的MD5哈希（32位）
@@ -1016,7 +1016,7 @@ public R<Void> sensitiveOperation(@RequestBody OperationReq req) {
 
 **执行顺序**：
 
-```
+```text
 请求 → 限流检查 → 防重复检查 → 业务逻辑 → 响应
 ```
 
@@ -1526,7 +1526,7 @@ public class CompositeIdempotentKeyGenerator {
 
 在多数据中心部署时，幂等性面临额外挑战：
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────┐
 │                       用户请求                                  │
 └────────────────────────┬───────────────────────────────────────┘

@@ -39,7 +39,7 @@
 
 **开发设置 → 开发者ID:**
 
-```
+```text
 AppID(小程序ID): wx1234567890abcdef
 AppSecret(小程序密钥): a1b2c3d4e5f6789012345678901234567
 ```
@@ -159,7 +159,7 @@ pnpm dev:mp-weixin
 
 **输出信息:**
 
-```
+```text
 vite v6.3.5 building for development...
 ✓ built in 3.2s
 小程序开发目录: dist/dev/mp-weixin
@@ -235,7 +235,7 @@ pnpm build:mp-weixin
 
 **构建流程:**
 
-```
+```text
 1. 加载生产环境变量(.env.production)
 2. TypeScript 类型检查
 3. Vite 编译打包
@@ -248,7 +248,7 @@ pnpm build:mp-weixin
 
 ### 构建产物结构
 
-```
+```text
 dist/build/mp-weixin/
 ├── app.js                    # 小程序主逻辑
 ├── app.json                  # 小程序配置
@@ -327,7 +327,7 @@ pnpm build:mp-weixin
 
 **版本号规范:**
 
-```
+```text
 主版本号.次版本号.修订号
 
 1.0.0 - 初始版本
@@ -738,7 +738,7 @@ uni.chooseImage({
 
 **创建协议页面:**
 
-```
+```text
 pages/agreement/
 ├── user-agreement.vue      # 用户协议
 └── privacy-policy.vue      # 隐私政策
@@ -963,7 +963,7 @@ pnpm install && pnpm build:mp-weixin
 
 **重新提交时填写修改说明:**
 
-```
+```text
 已根据审核意见进行如下修改:
 1. 添加了用户协议和隐私政策页面
 2. 移除了强制分享功能
@@ -1111,7 +1111,7 @@ export default {
 
 ### 1. 版本发布流程
 
-```
+```text
 1. 开发新功能 → 本地调试 → 代码Review → 合并主分支
 2. 测试验证 → 构建开发版 → 设为体验版 → 团队测试
 3. 发布准备 → 更新版本号 → 检查配置 → 生产构建
@@ -1121,7 +1121,7 @@ export default {
 
 ### 2. 环境管理
 
-```
+```text
 env/
 ├── .env                # 公共配置
 ├── .env.development    # 开发环境

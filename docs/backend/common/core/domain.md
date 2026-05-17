@@ -577,7 +577,7 @@ UserDisplay.java      // 含义不明确
 
 ### 2. 数据传输层次
 
-```
+```text
 Controller Layer
        ↕
     Bo/Vo Objects    # 业务对象/视图对象

@@ -1643,7 +1643,7 @@ bounceAnimation.onfinish = () => {
 
 在 Nuxt、Next.js 等 SSR 框架中使用类名操作函数时，服务端抛出错误：
 
-```
+```text
 ReferenceError: document is not defined
 ReferenceError: HTMLElement is not defined
 ```

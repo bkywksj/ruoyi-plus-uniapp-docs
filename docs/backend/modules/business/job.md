@@ -4,7 +4,7 @@
 
 ## 模块结构
 
-```
+```text
 job/
 ├── demo/                   # 示例任务
 │   └── TestAnnoJobExecutor.java

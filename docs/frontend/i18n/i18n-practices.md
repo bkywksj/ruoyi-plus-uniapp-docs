@@ -1169,7 +1169,7 @@ function formatRange(min: number, max: number): string {
 
 部分翻译显示为键名而非翻译值，或者切换到某些语言时完全无法显示翻译：
 
-```
+```text
 // 预期显示："新增用户"
 // 实际显示："user.addUser" 或 undefined
 ```

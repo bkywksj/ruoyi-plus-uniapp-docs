@@ -92,7 +92,7 @@ export default defineManifestConfig({
 
 **版本号规范:**
 
-```
+```text
 主版本号.次版本号.修订号
 5.5.0 → 5.5.1 (Bug修复)
 5.5.0 → 5.6.0 (新功能)
@@ -518,7 +518,7 @@ export default defineManifestConfig({
 
 ### 3. 图标规范管理
 
-```
+```text
 static/app/icons/
 ├── source/
 │   └── logo-1024.png      # 原图

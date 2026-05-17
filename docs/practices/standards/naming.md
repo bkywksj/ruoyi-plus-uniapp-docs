@@ -473,7 +473,7 @@ int maxSize = 100;                    // 应全大写加下划线
 
 **规范:** 大驼峰命名,业务组件使用 `A` 前缀
 
-```
+```text
 ✅ 正确
 AAiAssistant.vue                      // 业务组件
 AAiContentReviewer.vue                // 业务组件
@@ -498,7 +498,7 @@ a-ai-assistant.vue                    // 不应使用连字符
 
 **规范:** 小驼峰命名,按功能添加后缀
 
-```
+```text
 ✅ 正确
 adApi.ts                              // API接口文件
 adTypes.ts                            // 类型定义文件
@@ -527,7 +527,7 @@ ad.api.ts                             // 不应使用多个点
 
 **规范:** 小驼峰命名,单一功能用单数,多功能用复数
 
-```
+```text
 ✅ 正确
 cache.ts                              // 缓存工具
 colors.ts                             // 颜色工具
@@ -550,7 +550,7 @@ cacheUtils.ts                         // 不需要 Utils 后缀
 
 **规范:** 小驼峰命名,以 `use` 开头
 
-```
+```text
 ✅ 正确
 useAiChat.ts
 useAnimation.ts
@@ -810,7 +810,7 @@ export const useDict = defineStore('dict', () => { })        // 缺少 Store 后
 
 **规范:** 小驼峰命名
 
-```
+```text
 ✅ 正确
 login.vue
 phoneLogin.vue
@@ -833,7 +833,7 @@ PhoneLogin.vue                        // 首字母不应大写
 
 **规范:** 小驼峰命名,WD UI 组件以 `wd-` 前缀
 
-```
+```text
 ✅ 正确
 wd-button.vue
 wd-icon.vue
@@ -856,7 +856,7 @@ Wd-Button.vue                         // 前缀和名称都不应大写
 
 **规范:** 与前端保持一致,小驼峰命名
 
-```
+```text
 ✅ 正确
 homeApi.ts
 homeTypes.ts
@@ -1272,7 +1272,7 @@ create table b_ad
 **原则:** 前后端、移动端对应的实体名称保持一致
 
 **示例:**
-```
+```text
 后端 Entity:  Ad
 后端 Bo:      AdBo
 后端 Vo:      AdVo

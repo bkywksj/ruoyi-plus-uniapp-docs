@@ -1265,7 +1265,7 @@ console.log('主题色:', currentConfig.colorTheme)
 
 主题配置按以下优先级合并:
 
-```
+```text
 默认主题 < 全局覆盖 < 局部定制
 ```
 

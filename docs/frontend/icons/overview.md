@@ -8,7 +8,7 @@
 
 项目总共集成了 817 个图标，分布在两个图标系统中：
 
-```
+```text
 总计: 817 个图标
 ├── Iconfont: 644 个 (项目自定义图标)
 │   ├── 业务功能图标
@@ -44,7 +44,7 @@
 
 ## 目录结构
 
-```
+```text
 plus-ui/
 ├── src/
 │   ├── assets/
@@ -884,7 +884,7 @@ const getStatusIcon = (status: string) => {
 
 Iconfont 库包含 644 个项目定制图标，采用统一的设计语言，确保视觉一致性：
 
-```
+```text
 Iconfont 图标库: plus-ui
 ├── 字体系列: iconfont
 ├── CSS 前缀: icon-

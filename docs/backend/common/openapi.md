@@ -18,7 +18,7 @@ OpenAPI开放平台提供企业级API开放解决方案，通过 AppKey + AppSec
 
 ### 依赖关系
 
-```
+```text
 ruoyi-common-openapi
 ├── ruoyi-common-core          # 核心工具类
 ├── ruoyi-common-redis         # Redis缓存支持
@@ -41,7 +41,7 @@ ruoyi-common-openapi
 
 ### 认证流程
 
-```
+```text
 客户端请求
     │
     ▼
@@ -449,7 +449,7 @@ public class OpenApiSignUtils {
 
 ### 签名示例
 
-```
+```text
 AppKey: d4c0ed4bc5b049c8a144109f60c8abb9
 Timestamp: 1609459200000
 AppSecret: fcfe7ade592c4fcb9e6b8ec9e7c3134d

@@ -25,7 +25,7 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 
 ## 目录结构
 
-```
+```text
 项目根目录/
 ├── CLAUDE.md                    # 入口文件（每次加载）
 └── .claude/
@@ -205,7 +205,7 @@ public class XxxServiceImpl implements IXxxService {
         return MapstructUtils.convert(entity, XxxVo.class);
     }
 }
-```
+```text
 ```
 
 #### 技巧 2：对比展示错误和正确做法
@@ -219,7 +219,7 @@ public class XxxServiceImpl extends ServiceImpl<XxxMapper, Xxx> {
 
 // ❌ 错误：直接注入 Mapper
 private final XxxMapper xxxMapper;
-```
+```text
 
 ### 正确做法
 
@@ -229,7 +229,7 @@ public class XxxServiceImpl implements IXxxService {
 
 // ✅ 正确：注入 DAO
 private final IXxxDao xxxDao;
-```
+```text
 ```
 
 #### 技巧 3：包含完整可运行的示例
@@ -288,7 +288,7 @@ mkdir -p .claude/skills
 
 **无 Skills 的对话：**
 
-```
+```text
 我：帮我开发优惠券管理模块
 
 AI：好的，我需要了解一些信息：
@@ -308,7 +308,7 @@ AI：好的，我来生成代码...
 
 **有 Skills 的对话：**
 
-```
+```text
 我：帮我开发优惠券管理模块的 CRUD
 
 AI：[自动激活 crud-development Skill]
@@ -342,7 +342,7 @@ AI：[自动激活 crud-development Skill]
 
 ### 知识分层策略
 
-```
+```text
 CLAUDE.md（248行）      ← 每次必加载：核心禁令、架构要点
     ↓
 Skills（10,000+行）     ← 按需加载：详细规范、代码模板

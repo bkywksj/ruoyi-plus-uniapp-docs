@@ -334,7 +334,7 @@ $BP_SM: 768px;         // 全大写不符合规范
 
 **优先级规则:**
 
-```
+```text
 UnoCSS 原子类 > SCSS 工具类 > 自定义样式
 ```
 
@@ -1268,7 +1268,7 @@ export default defineConfig({
 
 **命名规则:**
 
-```
+```text
 .block {}                // 块
 .block__element {}       // 元素
 .block--modifier {}      // 修饰符

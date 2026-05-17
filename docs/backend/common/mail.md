@@ -2759,7 +2759,7 @@ public class MailProperties {
 
 ### 配置加载流程
 
-```
+```text
 1. 应用启动
     ↓
 2. Spring Boot 扫描 @AutoConfiguration
@@ -3102,7 +3102,7 @@ class GreenMailTest {
 #### 1. 认证失败
 
 **错误信息：**
-```
+```text
 javax.mail.AuthenticationFailedException: 535 Authentication failed
 ```
 
@@ -3134,7 +3134,7 @@ void diagnoseAuthFailure() {
 #### 2. 连接超时
 
 **错误信息：**
-```
+```text
 java.net.SocketTimeoutException: connect timed out
 ```
 
@@ -3165,7 +3165,7 @@ public boolean testConnection(String host, int port) {
 #### 3. SSL/TLS 握手失败
 
 **错误信息：**
-```
+```text
 javax.net.ssl.SSLHandshakeException: No appropriate protocol
 ```
 
@@ -3197,7 +3197,7 @@ System.setProperty("mail.smtp.ssl.ciphersuites",
 #### 4. 发件人地址被拒绝
 
 **错误信息：**
-```
+```text
 553 Mail from must equal authorized user
 ```
 
@@ -3214,7 +3214,7 @@ mail:
 #### 5. 收件人被拒绝
 
 **错误信息：**
-```
+```text
 550 Invalid User / Mailbox not found
 ```
 

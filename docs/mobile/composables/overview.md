@@ -22,7 +22,7 @@ RuoYi-Plus-UniApp 提供了一套完整的组合式函数(Composables),基于 Vu
 
 项目中的组合式函数分为两大类:
 
-```
+```text
 composables/
 ├── 应用级组合式函数 (src/composables/)
 │   ├── useAuth.ts          # 认证与权限管理
@@ -208,7 +208,7 @@ const canEditInTenant = hasTenantPermission('system:user:edit', 'tenant001')
 
 **权限检查逻辑:**
 
-```
+```text
 hasPermission 执行流程:
 ┌─────────────────────────────────────┐
 │ 1. 检查权限参数是否有效              │

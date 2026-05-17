@@ -17,7 +17,7 @@
 
 ## 组件架构
 
-```
+```text
 Settings/
 ├── Settings.vue              # 设置抽屉面板主组件
 └── (Navbar/tools/)

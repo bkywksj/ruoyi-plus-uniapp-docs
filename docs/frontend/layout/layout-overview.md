@@ -27,7 +27,7 @@
 
 ### 目录结构
 
-```
+```text
 layouts/
 ├── Layout.vue                    # 主布局容器
 ├── HomeLayout.vue               # 前台简洁布局
@@ -910,7 +910,7 @@ const STORAGE_KEY = 'layout-config'
 
 #### 垂直布局 (Vertical)
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │ Navbar                                   │
 ├─────────┬───────────────────────────────┤
@@ -927,7 +927,7 @@ const STORAGE_KEY = 'layout-config'
 
 #### 水平布局 (Horizontal)
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │ Navbar  [Logo] [Menu1] [Menu2] [Menu3]  │
 ├─────────────────────────────────────────┤
@@ -943,7 +943,7 @@ const STORAGE_KEY = 'layout-config'
 
 #### 混合布局 (Mixed)
 
-```
+```text
 ┌─────────────────────────────────────────┐
 │ Navbar  [TopMenu1] [TopMenu2]           │
 ├─────────┬───────────────────────────────┤

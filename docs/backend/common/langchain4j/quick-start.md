@@ -63,7 +63,7 @@ LangChain4j 是一个用于开发由大型语言模型(LLM)驱动的应用程序
 
 LangChain4j 模块使用独立的配置文件 `langchain4j.yml`，位于：
 
-```
+```text
 ruoyi-common/ruoyi-common-langchain4j/src/main/resources/langchain4j.yml
 ```
 
@@ -239,7 +239,7 @@ langchain4j:
 
 配置完成后，启动 Spring Boot 应用，查看控制台日志：
 
-```
+```text
 ========================================
 LangChain4j 模块初始化完成
 默认提供商: deepseek

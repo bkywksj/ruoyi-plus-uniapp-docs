@@ -4,7 +4,7 @@ RuoYi-Plus-UniApp 项目的开发规范体系，涵盖代码、命名、注释�
 
 ## 规范体系架构
 
-```
+```text
 开发规范体系
 ├── 代码规范          # 基础编码原则和风格
 ├── 命名规范          # 统一的命名约定
@@ -176,7 +176,7 @@ RESTful API 设计遵循统一的规范。
 
 **URL 设计**:
 
-```
+```text
 GET    /api/users          # 获取用户列表
 GET    /api/users/{id}     # 获取单个用户
 POST   /api/users          # 创建用户
@@ -244,7 +244,7 @@ Git 提交和分支管理规范。
 
 **提交信息格式**:
 
-```
+```text
 <type>(<scope>): <subject>
 
 <body>
@@ -281,7 +281,7 @@ Closes #123
 
 ### 后端分层
 
-```
+```text
 Controller 层    # 接口定义，参数校验，权限控制
     ↓
 Service 层      # 业务逻辑，事务管理
@@ -293,7 +293,7 @@ Mapper 层       # MyBatis 映射
 
 ### 前端分层
 
-```
+```text
 views/          # 页面组件
     ↓
 components/     # 业务组件

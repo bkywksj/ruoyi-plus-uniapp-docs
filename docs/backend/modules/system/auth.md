@@ -23,7 +23,7 @@
 
 ### 2.1 模块结构
 
-```
+```text
 auth/
 ├── controller/              # 控制器层
 │   ├── AuthController.java  # 认证主控制器

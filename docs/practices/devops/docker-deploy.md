@@ -335,7 +335,7 @@ IntelliJ IDEA 提供了强大的 Docker 集成能力，可以直接在 IDE 中�
 
 **IDEA 运行配置示例:**
 
-```
+```text
 Name: ryplus_uni_workflow Docker
 Image tag: ryplus_uni_workflow:dev
 Container name: ryplus_workflow_dev
@@ -432,7 +432,7 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 ## 部署架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │                    Nginx (80/443)                   │
 │              反向代理 + SSL + 负载均衡               │

@@ -21,7 +21,7 @@ JSON处理模块（`ruoyi-common-json`）提供了基于Jackson的JSON序列化�
 
 ## 模块结构
 
-```
+```text
 ruoyi-common-json/
 ├── pom.xml                                    # Maven配置文件
 ├── src/main/java/plus/ruoyi/common/json/
@@ -81,7 +81,7 @@ ruoyi-common-json/
 
 ### 模块依赖关系图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    ruoyi-common-json                        │
 ├─────────────────────────────────────────────────────────────┤
@@ -682,7 +682,7 @@ OrderInfo order4 = JsonUtils.parseObject(json4, OrderInfo.class);
 
 模块通过Spring Boot自动配置机制加载：
 
-```
+```text
 # META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
 plus.ruoyi.common.json.config.JsonAutoConfiguration
 ```

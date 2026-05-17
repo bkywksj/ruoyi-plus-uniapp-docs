@@ -29,7 +29,7 @@
 
 ### 项目结构
 
-```
+```text
 plus-uniapp/
 ├── src/
 │   ├── composables/          # 组合式函数目录

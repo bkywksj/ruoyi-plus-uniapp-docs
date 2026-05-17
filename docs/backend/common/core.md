@@ -168,7 +168,7 @@ ruoyi-common-core/
 
 ### 依赖关系图
 
-```
+```text
 ruoyi-common-core (核心模块)
     ├── spring-context-support
     ├── spring-web

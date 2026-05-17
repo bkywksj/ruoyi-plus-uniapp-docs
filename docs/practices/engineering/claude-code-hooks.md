@@ -502,7 +502,7 @@ PreToolUse Hook 可以修改工具的输入参数：
 
 ### 1. 分层配置
 
-```
+```text
 全局配置（~/.claude/settings.json）
 ├── 通用安全规则
 ├── 审计日志

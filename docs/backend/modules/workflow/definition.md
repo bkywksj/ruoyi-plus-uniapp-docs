@@ -1005,7 +1005,7 @@ public String generateVersion(String flowCode) {
 
 ### 版本状态流转
 
-```
+```text
 ┌──────────┐    发布    ┌──────────┐
 │  未发布  │ ────────> │  已发布  │
 │ (v1 草稿)│           │ (v1 生效)│

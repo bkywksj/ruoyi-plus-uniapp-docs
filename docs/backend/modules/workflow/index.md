@@ -154,7 +154,7 @@ warm-flow:
 
 打开浏览器访问流程设计器界面：
 
-```
+```text
 http://localhost:8080/workflow/designer
 ```
 
@@ -162,7 +162,7 @@ http://localhost:8080/workflow/designer
 
 访问 Swagger 文档查看工作流相关接口：
 
-```
+```text
 http://localhost:8080/doc.html#/workflow
 ```
 
@@ -200,7 +200,7 @@ flwTaskService.completeTask(completeBo);
 
 工作流模块采用分层架构设计，从上到下分为表现层、业务层、服务层和数据层：
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                         表现层 (Controller)                      │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐│
@@ -242,7 +242,7 @@ flwTaskService.completeTask(completeBo);
 
 工作流模块的包结构如下：
 
-```
+```text
 plus.ruoyi.workflow
 ├── config/                          # 配置类
 │   └── WarmFlowConfig.java          # Warm-Flow 配置
@@ -312,7 +312,7 @@ plus.ruoyi.workflow
 
 工作流的核心执行流程如下：
 
-```
+```text
 ┌──────────────────────────────────────────────────────────────────┐
 │ 1. 启动流程 (startWorkFlow)                                       │
 │    ├─ 验证流程定义和业务数据                                        │
@@ -362,7 +362,7 @@ plus.ruoyi.workflow
 
 工作流核心数据表关系：
 
-```
+```text
 ┌─────────────────┐       ┌─────────────────┐
 │ flow_definition │───────│   flow_node     │
 │ (流程定义)       │ 1:N   │   (流程节点)     │
@@ -424,7 +424,7 @@ plus.ruoyi.workflow
 
 **流程定义生命周期：**
 
-```
+```text
 创建 → 设计 → 保存 → 发布 → 使用 → 取消发布 → 修改 → 重新发布
                               ↓
                          挂起/激活
@@ -581,7 +581,7 @@ public enum TaskAssigneeType {
 
 **节点示例：**
 
-```
+```text
        ┌──────────────┐
        │   开始节点    │ (nodeType: 0)
        └──────┬───────┘
@@ -881,7 +881,7 @@ CREATE TABLE `order_approval` (
 
 在流程设计器中创建订单审批流程：
 
-```
+```text
 开始 → 提交申请 → [金额判断]
                     ├─ amount < 10000 → 部门经理审批 → 结束
                     └─ amount >= 10000 → 部门经理审批 → 财务总监审批 → 结束
@@ -1004,7 +1004,7 @@ flwTaskService.completeTask(completeBo);
 
 **命名规范：**
 
-```
+```text
 流程编码: 业务类型_流程名称 (如: leave_annual, order_approval)
 节点编码: node_功能描述 (如: node_submit, node_manager_approve)
 变量名称: 小驼峰命名 (如: leaveDays, orderAmount)
@@ -1224,7 +1224,7 @@ flwTaskService.rejectTask(backBo);
 
 确保并行网关正确配置：
 
-```
+```text
         ┌─────────────┐
         │  并行分支    │
         └─────┬───────┘
@@ -1391,7 +1391,7 @@ public class CustomSpelRule {
 
 在流程设计器中使用：
 
-```
+```text
 条件表达式: #{@customSpelRule.isVipUser(applicant)}
 ```
 

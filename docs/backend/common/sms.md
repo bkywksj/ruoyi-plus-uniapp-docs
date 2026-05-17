@@ -68,7 +68,7 @@ ruoyi-common-sms/
 
 ### 模块依赖关系图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    ruoyi-common-sms                         │
 ├─────────────────────────────────────────────────────────────┤
@@ -208,7 +208,7 @@ public class PlusSmsDao implements SmsDao {
 
 所有缓存键自动添加全局前缀 `GlobalConstants.GLOBAL_REDIS_KEY`，默认值为 `global:`，最终缓存键格式为：
 
-```
+```text
 global:sms:xxx    # 短信相关缓存
 global:captcha:xxx # 验证码缓存
 ```

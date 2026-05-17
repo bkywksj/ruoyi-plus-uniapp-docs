@@ -52,7 +52,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 
 ### BOM 工作原理
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                      ruoyi-common-bom                           │
 │  ┌─────────────────────────────────────────────────────────┐   │
@@ -537,7 +537,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 
 ### 层次架构图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                           业务扩展层 (Business Extensions)                   │
 │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────────────────┐│
@@ -611,7 +611,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 
 ### 核心依赖链
 
-```
+```text
 ruoyi-common-core (基础)
     │
     ├── ruoyi-common-web (依赖 core)
@@ -689,7 +689,7 @@ ruoyi-common-core (基础)
 
 对于大型项目，建议将依赖按功能拆分到不同的子模块:
 
-```
+```text
 my-project/
 ├── my-project-core/          # 核心依赖: core, web, log
 ├── my-project-data/          # 数据依赖: mybatis, redis, excel
@@ -823,7 +823,7 @@ ls ~/.m2/repository/plus/ruoyi/
 2. 将公共部分提取到 core 模块
 3. 使用接口解耦
 
-```
+```text
 # 错误的依赖关系
 module-a → module-b → module-a (循环)
 
@@ -845,7 +845,7 @@ module-b → module-core
 
 ### 核心依赖兼容性
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────────────────┐
 │                        版本兼容性矩阵                                       │
 ├────────────────────────────────────────────────────────────────────────────┤
@@ -962,7 +962,7 @@ public class CustomAutoConfiguration {
 }
 ```
 
-```
+```text
 // META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports
 plus.ruoyi.common.custom.config.CustomAutoConfiguration
 ```
@@ -1519,7 +1519,7 @@ mvn clean install -o
 
 ### 1. 父子项目结构
 
-```
+```text
 enterprise-platform/
 ├── pom.xml                      # 企业级父 POM
 ├── common-dependencies/         # 自定义依赖 BOM
@@ -1750,7 +1750,7 @@ String greeting = STR."Hello, \{user.getName()}!";
 
 ### 1. 自动配置原理
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                       Spring Boot Auto-Configuration                     │
 ├─────────────────────────────────────────────────────────────────────────┤

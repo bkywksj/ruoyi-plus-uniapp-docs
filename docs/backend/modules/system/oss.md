@@ -17,7 +17,7 @@ OSS（Object Storage Service）对象存储模块是一个企业级的文件管�
 
 ### 1.2 技术架构
 
-```
+```text
 ├── Controller 层（接口控制）
 ├── Service 层（业务逻辑）
 ├── Mapper 层（数据访问）

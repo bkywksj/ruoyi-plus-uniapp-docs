@@ -19,7 +19,7 @@ RuoYi-Plus-UniApp 移动端提供了完整的主题定制系统,支持全局主�
 
 ### 主题系统架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                      应用层 (App.vue)                        │
 ├─────────────────────────────────────────────────────────────┤
@@ -52,7 +52,7 @@ RuoYi-Plus-UniApp 移动端提供了完整的主题定制系统,支持全局主�
 
 ### 核心文件结构
 
-```
+```text
 plus-uniapp/src/
 ├── composables/
 │   └── useTheme.ts              # 主题管理 Composable
@@ -310,7 +310,7 @@ const resetTheme = () => {
 
 WD UI 组件库的所有 CSS 变量都以 `--wot-` 前缀开头,变量名采用短横线分隔(kebab-case)命名:
 
-```
+```text
 JavaScript 属性名         →    CSS 变量名
 colorTheme               →    --wot-color-theme
 buttonPrimaryBgColor     →    --wot-button-primary-bg-color

@@ -24,7 +24,7 @@
 
 ### 整体架构图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                        SnailJob 分布式任务调度架构                             │
 ├─────────────────────────────────────────────────────────────────────────────┤
@@ -189,7 +189,7 @@ java -jar target/ruoyi-snailjob-server.jar --spring.profiles.active=dev
 
 启动成功后会显示：
 
-```
+```text
 (✨◠‿◠)ﾉ♪♫ ruoyi-snailjob-server 启动成功！环境: [dev] 地址: http://127.0.0.1:8800/snail-job
 ```
 
@@ -362,7 +362,7 @@ docker-compose down
 
 **Cron 表达式格式**
 
-```
+```text
 ┌───────────── 秒 (0-59)
 │ ┌───────────── 分 (0-59)
 │ │ ┌───────────── 时 (0-23)
@@ -698,7 +698,7 @@ SnailJob 服务端支持多实例部署，通过数据库实现任务协调。
 
 **架构图**
 
-```
+```text
                     ┌─────────────────────┐
                     │     Nginx/LB        │
                     │  http://snailjob    │
@@ -973,7 +973,7 @@ JAVA_OPTS="-Xms1g -Xmx2g -XX:+UseZGC -XX:+HeapDumpOnOutOfMemoryError"
 
 **错误现象**
 
-```
+```text
 Failed to connect to SnailJob server
 Connection refused: 127.0.0.1:17888
 ```
@@ -1017,7 +1017,7 @@ telnet 127.0.0.1 17888
 
 **错误现象**
 
-```
+```text
 Task execution timeout
 ```
 
@@ -1031,7 +1031,7 @@ Task execution timeout
 
 **错误现象**
 
-```
+```text
 Cannot create PoolableConnectionFactory
 Connection refused
 ```
@@ -1051,7 +1051,7 @@ mysql -h 127.0.0.1 -u root -p ryplus_uni_workflow
 
 **错误现象**
 
-```
+```text
 java.lang.OutOfMemoryError: Java heap space
 ```
 

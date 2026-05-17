@@ -374,7 +374,7 @@ RefundResponse response = payService.refund(DictPaymentMethod.BALANCE, request);
 ### 回调地址规则
 
 系统自动生成回调地址，格式为：
-```
+```text
 {baseApi}/payment/notify/{paymentMethod}/{merchantId}
 ```
 
@@ -2961,7 +2961,7 @@ public PayResponse createAppPay(String orderNo, BigDecimal amount, String descri
 
 银联支付回调URL遵循统一格式：
 
-```
+```text
 {baseApi}/payment/notify/unionpay/{appid}/{type}
 ```
 

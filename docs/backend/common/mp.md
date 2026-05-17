@@ -16,7 +16,7 @@
 
 ### 模块架构
 
-```
+```text
 ruoyi-common-mp
 ├── config/                          # 配置层
 │   ├── MpAutoConfiguration.java     # Spring Boot 自动配置
@@ -132,7 +132,7 @@ public class MpAutoConfiguration {
 
 ### 装配流程
 
-```
+```text
 应用启动
     ↓
 加载 MpAutoConfiguration

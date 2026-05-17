@@ -697,7 +697,7 @@ export function createIconfontTypes(): Plugin {
 
 ### 图标资源结构
 
-```
+```text
 src/assets/icons/
 ├── system/                    # Iconfont 系统图标
 │   ├── iconfont.json         # 图标数据(从 iconfont.cn 导出)

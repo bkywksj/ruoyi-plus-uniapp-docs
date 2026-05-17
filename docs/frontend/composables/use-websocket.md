@@ -126,7 +126,7 @@ const { connect, disconnect, reconnect, send, status, isConnected } = useWS('ws:
 
 使用指数退避算法，重连延迟时间按以下规律增长：
 
-```
+```text
 第1次重连: 3秒 (baseDelay * 2^0)
 第2次重连: 6秒 (baseDelay * 2^1)
 第3次重连: 12秒 (baseDelay * 2^2)

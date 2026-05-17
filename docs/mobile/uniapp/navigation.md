@@ -712,7 +712,7 @@ uni.$emit('switchTab', { tab: 2 })
 ### 2. navigateTo 页面栈已满？
 
 **问题**：
-```
+```text
 navigateTo:fail page limit exceeded
 ```
 

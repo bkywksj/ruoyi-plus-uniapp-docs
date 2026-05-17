@@ -33,7 +33,7 @@ pnpm -v  # >= 8.0.0
 
 ### 项目结构
 
-```
+```text
 plus-ui/src/
 ├── components/              # 组件目录
 │   ├── AForm/              # 表单组件系列

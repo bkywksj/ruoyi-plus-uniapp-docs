@@ -971,7 +971,7 @@ export default defineConfig({
 
 #### 样式目录结构
 
-```
+```text
 src/assets/styles/
 ├── abstracts/           # 抽象层（变量、混入、函数）
 │   ├── _variables.scss  # CSS 变量定义

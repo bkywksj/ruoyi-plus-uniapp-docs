@@ -23,7 +23,7 @@ Excel处理模块基于FastExcel（原EasyExcel）框架，提供了完整的Exc
 
 ### 模块结构
 
-```
+```text
 ruoyi-common-excel
 ├── annotation/                    # 注解定义
 │   ├── CellMerge.java            # 单元格合并注解
@@ -1255,7 +1255,7 @@ private static final int EXPORT_PAGE_SIZE = 10000;  // 导出分页
 
 ### 4. 模板设计规范
 
-```
+```text
 # 模板占位符规范
 {.field}           # 单条数据字段
 {key.field}        # 多数据源字段

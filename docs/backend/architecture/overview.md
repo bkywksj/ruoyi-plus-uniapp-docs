@@ -19,7 +19,7 @@ RuoYi-Plus 后端采用 Spring Boot 3 + MyBatis-Plus 架构，提供现代化的
 
 ### 模块结构
 
-```
+```text
 ruoyi-plus/
 ├── ruoyi-admin/              # 启动模块
 ├── ruoyi-common/             # 通用模块
@@ -43,7 +43,7 @@ ruoyi-plus/
 
 ### 应用分层
 
-```
+```text
 ┌─────────────────────┐
 │   Controller 层     │  ← HTTP接口、参数验证、异常处理
 ├─────────────────────┤

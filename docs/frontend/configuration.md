@@ -6,7 +6,7 @@ RyPlus-Uni 前端项目采用 Vue 3 + TypeScript + Vite 构建，配置文件体
 
 **配置文件层次结构:**
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────┐
 │                      项目配置体系                                │
 ├─────────────────────────────────────────────────────────────────┤
@@ -60,7 +60,7 @@ RyPlus-Uni 前端项目采用 Vue 3 + TypeScript + Vite 构建，配置文件体
 
 环境变量文件位于 `env/` 目录下，按环境分为三个文件：
 
-```
+```text
 env/
 ├── .env                    # 基础配置（所有环境共享）
 ├── .env.development        # 开发环境配置
@@ -388,7 +388,7 @@ optimizeDeps: {
 
 ### 插件目录结构
 
-```
+```text
 vite/plugins/
 ├── index.ts              # 插件入口，组合所有插件
 ├── auto-imports.ts       # 自动导入插件
@@ -765,7 +765,7 @@ http://localhost:80/__openapi_generate
 
 **生成的文件结构:**
 
-```
+```text
 src/api/
 ├── business/
 │   └── user/
@@ -903,7 +903,7 @@ export function createHmrControlPlugin(): Plugin {
 
 ### 类型声明文件
 
-```
+```text
 src/types/
 ├── auto-imports.d.ts      # 自动导入函数的类型声明（自动生成）
 ├── components.d.ts        # 自动导入组件的类型声明（自动生成）
@@ -1348,7 +1348,7 @@ pnpm build:prod
 
 ### 构建产物结构
 
-```
+```text
 dist/
 ├── index.html
 ├── assets/

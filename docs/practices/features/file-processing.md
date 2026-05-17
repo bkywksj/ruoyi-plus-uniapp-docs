@@ -17,7 +17,7 @@ RuoYi-Plus 框架提供了完整的文件处理解决方案，基于对象存储
 
 ### 系统架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                       客户端请求                              │
 └─────────────────────────────────────────────────────────────┘
@@ -172,7 +172,7 @@ oss:
 ```
 
 本地存储文件访问路径结构：
-```
+```text
 {domain}/resources/{prefix}/{tenantId}/{moduleName}/{yyyy/MM/dd}/{uuid}.{ext}
 示例: http://localhost:8080/resources/files/tenant123/avatar/2024/05/27/abc123.jpg
 ```
@@ -238,7 +238,7 @@ public enum AccessPolicyType {
 
 **私有桶访问流程：**
 
-```
+```text
 ┌──────────────┐    ┌──────────────┐    ┌──────────────┐
 │   客户端      │───▶│   服务端      │───▶│   OSS        │
 │              │    │              │    │              │
@@ -354,7 +354,7 @@ public class SysOssServiceImpl implements ISysOssService {
 
 文件存储采用统一的路径规则：
 
-```
+```text
 {prefix}/{tenantId}/{moduleName}/{yyyy/MM/dd}/{uuid}{suffix}
 ```
 
@@ -368,7 +368,7 @@ public class SysOssServiceImpl implements ISysOssService {
 | `suffix` | 文件后缀 | `.jpg`, `.pdf` |
 
 **完整示例：**
-```
+```text
 files/tenant123/avatar/2024/05/27/abc123def456.jpg
 ```
 

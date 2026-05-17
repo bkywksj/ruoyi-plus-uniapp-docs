@@ -394,7 +394,7 @@ export default defineConfig({
 
 ### 环境变量结构
 
-```
+```text
 env/
 ├── .env                    # 公共配置
 ├── .env.development        # 开发环境
@@ -1253,7 +1253,7 @@ export default defineConfig(({ command, mode }) => {
 
 **环境变量文件规范**
 
-```
+```text
 env/
 ├── .env                 # 所有模式下加载
 ├── .env.local           # 所有模式下加载,但被 git 忽略

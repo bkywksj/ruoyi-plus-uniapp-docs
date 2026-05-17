@@ -819,7 +819,7 @@ const throttledFn = useThrottle(() => {
 
 ### 目录组织
 
-```
+```text
 plus-ui/
 ├── env/                        # 环境变量配置
 │   ├── .env.development        # 开发环境
@@ -931,7 +931,7 @@ plus-ui/
 
 **RuoYi-Plus-UniApp 采用清晰的分层架构:**
 
-```
+```text
 ┌─────────────────────────────────────┐
 │         视图层 (View Layer)          │
 │     Vue 组件、页面、布局              │
@@ -983,7 +983,7 @@ plus-ui/
 
 项目按照业务功能划分为多个模块,每个模块包含独立的 API、组件、页面和状态管理。
 
-```
+```text
 system/              # 系统管理模块
 ├── core/            # 核心功能
 │   ├── user/        # 用户管理

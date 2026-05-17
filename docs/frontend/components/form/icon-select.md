@@ -1079,7 +1079,7 @@ IconSelect 包含 817 个图标，分为以下类别：
 
 组件提供了清晰的 CSS 类名结构，便于自定义样式：
 
-```
+```text
 .icon-select-wrapper        // 根容器
 ├── .el-input              // 输入框
 │   ├── [prepend]          // 前置图标预览

@@ -519,7 +519,7 @@ ls -la
 
 项目使用 Vite 的环境变量系统，配置文件位于 `env/` 目录：
 
-```
+```text
 plus-ui/
 ├── env/
 │   ├── .env                 # 基础配置（所有环境共享）
@@ -634,7 +634,7 @@ proxy: {
 
 **代理工作原理:**
 
-```
+```text
 浏览器请求: http://localhost:80/dev-api/system/user/list
     ↓ Vite 代理
 后端实际请求: http://127.0.0.1:5503/system/user/list
@@ -734,7 +734,7 @@ pnpm dev
 
 **启动成功输出:**
 
-```
+```text
 命令, 模式 ->  serve development
 环境变量 env ->  {
   VITE_APP_ID: 'ryplus_uni_workflow',
@@ -1195,7 +1195,7 @@ public class CorsConfig implements WebMvcConfigurer {
 
 **问题描述:**
 
-```
+```text
 Error: listen EADDRINUSE: address already in use :::80
 ```
 
@@ -1220,7 +1220,7 @@ VITE_APP_PORT = '3000'
 
 **问题描述:**
 
-```
+```text
 ERR_PNPM_FETCH_404  GET https://registry.npmjs.org/xxx: Not Found - 404
 ```
 
@@ -1244,7 +1244,7 @@ pnpm install
 
 **问题描述:**
 
-```
+```text
 TS2307: Cannot find module '@/xxx' or its corresponding type declarations.
 ```
 
@@ -1297,7 +1297,7 @@ pnpm dev
 
 **问题描述:**
 
-```
+```text
 Failed to load resource: net::ERR_CONNECTION_REFUSED
 ```
 
@@ -1345,7 +1345,7 @@ pnpm dev
 
 **问题描述:**
 
-```
+```text
 Error: Build failed with X errors
 ```
 
@@ -1372,7 +1372,7 @@ pnpm build:prod
 
 **问题描述:**
 
-```
+```text
 FATAL ERROR: CALL_AND_RETRY_LAST Allocation failed - JavaScript heap out of memory
 ```
 
@@ -1507,7 +1507,7 @@ userStore.$subscribe((mutation, state) => {
 
 ### 2. 代码组织建议
 
-```
+```text
 src/
 ├── api/          # API 请求封装
 ├── assets/       # 静态资源

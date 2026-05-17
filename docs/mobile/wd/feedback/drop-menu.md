@@ -28,7 +28,7 @@ DropMenu 下拉菜单是一个向下或向上弹出的菜单列表组件，常�
 
 DropMenu 采用父子组件分离设计，通过 Vue 3 的 provide/inject 机制实现通信：
 
-```
+```text
 wd-drop-menu (父容器)
 ├── 管理展开状态
 ├── 计算偏移位置

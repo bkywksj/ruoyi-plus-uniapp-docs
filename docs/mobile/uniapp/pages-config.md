@@ -98,7 +98,7 @@ easycom: {
 ### 工作原理
 
 **自动扫描**：
-```
+```text
 src/
 ├── components/
 │   ├── UserCard/
@@ -355,7 +355,7 @@ globalStyle: {
 
 在 `src/pages/` 目录下创建页面，自动生成路由配置：
 
-```
+```text
 src/pages/
 ├── index/
 │   └── index.vue          → pages/index/index
@@ -475,7 +475,7 @@ TabBar 图标建议：
 
 ### 4. 页面路径规范
 
-```
+```text
 ✅ 推荐：
 pages/user/profile
 pages/order/list

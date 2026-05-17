@@ -16,7 +16,7 @@
 
 ## 组件架构
 
-```
+```text
 Navbar/
 ├── Navbar.vue              # 导航栏主容器(226行)
 ├── TopNav.vue              # 水平导航菜单(481行)

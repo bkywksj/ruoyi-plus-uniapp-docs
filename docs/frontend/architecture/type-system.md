@@ -8,7 +8,7 @@ Ruoyi-Plus-Uniapp 框架建立了完整的 TypeScript 类型体系，通过统�
 
 ### 类型分层结构
 
-```
+```text
 📁 类型系统架构
 ├── 🌐 全局类型 (global.d.ts)        # 项目通用类型定义
 ├── 🔧 环境类型 (env.d.ts)           # 环境变量类型声明

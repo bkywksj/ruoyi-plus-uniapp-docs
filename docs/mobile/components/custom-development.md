@@ -14,7 +14,7 @@
 
 ## 组件目录结构
 
-```
+```text
 src/
 ├── components/              # 业务组件目录
 │   ├── auth/               # 认证相关组件
@@ -748,7 +748,7 @@ onReachBottom(() => {
 
 每个组件只负责一个功能，避免组件过于庞大：
 
-```
+```text
 ✅ 好的做法：
 - AuthModal.vue - 只负责授权弹窗
 - UserCard.vue - 只负责用户卡片展示

@@ -23,7 +23,7 @@
 
 ### 整体架构图
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                     Spring Boot Admin 监控中心架构                           │
 ├─────────────────────────────────────────────────────────────────────────────┤
@@ -147,7 +147,7 @@ java -jar target/ruoyi-monitor-admin.jar --spring.profiles.active=dev
 
 启动成功后会显示：
 
-```
+```text
 (✨◠‿◠)ﾉ♪♫ Spring Boot Admin 启动成功！环境: [dev] 地址: http://127.0.0.1:9090/admin
 ```
 
@@ -526,7 +526,7 @@ private String generateSign(String secret) {
 
 监控中心使用异步事件驱动架构处理通知：
 
-```
+```text
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │ Instance Event  │───▶│ CustomNotifier  │───▶│ NotifierEvent   │
 │ (状态变更)      │    │ (事件监听)      │    │ (内部事件)      │
@@ -789,7 +789,7 @@ JAVA_OPTS="-Xms256m -Xmx512m -XX:+UseZGC"
 
 **错误现象**
 
-```
+```text
 Failed to register with Admin Server
 Connection refused: localhost:9090
 ```
@@ -818,7 +818,7 @@ curl -u ruoyi:123456 http://localhost:9090/admin/actuator/health
 
 **错误现象**
 
-```
+```text
 邮件发送失败: Could not connect to SMTP host
 ```
 
@@ -850,7 +850,7 @@ spring:
 
 **错误现象**
 
-```
+```text
 WebHook消息发送失败: errcode=310000, errmsg=sign not match
 ```
 

@@ -217,7 +217,7 @@ public class DemoConsumer implements RocketMQListener<String> {
 
 启动 Spring Boot 应用后，查看日志：
 
-```
+```text
 ========================================
 🚀 RocketMQ 模块开始初始化
   - NameServer: 127.0.0.1:9876

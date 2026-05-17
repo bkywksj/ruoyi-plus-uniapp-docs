@@ -8,7 +8,7 @@ ruoyi-common-core 提供了一套完整的异常处理体系，采用分层设�
 
 ### 层次结构
 
-```
+```text
 BaseException (基础异常)
 ├── BaseBusinessException (业务异常基类)
 │   ├── ServiceException (通用业务异常)

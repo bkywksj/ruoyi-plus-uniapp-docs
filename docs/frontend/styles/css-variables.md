@@ -17,7 +17,7 @@ RuoYi-Plus-UI 采用 CSS 自定义属性（CSS Variables）构建完整的设计
 
 CSS 变量分布在多个 SCSS 文件中，形成完整的设计系统：
 
-```
+```text
 src/assets/styles/
 ├── abstracts/
 │   └── _variables.scss      # 全局基础变量定义
@@ -178,7 +178,7 @@ CSS 自定义属性定义在 `:root` 选择器中，运行时可动态修改：
 
 ### 层级设计原则
 
-```
+```text
 页面内容        z-index: auto (0)
     ↓
 固定头部        z-index: var(--z-header)    = 9

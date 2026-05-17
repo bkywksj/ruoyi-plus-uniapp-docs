@@ -14,7 +14,7 @@
 
 ## 项目根目录
 
-```
+```text
 plus-ui/
 ├── env/                     # 环境变量配置目录
 │   ├── .env.development    # 开发环境配置
@@ -56,7 +56,7 @@ plus-ui/
 
 API接口按业务模块划分,每个模块包含API函数和类型定义。
 
-```
+```text
 src/api/
 ├── business/               # 业务模块API
 │   ├── base/              # 基础业务(广告、支付等)
@@ -140,7 +140,7 @@ export const addUser = (data: UserForm): Result<void> => {
 
 存放项目中使用的静态资源,这些文件会被Vite处理(压缩、优化)。
 
-```
+```text
 src/assets/
 ├── icons/                  # SVG图标文件
 │   ├── svg/               # 自定义SVG图标
@@ -178,7 +178,7 @@ import loginBg from '@/assets/images/login-bg.jpg'
 
 存放可在全局使用的公共组件,按组件功能分类。
 
-```
+```text
 src/components/
 ├── AAi/                    # AI对话组件
 │   ├── AAiChat.vue        # AI聊天组件
@@ -265,7 +265,7 @@ export default {
 
 存放可复用的组合式函数(Composables),封装业务逻辑和状态管理。
 
-```
+```text
 src/composables/
 ├── useAiChat.ts            # AI对话功能
 ├── useAnimation.ts         # 动画效果
@@ -327,7 +327,7 @@ export const useDialog = () => {
 
 存放Vue自定义指令,用于DOM操作和行为扩展。
 
-```
+```text
 src/directives/
 ├── permission/             # 权限指令
 │   ├── index.ts           # 指令导出
@@ -360,7 +360,7 @@ src/directives/
 
 存放页面布局组件,定义应用的整体结构。
 
-```
+```text
 src/layouts/
 ├── components/             # 布局子组件
 │   ├── AppMain.vue        # 主内容区域
@@ -390,7 +390,7 @@ src/layouts/
 
 存放多语言翻译文件,支持国际化。
 
-```
+```text
 src/locales/
 ├── lang/                   # 语言文件目录
 │   ├── zh-cn.ts           # 中文简体
@@ -438,7 +438,7 @@ const { t } = useI18n()
 
 存放第三方库的插件配置和初始化代码。
 
-```
+```text
 src/plugins/
 ├── element-plus.ts         # Element Plus配置
 ├── echarts.ts              # ECharts配置
@@ -451,7 +451,7 @@ src/plugins/
 
 定义应用的路由规则和导航守卫。
 
-```
+```text
 src/router/
 ├── modules/                # 路由模块
 │   ├── system.ts          # 系统管理路由
@@ -500,7 +500,7 @@ export default systemRoutes
 
 使用Pinia进行全局状态管理。
 
-```
+```text
 src/stores/
 ├── modules/                # Store模块
 │   ├── user.ts            # 用户信息状态
@@ -569,7 +569,7 @@ export const useUserStore = defineStore('user', () => {
 
 集中管理项目的TypeScript类型定义。
 
-```
+```text
 src/types/
 ├── global.d.ts             # 全局类型定义
 ├── env.d.ts                # 环境变量类型
@@ -659,7 +659,7 @@ declare interface ResponsiveSpan {
 
 存放通用的工具函数和辅助方法。
 
-```
+```text
 src/utils/
 ├── request.ts              # Axios请求封装
 ├── auth.ts                 # 认证工具(Token操作)
@@ -699,7 +699,7 @@ export const isValidIdCard = (idCard: string): boolean => {
 
 存放所有页面级组件,按业务模块划分。
 
-```
+```text
 src/views/
 ├── business/               # 业务模块页面
 │   ├── base/              # 基础业务
@@ -967,7 +967,7 @@ export default [
 
 ### env目录结构
 
-```
+```text
 env/
 ├── .env.development        # 开发环境
 ├── .env.production         # 生产环境
@@ -1022,7 +1022,7 @@ VITE_APP_WS_URL = ws://localhost:8080/ws
 
 **推荐结构:**
 
-```
+```text
 components/
 └── UserList/
     ├── UserList.vue          # 主组件

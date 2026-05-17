@@ -20,7 +20,7 @@
 
 系统核心模块采用标准的三层架构设计,包含以下目录结构:
 
-```
+```text
 plus.ruoyi.system.core/
 ├── controller/          # 控制器层 - RESTful API 接口
 │   ├── SysUserController.java           # 用户管理接口

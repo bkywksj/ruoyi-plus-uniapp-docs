@@ -101,7 +101,7 @@ RuoYi-Plus-UniApp 移动端项目采用现代化的配置体系，基于 Vite �
 
 ### 目录结构
 
-```
+```text
 plus-uniapp/
 ├── env/                          # 环境变量目录
 │   ├── .env                      # 基础环境变量（所有环境共享）

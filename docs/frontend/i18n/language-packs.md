@@ -19,7 +19,7 @@
 
 语言包相关文件位于 `src/locales/` 目录下:
 
-```
+```text
 src/locales/
 ├── i18n.ts          # i18n 实例配置
 ├── zh_CN.ts         # 中文语言包

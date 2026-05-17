@@ -671,7 +671,7 @@ const ALL_PERMISSION = '*:*:*'
 
 ### hasPermission 检查流程
 
-```
+```text
 1. 检查权限参数是否为空
    ├─ 为空 → 输出警告 → 返回 false
    └─ 不为空 → 继续
@@ -693,7 +693,7 @@ const ALL_PERMISSION = '*:*:*'
 
 ### hasTenantPermission 检查流程
 
-```
+```text
 1. 获取目标租户 ID
    ├─ 传入租户 ID → 使用传入值
    └─ 未传入 → 使用当前用户租户 ID
@@ -715,7 +715,7 @@ const ALL_PERMISSION = '*:*:*'
 
 ### canAccessRoute 检查流程
 
-```
+```text
 1. 检查路由对象是否存在
    ├─ 不存在 → 返回 false
    └─ 存在 → 继续

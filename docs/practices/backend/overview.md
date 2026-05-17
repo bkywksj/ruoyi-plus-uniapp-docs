@@ -6,7 +6,7 @@ RuoYi-Plus-UniApp 后端开发最佳实践体系，基于 Spring Boot 3.x + MyBa
 
 ### 分层架构
 
-```
+```text
 ┌─────────────────────────────────────────────────┐
 │                  Controller 层                   │
 │         接口定义 / 参数校验 / 权限控制            │
@@ -1182,7 +1182,7 @@ public class UserEventListener {
 
 ### 包结构
 
-```
+```text
 com.ruoyi.system
 ├── controller          # 控制器层
 │   └── SysUserController.java

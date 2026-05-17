@@ -40,7 +40,7 @@
 - **SEO**: 搜索引擎优化
 
 **关键指标**：
-```
+```text
 First Contentful Paint: 1.2s
 Largest Contentful Paint: 2.3s
 Total Blocking Time: 150ms
@@ -69,7 +69,7 @@ Speed Index: 2.1s
 - **Timings**: 时间标记
 
 **关键时间点**：
-```
+```text
 DCL (DOMContentLoaded): 蓝线
 L (Load): 红线
 FP (First Paint): 绿线
@@ -88,7 +88,7 @@ LCP (Largest Contentful Paint): 蓝点
 - **Finish**: 完成时间
 
 **资源类型分析**：
-```
+```text
 JS: 350KB (45%)
 CSS: 120KB (15%)
 Images: 200KB (25%)
@@ -163,7 +163,7 @@ export default defineConfig({
 5. 点击 **Stop Recording**
 
 **分析内容**：
-```
+```text
 Component: UserList
 Render: 15.3ms
 Update: 8.2ms

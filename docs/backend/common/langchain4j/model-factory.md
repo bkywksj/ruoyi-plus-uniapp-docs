@@ -18,7 +18,7 @@ ModelFactory 是 LangChain4j 模块的核心组件，负责创建和管理各种
 
 ### 整体架构
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                       业务层 (Business Layer)                │
 │                  ChatService / RAG / Embedding               │
@@ -50,7 +50,7 @@ ModelFactory 是 LangChain4j 模块的核心组件，负责创建和管理各种
 
 ### 核心类结构
 
-```
+```text
 plus.ruoyi.common.langchain4j
 ├── config/
 │   ├── LangChain4jProperties.java     # 配置属性类

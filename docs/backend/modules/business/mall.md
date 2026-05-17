@@ -4,7 +4,7 @@
 
 ## 模块结构
 
-```
+```text
 mall/
 ├── controller/          # 控制器层
 │   ├── GoodsController.java    # 商品管理

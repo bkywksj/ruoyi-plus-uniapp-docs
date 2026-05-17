@@ -54,7 +54,7 @@ RuoYi-Plus 前端项目采用三图标源架构，整合 Iconfont 字体图标�
 
 图标系统的核心文件组织如下：
 
-```
+```text
 src/
 ├── assets/icons/
 │   ├── system/                    # 系统 Iconfont 图标

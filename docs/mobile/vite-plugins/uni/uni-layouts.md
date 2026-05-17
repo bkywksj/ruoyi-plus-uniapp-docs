@@ -38,7 +38,7 @@ export default async ({ command, mode, env }) => {
 
 在 `src/layouts/` 目录下创建布局组件：
 
-```
+```text
 src/layouts/
 └── default.vue    # 默认布局（必需）
 ```
@@ -153,7 +153,7 @@ const { themeVars } = useTheme({
 
 ### 创建多个布局
 
-```
+```text
 src/layouts/
 ├── default.vue    # 默认布局
 ├── blank.vue      # 空白布局（无全局组件）
@@ -411,7 +411,7 @@ UniLayouts({
 
 ## 工作原理
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    布局系统工作流程                           │
 ├─────────────────────────────────────────────────────────────┤
@@ -638,7 +638,7 @@ const { themeVars } = useTheme()
 
 ### 1. 合理划分布局
 
-```
+```text
 src/layouts/
 ├── default.vue    # 通用布局（大多数页面使用）
 ├── blank.vue      # 空白布局（登录、启动页）
