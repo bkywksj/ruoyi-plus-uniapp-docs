@@ -113,13 +113,13 @@ DeepSeek 是国产大模型，以高性价比著称，特别适合中文场景�
 - OpenAI 兼容接口，迁移成本低
 
 ```java
-// DeepSeek 模型创建实现
-private ChatLanguageModel createDeepSeekChatModel(String modelName) {
-    ModelConfig config = properties.getDeepseek();
+// DeepSeek 模型创建实现（LangChain4j 1.14.1）
+private ChatModel createDeepSeekChatModel(String modelName, ThinkingOptions thinking) {
+    ModelConfig config = effectiveConfig(properties.getDeepseek(), thinking);
     validateConfig(config, "DeepSeek");
 
-    // 使用 OpenAI SDK 调用 DeepSeek API
-    return OpenAiChatModel.builder()
+    // 使用 OpenAI SDK 调用 DeepSeek API（OpenAI 兼容协议）
+    OpenAiChatModel.OpenAiChatModelBuilder builder = OpenAiChatModel.builder()
             .apiKey(config.getApiKey())
             .baseUrl(getBaseUrl(config, ModelProvider.DEEPSEEK))
             .modelName(getModelName(modelName, config, "deepseek-chat"))
@@ -129,8 +129,14 @@ private ChatLanguageModel createDeepSeekChatModel(String modelName) {
             .timeout(properties.getTimeout())
             .maxRetries(properties.getMaxRetries())
             .logRequests(log.isDebugEnabled())
-            .logResponses(log.isDebugEnabled())
-            .build();
+            .logResponses(log.isDebugEnabled());
+
+    // 启用深度思考：自动解析 reasoning_content 字段
+    if (Boolean.TRUE.equals(config.getEnableThinking())) {
+        builder.returnThinking(Boolean.TRUE.equals(config.getReturnThinking()));
+    }
+
+    return builder.build();
 }
 ```
 
@@ -150,18 +156,24 @@ private ChatLanguageModel createDeepSeekChatModel(String modelName) {
 - 价格适中
 
 ```java
-// 通义千问模型创建实现
-private ChatLanguageModel createQianWenChatModel(String modelName) {
-    ModelConfig config = properties.getQianwen();
+// 通义千问模型创建实现（LangChain4j 1.14.1）
+private ChatModel createQianWenChatModel(String modelName, ThinkingOptions thinking) {
+    ModelConfig config = effectiveConfig(properties.getQianwen(), thinking);
     validateConfig(config, "QianWen");
 
-    return QwenChatModel.builder()
+    QwenChatModel.QwenChatModelBuilder builder = QwenChatModel.builder()
             .apiKey(config.getApiKey())
             .modelName(getModelName(modelName, config, "qwen-turbo"))
             .temperature(config.getTemperature().floatValue())
             .topP(config.getTopP())
-            .maxTokens(config.getMaxTokens())
-            .build();
+            .maxTokens(config.getMaxTokens());
+
+    // Qwen 通过 defaultRequestParameters 透传 enable_thinking / thinking_budget
+    if (Boolean.TRUE.equals(config.getEnableThinking())) {
+        builder.defaultRequestParameters(buildQwenThinkingParameters(config));
+    }
+
+    return builder.build();
 }
 ```
 
@@ -181,12 +193,12 @@ Claude 是 Anthropic 公司推出的 AI 助手，以安全性和推理能力著�
 - 支持超长上下文（200K tokens）
 
 ```java
-// Claude 模型创建实现
-private ChatLanguageModel createClaudeChatModel(String modelName) {
-    ModelConfig config = properties.getClaude();
+// Claude 模型创建实现（LangChain4j 1.14.1）
+private ChatModel createClaudeChatModel(String modelName, ThinkingOptions thinking) {
+    ModelConfig config = effectiveConfig(properties.getClaude(), thinking);
     validateConfig(config, "Claude");
 
-    return AnthropicChatModel.builder()
+    AnthropicChatModel.AnthropicChatModelBuilder builder = AnthropicChatModel.builder()
             .apiKey(config.getApiKey())
             .baseUrl(getBaseUrl(config, ModelProvider.CLAUDE))
             .modelName(getModelName(modelName, config, "claude-3-5-sonnet-20241022"))
@@ -196,8 +208,11 @@ private ChatLanguageModel createClaudeChatModel(String modelName) {
             .timeout(properties.getTimeout())
             .maxRetries(properties.getMaxRetries())
             .logRequests(log.isDebugEnabled())
-            .logResponses(log.isDebugEnabled())
-            .build();
+            .logResponses(log.isDebugEnabled());
+
+    // Claude Extended Thinking：thinkingType + thinkingBudgetTokens 必填
+    applyClaudeThinking(builder, config);
+    return builder.build();
 }
 ```
 
@@ -218,12 +233,12 @@ OpenAI 是 AI 领域的先驱，GPT 系列模型生态最为成熟，使用 Open
 - 支持微调
 
 ```java
-// OpenAI 模型创建实现
-private ChatLanguageModel createOpenAiChatModel(String modelName) {
-    ModelConfig config = properties.getOpenai();
+// OpenAI 模型创建实现（LangChain4j 1.14.1）
+private ChatModel createOpenAiChatModel(String modelName, ThinkingOptions thinking) {
+    ModelConfig config = effectiveConfig(properties.getOpenai(), thinking);
     validateConfig(config, "OpenAI");
 
-    return OpenAiChatModel.builder()
+    OpenAiChatModel.OpenAiChatModelBuilder builder = OpenAiChatModel.builder()
             .apiKey(config.getApiKey())
             .baseUrl(getBaseUrl(config, ModelProvider.OPENAI))
             .modelName(getModelName(modelName, config, "gpt-4o-mini"))
@@ -233,8 +248,11 @@ private ChatLanguageModel createOpenAiChatModel(String modelName) {
             .timeout(properties.getTimeout())
             .maxRetries(properties.getMaxRetries())
             .logRequests(log.isDebugEnabled())
-            .logResponses(log.isDebugEnabled())
-            .build();
+            .logResponses(log.isDebugEnabled());
+
+    // OpenAI 推理模型：通过 reasoningEffort 控制思考强度（low/medium/high）
+    applyOpenAiReasoning(builder, config);
+    return builder.build();
 }
 ```
 
@@ -257,16 +275,23 @@ Ollama 是本地模型部署方案，无需 API Key，适合隐私敏感场景�
 - 5 分钟超时设置（本地模型首次加载较慢）
 
 ```java
-// Ollama 模型创建实现
-private ChatLanguageModel createOllamaChatModel(String modelName) {
-    ModelConfig config = properties.getOllama();
+// Ollama 模型创建实现（LangChain4j 1.14.1）
+private ChatModel createOllamaChatModel(String modelName, ThinkingOptions thinking) {
+    ModelConfig config = effectiveConfig(properties.getOllama(), thinking);
 
-    return OllamaChatModel.builder()
+    OllamaChatModel.OllamaChatModelBuilder builder = OllamaChatModel.builder()
             .baseUrl(getBaseUrl(config, ModelProvider.OLLAMA))
             .modelName(getModelName(modelName, config, "llama3.2"))
             .temperature(config.getTemperature())
-            .timeout(Duration.ofMinutes(5))  // 本地模型需要更长超时
-            .build();
+            .timeout(Duration.ofMinutes(5));  // 本地模型需要更长超时
+
+    // Ollama 推理模型（deepseek-r1 / qwq）：通过 think=true 暴露思考块
+    if (Boolean.TRUE.equals(config.getEnableThinking())) {
+        builder.think(Boolean.TRUE)
+                .returnThinking(Boolean.TRUE.equals(config.getReturnThinking()));
+    }
+
+    return builder.build();
 }
 ```
 
@@ -292,25 +317,25 @@ public class AiService {
 #### 使用默认模型
 
 ```java
-// 使用指定提供商的默认模型
-ChatLanguageModel model = modelFactory.createChatModel("deepseek");
+// 使用指定提供商的默认模型（LangChain4j 1.14.1：返回 ChatModel）
+ChatModel model = modelFactory.createChatModel("deepseek");
 
-// 发送消息并获取响应
-Response<AiMessage> response = model.generate("你好，请介绍一下自己");
-String answer = response.content().text();
+// 发送消息并获取响应（1.14.1：chat() 返回 ChatResponse）
+ChatResponse response = model.chat(UserMessage.from("你好，请介绍一下自己"));
+String answer = response.aiMessage().text();
 ```
 
 #### 指定模型名称
 
 ```java
 // 使用 DeepSeek 的代码模型
-ChatLanguageModel codeModel = modelFactory.createChatModel("deepseek", "deepseek-coder");
+ChatModel codeModel = modelFactory.createChatModel("deepseek", "deepseek-coder");
 
 // 使用 OpenAI 的 GPT-4
-ChatLanguageModel gpt4Model = modelFactory.createChatModel("openai", "gpt-4-turbo");
+ChatModel gpt4Model = modelFactory.createChatModel("openai", "gpt-4-turbo");
 
 // 使用通义千问的最强模型
-ChatLanguageModel qwenMaxModel = modelFactory.createChatModel("qianwen", "qwen-max");
+ChatModel qwenMaxModel = modelFactory.createChatModel("qianwen", "qwen-max");
 ```
 
 ### 创建流式模型
@@ -320,64 +345,72 @@ ChatLanguageModel qwenMaxModel = modelFactory.createChatModel("qianwen", "qwen-m
 #### 基本流式调用
 
 ```java
-// 创建流式聊天模型
-StreamingChatLanguageModel streamingModel =
+// 创建流式聊天模型（LangChain4j 1.14.1：返回 StreamingChatModel）
+StreamingChatModel streamingModel =
     modelFactory.createStreamingChatModel("deepseek");
 
-// 使用流式处理器
-streamingModel.generate("写一首关于春天的诗", new StreamingResponseHandler<AiMessage>() {
-    @Override
-    public void onNext(String token) {
-        // 每次收到一个 token
-        System.out.print(token);
-    }
+// 使用流式处理器（1.14.1：StreamingChatResponseHandler）
+streamingModel.chat(List.of(UserMessage.from("写一首关于春天的诗")),
+    new StreamingChatResponseHandler() {
+        @Override
+        public void onPartialResponse(String partialResponse) {
+            // 最终回复增量
+            System.out.print(partialResponse);
+        }
 
-    @Override
-    public void onComplete(Response<AiMessage> response) {
-        // 生成完成
-        System.out.println("\n生成完成，共使用 " +
-            response.tokenUsage().totalTokenCount() + " tokens");
-    }
+        @Override
+        public void onPartialThinking(PartialThinking partialThinking) {
+            // 推理阶段增量（仅推理模型 + enableThinking=true 时触发）
+            System.out.print("[思考] " + partialThinking.text());
+        }
 
-    @Override
-    public void onError(Throwable error) {
-        // 发生错误
-        System.err.println("生成失败: " + error.getMessage());
-    }
-});
+        @Override
+        public void onCompleteResponse(ChatResponse completeResponse) {
+            // 生成完成
+            System.out.println("\n生成完成，共使用 " +
+                completeResponse.tokenUsage().totalTokenCount() + " tokens");
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            // 发生错误
+            System.err.println("生成失败: " + error.getMessage());
+        }
+    });
 ```
 
 #### 指定模型名称的流式调用
 
 ```java
-StreamingChatLanguageModel streamingModel =
+StreamingChatModel streamingModel =
     modelFactory.createStreamingChatModel("openai", "gpt-4o");
 
 // 使用 CompletableFuture 处理
-CompletableFuture<Response<AiMessage>> future = new CompletableFuture<>();
+CompletableFuture<ChatResponse> future = new CompletableFuture<>();
 
-streamingModel.generate("分析这段代码的复杂度", new StreamingResponseHandler<AiMessage>() {
-    StringBuilder content = new StringBuilder();
+streamingModel.chat(List.of(UserMessage.from("分析这段代码的复杂度")),
+    new StreamingChatResponseHandler() {
+        StringBuilder content = new StringBuilder();
 
-    @Override
-    public void onNext(String token) {
-        content.append(token);
-        // 可以在这里实时推送到前端
-    }
+        @Override
+        public void onPartialResponse(String partialResponse) {
+            content.append(partialResponse);
+            // 可以在这里实时推送到前端
+        }
 
-    @Override
-    public void onComplete(Response<AiMessage> response) {
-        future.complete(response);
-    }
+        @Override
+        public void onCompleteResponse(ChatResponse completeResponse) {
+            future.complete(completeResponse);
+        }
 
-    @Override
-    public void onError(Throwable error) {
-        future.completeExceptionally(error);
-    }
-});
+        @Override
+        public void onError(Throwable error) {
+            future.completeExceptionally(error);
+        }
+    });
 
 // 等待完成
-Response<AiMessage> response = future.get();
+ChatResponse response = future.get();
 ```
 
 ### 多轮对话
@@ -390,7 +423,8 @@ public class MultiTurnChatService {
     private final ModelFactory modelFactory;
 
     public String chat(List<ChatMessage> history, String userMessage) {
-        ChatLanguageModel model = modelFactory.createChatModel("deepseek");
+        // LangChain4j 1.14.1：ChatModel 替代 ChatLanguageModel
+        ChatModel model = modelFactory.createChatModel("deepseek");
 
         // 构建消息列表
         List<dev.langchain4j.data.message.ChatMessage> messages = new ArrayList<>();
@@ -407,9 +441,9 @@ public class MultiTurnChatService {
         // 添加当前用户消息
         messages.add(UserMessage.from(userMessage));
 
-        // 生成响应
-        Response<AiMessage> response = model.generate(messages);
-        return response.content().text();
+        // 生成响应（1.14.1：chat() 直接返回 ChatResponse）
+        ChatResponse response = model.chat(messages);
+        return response.aiMessage().text();
     }
 }
 ```
@@ -637,11 +671,11 @@ public class SmartAiService {
                 provider = "deepseek";
         }
 
-        ChatLanguageModel model = modelName != null
+        ChatModel model = modelName != null
             ? modelFactory.createChatModel(provider, modelName)
             : modelFactory.createChatModel(provider);
 
-        return model.generate(content).content().text();
+        return model.chat(UserMessage.from(content)).aiMessage().text();
     }
 }
 ```
@@ -667,10 +701,10 @@ public class ResilientAiService {
 
         for (String provider : providers) {
             try {
-                ChatLanguageModel model = modelFactory.createChatModel(provider);
-                Response<AiMessage> response = model.generate(message);
+                ChatModel model = modelFactory.createChatModel(provider);
+                ChatResponse response = model.chat(UserMessage.from(message));
                 log.info("使用 {} 模型成功响应", provider);
-                return response.content().text();
+                return response.aiMessage().text();
             } catch (Exception e) {
                 log.warn("模型 {} 调用失败: {}", provider, e.getMessage());
             }
@@ -688,8 +722,8 @@ public class ResilientAiService {
 
         for (int i = 0; i < maxRetries; i++) {
             try {
-                ChatLanguageModel model = modelFactory.createChatModel(provider);
-                return model.generate(message).content().text();
+                ChatModel model = modelFactory.createChatModel(provider);
+                return model.chat(UserMessage.from(message)).aiMessage().text();
             } catch (Exception e) {
                 lastException = e;
                 log.warn("第 {} 次调用失败: {}", i + 1, e.getMessage());
@@ -728,8 +762,8 @@ public class ParallelAiService {
 
         CompletableFuture<String>[] futures = providers.stream()
             .map(provider -> CompletableFuture.supplyAsync(() -> {
-                ChatLanguageModel model = modelFactory.createChatModel(provider);
-                return model.generate(message).content().text();
+                ChatModel model = modelFactory.createChatModel(provider);
+                return model.chat(UserMessage.from(message)).aiMessage().text();
             }))
             .toArray(CompletableFuture[]::new);
 
@@ -748,8 +782,8 @@ public class ParallelAiService {
         Map<String, CompletableFuture<String>> futures = new HashMap<>();
         for (String provider : providers) {
             futures.put(provider, CompletableFuture.supplyAsync(() -> {
-                ChatLanguageModel model = modelFactory.createChatModel(provider);
-                return model.generate(message).content().text();
+                ChatModel model = modelFactory.createChatModel(provider);
+                return model.chat(UserMessage.from(message)).aiMessage().text();
             }));
         }
 
@@ -783,14 +817,15 @@ public class CustomPromptService {
      * 使用系统提示词的对话
      */
     public String chatWithSystemPrompt(String userMessage, String systemPrompt) {
-        ChatLanguageModel model = modelFactory.createChatModel("deepseek");
+        ChatModel model = modelFactory.createChatModel("deepseek");
 
-        List<dev.langchain4j.data.message.ChatMessage> messages = List.of(
+        // 1.14.1：使用可变参数或 List 调用 chat()
+        ChatResponse response = model.chat(
             SystemMessage.from(systemPrompt),
             UserMessage.from(userMessage)
         );
 
-        return model.generate(messages).content().text();
+        return response.aiMessage().text();
     }
 
     /**
@@ -841,7 +876,7 @@ public class ExtendedModelFactory extends ModelFactory {
     /**
      * 创建自定义模型
      */
-    public ChatLanguageModel createCustomModel(String providerCode, String modelName) {
+    public ChatModel createCustomModel(String providerCode, String modelName) {
         // 先尝试使用内置提供商
         try {
             return super.createChatModel(providerCode, modelName);
@@ -861,13 +896,13 @@ public class ExtendedModelFactory extends ModelFactory {
         throw new IllegalArgumentException("Unknown provider: " + providerCode);
     }
 
-    private ChatLanguageModel createAzureOpenAiModel(String modelName) {
+    private ChatModel createAzureOpenAiModel(String modelName) {
         // Azure OpenAI 实现
         // return AzureOpenAiChatModel.builder()...
         throw new UnsupportedOperationException("Azure OpenAI not implemented");
     }
 
-    private ChatLanguageModel createMoonshotModel(String modelName) {
+    private ChatModel createMoonshotModel(String modelName) {
         // Moonshot 实现
         // return OpenAiChatModel.builder()
         //     .baseUrl("https://api.moonshot.cn/v1")...
@@ -896,10 +931,12 @@ public ModelFactory(LangChain4jProperties properties)
 
 | 方法 | 返回类型 | 说明 |
 |------|----------|------|
-| `createChatModel(String providerCode)` | `ChatLanguageModel` | 创建同步聊天模型 |
-| `createChatModel(String providerCode, String modelName)` | `ChatLanguageModel` | 创建指定名称的同步聊天模型 |
-| `createStreamingChatModel(String providerCode)` | `StreamingChatLanguageModel` | 创建流式聊天模型 |
-| `createStreamingChatModel(String providerCode, String modelName)` | `StreamingChatLanguageModel` | 创建指定名称的流式聊天模型 |
+| `createChatModel(String providerCode)` | `ChatModel` | 创建同步聊天模型 |
+| `createChatModel(String providerCode, String modelName)` | `ChatModel` | 创建指定名称的同步聊天模型 |
+| `createChatModel(String providerCode, String modelName, ThinkingOptions thinking)` | `ChatModel` | 创建支持思考参数覆盖的同步聊天模型 |
+| `createStreamingChatModel(String providerCode)` | `StreamingChatModel` | 创建流式聊天模型 |
+| `createStreamingChatModel(String providerCode, String modelName)` | `StreamingChatModel` | 创建指定名称的流式聊天模型 |
+| `createStreamingChatModel(String providerCode, String modelName, ThinkingOptions thinking)` | `StreamingChatModel` | 创建支持思考参数覆盖的流式聊天模型 |
 
 ### ModelProvider 枚举
 
@@ -930,13 +967,20 @@ public enum ModelProvider {
 ```java
 @Data
 public static class ModelConfig {
-    private String apiKey;           // API密钥
-    private String baseUrl;          // API地址
-    private String modelName;        // 模型名称
-    private Double temperature = 0.7;// 温度参数
-    private Double topP = 1.0;       // Top P参数
-    private Integer maxTokens = 2048;// 最大Token数
-    private Boolean enabled = false; // 是否启用
+    private String apiKey;                            // API密钥
+    private String baseUrl;                           // API地址
+    private String modelName;                         // 模型名称
+    private Double temperature = 0.7;                 // 温度参数
+    private Double topP = 1.0;                        // Top P参数
+    private Integer maxTokens = 2048;                 // 最大Token数
+    private Boolean enabled = false;                  // 是否启用
+
+    // 1.14.1 新增：深度思考相关配置
+    private Boolean enableThinking = false;           // 是否开启深度思考
+    private Integer thinkingBudgetTokens = 1024;      // 思考预算（仅 Claude/Qwen 生效）
+    private String reasoningEffort;                   // OpenAI 推理强度: low|medium|high
+    private Boolean returnThinking = true;            // 是否返回思考内容到客户端
+
     private Map<String, Object> extraParams = new HashMap<>(); // 额外参数
 }
 ```
@@ -1023,7 +1067,7 @@ public class OptimalModelService {
 
     private final ModelFactory modelFactory;
 
-    public ChatLanguageModel getModel(UseCase useCase) {
+    public ChatModel getModel(UseCase useCase) {
         return switch (useCase) {
             // 成本敏感：使用 DeepSeek 或 Qwen Turbo
             case COST_SENSITIVE -> modelFactory.createChatModel("deepseek");
@@ -1069,15 +1113,15 @@ public class RobustAiService {
         backoff = @Backoff(delay = 1000, multiplier = 2)
     )
     public String chat(String message) {
-        ChatLanguageModel model = modelFactory.createChatModel("deepseek");
-        return model.generate(message).content().text();
+        ChatModel model = modelFactory.createChatModel("deepseek");
+        return model.chat(UserMessage.from(message)).aiMessage().text();
     }
 
     @Recover
     public String recoverChat(RuntimeException e, String message) {
         // 降级处理
-        ChatLanguageModel fallback = modelFactory.createChatModel("qianwen");
-        return fallback.generate(message).content().text();
+        ChatModel fallback = modelFactory.createChatModel("qianwen");
+        return fallback.chat(UserMessage.from(message)).aiMessage().text();
     }
 }
 ```
@@ -1104,17 +1148,17 @@ logging:
 public class CachedModelService {
 
     private final ModelFactory modelFactory;
-    private final Map<String, ChatLanguageModel> modelCache = new ConcurrentHashMap<>();
+    private final Map<String, ChatModel> modelCache = new ConcurrentHashMap<>();
 
     public CachedModelService(ModelFactory modelFactory) {
         this.modelFactory = modelFactory;
     }
 
-    public ChatLanguageModel getCachedModel(String provider) {
+    public ChatModel getCachedModel(String provider) {
         return modelCache.computeIfAbsent(provider, modelFactory::createChatModel);
     }
 
-    public ChatLanguageModel getCachedModel(String provider, String modelName) {
+    public ChatModel getCachedModel(String provider, String modelName) {
         String key = provider + ":" + modelName;
         return modelCache.computeIfAbsent(key,
             k -> modelFactory.createChatModel(provider, modelName));
@@ -1134,10 +1178,10 @@ public class MonitoredAiService {
     private final MeterRegistry meterRegistry;
 
     public String chatWithMonitoring(String message) {
-        ChatLanguageModel model = modelFactory.createChatModel("deepseek");
+        ChatModel model = modelFactory.createChatModel("deepseek");
 
         long start = System.currentTimeMillis();
-        Response<AiMessage> response = model.generate(message);
+        ChatResponse response = model.chat(UserMessage.from(message));
         long duration = System.currentTimeMillis() - start;
 
         // 记录指标
@@ -1151,7 +1195,7 @@ public class MonitoredAiService {
                 .increment(response.tokenUsage().outputTokenCount());
         }
 
-        return response.content().text();
+        return response.aiMessage().text();
     }
 }
 ```
@@ -1181,7 +1225,7 @@ langchain4j:
 ```java
 // 在代码中处理异常
 try {
-    ChatLanguageModel model = modelFactory.createChatModel("deepseek");
+    ChatModel model = modelFactory.createChatModel("deepseek");
 } catch (IllegalStateException e) {
     log.error("API Key 未配置: {}", e.getMessage());
 } catch (IllegalArgumentException e) {
@@ -1212,7 +1256,7 @@ langchain4j:
 ```java
 // Ollama 本地模型需要更长超时
 // 框架已自动设置 5 分钟超时
-ChatLanguageModel model = modelFactory.createChatModel("ollama");
+ChatModel model = modelFactory.createChatModel("ollama");
 ```
 
 ### 3. 流式响应中断
@@ -1227,18 +1271,29 @@ ChatLanguageModel model = modelFactory.createChatModel("ollama");
 **解决方案:**
 
 ```java
-streamingModel.generate(message, new StreamingResponseHandler<AiMessage>() {
-    @Override
-    public void onError(Throwable error) {
-        if (error instanceof SocketTimeoutException) {
-            log.warn("连接超时，尝试重新连接");
-            // 重试逻辑
-        } else if (error.getMessage().contains("quota")) {
-            log.error("配额不足: {}", error.getMessage());
-            // 切换到其他模型
+streamingModel.chat(List.of(UserMessage.from(message)),
+    new StreamingChatResponseHandler() {
+        @Override
+        public void onPartialResponse(String partialResponse) {
+            // 正常接收增量
         }
-    }
-});
+
+        @Override
+        public void onCompleteResponse(ChatResponse completeResponse) {
+            // 完成
+        }
+
+        @Override
+        public void onError(Throwable error) {
+            if (error instanceof SocketTimeoutException) {
+                log.warn("连接超时，尝试重新连接");
+                // 重试逻辑
+            } else if (error.getMessage().contains("quota")) {
+                log.error("配额不足: {}", error.getMessage());
+                // 切换到其他模型
+            }
+        }
+    });
 ```
 
 ### 4. 如何获取各提供商的 API Key
@@ -1368,6 +1423,13 @@ public class LangChain4jProperties {
         private Double topP = 1.0;
         private Integer maxTokens = 2048;
         private Boolean enabled = false;
+
+        // 1.14.1 新增：深度思考相关
+        private Boolean enableThinking = false;
+        private Integer thinkingBudgetTokens = 1024;
+        private String reasoningEffort;
+        private Boolean returnThinking = true;
+
         private Map<String, Object> extraParams = new HashMap<>();
     }
 
@@ -1407,6 +1469,143 @@ public class LangChain4jProperties {
     }
 }
 ```
+
+## 版本迁移
+
+`ruoyi-common-langchain4j` 已从 LangChain4j `0.35.0` 升级到 `1.14.1`，本次升级带来了大量 Breaking Changes，主要集中在「模型接口重命名」「响应类型统一」「流式回调拆分」三个维度。下面的对照表覆盖了所有从旧版本迁移到新版本时需要关注的 API 变更。
+
+### 接口类重命名
+
+| 旧 API (0.35.0) | 新 API (1.14.1) | 说明 |
+|----------------|----------------|------|
+| `ChatLanguageModel` | `ChatModel` | 同步聊天模型接口（包路径 `dev.langchain4j.model.chat`） |
+| `StreamingChatLanguageModel` | `StreamingChatModel` | 流式聊天模型接口（包路径同上） |
+| `EmbeddingModel` | `EmbeddingModel` | 嵌入模型接口未变 |
+| `Response<AiMessage>` | `ChatResponse` | 响应类型统一（包路径 `dev.langchain4j.model.chat.response`） |
+| `StreamingResponseHandler<AiMessage>` | `StreamingChatResponseHandler` | 流式回调接口，新增 `onPartialThinking` 方法 |
+
+### 方法签名变更
+
+| 旧调用 | 新调用 |
+|--------|--------|
+| `model.generate(String text)` | `model.chat(UserMessage.from(text))` |
+| `model.generate(List<ChatMessage>)` | `model.chat(List<ChatMessage>)` |
+| `response.content()` | `response.aiMessage()` |
+| `response.content().text()` | `response.aiMessage().text()` |
+| `streamingModel.generate(msg, handler)` | `streamingModel.chat(List.of(msg), handler)` |
+| `handler.onNext(String token)` | `handler.onPartialResponse(String partialResponse)` |
+| `handler.onComplete(Response<AiMessage>)` | `handler.onCompleteResponse(ChatResponse)` |
+
+### 流式回调拆分
+
+`StreamingChatResponseHandler` 把回调拆分为「内容增量」与「思考增量」两个独立方法，便于深度思考场景按阶段处理：
+
+```java
+// 0.35.0 旧版：所有 token 走同一个回调
+streamingModel.generate("...", new StreamingResponseHandler<AiMessage>() {
+    @Override
+    public void onNext(String token) { ... }
+
+    @Override
+    public void onComplete(Response<AiMessage> response) { ... }
+});
+
+// 1.14.1 新版：内容与思考分通道
+streamingModel.chat(List.of(UserMessage.from("...")),
+    new StreamingChatResponseHandler() {
+        @Override
+        public void onPartialResponse(String partialResponse) { /* 最终回复增量 */ }
+
+        @Override
+        public void onPartialThinking(PartialThinking partialThinking) { /* 推理增量 */ }
+
+        @Override
+        public void onCompleteResponse(ChatResponse completeResponse) { /* 完成 */ }
+
+        @Override
+        public void onError(Throwable error) { /* 异常 */ }
+    });
+```
+
+`onPartialThinking` 是 1.14.1 新增的回调，仅在以下条件同时满足时触发：
+
+- 使用的是推理模型（`deepseek-reasoner` / `o1-mini` / Claude Extended Thinking 等）
+- 配置 `enable-thinking: true`
+- 配置 `return-thinking: true`
+
+不满足任一条件时，新版回调行为与旧版完全一致，无需额外兼容。
+
+### TokenUsage 字段重命名
+
+| 旧字段 (0.35.0) | 新字段 (1.14.1) |
+|---------------|---------------|
+| `tokenUsage.inputTokenCount()` | `tokenUsage.inputTokenCount()` 保持不变 |
+| `tokenUsage.outputTokenCount()` | `tokenUsage.outputTokenCount()` 保持不变 |
+| `tokenUsage.totalTokenCount()` | `tokenUsage.totalTokenCount()` 保持不变 |
+
+TokenUsage 接口保持兼容，无需修改。
+
+### 深度思考相关新 API
+
+1.14.1 全新引入的 API，0.35.0 中不存在对应实现：
+
+| 新 API | 说明 |
+|--------|------|
+| `AiMessage.thinking()` | 同步响应中获取推理内容 |
+| `OpenAiChatModelBuilder.returnThinking(Boolean)` | OpenAI 兼容协议下解析 `reasoning_content` |
+| `OpenAiChatModelBuilder.reasoningEffort(String)` | OpenAI 推理强度 |
+| `AnthropicChatModelBuilder.thinkingType(String)` | Claude Extended Thinking 协议 |
+| `AnthropicChatModelBuilder.thinkingBudgetTokens(Integer)` | Claude 思考预算 |
+| `QwenChatRequestParameters.enableThinking(Boolean)` | 通义千问启用思考 |
+| `QwenChatRequestParameters.thinkingBudget(Integer)` | 通义千问思考预算 |
+| `OllamaChatModelBuilder.think(Boolean)` | Ollama 暴露思考块 |
+| `PartialThinking` | 流式思考增量类型 |
+
+### 完整迁移示例
+
+下面是一个完整的迁移对照示例，展示如何把 0.35.0 的同步对话代码升级到 1.14.1：
+
+```java
+// ========== 0.35.0 旧代码 ==========
+import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.data.message.AiMessage;
+import dev.langchain4j.model.output.Response;
+
+public String oldChat(String question) {
+    ChatLanguageModel model = OpenAiChatModel.builder()
+        .apiKey("sk-xxx")
+        .modelName("gpt-4o-mini")
+        .build();
+
+    Response<AiMessage> response = model.generate(question);
+    return response.content().text();
+}
+
+// ========== 1.14.1 新代码 ==========
+import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.openai.OpenAiChatModel;
+import dev.langchain4j.data.message.UserMessage;
+import dev.langchain4j.model.chat.response.ChatResponse;
+
+public String newChat(String question) {
+    ChatModel model = OpenAiChatModel.builder()
+        .apiKey("sk-xxx")
+        .modelName("gpt-4o-mini")
+        .build();
+
+    ChatResponse response = model.chat(UserMessage.from(question));
+    return response.aiMessage().text();
+}
+```
+
+### 迁移建议
+
+1. **先升级依赖再修改代码**：先在 BOM 中把 langchain4j 版本升级到 1.14.1，让编译报错把所有需要修改的位置标出来，再逐个修复
+2. **优先使用框架封装**：业务代码尽量通过 `ModelFactory` + `ChatService` 调用，框架内部已经完成 API 适配，业务侧无需感知底层变化
+3. **流式回调全量重写**：旧版 `StreamingResponseHandler` 与新版 `StreamingChatResponseHandler` 完全不兼容，必须重写所有自定义流式处理器
+4. **响应字段统一**：把 `response.content().text()` 全局替换为 `response.aiMessage().text()`，把 `Response<AiMessage>` 替换为 `ChatResponse`
+5. **深度思考独立梳理**：1.14.1 引入的 thinking 能力是新特性，建议作为单独的开发任务推进，不要混入兼容性迁移
 
 ## 总结
 
