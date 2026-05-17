@@ -28,7 +28,7 @@ AFormTreeSelect 是一个功能丰富的树形选择组件，基于 Element Plus
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const deptTree = [
   {
     deptId: '1',
@@ -75,7 +75,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const permissionTree = [
   {
     id: '1',
@@ -219,7 +219,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const categoryTree = [
   {
     categoryId: '1',
@@ -302,7 +302,7 @@ const categoryTree = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const lazyTree = ref([
   { id: '1', label: '一级部门A', leaf: false },
   { id: '2', label: '一级部门B', leaf: false }
@@ -345,7 +345,7 @@ const loadNode = (node, resolve) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleChange = (value, data, node) => {
   console.log('选择变化：', { value, data, node })
 }
@@ -387,7 +387,7 @@ const handleBlur = (event) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleNodeClick = (data, node, component) => {
   console.log('节点点击：', { data, node })
 }
@@ -427,7 +427,7 @@ const handleNodeCollapse = (data, node, component) => {
   </AFormTreeSelect>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const deptTree = [
   {
     id: '1',
@@ -463,7 +463,7 @@ const deptTree = [
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const treeSelectRef = ref()
 const expandedAll = ref(false)
 const dynamicTree = ref([])
@@ -516,7 +516,7 @@ onMounted(() => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const selectedNodes = ref([])
 const treeSelectRef = ref()
 
@@ -575,7 +575,7 @@ const getNodeIdsByLevel = (nodes, targetLevel, currentLevel = 1) => {
 ### 树形数据转换
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 扁平数据转树形结构
 const flatToTree = (flatData, options = {}) => {
   const { 
@@ -633,7 +633,7 @@ const treeData = computed(() => {
 ### 选中状态处理
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 处理选中状态和回显
 const processSelectedValues = (selectedIds, treeData) => {
   const result = []
@@ -707,7 +707,7 @@ const getNodePath = (targetNode, treeData, path = []) => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   deptId: [
     { required: true, message: '请选择所属部门', trigger: 'change' }
@@ -739,7 +739,7 @@ const rules = {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const validateManager = (rule, value, callback) => {
   if (!value) {
     callback(new Error('请选择直属上级'))
@@ -813,7 +813,7 @@ const rules = {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 
 const { isMobile, isTablet } = useBreakpoint()
@@ -847,7 +847,7 @@ const responsive = computed(() => {
 ### 1. 数据结构优化
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 推荐的数据结构
 const optimizedTreeData = [
   {
@@ -875,7 +875,7 @@ const optimizedTreeData = [
 ### 2. 性能优化
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 使用 computed 缓存处理后的数据
 const processedTreeData = computed(() => {
   return rawTreeData.value.map(dept => ({
@@ -909,7 +909,7 @@ const virtualScrollOptions = {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 自定义搜索方法
 const filterNode = (value, data) => {
   if (!value) return true
@@ -948,7 +948,7 @@ const addSearchFields = (nodes) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 根据用户权限过滤树形数据
 const filteredMenuTree = computed(() => {
   return filterTreeByPermission(menuTree.value, userPermissions.value)
@@ -970,7 +970,7 @@ const filterTreeByPermission = (nodes, permissions) => {
 ### 5. 状态管理
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 统一的树形数据管理
 const useTreeData = () => {
   const treeData = ref([])

@@ -29,7 +29,7 @@ WebSocket 通信钩子函数，提供完整的 WebSocket 连接管理和消息�
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useWS } from '@/composables/useWS'
 
 const { connect, disconnect, send, status, isConnected } = useWS('ws://localhost:8080/websocket')
@@ -46,7 +46,7 @@ const sendMessage = () => {
 ### 完整配置
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 import { useWS } from '@/composables/useWS'
 
 const { connect, disconnect, reconnect, send, status, isConnected } = useWS('ws://localhost:8080/websocket', {
@@ -620,7 +620,7 @@ webSocket.initialize() // 直接返回，不会重复初始化
 #### App.vue 中初始化
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 import { webSocket } from '@/composables/useWS'
 
 onMounted(() => {
@@ -645,7 +645,7 @@ onUnmounted(() => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { webSocket } from '@/composables/useWS'
 
 const sendGlobalMessage = () => {
@@ -800,7 +800,7 @@ useWS(url, {
 ### 4. 页面可见性优化
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 import { useDocumentVisibility } from '@vueuse/core'
 import { webSocket } from '@/composables/useWS'
 

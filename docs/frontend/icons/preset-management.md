@@ -1088,7 +1088,7 @@ export function useLazyIcon(iconName: string) {
   </Suspense>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const LazyIcon = useLazyIcon('mdi:home')
 </script>
 ```
@@ -1770,7 +1770,7 @@ export default defineConfig({
   <div :class="iconClass"></div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const iconClass = ref('i-ep-home')
 </script>
 ```

@@ -1352,7 +1352,7 @@ const hasValidIcon = computed(() => {
   <IconSelect v-model="form.icon" />
 </el-form-item>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   icon: [
     {

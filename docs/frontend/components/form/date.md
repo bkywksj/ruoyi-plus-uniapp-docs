@@ -26,7 +26,7 @@ AFormDate 是一个功能完善的日期选择组件，基于 Element Plus 的 E
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const queryParams = reactive({
   createTime: ''
 })
@@ -202,7 +202,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const dateShortcuts = [
   {
     text: '最近一周',
@@ -249,7 +249,7 @@ const dateShortcuts = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const disabledDate = (time) => {
   // 禁用过去的日期和周末
   const today = new Date()
@@ -278,7 +278,7 @@ const disabledDate = (time) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const limitDateRange = (time) => {
   // 只允许选择未来30天内的日期
   const today = new Date()
@@ -337,7 +337,7 @@ const limitDateRange = (time) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleDateChange = (value) => {
   console.log('日期变化:', value)
   // 可以根据日期更新其他相关字段
@@ -392,7 +392,7 @@ const handleVisibleChange = (visible) => {
   </el-row>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   startDate: '',
   endDate: ''
@@ -442,7 +442,7 @@ const handleEndDateChange = (value) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const disableWeekends = (time) => {
   const day = time.getDay()
   return day === 0 || day === 6 // 禁用周末
@@ -464,7 +464,7 @@ const disableWeekends = (time) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const holidays = [
   '2024-01-01', // 元旦
   '2024-02-10', // 春节
@@ -508,7 +508,7 @@ const disableHolidays = (time) => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const phases = reactive({
   phase1: [],
   phase2: [],
@@ -556,7 +556,7 @@ const updatePhaseConstraints = () => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   startDate: [
     { required: true, message: '请选择开始日期', trigger: 'change' }
@@ -592,7 +592,7 @@ const rules = {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   dateRange: [
     { required: true, message: '请选择活动周期', trigger: 'change' },
@@ -664,7 +664,7 @@ const rules = {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 const { isMobile } = useBreakpoint()
 </script>
@@ -707,7 +707,7 @@ const { isMobile } = useBreakpoint()
   </el-card>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const task = reactive({
   startDate: '',
   dueDate: '',
@@ -751,7 +751,7 @@ const disableAfterDue = (time) => {
   </el-card>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const queryParams = reactive({
   dateRange: []
 })
@@ -858,7 +858,7 @@ const generateReport = async () => {
   </el-card>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const appointment = reactive({
   date: '',
   timeSlot: ''
@@ -929,7 +929,7 @@ const loadAvailableSlots = async (date) => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const eventForm = reactive({
   registrationPeriod: [],
   eventPeriod: []
@@ -1036,7 +1036,7 @@ const eventRules = {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const commonShortcuts = [
   { text: '最近7天', value: () => getLastDays(7) },
   { text: '最近30天', value: () => getLastDays(30) },
@@ -1059,7 +1059,7 @@ const commonShortcuts = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const disableFutureDates = (time) => {
   return time.getTime() > Date.now()
 }
@@ -1079,7 +1079,7 @@ const disableFutureDates = (time) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleTimeZoneConversion = (localTime) => {
   // 处理时区转换逻辑
   const utcTime = convertToUTC(localTime)

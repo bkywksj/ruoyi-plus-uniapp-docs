@@ -27,7 +27,7 @@ AFormCheckbox 是一个功能丰富的复选框组件，基于 Element Plus 的 
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const typeOptions = [
   { label: '类型1', value: '1' },
   { label: '类型2', value: '2' },
@@ -57,7 +57,7 @@ const hobbyOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const skillOptions = [
   { label: 'Vue.js', value: 'vue' },
   { label: 'React', value: 'react' },
@@ -151,7 +151,7 @@ const skillOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const roleList = [
   { id: 1, name: '管理员', description: '系统管理权限' },
   { id: 2, name: '编辑者', description: '内容编辑权限' },
@@ -174,7 +174,7 @@ const roleList = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const permissionOptions = [
   { label: '查看数据', value: 'view' },
   { label: '编辑数据', value: 'edit' },
@@ -201,7 +201,7 @@ const permissionOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const featureOptions = [
   { id: 1, name: '基础功能', available: true },
   { id: 2, name: '高级分析', available: false }, // 这个选项会被禁用
@@ -225,7 +225,7 @@ const featureOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   tags: [] // 绑定数组类型
 })
@@ -255,7 +255,7 @@ const tagOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const courseOptions = [
   { label: '高等数学', value: 'math' },
   { label: '大学物理', value: 'physics' },
@@ -280,7 +280,7 @@ const courseOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const filterOptions = [
   { label: '最新', value: 'latest' },
   { label: '热门', value: 'popular' },
@@ -308,7 +308,7 @@ const handleFilterChange = (values) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const notificationOptions = [
   { label: '邮件通知', value: 'email' },
   { label: '短信通知', value: 'sms' },
@@ -355,7 +355,7 @@ const handleNotificationChange = (values) => {
   </el-row>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const moduleOptions = [
   { label: '用户管理', value: 'user' },
   { label: '内容管理', value: 'content' },
@@ -415,7 +415,7 @@ const handleModuleChange = (modules) => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const itemOptions = [
   { label: '项目A', value: 'a' },
   { label: '项目B', value: 'b' },
@@ -456,7 +456,7 @@ const handleItemChange = (values) => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const groupedOptions = [
   {
     category: '前端技术',
@@ -504,7 +504,7 @@ const handleGroupChange = (values) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const categoryOptions = ref([])
 const loadingCategories = ref(false)
 
@@ -542,7 +542,7 @@ const handleVisibleChange = (visible) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const allPermissions = [
   { code: 'user:view', name: '查看用户', level: 1 },
   { code: 'user:edit', name: '编辑用户', level: 2 },
@@ -574,7 +574,7 @@ const availablePermissions = computed(() => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const interestOptions = [
   { label: '阅读', value: 'reading' },
   { label: '运动', value: 'sports' },
@@ -612,7 +612,7 @@ const rules = {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   skills: [
     { 
@@ -649,7 +649,7 @@ const rules = {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const weekdayOptions = [
   { label: '周一', value: 1 },
   { label: '周二', value: 2 },
@@ -735,7 +735,7 @@ const rules = {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 const { isMobile } = useBreakpoint()
 </script>
@@ -760,7 +760,7 @@ const { isMobile } = useBreakpoint()
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const permissionTree = [
   { id: 1, name: '用户管理 - 查看用户列表' },
   { id: 2, name: '用户管理 - 新增用户' },
@@ -800,7 +800,7 @@ const roleForm = reactive({
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const filters = reactive({
   categories: [],
   tags: []
@@ -840,7 +840,7 @@ const handleFilter = () => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const selectedItems = ref([])
 
 const batchDelete = () => {
@@ -869,7 +869,7 @@ const batchExport = () => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const notificationOptions = [
   { label: '系统通知', value: 'system' },     // 重要的放前面
   { label: '安全警报', value: 'security' },
@@ -890,7 +890,7 @@ const notificationOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   preferences: ['email'] // 设置默认选中邮件通知
 })
@@ -1015,7 +1015,7 @@ const badRules = {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   agreeTerms: false  // 布尔类型初始值
 })
@@ -1056,7 +1056,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // ✅ 数据结构中包含禁用标识字段
 const roleOptions = [
   { roleId: 1, roleName: '管理员', isActive: true },

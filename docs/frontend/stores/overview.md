@@ -1511,7 +1511,7 @@ export default defineComponent({
 })
 ```
 
-使用 `<script setup>` 语法:
+使用 `<script lang="ts" setup>` 语法:
 
 ```vue
 <script lang="ts" setup>

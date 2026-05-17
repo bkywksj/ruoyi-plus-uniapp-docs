@@ -1341,7 +1341,7 @@ type SpanType =
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   image: [
     { required: true, message: '请上传图片', trigger: 'change' }
@@ -1401,7 +1401,7 @@ const rules = {
 组件已内置处理逻辑，会自动处理预签名URL。如果仍有问题，可以尝试：
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 手动刷新组件
 const uploadRef = ref()
 
@@ -1450,7 +1450,7 @@ const refresh = () => {
   @error="handleError"
 />
 
-<script setup>
+<script lang="ts" setup>
 const handleError = (error: string, file: any) => {
   if (error.includes('压缩')) {
     // 提示用户更换图片或禁用压缩
@@ -1480,7 +1480,7 @@ const handleError = (error: string, file: any) => {
 **解决方案：**
 ```vue
 <!-- 确保后端返回正确格式 -->
-<script setup>
+<script lang="ts" setup>
 // 后端应返回格式
 // {
 //   ossId: "123456",

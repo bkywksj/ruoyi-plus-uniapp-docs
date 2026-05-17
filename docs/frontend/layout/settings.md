@@ -1135,7 +1135,7 @@ localStorage.setItem('layout-config', JSON.stringify(config))
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const layout = useLayout()
 
 // ✅ 在 computed 中使用

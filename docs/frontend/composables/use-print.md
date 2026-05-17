@@ -64,7 +64,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { usePrint } from '@/composables/usePrint'
 
 const {
@@ -169,7 +169,7 @@ const tableData = ref([
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { usePrint } from '@/composables/usePrint'
 
 const {
@@ -245,7 +245,7 @@ setPrintStyle(customPrintStyle)
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { usePrint } from '@/composables/usePrint'
 
 const {
@@ -315,7 +315,7 @@ const batchExportPDF = () => {
 ### PDF水印和安全
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 import { usePrint } from '@/composables/usePrint'
 
 const {
@@ -436,7 +436,7 @@ const createSecurePDF = () => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { usePrint } from '@/composables/usePrint'
 
 const {
@@ -548,7 +548,7 @@ const {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { usePrint } from '@/composables/usePrint'
 
 const {
@@ -598,7 +598,7 @@ onBatchComplete((results) => {
 ### 打印模板系统
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 import { usePrint } from '@/composables/usePrint'
 
 const {

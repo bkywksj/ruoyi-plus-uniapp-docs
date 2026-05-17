@@ -336,7 +336,7 @@ build: {
 #### 避免不必要的渲染
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // ✅ 使用 computed 缓存计算结果
 const filteredList = computed(() => {
   return list.value.filter(item => item.status === 'active')
@@ -359,7 +359,7 @@ const filteredList = computed(() => {
 #### 列表优化
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // ✅ 使用唯一 key
 <div v-for="item in list" :key="item.id">
 
@@ -518,7 +518,7 @@ function prefetchRoute(routeName: string) {
   </router-view>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 缓存列表页，不缓存详情页
 const cachedViews = ['UserList', 'RoleList']
 </script>

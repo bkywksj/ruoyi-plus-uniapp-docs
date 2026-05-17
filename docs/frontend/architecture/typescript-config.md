@@ -1628,7 +1628,7 @@ declare global {
 
 **问题现象:**
 - 在 `.ts` 文件中全局类型正常
-- 在 `.vue` 文件的 `<script setup>` 中报错
+- 在 `.vue` 文件的 `<script lang="ts" setup>` 中报错
 
 **解决方案:**
 

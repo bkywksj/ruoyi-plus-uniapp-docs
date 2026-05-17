@@ -24,7 +24,7 @@ AFormFileUpload 是一个功能丰富的文件上传组件，基于 Element Plus
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   title: '',
   attachments: ''
@@ -189,7 +189,7 @@ const fileUrls = ref('')
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const originalFileId = ref(123) // 要替换的文件ID
 </script>
 ```
@@ -244,7 +244,7 @@ const originalFileId = ref(123) // 要替换的文件ID
   <el-button @click="clearFiles">清空文件</el-button>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const uploading = ref(false)
 const uploadRef = ref()
 
@@ -281,7 +281,7 @@ const clearFiles = () => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleChange = (file, fileList) => {
   console.log('文件变化：', { file, fileList })
 }
@@ -323,7 +323,7 @@ const handleExceed = (files, fileList) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const beforeUpload = (file) => {
   // 文件类型检查
   const isValidType = ['image/jpeg', 'image/png', 'application/pdf'].includes(file.type)
@@ -367,7 +367,7 @@ const handleValidatedChange = (file, fileList) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const customUpload = (options) => {
   const { file, onProgress, onSuccess, onError } = options
   
@@ -461,7 +461,7 @@ const uploadFileWithProgress = ({ url, data, onProgress }) => {
   </el-dialog>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const previewDialogVisible = ref(false)
 const previewFile = ref(null)
 
@@ -536,7 +536,7 @@ const downloadFile = (file) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const CHUNK_SIZE = 5 * 1024 * 1024 // 5MB per chunk
 
 const chunkUpload = async (options) => {
@@ -634,7 +634,7 @@ const mergeChunks = (params) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const compressFile = async (file) => {
   // 只对图片进行压缩
   if (!file.type.startsWith('image/')) {
@@ -742,7 +742,7 @@ const compressImage = (file, options = {}) => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const fileList = ref([])
 const selectedFiles = ref([])
 
@@ -873,7 +873,7 @@ const deleteFile = (index) => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   documents: [
     { required: true, message: '请上传必需文档', trigger: 'change' }
@@ -912,7 +912,7 @@ const validateFileCount = (rule, value, callback) => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const validateExcelContent = async (response, file) => {
   try {
     // 验证Excel文件内容
@@ -945,7 +945,7 @@ const validateUploadedExcel = async (fileUrl) => {
 ### 1. 性能优化
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 使用计算属性优化文件列表显示
 const displayFileList = computed(() => {
   return fileList.value.map(file => ({
@@ -965,7 +965,7 @@ const debouncedHandleChange = debounce((fileList) => {
 ### 2. 错误处理
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 const handleUploadError = (error, file) => {
   console.error('Upload error:', error)
   
@@ -997,7 +997,7 @@ const handleUploadError = (error, file) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 
 const { isMobile } = useBreakpoint()

@@ -270,7 +270,7 @@ watchEffect(() => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 处理移动端点击侧边栏外区域关闭侧边栏
 const handleClickOutside = () => {
   layout.closeSideBar()

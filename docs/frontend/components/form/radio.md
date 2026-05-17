@@ -27,7 +27,7 @@ AFormRadio 是一个功能完善的单选框组件，基于 Element Plus 的 ElR
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const statusOptions = [
   { label: '启用', value: '1' },
   { label: '禁用', value: '0' }
@@ -54,7 +54,7 @@ const genderOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const typeOptions = [
   { label: '个人用户', value: 'personal' },
   { label: '企业用户', value: 'enterprise' },
@@ -121,7 +121,7 @@ const typeOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const levelList = [
   { id: 1, name: '普通用户', description: '基础功能' },
   { id: 2, name: 'VIP用户', description: '增值服务' },
@@ -144,7 +144,7 @@ const levelList = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const privacyOptions = [
   { label: '公开', value: 'public' },
   { label: '仅好友可见', value: 'friends' },
@@ -171,7 +171,7 @@ const privacyOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const planOptions = [
   { id: 1, name: '基础版', status: 'active' },
   { id: 2, name: '专业版', status: 'disabled' }, // 这个选项会被禁用
@@ -197,7 +197,7 @@ const planOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const regionOptions = [
   { id: 1, name: '华北地区', status: '1' },
   { id: 2, name: '华东地区', status: '0' }, // 禁用
@@ -223,7 +223,7 @@ const regionOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const shippingOptions = [
   { id: 1, name: '标准配送', available: true, region: 'all' },
   { id: 2, name: '次日达', available: false, region: 'limited' },
@@ -251,7 +251,7 @@ const isShippingDisabled = (option) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const themeOptions = [
   { label: '浅色主题', value: 'light' },
   { label: '深色主题', value: 'dark' },
@@ -275,7 +275,7 @@ const themeOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const priorityOptions = [
   { label: '低', value: 'low' },
   { label: '中', value: 'medium' },
@@ -297,7 +297,7 @@ const priorityOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const viewOptions = [
   { label: '列表视图', value: 'list' },
   { label: '卡片视图', value: 'card' },
@@ -325,7 +325,7 @@ const handleViewChange = (value) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const notificationOptions = [
   { label: '立即通知', value: 'immediate' },
   { label: '每日汇总', value: 'daily' },
@@ -376,7 +376,7 @@ const handleNotificationChange = (value) => {
   </el-row>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const paymentOptions = [
   { label: '一次性付款', value: 'full' },
   { label: '分期付款', value: 'installment' }
@@ -412,7 +412,7 @@ const handlePaymentTypeChange = (value) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const difficultyOptions = computed(() => {
   const levels = ['简单', '普通', '困难', '专家']
   return levels.map((name, index) => ({
@@ -436,7 +436,7 @@ const difficultyOptions = computed(() => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const allAccessOptions = [
   { label: '只读', value: 'read', requiredRole: 'user' },
   { label: '读写', value: 'write', requiredRole: 'editor' },
@@ -483,7 +483,7 @@ const hasRole = (role) => {
   </AFormRadio>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const planOptions = [
   {
     id: 1,
@@ -526,7 +526,7 @@ const planOptions = [
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const agreementOptions = [
   { label: '同意', value: true },
   { label: '不同意', value: false }
@@ -575,7 +575,7 @@ const rules = {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const riskOptions = [
   { label: '保守型', value: 'conservative' },
   { label: '稳健型', value: 'moderate' },
@@ -652,7 +652,7 @@ const rules = {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 const { isMobile } = useBreakpoint()
 </script>
@@ -693,7 +693,7 @@ const { isMobile } = useBreakpoint()
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const frequencyOptions = [
   { label: '每天', value: 'daily' },      // 最常用的放前面
   { label: '每周', value: 'weekly' },
@@ -714,7 +714,7 @@ const frequencyOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   privacy: 'friends' // 设置合理的默认值
 })
@@ -739,7 +739,7 @@ const privacyOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const backupOptions = [
   { label: '实时备份 - 数据变化时立即备份', value: 'realtime' },
   { label: '每日备份 - 每天凌晨自动备份', value: 'daily' },
@@ -773,7 +773,7 @@ const backupOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 问题代码：数据类型不匹配
 const form = reactive({
   status: 1  // number 类型
@@ -866,7 +866,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   categoryId: 5  // 编辑时有初始值
 })
@@ -1052,7 +1052,7 @@ const isFormReady = loader.isReady()
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   agreement: [
     { required: true, message: '请选择是否同意', trigger: 'change' }
@@ -1366,7 +1366,7 @@ const ButtonRadioGroup = defineComponent({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 问题：函数没有正确执行
 const isDeliveryDisabled = (option) => {
   return option.price > userBalance.value
@@ -1558,7 +1558,7 @@ const processedOptions = computed(() =>
   <!-- 选项显示为空 -->
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const deptOptions = [
   { id: 1, name: '技术部' },  // 字段名不匹配
   { id: 2, name: '市场部' }
@@ -1745,7 +1745,7 @@ if (import.meta.env.DEV) {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 问题：切换用户类型后，子类型选项没有更新
 const handleUserTypeChange = (value) => {
   form.subType = ''  // 重置子类型
@@ -2306,7 +2306,7 @@ const {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useDebounceFn } from '@vueuse/core'
 
 const searchInput = ref('')

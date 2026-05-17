@@ -25,7 +25,7 @@ AFormEditor 是一个功能丰富的富文本编辑器组件，基于 WangEditor
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   title: '',
   content: ''
@@ -116,7 +116,7 @@ const articleContent = ref('<p>欢迎使用富文本编辑器！</p>')
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   title: '',
   content: ''
@@ -166,7 +166,7 @@ const previewDocument = () => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const uploadUrl = '/api/upload/image'
 
 const uploadParams = {
@@ -199,7 +199,7 @@ const handleImageUploadError = (error) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const customToolbar = [
   'bold', 'italic', 'underline', 'strike',
   '|',
@@ -230,7 +230,7 @@ const customToolbar = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   readme: `# 项目标题
 
@@ -266,7 +266,7 @@ function hello() {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const articleContent = ref(`
   <h2>文章标题</h2>
   <p>这是一篇示例文章的内容...</p>
@@ -305,7 +305,7 @@ const articleContent = ref(`
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const documentContent = ref('')
 const onlineUsers = ref([])
 
@@ -383,7 +383,7 @@ ws.onmessage = (event) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const content = ref('')
 
 const handleChange = (newContent) => {
@@ -434,7 +434,7 @@ const autoSave = debounce((content) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleImagePaste = (file) => {
   console.log('粘贴图片：', file)
   // 处理粘贴的图片
@@ -485,7 +485,7 @@ const uploadPastedImage = async (file) => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const content = ref('')
 
 const exportToHtml = () => {
@@ -579,7 +579,7 @@ const htmlToMarkdown = (html) => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const content = ref('')
 const selectedTemplate = ref('')
 
@@ -691,7 +691,7 @@ const saveAsTemplate = () => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const content = ref('')
 
 const stats = reactive({
@@ -794,7 +794,7 @@ watch(content, updateStats, { immediate: true })
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const content = ref('')
 const currentVersion = ref(1)
 const versionDialogVisible = ref(false)
@@ -939,7 +939,7 @@ onMounted(() => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const formRef = ref()
 
 const form = reactive({
@@ -994,7 +994,7 @@ const submitForm = async () => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   content: [
     { validator: validateImageLimit, trigger: 'blur' }
@@ -1025,7 +1025,7 @@ const validateImageCount = (content) => {
 ### 1. 性能优化
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 使用防抖优化内容变更
 const debouncedSave = debounce((content) => {
   // 自动保存逻辑
@@ -1047,7 +1047,7 @@ onMounted(() => {
 ### 2. 内容安全
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // XSS防护
 const sanitizeContent = (content) => {
   // 使用DOMPurify或类似库清理HTML内容
@@ -1078,7 +1078,7 @@ const saveContent = () => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 
 const { isMobile } = useBreakpoint()

@@ -1817,7 +1817,7 @@ html.dark {
   </el-button>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useTheme } from '@/composables/useTheme'
 const { currentTheme } = useTheme()
 </script>

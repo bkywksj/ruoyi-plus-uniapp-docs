@@ -251,7 +251,7 @@ emit('update:modelValue', newValue)
 />
 
 <!-- ✅ 跨组件通信：Pinia Store -->
-<script setup>
+<script lang="ts" setup>
 import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
 </script>
@@ -573,7 +573,7 @@ export const useUserStore = defineStore('user', {
 })
 
 // ✅ 组件：只负责展示和交互
-<script setup>
+<script lang="ts" setup>
 const userStore = useUserStore()
 onMounted(() => {
   userStore.loadUsers()
@@ -595,7 +595,7 @@ onMounted(() => {
 <!-- ⚠️ v-html 慎用 -->
 <div v-html="sanitize(htmlContent)"></div>
 
-<script setup>
+<script lang="ts" setup>
 import DOMPurify from 'dompurify'
 
 function sanitize(html: string) {

@@ -246,7 +246,7 @@ AFormInput 是一个功能强大的输入框组件，基于 Element Plus 的 ElI
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleBlur = (event) => {
   console.log('失去焦点', event.target.value)
 }
@@ -288,7 +288,7 @@ const handleClear = () => {
   </AFormInput>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { debounce } from 'lodash-es'
 
 // 防抖搜索
@@ -328,7 +328,7 @@ const handleEnterSearch = () => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   userName: '',
   email: ''
@@ -361,7 +361,7 @@ const rules = {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const validatePhone = (rule, value, callback) => {
   if (!value) {
     callback(new Error('请输入手机号'))
@@ -392,7 +392,7 @@ const rules = {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const formatAmount = (value) => {
   // 只允许输入数字和小数点
   const formatted = value.replace(/[^\d.]/g, '')
@@ -420,7 +420,7 @@ const formatAmount = (value) => {
   </ul>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { debounce } from 'lodash-es'
 
 const searchKeyword = ref('')
@@ -454,7 +454,7 @@ watch(searchKeyword, handleSearch)
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const isAdmin = computed(() => {
   return user.value?.role === 'admin'
 })
@@ -498,7 +498,7 @@ const isAdmin = computed(() => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 
 const { isMobile } = useBreakpoint()
@@ -624,7 +624,7 @@ const form = reactive({
 
 ```vue
 <!-- ❌ 错误：直接修改嵌套对象 -->
-<script setup>
+<script lang="ts" setup>
 const data = ref({ user: { name: '' } })
 
 // 这种方式可能导致响应性丢失
@@ -634,7 +634,7 @@ const updateName = () => {
 </script>
 
 <!-- ✅ 正确：保持响应式引用 -->
-<script setup>
+<script lang="ts" setup>
 const data = reactive({
   user: {
     name: ''
@@ -1585,7 +1585,7 @@ const encryptPassword = async (password: string): Promise<string> => {
   <AFormInput v-model="form.password" type="password" />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const randomId = Math.random().toString(36).substring(7)
 </script>
 ```

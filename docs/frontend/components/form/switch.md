@@ -25,7 +25,7 @@ AFormSwitch 是一个功能完善的开关组件，基于 Element Plus 的 ElSwi
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const queryParams = reactive({
   enabled: true
 })
@@ -110,7 +110,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   isEnabled: false // 布尔类型
 })
@@ -133,7 +133,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   status: 'inactive' // 字符串类型
 })
@@ -156,7 +156,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   priority: 0 // 数字类型
 })
@@ -224,7 +224,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const switchLoading = ref(false)
 
 const handleServiceToggle = async (value) => {
@@ -274,7 +274,7 @@ const handleServiceToggle = async (value) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleNotificationChange = (value) => {
   console.log('通知设置变更:', value)
   
@@ -313,7 +313,7 @@ const handleBlur = (event) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const confirmToggle = () => {
   return new Promise((resolve) => {
     showConfirm('确定要切换删除模式吗？', '提示', {
@@ -352,7 +352,7 @@ const confirmToggle = () => {
   </el-row>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleAutoBackupChange = (enabled) => {
   if (!enabled) {
     // 关闭自动备份时，同时关闭加密
@@ -378,7 +378,7 @@ const handleAutoBackupChange = (enabled) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const canUseAdvancedMode = computed(() => {
   return user.value?.level >= 5
 })
@@ -424,7 +424,7 @@ const canUseAdvancedMode = computed(() => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const masterSwitch = ref(true)
 
 const handleMasterToggle = (enabled) => {
@@ -464,7 +464,7 @@ const handleMasterToggle = (enabled) => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleConfigModeChange = (useCustom) => {
   if (!useCustom) {
     // 恢复默认配置
@@ -493,7 +493,7 @@ const handleConfigModeChange = (useCustom) => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   agreement: [
     { 
@@ -536,7 +536,7 @@ const rules = {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = computed(() => ({
   enableSSL: [
     { required: true, message: '请选择是否启用SSL', trigger: 'change' }
@@ -592,7 +592,7 @@ const rules = computed(() => ({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 const { isMobile } = useBreakpoint()
 </script>
@@ -639,7 +639,7 @@ const { isMobile } = useBreakpoint()
   </el-card>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const settings = reactive({
   maintenance: false,
   registration: true,
@@ -675,7 +675,7 @@ const settings = reactive({
   </el-card>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const permissions = reactive({
   canEdit: false,
   canDelete: false,
@@ -715,7 +715,7 @@ const handlePermissionChange = async (type, enabled) => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const features = ref([
   {
     key: 'ai_assistant',
@@ -778,7 +778,7 @@ const toggleFeature = async (feature) => {
   </el-card>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const notificationCategories = [
   {
     key: 'system',
@@ -860,7 +860,7 @@ const saveNotificationSetting = async (category, type, enabled) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   allowNotifications: true // 合理的默认值
 })
@@ -879,7 +879,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const savingSettings = ref(false)
 
 const handleAutoSaveToggle = async (enabled) => {
@@ -910,7 +910,7 @@ const handleAutoSaveToggle = async (enabled) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const confirmDangerousAction = async () => {
   try {
     await showConfirm(
@@ -966,7 +966,7 @@ const confirmDangerousAction = async () => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   enabled: false  // 布尔类型，需要配合布尔类型的 activeValue/inactiveValue
 })
@@ -995,7 +995,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 或者在事件处理中判断是否首次加载
 const isFirstLoad = ref(true)
 
@@ -1030,7 +1030,7 @@ const handleAutoUpdateChange = (value) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // ❌ 错误：没有返回值
 const handleBeforeChange = () => {
   showConfirm('确定吗？')
@@ -1089,7 +1089,7 @@ const handleBeforeChange = async (): Promise<boolean> => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const masterEnabled = ref(true)
 const form = reactive({
   feature1: false,

@@ -1120,7 +1120,7 @@ deferClassOperation('.dynamic-item', 'loaded', 'add')
   </button>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const buttonRef = ref(null)
 const isActive = ref(false)
 
@@ -1786,7 +1786,7 @@ export default defineNuxtPlugin(() => {
 })
 
 // 组件中使用
-<script setup>
+<script lang="ts" setup>
 const { $addClass, $removeClass } = useNuxtApp()
 
 onMounted(() => {
@@ -2126,7 +2126,7 @@ window.addEventListener('scroll', throttle(() => {
   <div ref="boxRef" :class="$style.box">盒子</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const boxRef = ref(null)
 
 const highlight = () => {
@@ -2265,7 +2265,7 @@ const highlight = () => {
 }
 </style>
 
-<script setup>
+<script lang="ts" setup>
 // 现在可以直接使用全局类名
 const highlight = () => {
   addClass(boxRef.value, 'highlighted')  // 使用全局类名
@@ -2277,7 +2277,7 @@ const highlight = () => {
   <div ref="boxRef" class="box">盒子</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const boxRef = ref(null)
 
 // 操作非 scoped 的类名

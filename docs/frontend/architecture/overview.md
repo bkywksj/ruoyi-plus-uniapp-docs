@@ -1416,7 +1416,7 @@ const routes: RouteRecordRaw[] = [
 **组件懒加载:**
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 import { defineAsyncComponent } from 'vue'
 
 const HeavyComponent = defineAsyncComponent(() =>

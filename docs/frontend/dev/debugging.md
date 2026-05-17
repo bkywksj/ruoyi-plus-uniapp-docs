@@ -39,7 +39,7 @@ vue-devtools
 
 **查看组件状态**：
 ```vue
-<script setup>
+<script lang="ts" setup>
 const count = ref(0)
 const userInfo = reactive({ name: 'John', age: 30 })
 </script>
@@ -528,7 +528,7 @@ console.log('[UserList] 数据:', data)
 ### 监控 Props 变化
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 const props = defineProps<{ userId: string }>()
 
 watch(() => props.userId, (newVal, oldVal) => {

@@ -29,7 +29,7 @@ AFormCascader 是一个功能强大的级联选择组件，基于 Element Plus �
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { regionData } from 'element-china-area-data'
 
 const form = reactive({
@@ -69,7 +69,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const deptTree = [
   {
     id: '1',
@@ -168,7 +168,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const menuTree = [
   {
     menuId: '1',
@@ -218,7 +218,7 @@ const form = reactive({
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const orgData = [
   {
     code: 'root',
@@ -264,7 +264,7 @@ const orgData = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const regionTree = [
   {
     id: '1',
@@ -304,7 +304,7 @@ const regionTree = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const categoryOptions = ref([
   { value: '1', label: '电子产品', leaf: false },
   { value: '2', label: '服装', leaf: false },
@@ -361,7 +361,7 @@ const fetchCategoryChildren = async (parentId, level) => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   pathId: ''
 })
@@ -397,7 +397,7 @@ const handlePathChange = (info) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleChange = (value) => {
   console.log('选择变化：', value)
 }
@@ -434,7 +434,7 @@ const handleVisibleChange = (visible) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const selectedCategories = ref([])
 
 const handleMultipleChange = (values) => {
@@ -470,7 +470,7 @@ const handleRemoveTag = (value) => {
   </AFormCascader>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const deptTree = [
   {
     id: '1',
@@ -500,7 +500,7 @@ const deptTree = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const filterMethod = (node, keyword) => {
   return node.text.includes(keyword)
 }
@@ -538,7 +538,7 @@ const filterMethod = (node, keyword) => {
 ### 数据转换
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 将扁平数据转换为树形结构
 const flatToTree = (flatData, parentKey = null) => {
   return flatData
@@ -575,7 +575,7 @@ const deptTree = computed(() => flatToTree(flatDepartments))
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   categoryPath: '' // 只保存最后一级的值
 })
@@ -640,7 +640,7 @@ const handleCategoryChange = (value, selectedData) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 
 const { isMobile, isTablet } = useBreakpoint()
@@ -674,7 +674,7 @@ const responsive = computed(() => {
 ### 1. 数据结构规范
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 推荐的数据结构
 const standardTreeData = [
   {
@@ -699,7 +699,7 @@ const standardTreeData = [
 ### 2. 性能优化
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 使用 computed 缓存处理后的数据
 const processedOptions = computed(() => {
   return rawData.value.map(item => ({
@@ -730,7 +730,7 @@ const initialOptions = computed(() => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   category: [
     { 

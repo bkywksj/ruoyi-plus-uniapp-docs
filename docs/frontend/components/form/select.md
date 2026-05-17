@@ -27,7 +27,7 @@ AFormSelect 是一个功能强大的选择器组件，基于 Element Plus 的 El
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const statusOptions = [
   { label: '启用', value: '1' },
   { label: '禁用', value: '0' }
@@ -55,7 +55,7 @@ const typeOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const roleOptions = [
   { label: '用户管理员', value: 'user_admin' },
   { label: '内容管理员', value: 'content_admin' },
@@ -129,7 +129,7 @@ const roleOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const userList = [
   { id: 1, name: '张三', department: '技术部' },
   { id: 2, name: '李四', department: '产品部' },
@@ -205,7 +205,7 @@ const userList = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const postOptions = [
   { postId: 1, postName: '前端开发', status: '1' },
   { postId: 2, postName: '后端开发', status: '0' }, // 这个选项会被禁用
@@ -230,7 +230,7 @@ const postOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const deptList = [
   { deptId: 1, deptName: '技术部', status: '1' },
   { deptId: 2, deptName: '产品部', status: '0' }, // 禁用
@@ -254,7 +254,7 @@ const deptList = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const productList = [
   { id: 1, name: '商品A', status: '1', stock: 100 },
   { id: 2, name: '商品B', status: '0', stock: 0 }, // 下架且无库存
@@ -284,7 +284,7 @@ const isProductDisabled = (item) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   permissions: [] // 多选时绑定数组
 })
@@ -314,7 +314,7 @@ const permissionOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const cityOptions = [
   { code: '110000', name: '北京市' },
   { code: '120000', name: '天津市' },
@@ -372,7 +372,7 @@ const cityOptions = [
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const handleChange = (value) => {
   console.log('选择变化:', value)
   // 可以根据选择更新其他字段
@@ -417,7 +417,7 @@ const handleClear = () => {
   </el-row>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const provinces = ref([
   { value: '11', label: '北京市' },
   { value: '31', label: '上海市' }
@@ -461,7 +461,7 @@ const handleProvinceChange = async (provinceId) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const remoteUsers = ref([])
 const loading = ref(false)
 
@@ -519,7 +519,7 @@ const remoteSearch = debounce(async (query) => {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const productOptions = ref([])
 const loadingProducts = ref(false)
 
@@ -574,7 +574,7 @@ const handleVisibleChange = (visible) => {
   </AFormSelect>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const groupedRoles = [
   {
     label: '系统角色',
@@ -610,7 +610,7 @@ const groupedRoles = [
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   category: [
     { required: true, message: '请选择分类', trigger: 'change' }
@@ -634,7 +634,7 @@ const rules = {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   tags: [
     {
@@ -686,7 +686,7 @@ const rules = {
   />
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 const { isMobile } = useBreakpoint()
 </script>
@@ -782,7 +782,7 @@ const { isMobile } = useBreakpoint()
 
 ```vue
 <!-- ❌ 错误：类型不一致 -->
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   status: 1  // 数字类型
 })
@@ -794,7 +794,7 @@ const statusOptions = [
 </script>
 
 <!-- ✅ 正确：保持类型一致 -->
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   status: '1'  // 字符串类型
 })
@@ -916,7 +916,7 @@ async function loadFormData() {
 
 ```vue
 <!-- ❌ 错误：绑定值不是数组 -->
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   roles: ''  // 字符串类型
 })
@@ -927,7 +927,7 @@ const form = reactive({
 </template>
 
 <!-- ✅ 正确：绑定值为数组 -->
-<script setup>
+<script lang="ts" setup>
 const form = reactive({
   roles: [] as string[]  // 数组类型
 })
@@ -1244,7 +1244,7 @@ const { results: userOptions, loading, search: searchUsers } = useRemoteSearch({
 />
 
 <!-- ❌ 错误：类型不匹配 -->
-<script setup>
+<script lang="ts" setup>
 const userList = [
   { id: 1, name: '张三', status: 0 },  // 数字 0
   { id: 2, name: '李四', status: 1 }

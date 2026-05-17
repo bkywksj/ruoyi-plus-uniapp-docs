@@ -64,7 +64,7 @@ AForm 是表单系统的核心容器组件，基于 Element Plus 的 ElForm 封�
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { ref, reactive } from 'vue'
 
 // 表单数据
@@ -147,7 +147,7 @@ const resetForm = () => {
   </ASearchForm>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const queryParams = reactive({
   keyword: '',
   status: '',
@@ -231,7 +231,7 @@ const handleReset = () => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import { useBreakpoint } from '@/composables/useBreakpoint'
 
 const { isMobile } = useBreakpoint()
@@ -282,7 +282,7 @@ const { isMobile } = useBreakpoint()
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const rules = {
   email: [
     { required: true, message: '请输入邮箱' },
@@ -338,7 +338,7 @@ const rules = {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const dynamicRules = computed(() => {
   const rules = {
     type: [{ required: true, message: '请选择类型' }]
@@ -382,7 +382,7 @@ const dynamicRules = computed(() => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const submitting = ref(false)
 
 // 提交表单
@@ -433,7 +433,7 @@ const validateField = () => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 // 清除验证信息
 const clearValidate = () => {
   formRef.value.clearValidate()
@@ -481,7 +481,7 @@ const getFormData = () => {
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const showSearch = ref(true)
 
 const toggleSearch = () => {
@@ -522,7 +522,7 @@ const toggleSearch = () => {
   </ASearchForm>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const searchFormRef = ref()
 
 // 重置搜索条件
@@ -585,7 +585,7 @@ const externalReset = () => {
   </el-form>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const loading = ref(false)
 const editMode = computed(() => !!form.id)
 
@@ -599,7 +599,7 @@ const isFormValid = computed(() => {
 ### 3. 表单数据初始化
 
 ```vue
-<script setup>
+<script lang="ts" setup>
 // 默认表单数据
 const defaultForm = {
   name: '',
