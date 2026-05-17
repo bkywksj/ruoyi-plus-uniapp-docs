@@ -874,7 +874,7 @@ echo $DINGTALK_SECRET
 
 | 组件 | 版本 | 说明 |
 |------|------|------|
-| Spring Boot | 3.5.6 | 应用基础框架 |
+| Spring Boot | 3.5.12 | 应用基础框架 |
 | Spring Boot Admin | 3.4.x | 监控中心核心 |
 | Spring Security | 6.x | 安全认证框架 |
 | Hutool | 5.8.40 | 工具类库 |

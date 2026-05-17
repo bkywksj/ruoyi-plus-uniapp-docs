@@ -24,10 +24,10 @@ RuoYi-Plus 工作流模块是一个功能完善、高度可扩展的企业级工
 | 技术 | 版本 | 说明 |
 |------|------|------|
 | Warm-Flow | 1.8.1 | 轻量级工作流引擎 |
-| Spring Boot | 3.5.6 | 应用框架 |
-| MyBatis-Plus | 3.5.14 | ORM 框架 |
+| Spring Boot | 3.5.12 | 应用框架 |
+| MyBatis-Plus | 3.5.16 | ORM 框架 |
 | Sa-Token | 1.44.0 | 认证授权 |
-| Redisson | 3.51.0 | 分布式锁 |
+| Redisson | 3.52.0 | 分布式锁 |
 
 **模块依赖：**
 

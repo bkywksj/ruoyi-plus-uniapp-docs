@@ -10,7 +10,7 @@
 |-----|------|------|
 | MySQL | 5.7+ | 主数据库(推荐) |
 | PostgreSQL | 14.0+ | 备选数据库 |
-| MyBatis-Plus | 3.5.14 | ORM框架 |
+| MyBatis-Plus | 3.5.16 | ORM框架 |
 | HikariCP | 5.0+ | 连接池 |
 
 **规范等级:**

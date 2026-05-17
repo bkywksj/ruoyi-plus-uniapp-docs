@@ -1092,8 +1092,8 @@ JAVA_OPTS="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/logs/"
 | 组件 | 版本 | 说明 |
 |------|------|------|
 | SnailJob | 1.8.0 | 分布式任务调度框架 |
-| Spring Boot | 3.5.6 | 应用基础框架 |
-| MyBatis Plus | 3.5.14 | 数据持久层 |
+| Spring Boot | 3.5.12 | 应用基础框架 |
+| MyBatis Plus | 3.5.16 | 数据持久层 |
 | HikariCP | 5.x | 数据库连接池 |
 | gRPC/Netty | - | RPC 通信 |
 | Spring Boot Admin | 3.4.x | 应用监控 |

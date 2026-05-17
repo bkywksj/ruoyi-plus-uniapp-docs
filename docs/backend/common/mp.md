@@ -38,8 +38,8 @@ ruoyi-common-mp
 |------|------|------|
 | WxJava (weixin-java-mp) | 4.7.6.B | 微信公众号SDK |
 | Caffeine | 3.x | 本地缓存 |
-| Redisson | 3.51.0 | 分布式锁和缓存 |
-| Spring Boot | 3.5.6 | 自动配置支持 |
+| Redisson | 3.52.0 | 分布式锁和缓存 |
+| Spring Boot | 3.5.12 | 自动配置支持 |
 
 ## 依赖说明
 

@@ -10,9 +10,9 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 |------|------|------|
 | Java | 17+ | 支持 JDK 17 及以上版本 |
 | Spring Boot | 3.5.x | 核心框架 |
-| MyBatis-Plus | 3.5.14 | ORM 框架 |
+| MyBatis-Plus | 3.5.16 | ORM 框架 |
 | Sa-Token | 1.44.0 | 认证授权框架 |
-| Redisson | 3.51.0 | Redis 客户端 |
+| Redisson | 3.52.0 | Redis 客户端 |
 | Hutool | 5.8.40 | 工具类库 |
 | Warm-Flow | 1.8.1 | 工作流引擎 |
 | SnailJob | 1.8.0 | 分布式任务调度 |
@@ -289,8 +289,8 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 
 | 模块 | 说明 | 技术栈 |
 |------|------|--------|
-| `ruoyi-common-mybatis` | ORM 框架 | MyBatis-Plus 3.5.14 |
-| `ruoyi-common-redis` | 缓存服务 | Redisson 3.51.0 |
+| `ruoyi-common-mybatis` | ORM 框架 | MyBatis-Plus 3.5.16 |
+| `ruoyi-common-redis` | 缓存服务 | Redisson 3.52.0 |
 | `ruoyi-common-oss` | 对象存储 | AWS S3 兼容协议 |
 
 #### 安全认证模块

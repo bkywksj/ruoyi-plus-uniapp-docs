@@ -131,10 +131,10 @@ plus.ruoyi.system.core/
 ### 核心技术栈
 
 **框架集成:**
-- **Spring Boot 3.5.6** - 应用框架和依赖注入
-- **MyBatis-Plus 3.5.14** - ORM 框架,提供强大的 CRUD 和查询构造器
+- **Spring Boot 3.5.12** - 应用框架和依赖注入
+- **MyBatis-Plus 3.5.16** - ORM 框架,提供强大的 CRUD 和查询构造器
 - **Sa-Token 1.44.0** - 权限认证框架,支持多端登录和权限控制
-- **Redisson 3.51.0** - Redis 客户端,提供分布式锁和缓存支持
+- **Redisson 3.52.0** - Redis 客户端,提供分布式锁和缓存支持
 - **Hutool 5.8.40** - Java 工具库,提供丰富的工具方法
 
 **数据模型:**

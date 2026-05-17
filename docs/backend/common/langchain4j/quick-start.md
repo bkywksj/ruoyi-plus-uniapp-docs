@@ -21,7 +21,7 @@ LangChain4j 是一个用于开发由大型语言模型(LLM)驱动的应用程序
 | 项目 | 要求 | 说明 |
 |------|------|------|
 | Java | 17+ | 项目基于 Java 17 构建 |
-| Spring Boot | 3.5.6+ | 框架版本 |
+| Spring Boot | 3.5.12+ | 框架版本 |
 | Redis | 任意版本 | 用于存储对话历史（可选） |
 | API Key | 至少一个 | DeepSeek/OpenAI/通义千问等 |
 

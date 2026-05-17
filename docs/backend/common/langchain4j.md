@@ -31,8 +31,8 @@
 | 技术 | 版本 | 说明 |
 |------|------|------|
 | LangChain4j | 0.35.0 | LLM应用开发框架 |
-| Spring Boot | 3.5.6 | 自动配置支持 |
-| Redisson | 3.51.0 | Redis客户端 |
+| Spring Boot | 3.5.12 | 自动配置支持 |
+| Redisson | 3.52.0 | Redis客户端 |
 
 ## 架构设计
 

@@ -241,11 +241,11 @@ ruoyi-admin 模块依赖的核心技术栈版本：
 | 技术 | 版本 | 说明 |
 |------|------|------|
 | Java | 17+ | 支持虚拟线程（JDK21原生支持） |
-| Spring Boot | 3.5.6 | 核心框架 |
+| Spring Boot | 3.5.12 | 核心框架 |
 | Undertow | - | 内嵌Web容器（高性能） |
-| MyBatis-Plus | 3.5.14 | ORM框架 |
+| MyBatis-Plus | 3.5.16 | ORM框架 |
 | Sa-Token | 1.44.0 | 认证授权框架 |
-| Redisson | 3.51.0 | Redis客户端 |
+| Redisson | 3.52.0 | Redis客户端 |
 | Warm-Flow | 1.8.1 | 工作流引擎 |
 
 ## 最佳实践

@@ -237,7 +237,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 | Java | 17 | JDK版本要求 |
 | Spring Boot | 3.5.8 | 核心框架版本 |
 | MyBatis | 3.5.16 | 持久层框架 |
-| MyBatis-Plus | 3.5.14 | MyBatis增强 |
+| MyBatis-Plus | 3.5.16 | MyBatis增强 |
 
 ### 数据处理组件版本
 
@@ -856,7 +856,7 @@ module-b → module-core
 │  │   ├── Jakarta EE 10                                                     │
 │  │   └── Tomcat/Undertow 嵌入式服务器                                       │
 │  │                                                                         │
-│  ├── MyBatis-Plus 3.5.14                                                   │
+│  ├── MyBatis-Plus 3.5.16                                                   │
 │  │   ├── MyBatis 3.5.16                                                    │
 │  │   └── 支持 MySQL 8.x / PostgreSQL 15+ / Oracle 19+                      │
 │  │                                                                         │

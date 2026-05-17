@@ -18,7 +18,7 @@ RuoYi-Plus-UniApp 采用 Redis + Caffeine 二级缓存架构，基于 Redisson �
 | 组件 | 版本 | 用途 |
 |------|------|------|
 | Redis | 7.x | 远程缓存服务器 |
-| Redisson | 3.51.0 | Redis Java客户端 |
+| Redisson | 3.52.0 | Redis Java客户端 |
 | Caffeine | 3.x | 本地缓存库 |
 | Spring Cache | 3.x | 缓存抽象层 |
 
@@ -49,7 +49,7 @@ RuoYi-Plus-UniApp 采用 Redis + Caffeine 二级缓存架构，基于 Redisson �
 <dependency>
     <groupId>org.redisson</groupId>
     <artifactId>redisson-spring-boot-starter</artifactId>
-    <version>3.51.0</version>
+    <version>3.52.0</version>
 </dependency>
 ```
 

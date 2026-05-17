@@ -319,7 +319,7 @@ file.upload.size.exceed.limit=The uploaded file size exceeds the limit! Maximum 
 
 ### 异常自动转换
 
-异常可以自动转换为统一的响应格式 R&lt;T&gt;。
+异常可以自动转换为统一的响应格式 `R<T>`。
 
 ```java
 @ControllerAdvice
