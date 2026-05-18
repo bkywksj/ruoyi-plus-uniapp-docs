@@ -62,7 +62,7 @@ export default defineConfig({
             "url": "https://ruoyi.plus",
             "offers": {
                 "@type": "Offer",
-                "price": "2218",
+                "price": "2258",
                 "priceCurrency": "CNY"
             }
         })],

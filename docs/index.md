@@ -178,7 +178,7 @@ highlights:
 
 <APricingCard
   plan="个人版"
-  :price="2218"
+  :price="2258"
   description="适合个人开发者"
   :features="[
     '📦 完整源码交付',
