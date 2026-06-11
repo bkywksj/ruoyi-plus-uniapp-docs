@@ -244,11 +244,11 @@ highlights:
 - ⚠️ **使用限制**：仅禁止框架二次销售和扩散传播
 :::
 
-## 🎯 更多产品
+## 🎯 产品矩阵
 
 抓蛙师出品，覆盖全栈开发、AI 效率工具、桌面应用三大场景
 
-<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 30px 0;">
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin: 30px 0;">
 
 <a href="https://ai-workstation.ruoyi.plus/" target="_blank" rel="noopener noreferrer" class="product-preview-card">
   <div style="font-size: 40px; margin-bottom: 12px;">🤖</div>
@@ -269,6 +269,34 @@ highlights:
   <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">灵动桌面框架</h4>
   <p style="margin: 0 0 8px; font-size: 13px; color: #10B981; font-weight: 500;">React 19 + Rust + TypeScript · AI驱动跨平台</p>
   <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">Tauri 2.x | 33个AI技能 | 三引擎协同</p>
+</a>
+
+<a href="https://sigil.ruoyi.plus" target="_blank" rel="noopener noreferrer" class="product-preview-card">
+  <div style="font-size: 40px; margin-bottom: 12px;">🔐</div>
+  <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">Sigil</h4>
+  <p style="margin: 0 0 8px; font-size: 13px; color: #10B981; font-weight: 500;">AI 凭据金库 · 让 AI 拿不到你的密钥</p>
+  <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">AES-256 加密 | MCP 代理 | 审计 + 范围控制</p>
+</a>
+
+<a href="https://reeve.ruoyi.plus" target="_blank" rel="noopener noreferrer" class="product-preview-card">
+  <div style="font-size: 40px; margin-bottom: 12px;">🛡️</div>
+  <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">Reeve</h4>
+  <p style="margin: 0 0 8px; font-size: 13px; color: #0EA5E9; font-weight: 500;">服务器庄园总管 · 你持钥 AI 借道</p>
+  <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">SSH 管理 | MCP 受控接入 | 四重关卡 + 审计</p>
+</a>
+
+<a href="https://agileshot.ruoyi.plus" target="_blank" rel="noopener noreferrer" class="product-preview-card">
+  <div style="font-size: 40px; margin-bottom: 12px;">📸</div>
+  <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">AgileShot</h4>
+  <p style="margin: 0 0 8px; font-size: 13px; color: #F59E0B; font-weight: 500;">AI 时代的桌面截图与标注工具</p>
+  <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">11 种标注 | AI OCR/翻译 | MCP 扩展</p>
+</a>
+
+<a href="https://kb.ruoyi.plus/" target="_blank" rel="noopener noreferrer" class="product-preview-card">
+  <div style="font-size: 40px; margin-bottom: 12px;">📚</div>
+  <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">智码本地知识库</h4>
+  <p style="margin: 0 0 8px; font-size: 13px; color: #8B5CF6; font-weight: 500;">全文搜索 · 双链 · 知识图谱 · MCP</p>
+  <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">12 工具 MCP | 双链图谱 | 多端同步</p>
 </a>
 
 </div>

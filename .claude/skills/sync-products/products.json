@@ -36,12 +36,12 @@
       "id": "ai-workstation",
       "name": "AI 全能工作站",
       "icon": "🤖",
-      "slogan": "一句话搞定一切 · 44个专业模块 · 730+ AI技能",
+      "slogan": "一句话搞定一切 · 61个专业模块 · 1246 AI技能",
       "description": "覆盖内容创作、办公效率、多媒体处理、商业财务、设计策略、数据分析、运营协作、效率工具八大领域。用自然语言描述需求，两级智能路由自动识别意图，跨工具协作完成复杂任务。",
       "theme": "blue",
       "badge": "42集教程",
       "highlights": [
-        "八大领域44个模块：封面设计、视频制作、PPT/Excel/Word、图片处理、音频合成等",
+        "八大领域61个模块：封面设计、视频制作、PPT/Excel/Word、图片处理、音频合成等",
         "智能路由系统：自然语言交互，自动匹配最佳工具完成任务",
         "多模型协同：Claude + Codex + Gemini 三引擎协作、交叉审查",
         "技能工厂：内置引擎持续生成新技能，工作站能力不断增长",
@@ -54,7 +54,7 @@
       ],
       "preview": {
         "color": "#0B6EF0",
-        "tagline": "一句话搞定一切 · 44个模块 · 730+ AI技能",
+        "tagline": "一句话搞定一切 · 61个模块 · 1246 AI技能",
         "summary": "八大领域全覆盖 | 智能路由 | 42集视频教程"
       },
       "site": {
@@ -123,6 +123,136 @@
       },
       "site": {
         "docsPath": "E:/my/桌面软件tauri/tauri-docs",
+        "configPath": "docs/.vitepress/config.ts",
+        "themePath": "docs/.vitepress/theme",
+        "indexPath": "docs/index.md",
+        "productsPath": "docs/products.md",
+        "stylePath": "docs/.vitepress/theme/style.css"
+      }
+    },
+    {
+      "id": "sigil",
+      "name": "Sigil",
+      "icon": "🔐",
+      "slogan": "AI 凭据金库 · MCP 协议代理 —— AI 用得到、看不到明文",
+      "description": "基于 Tauri 2 的开发者凭据保险库。系统密钥环 + AES-256-GCM + SQLCipher 整库加密，AI 通过 MCP 协议调用能力，凭据只在本地使用、结果脱敏返回，永不进入 AI 上下文。",
+      "theme": "green",
+      "badge": "",
+      "highlights": [
+        "加密金库：系统密钥环 + AES-256-GCM + SQLCipher 整库加密，密钥永不离手",
+        "MCP 标准协议：Claude Code / Cursor / Cline / Zed 等客户端原生接入",
+        "内置能力 + 可扩展：Git push、Gitee/GitHub/GitCode 仓库操作、HTTP API 代理、数据库查询，UI 配置无需编程",
+        "审计日志 + 范围控制：每次凭据访问留痕可追溯，每个凭据限定可用能力",
+        "本地优先：所有数据全在本机 SQLite，AI 拿不到任何明文凭据"
+      ],
+      "actions": [
+        { "text": "访问官网", "link": "https://sigil.ruoyi.plus" }
+      ],
+      "preview": {
+        "color": "#10B981",
+        "tagline": "AI 凭据金库 · 让 AI 拿不到你的密钥",
+        "summary": "AES-256 加密 | MCP 代理 | 审计 + 范围控制"
+      },
+      "site": {
+        "docsPath": "E:/my/桌面软件tauri/sigil-docs",
+        "configPath": "docs/.vitepress/config.ts",
+        "themePath": "docs/.vitepress/theme",
+        "indexPath": "docs/index.md",
+        "productsPath": "docs/products.md",
+        "stylePath": "docs/.vitepress/theme/style.css"
+      }
+    },
+    {
+      "id": "reeve",
+      "name": "Reeve",
+      "icon": "🛡️",
+      "slogan": "服务器庄园总管 · SSH 管理 + 受控 AI 接入（MCP）",
+      "description": "基于 Tauri 2 的 SSH 服务器管理 + 受控 AI 接入桌面工具。你持钥、AI 借道：AI 通过 MCP 操作服务器，只看到服务器别名，拿不到账号密码私钥；四重关卡 + 全量审计，MCP 仅监听 127.0.0.1。",
+      "theme": "blue",
+      "badge": "",
+      "highlights": [
+        "一流 SSH 客户端：多标签终端 · 服务器清单 · SFTP · 命令片段，可替代 Xshell / Termius / FinalShell",
+        "AI 安全跳板：Claude Code / Codex / claude.ai 通过 MCP 操作服务器，只见别名不见凭据",
+        "四重安全关卡：全局开关 → 每服务器分级策略 → 危险命令黑名单 → 全量审计",
+        "凭据零泄露：AES-256-GCM + 系统钥匙串，MCP 仅监听 127.0.0.1 绝不公网",
+        "越用越懂你：以项目目录沉淀经验库 / Runbook / 可配置技能"
+      ],
+      "actions": [
+        { "text": "访问官网", "link": "https://reeve.ruoyi.plus" }
+      ],
+      "preview": {
+        "color": "#0EA5E9",
+        "tagline": "服务器庄园总管 · 你持钥 AI 借道",
+        "summary": "SSH 管理 | MCP 受控接入 | 四重关卡 + 审计"
+      },
+      "site": {
+        "docsPath": "E:/my/桌面软件tauri/reeve-docs",
+        "configPath": "docs/.vitepress/config.ts",
+        "themePath": "docs/.vitepress/theme",
+        "indexPath": "docs/index.md",
+        "productsPath": "docs/products.md",
+        "stylePath": "docs/.vitepress/theme/style.css"
+      }
+    },
+    {
+      "id": "agileshot",
+      "name": "AgileShot",
+      "icon": "📸",
+      "slogan": "AI 时代的桌面截图与标注工具",
+      "description": "基于 Qt 6 + C++20 自研 Agile-Qt 框架的桌面截图标注工具。整合截图捕获、11 种标注、AI 智能（OCR/翻译）、钉图贴图、录屏 GIF、MCP Server 扩展，一体化。",
+      "theme": "orange",
+      "badge": "11 种标注",
+      "highlights": [
+        "11 种标注工具开箱即用：矩形/椭圆/箭头/文字/马赛克/模糊/计数/高亮/图章，撤销重做完整",
+        "AI 智能标注：一键 OCR、翻译、代码解释，截图即问 AI",
+        "MCP Server：让 Claude Desktop / Cursor 直接在屏幕上工作（9 个 MCP 工具）",
+        "钉图 / 贴图：鼠标穿透、多张同存、独立缩放",
+        "录屏 + GIF + 取色器 + 历史全文搜索（SQLite 本地存储）"
+      ],
+      "actions": [
+        { "text": "访问官网", "link": "https://agileshot.ruoyi.plus" },
+        { "text": "视频介绍", "link": "https://www.bilibili.com/video/BV1uQ7k6nEvq" }
+      ],
+      "preview": {
+        "color": "#F59E0B",
+        "tagline": "AI 时代的桌面截图与标注工具",
+        "summary": "11 种标注 | AI OCR/翻译 | MCP 扩展"
+      },
+      "site": {
+        "docsPath": "",
+        "configPath": "docs/.vitepress/config.ts",
+        "themePath": "docs/.vitepress/theme",
+        "indexPath": "docs/index.md",
+        "productsPath": "docs/products.md",
+        "stylePath": "docs/.vitepress/theme/style.css"
+      }
+    },
+    {
+      "id": "knowledge-base",
+      "name": "智码本地知识库",
+      "icon": "📚",
+      "slogan": "全文搜索 · 双向链接 · 知识图谱 · 内置 MCP Server",
+      "description": "基于 Tauri 2 的本地优先知识库。Markdown 笔记 + 双向链接 + 知识图谱，PDF/Word/图片/视频全格式，内置 MCP Server 让 AI 直接读写知识库，所有数据全在本机 SQLite。",
+      "theme": "purple",
+      "badge": "",
+      "highlights": [
+        "全文搜索 · 双向链接 · 知识图谱：知识自由编织、可视化追溯",
+        "全格式支持：PDF 标注、Word 导入、图片/视频/音频附件",
+        "内置 MCP Server（12 工具）：一键接入 Claude Desktop / Cursor / Cherry Studio",
+        "AI 对话：笔记内一键召唤 AI 结合上下文回答",
+        "多端同步 · 数据自主：WebDAV / 坚果云 / NAS，全在本机 SQLite"
+      ],
+      "actions": [
+        { "text": "访问官网", "link": "https://kb.ruoyi.plus/" },
+        { "text": "视频讲解", "link": "https://www.bilibili.com/video/BV1xvosBREbr" }
+      ],
+      "preview": {
+        "color": "#8B5CF6",
+        "tagline": "全文搜索 · 双链 · 知识图谱 · MCP",
+        "summary": "12 工具 MCP | 双链图谱 | 多端同步"
+      },
+      "site": {
+        "docsPath": "E:/my/桌面软件tauri/knowledge-base-docs",
         "configPath": "docs/.vitepress/config.ts",
         "themePath": "docs/.vitepress/theme",
         "indexPath": "docs/index.md",

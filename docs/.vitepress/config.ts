@@ -96,7 +96,7 @@ export default defineConfig({
             { text: '特性', link: '/changelog' },
             { text: '视频', link: '/video' },
             { text: '演示', link: '/demo' },
-            { text: '更多产品', link: '/products' }
+            { text: '产品矩阵', link: '/products' }
         ],
 
         sidebar: {
