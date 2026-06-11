@@ -16,7 +16,10 @@
         "80+企业信赖，3800+次提交，持续迭代优化"
       ],
       "actions": [
-        { "text": "访问官网", "link": "https://ruoyi.plus/" }
+        {
+          "text": "访问官网",
+          "link": "https://ruoyi.plus/"
+        }
       ],
       "preview": {
         "color": "#0B6EF0",
@@ -30,7 +33,8 @@
         "indexPath": "docs/index.md",
         "productsPath": "docs/products.md",
         "stylePath": "docs/.vitepress/theme/style.css"
-      }
+      },
+      "logo": "ruoyi-plus-uniapp.png"
     },
     {
       "id": "ai-workstation",
@@ -48,9 +52,18 @@
         "邀请好友注册，试用天数 +1，持续体验"
       ],
       "actions": [
-        { "text": "访问官网", "link": "https://ai-workstation.ruoyi.plus/" },
-        { "text": "视频教程", "link": "https://www.bilibili.com/video/BV17cXNBkEEV" },
-        { "text": "MCP 试用", "link": "https://ai-workstation-mcp.agilefr.com/" }
+        {
+          "text": "访问官网",
+          "link": "https://ai-workstation.ruoyi.plus/"
+        },
+        {
+          "text": "视频教程",
+          "link": "https://www.bilibili.com/video/BV17cXNBkEEV"
+        },
+        {
+          "text": "MCP 试用",
+          "link": "https://ai-workstation-mcp.agilefr.com/"
+        }
       ],
       "preview": {
         "color": "#0B6EF0",
@@ -64,7 +77,8 @@
         "indexPath": "docs/index.md",
         "productsPath": "docs/products.md",
         "stylePath": "docs/.vitepress/theme/style.css"
-      }
+      },
+      "logo": "ai-workstation.svg"
     },
     {
       "id": "aicoder",
@@ -82,7 +96,10 @@
         "MCP Server可视化管理：自动检测AI工具、一键切换"
       ],
       "actions": [
-        { "text": "访问官网", "link": "https://aicoder.ruoyi.plus/" }
+        {
+          "text": "访问官网",
+          "link": "https://aicoder.ruoyi.plus/"
+        }
       ],
       "preview": {
         "color": "#8B5CF6",
@@ -96,7 +113,8 @@
         "indexPath": "docs/index.md",
         "productsPath": "docs/products.md",
         "stylePath": "docs/.vitepress/theme/style.css"
-      }
+      },
+      "logo": "aicoder.png"
     },
     {
       "id": "tauri-desktop",
@@ -114,7 +132,10 @@
         "多平台打包：Windows (NSIS/MSI)、macOS (DMG)、Linux (DEB/AppImage)"
       ],
       "actions": [
-        { "text": "访问官网", "link": "https://tauri.ruoyi.plus/" }
+        {
+          "text": "访问官网",
+          "link": "https://tauri.ruoyi.plus/"
+        }
       ],
       "preview": {
         "color": "#10B981",
@@ -128,7 +149,8 @@
         "indexPath": "docs/index.md",
         "productsPath": "docs/products.md",
         "stylePath": "docs/.vitepress/theme/style.css"
-      }
+      },
+      "logo": "tauri-desktop.svg"
     },
     {
       "id": "sigil",
@@ -146,7 +168,10 @@
         "本地优先：所有数据全在本机 SQLite，AI 拿不到任何明文凭据"
       ],
       "actions": [
-        { "text": "访问官网", "link": "https://sigil.ruoyi.plus" }
+        {
+          "text": "访问官网",
+          "link": "https://sigil.ruoyi.plus"
+        }
       ],
       "preview": {
         "color": "#10B981",
@@ -160,7 +185,8 @@
         "indexPath": "docs/index.md",
         "productsPath": "docs/products.md",
         "stylePath": "docs/.vitepress/theme/style.css"
-      }
+      },
+      "logo": "sigil.svg"
     },
     {
       "id": "reeve",
@@ -178,7 +204,10 @@
         "越用越懂你：以项目目录沉淀经验库 / Runbook / 可配置技能"
       ],
       "actions": [
-        { "text": "访问官网", "link": "https://reeve.ruoyi.plus" }
+        {
+          "text": "访问官网",
+          "link": "https://reeve.ruoyi.plus"
+        }
       ],
       "preview": {
         "color": "#0EA5E9",
@@ -192,7 +221,8 @@
         "indexPath": "docs/index.md",
         "productsPath": "docs/products.md",
         "stylePath": "docs/.vitepress/theme/style.css"
-      }
+      },
+      "logo": "reeve.png"
     },
     {
       "id": "agileshot",
@@ -210,8 +240,14 @@
         "录屏 + GIF + 取色器 + 历史全文搜索（SQLite 本地存储）"
       ],
       "actions": [
-        { "text": "访问官网", "link": "https://agileshot.ruoyi.plus" },
-        { "text": "视频介绍", "link": "https://www.bilibili.com/video/BV1uQ7k6nEvq" }
+        {
+          "text": "访问官网",
+          "link": "https://agileshot.ruoyi.plus"
+        },
+        {
+          "text": "视频介绍",
+          "link": "https://www.bilibili.com/video/BV1uQ7k6nEvq"
+        }
       ],
       "preview": {
         "color": "#F59E0B",
@@ -225,7 +261,8 @@
         "indexPath": "docs/index.md",
         "productsPath": "docs/products.md",
         "stylePath": "docs/.vitepress/theme/style.css"
-      }
+      },
+      "logo": "agileshot.png"
     },
     {
       "id": "knowledge-base",
@@ -243,8 +280,14 @@
         "多端同步 · 数据自主：WebDAV / 坚果云 / NAS，全在本机 SQLite"
       ],
       "actions": [
-        { "text": "访问官网", "link": "https://kb.ruoyi.plus/" },
-        { "text": "视频讲解", "link": "https://www.bilibili.com/video/BV1xvosBREbr" }
+        {
+          "text": "访问官网",
+          "link": "https://kb.ruoyi.plus/"
+        },
+        {
+          "text": "视频讲解",
+          "link": "https://www.bilibili.com/video/BV1xvosBREbr"
+        }
       ],
       "preview": {
         "color": "#8B5CF6",
@@ -258,7 +301,8 @@
         "indexPath": "docs/index.md",
         "productsPath": "docs/products.md",
         "stylePath": "docs/.vitepress/theme/style.css"
-      }
+      },
+      "logo": "knowledge-base.png"
     }
   ]
 }

@@ -4,7 +4,8 @@
     <div class="product-left">
       <div class="product-left-top">
         <div class="product-icon-wrapper">
-          <span class="product-icon">{{ icon }}</span>
+          <img v-if="logo" :src="logo" :alt="name" class="product-logo-img" />
+          <span v-else class="product-icon">{{ icon }}</span>
         </div>
         <div>
           <div style="display: flex; align-items: center; gap: 10px;">
@@ -42,7 +43,8 @@
 
 <script setup>
 defineProps({
-  icon: { type: String, required: true },
+  icon: { type: String, default: '' },
+  logo: { type: String, default: '' },
   name: { type: String, required: true },
   slogan: { type: String, default: '' },
   description: { type: String, default: '' },
@@ -155,6 +157,13 @@ defineProps({
 .product-icon {
   font-size: 28px;
   line-height: 1;
+}
+
+/* 真实产品 logo（替代 emoji 图标） */
+.product-logo-img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
 }
 
 /* 名称 */

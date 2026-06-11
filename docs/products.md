@@ -8,6 +8,7 @@
 
 <AProductCard
   icon="🤖"
+  logo="/products/ai-workstation.svg"
   name="AI 全能工作站"
   slogan="一句话搞定一切 · 61个专业模块 · 1246 AI技能"
   description="覆盖内容创作、办公效率、多媒体处理、商业财务、设计策略、数据分析、运营协作、效率工具八大领域。用自然语言描述需求，两级智能路由自动识别意图，跨工具协作完成复杂任务。"
@@ -29,6 +30,7 @@
 
 <AProductCard
   icon="⚡"
+  logo="/products/aicoder.png"
   name="智码 AiCoder"
   slogan="给 Claude Code、Codex、Gemini CLI 一个统一的家"
   description="内置真实PTY伪终端，CLI原生运行，不拦截、不修改、不转发任何API请求，零额外开销。像浏览器一样管理AI对话，按项目分组、收藏标记、颜色区分。"
@@ -48,6 +50,7 @@
 
 <AProductCard
   icon="🖥️"
+  logo="/products/tauri-desktop.svg"
   name="灵动桌面框架"
   slogan="React 19 + Rust + TypeScript · AI驱动 · 轻量安全 · 高性能跨平台"
   description="基于Tauri 2.x的企业级桌面应用开发框架，内置33个AI专业技能，Claude + Codex + Gemini三引擎协同。双进程架构，WebView前端与Rust后端通过IPC高效通信。"
@@ -66,6 +69,7 @@
 
 <AProductCard
   icon="🔐"
+  logo="/products/sigil.svg"
   name="Sigil"
   slogan="AI 凭据金库 · MCP 协议代理 —— AI 用得到、看不到明文"
   description="基于 Tauri 2 的开发者凭据保险库。系统密钥环 + AES-256-GCM + SQLCipher 整库加密，AI 通过 MCP 协议调用能力，凭据只在本地使用、结果脱敏返回，永不进入 AI 上下文。"
@@ -84,6 +88,7 @@
 
 <AProductCard
   icon="🛡️"
+  logo="/products/reeve.png"
   name="Reeve"
   slogan="服务器庄园总管 · SSH 管理 + 受控 AI 接入（MCP）"
   description="基于 Tauri 2 的 SSH 服务器管理 + 受控 AI 接入桌面工具。你持钥、AI 借道：AI 通过 MCP 操作服务器，只看到服务器别名，拿不到账号密码私钥；四重关卡 + 全量审计，MCP 仅监听 127.0.0.1。"
@@ -102,6 +107,7 @@
 
 <AProductCard
   icon="📸"
+  logo="/products/agileshot.png"
   name="AgileShot"
   slogan="AI 时代的桌面截图与标注工具"
   description="基于 Qt 6 + C++20 自研 Agile-Qt 框架的桌面截图标注工具。整合截图捕获、11 种标注、AI 智能（OCR/翻译）、钉图贴图、录屏 GIF、MCP Server 扩展，一体化。"
@@ -122,6 +128,7 @@
 
 <AProductCard
   icon="📚"
+  logo="/products/knowledge-base.png"
   name="智码本地知识库"
   slogan="全文搜索 · 双向链接 · 知识图谱 · 内置 MCP Server"
   description="基于 Tauri 2 的本地优先知识库。Markdown 笔记 + 双向链接 + 知识图谱，PDF/Word/图片/视频全格式，内置 MCP Server 让 AI 直接读写知识库，所有数据全在本机 SQLite。"
