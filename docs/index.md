@@ -279,6 +279,7 @@ highlights:
 
 <div class="trusted-companies">
   <div class="company-grid">
+    <span class="company-tag">广东移动</span>
     <span class="company-tag">湛江移动公司</span>
     <span class="company-tag">中运交投（深圳）投资集团有限公司</span>
     <span class="company-tag">淮沪煤电有限公司田集发电厂</span>
@@ -347,6 +348,26 @@ highlights:
     <span class="company-tag">武汉顺为起点软件技术咨询有限公司</span>
     <span class="company-tag">易必佩（温州）技术有限公司</span>
     <span class="company-tag">广州享元数字科技有限公司</span>
+    <span class="company-tag">陕西嘉澜电子科技有限公司</span>
+    <span class="company-tag">安升重工有限公司</span>
+    <span class="company-tag">陕西智信物联信息科技有限公司</span>
+    <span class="company-tag">浙江甬讯通信息科技有限公司</span>
+    <span class="company-tag">贵州先知科技有限公司</span>
+    <span class="company-tag">广西致浩信息技术有限公司</span>
+    <span class="company-tag">重庆康脉信息科技有限公司</span>
+    <span class="company-tag">宁波国际物流发展股份有限公司</span>
+    <span class="company-tag">物产中大（浙江）数字贸易科技有限公司</span>
+    <span class="company-tag">山东图钉软件有限公司</span>
+    <span class="company-tag">皓酌工程咨询服务（上海）有限公司</span>
+    <span class="company-tag">娄底华菱云创数智科技有限公司</span>
+    <span class="company-tag">深圳市够威体育科技有限公司</span>
+    <span class="company-tag">武汉珞珈新图科技有限公司</span>
+    <span class="company-tag">南京云巍互联网络科技有限公司</span>
+    <span class="company-tag">杭州循元智能科技有限公司</span>
+    <span class="company-tag">道明光学股份有限公司</span>
+    <span class="company-tag">山东东八区信息科技有限公司</span>
+    <span class="company-tag">步阳集团有限公司</span>
+    <span class="company-tag">宜昌市西陵区星露软件开发工作室</span>
   </div>
 </div>
 
