@@ -293,8 +293,8 @@ highlights:
 </a>
 
 <a href="https://kb.ruoyi.plus/" target="_blank" rel="noopener noreferrer" class="product-preview-card">
-  <img src="/products/knowledge-base.png" alt="智码本地知识库" style="width: 48px; height: 48px; object-fit: contain; margin-bottom: 12px;" />
-  <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">智码本地知识库</h4>
+  <img src="/products/knowledge-base.png" alt="本地知识库" style="width: 48px; height: 48px; object-fit: contain; margin-bottom: 12px;" />
+  <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">本地知识库</h4>
   <p style="margin: 0 0 8px; font-size: 13px; color: #8B5CF6; font-weight: 500;">全文搜索 · 双链 · 知识图谱 · MCP</p>
   <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">12 工具 MCP | 双链图谱 | 多端同步</p>
 </a>

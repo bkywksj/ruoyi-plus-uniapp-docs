@@ -129,7 +129,7 @@
 <AProductCard
   icon="📚"
   logo="/products/knowledge-base.png"
-  name="智码本地知识库"
+  name="本地知识库"
   slogan="全文搜索 · 双向链接 · 知识图谱 · 内置 MCP Server"
   description="基于 Tauri 2 的本地优先知识库。Markdown 笔记 + 双向链接 + 知识图谱，PDF/Word/图片/视频全格式，内置 MCP Server 让 AI 直接读写知识库，所有数据全在本机 SQLite。"
   theme="purple"
