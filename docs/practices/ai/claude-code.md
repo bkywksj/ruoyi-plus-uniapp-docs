@@ -16,8 +16,8 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - [x] 续写提示已保留，如需扩展可追加更多技能场景或案例
 
 ## 核心特性
-- 技能体系：`.claude/skills` 目录现有 54 个技能目录，覆盖架构、后端、前端、移动端、APP原生、AI、协作、工程规范、部署运维、中间件集成与物联网
-- 命令体系：`.claude/commands` 提供 13 个命令文件，`/init-docs` 内含两种模式，合计 14 个使用入口（不含 local 相关的上游同步命令，这些命令仅在源码项目中使用）
+- 技能体系：`.claude/skills` 目录现有 59 个技能目录，覆盖架构、后端、前端、移动端、APP原生、AI、协作、计划、测试验收、工程规范、部署运维、交付、中间件集成与物联网
+- 命令体系：`.claude/commands` 提供 18 个命令文件，`/init-docs` 内含两种模式，合计 19 个使用入口（不含 local 相关的上游同步命令，这些命令仅在源码项目中使用）
 - 钩子体系：`.claude/hooks` 提供 3 个 JavaScript 钩子，分别负责技能强制评估、工具安全拦截与结束收尾
 - 配置入口：`.claude/settings.json` 统一绑定 `UserPromptSubmit`、`PreToolUse`（5s超时）、`Stop`（10s超时）三类触发点
 - 规则底座：`CLAUDE.md` 与 `AGENTS.md` 约束语言、架构、流程、命令与文档生成边界
@@ -36,6 +36,16 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 规定文档生成边界，文档必须输出到 `docs/` 目录
 - 给出标准代码模板示例，明确 Entity、BO、VO、Controller、DAO 的正确写法
 - 列出快捷命令入口与参考代码路径，便于快速进入正确流程
+- 约定多会话并发自动避让协议，避免多窗口同改一仓库时互相覆盖
+
+### 多会话并发自动避让协议（L1/L2/L3 三层触发）
+用户可能同时开多个 Codex / Claude Code 会话操作同一仓库。本会话须自动感知并避让其他会话的工作，默认静默执行、不打扰用户。设计原则：宁可绕路，绝不覆盖；宁可静默放弃，绝不擅自 stash / reset / checkout。
+
+- **L1 启动时探测**（首次响应前仅一次）：执行 `git status -s` 与 `git branch --show-current`，把「未提交文件清单」与「当前分支」记入会话上下文复用、不向用户复述；清单非空且与本次任务无关则视为「他者占用区」，本会话不修改、不 stash、不 checkout、不 reset 这些文件。
+- **L2 修改文件前**（按需触发，单文件粒度）：执行 `git log -1 --format="%ar|%s" <file>` 判定——距今 ≥ 15 分钟自由修改；不足 15 分钟且文件不在 L1 未提交清单也可自由修改；不足 15 分钟且在清单内但可绕开则静默换路径绕开；不足 15 分钟且在清单内又必须改同文件时，才唯一一次打扰用户确认。
+- **L3 提交前**（强校验必做）：`git commit` 前执行 `git diff --cached --name-only` 对照本会话自维护的改动清单，越界文件静默 `git restore --staged <file>`，逐个 `git add <具体文件>`、禁止 `git add -A`/`git add .`，commit message 末尾可附 `[scope: <模块>]` 标识本次会话范围。
+- **跨会话操作禁令**（不询问、直接禁止）：`git stash`/`stash pop`、`git reset --hard`、`git checkout <file>`（丢弃改动）、`git checkout <branch>`（除非用户明确指示）、`git add -A`/`git add .`、`git clean -fd`、kill 端口或进程、删除非本会话的 `docs/tasks/active/` 任务文档。
+- **高并发升级**：用户明确「并行开发」或预计 30+ 分钟同时改不同模块时，主动建议用 `git worktree` 隔离（3-5 个并行最佳，5+ 会撞 API 速率限制）；但 worktree 不能隔离数据库、Redis、端口，同时跑 dev server 仍需手动错开端口或 profile。
 
 ### 双配置协同流程
 - `CLAUDE.md` 作为每次对话的底座规则，保证一致的语言与架构语义
@@ -61,14 +71,15 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 技能文件包含 YAML 头部，记录 `name`、`description`、触发场景与触发词
 - 强制技能评估流程由钩子注入，未匹配技能时需明确说明
 
-### 分类总览（54 个技能）
+### 分类总览（59 个技能）
 - 业务与架构：crud-development、api-development、architecture-design、workflow-engine
 - 后端能力：backend-annotations、data-permission、error-handler、security-guard、multi-tenant、json-serialization、test-development、log-audit
 - 前端与移动：ui-pc、ui-mobile、ui-design-mobile、store-pc、store-mobile、uniapp-platform、i18n-development
 - APP原生：app-adapter
 - 中间件与集成：redis-cache、scheduled-jobs、realtime-communication、notification-system、message-queue、iot-mqtt、third-party-api、social-login
 - 工程与质量：code-patterns、git-workflow、project-navigator、utils-toolkit、performance-doctor、icon-management
-- 部署运维：deployment-guide、env-config
+- 计划与测试验收：writing-plans、e2e-test-pc、e2e-test-mobile
+- 部署与交付：deployment-guide、env-config、delivery-sync、module-strip
 - AI 与协作：ai-langchain4j、collaborating-with-codex、collaborating-with-gemini、task-tracker
 - 业务集成：payment-integration、wechat-integration、file-oss-management、media-processing
 - 诊断与规划：bug-detective、brainstorm、tech-decision、html-to-code
@@ -537,6 +548,12 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 
 定位
 - 当需要进行 Git 版本控制操作时自动使用此 Skill。
+
+远程操作优先用 Sigil（检测到才启用，没装则无感回退）
+- 需要远程认证的操作（`push` / `clone` / 推送后远端核对）本会话检测到 Sigil 就优先走它：凭据由保险库注入、明文不外泄、不落 `.git/config`。
+- 判断方式：本会话能 `ToolSearch` 到 `mcp__sigil__git_push` 视为可用；查不到即没装，直接走原生 `git push`，不报错、不提示、不卡流程，对无 Sigil 环境零影响。
+- 只接管「远程认证操作」，本地操作（`status`/`diff`/`add`/`commit`/`log`/`branch`/`merge`/`reset`）一律用 git CLI，提交流程完全不变。
+- 失败处置：Sigil 可用但推送报错（vault locked / 凭据缺失 / 能力未启用）则停下报出错误前缀提示用户处理，绝不因失败自动改用明文 token URL；仅当 Sigil 完全不存在时才回退普通 `git push`。
 
 触发场景
 - 提交代码
@@ -1823,12 +1840,17 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 定位
 - 当用户需要基于本框架创建新项目、初始化新项目时自动使用此 Skill。提供交互式项目初始化流程：模板更新检测、分支选择、移动端选择、标识符替换、目录复制、Git 仓库创建、数据库初始化、启动引导。
 
+非 MySQL 数据库驱动启用指引（增强）
+- 框架默认只启用 MySQL 驱动 + anyline 适配器，`application-dev.yml` 也只配了 MySQL 的 master/slave 数据源。用户若选 PostgreSQL / Oracle / SQL Server，必须先启用对应驱动再启动，否则报「找不到驱动」或「连接失败」。
+- 操作：解开 `ruoyi-common/ruoyi-common-mybatis/pom.xml` 中对应数据库的 JDBC 驱动与 anyline 适配器注释（驱动 + anyline 必须同步启用，缺一启动建表会报错）→ 把 `application-dev.yml` 的 master/slave `driverClassName` 与 `url` 替换为对应数据库（PostgreSQL 默认 5432、Oracle 1521、SQL Server 1433）→ 从 `script/sql/postgres`、`script/sql/oracle`、`script/sql/sqlserver` 导入对应库类型的 SQL 脚本。
+- 修改 pom.xml 与 yml 后须保持 UTF-8 无 BOM，避免触发「非法字符: '﻿'」。
+
 触发场景
 - 用户说"我要开发一个新项目"或"创建一个新项目"
 - 基于 ruoyi-plus-uniapp 框架初始化新的业务系统
 - 修改项目唯一标识符和端口配置
 - 为新项目创建 Git 仓库并推送代码
-- 初始化新项目的数据库
+- 初始化新项目的数据库（含非 MySQL 数据库驱动启用）
 
 触发词
 - `新项目`
@@ -1871,6 +1893,169 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 示例
 - 用户: 上游框架又更新了，怎么把新功能合到子项目
 - 用户: 只想合并框架里新增的 workflow 改动
+
+### writing-plans
+
+定位
+- 当需要把已确定的方案/需求拆解成「可直接执行的细颗粒计划」时自动使用此 Skill。补齐 brainstorm（方案）与 dev-loop（执行）之间的「计划层」断层，产出带精确文件路径、验证命令、规范提交的任务台账。
+
+核心原则
+- 颗粒度反比于框架自动生成程度：能 codegen 的（标准 CRUD）只写「配 codegen → 调 `/dev` → 校验四层」的编排步骤，不重写 Java；框架不生成的（非 CRUD 业务逻辑、第三方集成、定制 UI 页）才写代码骨架。
+- 每个任务条目固定结构：文件路径、框架约束提醒、2-5 分钟勾选步骤、验证命令、规范 commit、依赖。
+- 产物落 `docs/tasks/active/*.md`，复用 task-tracker 富模板，从而 `update-status` 零改造聚合、`dev-loop` 直接消费。
+
+触发场景
+- 头脑风暴/需求已定，要拆成可执行的实施计划
+- add-todo 的一句话待办太粗，需要细到「文件 + 命令 + 验收」
+- 复杂功能开发前，先出一份可被 `/dev-loop` 自主执行的任务台账
+
+触发词
+- `写计划`
+- `制定计划`
+- `实施计划`
+- `拆解任务`
+- `任务拆解`
+- `计划层`
+- `把方案落地`
+- `可执行计划`
+- `writing-plans`
+- `开发计划`
+
+示例
+- 用户: 把这个需求拆成可以自主执行的计划
+- 用户: 头脑风暴定了方案，帮我落成任务台账
+
+### e2e-test-pc
+
+定位
+- 当需要用 aicoder 内置浏览器对 PC 后台管理端（plus-ui）做端到端自动化测试、业务验收、回归测试时自动使用此 Skill。区别于 test-development（写后端 JUnit 代码），本技能在真实运行的前后端环境里模拟用户操作页面、断言渲染结果、检查接口与控制台。
+
+核心机制
+- 标准 CRUD 冒烟配方：所有后台 CRUD 页面同构（ASearchForm + 工具栏 + el-table + Pagination + AModal），一套配方（八个标准用例 TC-01~08）套用任意模块，只换菜单路径、字段名、API 路径。
+- 五维断言：UI 可见性 / 数据正确性（含字典翻译成中文）/ 接口健康（业务接口 200）/ 无 JS 报错 / 交互闭环（增后多一条、删后少一条），缺一不算通过。
+- 「逐个测试逐个落实」执行循环：测试计划与报告沉淀到 `docs/tests/`（plans 与 reports 分目录），失败用例留截图存证，可中断恢复。
+
+触发场景
+- 开发完一个后台业务模块后，要在真实浏览器里验收 CRUD 功能
+- 需要把某个后台模块/整条业务流跑一遍并产出测试报告
+- 需要回归测试，逐个用例落实、记录 Bug
+
+触发词
+- `自动化测试`
+- `E2E`
+- `端到端测试`
+- `浏览器测试`
+- `回归测试`
+- `业务验收`
+- `plus-ui测试`
+- `测一遍`
+- `aicoder浏览器`
+
+注意事项
+- 后端默认端口 `5503`（非 8080），前端默认 `80`；端口不确定必须先问用户，不主动 shell spawn 服务。
+- 移动端 H5 测试请用 `e2e-test-mobile`；后端单测请用 `test-development`。
+
+示例
+- 用户: 测一下新加的优惠券模块
+- 用户: 把整个下单流程在浏览器里跑一遍
+
+### e2e-test-mobile
+
+定位
+- 当需要用 aicoder 内置浏览器对移动端 plus-uniapp 的 H5 端做端到端自动化测试、业务验收、回归测试时自动使用此 Skill。关键路径：启动 H5 端（默认 `:5173`）→ 用浏览器驱动 WD UI 页面 → 模拟操作 → 五维断言 → 沉淀测试计划与报告。
+
+移动端三处关键差异
+- 必须先有 H5 在跑（默认 `:5173`），端口不确定先问用户。
+- uni H5 是 hash 路由，跳页面与 `browser_wait_for(urlContains)` 都要带 `#/`。
+- WD UI 组件编译后 DOM class 不稳定，硬写 class 选择器极易失效，一律先 `browser_snapshot` 探查再配合 `browser_eval` 按文本/结构定位。
+
+触发场景
+- 开发完一个移动端页面/功能后，要在 H5 里验收
+- 需要把移动端某条业务流（浏览-下单-支付等）跑一遍并产出报告
+- 需要回归测试移动端，逐个用例落实、记录 Bug
+
+触发词
+- `移动端测试`
+- `H5测试`
+- `plus-uniapp测试`
+- `移动端E2E`
+- `移动端回归`
+- `wd-paging测试`
+- `WD UI测试`
+- `移动端跑一遍`
+
+注意事项
+- PC 后台测试请用 `e2e-test-pc`；plus-app 原生插件能力需真机/HBuilderX，无法用浏览器直接测，但同构页面可借本技能在 H5 上做等价验证。
+
+示例
+- 用户: 移动端领券中心页跑一遍
+- 用户: H5 的登录到下单流程回归一下
+
+### delivery-sync
+
+定位
+- 当需要把主项目同步成一份「交付副本」给客户/合作方时自动使用此 Skill。生成的交付目录不带 git 历史、不带技能体系、不带内部文档，只保留可交付的代码与必要文档。
+
+核心机制
+- 主项目根维护 `.deliveryignore`（gitignore 风格排除清单）与 `.delivery-sync.json`（记上次同步的 baseline commit + 历史，均加入 `.gitignore` 纯本地维护）。
+- 通过零依赖、跨平台的 Python 脚本执行单向镜像同步；同步前 `--dry-run` 预览所有变更，用户确认后才实际执行。
+- 交付目录排除 `.git/`、`.claude/`、`.codex/`、`AGENTS.md`、`CLAUDE.md` 与 `docs/tasks/`、`docs/experience/` 等内部文档，只保留 `delivery/` 下的 README/DEPLOY 等交付文档；支持为不同客户配置不同预设。
+
+触发场景
+- 需要把主项目打包成可交付物（去掉 git 与技能体系）
+- 主项目有新提交后，需要把增量同步到已存在的交付目录
+- 需要预览同步会改动哪些文件再决定是否执行
+
+触发词
+- `交付`
+- `交付副本`
+- `客户版本`
+- `剥离技能`
+- `镜像`
+- `同步交付`
+- `delivery`
+- `交付目录`
+
+注意事项
+- 本技能负责文件路径级排除（含整个端目录如 `plus-uniapp/`）；业务模块语义级裁剪（删 mall 后还要改 pom.xml/SQL）由 module-strip 处理，两者共用 `.delivery-sync.json` 配置。
+
+示例
+- 用户: 把项目同步成一份给客户的干净副本
+- 用户: 主项目又提交了，增量同步到交付目录
+
+### module-strip
+
+定位
+- 当需要在「交付目录」里删除指定业务模块（如不要商城/IoT/支付/AI）时使用此 Skill。处理删除目录 + 修改 pom.xml 的语义级裁剪，是 delivery-sync 的下游补充技能。
+
+作用域硬约束
+- 只动交付目录（如 `../ruoyi-plus-uniapp-delivery`），绝不动主项目——主项目永远保留全集，不同客户裁出不同子集。
+- 内置 mall（商城）/ iot（物联网）/ pay（支付）/ ai（AI）/ crm（客户关系）等预设，每个预设以 JSON 描述要删的目录、文件与要移除的 pom.xml 行。
+- 复用 `.delivery-sync.json` 的 `stripModules` 字段，不引入新状态文件；裁剪后可跑 `mvn compile` 验证仍能编译。
+
+触发场景
+- 需要从交付副本里去掉商城/物联网/支付/AI 等功能
+- 需要列出可裁剪的模块预设
+- 需要在裁剪后跑 mvn compile 验证
+
+触发词
+- `模块裁剪`
+- `裁剪模块`
+- `删除模块`
+- `去掉模块`
+- `strip-modules`
+- `商城裁剪`
+- `不要mall`
+- `不要iot`
+- `不要pay`
+- `不要ai`
+
+注意事项
+- 判断规则：「删目录 + 改 pom.xml/SQL」组合 = module-strip；仅「删目录」= delivery-sync。
+
+示例
+- 用户: 这个客户不要商城功能，从交付目录删掉
+- 用户: 裁剪掉支付模块后验证还能不能编译
 
 ### 技能触发词索引
 以下索引用于快速定位触发词，便于在大规模任务中快速匹配技能。
@@ -2967,7 +3152,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 
 ## 命令系统
 ### 命令入口总览
-命令文件位于 `.claude/commands/`，当前共 13 个命令文件（不含 local 相关的上游同步命令）。以下按 14 个使用入口展开。
+命令文件位于 `.claude/commands/`，当前共 18 个命令文件（不含 local 相关的上游同步命令）。以下按 19 个使用入口展开。
 
 | 使用入口 | 定位 | 关键输入 | 主要输出 |
 | --- | --- | --- | --- |
@@ -2982,8 +3167,13 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 | `/add-todo` | 快速添加待办 | 任务描述 | 待办清单与状态联动 |
 | `/update-status` | 增量更新状态 | 无 | 三文档联动更新报告 |
 | `/sync` | 文档全量同步 | 无 | 三文档一致性同步 |
+| `/kickoff` | 一句话起新项目的前门编排 | 一句话项目想法 | 需求门 → 原型门 → project-init 孵化 → 起飞 `/dev-loop` |
+| `/dev-loop` | 自主循环开发的一轮标准作业 | 无 / 圈定范围（模块或里程碑） | 配合 `/loop` 自主连续开发，编排既有技能直到任务台账做完 |
+| `/loop-gen` | 现生成量身定做的 `/loop` 提示词 | 一句话意图 | 填好真相源/每轮动作/验证门/停止条件的可起飞提示词 |
 | `/deploy` | 一键自动化部署 | 部署目标（服务器/Docker） | 构建与部署执行报告 |
 | `/framework-sync` | 框架同步 | 目标分支 / 提交范围 | 从 ruoyi-plus-uniapp 框架原仓库合并更新到子项目 |
+| `/sync-delivery` | 交付副本同步 | 预设 / `--dry-run` / `--first-time` | 主项目 → 交付目录文件级镜像（去 git/技能体系/内部文档） |
+| `/strip-modules` | 交付目录业务模块裁剪 | 模块名 / `--list` / `--preview` / `--verify` | 删目录 + 改 pom.xml，可跑 `mvn compile` 验证 |
 | `/exp` | 经验沉淀 | 会话上下文或提交范围 | 抽取可复用模式到 Skills / Memory / docs |
 
 > **说明**：源码项目中还包含 `/sync-local`、`/sync-wot-local`、`/sync-unibest-local` 等上游同步命令，这些命令仅在源码开发项目中使用，不属于本文档项目的范畴，因此不在此处列出。
@@ -3140,6 +3330,68 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 按选择性策略合并到当前子项目，保留子项目定制
 输出
 - 同步清单、冲突提示与标识符替换报告
+
+### /kickoff
+定位
+- 在框架模板里一句话起一个新业务项目的前门编排器：联网调研出需求 → 工作站出原型 → 孵化新项目 → 起飞自主循环。前段把关「做什么」、后段交给 `/dev-loop` 做「怎么做」。
+输入
+- 一句话项目想法，如 `做一个社区团购：PC 后台 + 小程序端`
+流程
+- 阶段一 需求孵化：`WebSearch` / 工作站 research 联网调研 + 头脑风暴，扩成结构化需求写入 `docs/需求文档.md`，🚦人工门确认（不碰代码/坐标）
+- 阶段二 原型生成：调 AI 工作站 ui-studio 产出 `docs/prototypes/<业务>/*.html`（带组件映射表注释），禁止模型自己手搓 HTML，🚦人工门确认
+- 阶段三 创建新项目：执行 `project-init` 孵化，到这一步才改 Maven 坐标/标识符/端口/DB 库名/前端标识，建私有仓库、建库导数据（Java 包名 `plus.ruoyi` 全程不动）
+- 阶段四 起飞：到新项目新开会话粘 `/loop /dev-loop`，自拆任务台账后自主循环
+输出
+- 需求文档、原型、孵化出的新项目与起飞指令；每个人工门必须真的停下等用户
+
+### /dev-loop
+定位
+- 自主循环开发的「一轮标准作业」，配合内置 `/loop` 用 `/loop /dev-loop` 自主连续开发直到任务台账做完。核心是「编排器」，不重复造轮子。
+输入
+- 不带参数 = 全量按台账顺序；带范围参数（模块名 / 里程碑 / 编号关键词）= 每轮只做匹配该范围的未勾任务
+流程
+- 每轮开工必读真相源：`CLAUDE.md`/`.claude/PROJECT.md`/`framework-config.json`、`docs/需求文档.md`、`docs/prototypes/*`、`docs/tasks/active/*.md`
+- 有需求无台账 → 第 0 轮激活 `writing-plans` 自举拆计划；台账已存在 → 每轮只选第一个未勾任务，按类型复用对应能力（CRUD 走 `/dev`、原型转码走 `html-to-code`、前端照 `ui-pc`/`ui-mobile`）
+- 验证门全绿（后端 `mvn -pl <模块> -am compile`、前端 `pnpm -C plus-ui build`、移动端 `pnpm -C plus-uniapp build:h5`，UI 任务额外过截图保真闭环，复用 e2e-test-pc/e2e-test-mobile）
+- 过两段 review（功能正确性 + `/check` 规范）后逐个 `git add` 最小提交（规范 message），更新 `docs/tasks/active/`，里程碑调 `/update-status` 汇总三文档
+输出
+- 每轮一个最小可提交单元 + 本轮小结（完成项 / 进度 / 下一个）；全部 `[x]` 后跑 `/update-status` 并停止循环
+
+### /loop-gen
+定位
+- 当本次意图不是「按需求建功能」（如还原原型、批量修 bug、补测试、重构、迁移、清理、文档替换）时，听一句意图现生成一条量身定做的 `/loop` 提示词。
+输入
+- 一句话意图，如 `把现有界面逐页还原成 prototype/ 的原型（截图比对修正）`
+流程
+- 归类意图到一种循环范式（建功能 / 还原 UI / 修 bug / 补测试 / 重构 / 迁移 / 清理 / 文档）
+- 摸项目真相源、验证命令与技术栈，缺关键信息只问 1-2 个（每轮粒度、完成判据、范围）
+- 套通用骨架填实占位（真相源 / 每轮动作 / 验证门 / 停止条件），UI 类意图自动加原型保真截图闭环
+输出
+- 一整段以第一行 `/loop` 开头的提示词，用户整段粘贴即起飞（本命令只生成提示词，不替用户起飞）
+
+### /sync-delivery
+定位
+- 把主项目镜像同步到同级「交付目录」，生成不带 git 历史、不带技能体系、不带内部协作文档的可交付版本。
+输入
+- 预设（如 `--preset 客户A`）与 `--first-time` / `--status` / `--dry-run` / `--force` 等选项
+流程
+- 环境检查（git 仓库、Python、`delivery_sync.py` 脚本）后调脚本（Windows 须设 `PYTHONIOENCODING=utf-8`）
+- 首次创建：交互询问交付目录路径 → 复制模板 → dry-run 预览 → 确认后同步；增量同步：比对 HEAD 与 baseline → 列新增提交 → 预览 → 确认后同步
+- 基于 `.deliveryignore` 排除清单与 `.delivery-sync.json` baseline 执行单向镜像
+输出
+- 同步前后文件数变化、baseline commit 变化、交付目录绝对路径与 `.delivery-sync-marker` 位置
+
+### /strip-modules
+定位
+- 在交付目录里删除指定业务模块（删目录 + 改 pom.xml），是 `/sync-delivery` 的下游补充。
+输入
+- 模块名（如 `mall iot`）与 `--list` / `--preview` / `--verify` 等选项，可组合
+流程
+- 环境检查（`.delivery-sync.json` 存在、交付目录有 `.delivery-sync-marker` 受管标记）后调 `module_strip.py`
+- 预览模式列出每个模块会删什么、改哪些 pom.xml；正式执行实际删除 + 修改并输出统计，末尾列出待手动处理清单（SQL 表/菜单初始化、前端路由等）
+- `--verify` 在交付目录跑 `mvn compile`，失败时显示最后 2KB 错误日志
+输出
+- 裁剪统计报告、待手动处理清单与可选的编译验证结果
 
 ### /exp
 定位

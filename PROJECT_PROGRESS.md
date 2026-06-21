@@ -1,7 +1,7 @@
 # RuoYi-Plus-UniApp 文档进度清单
 
-> **最后更新**: 2026-04-19（完成 94 个上游提交的全量同步：技能/命令清单、15+ WD 组件增强、2 篇 WD 新组件文档、后端平台集群同步/OSS 缓存/SpringDoc/SNAIL_JOB 配置/字典字段/AFormSelect option 插槽等）
-> **整体完成度**: 100% (499/499)
+> **最后更新**: 2026-06-21（增量同步 67 个上游提交：LangChain4j 1.14.1 全量迁移（概览+chat-service+model-factory+thinking）、微信支付 publicKeyId、新增 useImageCompress 图片压缩 Composable、Undertow 上传限制、dict 字典名 sys_user_gender、OSS 富文本预签名清洗、nvue 扫描配置、AFormMap 搜索候选下拉、Claude Code 实践文档补录 5 技能/5 命令）
+> **整体完成度**: 100% (500/500)
 > **总行数**: 763,000+ 行
 >
 > 按照 `config.ts` 导航顺序整理，用于复查和维护
@@ -16,11 +16,11 @@
 |------|------|--------|--------|
 | 后端文档 | 98 | 98 | **100%** |
 | 前端文档 | 141 | 141 | **100%** |
-| 移动端文档 | 129 | 129 | **100%** |
+| 移动端文档 | 130 | 130 | **100%** |
 | WD 组件库 | 83 | 83 | **100%** |
 | 最佳实践 | 44 | 44 | **100%** |
 | 首页与其他 | 4 | 4 | **100%** |
-| **总计** | **499** | **499** | **100%** |
+| **总计** | **500** | **500** | **100%** |
 
 ---
 
@@ -564,6 +564,7 @@
 | useShare 分享功能 | `mobile/composables/use-share.md` | ✅ |
 | useScroll 滚动处理 | `mobile/composables/use-scroll.md` | ✅ |
 | useEventBus 事件总线 | `mobile/composables/use-event-bus.md` | ✅ |
+| useImageCompress 图片压缩 | `mobile/composables/use-image-compress.md` | ✅ |
 | useWebSocket 实时通信 | `mobile/composables/use-websocket.md` | ✅ |
 | useTheme 主题管理 | `mobile/composables/use-theme.md` | ✅ |
 | useI18n 国际化 | `mobile/composables/use-i18n.md` | ✅ |

@@ -43,7 +43,7 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 
 ## 项目已有 Skills 清单
 
-本项目包含 **54 个 Skills**，按功能分为 11 大类：
+本项目包含 **59 个 Skills**，按功能分为 12 大类：
 
 ### 后端开发类（10 个）
 
@@ -122,26 +122,36 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 | **media-processing** | 图片处理、二维码、Excel | 媒体处理工具 |
 | **icon-management** | 图标、菜单图标、IconSelect | PC 端与移动端图标管理 |
 
-### 部署运维类（2 个）
+### 测试验收类（2 个）
+
+| Skill | 触发词 | 说明 |
+|-------|--------|------|
+| **e2e-test-pc** | 自动化测试、E2E、端到端测试、浏览器测试、回归测试、业务验收、plus-ui测试 | 用 aicoder 内置浏览器对 PC 后台管理端（plus-ui）做端到端自动化测试。提供标准 CRUD 冒烟配方（八个标准用例）、五维断言模式（UI/数据/接口/无报错/交互闭环）、登录态复用与逐个用例落实的执行循环，测试计划与报告沉淀到 `docs/tests/` |
+| **e2e-test-mobile** | 移动端测试、H5测试、plus-uniapp测试、移动端E2E、移动端回归、wd-paging测试、WD UI测试 | 用 aicoder 内置浏览器对移动端 plus-uniapp 的 H5 端做端到端自动化测试。处理 hash 路由与 WD UI 编译后 DOM 不稳定（先 snapshot 再 eval 定位），同样走五维断言与可中断恢复的测试循环 |
+
+### 部署运维类（4 个）
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
 | **deployment-guide** | 部署、上线、Docker、Nginx、1Panel、生产环境 | 生产环境部署、一键自动化部署脚本、构建 JAR/前端/小程序/APP、密钥轮换 |
 | **env-config** | 环境配置、profile、application.yml、.env、多环境 | 后端 Spring Boot 多 profile、前端/移动端 `.env` 文件、环境变量占位符 |
+| **delivery-sync** | 交付、交付副本、客户版本、剥离技能、镜像、同步交付 | 把主项目单向镜像同步成不带 git 历史、不带技能体系（`.claude`/`.codex`/`AGENTS.md`/`CLAUDE.md`）、不带内部协作文档的可交付副本。基于 `.deliveryignore` 排除清单与 `.delivery-sync.json` baseline，支持 `--dry-run` 预览、增量同步与多客户预设 |
+| **module-strip** | 模块裁剪、删除模块、不要mall、不要iot、不要pay、不要ai | delivery-sync 的下游补充。在交付目录里语义级裁剪指定业务模块（删目录 + 改 pom.xml），内置商城/IoT/支付/AI/CRM 等预设；只动交付目录，绝不动主项目，裁剪后可跑 `mvn compile` 验证 |
 
-### 规划与协作类（13 个）
+### 规划与协作类（14 个）
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
 | **architecture-design** | 架构、模块划分、重构 | 系统架构规划 |
 | **tech-decision** | 技术选型、方案对比 | 技术决策分析 |
 | **brainstorm** | 头脑风暴、方案设计、业界怎么做 | 创意方案探索,内置 5 种发散方法(类比/反向/约束/跨界 + 联网借鉴法按需查最新最佳实践) |
+| **writing-plans** | 写计划、制定计划、实施计划、拆解任务、计划层、把方案落地、可执行计划 | SDLC 链路的「计划层」，补齐 brainstorm（方案）与 dev-loop（执行）之间的断层。把方案翻译成可被人或 `/dev-loop` 直接执行的细颗粒计划（每条带文件路径、勾选步骤、验证命令、规范提交），颗粒度反比于框架自动生成程度（CRUD 只编排不写码、非 CRUD 才写骨架），产物落 `docs/tasks/active/` 复用 task-tracker 台账 |
 | **i18n-development** | 国际化、多语言、i18n | 全栈国际化方案 |
 | **project-navigator** | 项目结构、文件在哪 | 项目导航和定位 |
-| **git-workflow** | Git、提交、分支 | Git 工作流规范 |
+| **git-workflow** | Git、提交、分支 | Git 工作流规范。远程认证操作（push/clone/推送后核对）优先走 Sigil 凭据保险库（明文不外泄、不落 `.git/config`）；本会话检测到 `mcp__sigil__git_push` 才启用，没装 Sigil 则照常 `git push`、流程无感回退；本地操作（add/commit/diff/branch）一律用 git CLI 不接管 |
 | **task-tracker** | 任务跟踪、记录进度 | 开发任务持久化跟踪 |
 | **add-skill** | 添加技能、创建技能 | 扩展技能系统 |
-| **project-init** | 新项目、初始化项目、independent deployment | 基于框架模板创建独立业务项目，含标识符替换、Git 仓库创建、数据库初始化 |
+| **project-init** | 新项目、初始化项目、independent deployment | 基于框架模板创建独立业务项目，含标识符替换、Git 仓库创建、数据库初始化。补全非 MySQL 数据库（PostgreSQL/Oracle/SQL Server）的驱动启用指引：解开 `ruoyi-common-mybatis/pom.xml` 对应 JDBC 驱动与 anyline 适配器注释、替换 `application-dev.yml` 的 master/slave 数据源、按库类型导入对应 SQL 脚本 |
 | **project-migration** | 迁移项目、架构迁移、框架迁移 | 项目迁移与重构方法论，支持浅/标准/深度三种策略 |
 | **framework-sync** | 框架同步、upstream、拉取更新、合并上游 | 将 ruoyi-plus-uniapp 框架原仓库更新同步到子项目（多分支、选择性合并） |
 | **exp-sediment** | 沉淀经验、总结会话、/exp、以前怎么处理、之前的方案、查记录、历史经验、查笔记、上次怎么解决、类似问题 | 双向触发(产出/消费):产出经验时将本次会话或最近提交的隐性知识沉淀到 Skills/Memory/CLAUDE.md/`.claude/docs/experience/`;消费经验时按主题 grep 历史踩坑记录避免重蹈覆辙,提供"轻量/按主题/全量"三档读取深度策略 |

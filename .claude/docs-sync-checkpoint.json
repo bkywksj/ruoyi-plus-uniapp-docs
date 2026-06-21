@@ -1,6 +1,6 @@
 {
-  "lastSyncCommit": "580046f4b1299167749d291ce1c477f2e4bc2b28",
-  "lastSyncDate": "2026-04-26T17:33:28+08:00",
+  "lastSyncCommit": "bb0d0d82fb317d46c3ab08a1afb6e6c3ffd935b5",
+  "lastSyncDate": "2026-06-17T21:06:41+08:00",
   "syncHistory": [
     {
       "commit": "a2bff84f7a8c298b341b32b04feb7e55533267b4",
@@ -55,6 +55,28 @@
         "docs/practices/engineering/claude-code-skills.md",
         "docs/practices/engineering/claude-code-commands.md",
         "docs/practices/ai/claude-code.md"
+      ]
+    },
+    {
+      "commit": "bb0d0d82fb317d46c3ab08a1afb6e6c3ffd935b5",
+      "date": "2026-06-17T21:06:41+08:00",
+      "summary": "增量处理 67 个上游提交（2026-04-26 → 2026-06-17）。重点：1) LangChain4j 0.35.0→1.14.1 大版本升级+深度思考——thinking.md/model-factory.md 此前已手动更新（检查点未推进），本次补齐概览 langchain4j.md 的版本号与 dashscope 依赖坐标（langchain4j-dashscope→langchain4j-community-dashscope:1.14.0-beta24）及 CLAUDE.md 版本表；2) 微信支付 V3 公钥模式新增 publicKeyId 字段（pay.md），区别于证书序列号，留空回退兼容；3) 新增 useImageCompress 跨端图片压缩 Composable（新建 use-image-compress.md + overview + 侧边栏）；4) Undertow max-http-post-size -1→100MB 修复 2MB multipart 限制（configuration.md）；5) dict 残留字典名 sys_user_sex→sys_user_gender（dict.md）；6) OSS 富文本入库前清洗私有桶预签名参数 OssContentUtils（oss.md 新增富文本内容处理章节）。跳过：WD 纯视觉修复(datetime-picker/calendar)、字符集乱码、log oper_type CHAR→VARCHAR、snailjob 标识符、button 样式、tree/menu 虚拟滚动 perf、CVE 依赖升级、大量 .claude/.codex 技能/钩子提交（内部工具链）。后续补充（已全部完成，无遗留缺口）：A) chat-service.md 全量迁移到 1.14.1 API（ChatModel/StreamingChatModel、chat()、StreamingChatResponseHandler 的 onPartialThinking/onPartialResponse/onCompleteResponse、项目 DTO ChatResponse→AiChatResponse 并补 reasoningContent/phase 字段）。B) langchain4j.md 概览深层代码全量迁移到 1.14.1：ModelFactory 4 个 createXxxChatModel 返回 ChatModel；ChatService chat/streamChat/handleSingle/Continuous/Rag/Function 改用 ChatModel/StreamingChatModel + .chat() + 模型层 ChatResponse + response.aiMessage().text()/toolExecutionRequests()；StreamChatHandler 改实现 StreamingChatResponseHandler（onPartialThinking/onPartialResponse/onCompleteResponse）；项目 DTO 定义与全部用例/WebSocket 发送方法 ChatResponse→AiChatResponse 并补 reasoningContent/phase/Phase；TokenCounter 改用 TokenCountEstimator/OpenAiTokenCountEstimator(\"gpt-4o\")；顶部 note 收敛为已对齐 1.x（嵌入模型 response.content() 不在 chat 升级范围，保留）。C) Claude Code 实践文档补录（子代理完成）：claude-code-skills.md 新增 e2e-test-pc/e2e-test-mobile/delivery-sync/module-strip/writing-plans 5 技能 + 增强 git-workflow/project-init（54→59 技能）；claude-code-commands.md 新增 /kickoff /dev-loop /loop-gen /sync-delivery /strip-modules（13→18 命令）；claude-code.md 三处计数同步 + 新增多会话并发避让协议小节；autonomous-dev 无独立技能目录，按 /kickoff+/dev-loop+/loop-gen 命令编排形态补录。D) nvue：uni-pages.md 补 extensions:['vue','nvue'] 配置项（manifest 编译配置 manifest-config.md 已有完整章节）。E) AFormMap：form/overview.md 补 POI 搜索候选下拉特性 + searchCity/searchPageSize Props。",
+      "updatedDocs": [
+        "docs/backend/common/langchain4j.md",
+        "docs/backend/common/langchain4j/chat-service.md",
+        "docs/backend/common/pay.md",
+        "docs/backend/ruoyi-admin/configuration.md",
+        "docs/backend/modules/system/dict.md",
+        "docs/backend/common/oss.md",
+        "docs/mobile/composables/use-image-compress.md",
+        "docs/mobile/composables/overview.md",
+        "docs/mobile/vite-plugins/uni/uni-pages.md",
+        "docs/frontend/components/form/overview.md",
+        "docs/practices/engineering/claude-code-skills.md",
+        "docs/practices/engineering/claude-code-commands.md",
+        "docs/practices/ai/claude-code.md",
+        "docs/.vitepress/config.ts",
+        "CLAUDE.md"
       ]
     }
   ]

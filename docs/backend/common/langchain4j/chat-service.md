@@ -9,9 +9,21 @@ ChatService 是 LangChain4j 模块的核心服务，提供同步和流式的 AI 
 - **多对话模式** - 单轮对话、连续对话、RAG 对话、函数调用四种模式
 - **会话管理** - 自动管理对话历史，支持多轮上下文记忆
 - **流式响应** - 实时输出响应内容，提升用户体验
+- **深度思考** - 流式响应区分 `thinking` / `content` 两阶段，透传推理内容（reasoning_content）
 - **灵活存储** - 支持内存和 Redis 两种会话存储方式
 - **Token 统计** - 自动统计输入和输出 Token 使用量
 - **灵活配置** - 支持自定义系统提示词、温度参数等
+
+::: warning LangChain4j 1.x API 说明
+本模块基于 **LangChain4j 1.14.1**。1.x 对模型层 API 做了重命名，文档中的代码已对齐新 API：
+
+- 模型接口：`ChatLanguageModel` → `ChatModel`、`StreamingChatLanguageModel` → `StreamingChatModel`
+- 调用方法：`generate()` → `chat()`，同步调用返回 `dev.langchain4j.model.chat.response.ChatResponse`
+- 流式回调：`StreamingResponseHandler<AiMessage>` → `StreamingChatResponseHandler`，`onNext` → `onPartialResponse`、`onComplete` → `onCompleteResponse`，并新增 `onPartialThinking` 推理增量回调
+- 项目响应 DTO：原 `ChatResponse` 已重命名为 **`AiChatResponse`**，以避免与 langchain4j 1.x 的模型层 `ChatResponse` 同名冲突
+
+完整的旧 → 新 API 迁移对照表见「模型工厂」文档。
+:::
 
 ## 模块架构
 
@@ -89,7 +101,7 @@ ChatService 是 LangChain4j 模块的核心服务，提供同步和流式的 AI 
                                                         │
                                                         ▼
                                                 ┌───────────────┐
-                                                │ ChatResponse  │
+                                                │ AiChatResponse│
                                                 │ + TokenUsage  │
                                                 └───────────────┘
 ```
@@ -185,7 +197,7 @@ public String simpleChat(String message) {
         .setMode(ChatMode.SINGLE)
         .setStream(false);
 
-    ChatResponse response = chatService.chat(request);
+    AiChatResponse response = chatService.chat(request);
     return response.getContent();
 }
 ```
@@ -196,7 +208,7 @@ public String simpleChat(String message) {
 2. `ChatService` 调用 `ModelFactory` 创建聊天模型
 3. 调用 `handleSingleChat` 方法处理单轮对话
 4. 直接调用模型生成响应，不保存历史
-5. 构建 `ChatResponse` 返回结果
+5. 构建 `AiChatResponse` 返回结果
 
 ### 多轮连续对话
 
@@ -211,7 +223,7 @@ public String continuousChat(String sessionId, String message) {
         .setMode(ChatMode.CONTINUOUS)     // 连续对话模式
         .setStream(false);
 
-    ChatResponse response = chatService.chat(request);
+    AiChatResponse response = chatService.chat(request);
     return response.getContent();
 }
 ```
@@ -280,18 +292,24 @@ streamChat("讲个笑话", content -> System.out.print(content));
 │                  流式响应处理流程                              │
 ├──────────────────────────────────────────────────────────────┤
 │                                                              │
-│  StreamingChatLanguageModel.generate()                       │
+│  StreamingChatModel.chat(messages, handler)                  │
 │            │                                                 │
 │            ▼                                                 │
 │  ┌──────────────────────────────────────────────────────┐   │
-│  │              StreamChatHandler                        │   │
+│  │       StreamChatHandler (StreamingChatResponseHandler)│   │
 │  │  ┌────────────────────────────────────────────────┐  │   │
-│  │  │ onNext(token)                                  │  │   │
-│  │  │   └─► fullContent.append(token)                │  │   │
+│  │  │ onPartialThinking(partialThinking)             │  │   │
+│  │  │   └─► phase=thinking 推理增量                  │  │   │
 │  │  │   └─► responseConsumer.accept(partial)         │  │   │
 │  │  └────────────────────────────────────────────────┘  │   │
 │  │  ┌────────────────────────────────────────────────┐  │   │
-│  │  │ onComplete(response)                           │  │   │
+│  │  │ onPartialResponse(partialResponse)             │  │   │
+│  │  │   └─► fullContent.append(partialResponse)      │  │   │
+│  │  │   └─► phase=content 正文增量                   │  │   │
+│  │  │   └─► responseConsumer.accept(partial)         │  │   │
+│  │  └────────────────────────────────────────────────┘  │   │
+│  │  ┌────────────────────────────────────────────────┐  │   │
+│  │  │ onCompleteResponse(completeResponse)           │  │   │
 │  │  │   └─► 设置 TokenUsage                          │  │   │
 │  │  │   └─► responseConsumer.accept(final)           │  │   │
 │  │  │   └─► 执行 onComplete 回调                     │  │   │
@@ -352,7 +370,7 @@ public String techAssistant(String question) {
         .setMode(ChatMode.SINGLE)
         .setStream(false);
 
-    ChatResponse response = chatService.chat(request);
+    AiChatResponse response = chatService.chat(request);
     return response.getContent();
 }
 ```
@@ -361,23 +379,24 @@ public String techAssistant(String question) {
 
 ```java
 // 单轮对话 - 每次请求都添加系统提示词
-private ChatResponse handleSingleChat(ChatLanguageModel chatModel,
-                                       ChatRequest request) {
+private AiChatResponse handleSingleChat(ChatModel chatModel,
+                                        ChatRequest request) {
     UserMessage userMessage = UserMessage.from(request.getMessage());
 
-    Response<AiMessage> response;
+    // 1.x：chat() 返回 dev.langchain4j.model.chat.response.ChatResponse
+    ChatResponse response;
     if (StrUtil.isNotBlank(request.getSystemPrompt())) {
         SystemMessage systemMessage = SystemMessage.from(request.getSystemPrompt());
-        response = chatModel.generate(systemMessage, userMessage);
+        response = chatModel.chat(systemMessage, userMessage);
     } else {
-        response = chatModel.generate(userMessage);
+        response = chatModel.chat(userMessage);
     }
 
     return buildResponse(response);
 }
 
 // 多轮对话 - 仅在新会话时添加系统提示词
-private ChatResponse handleContinuousChat(...) {
+private AiChatResponse handleContinuousChat(...) {
     var memory = memoryManager.getOrCreateMemory(sessionId);
 
     // 只有在会话为空时才添加系统提示词
@@ -449,7 +468,7 @@ public String ragChat(String question, List<Long> knowledgeBaseIds) {
         .setKnowledgeBaseIds(knowledgeBaseIds)  // 指定知识库
         .setStream(false);
 
-    ChatResponse response = chatService.chat(request);
+    AiChatResponse response = chatService.chat(request);
 
     // RAG 模式会返回引用的文档
     List<DocumentReference> refs = response.getReferences();
@@ -485,7 +504,7 @@ public String chatWithExtraParams(String message) {
 /**
  * 同步对话
  */
-public ChatResponse chat(ChatRequest request) {
+public AiChatResponse chat(ChatRequest request) {
     long startTime = System.currentTimeMillis();
 
     try {
@@ -497,14 +516,15 @@ public ChatResponse chat(ChatRequest request) {
             ? request.getProvider()
             : properties.getDefaultProvider();
 
-        // 3. 创建聊天模型
-        ChatLanguageModel chatModel = modelFactory.createChatModel(
+        // 3. 创建聊天模型（1.x：ChatModel；传入 thinking 覆盖项）
+        ChatModel chatModel = modelFactory.createChatModel(
             provider,
-            request.getModelName()
+            request.getModelName(),
+            resolveThinkingOptions(request)
         );
 
         // 4. 根据对话模式处理
-        ChatResponse response = switch (request.getMode()) {
+        AiChatResponse response = switch (request.getMode()) {
             case SINGLE -> handleSingleChat(chatModel, request);
             case CONTINUOUS -> handleContinuousChat(chatModel, request, sessionId);
             case RAG -> handleRagChat(chatModel, request, sessionId);
@@ -519,7 +539,7 @@ public ChatResponse chat(ChatRequest request) {
 
     } catch (Exception e) {
         log.error("Chat error: {}", e.getMessage(), e);
-        return ChatResponse.builder()
+        return AiChatResponse.builder()
             .error(e.getMessage())
             .responseTime(System.currentTimeMillis() - startTime)
             .build();
@@ -533,7 +553,7 @@ public ChatResponse chat(ChatRequest request) {
 /**
  * 流式对话
  */
-public void streamChat(ChatRequest request, Consumer<ChatResponse> responseConsumer) {
+public void streamChat(ChatRequest request, Consumer<AiChatResponse> responseConsumer) {
     try {
         // 1. 获取或生成会话ID
         String sessionId = getOrGenerateSessionId(request);
@@ -543,10 +563,11 @@ public void streamChat(ChatRequest request, Consumer<ChatResponse> responseConsu
             ? request.getProvider()
             : properties.getDefaultProvider();
 
-        // 3. 创建流式聊天模型
-        StreamingChatLanguageModel streamingModel = modelFactory.createStreamingChatModel(
+        // 3. 创建流式聊天模型（1.x：StreamingChatModel；传入 thinking 覆盖项）
+        StreamingChatModel streamingModel = modelFactory.createStreamingChatModel(
             provider,
-            request.getModelName()
+            request.getModelName(),
+            resolveThinkingOptions(request)
         );
 
         // 4. 根据对话模式处理
@@ -561,7 +582,7 @@ public void streamChat(ChatRequest request, Consumer<ChatResponse> responseConsu
 
     } catch (Exception e) {
         log.error("Stream chat error: {}", e.getMessage(), e);
-        responseConsumer.accept(ChatResponse.builder()
+        responseConsumer.accept(AiChatResponse.builder()
             .error(e.getMessage())
             .finished(true)
             .build());
@@ -576,10 +597,10 @@ public void streamChat(ChatRequest request, Consumer<ChatResponse> responseConsu
  * 多轮流式对话
  */
 private void handleContinuousStreamChat(
-    StreamingChatLanguageModel streamingModel,
+    StreamingChatModel streamingModel,
     ChatRequest request,
     String sessionId,
-    Consumer<ChatResponse> responseConsumer) {
+    Consumer<AiChatResponse> responseConsumer) {
 
     // 获取会话内存
     var memory = memoryManager.getOrCreateMemory(sessionId);
@@ -598,12 +619,12 @@ private void handleContinuousStreamChat(
 
     // 创建流式处理器，包含完成回调
     var handler = new StreamChatHandler(messageId, responseConsumer, fullContent, () -> {
-        // 流式完成后，将AI回复保存到内存
+        // 流式完成后，将AI回复保存到内存（仅 text）
         memory.add(AiMessage.from(fullContent.toString()));
     });
 
-    // 生成流式响应
-    streamingModel.generate(memory.messages(), handler);
+    // 生成流式响应（1.x：chat()）
+    streamingModel.chat(memory.messages(), handler);
 }
 ```
 
@@ -611,12 +632,20 @@ private void handleContinuousStreamChat(
 
 ```java
 /**
- * 构建响应对象
+ * 构建同步响应对象（含 thinking 内容）
+ * 入参为 langchain4j 1.x 的 dev.langchain4j.model.chat.response.ChatResponse
  */
-private ChatResponse buildResponse(Response<AiMessage> response) {
-    ChatResponse chatResponse = ChatResponse.builder()
+private AiChatResponse buildResponse(ChatResponse response) {
+    AiMessage aiMessage = response.aiMessage();
+    // langchain4j 1.x 在 AiMessage.thinking() 上承载推理内容（不带 <think> 标签）
+    String thinking = aiMessage != null ? aiMessage.thinking() : null;
+    String text = aiMessage != null ? aiMessage.text() : null;
+
+    AiChatResponse chatResponse = AiChatResponse.builder()
         .messageId(IdUtil.fastSimpleUUID())
-        .content(response.content().text())
+        .content(text)
+        .reasoningContent(StrUtil.isNotBlank(thinking) ? thinking : null)
+        .phase(AiChatResponse.Phase.CONTENT)
         .finished(true)
         .build();
 
@@ -905,26 +934,30 @@ public class RedisChatStore implements ChatMemoryStore {
 
 ```java
 /**
- * 流式对话响应处理器
+ * 流式对话响应处理器（langchain4j 1.x StreamingChatResponseHandler）
+ * 支持 thinking / content 两阶段流式输出
  */
 @Slf4j
-public class StreamChatHandler implements StreamingResponseHandler<AiMessage> {
+public class StreamChatHandler implements StreamingChatResponseHandler {
 
     private final String messageId;
-    private final Consumer<ChatResponse> responseConsumer;
+    private final Consumer<AiChatResponse> responseConsumer;
+    /** 累积最终回复内容（content 阶段），供多轮对话保存到 memory */
     private final StringBuilder fullContent;
+    /** 累积 thinking 内容（完成时回填到 reasoningContent） */
+    private final StringBuilder fullThinking = new StringBuilder();
     private final Runnable onComplete;
 
     public StreamChatHandler(
             String messageId,
-            Consumer<ChatResponse> responseConsumer,
+            Consumer<AiChatResponse> responseConsumer,
             StringBuilder fullContent) {
         this(messageId, responseConsumer, fullContent, null);
     }
 
     public StreamChatHandler(
             String messageId,
-            Consumer<ChatResponse> responseConsumer,
+            Consumer<AiChatResponse> responseConsumer,
             StringBuilder fullContent,
             Runnable onComplete) {
         this.messageId = messageId;
@@ -933,36 +966,69 @@ public class StreamChatHandler implements StreamingResponseHandler<AiMessage> {
         this.onComplete = onComplete;
     }
 
+    /**
+     * 推理 / 思考阶段增量（仅推理模型 + enableThinking=true 时触发）
+     */
     @Override
-    public void onNext(String token) {
-        // 累积完整内容
-        fullContent.append(token);
+    public void onPartialThinking(PartialThinking partialThinking) {
+        if (partialThinking == null) {
+            return;
+        }
+        String text = partialThinking.text();
+        if (text == null || text.isEmpty()) {
+            return;
+        }
+        fullThinking.append(text);
 
-        // 推送增量内容
-        ChatResponse response = ChatResponse.builder()
+        AiChatResponse response = AiChatResponse.builder()
                 .messageId(messageId)
-                .content(token)
+                .reasoningContent(text)
+                .phase(AiChatResponse.Phase.THINKING)
                 .finished(false)
                 .build();
 
         responseConsumer.accept(response);
     }
 
+    /**
+     * 最终回复增量
+     */
     @Override
-    public void onComplete(Response<AiMessage> response) {
-        // 推送完成消息
-        ChatResponse finalResponse = ChatResponse.builder()
+    public void onPartialResponse(String partialResponse) {
+        if (partialResponse == null || partialResponse.isEmpty()) {
+            return;
+        }
+        fullContent.append(partialResponse);
+
+        AiChatResponse response = AiChatResponse.builder()
+                .messageId(messageId)
+                .content(partialResponse)
+                .phase(AiChatResponse.Phase.CONTENT)
+                .finished(false)
+                .build();
+
+        responseConsumer.accept(response);
+    }
+
+    /**
+     * 流式完成：返回 TokenUsage 和完整 thinking
+     */
+    @Override
+    public void onCompleteResponse(ChatResponse completeResponse) {
+        AiChatResponse finalResponse = AiChatResponse.builder()
                 .messageId(messageId)
                 .content("")
+                .reasoningContent(fullThinking.length() > 0 ? fullThinking.toString() : null)
+                .phase(AiChatResponse.Phase.CONTENT)
                 .finished(true)
                 .build();
 
         // 设置Token使用情况
-        if (response.tokenUsage() != null) {
+        if (completeResponse != null && completeResponse.tokenUsage() != null) {
             TokenUsage tokenUsage = new TokenUsage();
-            tokenUsage.setPromptTokens(response.tokenUsage().inputTokenCount());
-            tokenUsage.setCompletionTokens(response.tokenUsage().outputTokenCount());
-            tokenUsage.setTotalTokens(response.tokenUsage().totalTokenCount());
+            tokenUsage.setPromptTokens(completeResponse.tokenUsage().inputTokenCount());
+            tokenUsage.setCompletionTokens(completeResponse.tokenUsage().outputTokenCount());
+            tokenUsage.setTotalTokens(completeResponse.tokenUsage().totalTokenCount());
             finalResponse.setTokenUsage(tokenUsage);
         }
 
@@ -976,12 +1042,11 @@ public class StreamChatHandler implements StreamingResponseHandler<AiMessage> {
 
     @Override
     public void onError(Throwable error) {
-        log.error("❌ 流式错误: messageId={}, error={}", messageId, error.getMessage(), error);
+        log.error("流式错误: messageId={}, error={}", messageId, error.getMessage(), error);
 
-        // 推送错误消息
-        ChatResponse errorResponse = ChatResponse.builder()
+        AiChatResponse errorResponse = AiChatResponse.builder()
                 .messageId(messageId)
-                .content(error.getMessage())
+                .error(error.getMessage())
                 .finished(true)
                 .build();
 
@@ -1059,16 +1124,23 @@ public class ChatRequest implements Serializable {
 }
 ```
 
-### ChatResponse 完整定义
+### AiChatResponse 完整定义
+
+::: tip 命名说明
+项目响应 DTO 在 1.x 升级时由 `ChatResponse` 重命名为 `AiChatResponse`，以避免与 langchain4j 1.x 的模型层 `dev.langchain4j.model.chat.response.ChatResponse` 同名冲突——否则所有用到模型层 `ChatResponse` 的地方都得写全限定类名，违反项目导入规范。
+:::
 
 ```java
 /**
- * 聊天响应DTO
+ * AI 聊天响应 DTO
  */
 @Builder
 @Data
 @Accessors(chain = true)
-public class ChatResponse implements Serializable {
+public class AiChatResponse implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     /**
      * 会话ID
@@ -1081,10 +1153,21 @@ public class ChatResponse implements Serializable {
     private String messageId;
 
     /**
-     * AI回复内容
-     * 流式模式下为增量内容，同步模式下为完整内容
+     * AI回复正文
+     * 流式模式下为 content 阶段增量，同步模式下为完整内容
      */
     private String content;
+
+    /**
+     * 深度思考内容（reasoning / chain-of-thought）
+     * 完成态为累积全文，流式为单次增量；仅模型支持 thinking 且 returnThinking=true 时返回
+     */
+    private String reasoningContent;
+
+    /**
+     * 当前流式增量所属阶段：thinking（思考增量）/ content（正文增量）/ null（非流式或完成消息）
+     */
+    private String phase;
 
     /**
      * 是否完成
@@ -1115,6 +1198,17 @@ public class ChatResponse implements Serializable {
      * 出错时包含错误详情
      */
     private String error;
+
+    /**
+     * 流式增量阶段枚举值
+     */
+    public static final class Phase {
+        public static final String THINKING = "thinking";
+        public static final String CONTENT = "content";
+
+        private Phase() {
+        }
+    }
 }
 ```
 
@@ -1196,7 +1290,7 @@ public class CustomerServiceController {
             .setMode(ChatMode.CONTINUOUS)
             .setStream(false);
 
-        ChatResponse response = chatService.chat(request);
+        AiChatResponse response = chatService.chat(request);
         return R.ok(response.getContent());
     }
 }
@@ -1502,7 +1596,7 @@ public class ChatTokenMonitor {
 
     @AfterReturning(pointcut = "execution(* plus.ruoyi..*ChatService.chat(..))",
                     returning = "response")
-    public void monitorTokenUsage(ChatResponse response) {
+    public void monitorTokenUsage(AiChatResponse response) {
         if (response.getTokenUsage() != null) {
             TokenUsage usage = response.getTokenUsage();
             log.info("Token使用 - 输入:{}, 输出:{}, 总计:{}",

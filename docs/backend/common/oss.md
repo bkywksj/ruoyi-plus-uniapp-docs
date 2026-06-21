@@ -1012,6 +1012,41 @@ String uploadUrl = client.generatePresignedUploadUrl(objectKey, contentType, exp
 System.out.println("预签名上传URL: " + uploadUrl);
 ```
 
+## 富文本内容处理
+
+通知公告、文章等富文本字段中常常嵌入私有桶的图片地址。私有桶图片通过预签名 URL 访问，URL 上携带 `X-Amz-*`、`OSSAccessKeyId`、`q-signature` 等签名参数且自带有效期（通常 1 小时）。如果把整串带签名的 URL 直接写入数据库，会带来两个问题：一是数据库内容冗余且签名过期后失效，二是某些不经过 VO 序列化的展示路径会暴露已失效的签名。
+
+`OssContentUtils` 工具类负责在**写入数据库前**清洗富文本中的预签名参数，只持久化干净的基础地址；配合读取时的 `@SerialMap(PRESIGNED_URL)` 动态重新签名，形成「存干净、读重签」的完整闭环。
+
+### 清洗预签名参数
+
+```java
+import plus.ruoyi.common.oss.utils.OssContentUtils;
+
+// 入库前清洗富文本中的 OSS 图片预签名参数
+String cleanHtml = OssContentUtils.cleanPresignedUrls(bo.getNoticeContent());
+entity.setNoticeContent(cleanHtml);
+```
+
+`cleanPresignedUrls` 遍历 HTML 中所有 `src` / `data-href` 属性：凡是带签名特征的 URL，去掉查询串只保留基础地址；公开链接、外链、无查询串的地址原样保留，不做任何改动。
+
+### 签名特征识别
+
+工具类通过 URL 中的特征参数识别各云服务商的预签名地址，覆盖主流对象存储：
+
+| 云服务商 | 识别特征参数 |
+|---------|-------------|
+| AWS S3 / MinIO | `X-Amz-Algorithm`、`X-Amz-Signature`、`X-Amz-Credential` |
+| 阿里云 OSS | `OSSAccessKeyId`、`Signature` |
+| 腾讯云 COS | `q-sign-algorithm`、`q-signature` |
+| 七牛云 | `e=` + `token=` |
+| AWS S3 v2 | `AWSAccessKeyId` |
+| 华为云 OBS 等 | `Expires` + `Signature` |
+
+::: tip 存干净、读重签
+入库前用 `OssContentUtils.cleanPresignedUrls` 清洗签名，读取时由 `@SerialMap(PRESIGNED_URL)` 为私有桶 URL 动态重新签名。这样数据库里始终是干净、不过期的基础地址，前端展示时拿到的则是实时有效的预签名 URL。
+:::
+
 ## 最佳实践
 
 ### 1. 客户端复用

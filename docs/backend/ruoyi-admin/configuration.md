@@ -98,8 +98,8 @@ ruoyi-admin 使用 Undertow 作为内嵌 Web 容器，相比 Tomcat 具有更高
 ```yaml
 server:
   undertow:
-    # HTTP POST请求体最大大小（-1表示无限制）
-    max-http-post-size: -1
+    # HTTP POST请求体最大大小。Undertow 2.3.21+ multipart 默认限制 2MB，需配置正数覆盖
+    max-http-post-size: 100MB
     # 缓冲区大小（越小空间利用率越高）
     buffer-size: 512
     # 是否使用直接内存
@@ -110,6 +110,10 @@ server:
       # 工作线程数（处理阻塞任务，如Servlet请求）
       worker: 256
 ```
+
+::: warning max-http-post-size 必须配置正数
+自 Undertow 2.3.21 起，multipart（文件/表单）请求体默认被限制为 **2MB**，超出会上传失败。早期通过 `max-http-post-size: -1` 表示「无限制」的写法**不再生效**，必须改为一个具体的正数（如 `100MB`）来覆盖默认 2MB 限制。该值是 HTTP POST 请求体的总上限，需大于等于 `spring.servlet.multipart.max-request-size`，否则大文件上传仍会被 Undertow 层拦截。
+:::
 
 **线程配置说明：**
 

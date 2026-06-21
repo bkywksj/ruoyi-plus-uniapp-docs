@@ -489,10 +489,18 @@ const regionOptions = [
 
 ### 12. AFormMap - 地图选点组件
 
+基于高德地图的地址选点组件。搜索框接入了 POI 候选下拉：输入关键词即弹出候选列表（显示 POI 名称 + 省市区 + 详细地址），点选某条候选即直接在地图上定位，无需再点“搜索”按钮（搜索按钮作为兜底保留）。
+
 ```vue
 <template>
   <el-form :model="form">
-    <AFormMap v-model="form.location" label="地址" />
+    <!-- 限定搜索城市、调整候选条数 -->
+    <AFormMap
+      v-model="form.location"
+      label="地址"
+      search-city="杭州"
+      :search-page-size="10"
+    />
   </el-form>
 </template>
 
@@ -500,6 +508,20 @@ const regionOptions = [
 const form = reactive({ location: { lng: 120.153576, lat: 30.287459 } })
 </script>
 ```
+
+**搜索候选下拉特性:**
+
+- 搜索框由 `el-input` 升级为 `el-autocomplete`，输入即出候选下拉，自定义模板展示 POI 名称与省市区详细地址
+- 弹窗级共享 `placeSearch` 实例：搜索建议与“搜索”按钮兜底复用同一实例，避免重复创建
+- 自动过滤无 `location` 的候选项（如行政区类提示），保证点选即可定位
+- 候选下拉 popper 的 `z-index` 提升至 `3100`，避免被 `z-index=3000` 的 `el-dialog` 遮挡
+
+**新增 Props:**
+
+| 参数 | 说明 | 类型 | 默认值 |
+|------|------|------|--------|
+| `searchCity` | POI 搜索限定城市 | `string` | `'全国'` |
+| `searchPageSize` | 候选下拉单页条数 | `number` | `10` |
 
 ---
 

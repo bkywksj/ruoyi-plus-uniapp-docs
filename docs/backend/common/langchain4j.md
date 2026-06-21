@@ -30,9 +30,22 @@
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| LangChain4j | 0.35.0 | LLM应用开发框架 |
+| LangChain4j | 1.14.1 | LLM应用开发框架（核心、open-ai、ollama、anthropic 集成） |
+| LangChain4j Community (DashScope) | 1.14.0-beta24 | 通义千问集成，已迁出主仓库独立维护 |
 | Spring Boot | 3.5.12 | 自动配置支持 |
 | Redisson | 3.52.0 | Redis客户端 |
+
+::: warning LangChain4j 1.x API 说明
+本模块已升级到 **LangChain4j 1.14.1**，本文代码已对齐新 API；更细致的实现与完整的旧 → 新迁移对照见「模型工厂」「聊天服务」「深度思考」「WebSocket流式对话」子文档。关键变更速览：
+
+- 模型接口：`ChatLanguageModel` → `ChatModel`、`StreamingChatLanguageModel` → `StreamingChatModel`
+- 调用方法：`generate()` → `chat()`，同步调用返回 `dev.langchain4j.model.chat.response.ChatResponse`
+- 流式回调：`StreamingResponseHandler<AiMessage>` → `StreamingChatResponseHandler`，`onNext` → `onPartialResponse`、`onComplete` → `onCompleteResponse`，新增 `onPartialThinking` 推理增量回调
+- Token 估算：`Tokenizer` / `OpenAiTokenizer` → `TokenCountEstimator`
+- 项目响应 DTO：原 `ChatResponse` 已重命名为 **`AiChatResponse`**，避免与 langchain4j 1.x 的模型层 `ChatResponse` 同名冲突
+
+完整旧 → 新 API 迁移对照表见「模型工厂」文档。
+:::
 
 ## 架构设计
 
@@ -248,7 +261,7 @@ public class AiAssistantService {
         request.setMessage(message);
         request.setSessionId("user-" + System.currentTimeMillis());
 
-        ChatResponse response = chatService.chat(request);
+        AiChatResponse response = chatService.chat(request);
         return response.getContent();
     }
 
@@ -260,7 +273,7 @@ public class AiAssistantService {
         request.setMessage(message);
         request.setSessionId(sessionId);  // 相同sessionId会保留上下文
 
-        ChatResponse response = chatService.chat(request);
+        AiChatResponse response = chatService.chat(request);
         return response.getContent();
     }
 }
@@ -282,7 +295,7 @@ public class AiStreamService {
     /**
      * 流式对话
      */
-    public void chatStream(String message, Consumer<ChatResponse> responseConsumer) {
+    public void chatStream(String message, Consumer<AiChatResponse> responseConsumer) {
         ChatRequest request = new ChatRequest();
         request.setMessage(message);
         request.setSessionId("stream-" + System.currentTimeMillis());
@@ -382,7 +395,7 @@ langchain4j:
 **模型创建实现**：
 
 ```java
-private ChatLanguageModel createDeepSeekChatModel(String modelName) {
+private ChatModel createDeepSeekChatModel(String modelName) {
     ModelConfig config = properties.getDeepseek();
     String actualModelName = StringUtils.hasText(modelName)
         ? modelName : config.getModelName();
@@ -422,7 +435,7 @@ langchain4j:
 **模型创建实现**：
 
 ```java
-private ChatLanguageModel createQianWenChatModel(String modelName) {
+private ChatModel createQianWenChatModel(String modelName) {
     ModelConfig config = properties.getQianwen();
     String actualModelName = StringUtils.hasText(modelName)
         ? modelName : config.getModelName();
@@ -460,7 +473,7 @@ langchain4j:
 **模型创建实现**：
 
 ```java
-private ChatLanguageModel createClaudeChatModel(String modelName) {
+private ChatModel createClaudeChatModel(String modelName) {
     ModelConfig config = properties.getClaude();
     String actualModelName = StringUtils.hasText(modelName)
         ? modelName : config.getModelName();
@@ -518,7 +531,7 @@ langchain4j:
 **模型创建实现**：
 
 ```java
-private ChatLanguageModel createOllamaChatModel(String modelName) {
+private ChatModel createOllamaChatModel(String modelName) {
     ModelConfig config = properties.getOllama();
     String actualModelName = StringUtils.hasText(modelName)
         ? modelName : config.getModelName();
@@ -541,21 +554,21 @@ private ChatLanguageModel createOllamaChatModel(String modelName) {
 ChatRequest request1 = new ChatRequest();
 request1.setMessage("介绍一下量子计算");
 request1.setProvider("deepseek");
-ChatResponse response1 = chatService.chat(request1);
+AiChatResponse response1 = chatService.chat(request1);
 
 // 切换到 OpenAI
 ChatRequest request2 = new ChatRequest();
 request2.setMessage("同样的问题");
 request2.setProvider("openai");
 request2.setModelName("gpt-4-turbo");
-ChatResponse response2 = chatService.chat(request2);
+AiChatResponse response2 = chatService.chat(request2);
 
 // 使用 Claude
 ChatRequest request3 = new ChatRequest();
 request3.setMessage("请用更简洁的方式解释");
 request3.setProvider("claude");
 request3.setModelName("claude-3-5-sonnet-20241022");
-ChatResponse response3 = chatService.chat(request3);
+AiChatResponse response3 = chatService.chat(request3);
 ```
 
 ## ChatService 核心服务
@@ -577,13 +590,13 @@ public class ChatService {
     /**
      * 同步对话
      */
-    public ChatResponse chat(ChatRequest request) {
+    public AiChatResponse chat(ChatRequest request) {
         // 获取或创建模型
-        ChatLanguageModel chatModel = getOrCreateModel(request);
+        ChatModel chatModel = getOrCreateModel(request);
         String sessionId = getSessionId(request);
 
         // 根据模式处理对话
-        ChatResponse response = switch (request.getMode()) {
+        AiChatResponse response = switch (request.getMode()) {
             case SINGLE -> handleSingleChat(chatModel, request);
             case CONTINUOUS -> handleContinuousChat(chatModel, request, sessionId);
             case RAG -> handleRagChat(chatModel, request, sessionId);
@@ -596,8 +609,8 @@ public class ChatService {
     /**
      * 流式对话
      */
-    public void streamChat(ChatRequest request, Consumer<ChatResponse> responseConsumer) {
-        StreamingChatLanguageModel streamingModel = getOrCreateStreamingModel(request);
+    public void streamChat(ChatRequest request, Consumer<AiChatResponse> responseConsumer) {
+        StreamingChatModel streamingModel = getOrCreateStreamingModel(request);
         String sessionId = getSessionId(request);
         String messageId = generateMessageId();
 
@@ -610,7 +623,7 @@ public class ChatService {
         );
 
         // 发起流式请求
-        streamingModel.generate(messages, handler);
+        streamingModel.chat(messages, handler);
     }
 }
 ```
@@ -620,7 +633,7 @@ public class ChatService {
 单轮对话不保留历史记录，每次对话独立：
 
 ```java
-private ChatResponse handleSingleChat(ChatLanguageModel chatModel, ChatRequest request) {
+private AiChatResponse handleSingleChat(ChatModel chatModel, ChatRequest request) {
     long startTime = System.currentTimeMillis();
 
     // 构建消息
@@ -635,14 +648,14 @@ private ChatResponse handleSingleChat(ChatLanguageModel chatModel, ChatRequest r
     messages.add(UserMessage.from(request.getMessage()));
 
     // 调用模型
-    Response<AiMessage> response = chatModel.generate(messages);
+    ChatResponse response = chatModel.chat(messages);
 
     long responseTime = System.currentTimeMillis() - startTime;
 
-    return ChatResponse.builder()
+    return AiChatResponse.builder()
         .sessionId(request.getSessionId())
         .messageId(generateMessageId())
-        .content(response.content().text())
+        .content(response.aiMessage().text())
         .tokenUsage(convertTokenUsage(response.tokenUsage()))
         .responseTime(responseTime)
         .finished(true)
@@ -661,8 +674,8 @@ private ChatResponse handleSingleChat(ChatLanguageModel chatModel, ChatRequest r
 连续对话模式保留会话历史，支持上下文连贯对话：
 
 ```java
-private ChatResponse handleContinuousChat(
-    ChatLanguageModel chatModel,
+private AiChatResponse handleContinuousChat(
+    ChatModel chatModel,
     ChatRequest request,
     String sessionId
 ) {
@@ -684,17 +697,17 @@ private ChatResponse handleContinuousChat(
     List<ChatMessage> messages = memory.messages();
 
     // 调用模型
-    Response<AiMessage> response = chatModel.generate(messages);
+    ChatResponse response = chatModel.chat(messages);
 
     // 将AI回复添加到记忆
-    memory.add(response.content());
+    memory.add(response.aiMessage());
 
     long responseTime = System.currentTimeMillis() - startTime;
 
-    return ChatResponse.builder()
+    return AiChatResponse.builder()
         .sessionId(sessionId)
         .messageId(generateMessageId())
-        .content(response.content().text())
+        .content(response.aiMessage().text())
         .tokenUsage(convertTokenUsage(response.tokenUsage()))
         .responseTime(responseTime)
         .finished(true)
@@ -713,8 +726,8 @@ private ChatResponse handleContinuousChat(
 RAG 模式结合知识库进行回答：
 
 ```java
-private ChatResponse handleRagChat(
-    ChatLanguageModel chatModel,
+private AiChatResponse handleRagChat(
+    ChatModel chatModel,
     ChatRequest request,
     String sessionId
 ) {
@@ -736,20 +749,20 @@ private ChatResponse handleRagChat(
     memory.add(UserMessage.from(augmentedPrompt));
 
     // 调用模型
-    Response<AiMessage> response = chatModel.generate(memory.messages());
+    ChatResponse response = chatModel.chat(memory.messages());
 
     // 添加AI回复到记忆
-    memory.add(response.content());
+    memory.add(response.aiMessage());
 
     long responseTime = System.currentTimeMillis() - startTime;
 
     // 构建引用信息
     List<Reference> references = buildReferences(relevantDocuments);
 
-    return ChatResponse.builder()
+    return AiChatResponse.builder()
         .sessionId(sessionId)
         .messageId(generateMessageId())
-        .content(response.content().text())
+        .content(response.aiMessage().text())
         .tokenUsage(convertTokenUsage(response.tokenUsage()))
         .responseTime(responseTime)
         .references(references)
@@ -785,8 +798,8 @@ private String buildRagPrompt(String question, List<TextSegment> documents) {
 函数调用模式支持调用外部工具：
 
 ```java
-private ChatResponse handleFunctionChat(
-    ChatLanguageModel chatModel,
+private AiChatResponse handleFunctionChat(
+    ChatModel chatModel,
     ChatRequest request,
     String sessionId
 ) {
@@ -802,28 +815,28 @@ private ChatResponse handleFunctionChat(
     List<ToolSpecification> tools = getAvailableTools();
 
     // 调用模型（带工具）
-    Response<AiMessage> response = chatModel.generate(memory.messages(), tools);
+    ChatResponse response = chatModel.chat(memory.messages(), tools);
 
     // 处理工具调用
-    if (response.content().hasToolExecutionRequests()) {
-        for (ToolExecutionRequest toolRequest : response.content().toolExecutionRequests()) {
+    if (response.aiMessage().hasToolExecutionRequests()) {
+        for (ToolExecutionRequest toolRequest : response.aiMessage().toolExecutionRequests()) {
             String result = executeToolCall(toolRequest);
             memory.add(ToolExecutionResultMessage.from(toolRequest, result));
         }
 
         // 再次调用模型获取最终回复
-        response = chatModel.generate(memory.messages());
+        response = chatModel.chat(memory.messages());
     }
 
     // 添加AI回复到记忆
-    memory.add(response.content());
+    memory.add(response.aiMessage());
 
     long responseTime = System.currentTimeMillis() - startTime;
 
-    return ChatResponse.builder()
+    return AiChatResponse.builder()
         .sessionId(sessionId)
         .messageId(generateMessageId())
-        .content(response.content().text())
+        .content(response.aiMessage().text())
         .tokenUsage(convertTokenUsage(response.tokenUsage()))
         .responseTime(responseTime)
         .finished(true)
@@ -1052,22 +1065,22 @@ public class ChatMessageSerializer {
 
 ### StreamChatHandler
 
-`StreamChatHandler` 实现 `StreamingResponseHandler` 接口，处理流式响应：
+`StreamChatHandler` 实现 langchain4j 1.x 的 `StreamingChatResponseHandler` 接口，处理流式响应。1.x 把回调拆为推理增量 `onPartialThinking`、正文增量 `onPartialResponse` 与完成回调 `onCompleteResponse`：
 
 ```java
 @Slf4j
-public class StreamChatHandler implements StreamingResponseHandler<AiMessage> {
+public class StreamChatHandler implements StreamingChatResponseHandler {
 
     private final String messageId;
     private final String sessionId;
-    private final Consumer<ChatResponse> responseConsumer;
+    private final Consumer<AiChatResponse> responseConsumer;
     private final StringBuilder fullContent = new StringBuilder();
     private final long startTime = System.currentTimeMillis();
 
     public StreamChatHandler(
         String messageId,
         String sessionId,
-        Consumer<ChatResponse> responseConsumer
+        Consumer<AiChatResponse> responseConsumer
     ) {
         this.messageId = messageId;
         this.sessionId = sessionId;
@@ -1075,16 +1088,37 @@ public class StreamChatHandler implements StreamingResponseHandler<AiMessage> {
     }
 
     /**
-     * 处理每个Token
+     * 处理推理 / 思考增量（仅推理模型 + enableThinking=true 时触发）
      */
     @Override
-    public void onNext(String token) {
-        fullContent.append(token);
+    public void onPartialThinking(PartialThinking partialThinking) {
+        if (partialThinking == null || partialThinking.text() == null) {
+            return;
+        }
 
-        ChatResponse response = ChatResponse.builder()
+        AiChatResponse response = AiChatResponse.builder()
             .messageId(messageId)
             .sessionId(sessionId)
-            .content(token)
+            .reasoningContent(partialThinking.text())
+            .phase(AiChatResponse.Phase.THINKING)
+            .finished(false)
+            .build();
+
+        responseConsumer.accept(response);
+    }
+
+    /**
+     * 处理正文增量
+     */
+    @Override
+    public void onPartialResponse(String partialResponse) {
+        fullContent.append(partialResponse);
+
+        AiChatResponse response = AiChatResponse.builder()
+            .messageId(messageId)
+            .sessionId(sessionId)
+            .content(partialResponse)
+            .phase(AiChatResponse.Phase.CONTENT)
             .finished(false)
             .build();
 
@@ -1095,10 +1129,10 @@ public class StreamChatHandler implements StreamingResponseHandler<AiMessage> {
      * 处理完成
      */
     @Override
-    public void onComplete(Response<AiMessage> response) {
+    public void onCompleteResponse(ChatResponse response) {
         long responseTime = System.currentTimeMillis() - startTime;
 
-        ChatResponse finalResponse = ChatResponse.builder()
+        AiChatResponse finalResponse = AiChatResponse.builder()
             .messageId(messageId)
             .sessionId(sessionId)
             .content(fullContent.toString())
@@ -1122,7 +1156,7 @@ public class StreamChatHandler implements StreamingResponseHandler<AiMessage> {
     public void onError(Throwable error) {
         log.error("Stream chat error, messageId: {}", messageId, error);
 
-        ChatResponse errorResponse = ChatResponse.builder()
+        AiChatResponse errorResponse = AiChatResponse.builder()
             .messageId(messageId)
             .sessionId(sessionId)
             .error(error.getMessage())
@@ -1263,7 +1297,7 @@ public class AiChatMessageProcessor implements MessageProcessor {
      * 处理同步对话
      */
     private void handleSyncChat(WebSocketSession session, ChatRequest request) {
-        ChatResponse response = chatService.chat(request);
+        AiChatResponse response = chatService.chat(request);
         sendChatResponse(session, response);
     }
 
@@ -1281,7 +1315,7 @@ public class AiChatMessageProcessor implements MessageProcessor {
     /**
      * 发送流式消息
      */
-    private void sendStreamMessage(WebSocketSession session, String sessionId, ChatResponse response) {
+    private void sendStreamMessage(WebSocketSession session, String sessionId, AiChatResponse response) {
         Map<String, Object> data = new HashMap<>();
         data.put("type", "ai_chat_stream");
         data.put("sessionId", sessionId);
@@ -1293,7 +1327,7 @@ public class AiChatMessageProcessor implements MessageProcessor {
     /**
      * 发送完成消息
      */
-    private void sendCompleteMessage(WebSocketSession session, String sessionId, ChatResponse response) {
+    private void sendCompleteMessage(WebSocketSession session, String sessionId, AiChatResponse response) {
         Map<String, Object> data = new HashMap<>();
         data.put("type", "ai_chat_complete");
         data.put("sessionId", sessionId);
@@ -1455,14 +1489,18 @@ public class ChatRequest {
 }
 ```
 
-### ChatResponse
+### AiChatResponse
+
+::: tip 命名说明
+项目响应 DTO 在 1.x 升级时由 `ChatResponse` 重命名为 `AiChatResponse`，避免与 langchain4j 1.x 的模型层 `dev.langchain4j.model.chat.response.ChatResponse` 同名冲突。
+:::
 
 ```java
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatResponse {
+public class AiChatResponse {
 
     /**
      * 会话ID
@@ -1475,9 +1513,20 @@ public class ChatResponse {
     private String messageId;
 
     /**
-     * AI回复内容
+     * AI回复正文（content 阶段累积内容；流式时为本次正文增量）
      */
     private String content;
+
+    /**
+     * 深度思考内容（reasoning / chain-of-thought）
+     * 完成态为累积全文，流式为单次增量；仅模型支持 thinking 且 returnThinking=true 时返回
+     */
+    private String reasoningContent;
+
+    /**
+     * 当前流式增量所属阶段：thinking（思考增量）/ content（正文增量）/ null（非流式或完成消息）
+     */
+    private String phase;
 
     /**
      * 是否完成
@@ -1504,6 +1553,17 @@ public class ChatResponse {
      * 错误信息
      */
     private String error;
+
+    /**
+     * 流式增量阶段枚举值
+     */
+    public static final class Phase {
+        public static final String THINKING = "thinking";
+        public static final String CONTENT = "content";
+
+        private Phase() {
+        }
+    }
 }
 ```
 
@@ -1702,7 +1762,7 @@ request.setMaxTokens(500);  // 最多500个token
 request.setMessage("简要介绍一下机器学习");
 
 // 监控Token使用
-ChatResponse response = chatService.chat(request);
+AiChatResponse response = chatService.chat(request);
 TokenUsageInfo usage = response.getTokenUsage();
 log.info("Token使用: 输入={}, 输出={}, 总计={}",
     usage.getInputTokens(),
@@ -2337,7 +2397,7 @@ public class KnowledgeBaseService {
         request.setMode(ChatMode.SINGLE);
         request.setSystemPrompt("你是一个专业的知识库问答助手，请根据提供的参考资料回答问题。");
 
-        ChatResponse response = chatService.chat(request);
+        AiChatResponse response = chatService.chat(request);
 
         return response.getContent();
     }
@@ -2596,7 +2656,9 @@ public class MathSolverService {
 ```java
 public class TokenCounter {
 
-    private static final Tokenizer DEFAULT_TOKENIZER = new OpenAiTokenizer();
+    // langchain4j 1.x：Tokenizer / OpenAiTokenizer 已移除，改用 TokenCountEstimator
+    private static final TokenCountEstimator DEFAULT_ESTIMATOR =
+        new OpenAiTokenCountEstimator("gpt-4o");
 
     /**
      * 估算文本的Token数量
@@ -2605,7 +2667,7 @@ public class TokenCounter {
         if (StrUtil.isBlank(text)) {
             return 0;
         }
-        return DEFAULT_TOKENIZER.estimateTokenCountInText(text);
+        return DEFAULT_ESTIMATOR.estimateTokenCountInText(text);
     }
 
     /**
@@ -2775,11 +2837,11 @@ public class TokenManagementService {
         <version>${langchain4j.version}</version>
     </dependency>
 
-    <!-- DashScope 通义千问支持 -->
+    <!-- DashScope 通义千问支持（1.x 起迁至 community 子项目，独立版本号且带 betaN 后缀，为社区集成稳定标识，非预发布） -->
     <dependency>
         <groupId>dev.langchain4j</groupId>
-        <artifactId>langchain4j-dashscope</artifactId>
-        <version>${langchain4j.version}</version>
+        <artifactId>langchain4j-community-dashscope</artifactId>
+        <version>${langchain4j-community.version}</version>
     </dependency>
 
     <!-- Anthropic Claude 支持 -->
@@ -2816,7 +2878,9 @@ public class TokenManagementService {
 
 ```xml
 <properties>
-    <langchain4j.version>0.35.0</langchain4j.version>
+    <langchain4j.version>1.14.1</langchain4j.version>
+    <!-- DashScope（通义千问）自 1.x 起迁出主仓库，artifactId 改为 langchain4j-community-dashscope，版本号独立维护 -->
+    <langchain4j-community.version>1.14.0-beta24</langchain4j-community.version>
 </properties>
 ```
 

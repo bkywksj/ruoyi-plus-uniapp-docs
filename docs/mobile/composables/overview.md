@@ -38,7 +38,8 @@ composables/
 │   ├── useWxShare.ts       # 微信分享
 │   ├── useScroll.ts        # 滚动控制
 │   ├── useAppInit.ts       # 应用初始化
-│   └── useSubscribe.ts     # 消息订阅
+│   ├── useSubscribe.ts     # 消息订阅
+│   └── useImageCompress.ts # 图片压缩(跨端)
 │
 └── 组件级组合式函数 (src/wd/components/composables/)
     ├── useParent.ts        # 父组件通信
@@ -608,6 +609,7 @@ const DEFAULT_THEME = {
 | `useI18n` | 国际化 | 多语言支持 |
 | `useAppInit` | 应用初始化 | 启动初始化流程 |
 | `useSubscribe` | 消息订阅 | 小程序消息订阅 |
+| `useImageCompress` | 图片压缩 | 跨端图片压缩、wd-upload 上传前自动压缩 |
 
 ## 组件级组合式函数
 

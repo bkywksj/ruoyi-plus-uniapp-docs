@@ -133,7 +133,7 @@ public class SysDictType extends TenantEntity {
 
 **关键字段说明**:
 
-- **dict_type**: 字典类型的唯一标识,建议使用模块前缀命名,如`sys_user_sex`、`biz_order_status`
+- **dict_type**: 字典类型的唯一标识,建议使用模块前缀命名,如`sys_user_gender`、`biz_order_status`
 - **is_system**: 系统级字典标识,用于保护系统核心字典不被租户误删除或修改
 - **status**: 字典状态,停用后前端将无法获取该字典类型下的数据
 
@@ -269,7 +269,7 @@ public class SysDictTypeBo {
       {
         "dictId": 1,
         "dictName": "用户性别",
-        "dictType": "sys_user_sex",
+        "dictType": "sys_user_gender",
         "status": "0",
         "isSystem": "1",
         "remark": "用户性别列表",
@@ -303,7 +303,7 @@ public class SysDictTypeBo {
   "data": {
     "dictId": 1,
     "dictName": "用户性别",
-    "dictType": "sys_user_sex",
+    "dictType": "sys_user_gender",
     "status": "0",
     "isSystem": "1",
     "remark": "用户性别列表"
@@ -457,7 +457,7 @@ public class SysDictTypeBo {
     {
       "dictId": 1,
       "dictName": "用户性别",
-      "dictType": "sys_user_sex"
+      "dictType": "sys_user_gender"
     },
     {
       "dictId": 2,
@@ -575,7 +575,7 @@ public class SysDictDataBo {
         "dictSort": 1,
         "dictLabel": "男",
         "dictValue": "1",
-        "dictType": "sys_user_sex",
+        "dictType": "sys_user_gender",
         "listClass": "primary",
         "isDefault": "Y",
         "status": "0",
@@ -586,7 +586,7 @@ public class SysDictDataBo {
         "dictSort": 2,
         "dictLabel": "女",
         "dictValue": "2",
-        "dictType": "sys_user_sex",
+        "dictType": "sys_user_gender",
         "listClass": "danger",
         "isDefault": "N",
         "status": "0",
@@ -622,7 +622,7 @@ public class SysDictDataBo {
     "dictSort": 1,
     "dictLabel": "男",
     "dictValue": "1",
-    "dictType": "sys_user_sex",
+    "dictType": "sys_user_gender",
     "cssClass": "",
     "listClass": "primary",
     "isDefault": "Y",
@@ -641,7 +641,7 @@ public class SysDictDataBo {
 **权限**: 无需权限
 
 **路径参数**:
-- `dictType`: 字典类型,如`sys_user_sex`
+- `dictType`: 字典类型,如`sys_user_gender`
 
 **业务逻辑**:
 
@@ -663,7 +663,7 @@ public class SysDictDataBo {
       "dictSort": 1,
       "dictLabel": "男",
       "dictValue": "1",
-      "dictType": "sys_user_sex",
+      "dictType": "sys_user_gender",
       "listClass": "primary",
       "isDefault": "Y",
       "status": "0"
@@ -673,7 +673,7 @@ public class SysDictDataBo {
       "dictSort": 2,
       "dictLabel": "女",
       "dictValue": "2",
-      "dictType": "sys_user_sex",
+      "dictType": "sys_user_gender",
       "listClass": "danger",
       "isDefault": "N",
       "status": "0"
@@ -692,7 +692,7 @@ import { getDictDataByType } from '@/api/system/dict'
 const sexOptions = ref([])
 
 onMounted(async () => {
-  const res = await getDictDataByType('sys_user_sex')
+  const res = await getDictDataByType('sys_user_gender')
   sexOptions.value = res.data
 })
 ```
@@ -725,7 +725,7 @@ onMounted(async () => {
   "dictSort": 3,
   "dictLabel": "未知",
   "dictValue": "0",
-  "dictType": "sys_user_sex",
+  "dictType": "sys_user_gender",
   "cssClass": "",
   "listClass": "info",
   "isDefault": "N",
@@ -767,7 +767,7 @@ onMounted(async () => {
   "dictSort": 3,
   "dictLabel": "保密",
   "dictValue": "0",
-  "dictType": "sys_user_sex",
+  "dictType": "sys_user_gender",
   "listClass": "warning",
   "isDefault": "N",
   "status": "0",
@@ -1061,11 +1061,11 @@ public interface DictService {
 
 ```java
 // 值转标签
-String label = dictTypeService.getDictLabel("sys_user_sex", "1", ",");
+String label = dictTypeService.getDictLabel("sys_user_gender", "1", ",");
 // 结果: "男"
 
 // 标签转值
-String value = dictTypeService.getDictValue("sys_user_sex", "男", ",");
+String value = dictTypeService.getDictValue("sys_user_gender", "男", ",");
 // 结果: "1"
 ```
 
@@ -1085,7 +1085,7 @@ String values = dictTypeService.getDictValue("sys_user_status", "正常,停用",
 
 ```java
 // 获取字典类型下所有数据的映射
-Map<String, String> dictMap = dictTypeService.getAllDictByDictType("sys_user_sex");
+Map<String, String> dictMap = dictTypeService.getAllDictByDictType("sys_user_gender");
 // 结果: {"1": "男", "2": "女", "0": "未知"}
 
 // 使用映射进行批量转换
@@ -1110,7 +1110,7 @@ public class UserServiceImpl implements IUserService {
         List<UserVo> userVos = MapstructUtils.convert(users, UserVo.class);
 
         // 批量转换字典标签
-        Map<String, String> sexDict = dictTypeService.getAllDictByDictType("sys_user_sex");
+        Map<String, String> sexDict = dictTypeService.getAllDictByDictType("sys_user_gender");
         Map<String, String> statusDict = dictTypeService.getAllDictByDictType("sys_user_status");
 
         for (UserVo vo : userVos) {
@@ -1131,7 +1131,7 @@ public class UserServiceImpl implements IUserService {
 
 ```java
 // ✅ 推荐
-sys_user_sex        // 系统模块-用户性别
+sys_user_gender        // 系统模块-用户性别
 sys_user_status     // 系统模块-用户状态
 biz_order_status    // 业务模块-订单状态
 biz_pay_method      // 业务模块-支付方式
@@ -1170,7 +1170,7 @@ dictSort = 3
 ```java
 // 系统核心字典,租户不可修改
 SysDictTypeBo dictType = new SysDictTypeBo();
-dictType.setDictType("sys_user_sex");
+dictType.setDictType("sys_user_gender");
 dictType.setIsSystem("1");  // 标记为系统级
 
 // 租户自定义字典,可以修改
@@ -1185,14 +1185,14 @@ customDict.setIsSystem("0");  // 标记为租户级
 
 ```java
 // ✅ 推荐 - 一次性获取字典映射,批量转换
-Map<String, String> sexDict = dictTypeService.getAllDictByDictType("sys_user_sex");
+Map<String, String> sexDict = dictTypeService.getAllDictByDictType("sys_user_gender");
 for (UserVo vo : userList) {
     vo.setSexLabel(sexDict.get(vo.getSex()));
 }
 
 // ❌ 不推荐 - 循环中多次调用,性能差
 for (UserVo vo : userList) {
-    String label = dictTypeService.getDictLabel("sys_user_sex", vo.getSex(), ",");
+    String label = dictTypeService.getDictLabel("sys_user_gender", vo.getSex(), ",");
     vo.setSexLabel(label);
 }
 ```
@@ -1256,7 +1256,7 @@ const handleChange = (value) => {
 dictTypeService.resetDictCache();
 
 // 方案2: 清除指定字典类型的缓存
-CacheUtils.evict(CacheNames.SYS_DICT, "sys_user_sex");
+CacheUtils.evict(CacheNames.SYS_DICT, "sys_user_gender");
 
 // 方案3: 使用正确的API接口修改数据(会自动更新缓存)
 dictDataService.updateDictData(dictDataBo);
@@ -1276,13 +1276,13 @@ dictDataService.updateDictData(dictDataBo);
 
 ```java
 // 检查数据库中是否存在该字典类型
-SELECT * FROM sys_dict_type WHERE dict_type = 'sys_user_sex';
+SELECT * FROM sys_dict_type WHERE dict_type = 'sys_user_gender';
 
 // 如果是软删除导致,可以修改字典类型名称
-UPDATE sys_dict_type SET dict_type = 'sys_user_sex_old' WHERE dict_type = 'sys_user_sex' AND del_flag = '1';
+UPDATE sys_dict_type SET dict_type = 'sys_user_gender_old' WHERE dict_type = 'sys_user_gender' AND del_flag = '1';
 
 // 或者使用不同的字典类型名称
-dictType.setDictType("sys_user_sex_v2");
+dictType.setDictType("sys_user_gender_v2");
 ```
 
 ### 3. 字典数据排序不生效
@@ -1323,7 +1323,7 @@ dictOptions.value = res.data.sort((a, b) => a.dictSort - b.dictSort);
 // 先删除字典类型下的所有字典数据
 List<SysDictData> dataList = dictDataDao.list(
     new PlusLambdaQuery<SysDictData>()
-        .eq(SysDictData::getDictType, "sys_user_sex")
+        .eq(SysDictData::getDictType, "sys_user_gender")
 );
 List<Long> dataIds = StreamUtils.toList(dataList, SysDictData::getDictDataId);
 dictDataService.deleteDictDataByIds(dataIds);
@@ -1416,7 +1416,7 @@ System.out.println(analysis);
 
 ```java
 // 后端转换
-Map<String, String> dictMap = dictTypeService.getAllDictByDictType("sys_user_sex");
+Map<String, String> dictMap = dictTypeService.getAllDictByDictType("sys_user_gender");
 for (UserVo vo : userList) {
     vo.setSexLabel(dictMap.getOrDefault(vo.getSex(), vo.getSex()));
 }

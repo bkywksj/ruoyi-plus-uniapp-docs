@@ -28,6 +28,9 @@ export default (mode: string) => {
     // 设置首页
     homePage: 'pages/index/index',
 
+    // 扫描的文件后缀：vue + nvue（nvue 仅 APP 端生效，weex 原生渲染）
+    extensions: ['vue', 'nvue'],
+
     // 排除的组件路径
     exclude: ['**/components/**/**.*'],
 
@@ -107,6 +110,9 @@ interface UniPagesOptions {
   /** 首页路径 */
   homePage?: string
 
+  /** 扫描的页面文件后缀（默认 ['vue']，加入 'nvue' 后 .nvue 页面也会被扫描并生成路由） */
+  extensions?: string[]
+
   /** 排除的文件模式 */
   exclude?: string[]
 
@@ -165,6 +171,21 @@ UniPages({
   routeBlockLang: 'json5',
 })
 ```
+
+### extensions
+
+- **类型**: `string[]`
+- **默认值**: `['vue']`
+- **说明**: 指定页面扫描的文件后缀。默认仅扫描 `.vue` 页面；`plus-app` 在此基础上加入 `'nvue'`，使 `.nvue` 原生渲染页面也会被自动扫描并生成路由
+
+```typescript
+UniPages({
+  // 同时扫描 vue 与 nvue 页面
+  extensions: ['vue', 'nvue'],
+})
+```
+
+`.nvue` 是 uni-app 的原生（Weex）渲染页面，仅在 APP 端生效，用于长列表、复杂动画、地图等对性能敏感的关键路径。加入 `'nvue'` 后，`pages/` 目录下的 `.vue` 与 `.nvue` 页面会被统一扫描进路由表，二者可通过 `uni.navigateTo` 互相跳转，平台自动衔接 WebView 与原生渲染层。NVUE 的 `manifest.json` 编译配置（`nvueCompiler`、`nvueLaunchMode` 等）独立于本插件，二者需配合使用。
 
 ### subPackages
 

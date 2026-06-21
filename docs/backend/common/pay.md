@@ -172,6 +172,9 @@ String mchId = "1234567890";
 String apiV3Key = "your_api_v3_key";
 String certSerialNo = "your_cert_serial_no";
 
+// 公钥ID（V3 公钥模式专用，格式 PUB_KEY_ID_xxx）
+String publicKeyId = "PUB_KEY_ID_0123456789...";
+
 // 证书配置
 String certPath = "cert/apiclient_cert.pem";
 String keyPath = "cert/apiclient_key.pem";
@@ -181,6 +184,14 @@ String platformCertPath = "cert/wechatpay_public_key.pem";
 // 或直接配置公钥内容
 String platformCertPath = "-----BEGIN PUBLIC KEY-----\nMIIBIj...\n-----END PUBLIC KEY-----";
 ```
+
+::: tip publicKeyId 公钥ID 字段（V3 公钥模式专用）
+微信支付 V3「公钥模式」验签需要一个**独立的公钥ID**（格式 `PUB_KEY_ID_xxx`），它与「证书序列号」`certSerialNo` 是两个不同的标识。早期实现误用证书序列号冒充公钥ID，会导致公钥模式下回调验签失败，因此新增了独立的 `publicKeyId` 字段贯通全链路（`b_payment` 表新增 `public_key_id` 列，`Payment` / `PaymentBo` / `PaymentVo` / `PaymentDTO` / `PayConfig` 均补充该字段）。
+
+- **获取路径**：微信商户平台 → 账户中心 → API 安全 → 微信支付公钥
+- **回退兼容**：`WxPayConfigBuilder` 构建配置时优先使用真实 `publicKeyId`；若该字段为空，则回退使用 `certSerialNo` 并打印告警，保证旧配置向后兼容
+- **适用范围**：仅「微信支付公钥模式」需要填写，「平台证书模式」可留空
+:::
 
 #### 证书配置灵活性 🔧
 

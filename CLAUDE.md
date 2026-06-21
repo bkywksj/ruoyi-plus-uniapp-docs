@@ -211,7 +211,8 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 | Hutool | 5.8.40 |
 | Warm-Flow | 1.8.1 |
 | SnailJob | 1.8.0 |
-| LangChain4j | 0.35.0 |
+| LangChain4j | 1.14.1 |
+| LangChain4j Community (DashScope) | 1.14.0-beta24 |
 | WxJava | 4.7.6.B |
 
 **⚠️ 重要说明**:
