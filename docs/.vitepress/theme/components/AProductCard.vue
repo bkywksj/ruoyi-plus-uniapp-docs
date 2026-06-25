@@ -91,6 +91,10 @@ defineProps({
   background: linear-gradient(180deg, #10B981, #34D399);
 }
 
+.product-card.theme-orange::before {
+  background: linear-gradient(180deg, #F59E0B, #F97316);
+}
+
 .product-card:hover {
   transform: translateX(4px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
@@ -154,6 +158,10 @@ defineProps({
   background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(52, 211, 153, 0.1));
 }
 
+.product-card.theme-orange .product-icon-wrapper {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(249, 115, 22, 0.1));
+}
+
 .product-icon {
   font-size: 28px;
   line-height: 1;
@@ -192,6 +200,10 @@ defineProps({
 
 .product-card.theme-green .product-slogan {
   color: #10B981;
+}
+
+.product-card.theme-orange .product-slogan {
+  color: #F59E0B;
 }
 
 /* 描述 */
@@ -237,6 +249,10 @@ defineProps({
 
 .product-card.theme-green .product-action-btn.is-primary {
   background: linear-gradient(135deg, #10B981, #34D399);
+}
+
+.product-card.theme-orange .product-action-btn.is-primary {
+  background: linear-gradient(135deg, #F59E0B, #F97316);
 }
 
 .product-action-btn.is-primary:hover {
@@ -288,6 +304,10 @@ defineProps({
 
 .product-card.theme-green .highlight-dot {
   background: #10B981;
+}
+
+.product-card.theme-orange .highlight-dot {
+  background: #F59E0B;
 }
 
 .highlight-text {
