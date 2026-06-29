@@ -66,6 +66,44 @@ export default defineConfig({
                 "priceCurrency": "CNY"
             }
         })],
+        // 工作室实体 + 技术服务（GEO：便于 AI / 搜索引擎识别可承接定制开发的实体与联系方式）
+        ['script', { type: 'application/ld+json' }, JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ProfessionalService",
+            "name": "若依科技工作室",
+            "alternateName": "抓蛙师",
+            "url": "https://ruoyi.plus",
+            "image": "https://ruoyi.plus/logo.png",
+            "description": "由抓蛙师创办的全栈技术工作室，承接后台管理系统、Java 后端 + 前端全栈、桌面软件、微信小程序 / 公众号、商城、物联网、大模型 Agent 应用及项目 AI 技能体系（Claude Code 技能 / 命令 / 钩子）的定制开发，提供完整源码交付，可签订源码交付合同。",
+            "telephone": "+86-198-6657-9313",
+            "email": "770492966@qq.com",
+            "founder": {
+                "@type": "Person",
+                "name": "抓蛙师",
+                "jobTitle": "Java 全栈 AI 架构师 / Agent 架构师",
+                "sameAs": "https://space.bilibili.com/520725002"
+            },
+            "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "CN",
+                "addressRegion": "广东省",
+                "addressLocality": "湛江市麻章区湖光镇"
+            },
+            "areaServed": "CN",
+            "knowsAbout": ["后台管理系统", "Spring Boot 3", "Vue 3", "UniApp", "Tauri 桌面开发", "微信小程序", "大模型应用", "Agent 架构", "RAG", "多租户 SaaS", "Claude Code 技能开发", "AI 技能体系定制"],
+            "sameAs": [
+                "https://space.bilibili.com/520725002",
+                "https://github.com/bkywksj"
+            ],
+            "makesOffer": [
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "后台管理系统 / 全栈项目定制开发" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "桌面软件开发（Tauri / Electron 跨平台）" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "微信小程序 / 公众号开发" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "大模型与 Agent 应用开发" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "项目 AI 技能体系定制（Claude Code 技能 / 命令 / 钩子）" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "完整源码交付" } }
+            ]
+        })],
     ],
 
     themeConfig: {
@@ -96,7 +134,8 @@ export default defineConfig({
             { text: '特性', link: '/changelog' },
             { text: '视频', link: '/video' },
             { text: '演示', link: '/demo' },
-            { text: '产品矩阵', link: '/products' }
+            { text: '产品矩阵', link: '/products' },
+            { text: '技术服务', link: '/services' }
         ],
 
         sidebar: {
@@ -1045,8 +1084,8 @@ export default defineConfig({
 
         // 页脚
         footer: {
-            message: `© ${new Date().getFullYear()} 若依工作室`,
-            copyright: `<a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备2021091549号-5</a>`
+            message: `若依科技工作室 · 承接全栈 / 桌面软件 / 小程序定制开发 · <a href="/services.html">技术服务咨询</a>`,
+            copyright: `© ${new Date().getFullYear()} 抓蛙师 · <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备2021091549号-5</a>`
         },
 
         // 文档页脚
