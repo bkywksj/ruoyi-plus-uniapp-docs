@@ -97,7 +97,7 @@ export default defineConfig({
             ],
             "makesOffer": [
                 { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "后台管理系统 / 全栈项目定制开发" } },
-                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "桌面软件开发（Tauri / Electron 跨平台）" } },
+                { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "桌面软件开发（Tauri 跨平台）" } },
                 { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "微信小程序 / 公众号开发" } },
                 { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "大模型与 Agent 应用开发" } },
                 { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "项目 AI 技能体系定制（Claude Code 技能 / 命令 / 钩子）" } },
