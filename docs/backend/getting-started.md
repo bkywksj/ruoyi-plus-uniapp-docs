@@ -12,7 +12,8 @@
 
 ### 核心环境
 - **Java**: JDK 17+
-  - 📥 [JDK 17 下载地址](https://openjdk.org/projects/jdk/17/) (推荐)
+  - 📥 [Eclipse Temurin JDK 17 下载地址](https://adoptium.net/temurin/releases/?version=17) (开源免费、免登录，推荐)
+  - 📥 [Oracle JDK 17 下载地址](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) (官方，需登录 Oracle 账号)
   - 支持 JDK 17 及以上版本
 
 - **数据库**:
