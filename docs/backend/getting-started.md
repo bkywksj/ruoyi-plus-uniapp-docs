@@ -16,6 +16,8 @@
   - 📥 [Oracle JDK 17 下载地址](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) (官方，需登录 Oracle 账号)
   - 支持 JDK 17 及以上版本
 
+> **分支提示**：以上为 3.5.x 主线（master）要求。Spring Boot 4 分支（6.x / 6.x-single）环境要求相同，仅框架版本升级至 4.1.0（JDK 21）。各分支差异详见 [分支说明](/changelog#分支说明)。
+
 - **数据库**:
   - **MySQL 5.7+** (推荐)
   - Oracle >= 12c
