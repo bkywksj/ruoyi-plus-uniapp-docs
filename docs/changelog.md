@@ -12,7 +12,7 @@
 | **single** | 3.5.x | 21 | ❌ | ❌ | 移除所有多租户逻辑（单租户版） |
 | **workflow** | 3.5.x | 21 | ✅ | ✅ | 多租户 + warm-flow 工作流 |
 | **6.x** | 4.1.0 | 21 | ✅ | ✅ | Spring Boot 4 全功能版（对标 workflow） |
-| **6.x-single** | 4.1.0 | 21 | ❌ | ❌ | Spring Boot 4 单租户版（对标 single） |
+| **6.x-single** | 4.1.0 | 21 | ❌ | ✅ | Spring Boot 4 单租户 + 工作流版 |
 
 > **Spring Boot 4 分支（6.x / 6.x-single）**：技术栈升级至 Spring Boot 4.1.0（JDK 21），其余业务代码、四层架构与开发规范同 3.5.x 主线完全一致。**本文档正文默认以 3.5.x 主线（master）为准**，SpringBoot 4 分支仅框架版本不同。
 
