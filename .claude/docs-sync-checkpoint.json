@@ -1,6 +1,37 @@
 {
-  "lastSyncCommit": "bb0d0d82fb317d46c3ab08a1afb6e6c3ffd935b5",
-  "lastSyncDate": "2026-06-17T21:06:41+08:00",
+  "defaultBranch": "workflow",
+  "branches": {
+    "master": {
+      "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp",
+      "gitBranch": "master",
+      "lastSyncCommit": null,
+      "lastSyncDate": null
+    },
+    "single": {
+      "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-single",
+      "gitBranch": "single",
+      "lastSyncCommit": null,
+      "lastSyncDate": null
+    },
+    "workflow": {
+      "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-workflow",
+      "gitBranch": "workflow",
+      "lastSyncCommit": "bb0d0d82fb317d46c3ab08a1afb6e6c3ffd935b5",
+      "lastSyncDate": "2026-06-17T21:06:41+08:00"
+    },
+    "6.x": {
+      "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x",
+      "gitBranch": "6.x",
+      "lastSyncCommit": null,
+      "lastSyncDate": null
+    },
+    "6.x-single": {
+      "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x-single",
+      "gitBranch": "single-6.x",
+      "lastSyncCommit": null,
+      "lastSyncDate": null
+    }
+  },
   "syncHistory": [
     {
       "commit": "a2bff84f7a8c298b341b32b04feb7e55533267b4",
