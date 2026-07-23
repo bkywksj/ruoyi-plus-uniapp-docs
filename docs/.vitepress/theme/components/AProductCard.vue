@@ -5,7 +5,7 @@
       <div class="product-left-top">
         <div class="product-icon-wrapper">
           <img v-if="logo" :src="logo" :alt="name" class="product-logo-img" />
-          <span v-else class="product-icon">{{ icon }}</span>
+          <Icon v-else-if="icon" :icon="icon" class="product-icon" />
         </div>
         <div>
           <div style="display: flex; align-items: center; gap: 10px;">

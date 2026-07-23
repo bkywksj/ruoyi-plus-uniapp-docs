@@ -2,7 +2,7 @@
   <div class="pricing-card" :class="{ 'is-recommended': recommended }">
     <!-- 推荐标签 -->
     <div v-if="recommended" class="recommended-badge">
-      <span>⭐ 推荐</span>
+      <span><Icon icon="lucide:star" /> 推荐</span>
     </div>
 
     <!-- 卡片头部 -->
@@ -25,7 +25,7 @@
     <div class="card-features">
       <ul class="feature-list">
         <li v-for="(feature, index) in features" :key="index" class="feature-item">
-          <span class="feature-icon">✓</span>
+          <span class="feature-icon"><Icon icon="lucide:check" /></span>
           <span class="feature-text">{{ feature }}</span>
         </li>
       </ul>
@@ -53,7 +53,7 @@
     <Transition name="modal">
       <div v-if="showModal" class="modal-overlay" @click="showModal = false">
         <div class="modal-content" @click.stop>
-          <div class="modal-icon">✓</div>
+          <div class="modal-icon"><Icon icon="lucide:check" /></div>
           <div class="modal-title">已复制</div>
           <div class="modal-message">
             微信同QQ：<span class="qq-number">770492966</span>

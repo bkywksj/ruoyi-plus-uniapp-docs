@@ -94,3 +94,52 @@
         padding: 4px 12px;
     }
 }
+
+/* ===== Iconify 图标与状态标记 ===== */
+/* 通用装饰图标：内联对齐正文，继承文字色 */
+.vp-doc :where(.iconify) {
+    display: inline-block;
+    vertical-align: -0.14em;
+    width: 1.05em;
+    height: 1.05em;
+}
+
+/* 语义状态标记（行内正误标记） */
+.imark {
+    display: inline-block;
+    vertical-align: -0.14em;
+    width: 1.1em;
+    height: 1.1em;
+    margin-right: 0.1em;
+}
+.imark-ok {
+    color: var(--vp-c-green-1, #18794e);
+}
+.imark-no {
+    color: var(--vp-c-red-1, #b8272c);
+}
+.imark-warn {
+    color: var(--vp-c-yellow-1, #915930);
+}
+.imark-ask {
+    color: var(--vp-c-brand-1, #3451b2);
+}
+
+/* 优先级圆点：实心配色 */
+.idot {
+    display: inline-block;
+    vertical-align: -0.1em;
+    width: 0.85em;
+    height: 0.85em;
+    margin-right: 0.1em;
+}
+.idot :where(path, circle) {
+    fill: currentColor;
+    stroke: currentColor;
+}
+.idot-red { color: #e5484d; }
+.idot-yellow { color: #f5a623; }
+.idot-green { color: #30a46c; }
+.idot-orange { color: #f76808; }
+.idot-blue { color: #3b82f6; }
+.idot-purple { color: #8e4ec6; }
