@@ -40,10 +40,10 @@ RuoYi-Plus 提供了完整的测试支持框架，基于 JUnit 5 构建，提供
 
 | 基类 | 启动 Spring | 启动 Web | 事务回滚 | 适用场景 |
 |------|------------|----------|---------|---------|
-| `BaseUnitTest` | ❌ | ❌ | ❌ | 工具类、POJO、算法 |
-| `BaseSpringTest` | ✅ | ❌ | ❌ | 需要依赖注入的测试 |
-| `BaseServiceTest` | ✅ | ❌ | ✅ | Service 层业务逻辑 |
-| `BaseControllerTest` | ✅ | ✅ | ❌ | Controller 接口测试 |
+| `BaseUnitTest` | 否 | 否 | 否 | 工具类、POJO、算法 |
+| `BaseSpringTest` | 是 | 否 | 否 | 需要依赖注入的测试 |
+| `BaseServiceTest` | 是 | 否 | 是 | Service 层业务逻辑 |
+| `BaseControllerTest` | 是 | 是 | 否 | Controller 接口测试 |
 
 ## 第三步：编写第一个测试
 
@@ -495,12 +495,12 @@ String filePath = TestConfig.getOutputFilePath("test.txt");
 
 通过本文档，你已经学会了：
 
-1. ✅ 添加测试依赖
-2. ✅ 选择合适的测试基类
-3. ✅ 编写单元测试和集成测试
-4. ✅ 使用测试数据工厂
-5. ✅ 运行和调试测试
-6. ✅ 使用断言库进行验证
-7. ✅ 最佳实践和问题排查
+1. <Ok/> 添加测试依赖
+2. <Ok/> 选择合适的测试基类
+3. <Ok/> 编写单元测试和集成测试
+4. <Ok/> 使用测试数据工厂
+5. <Ok/> 运行和调试测试
+6. <Ok/> 使用断言库进行验证
+7. <Ok/> 最佳实践和问题排查
 
 现在你可以在项目中编写高质量的测试代码了！

@@ -2,7 +2,7 @@
 
 Element Plus 消息与弹窗工具函数集，提供统一的用户交互反馈功能，包括消息提示、弹窗提示、通知、确认框、输入框和加载遮罩等。
 
-## 📖 概述
+## 概述
 
 模态框工具库基于 Element Plus 组件库，提供以下功能：
 - **消息提示**：各种类型的消息提示
@@ -11,17 +11,17 @@ Element Plus 消息与弹窗工具函数集，提供统一的用户交互反馈�
 - **交互弹窗**：确认框和输入框
 - **加载遮罩**：控制全局加载遮罩
 
-## 🎯 设计特点
+## 设计特点
 
-✨ **Result 格式返回**：所有异步方法都返回 `Result<T>` 格式：`[Error | null, T | null]`
+<Icon icon="lucide:sparkles" /> **Result 格式返回**：所有异步方法都返回 `Result<T>` 格式：`[Error | null, T | null]`
 
-✨ **统一 API 风格**：所有函数使用 `show` 前缀，便于智能提示和语义理解
+<Icon icon="lucide:sparkles" /> **统一 API 风格**：所有函数使用 `show` 前缀，便于智能提示和语义理解
 
-✨ **灵活参数支持**：支持字符串快捷调用和对象详细配置两种方式
+<Icon icon="lucide:sparkles" /> **灵活参数支持**：支持字符串快捷调用和对象详细配置两种方式
 
-✨ **TypeScript 友好**：完整的类型定义和智能提示支持
+<Icon icon="lucide:sparkles" /> **TypeScript 友好**：完整的类型定义和智能提示支持
 
-## 📢 消息提示
+## 消息提示
 
 ### showMsg
 
@@ -100,7 +100,7 @@ async function handleApiResponse() {
 }
 ```
 
-## 🔔 弹窗提示
+## 弹窗提示
 
 ### showAlert
 
@@ -171,7 +171,7 @@ const [err] = await showAlertError({
 
 显示成功/警告信息弹窗，用法与 `showAlertError` 类似。
 
-## 📨 通知提示
+## 通知提示
 
 ### showNotify
 
@@ -232,7 +232,7 @@ class FileUploader {
 }
 ```
 
-## ❓ 交互弹窗
+## 交互弹窗
 
 ### showConfirm
 
@@ -388,7 +388,7 @@ async function renameItem(itemId: number, currentName: string) {
 }
 ```
 
-## 🔄 加载遮罩
+## 加载遮罩
 
 ### showLoading
 
@@ -483,7 +483,7 @@ class DataManager {
 }
 ```
 
-## 💡 实际应用场景
+## 实际应用场景
 
 ### 1. 用户操作反馈系统
 
@@ -851,7 +851,7 @@ class DataWorkflow {
 }
 ```
 
-## 🎨 与 Element Plus 的集成
+## 与 Element Plus 的集成
 
 ### 表单验证结合
 
@@ -915,7 +915,7 @@ const handleTableRowAction = async (row: any, action: string) => {
 }
 ```
 
-## ⚡ 性能优化建议
+## 性能优化建议
 
 ### 1. 避免频繁弹窗
 
@@ -964,7 +964,7 @@ class LoadingManager {
 const loadingManager = new LoadingManager()
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **异步处理**：所有弹窗函数都是异步的，记得使用 await
 2. **错误处理**：使用 Result 格式可以优雅地处理用户取消操作
@@ -972,7 +972,7 @@ const loadingManager = new LoadingManager()
 4. **移动端适配**：在移动设备上测试弹窗显示效果
 5. **国际化**：考虑多语言环境下的文本显示
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 加载遮罩无法关闭
 

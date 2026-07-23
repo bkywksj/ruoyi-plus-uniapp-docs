@@ -1,4 +1,4 @@
-# Redis缓存 (redis) 
+# Redis缓存 (redis)
 
 ## 概述
 
@@ -6,14 +6,14 @@
 
 ## 核心特性
 
-- **🚀 高性能二级缓存**：Redis + Caffeine 双重缓存架构
-- **🔒 分布式锁**：基于 Redisson 的分布式锁机制
-- **📊 分布式ID生成**：支持多种格式的唯一ID生成
-- **🎯 队列管理**：普通队列、延迟队列、优先队列等
-- **⚡ 限流控制**：基于令牌桶的限流机制
-- **📡 发布订阅**：Redis消息发布订阅功能
-- **🔧 灵活配置**：支持单机和集群模式
-- **💡 智能序列化**：JSON序列化，支持Java8时间类型
+- **<Icon icon="lucide:rocket" /> 高性能二级缓存**：Redis + Caffeine 双重缓存架构
+- **<Icon icon="lucide:lock" /> 分布式锁**：基于 Redisson 的分布式锁机制
+- **<Icon icon="lucide:chart-column" /> 分布式ID生成**：支持多种格式的唯一ID生成
+- **<Icon icon="lucide:target" /> 队列管理**：普通队列、延迟队列、优先队列等
+- **<Icon icon="lucide:zap" /> 限流控制**：基于令牌桶的限流机制
+- **<Icon icon="lucide:radio-tower" /> 发布订阅**：Redis消息发布订阅功能
+- **<Icon icon="lucide:wrench" /> 灵活配置**：支持单机和集群模式
+- **<Icon icon="lucide:lightbulb" /> 智能序列化**：JSON序列化，支持Java8时间类型
 
 ## 架构设计
 

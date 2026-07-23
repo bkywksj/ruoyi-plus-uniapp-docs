@@ -2,7 +2,7 @@
 
 RuoYi-Plus 项目的API接口设计规范，包含RESTful设计、响应格式、错误处理等最佳实践。
 
-## 📋 设计原则
+## 设计原则
 
 ### 1. RESTful 风格
 
@@ -212,7 +212,7 @@ public R<PageResult<UserVo>> getUsers(UserQuery query, PageQuery pageQuery) {
 }
 ```
 
-## 🔗 URL 设计
+## URL 设计
 
 ### 资源命名
 
@@ -305,7 +305,7 @@ public class UserSearchBo {
 }
 ```
 
-## 📊 状态码设计
+## 状态码设计
 
 ### HTTP状态码
 
@@ -418,7 +418,7 @@ public class UserServiceImpl implements IUserService {
 }
 ```
 
-## 📝 请求响应设计
+## 请求响应设计
 
 ### 请求体设计
 
@@ -516,7 +516,7 @@ public class UserResponse {
 }
 ```
 
-## 🔒 安全设计
+## 安全设计
 
 ### 输入验证
 
@@ -615,7 +615,7 @@ public class PhoneDesensitizeSerializer extends JsonSerializer<String> {
 }
 ```
 
-## 📚 API文档
+## API文档
 
 ### OpenAPI规范
 
@@ -652,7 +652,7 @@ public class UserController {
 }
 ```
 
-## 🔄 版本控制
+## 版本控制
 
 ### URL 版本控制
 
@@ -738,7 +738,7 @@ public class UserServiceImpl implements IUserService {
 
 ---
 
-## ⚠️ 错误处理规范
+## 错误处理规范
 
 ### 全局异常处理
 
@@ -905,7 +905,7 @@ public ResponseEntity<ErrorDetail> handleValidException(
 
 ---
 
-## 📦 批量操作设计
+## 批量操作设计
 
 ### 批量查询
 
@@ -1044,7 +1044,7 @@ public class BatchDeleteResult {
 
 ---
 
-## 🔐 并发控制设计
+## 并发控制设计
 
 ### 乐观锁控制
 
@@ -1171,7 +1171,7 @@ public class OrderController {
 
 ---
 
-## 🚀 缓存策略设计
+## 缓存策略设计
 
 ### 接口缓存
 
@@ -1235,7 +1235,7 @@ public class StaticResourceController {
 
 ---
 
-## 🛡️ 限流设计
+## 限流设计
 
 ### 接口限流注解
 
@@ -1357,7 +1357,7 @@ public class RateLimiterInterceptor implements HandlerInterceptor {
 
 ---
 
-## 📋 日志规范
+## 日志规范
 
 ### 请求日志记录
 
@@ -1462,7 +1462,7 @@ public class OperLogServiceImpl implements IOperLogService {
 
 ---
 
-## 🔧 常见问题与解决方案
+## 常见问题与解决方案
 
 ### 1. 大数据量分页查询
 
@@ -1618,40 +1618,40 @@ public class UserController {
 
 ---
 
-## 📊 API 设计检查清单
+## API 设计检查清单
 
 开发 API 接口时，请确认以下事项：
 
 ### 设计规范
-- [ ] ✅ 使用 RESTful 风格设计
-- [ ] ✅ 使用正确的 HTTP 方法
-- [ ] ✅ 资源命名使用复数形式
-- [ ] ✅ URL 使用小写和连字符
+- [ ] <Ok/> 使用 RESTful 风格设计
+- [ ] <Ok/> 使用正确的 HTTP 方法
+- [ ] <Ok/> 资源命名使用复数形式
+- [ ] <Ok/> URL 使用小写和连字符
 
 ### 请求处理
-- [ ] ✅ 添加参数校验注解
-- [ ] ✅ 使用 BO 对象接收参数
-- [ ] ✅ 处理空值和边界情况
+- [ ] <Ok/> 添加参数校验注解
+- [ ] <Ok/> 使用 BO 对象接收参数
+- [ ] <Ok/> 处理空值和边界情况
 
 ### 响应格式
-- [ ] ✅ 使用统一的响应格式
-- [ ] ✅ 返回合适的状态码
-- [ ] ✅ 使用 VO 对象返回数据
+- [ ] <Ok/> 使用统一的响应格式
+- [ ] <Ok/> 返回合适的状态码
+- [ ] <Ok/> 使用 VO 对象返回数据
 
 ### 安全性
-- [ ] ✅ 添加权限注解
-- [ ] ✅ 敏感数据脱敏
-- [ ] ✅ 防止 SQL 注入和 XSS
+- [ ] <Ok/> 添加权限注解
+- [ ] <Ok/> 敏感数据脱敏
+- [ ] <Ok/> 防止 SQL 注入和 XSS
 
 ### 性能
-- [ ] ✅ 合理使用缓存
-- [ ] ✅ 批量操作有数量限制
-- [ ] ✅ 分页查询有合理默认值
+- [ ] <Ok/> 合理使用缓存
+- [ ] <Ok/> 批量操作有数量限制
+- [ ] <Ok/> 分页查询有合理默认值
 
 ### 文档
-- [ ] ✅ 添加 OpenAPI 注解
-- [ ] ✅ 参数和响应有清晰描述
-- [ ] ✅ 示例数据完整
+- [ ] <Ok/> 添加 OpenAPI 注解
+- [ ] <Ok/> 参数和响应有清晰描述
+- [ ] <Ok/> 示例数据完整
 
 ---
 

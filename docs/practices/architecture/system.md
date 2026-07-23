@@ -1,6 +1,6 @@
 # 系统架构设计
 
-> **文档状态**: ✅ 已完成
+> **文档状态**: <Ok/> 已完成
 >
 > **作者**: 抓蛙师
 >
@@ -8,7 +8,7 @@
 
 系统架构是软件系统的顶层设计,定义了系统的组织结构、技术选型、模块划分和交互方式。良好的架构设计是系统稳定性、可扩展性和可维护性的基础保障。本文档详细介绍RuoYi-Plus-UniApp全栈系统的整体架构设计原则和实践。
 
-## 📋 目录
+## 目录
 
 - [系统架构概览](#系统架构概览)
 - [技术选型](#技术选型)
@@ -283,13 +283,13 @@ public class SysUserController extends BaseController {
 ```
 
 **最佳实践:**
-- ✅ Controller只做路由和参数校验,不包含业务逻辑
-- ✅ 使用构造函数注入依赖(@RequiredArgsConstructor)
-- ✅ 使用@Validated进行参数校验
-- ✅ 使用@SaCheckPermission进行权限校验
-- ✅ 统一使用`R<T>`返回响应
-- ❌ 不要在Controller中处理业务逻辑
-- ❌ 不要直接调用Mapper层
+- <Ok/> Controller只做路由和参数校验,不包含业务逻辑
+- <Ok/> 使用构造函数注入依赖(@RequiredArgsConstructor)
+- <Ok/> 使用@Validated进行参数校验
+- <Ok/> 使用@SaCheckPermission进行权限校验
+- <Ok/> 统一使用`R<T>`返回响应
+- <No/> 不要在Controller中处理业务逻辑
+- <No/> 不要直接调用Mapper层
 
 #### 2. Service层
 
@@ -346,13 +346,13 @@ public class UserServiceImpl implements IUserService {
 ```
 
 **最佳实践:**
-- ✅ Service层负责业务编排和事务管理
-- ✅ 使用@Transactional管理事务边界
-- ✅ 调用Manager层处理具体逻辑
-- ✅ 不同Service之间通过Manager层共享逻辑
-- ❌ 不要在Service中处理HTTP相关逻辑
-- ❌ 避免Service之间循环依赖
-- ❌ 避免在Service中直接调用Mapper
+- <Ok/> Service层负责业务编排和事务管理
+- <Ok/> 使用@Transactional管理事务边界
+- <Ok/> 调用Manager层处理具体逻辑
+- <Ok/> 不同Service之间通过Manager层共享逻辑
+- <No/> 不要在Service中处理HTTP相关逻辑
+- <No/> 避免Service之间循环依赖
+- <No/> 避免在Service中直接调用Mapper
 
 #### 3. Manager层
 
@@ -450,12 +450,12 @@ public class UserManager {
 5. **跨表操作**: 不涉及事务的跨表数据操作
 
 **最佳实践:**
-- ✅ Manager层可被多个Service复用
-- ✅ 封装缓存操作,Service层无需关心缓存细节
-- ✅ 封装第三方服务调用
-- ✅ 使用@Component注解标注
-- ❌ 不要在Manager层管理事务(事务在Service层)
-- ❌ 不要处理Controller相关逻辑
+- <Ok/> Manager层可被多个Service复用
+- <Ok/> 封装缓存操作,Service层无需关心缓存细节
+- <Ok/> 封装第三方服务调用
+- <Ok/> 使用@Component注解标注
+- <No/> 不要在Manager层管理事务(事务在Service层)
+- <No/> 不要处理Controller相关逻辑
 
 #### 4. Mapper层
 
@@ -513,12 +513,12 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 ```
 
 **最佳实践:**
-- ✅ Mapper继承BaseMapper获得基础CRUD
-- ✅ 简单查询使用Wrapper
-- ✅ 复杂查询写XML
-- ✅ 使用resultMap映射复杂对象
-- ❌ 不要在Mapper中处理业务逻辑
-- ❌ 避免N+1查询问题
+- <Ok/> Mapper继承BaseMapper获得基础CRUD
+- <Ok/> 简单查询使用Wrapper
+- <Ok/> 复杂查询写XML
+- <Ok/> 使用resultMap映射复杂对象
+- <No/> 不要在Mapper中处理业务逻辑
+- <No/> 避免N+1查询问题
 
 ### 前端分层架构
 

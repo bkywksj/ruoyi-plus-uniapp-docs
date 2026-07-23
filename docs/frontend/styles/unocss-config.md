@@ -1406,7 +1406,7 @@ transformers: [
 
 对于常用的样式组合,定义快捷方式可以提高开发效率。
 
-**推荐做法** ✅:
+**推荐做法** <Ok/>:
 
 ```vue
 <template>
@@ -1416,7 +1416,7 @@ transformers: [
 </template>
 ```
 
-**不推荐** ❌:
+**不推荐** <No/>:
 
 ```vue
 <template>
@@ -1430,7 +1430,7 @@ transformers: [
 
 通过主题颜色变量实现暗黑模式自动适配。
 
-**推荐做法** ✅:
+**推荐做法** <Ok/>:
 
 ```vue
 <template>
@@ -1440,7 +1440,7 @@ transformers: [
 </template>
 ```
 
-**不推荐** ❌:
+**不推荐** <No/>:
 
 ```vue
 <template>
@@ -1454,7 +1454,7 @@ transformers: [
 
 对于复杂的交互状态,使用变体组可以提高可读性。
 
-**推荐做法** ✅:
+**推荐做法** <Ok/>:
 
 ```vue
 <template>
@@ -1469,7 +1469,7 @@ transformers: [
 </template>
 ```
 
-**不推荐** ❌:
+**不推荐** <No/>:
 
 ```vue
 <template>
@@ -1483,7 +1483,7 @@ transformers: [
 
 使用响应式断点实现多端适配。
 
-**推荐做法** ✅:
+**推荐做法** <Ok/>:
 
 ```vue
 <template>
@@ -1497,7 +1497,7 @@ transformers: [
 
 对于组件内部的重复样式,使用 `@apply` 提取。
 
-**推荐做法** ✅:
+**推荐做法** <Ok/>:
 
 ```vue
 <template>

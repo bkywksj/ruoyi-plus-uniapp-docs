@@ -2,7 +2,7 @@
 
 全局类型定义在 `global.d.ts` 中,通过 `declare global` 声明,在项目任何位置都可直接使用无需导入。
 
-## 🎯 核心全局类型
+## 核心全局类型
 
 ### 1. 组件实例类型
 
@@ -606,7 +606,7 @@ function handleRemove(file: UploadFile) {
 }
 ```
 
-## 🔧 全局类型使用技巧
+## 全局类型使用技巧
 
 ### 1. 无需导入
 
@@ -723,7 +723,7 @@ function isStandardResponse<T>(data: any): data is R<T> {
 }
 ```
 
-## 📋 实际应用案例
+## 实际应用案例
 
 ### 案例1: 通用表格组件
 
@@ -999,7 +999,7 @@ function handlePreview(file: UploadFile) {
 </script>
 ```
 
-## ✅ 全局类型最佳实践
+## 全局类型最佳实践
 
 ### 1. 合理使用全局类型
 
@@ -1173,7 +1173,7 @@ declare interface PageQuery {
 }
 ```
 
-## 📚 总结
+## 总结
 
 全局类型提供了统一的基础类型定义,主要优势:
 

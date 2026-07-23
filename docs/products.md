@@ -7,7 +7,7 @@
 <div class="products-grid">
 
 <AProductCard
-  icon="🤖"
+  icon="lucide:bot"
   logo="/products/ai-workstation.svg"
   name="AI 全能工作站"
   slogan="一句话搞定一切 · 61个专业模块 · 1246 AI技能"
@@ -29,7 +29,7 @@
 />
 
 <AProductCard
-  icon="⚡"
+  icon="lucide:zap"
   logo="/products/aicoder.png"
   name="智码 AiCoder"
   slogan="给 Claude Code、Codex、Gemini CLI 一个统一的家"
@@ -49,7 +49,7 @@
 />
 
 <AProductCard
-  icon="🖥️"
+  icon="lucide:monitor"
   logo="/products/tauri-desktop.svg"
   name="灵动桌面框架"
   slogan="React 19 + Rust + TypeScript · AI驱动 · 轻量安全 · 高性能跨平台"
@@ -68,7 +68,7 @@
 />
 
 <AProductCard
-  icon="🔐"
+  icon="lucide:lock-keyhole"
   logo="/products/sigil.svg"
   name="Sigil"
   slogan="AI 凭据金库 · MCP 协议代理 —— AI 用得到、看不到明文"
@@ -87,7 +87,7 @@
 />
 
 <AProductCard
-  icon="🛡️"
+  icon="lucide:shield"
   logo="/products/reeve.png"
   name="Reeve"
   slogan="服务器庄园总管 · SSH 管理 + 受控 AI 接入（MCP）"
@@ -106,7 +106,7 @@
 />
 
 <AProductCard
-  icon="📸"
+  icon="lucide:camera"
   logo="/products/agileshot.png"
   name="AgileShot"
   slogan="AI 时代的桌面截图与标注工具"
@@ -127,7 +127,7 @@
 />
 
 <AProductCard
-  icon="📚"
+  icon="lucide:library"
   logo="/products/knowledge-base.png"
   name="本地知识库"
   slogan="全文搜索 · 双向链接 · 知识图谱 · 内置 MCP Server"

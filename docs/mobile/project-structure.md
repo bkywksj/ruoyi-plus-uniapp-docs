@@ -194,7 +194,7 @@ UnoCSS 原子化 CSS 配置，定义快捷方式、规则和预设。
 
 ### 源码目录详解
 
-#### 📁 api/
+#### api/
 API 接口管理目录，集中管理所有 HTTP 请求接口：
 
 - **app/**: 应用相关接口（如配置、通知等）
@@ -206,7 +206,7 @@ API 接口管理目录，集中管理所有 HTTP 请求接口：
 - 统一使用 useHttp 进行请求
 - 支持请求/响应加密解密
 
-#### 📁 components/
+#### components/
 全局组件目录，存放可复用的业务组件：
 
 - **auth/**: 认证相关组件（如授权模态框）
@@ -221,7 +221,7 @@ API 接口管理目录，集中管理所有 HTTP 请求接口：
 </template>
 ```
 
-#### 📁 composables/
+#### composables/
 组合式函数目录，封装可复用的业务逻辑：
 
 **核心 Composables**：
@@ -245,25 +245,25 @@ if (hasPermi('system:user:add')) {
 }
 ```
 
-#### 📁 layouts/
+#### layouts/
 布局组件目录，定义页面布局结构：
 
 - **default.vue**: 默认布局（包含导航栏、内容区等）
 
-#### 📁 locales/
+#### locales/
 国际化语言包目录：
 
 - **zh_CN.ts**: 中文语言包
 - **en_US.ts**: 英文语言包
 - **i18n.ts**: 国际化配置
 
-#### 📁 pages/
+#### pages/
 主包页面目录，存放主包页面文件：
 
 - **auth/**: 认证相关页面（登录、注册、授权等）
 - **index/**: 底部导航相关页面
 
-#### 📁 pages-sub/
+#### pages-sub/
 分包页面目录，用于优化小程序包体积：
 
 - **admin/**: 管理功能分包（管理员专用功能）
@@ -274,14 +274,14 @@ if (hasPermi('system:user:add')) {
 - 按需加载，提升用户体验
 - 管理功能独立，便于维护
 
-#### 📁 static/
+#### static/
 静态资源目录，存放图片、字体等静态文件：
 
 - **app/**: 应用图标、启动图等
 - **images/**: 业务图片资源
 - **style/**: 全局样式文件
 
-#### 📁 stores/
+#### stores/
 Pinia 状态管理目录：
 
 **状态模块**：
@@ -297,14 +297,14 @@ const userStore = useUserStore()
 console.log(userStore.userInfo)
 ```
 
-#### 📁 types/
+#### types/
 TypeScript 类型定义目录：
 
 - **api.d.ts**: API 接口类型定义
 - **global.d.ts**: 全局类型定义
 - **uni.d.ts**: uni-app 扩展类型定义
 
-#### 📁 utils/
+#### utils/
 工具函数目录，复用前端的工具函数：
 
 **核心工具**：
@@ -322,7 +322,7 @@ TypeScript 类型定义目录：
 - **to.ts**: 安全异步执行
 - **validators.ts**: 表单验证规则
 
-#### 📁 wd/
+#### wd/
 WotUI 组件库目录，经过 Vue 3 + TypeScript 重构的移动端组件库：
 
 - **components/**: 组件源码

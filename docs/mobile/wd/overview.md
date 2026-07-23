@@ -33,9 +33,9 @@
 
 | 平台类型 | 支持平台 | 状态 |
 |---------|---------|------|
-| **Web** | H5 | ✅ 完全支持 |
-| **小程序** | 微信、支付宝、钉钉、百度、抖音、QQ、快手、小红书 | ✅ 完全支持 |
-| **App** | Android、iOS、鸿蒙 | ✅ 完全支持 |
+| **Web** | H5 | 是 完全支持 |
+| **小程序** | 微信、支付宝、钉钉、百度、抖音、QQ、快手、小红书 | 是 完全支持 |
+| **App** | Android、iOS、鸿蒙 | 是 完全支持 |
 
 **平台差异处理**:
 
@@ -1554,10 +1554,10 @@ export const useFormRules = () => {
 
 **主要更新**：
 
-- 🎉 新增鸿蒙 App 支持
-- ✨ 优化 TypeScript 类型定义
-- 🐛 修复已知问题
-- 📝 完善文档示例
+- <Icon icon="lucide:party-popper" /> 新增鸿蒙 App 支持
+- <Icon icon="lucide:sparkles" /> 优化 TypeScript 类型定义
+- <Icon icon="lucide:bug" /> 修复已知问题
+- <Icon icon="lucide:file-pen-line" /> 完善文档示例
 
 ### 升级指南
 

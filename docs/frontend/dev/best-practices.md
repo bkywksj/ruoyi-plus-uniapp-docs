@@ -2,7 +2,7 @@
 
 前端项目的开发规范和最佳实践指南。
 
-## 🎯 编码规范
+## 编码规范
 
 ### 命名规范
 
@@ -188,7 +188,7 @@ function binarySearch(arr: number[], target: number) {
 const userName = 'John' // 这行设置用户名
 ```
 
-## 📝 Vue 最佳实践
+## Vue 最佳实践
 
 ### 组件设计
 
@@ -363,7 +363,7 @@ const filteredList = computed(() => {
 </VirtualScroll>
 ```
 
-## 🔄 TypeScript 最佳实践
+## TypeScript 最佳实践
 
 ### 类型定义
 
@@ -461,7 +461,7 @@ if (typeof value === 'string') {
 }
 ```
 
-## 🎨 CSS 最佳实践
+## CSS 最佳实践
 
 ### 命名规范
 
@@ -509,7 +509,7 @@ if (typeof value === 'string') {
 }
 ```
 
-## 📦 项目结构
+## 项目结构
 
 ### 目录组织
 
@@ -584,7 +584,7 @@ onMounted(() => {
 // 业务逻辑应该在 Store 中
 ```
 
-## 🔒 安全最佳实践
+## 安全最佳实践
 
 ### XSS 防护
 
@@ -645,7 +645,7 @@ if (hasPermission('system:user:delete')) {
 }
 ```
 
-## 🐛 错误处理
+## 错误处理
 
 ### 统一错误处理
 
@@ -698,7 +698,7 @@ if (err) {
 msgError('Failed to fetch user: 500 Internal Server Error')
 ```
 
-## 📋 开发检查清单
+## 开发检查清单
 
 ### 代码提交前
 - [ ] 代码格式化（Prettier）

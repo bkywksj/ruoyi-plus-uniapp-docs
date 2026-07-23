@@ -1664,7 +1664,7 @@ interface ApiParams {
 
 ### 1. 统一使用date工具,避免直接操作Date
 
-✅ **推荐**:
+<Ok/> **推荐**:
 ```typescript
 import { formatDate, getCurrentDate } from '@/utils/date'
 
@@ -1672,7 +1672,7 @@ const today = getCurrentDate()
 const formatted = formatDate(new Date(), 'yyyy-MM-dd')
 ```
 
-❌ **不推荐**:
+<No/> **不推荐**:
 ```typescript
 const today = new Date().toISOString().split('T')[0]
 const year = new Date().getFullYear()
@@ -1685,7 +1685,7 @@ const formatted = `${year}-${month}-${day}`
 
 ### 2. 相对时间显示需要定时更新
 
-✅ **推荐**:
+<Ok/> **推荐**:
 ```vue
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue'
@@ -1710,7 +1710,7 @@ onUnmounted(() => {
 </script>
 ```
 
-❌ **不推荐**:
+<No/> **不推荐**:
 ```vue
 <script lang="ts" setup>
 import { formatRelativeTime } from '@/utils/date'
@@ -1724,7 +1724,7 @@ const relativeTime = formatRelativeTime(publishTime)
 
 ### 3. 时间戳统一使用毫秒,formatDate会自动转换
 
-✅ **推荐**:
+<Ok/> **推荐**:
 ```typescript
 import { formatDate } from '@/utils/date'
 
@@ -1735,7 +1735,7 @@ const timestamp = 1705299045 // 10位
 const formatted = formatDate(timestamp, 'yyyy-MM-dd HH:mm:ss')
 ```
 
-❌ **不推荐**:
+<No/> **不推荐**:
 ```typescript
 // 手动转换
 const timestamp = 1705299045
@@ -1747,7 +1747,7 @@ const formatted = formatDate(timestampMs, 'yyyy-MM-dd HH:mm:ss')
 
 ### 4. 表格日期使用formatTableDate
 
-✅ **推荐**:
+<Ok/> **推荐**:
 ```typescript
 import { formatTableDate } from '@/utils/date'
 
@@ -1761,7 +1761,7 @@ const formatRow = (row: TableRow) => ({
 })
 ```
 
-❌ **不推荐**:
+<No/> **不推荐**:
 ```typescript
 import { formatDate } from '@/utils/date'
 
@@ -1777,7 +1777,7 @@ const formatRow = (row: TableRow) => ({
 
 ### 5. 日期范围查询使用addDateRange
 
-✅ **推荐**:
+<Ok/> **推荐**:
 ```typescript
 import { addDateRange } from '@/utils/date'
 
@@ -1787,7 +1787,7 @@ const fetchList = (params: any, dateRange: [string, string]) => {
 }
 ```
 
-❌ **不推荐**:
+<No/> **不推荐**:
 ```typescript
 const fetchList = (params: any, dateRange: [string, string]) => {
   const queryParams = {
@@ -1803,7 +1803,7 @@ const fetchList = (params: any, dateRange: [string, string]) => {
 
 ### 6. 计算日期差使用getDaysBetween而非手动计算
 
-✅ **推荐**:
+<Ok/> **推荐**:
 ```typescript
 import { getDaysBetween } from '@/utils/date'
 
@@ -1812,7 +1812,7 @@ const end = new Date('2024-01-15')
 const days = getDaysBetween(start, end) // 14
 ```
 
-❌ **不推荐**:
+<No/> **不推荐**:
 ```typescript
 const start = new Date('2024-01-01')
 const end = new Date('2024-01-15')
@@ -1823,7 +1823,7 @@ const days = Math.floor((end.getTime() - start.getTime()) / (1000 * 3600 * 24))
 
 ### 7. 日期加减使用dateAdd而非手动计算
 
-✅ **推荐**:
+<Ok/> **推荐**:
 ```typescript
 import { dateAdd } from '@/utils/date'
 
@@ -1832,7 +1832,7 @@ const nextMonth = dateAdd(new Date(), 'month', 1)
 const lastYear = dateAdd(new Date(), 'year', -1)
 ```
 
-❌ **不推荐**:
+<No/> **不推荐**:
 ```typescript
 const tomorrow = new Date(Date.now() + 24 * 3600 * 1000)
 
@@ -1844,7 +1844,7 @@ const nextMonth = new Date(now.getFullYear(), now.getMonth() + 1, now.getDate())
 
 ### 8. 组合使用多个工具函数实现复杂逻辑
 
-✅ **推荐**:
+<Ok/> **推荐**:
 ```typescript
 import { getDateRangeByType, addDateRange, formatDate } from '@/utils/date'
 

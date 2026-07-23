@@ -6,14 +6,14 @@ OSS（Object Storage Service）对象存储模块为若依系统提供了统一�
 
 ### 主要特性
 
-- 🚀 **多存储支持**：支持本地存储、阿里云OSS、腾讯云COS、七牛云、华为云OBS、MinIO等
-- 🔒 **安全可靠**：支持预签名URL、访问权限控制、文件完整性校验
-- 🎯 **高性能**：基于AWS S3 SDK v2异步客户端与Netty，支持大文件传输
-- 🔧 **易于配置**：支持动态配置切换，无需重启应用
-- 📊 **多租户**：支持租户数据隔离，文件路径自动包含租户ID
-- 🎨 **灵活路径**：支持自定义文件存储路径规则
-- 🔄 **线程安全**：客户端工厂采用双重检查锁定模式，确保并发安全
-- ⚡ **智能缓存**：配置信息缓存至Redis，客户端实例按租户缓存
+- <Icon icon="lucide:rocket" /> **多存储支持**：支持本地存储、阿里云OSS、腾讯云COS、七牛云、华为云OBS、MinIO等
+- <Icon icon="lucide:lock" /> **安全可靠**：支持预签名URL、访问权限控制、文件完整性校验
+- <Icon icon="lucide:target" /> **高性能**：基于AWS S3 SDK v2异步客户端与Netty，支持大文件传输
+- <Icon icon="lucide:wrench" /> **易于配置**：支持动态配置切换，无需重启应用
+- <Icon icon="lucide:chart-column" /> **多租户**：支持租户数据隔离，文件路径自动包含租户ID
+- <Icon icon="lucide:palette" /> **灵活路径**：支持自定义文件存储路径规则
+- <Icon icon="lucide:refresh-cw" /> **线程安全**：客户端工厂采用双重检查锁定模式，确保并发安全
+- <Icon icon="lucide:zap" /> **智能缓存**：配置信息缓存至Redis，客户端实例按租户缓存
 
 ### 支持的存储类型
 

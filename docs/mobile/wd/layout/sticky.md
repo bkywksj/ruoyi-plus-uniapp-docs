@@ -947,7 +947,7 @@ Sticky 组件支持通过 CSS 变量进行主题定制:
 
 ### 1. 合理设置层级
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 ```vue
 <template>
   <!-- 导航栏层级较高 -->
@@ -962,7 +962,7 @@ Sticky 组件支持通过 CSS 变量进行主题定制:
 </template>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 ```vue
 <template>
   <!-- 所有吸顶元素使用相同层级,可能导致遮挡问题 -->
@@ -983,7 +983,7 @@ Sticky 组件支持通过 CSS 变量进行主题定制:
 
 ### 2. 配合容器限制范围
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 ```vue
 <template>
   <!-- 使用 StickyBox 限制吸顶范围 -->
@@ -998,7 +998,7 @@ Sticky 组件支持通过 CSS 变量进行主题定制:
 </template>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 ```vue
 <template>
   <!-- 不使用容器,吸顶元素会一直固定在顶部 -->
@@ -1018,7 +1018,7 @@ Sticky 组件支持通过 CSS 变量进行主题定制:
 
 ### 3. 避免频繁切换
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 ```vue
 <template>
   <wd-sticky>
@@ -1041,7 +1041,7 @@ const updateText = () => {
 </script>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 ```vue
 <template>
   <!-- 频繁添加/移除吸顶元素 -->
@@ -1071,7 +1071,7 @@ const toggleSticky = () => {
 
 ### 4. 注意内容高度
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 ```vue
 <template>
   <wd-sticky-box>
@@ -1089,7 +1089,7 @@ const toggleSticky = () => {
 </template>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 ```vue
 <template>
   <wd-sticky-box>
@@ -1114,7 +1114,7 @@ const toggleSticky = () => {
 
 ### 5. 优化滚动性能
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 ```vue
 <template>
   <view class="demo">
@@ -1134,7 +1134,7 @@ const toggleSticky = () => {
 </template>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 ```vue
 <template>
   <view class="demo">

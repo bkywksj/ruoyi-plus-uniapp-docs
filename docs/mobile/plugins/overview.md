@@ -641,9 +641,9 @@ export const useCustomPlugin = (options = {}) => {
 ### 插件命名规范
 
 1. **文件命名**: 使用 `use` 前缀,camelCase 命名
-   - ✅ `useCustomPlugin.ts`
-   - ❌ `customPlugin.ts`
-   - ❌ `UseCustomPlugin.ts`
+   - <Ok/> `useCustomPlugin.ts`
+   - <No/> `customPlugin.ts`
+   - <No/> `UseCustomPlugin.ts`
 
 2. **导出名称**: 与文件名一致
    ```typescript
@@ -698,11 +698,11 @@ export const useCustomPlugin = (options = {}) => {
 
 | 插件 | H5 | 小程序 | App | 说明 |
 |------|-----|--------|-----|------|
-| usePayment | ✅ | ✅ | ✅ | 支付方式自动适配 |
-| useShare | ❌ | ✅ | ❌ | 仅小程序支持 |
-| useWxShare | ✅ | ✅ | ✅ | 微信环境专用 |
-| useWebSocket | ✅ | ✅ | ✅ | 全平台支持 |
-| useAuth | ✅ | ✅ | ✅ | 全平台支持 |
+| usePayment | 是 | 是 | 是 | 支付方式自动适配 |
+| useShare | 否 | 是 | 否 | 仅小程序支持 |
+| useWxShare | 是 | 是 | 是 | 微信环境专用 |
+| useWebSocket | 是 | 是 | 是 | 全平台支持 |
+| useAuth | 是 | 是 | 是 | 全平台支持 |
 
 ## 常见问题
 

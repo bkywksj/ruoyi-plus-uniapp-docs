@@ -389,8 +389,8 @@ public class ${ClassName}Controller {
 | 特性 | @Validated | @Valid |
 |------|------------|--------|
 | 来源 | Spring 框架 | JSR-380 标准 |
-| 分组校验 | ✅ 支持 | ❌ 不支持 |
-| 嵌套校验 | ❌ 不支持 | ✅ 支持 |
+| 分组校验 | 是 支持 | 否 不支持 |
+| 嵌套校验 | 否 不支持 | 是 支持 |
 | 使用位置 | 类、方法、参数 | 方法、参数、字段 |
 
 **推荐使用方式:**
@@ -1032,7 +1032,7 @@ public class GlobalExceptionHandler {
 
 ### 1. 合理使用校验分组
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Data
@@ -1071,7 +1071,7 @@ public class ArticleBo {
 }
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```java
 @Data
@@ -1088,7 +1088,7 @@ public class ArticleBo {
 
 ### 2. 校验消息清晰明确
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Data
@@ -1110,7 +1110,7 @@ public class UserBo {
 }
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```java
 @Data
@@ -1130,7 +1130,7 @@ public class UserBo {
 
 ### 3. 前后端校验配合
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 前端进行基础校验,提升用户体验;后端进行完整校验,确保数据安全。
 
@@ -1174,7 +1174,7 @@ public class UserBo {
 
 ### 4. 避免过度校验
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Data
@@ -1193,7 +1193,7 @@ public class QueryBo {
 }
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```java
 @Data
@@ -1214,7 +1214,7 @@ public class QueryBo {
 
 ### 5. 使用自定义校验封装复杂规则
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 // 使用自定义注解封装复杂校验逻辑
@@ -1232,7 +1232,7 @@ public class OrderBo {
 }
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```java
 // ❌ 在每个字段上重复写正则表达式
@@ -1250,7 +1250,7 @@ public class OrderBo {
 
 ### 6. Service 层补充业务校验
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Service
@@ -1304,7 +1304,7 @@ public class OrderServiceImpl implements IOrderService {
 - 方法参数上没有添加 `@Validated` 或 `@Valid`
 - 校验注解没有指定分组但使用了分组校验
 
-**✅ 正确做法:**
+**<Ok/> 正确做法:**
 
 ```java
 @Validated  // 类上必须添加
@@ -1336,7 +1336,7 @@ public class UserBo {
 
 - 嵌套对象字段上没有添加 `@Valid` 注解
 
-**❌ 错误示例:**
+**<No/> 错误示例:**
 
 ```java
 @Data
@@ -1348,7 +1348,7 @@ public class OrderBo {
 }
 ```
 
-**✅ 正确做法:**
+**<Ok/> 正确做法:**
 
 ```java
 @Data
@@ -1367,7 +1367,7 @@ public class OrderBo {
 
 - 集合字段上没有添加 `@Valid` 注解
 
-**❌ 错误示例:**
+**<No/> 错误示例:**
 
 ```java
 @Data
@@ -1379,7 +1379,7 @@ public class BatchBo {
 }
 ```
 
-**✅ 正确做法:**
+**<Ok/> 正确做法:**
 
 ```java
 @Data
@@ -1398,7 +1398,7 @@ public class BatchBo {
 
 - 同一字段在不同分组中的校验规则相互矛盾
 
-**❌ 错误示例:**
+**<No/> 错误示例:**
 
 ```java
 @Data
@@ -1411,7 +1411,7 @@ public class UserBo {
 }
 ```
 
-**✅ 正确做法:**
+**<Ok/> 正确做法:**
 
 ```java
 @Data
@@ -1430,7 +1430,7 @@ public class UserBo {
 
 - 占位符格式错误或注解不支持
 
-**❌ 错误示例:**
+**<No/> 错误示例:**
 
 ```java
 @Data
@@ -1442,7 +1442,7 @@ public class UserBo {
 }
 ```
 
-**✅ 正确做法:**
+**<Ok/> 正确做法:**
 
 ```java
 @Data

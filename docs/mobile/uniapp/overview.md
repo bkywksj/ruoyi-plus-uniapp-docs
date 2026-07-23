@@ -68,28 +68,28 @@ uni-app 是一个使用 Vue.js 开发所有前端应用的框架，开发者编�
 
 ## 支持的平台
 
-### 📱 小程序平台
+### 小程序平台
 
 | 平台 | 开发命令 | 构建命令 | 状态 |
 |------|---------|---------|------|
-| 微信小程序 | `pnpm dev:mp-weixin` | `pnpm build:mp-weixin` | ✅ 主要支持 |
-| 支付宝小程序 | `pnpm dev:mp-alipay` | `pnpm build:mp-alipay` | ✅ 支持 |
-| 百度小程序 | `pnpm dev:mp-baidu` | `pnpm build:mp-baidu` | ✅ 支持 |
-| 字节跳动小程序 | `pnpm dev:mp-toutiao` | `pnpm build:mp-toutiao` | ✅ 支持 |
-| QQ小程序 | `pnpm dev:mp-qq` | `pnpm build:mp-qq` | ✅ 支持 |
-| 快手小程序 | `pnpm dev:mp-kuaishou` | `pnpm build:mp-kuaishou` | ✅ 支持 |
-| 京东小程序 | `pnpm dev:mp-jd` | `pnpm build:mp-jd` | ✅ 支持 |
-| 小红书小程序 | `pnpm dev:mp-xhs` | `pnpm build:mp-xhs` | ✅ 支持 |
-| 飞书小程序 | `pnpm dev:mp-lark` | `pnpm build:mp-lark` | ✅ 支持 |
-| 鸿蒙小程序 | `pnpm dev:mp-harmony` | `pnpm build:mp-harmony` | ✅ 支持 |
+| 微信小程序 | `pnpm dev:mp-weixin` | `pnpm build:mp-weixin` | 是 主要支持 |
+| 支付宝小程序 | `pnpm dev:mp-alipay` | `pnpm build:mp-alipay` | 是 支持 |
+| 百度小程序 | `pnpm dev:mp-baidu` | `pnpm build:mp-baidu` | 是 支持 |
+| 字节跳动小程序 | `pnpm dev:mp-toutiao` | `pnpm build:mp-toutiao` | 是 支持 |
+| QQ小程序 | `pnpm dev:mp-qq` | `pnpm build:mp-qq` | 是 支持 |
+| 快手小程序 | `pnpm dev:mp-kuaishou` | `pnpm build:mp-kuaishou` | 是 支持 |
+| 京东小程序 | `pnpm dev:mp-jd` | `pnpm build:mp-jd` | 是 支持 |
+| 小红书小程序 | `pnpm dev:mp-xhs` | `pnpm build:mp-xhs` | 是 支持 |
+| 飞书小程序 | `pnpm dev:mp-lark` | `pnpm build:mp-lark` | 是 支持 |
+| 鸿蒙小程序 | `pnpm dev:mp-harmony` | `pnpm build:mp-harmony` | 是 支持 |
 
-### 🌐 Web 平台
+### Web 平台
 
 | 平台 | 开发命令 | 构建命令 | 说明 |
 |------|---------|---------|------|
 | H5 | `pnpm dev:h5` | `pnpm build:h5` | 移动端响应式网页 |
 
-### 📲 App 平台
+### App 平台
 
 | 平台 | 开发命令 | 构建命令 | 说明 |
 |------|---------|---------|------|
@@ -98,7 +98,7 @@ uni-app 是一个使用 Vue.js 开发所有前端应用的框架，开发者编�
 | iOS | `pnpm dev:app-ios` | `pnpm build:app-ios` | 仅iOS |
 | 鸿蒙App | `pnpm dev:app-harmony` | `pnpm build:app-harmony` | 鸿蒙原生应用 |
 
-### ⚡ 快应用
+### 快应用
 
 | 平台 | 开发命令 | 说明 |
 |------|---------|------|
@@ -290,22 +290,22 @@ pnpm build:app
 
 | 功能 | H5 | 小程序 | App |
 |------|-----|--------|-----|
-| WebSocket | ✅ | ✅ | ✅ |
-| SSE | ✅ | ❌ | ✅ |
-| DOM操作 | ✅ | ❌ | ❌ |
-| BOM对象 | ✅ | 部分 | 部分 |
-| 文件系统 | ❌ | ✅ | ✅ |
+| WebSocket | 是 | 是 | 是 |
+| SSE | 是 | 否 | 是 |
+| DOM操作 | 是 | 否 | 否 |
+| BOM对象 | 是 | 部分 | 部分 |
+| 文件系统 | 否 | 是 | 是 |
 
 ### 组件差异
 
 | 组件 | H5 | 小程序 | App | 说明 |
 |------|-----|--------|-----|------|
-| view | ✅ | ✅ | ✅ | div 标签 |
-| scroll-view | ✅ | ✅ | ✅ | 滚动区域 |
-| swiper | ✅ | ✅ | ✅ | 轮播组件 |
-| video | ✅ | ✅ | ✅ | 视频播放 |
-| map | ✅ | ✅ | ✅ | 地图组件 |
-| canvas | ✅ | ✅ | ✅ | 画布 |
+| view | 是 | 是 | 是 | div 标签 |
+| scroll-view | 是 | 是 | 是 | 滚动区域 |
+| swiper | 是 | 是 | 是 | 轮播组件 |
+| video | 是 | 是 | 是 | 视频播放 |
+| map | 是 | 是 | 是 | 地图组件 |
+| canvas | 是 | 是 | 是 | 画布 |
 
 ### 样式差异
 
@@ -331,18 +331,18 @@ pnpm build:app
 
 ### 1. 为什么选择 uni-app？
 
-- ✅ 一套代码，多端运行
-- ✅ 完整的 Vue 3 生态支持
-- ✅ 丰富的组件和 API
-- ✅ 活跃的社区和插件市场
-- ✅ DCloud 官方技术支持
+- <Ok/> 一套代码，多端运行
+- <Ok/> 完整的 Vue 3 生态支持
+- <Ok/> 丰富的组件和 API
+- <Ok/> 活跃的社区和插件市场
+- <Ok/> DCloud 官方技术支持
 
 ### 2. 与原生小程序开发的区别？
 
 | 对比项 | uni-app | 原生小程序 |
 |--------|---------|-----------|
 | 开发语言 | Vue 3 + TypeScript | 小程序专用语法 |
-| 跨平台 | ✅ 多端 | ❌ 单一平台 |
+| 跨平台 | 是 多端 | 否 单一平台 |
 | 组件库 | 丰富 | 平台限制 |
 | 学习成本 | 低（Vue基础） | 中等 |
 | 性能 | 接近原生 | 原生 |

@@ -4,19 +4,19 @@ url: https://uni.ruoyi.plus
 aside: false
 ---
 
-# 🎯 项目演示
+# 项目演示
 
 体验 ruoyi-plus-uniapp 全栈开发框架的演示功能
 
-## 🌐 在线演示
+## 在线演示
 
 | 平台               | 地址                                                                  | 账密                    | 说明                       |
 |------------------|---------------------------------------------------------------------|-----------------------|--------------------------|
-| 💻 **超管后台管理**    | [立即体验](https://ui.ruoyi.plus/login?redirect=/index?tenantId=000000) | superadmin / admin123 | Vue3 + Element Plus 管理后台 |
-| 📱 **移动端H5基础框架** | [立即体验](http://uni.ruoyi.plus/h5)                                    | superadmin / admin123 | UniApp 跨平台应用             |
-| 📱 **移动端H5组件演示** | [立即体验](http://uni.ruoyi.plus/demo)                                  | superadmin / admin123 | UniApp 跨平台应用             |
+| <Icon icon="lucide:laptop" /> **超管后台管理**    | [立即体验](https://ui.ruoyi.plus/login?redirect=/index?tenantId=000000) | superadmin / admin123 | Vue3 + Element Plus 管理后台 |
+| <Icon icon="lucide:smartphone" /> **移动端H5基础框架** | [立即体验](http://uni.ruoyi.plus/h5)                                    | superadmin / admin123 | UniApp 跨平台应用             |
+| <Icon icon="lucide:smartphone" /> **移动端H5组件演示** | [立即体验](http://uni.ruoyi.plus/demo)                                  | superadmin / admin123 | UniApp 跨平台应用             |
 
-## 💰 授权定价
+## 授权定价
 
 选择适合您的版本，开启高效开发之旅（三个版本代码完全一样，仅授权主体和开发人员数量差异，企业版须有营业执照方可购买）
 
@@ -29,13 +29,13 @@ plan="个人版"
 saving-text="节省 ¥500"
 description="适合个人开发者"
 :features="[
-'📦 完整源码交付',
-'🔄 持续更新服务',
-'🛠️ 自主开发权限',
-'💼 商业使用授权',
-'🤝 客户源码交付权',
-'🛡️ 技术支持服务',
-'💬 专属答疑群邀请'
+'完整源码交付',
+'持续更新服务',
+'自主开发权限',
+'商业使用授权',
+'客户源码交付权',
+'技术支持服务',
+'专属答疑群邀请'
 ]"
 button-text="立即购买"
 footer-text="适合个人开发者和小型项目"
@@ -48,13 +48,13 @@ plan="企业标准版"
 saving-text="节省 ¥800"
 description="开发团队 < 10人"
 :features="[
-'📦 完整源码交付',
-'🔄 持续更新服务',
-'🛠️ 自主开发权限',
-'💼 商业使用授权',
-'🤝 客户源码交付权',
-'🛡️ 技术支持服务',
-'💬 专属答疑群邀请(可邀1人)'
+'完整源码交付',
+'持续更新服务',
+'自主开发权限',
+'商业使用授权',
+'客户源码交付权',
+'技术支持服务',
+'专属答疑群邀请(可邀1人)'
 ]"
 recommended
 button-text="立即购买"
@@ -68,13 +68,13 @@ plan="企业高级版"
 saving-text="节省 ¥1200"
 description="开发团队 10~30人"
 :features="[
-'📦 完整源码交付',
-'🔄 持续更新服务',
-'🛠️ 自主开发权限',
-'💼 商业使用授权',
-'🤝 客户源码交付权',
-'🛡️ 技术支持服务',
-'💬 专属答疑群邀请(可邀2人)'
+'完整源码交付',
+'持续更新服务',
+'自主开发权限',
+'商业使用授权',
+'客户源码交付权',
+'技术支持服务',
+'专属答疑群邀请(可邀2人)'
 ]"
 button-text="立即购买"
 footer-text="大型企业的最佳选择"
@@ -84,14 +84,14 @@ footer-text="大型企业的最佳选择"
 
 ::: tip 购买说明
 
-- 💼 **企业授权**：支持商业项目使用，可交付客户源码
-- 🔄 **持续更新**：享受框架功能迭代和Bug修复
-- 🛡️ **技术支持**：提供专业的技术支持服务
-- 👥 **额外邀人**：额外邀人进答疑群 488/人
-- ⚠️ **使用限制**：仅禁止框架二次销售和扩散传播
+- <Icon icon="lucide:briefcase" /> **企业授权**：支持商业项目使用，可交付客户源码
+- <Icon icon="lucide:refresh-cw" /> **持续更新**：享受框架功能迭代和Bug修复
+- <Icon icon="lucide:shield" /> **技术支持**：提供专业的技术支持服务
+- <Icon icon="lucide:users" /> **额外邀人**：额外邀人进答疑群 488/人
+- <Warn/> **使用限制**：仅禁止框架二次销售和扩散传播
   :::
 
-## 💬 技术支持
+## 技术支持
 
 ::: warning 联系方式
 
@@ -99,7 +99,7 @@ footer-text="大型企业的最佳选择"
 - **项目文档：** https://ruoyi.plus
   :::
 
-### 📱 扫码关注
+### 扫码关注
 
 <div style="display: flex; gap: 30px; margin: 20px 0; flex-wrap: wrap; align-items: flex-start;">
   <div style="text-align: center;">
@@ -124,7 +124,7 @@ footer-text="大型企业的最佳选择"
   </div>
 </div>
 
-## 🖼️ 功能截图
+## 功能截图
 
 <ImagePreview src="https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/01.登录.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/02.忘记密码.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/03.首页.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/04.布局设置.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/05.新增商品.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/06.账号绑定.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/07.商品详情.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/09.素材库.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/10.广告配置.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/11.平台配置.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/12.发货管理.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/13.支付配置.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/16.用户管理.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/17.角色管理.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/18.菜单管理.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/19.部门管理.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/20.岗位管理.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/21.字典管理.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/22.修改字典.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/23.参数设置.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/24.通知公告.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/25.富文本.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/26.公告推送.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/27.操作日志.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/28.登录日志.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/29.文件管理.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/30.租户管理.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/31.租户套餐.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/32.在线用户.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/33.缓存监控.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/34.admin监控.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/35.调度中心.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/36.代码生成.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/37.代码生成编辑.png,https://ruoyikj-1306280403.cos.ap-guangzhou.myqcloud.com/docs/demo/38.单表 主子表 树表.png" width="100%" height="100%" style="margin-top: 20px" />
 

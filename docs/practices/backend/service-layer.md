@@ -91,10 +91,10 @@ public interface IAdService {
 ```
 
 **接口设计要点**:
-- ✅ 不继承 `IBaseService`
-- ✅ 方法命名简洁清晰
-- ✅ 返回值明确具体
-- ✅ 参数使用业务对象(Bo)
+- <Ok/> 不继承 `IBaseService`
+- <Ok/> 方法命名简洁清晰
+- <Ok/> 返回值明确具体
+- <Ok/> 参数使用业务对象(Bo)
 
 ---
 
@@ -114,10 +114,10 @@ public class AdServiceImpl implements IAdService {
 ```
 
 **关键原则**:
-- ✅ 使用 `@RequiredArgsConstructor` 进行构造函数注入
-- ✅ 依赖字段使用 `final` 修饰
-- ✅ 只注入 DAO 层接口,不直接注入 Mapper
-- ❌ 不使用 `@Autowired` 字段注入
+- <Ok/> 使用 `@RequiredArgsConstructor` 进行构造函数注入
+- <Ok/> 依赖字段使用 `final` 修饰
+- <Ok/> 只注入 DAO 层接口,不直接注入 Mapper
+- <No/> 不使用 `@Autowired` 字段注入
 
 ---
 
@@ -157,9 +157,9 @@ public List<AdVo> list(AdBo bo) {
 ```
 
 **实现要点**:
-- ✅ 调用 DAO 的 `buildQueryWrapper()` 构建查询
-- ✅ Service 层不直接构建查询条件
-- ✅ 使用 `MapstructUtils.convert()` 批量转换
+- <Ok/> 调用 DAO 的 `buildQueryWrapper()` 构建查询
+- <Ok/> Service 层不直接构建查询条件
+- <Ok/> 使用 `MapstructUtils.convert()` 批量转换
 
 ---
 
@@ -180,9 +180,9 @@ public PageResult<AdVo> page(AdBo bo, PageQuery pageQuery) {
 ```
 
 **实现要点**:
-- ✅ 使用 `PageResult` 的 `convert()` 方法转换
-- ✅ 自动处理分页信息(总数、页码等)
-- ✅ 一行代码完成类型转换
+- <Ok/> 使用 `PageResult` 的 `convert()` 方法转换
+- <Ok/> 自动处理分页信息(总数、页码等)
+- <Ok/> 一行代码完成类型转换
 
 ---
 
@@ -207,10 +207,10 @@ public Long add(AdBo bo) {
 ```
 
 **实现要点**:
-- ✅ 必须添加 `@Transactional(rollbackFor = Exception.class)`
-- ✅ 使用 `beforeSave()` 钩子方法
-- ✅ 插入后自动回填主键 ID
-- ✅ 返回新生成的主键
+- <Ok/> 必须添加 `@Transactional(rollbackFor = Exception.class)`
+- <Ok/> 使用 `beforeSave()` 钩子方法
+- <Ok/> 插入后自动回填主键 ID
+- <Ok/> 返回新生成的主键
 
 ---
 
@@ -242,11 +242,11 @@ public boolean update(AdBo bo) {
 ```
 
 **实现要点**:
-- ✅ 先校验 ID 是否为空
-- ✅ 校验记录是否存在
-- ✅ 使用 `ServiceException.of()` 抛出异常
-- ✅ 调用 `beforeSave()` 钩子
-- ✅ 使用 `updateById()` 更新
+- <Ok/> 先校验 ID 是否为空
+- <Ok/> 校验记录是否存在
+- <Ok/> 使用 `ServiceException.of()` 抛出异常
+- <Ok/> 调用 `beforeSave()` 钩子
+- <Ok/> 使用 `updateById()` 更新
 
 ---
 
@@ -270,9 +270,9 @@ public boolean batchDelete(Collection<Long> ids) {
 ```
 
 **实现要点**:
-- ✅ 使用 `CollUtil.isEmpty()` 校验集合
-- ✅ 调用 `beforeDelete()` 钩子
-- ✅ 支持批量删除
+- <Ok/> 使用 `CollUtil.isEmpty()` 校验集合
+- <Ok/> 调用 `beforeDelete()` 钩子
+- <Ok/> 支持批量删除
 
 ---
 
@@ -301,10 +301,10 @@ public boolean batchSave(List<AdBo> boList) {
 ```
 
 **实现要点**:
-- ✅ 空集合快速返回
-- ✅ 预分配 ArrayList 容量
-- ✅ 每条记录调用 `beforeSave()` 钩子
-- ✅ 使用 DAO 的 `batchSave()` 方法
+- <Ok/> 空集合快速返回
+- <Ok/> 预分配 ArrayList 容量
+- <Ok/> 每条记录调用 `beforeSave()` 钩子
+- <Ok/> 使用 DAO 的 `batchSave()` 方法
 
 ---
 
@@ -449,11 +449,11 @@ PageResult<AdVo> voPage = entityPage.convert(AdVo.class);
 ```
 
 **为什么使用 MapstructUtils**:
-- ✅ 编译期生成代码,性能高
-- ✅ 类型安全,编译检查
-- ✅ 代码简洁,一行搞定
-- ✅ 支持嵌套对象转换
-- ❌ 不使用 BeanUtils.copyProperties()
+- <Ok/> 编译期生成代码,性能高
+- <Ok/> 类型安全,编译检查
+- <Ok/> 代码简洁,一行搞定
+- <Ok/> 支持嵌套对象转换
+- <No/> 不使用 BeanUtils.copyProperties()
 
 ---
 
@@ -470,10 +470,10 @@ public Long add(AdBo bo) {
 ```
 
 **事务配置要点**:
-- ✅ 所有写操作(增删改)必须加 `@Transactional`
-- ✅ 必须指定 `rollbackFor = Exception.class`
-- ✅ 查询操作不需要事务注解
-- ✅ 事务粒度控制在单个 Service 方法
+- <Ok/> 所有写操作(增删改)必须加 `@Transactional`
+- <Ok/> 必须指定 `rollbackFor = Exception.class`
+- <Ok/> 查询操作不需要事务注解
+- <Ok/> 事务粒度控制在单个 Service 方法
 
 ---
 
@@ -500,11 +500,11 @@ ServiceException.notNull(bo.getId(), "广告配置ID不能为空");
 ```
 
 **异常处理原则**:
-- ✅ 使用 `ServiceException.of()` 创建异常
-- ✅ 异常信息清晰明确
-- ✅ 在 Service 层抛出,Controller 层统一处理
-- ❌ 不使用 `RuntimeException`
-- ❌ 不吞异常
+- <Ok/> 使用 `ServiceException.of()` 创建异常
+- <Ok/> 异常信息清晰明确
+- <Ok/> 在 Service 层抛出,Controller 层统一处理
+- <No/> 不使用 `RuntimeException`
+- <No/> 不吞异常
 
 ---
 
@@ -616,10 +616,10 @@ public class SysUserServiceImpl implements ISysUserService, UserService {
 ```
 
 **设计要点**:
-- ✅ 每个 DAO 负责一个表的操作
-- ✅ Service 层协调多个 DAO 完成复杂业务
-- ✅ 使用 `@RequiredArgsConstructor` 统一注入
-- ✅ 所有 DAO 使用 `final` 修饰
+- <Ok/> 每个 DAO 负责一个表的操作
+- <Ok/> Service 层协调多个 DAO 完成复杂业务
+- <Ok/> 使用 `@RequiredArgsConstructor` 统一注入
+- <Ok/> 所有 DAO 使用 `final` 修饰
 
 ---
 
@@ -723,8 +723,8 @@ public String getNickNamesByIds(String userIds) {
 ```
 
 **关键点**:
-- ✅ 同类方法调用必须使用 `SpringUtils.getAopProxy(this)` 获取代理对象
-- ❌ 直接调用 `this.getNickNameById(id)` 不会触发缓存
+- <Ok/> 同类方法调用必须使用 `SpringUtils.getAopProxy(this)` 获取代理对象
+- <No/> 直接调用 `this.getNickNameById(id)` 不会触发缓存
 
 ---
 
@@ -789,9 +789,9 @@ public boolean isEmailUnique(String email, Long userId) {
 ```
 
 **设计要点**:
-- ✅ 新增时 userId 传 null,更新时传实际ID
-- ✅ 校验逻辑在 DAO 层实现
-- ✅ 返回 boolean 类型便于调用方判断
+- <Ok/> 新增时 userId 传 null,更新时传实际ID
+- <Ok/> 校验逻辑在 DAO 层实现
+- <Ok/> 返回 boolean 类型便于调用方判断
 
 ---
 
@@ -1043,10 +1043,10 @@ public class OrderPaymentEventListener {
 ```
 
 **事件模式优点**:
-- ✅ 解耦业务逻辑
-- ✅ 便于扩展(添加新监听器无需修改原代码)
-- ✅ 支持异步处理(`@Async`)
-- ✅ 事务隔离
+- <Ok/> 解耦业务逻辑
+- <Ok/> 便于扩展(添加新监听器无需修改原代码)
+- <Ok/> 支持异步处理(`@Async`)
+- <Ok/> 事务隔离
 
 ---
 
@@ -1280,10 +1280,10 @@ public boolean deliverOrder(Long orderId, String shippingInfo) {
 ```
 
 **状态机设计要点**:
-- ✅ 明确定义状态转换规则
-- ✅ 每次状态变更前校验当前状态
-- ✅ 使用枚举管理状态值
-- ✅ 记录状态变更日志
+- <Ok/> 明确定义状态转换规则
+- <Ok/> 每次状态变更前校验当前状态
+- <Ok/> 使用枚举管理状态值
+- <Ok/> 记录状态变更日志
 
 ---
 

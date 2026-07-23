@@ -258,7 +258,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 
 ## 模块详解
 
-### 🚀 入口模块 (ruoyi-admin)
+### 入口模块 (ruoyi-admin)
 
 系统启动入口,负责整合所有模块并提供统一的部署打包。
 
@@ -276,7 +276,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 | `application-dev.yml` | 开发环境配置 |
 | `application-prod.yml` | 生产环境配置 |
 
-### 🔧 通用模块 (ruoyi-common)
+### 通用模块 (ruoyi-common)
 
 提供系统基础设施和通用功能,共 35 个子模块。
 
@@ -353,7 +353,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 | `ruoyi-common-serialMap` | 序列化映射 |
 | `ruoyi-common-test` | 测试工具 |
 
-### 📦 业务模块 (ruoyi-modules)
+### 业务模块 (ruoyi-modules)
 
 包含 5 个业务子模块,实现具体业务功能。
 
@@ -382,7 +382,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 | `common` | 业务通用组件 |
 | `job` | 业务定时任务 |
 
-#### ruoyi-mall - 商城模块 🆕
+#### ruoyi-mall - 商城模块
 
 电商业务功能:
 
@@ -392,7 +392,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 | 订单管理 | 订单创建、支付、发货、退款 |
 | 事件监听 | 订单状态变更、库存变动 |
 
-#### ruoyi-workflow - 工作流模块 🆕
+#### ruoyi-workflow - 工作流模块
 
 基于 Warm-Flow 的工作流引擎:
 
@@ -414,7 +414,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 | 代码生成 | 生成 Controller/Service/Mapper/Vue |
 | 预览下载 | 在线预览、打包下载 |
 
-### 🔌 扩展模块 (ruoyi-extend)
+### 扩展模块 (ruoyi-extend)
 
 独立部署的扩展服务:
 
@@ -425,7 +425,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 
 ## 项目架构特点
 
-### 🏗️ 模块化设计
+### 模块化设计
 
 ```text
 ┌─────────────────────────────────────────────────────────┐
@@ -449,7 +449,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 - **松耦合**: 模块间通过接口依赖,便于独立开发和维护
 - **高内聚**: 相关功能集中在同一模块内
 
-### 📁 领域驱动分层
+### 领域驱动分层
 
 每个业务模块采用标准分层结构:
 
@@ -468,7 +468,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 └── 📁 listener            // 事件监听器
 ```
 
-### 🔄 依赖关系
+### 依赖关系
 
 ```text
 ruoyi-admin

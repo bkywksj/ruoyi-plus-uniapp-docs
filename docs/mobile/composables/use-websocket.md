@@ -784,7 +784,7 @@ import {
 
 避免在多个组件中创建独立连接，统一使用全局管理器。
 
-**推荐 ✅:**
+**推荐 <Ok/>:**
 
 ```typescript
 // App.vue - 只初始化一次
@@ -797,7 +797,7 @@ onMounted(() => {
 webSocket.send({ type: 'chat', content: '你好' })
 ```
 
-**不推荐 ❌:**
+**不推荐 <No/>:**
 
 ```typescript
 // 每个组件创建独立连接，浪费资源

@@ -2,7 +2,7 @@
 
 本章节将指导你快速启动 RuoYi-Plus-UniApp 移动端项目，支持 H5、微信小程序、支付宝小程序、App 等多端开发。项目基于 UniApp 3.0 + Vue 3.4 + TypeScript 5.7 + Vite 6.3 构建，采用组合式 API 和 Pinia 状态管理。
 
-## 🎯 环境要求
+## 环境要求
 
 ### 必需环境
 
@@ -53,7 +53,7 @@ git --version
 
 ---
 
-## 🏗️ 技术栈概览
+## 技术栈概览
 
 项目采用现代化的技术栈，确保开发效率和运行性能：
 
@@ -95,7 +95,7 @@ git --version
 
 ---
 
-## 🛠️ 环境准备
+## 环境准备
 
 ### 1. Node.js 环境安装
 
@@ -167,7 +167,7 @@ pnpm config set registry https://registry.npmmirror.com
 
 ---
 
-## 🚀 项目启动
+## 项目启动
 
 ### 1. 获取项目代码
 
@@ -372,7 +372,7 @@ pnpm dev:app-harmony
 
 ---
 
-## 📱 多端开发脚本
+## 多端开发脚本
 
 ### 开发环境启动
 
@@ -425,7 +425,7 @@ pnpm uvm
 
 ---
 
-## 📁 项目结构
+## 项目结构
 
 ```text
 plus-uniapp/
@@ -531,7 +531,7 @@ plus-uniapp/
 
 ---
 
-## 🔧 项目配置文件
+## 项目配置文件
 
 ### 核心配置文件说明
 
@@ -638,7 +638,7 @@ export default defineUniPages({
 
 ---
 
-## 🔍 开发调试
+## 开发调试
 
 ### H5 端调试
 
@@ -703,7 +703,7 @@ pnpm dev:h5
 
 ---
 
-## 📱 开发流程指南
+## 开发流程指南
 
 ### 创建新页面
 
@@ -1103,7 +1103,7 @@ export function logout(): Promise<void> {
 
 ---
 
-## 🔧 开发工具配置
+## 开发工具配置
 
 ### VS Code 配置
 
@@ -1177,7 +1177,7 @@ export function logout(): Promise<void> {
 
 ---
 
-## 🐛 常见问题排查
+## 常见问题排查
 
 ### 1. 依赖安装失败
 
@@ -1403,7 +1403,7 @@ Cannot find module '@/xxx' or its corresponding type declarations
 
 ---
 
-## 📦 生产部署
+## 生产部署
 
 ### H5 部署
 
@@ -1463,7 +1463,7 @@ pnpm build:app
 
 ---
 
-## 🎉 开发环境就绪
+## 开发环境就绪
 
 恭喜！如果以上步骤都顺利完成，你的移动端开发环境已经成功搭建。
 
@@ -1487,4 +1487,4 @@ pnpm build:app
 | 类型检查 | `pnpm type-check` |
 | 代码检查 | `pnpm lint` |
 
-开始你的跨平台移动端开发之旅吧！🚀
+开始你的跨平台移动端开发之旅吧！<Icon icon="lucide:rocket" />

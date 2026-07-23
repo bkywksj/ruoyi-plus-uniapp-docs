@@ -224,20 +224,20 @@ public class XxxServiceImpl implements IXxxService {
 ### 常见错误
 
 ```java
-// ❌ 错误：Service 继承了基类
+// 错误：Service 继承了基类
 public class XxxServiceImpl extends ServiceImpl<XxxMapper, Xxx> {
 
-// ❌ 错误：直接注入 Mapper
+// 错误：直接注入 Mapper
 private final XxxMapper xxxMapper;
 ```text
 
 ### 正确做法
 
 ```java
-// ✅ 正确：不继承任何基类
+// 正确：不继承任何基类
 public class XxxServiceImpl implements IXxxService {
 
-// ✅ 正确：注入 DAO
+// 正确：注入 DAO
 private final IXxxDao xxxDao;
 ```text
 ```

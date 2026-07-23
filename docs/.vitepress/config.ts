@@ -141,7 +141,7 @@ export default defineConfig({
         sidebar: {
             '/backend/': [
                 {
-                    text: '🚀 快速开始',
+                    text: '快速开始',
                     items: [
                         { text: '项目简介', link: '/backend/' },
                         { text: '快速启动', link: '/backend/getting-started' },
@@ -193,14 +193,14 @@ export default defineConfig({
                         { text: '日志管理 (log)', link: '/backend/common/log' },
                         { text: 'HTTP客户端 (http)', link: '/backend/common/http' },
                         {
-                            text: 'LangChain4j AI集成 (langchain4j) ⭐',
+                            text: 'LangChain4j AI集成 (langchain4j)',
                             collapsed: false,
                             items: [
                                 { text: '模块概览', link: '/backend/common/langchain4j' },
                                 { text: '快速开始', link: '/backend/common/langchain4j/quick-start' },
                                 { text: '模型工厂', link: '/backend/common/langchain4j/model-factory' },
                                 { text: '聊天服务', link: '/backend/common/langchain4j/chat-service' },
-                                { text: '深度思考 ⭐', link: '/backend/common/langchain4j/thinking' },
+                                { text: '深度思考', link: '/backend/common/langchain4j/thinking' },
                                 { text: 'RAG检索增强', link: '/backend/common/langchain4j/rag' },
                                 { text: '向量存储', link: '/backend/common/langchain4j/vector-store' },
                                 { text: 'WebSocket流式对话', link: '/backend/common/langchain4j/websocket' }
@@ -219,7 +219,7 @@ export default defineConfig({
                         { text: '限流组件 (ratelimiter)', link: '/backend/common/ratelimiter' },
                         { text: 'Redis缓存 (redis)', link: '/backend/common/redis' },
                         {
-                            text: 'RocketMQ消息队列 (rocketmq) ⭐',
+                            text: 'RocketMQ消息队列 (rocketmq)',
                             collapsed: false,
                             items: [
                                 { text: '快速开始', link: '/backend/common/rocketmq/quick-start' },
@@ -287,7 +287,7 @@ export default defineConfig({
                             ]
                         },
                         {
-                            text: '工作流模块 (workflow) ⭐',
+                            text: '工作流模块 (workflow)',
                             collapsed: true,
                             items: [
                                 { text: '模块概览', link: '/backend/modules/workflow/' },
@@ -311,7 +311,7 @@ export default defineConfig({
 
             '/frontend/': [
                 {
-                    text: '🚀 快速开始',
+                    text: '快速开始',
                     items: [
                         { text: '项目简介', link: '/frontend/' },
                         { text: '快速启动', link: '/frontend/getting-started' },
@@ -320,7 +320,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🏗️ 项目架构',
+                    text: '项目架构',
                     collapsed: true,
                     items: [
                         { text: '架构概览', link: '/frontend/architecture/overview' },
@@ -333,7 +333,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🛣️ 路由系统 (router)',
+                    text: '路由系统 (router)',
                     collapsed: true,
                     items: [
                         { text: '路由总览', link: '/frontend/router/overview' },
@@ -342,7 +342,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📦 状态管理 (stores)',
+                    text: '状态管理 (stores)',
                     collapsed: true,
                     items: [
                         { text: '状态管理概览', link: '/frontend/stores/overview' },
@@ -355,7 +355,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🎨 布局系统 (Layout)',
+                    text: '布局系统 (Layout)',
                     collapsed: true,
                     items: [
                         { text: '布局概述', link: '/frontend/layout/layout-overview' },
@@ -369,7 +369,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🧩 组件系统 (Components)',
+                    text: '组件系统 (Components)',
                     collapsed: true,
                     items: [
                         // 1. 概览和指南
@@ -470,7 +470,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🎣 组合式函数 (composables)',
+                    text: '组合式函数 (composables)',
                     collapsed: true,
                     items: [
                         { text: '组合式函数概览', link: '/frontend/composables/overview' },
@@ -512,7 +512,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🛠️ 工具库 (utils)',
+                    text: '工具库 (utils)',
                     collapsed: true,
                     items: [
                         { text: '工具函数概览', link: '/frontend/utils/utils-overview' },
@@ -537,14 +537,14 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📋 指令系统 (directives)',
+                    text: '指令系统 (directives)',
                     collapsed: true,
                     items: [
                         { text: '权限指令', link: '/frontend/directives/permission' }
                     ]
                 },
                 {
-                    text: '🎨 样式系统 (styles)',
+                    text: '样式系统 (styles)',
                     collapsed: true,
                     items: [
                         { text: '样式架构', link: '/frontend/styles/style-architecture' },
@@ -563,7 +563,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🎭 图标系统 (icons)',
+                    text: '图标系统 (icons)',
                     collapsed: true,
                     items: [
                         { text: '图标系统概述', link: '/frontend/icons/overview' },
@@ -576,7 +576,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📝 类型定义 (types)',
+                    text: '类型定义 (types)',
                     collapsed: true,
                     items: [
                         { text: '类型系统概览', link: '/frontend/types/overview' },
@@ -591,7 +591,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '⚙️ 开发工具 (dev)',
+                    text: '开发工具 (dev)',
                     collapsed: true,
                     items: [
                         { text: 'Prettier配置', link: '/frontend/dev/prettier-config' },
@@ -603,14 +603,14 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🖼️ 低代码工具 (tools)',
+                    text: '低代码工具 (tools)',
                     collapsed: true,
                     items: [
                         { text: '页面设计器', link: '/frontend/tools/page-designer' }
                     ]
                 },
                 {
-                    text: '🌍 国际化 (locales)',
+                    text: '国际化 (locales)',
                     collapsed: true,
                     items: [
                         { text: '国际化配置', link: '/frontend/i18n/i18n-config' },
@@ -623,7 +623,7 @@ export default defineConfig({
 
             '/mobile/': [
                 {
-                    text: '🚀 快速开始',
+                    text: '快速开始',
                     items: [
                         { text: '项目简介', link: '/mobile/' },
                         { text: '快速启动', link: '/mobile/getting-started' },
@@ -633,7 +633,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🏗️ UniApp基础',
+                    text: 'UniApp基础',
                     collapsed: true,
                     items: [
                         { text: 'UniApp概览', link: '/mobile/uniapp/overview' },
@@ -647,7 +647,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🧩 WD UI 组件库 (78组件)',
+                    text: 'WD UI 组件库 (78组件)',
                     collapsed: true,
                     items: [
                         { text: '组件库概览', link: '/mobile/wd/overview' },
@@ -772,7 +772,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🎣 组合式函数 (composables)',
+                    text: '组合式函数 (composables)',
                     collapsed: true,
                     items: [
                         { text: '组合式函数概览', link: '/mobile/composables/overview' },
@@ -813,7 +813,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🛠️ 工具库 (utils)',
+                    text: '工具库 (utils)',
                     collapsed: true,
                     items: [
                         { text: '工具函数概览', link: '/mobile/utils/overview' },
@@ -857,7 +857,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📄 页面开发 (pages)',
+                    text: '页面开发 (pages)',
                     collapsed: true,
                     items: [
                         { text: '页面概述', link: '/mobile/pages/' },
@@ -866,7 +866,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🎨 布局系统 (layouts)',
+                    text: '布局系统 (layouts)',
                     collapsed: true,
                     items: [
                         { text: '布局概述', link: '/mobile/layouts/overview' },
@@ -877,7 +877,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📦 状态管理 (stores)',
+                    text: '状态管理 (stores)',
                     collapsed: true,
                     items: [
                         { text: '状态管理概览', link: '/mobile/stores/overview' },
@@ -888,7 +888,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🎨 样式系统 (styles)',
+                    text: '样式系统 (styles)',
                     collapsed: true,
                     items: [
                         { text: '样式概览', link: '/mobile/styles/overview' },
@@ -903,7 +903,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📦 组件开发',
+                    text: '组件开发',
                     collapsed: true,
                     items: [
                         { text: '自定义组件开发', link: '/mobile/components/custom-development' },
@@ -914,7 +914,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📱 平台适配',
+                    text: '平台适配',
                     collapsed: true,
                     items: [
                         { text: '平台差异说明', link: '/mobile/platform/differences' },
@@ -924,7 +924,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '⚡ 性能优化',
+                    text: '性能优化',
                     collapsed: true,
                     items: [
                         { text: '性能优化概览', link: '/mobile/performance/overview' },
@@ -936,7 +936,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📦 打包发布',
+                    text: '打包发布',
                     collapsed: true,
                     items: [
                         { text: '打包配置概览', link: '/mobile/build/overview' },
@@ -949,13 +949,13 @@ export default defineConfig({
 
             '/practices/': [
                 {
-                    text: '🛠️ 工程化',
+                    text: '工程化',
                     items: [
                         {
                             text: 'Claude Code',
                             collapsed: false,
                             items: [
-                                { text: 'Skills 技能系统 ⭐', link: '/practices/engineering/claude-code-skills' },
+                                { text: 'Skills 技能系统', link: '/practices/engineering/claude-code-skills' },
                                 { text: 'Commands 自定义命令', link: '/practices/engineering/claude-code-commands' },
                                 { text: 'Hooks 钩子机制', link: '/practices/engineering/claude-code-hooks' },
                                 { text: 'MCP 服务器配置', link: '/practices/engineering/claude-code-mcp' },
@@ -966,11 +966,11 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '📋 开发规范',
+                    text: '开发规范',
                     items: [
                         { text: '开发规范概览', link: '/practices/standards/overview' },
-                        { text: '代码规范 ✅', link: '/practices/standards/coding' },
-                        { text: 'API设计规范 ✅', link: '/practices/standards/api-design' },
+                        { text: '代码规范', link: '/practices/standards/coding' },
+                        { text: 'API设计规范', link: '/practices/standards/api-design' },
                         { text: '命名规范', link: '/practices/standards/naming' },
                         { text: '注释规范', link: '/practices/standards/comment' },
                         { text: 'Git使用规范', link: '/practices/standards/git' },
@@ -980,7 +980,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🏗️ 架构设计',
+                    text: '架构设计',
                     items: [
                         { text: '系统架构设计', link: '/practices/architecture/system' },
                         { text: '数据库设计', link: '/practices/architecture/database' },
@@ -990,7 +990,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '💻 后端开发',
+                    text: '后端开发',
                     items: [
                         { text: '后端开发概览', link: '/practices/backend/overview' },
                         { text: 'Service层最佳实践', link: '/practices/backend/service-layer' },
@@ -1003,7 +1003,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🔧 功能开发',
+                    text: '功能开发',
                     items: [
                         { text: '权限控制实现', link: '/practices/features/permission-control' },
                         { text: '数据权限设计', link: '/practices/features/data-permission' },
@@ -1016,7 +1016,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🔒 安全指南',
+                    text: '安全指南',
                     items: [
                         { text: '安全总览', link: '/practices/security/overview' },
                         { text: '认证与授权', link: '/practices/security/auth' },
@@ -1027,7 +1027,7 @@ export default defineConfig({
                     ]
                 },
                 {
-                    text: '🚀 部署运维',
+                    text: '部署运维',
                     items: [
                         { text: 'Docker部署指南', link: '/practices/devops/docker-deploy' }
                     ]

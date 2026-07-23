@@ -406,11 +406,11 @@ docker-compose up -d --build
 
 | 变量名 | 说明 | 默认值 | 必填(生产) |
 |--------|------|--------|-----------|
-| DB_HOST | 数据库主机 | 127.0.0.1 | ✅ |
+| DB_HOST | 数据库主机 | 127.0.0.1 | 是 |
 | DB_PORT | 数据库端口 | 3306 | 否 |
-| DB_NAME | 数据库名 | ryplus_uni_workflow | ✅ |
-| DB_USERNAME | 数据库用户名 | root | ✅ |
-| DB_PASSWORD | 数据库密码 | root | ✅ |
+| DB_NAME | 数据库名 | ryplus_uni_workflow | 是 |
+| DB_USERNAME | 数据库用户名 | root | 是 |
+| DB_PASSWORD | 数据库密码 | root | 是 |
 | DB_MAX_POOL_SIZE | 最大连接数 | 20(dev)/50(prod) | 否 |
 | DB_MIN_IDLE | 最小空闲连接 | 10(dev)/20(prod) | 否 |
 
@@ -428,10 +428,10 @@ docker-compose up -d --build
 
 | 变量名 | 说明 | 默认值 | 必填(生产) |
 |--------|------|--------|-----------|
-| REDIS_HOST | Redis主机 | 127.0.0.1 | ✅ |
+| REDIS_HOST | Redis主机 | 127.0.0.1 | 是 |
 | REDIS_PORT | Redis端口 | 6379 | 否 |
 | REDIS_DATABASE | Redis数据库索引 | 0 | 否 |
-| REDIS_PASSWORD | Redis密码 | - | ✅ |
+| REDIS_PASSWORD | Redis密码 | - | 是 |
 | REDIS_SSL_ENABLED | 是否启用SSL | false | 否 |
 
 ### 安全配置
@@ -460,7 +460,7 @@ docker-compose up -d --build
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
 | SNAIL_JOB_ENABLED | 定时任务开关 | false(dev)/true(prod) |
-| SNAIL_JOB_SERVER_HOST | 调度中心主机（⚠️ 必须带 SERVER 前缀，避免 Relaxed Binding 覆盖客户端 `snail-job.host`） | 127.0.0.1 |
+| SNAIL_JOB_SERVER_HOST | 调度中心主机（部分 必须带 SERVER 前缀，避免 Relaxed Binding 覆盖客户端 `snail-job.host`） | 127.0.0.1 |
 | SNAIL_JOB_SERVER_PORT | 调度中心端口（同理，避免覆盖客户端 `snail-job.port`） | 17888 |
 | SNAIL_JOB_TOKEN | 接入令牌 | - |
 

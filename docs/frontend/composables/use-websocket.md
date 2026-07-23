@@ -2,7 +2,7 @@
 
 WebSocket 通信钩子函数，提供完整的 WebSocket 连接管理和消息处理功能，支持动态退避重连策略。
 
-## 📋 功能特性
+## 功能特性
 
 - **自动连接**: 创建与服务器的 WebSocket 连接 (基于 VueUse 实现)
 - **动态退避重连**: 连接断开后按指数退避策略自动重连
@@ -14,7 +14,7 @@ WebSocket 通信钩子函数，提供完整的 WebSocket 连接管理和消息�
 - **资源清理**: 组件卸载时自动清理连接
 - **认证支持**: 自动附加令牌进行身份验证
 
-## 🎯 基础用法
+## 基础用法
 
 ### 简单连接
 
@@ -83,7 +83,7 @@ const { connect, disconnect, reconnect, send, status, isConnected } = useWS('ws:
 </script>
 ```
 
-## 🎛️ API 参考
+## API 参考
 
 ### 参数
 
@@ -120,7 +120,7 @@ const { connect, disconnect, reconnect, send, status, isConnected } = useWS('ws:
 | `isConnected` | `Ref<boolean>` | 是否已连接 |
 | `data` | `Ref<any>` | 接收到的消息数据 |
 
-## 🔄 重连机制
+## 重连机制
 
 ### 动态退避策略
 
@@ -148,7 +148,7 @@ const { connect, disconnect, reconnect, send, status, isConnected } = useWS('ws:
 - 手动调用 `disconnect()`
 - 连接成功
 
-## 💓 心跳机制
+## 心跳机制
 
 ### 自动心跳
 
@@ -168,7 +168,7 @@ const { connect } = useWS('ws://localhost:8080/websocket', {
 })
 ```
 
-## 📝 消息处理
+## 消息处理
 
 ### 发送消息
 
@@ -216,7 +216,7 @@ const { connect } = useWS('ws://localhost:8080/websocket', {
 })
 ```
 
-## 🔐 认证处理
+## 认证处理
 
 ### 自动令牌附加
 
@@ -242,7 +242,7 @@ const { connect } = useWS('ws://localhost:8080/websocket', {
 })
 ```
 
-## 🎪 全局WebSocket管理
+## 全局WebSocket管理
 
 ### 全局实例
 
@@ -282,7 +282,7 @@ class CustomMessageHandler implements MessageHandler {
 webSocket.addMessageHandler(new CustomMessageHandler())
 ```
 
-## 🔧 消息处理管道
+## 消息处理管道
 
 ### 消息类型枚举
 
@@ -471,7 +471,7 @@ pipeline.removeHandler(ChatMessageHandler)
 }
 ```
 
-## 🌐 全局 WebSocket 管理器
+## 全局 WebSocket 管理器
 
 ### GlobalWebSocketManager
 
@@ -657,7 +657,7 @@ const sendGlobalMessage = () => {
 </script>
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 ### 系统配置检查
 
@@ -732,7 +732,7 @@ try {
 }
 ```
 
-## 🎯 最佳实践
+## 最佳实践
 
 ### 1. 使用全局管理器
 
@@ -820,7 +820,7 @@ watch(visibility, (current) => {
 
 useWebSocket 为应用提供了强大而灵活的 WebSocket 通信能力，通过消息处理管道和全局管理器，轻松实现复杂的实时通信需求。
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. WebSocket 连接频繁断开重连
 

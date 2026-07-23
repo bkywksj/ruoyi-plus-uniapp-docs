@@ -1284,7 +1284,7 @@ const testCases = [
 
 在实际应用中,常需要多个验证条件同时满足。
 
-✅ **推荐做法**:
+<Ok/> **推荐做法**:
 ```typescript
 import { isEmail, isRequired, hasMinLength } from '@/utils/validators'
 
@@ -1299,7 +1299,7 @@ const validatePassword = (password: string): boolean => {
 }
 ```
 
-❌ **不推荐做法**:
+<No/> **不推荐做法**:
 ```typescript
 // 重复编写验证逻辑
 const validateEmail = (email: string): boolean => {
@@ -1312,7 +1312,7 @@ const validateEmail = (email: string): boolean => {
 
 将验证函数集成到表单验证规则中。
 
-✅ **推荐做法**:
+<Ok/> **推荐做法**:
 ```vue
 <script lang="ts" setup>
 import { ref } from 'vue'
@@ -1340,7 +1340,7 @@ const rules = {
 
 充分利用TypeScript类型定义。
 
-✅ **推荐做法**:
+<Ok/> **推荐做法**:
 ```typescript
 import { isArray, isObject } from '@/utils/validators'
 
@@ -1360,7 +1360,7 @@ const processData = (data: unknown) => {
 }
 ```
 
-❌ **不推荐做法**:
+<No/> **不推荐做法**:
 ```typescript
 const processData = (data: any) => {
   // 使用any类型,失去类型安全
@@ -1374,7 +1374,7 @@ const processData = (data: any) => {
 
 提供清晰的验证错误提示。
 
-✅ **推荐做法**:
+<Ok/> **推荐做法**:
 ```typescript
 import { isEmail } from '@/utils/validators'
 
@@ -1390,7 +1390,7 @@ const validateAndShowError = (email: string) => {
 }
 ```
 
-❌ **不推荐做法**:
+<No/> **不推荐做法**:
 ```typescript
 const validateAndShowError = (email: string) => {
   if (!isEmail(email)) {
@@ -1405,7 +1405,7 @@ const validateAndShowError = (email: string) => {
 
 避免重复验证,缓存验证结果。
 
-✅ **推荐做法**:
+<Ok/> **推荐做法**:
 ```vue
 <script lang="ts" setup>
 import { ref, computed } from 'vue'
@@ -1421,7 +1421,7 @@ const canSubmit = computed(() => isEmailValid.value && email.value.length > 0)
 </script>
 ```
 
-❌ **不推荐做法**:
+<No/> **不推荐做法**:
 ```vue
 <script lang="ts" setup>
 import { ref } from 'vue'

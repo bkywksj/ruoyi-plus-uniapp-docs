@@ -1123,7 +1123,7 @@ Row-Col 组件没有提供特定的 CSS 变量,可以通过 `custom-class` 和 `
 
 ### 1. 合理规划栅格数
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 ```vue
 <template>
   <!-- 一行内栅格数总和为 24 或不超过 24 -->
@@ -1140,7 +1140,7 @@ Row-Col 组件没有提供特定的 CSS 变量,可以通过 `custom-class` 和 `
 </template>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 ```vue
 <template>
   <!-- 一行内栅格数总和超过 24,会导致换行 -->
@@ -1159,7 +1159,7 @@ Row-Col 组件没有提供特定的 CSS 变量,可以通过 `custom-class` 和 `
 
 ### 2. 使用 gutter 而非 margin
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 ```vue
 <template>
   <!-- 使用 Row 的 gutter 统一设置间距 -->
@@ -1174,7 +1174,7 @@ Row-Col 组件没有提供特定的 CSS 变量,可以通过 `custom-class` 和 `
 </template>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 ```vue
 <template>
   <!-- 在列内容上添加 margin -->
@@ -1196,7 +1196,7 @@ Row-Col 组件没有提供特定的 CSS 变量,可以通过 `custom-class` 和 `
 
 ### 3. 嵌套时注意 gutter
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 ```vue
 <template>
   <wd-row :gutter="20">
@@ -1211,7 +1211,7 @@ Row-Col 组件没有提供特定的 CSS 变量,可以通过 `custom-class` 和 `
 </template>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 ```vue
 <template>
   <wd-row :gutter="20">
@@ -1233,7 +1233,7 @@ Row-Col 组件没有提供特定的 CSS 变量,可以通过 `custom-class` 和 `
 
 ### 4. 响应式布局动态计算
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 ```vue
 <template>
   <wd-row :gutter="20">
@@ -1269,7 +1269,7 @@ onMounted(() => {
 </script>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 ```vue
 <template>
   <!-- 固定列宽,不考虑屏幕尺寸 -->
@@ -1292,7 +1292,7 @@ onMounted(() => {
 
 ### 5. 合理使用 offset
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 ```vue
 <template>
   <!-- 使用 offset 实现居中 -->
@@ -1318,7 +1318,7 @@ onMounted(() => {
 </template>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 ```vue
 <template>
   <!-- 使用空列实现留白 -->

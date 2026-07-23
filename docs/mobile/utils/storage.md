@@ -1448,7 +1448,7 @@ const theme = cache.get<Theme>('theme') // theme: Theme | null
 
 ### 1. 使用类型安全
 
-✅ **推荐**: 始终使用TypeScript泛型指定数据类型
+<Ok/> **推荐**: 始终使用TypeScript泛型指定数据类型
 
 ```typescript
 // 推荐
@@ -1464,7 +1464,7 @@ console.log(userInfo.name) // 可能运行时错误
 
 ### 2. 合理设置过期时间
 
-✅ **推荐**: 根据数据特性设置合理的过期时间
+<Ok/> **推荐**: 根据数据特性设置合理的过期时间
 
 ```typescript
 // 推荐
@@ -1480,7 +1480,7 @@ cache.set('tempData', data, 365 * 24 * 3600) // 临时数据过期时间过长
 
 ### 3. 判空处理
 
-✅ **推荐**: 始终检查get返回值是否为null
+<Ok/> **推荐**: 始终检查get返回值是否为null
 
 ```typescript
 // 推荐
@@ -1500,7 +1500,7 @@ api.request({ headers: { Authorization: token } }) // token可能为null
 
 ### 4. 错误处理
 
-✅ **推荐**: 检查set返回值,处理存储失败情况
+<Ok/> **推荐**: 检查set返回值,处理存储失败情况
 
 ```typescript
 // 推荐
@@ -1518,7 +1518,7 @@ cache.set('largeData', hugeObject) // 忽略返回值
 
 ### 5. 键名规范
 
-✅ **推荐**: 使用有意义的键名,避免冲突
+<Ok/> **推荐**: 使用有意义的键名,避免冲突
 
 ```typescript
 // 推荐
@@ -1535,7 +1535,7 @@ cache.set('data', info) // 键名过于通用,易冲突
 
 ### 6. 大对象存储
 
-✅ **推荐**: 避免存储过大的对象,必要时分拆存储
+<Ok/> **推荐**: 避免存储过大的对象,必要时分拆存储
 
 ```typescript
 // 推荐
@@ -1554,7 +1554,7 @@ cache.set('allUserData', {
 
 ### 7. 定期清理
 
-✅ **推荐**: 在适当时机清理不需要的缓存
+<Ok/> **推荐**: 在适当时机清理不需要的缓存
 
 ```typescript
 // 推荐
@@ -1575,7 +1575,7 @@ if (newVersion !== oldVersion) {
 
 ### 8. 缓存键常量化
 
-✅ **推荐**: 将缓存键定义为常量,集中管理
+<Ok/> **推荐**: 将缓存键定义为常量,集中管理
 
 ```typescript
 // 推荐 - 创建 constants/cacheKeys.ts

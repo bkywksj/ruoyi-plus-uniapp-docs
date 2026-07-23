@@ -2,7 +2,7 @@
 
 滚动相关工具函数，提供平滑滚动、位置控制、可见性检测等功能，让页面滚动体验更加流畅和用户友好。
 
-## 📖 概述
+## 概述
 
 滚动工具库包含以下核心功能：
 - **滚动动画控制**：提供动画缓动和平滑切换
@@ -10,7 +10,7 @@
 - **平滑滚动导航**：滚动到指定位置或元素
 - **可见性检测**：检查元素是否在视口内可见
 
-## 🎨 动画控制函数
+## 动画控制函数
 
 ### easeInOutQuad
 
@@ -49,7 +49,7 @@ const requestAnimFrame: (callback: FrameRequestCallback) => void
 - 优化性能和电池使用
 - 确保动画流畅运行
 
-## 📍 位置操作
+## 位置操作
 
 ### getScrollPosition
 
@@ -109,7 +109,7 @@ setScrollPosition(savedPosition)
 - 同时设置多个可能的滚动元素
 - 确保在各种环境下都能正常工作
 
-## 🚀 平滑滚动
+## 平滑滚动
 
 ### scrollTo
 
@@ -262,7 +262,7 @@ class SmoothNavigation {
 const smoothNav = new SmoothNavigation()
 ```
 
-## 👁️ 可见性检测
+## 可见性检测
 
 ### isElementInViewport
 
@@ -307,7 +307,7 @@ window.addEventListener('scroll', () => {
 })
 ```
 
-## 💡 实际应用场景
+## 实际应用场景
 
 ### 1. 平滑导航系统
 
@@ -608,7 +608,7 @@ class ScrollProgressIndicator {
 const progressIndicator = new ScrollProgressIndicator()
 ```
 
-## 🎨 CSS 配合使用
+## CSS 配合使用
 
 这些滚动工具通常需要配合相应的CSS样式：
 
@@ -692,7 +692,7 @@ html {
 }
 ```
 
-## ⚡ 性能优化建议
+## 性能优化建议
 
 ### 1. 节流滚动事件
 
@@ -766,7 +766,7 @@ class ScrollHandler {
 }
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **兼容性**：某些功能在老旧浏览器中可能需要polyfill
 2. **性能影响**：频繁的滚动事件监听可能影响性能，建议使用节流
@@ -774,7 +774,7 @@ class ScrollHandler {
 4. **移动端适配**：在移动设备上测试滚动体验
 5. **可访问性**：考虑用户的减少动画偏好设置
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 平滑滚动在某些浏览器上不生效
 

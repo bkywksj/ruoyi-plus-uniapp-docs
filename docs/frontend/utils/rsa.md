@@ -2,7 +2,7 @@
 
 基于 JSEncrypt 库的 RSA 加密解密工具，提供完整的 RSA 加密、解密、签名和验证功能，是前端安全通信的核心组件。
 
-## 📖 概述
+## 概述
 
 RSA加密工具是一个封装了 JSEncrypt 库的安全工具模块，为前端应用提供非对称加密能力。该工具在用户登录、敏感数据传输、数字签名等场景中发挥关键作用，确保数据在传输过程中的机密性和完整性。
 
@@ -25,7 +25,7 @@ RSA加密工具是一个封装了 JSEncrypt 库的安全工具模块，为前端
 - **空值安全**：自动处理空值输入，返回 null 而非抛出异常
 - **签名算法**：使用 SHA256 哈希算法进行数字签名
 
-## 🔐 RSA算法基础
+## RSA算法基础
 
 ### 非对称加密原理
 
@@ -75,7 +75,7 @@ RSA（Rivest-Shamir-Adleman）是一种非对称加密算法，使用一对密�
 | 数据长度限制 | 有限制 | 无限制 |
 | 典型用途 | 密钥交换、签名 | 大数据加密 |
 
-## 🔧 安装依赖
+## 安装依赖
 
 使用前需要安装 JSEncrypt 库：
 
@@ -102,7 +102,7 @@ const encryptor = new JSEncrypt()
 // 完整的类型提示支持
 ```
 
-## ⚙️ 配置说明
+## 配置说明
 
 ### 系统配置
 
@@ -175,7 +175,7 @@ export const SystemConfig = {
 }
 ```
 
-## 🔐 核心功能
+## 核心功能
 
 ### rsaEncrypt
 
@@ -627,7 +627,7 @@ const encrypted = encryptor.encrypt(plainText)
 const decrypted = encryptor.decrypt(cipherText)
 ```
 
-## 🏗️ 实际应用场景
+## 实际应用场景
 
 ### 1. 用户登录加密
 
@@ -1126,7 +1126,7 @@ const registerUser = async (userData: {
 }
 ```
 
-## 🔄 混合加密方案
+## 混合加密方案
 
 RSA有数据长度限制，对于大数据应使用RSA+AES混合加密：
 
@@ -1253,7 +1253,7 @@ const encryptLargeData = async () => {
 }
 ```
 
-## 🔑 密钥管理最佳实践
+## 密钥管理最佳实践
 
 ### 1. 密钥格式规范
 
@@ -1449,7 +1449,7 @@ const getSecurityConfig = () => {
 }
 ```
 
-## ⚠️ 安全注意事项
+## 安全注意事项
 
 ### 1. 密钥安全
 
@@ -1651,7 +1651,7 @@ const verifySecureRequest = (request: SecureRequest): boolean => {
 }
 ```
 
-## 🧪 测试与调试
+## 测试与调试
 
 ### 单元测试
 
@@ -1772,7 +1772,7 @@ const diagnoseKey = (key: string, type: 'public' | 'private') => {
 }
 ```
 
-## 🔗 与后端联动
+## 与后端联动
 
 ### Java后端解密
 
@@ -1860,7 +1860,7 @@ public class RsaService {
 }
 ```
 
-## 📊 性能优化
+## 性能优化
 
 ### 加密器实例复用
 
@@ -1946,7 +1946,7 @@ const userData = {
 const encryptedData = batchEncrypt(userData, ['password', 'apiKey'])
 ```
 
-## 📝 常见问题
+## 常见问题
 
 ### 1. 加密失败返回null
 
@@ -2039,7 +2039,7 @@ const ensureBase64Compatibility = (encrypted: string): string => {
 - 使用密钥管理服务（KMS）
 - 定期轮换密钥
 
-## 📋 API速查表
+## API速查表
 
 | 函数 | 参数 | 返回值 | 说明 |
 |------|------|--------|------|
@@ -2050,7 +2050,7 @@ const ensureBase64Compatibility = (encrypted: string): string => {
 | `rsaVerify` | `txt: string, signature: string, pubKey?: string` | `boolean` | RSA公钥验签 |
 | `createEncryptor` | 无 | `JSEncrypt` | 创建加密器实例 |
 
-## 🔍 类型定义
+## 类型定义
 
 ```typescript
 // RSA工具类型定义

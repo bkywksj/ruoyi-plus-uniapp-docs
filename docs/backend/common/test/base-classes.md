@@ -22,11 +22,11 @@ BaseControllerTest (Controller 测试基类)
 
 ### 适用场景
 
-- ✅ 工具类测试 (`StringUtils`, `DateUtils` 等)
-- ✅ 枚举类测试
-- ✅ POJO 测试 (DTO, VO, Entity)
-- ✅ 算法逻辑测试
-- ❌ 不适合需要依赖注入的测试
+- <Ok/> 工具类测试 (`StringUtils`, `DateUtils` 等)
+- <Ok/> 枚举类测试
+- <Ok/> POJO 测试 (DTO, VO, Entity)
+- <Ok/> 算法逻辑测试
+- <No/> 不适合需要依赖注入的测试
 
 ### 核心特性
 
@@ -157,10 +157,10 @@ class DataProcessorTest extends BaseUnitTest {
 
 ### 适用场景
 
-- ✅ 需要 `@Autowired` 注入 Bean 的测试
-- ✅ 需要 Spring 配置的测试
-- ✅ 集成测试 (但不测试 HTTP 接口)
-- ❌ 不适合纯单元测试 (使用 `BaseUnitTest` 更快)
+- <Ok/> 需要 `@Autowired` 注入 Bean 的测试
+- <Ok/> 需要 Spring 配置的测试
+- <Ok/> 集成测试 (但不测试 HTTP 接口)
+- <No/> 不适合纯单元测试 (使用 `BaseUnitTest` 更快)
 
 ### 核心特性
 
@@ -259,10 +259,10 @@ logging:
 
 ### 适用场景
 
-- ✅ Service 层业务逻辑测试
-- ✅ 需要真实数据库操作的测试
-- ✅ 需要事务回滚的测试
-- ❌ 不适合 Controller 接口测试 (使用 `BaseControllerTest`)
+- <Ok/> Service 层业务逻辑测试
+- <Ok/> 需要真实数据库操作的测试
+- <Ok/> 需要事务回滚的测试
+- <No/> 不适合 Controller 接口测试 (使用 `BaseControllerTest`)
 
 ### 核心特性
 
@@ -422,11 +422,11 @@ void testDuplicateUserName() {
 
 ### 适用场景
 
-- ✅ Controller 接口测试
-- ✅ 完整请求流程测试 (包括拦截器、过滤器)
-- ✅ HTTP 接口测试
-- ✅ OpenAPI 接口测试 (支持自定义请求头)
-- ❌ 不适合纯业务逻辑测试 (使用 `BaseServiceTest` 更快)
+- <Ok/> Controller 接口测试
+- <Ok/> 完整请求流程测试 (包括拦截器、过滤器)
+- <Ok/> HTTP 接口测试
+- <Ok/> OpenAPI 接口测试 (支持自定义请求头)
+- <No/> 不适合纯业务逻辑测试 (使用 `BaseServiceTest` 更快)
 
 ### 核心特性
 
@@ -607,10 +607,10 @@ void testGetUserDetail() {
 
 | 基类 | Spring容器 | Web容器 | 事务回滚 | 启动速度 | 适用场景 |
 |------|-----------|---------|---------|---------|---------|
-| `BaseUnitTest` | ❌ | ❌ | ❌ | ⚡⚡⚡ | 工具类、POJO、算法 |
-| `BaseSpringTest` | ✅ | ❌ | ❌ | ⚡⚡ | 需要依赖注入的测试 |
-| `BaseServiceTest` | ✅ | ❌ | ✅ | ⚡⚡ | Service 业务逻辑 |
-| `BaseControllerTest` | ✅ | ✅ | ❌ | ⚡ | Controller 接口 |
+| `BaseUnitTest` | 否 | 否 | 否 | <Icon icon="lucide:zap" /><Icon icon="lucide:zap" /><Icon icon="lucide:zap" /> | 工具类、POJO、算法 |
+| `BaseSpringTest` | 是 | 否 | 否 | <Icon icon="lucide:zap" /><Icon icon="lucide:zap" /> | 需要依赖注入的测试 |
+| `BaseServiceTest` | 是 | 否 | 是 | <Icon icon="lucide:zap" /><Icon icon="lucide:zap" /> | Service 业务逻辑 |
+| `BaseControllerTest` | 是 | 是 | 否 | <Icon icon="lucide:zap" /> | Controller 接口 |
 
 ## 最佳实践
 

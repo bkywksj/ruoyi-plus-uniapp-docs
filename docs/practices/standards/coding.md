@@ -2,7 +2,7 @@
 
 RuoYi-Plus 项目的代码编写规范，包含命名规范、注释规范、代码结构等最佳实践。
 
-## 📋 基本原则
+## 基本原则
 
 ### 1. 可读性优先
 
@@ -73,7 +73,7 @@ public String getUserStatusText(String status) {
 }
 ```
 
-## 🏷️ 命名规范
+## 命名规范
 
 ### Java 命名
 
@@ -165,7 +165,7 @@ components/ProductItem/ProductItem.vue
 --border-radius: 4px;
 ```
 
-## 📝 注释规范
+## 注释规范
 
 ### Java 注释
 
@@ -385,7 +385,7 @@ onMounted(() => {
 </script>
 ```
 
-## 🏗️ 代码结构
+## 代码结构
 
 ### 控制器结构
 
@@ -618,7 +618,7 @@ public class UserServiceImpl implements IUserService {
 }
 ```
 
-## ✅ 最佳实践
+## 最佳实践
 
 ### 1. 异常处理
 
@@ -804,7 +804,7 @@ public class UserServiceImpl {
 
 代码规范是保证项目质量的基础，通过统一的规范可以提高代码的可读性、可维护性和团队协作效率。
 
-## 🔒 安全编码规范
+## 安全编码规范
 
 ### SQL 注入防护
 
@@ -885,7 +885,7 @@ public void createUser(UserBo user) {
 }
 ```
 
-## ⚡ 性能编码规范
+## 性能编码规范
 
 ### 数据库查询优化
 
@@ -971,7 +971,7 @@ for (Order order : orders) {
 }
 ```
 
-## 🧪 测试代码规范
+## 测试代码规范
 
 ### 单元测试结构
 
@@ -1055,7 +1055,7 @@ describe('UserList.vue', () => {
 })
 ```
 
-## 📋 代码审查清单
+## 代码审查清单
 
 ### 功能正确性
 
@@ -1093,7 +1093,7 @@ describe('UserList.vue', () => {
 - [ ] 是否有适当的日志记录
 - [ ] 错误信息是否有助于排查问题
 
-## 🎨 代码格式规范
+## 代码格式规范
 
 ### Java 代码格式
 
@@ -1229,7 +1229,7 @@ export function useUserList() {
 </template>
 ```
 
-## 📝 TODO 和 FIXME 规范
+## TODO 和 FIXME 规范
 
 ```java
 // TODO: 描述需要完成的功能

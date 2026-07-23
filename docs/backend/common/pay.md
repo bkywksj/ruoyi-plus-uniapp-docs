@@ -6,12 +6,12 @@ RuoYi-Plus 支付模块 (`ruoyi-common-pay`) 是一个统一的支付服务解�
 
 ### 核心特性
 
-- 🚀 **统一接口**: 提供统一的支付、退款、查询接口
-- 💳 **多支付方式**: 支持微信支付、支付宝、余额支付等
-- 🏢 **多租户支持**: 完整的多租户配置管理
-- 🔒 **安全可靠**: 完整的签名验证和回调处理
-- 📊 **配置管理**: 智能化的配置初始化和管理
-- 🎯 **事件驱动**: 支付成功事件发布机制
+- <Icon icon="lucide:rocket" /> **统一接口**: 提供统一的支付、退款、查询接口
+- <Icon icon="lucide:credit-card" /> **多支付方式**: 支持微信支付、支付宝、余额支付等
+- <Icon icon="lucide:building-2" /> **多租户支持**: 完整的多租户配置管理
+- <Icon icon="lucide:lock" /> **安全可靠**: 完整的签名验证和回调处理
+- <Icon icon="lucide:chart-column" /> **配置管理**: 智能化的配置初始化和管理
+- <Icon icon="lucide:target" /> **事件驱动**: 支付成功事件发布机制
 
 ### 支持的支付方式
 
@@ -148,7 +148,7 @@ String mchKey = "your_wx_api_key";  // v2 商户密钥
 String certPath = "cert/apiclient_cert.p12";
 ```
 
-**v3 API 配置（平台证书模式）⭐ 推荐**
+**v3 API 配置（平台证书模式）<Icon icon="lucide:star" /> 推荐**
 ```java
 // 必需配置
 String appId = "wx1234567890123456";
@@ -164,7 +164,7 @@ String keyPath = "cert/apiclient_key.pem";    // 商户私钥
 String platformCertPath = "cert/wechatpay_platform.pem";
 ```
 
-**v3 API 配置（公钥模式）⭐ 新功能**
+**v3 API 配置（公钥模式）<Icon icon="lucide:star" /> 新功能**
 ```java
 // 必需配置
 String appId = "wx1234567890123456";
@@ -193,7 +193,7 @@ String platformCertPath = "-----BEGIN PUBLIC KEY-----\nMIIBIj...\n-----END PUBLI
 - **适用范围**：仅「微信支付公钥模式」需要填写，「平台证书模式」可留空
 :::
 
-#### 证书配置灵活性 🔧
+#### 证书配置灵活性
 
 系统支持多种证书配置方式：
 
@@ -206,7 +206,7 @@ String certPath = "classpath:cert/apiclient_cert.pem";
 String certPath = "/data/cert/apiclient_cert.pem";
 ```
 
-**2. PEM 内容直接配置** ⭐ 推荐
+**2. PEM 内容直接配置** <Icon icon="lucide:star" /> 推荐
 ```java
 // 直接配置 PEM 格式证书内容（无需文件）
 String certPath = """
@@ -240,9 +240,9 @@ String platformCertPath = "cert/prod/wechatpay_platform.pem";
 2. **内容检测**：文件内容以 `-----BEGIN PUBLIC KEY-----` 开头
 
 **使用场景：**
-- ✅ 轻量级部署：公钥文件体积更小
-- ✅ 证书更新简化：公钥相对稳定，无需频繁更新
-- ✅ 安全性要求：满足基本的签名验证需求
+- <Ok/> 轻量级部署：公钥文件体积更小
+- <Ok/> 证书更新简化：公钥相对稳定，无需频繁更新
+- <Ok/> 安全性要求：满足基本的签名验证需求
 
 ::: warning 注意
 公钥模式仅用于回调验证，不影响支付、退款等业务功能。如有条件，建议使用完整的平台证书模式。

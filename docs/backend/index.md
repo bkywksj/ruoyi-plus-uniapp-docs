@@ -37,7 +37,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 基础信息对比
 
-| 对比项      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp |
+| 对比项      | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp |
 |----------|-----------|----------------|---------------------|
 | **维护组织** | 若依官方      | Dromara 开源组织   | 抓蛙师/若依工作室           |
 | **项目定位** | 经典快速开发框架  | 多租户权限管理系统      | 全栈统一开发平台            |
@@ -49,7 +49,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 技术栈对比
 
-| 技术栈             | RuoYi-Vue                     | RuoYi-Vue-Plus             | ⚡ RuoYi-Plus-UniApp              |
+| 技术栈             | RuoYi-Vue                     | RuoYi-Vue-Plus             | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp              |
 |-----------------|-------------------------------|----------------------------|----------------------------------|
 | **后端**          | Spring Boot + Spring Security | Spring Boot + Sa-Token     | Spring Boot + Sa-Token           |
 | **Spring Boot** | 2.7.x                         | 3.2.x                      | 3.2.x                            |
@@ -67,177 +67,177 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ### 后端架构重构
 
-| 重构项目     | RuoYi-Vue     | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp                                                   |
+| 重构项目     | RuoYi-Vue     | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp                                                   |
 |----------|---------------|----------------|-----------------------------------------------------------------------|
-| **基础架构** | 传统架构          | 现代化架构          | ✅ 面向未来的现代化架构                                                          |
-| **查询增强** | MyBatis       | MyBatis-Plus   | ✅ PlusQuery+PlusLambdaQuery聚合查询  IBaseService接口+BaseServiceImpl减少样板代码 |
-| **响应封装** | TableDataInfo | PageResult     | ✅ `R<PageResult<T>>`统一响应                                              |
-| **应用隔离** | 无             | 无              | ✅ 项目唯一标识符 应用ID隔离                                                      |
-| **字典系统** | 基础字典          | 基础字典           | ✅增强字典 Dict开头枚举+1是0否统一规范                                               |
-| **租户系统** | 无             | 基础多租户          | ✅ 兜底租户ID+OSS目录租户隔离                                                    |
+| **基础架构** | 传统架构          | 现代化架构          | 是 面向未来的现代化架构                                                          |
+| **查询增强** | MyBatis       | MyBatis-Plus   | 是 PlusQuery+PlusLambdaQuery聚合查询  IBaseService接口+BaseServiceImpl减少样板代码 |
+| **响应封装** | TableDataInfo | PageResult     | 是 `R<PageResult<T>>`统一响应                                              |
+| **应用隔离** | 无             | 无              | 是 项目唯一标识符 应用ID隔离                                                      |
+| **字典系统** | 基础字典          | 基础字典           | 是增强字典 Dict开头枚举+1是0否统一规范                                               |
+| **租户系统** | 无             | 基础多租户          | 是 兜底租户ID+OSS目录租户隔离                                                    |
 
 ### 前端架构重构
 
-| 重构项目     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp            |
+| 重构项目     | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp            |
 |----------|-----------|----------------|--------------------------------|
-| **目录结构** | Vue2规范    | Vue3规范         | ✅ composables+layouts+stores统一 |
-| **组件命名** | 传统命名      | 现代命名           | ✅ 首字母大写驼峰+语义化                  |
-| **类型系统** | 基础类型      | TypeScript     | ✅ `R<T>`+`PageResult<T>`统一类型   |
-| **工具重构** | utils工具类  | 部分重构           | ✅ 完全重构为Composables组合函数         |
-| **样式系统** | 传统样式      | UnoCSS 现代样式    | ✅ UnoCSS配置增强+完善备注              |
-| **图标系统** | 基础图标/svg  | 丰富图标/svg       | ✅ Iconify图标库+400+图标重构          |
+| **目录结构** | Vue2规范    | Vue3规范         | 是 composables+layouts+stores统一 |
+| **组件命名** | 传统命名      | 现代命名           | 是 首字母大写驼峰+语义化                  |
+| **类型系统** | 基础类型      | TypeScript     | 是 `R<T>`+`PageResult<T>`统一类型   |
+| **工具重构** | utils工具类  | 部分重构           | 是 完全重构为Composables组合函数         |
+| **样式系统** | 传统样式      | UnoCSS 现代样式    | 是 UnoCSS配置增强+完善备注              |
+| **图标系统** | 基础图标/svg  | 丰富图标/svg       | 是 Iconify图标库+400+图标重构          |
 
 ## 核心功能对比
 
 ### 基础功能模块
 
-| 功能模块     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp   |
+| 功能模块     | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp   |
 |----------|-----------|----------------|-----------------------|
-| **用户管理** | 基础功能      | 基础功能           | ✅ 基础功能+移动端用户绑定        |
-| **角色管理** | 基础权限      | 基础权限           | ✅ 基础权限+租户角色同步功能       |
-| **菜单管理** | 树形菜单      | 树形菜单           | ✅ 树形菜单+国际化菜单+国际化键自动生成 |
-| **部门管理** | 树形结构      | 多租户部门          | ✅ 多租户部门               |
-| **字典管理** | 基础字典      | 多租户字典          | ✅ 多租户字典+Dict枚举+通用转换器  |
-| **通知公告** | 基础通知      | 基础通知+在线推送      | ✅ 精准推送/离线留存+已读未读统计    |
+| **用户管理** | 基础功能      | 基础功能           | 是 基础功能+移动端用户绑定        |
+| **角色管理** | 基础权限      | 基础权限           | 是 基础权限+租户角色同步功能       |
+| **菜单管理** | 树形菜单      | 树形菜单           | 是 树形菜单+国际化菜单+国际化键自动生成 |
+| **部门管理** | 树形结构      | 多租户部门          | 是 多租户部门               |
+| **字典管理** | 基础字典      | 多租户字典          | 是 多租户字典+Dict枚举+通用转换器  |
+| **通知公告** | 基础通知      | 基础通知+在线推送      | 是 精准推送/离线留存+已读未读统计    |
 
 ### 高级功能模块
 
-| 功能模块      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp  |
+| 功能模块      | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp  |
 |-----------|-----------|----------------|----------------------|
-| **多租户**   | ❌ 不支持     | ✅ 完整支持         | ✅ SaaS多租户+数据隔离增强     |
-| **数据权限**  | ✅ 基础支持    | ✅ 增强支持         | ✅ 增强支持               |
-| **代码生成**  | ✅ 基础生成    | ✅ 基础生成         | ✅ 主子表+默认值+权限生成       |
-| **文件存储**  | ✅ 本地存储    | ✅ OSS多云存储      | ✅ OSS策略模式+S3+本地+前端直传 |
-| **支付功能**  | ❌ 无       | ❌ 无            | ✅ wxjava+支付宝SDK+租户隔离+v2/v3智能切换    |
-| **短信服务**  | ❌ 无       | ✅ 多厂商支持        | ✅ 多厂商支持              |
-| **小程序支持** | ❌ 无       | ❌ 无            | ✅ 微信+QQ+支付宝+抖音全平台    |
-| **序列化增强** | ❌ 无       | 基础转换+手动逐个实现    | ✅ SerialMap注解+字段映射   |
+| **多租户**   | 否 不支持     | 是 完整支持         | 是 SaaS多租户+数据隔离增强     |
+| **数据权限**  | 是 基础支持    | 是 增强支持         | 是 增强支持               |
+| **代码生成**  | 是 基础生成    | 是 基础生成         | 是 主子表+默认值+权限生成       |
+| **文件存储**  | 是 本地存储    | 是 OSS多云存储      | 是 OSS策略模式+S3+本地+前端直传 |
+| **支付功能**  | 否 无       | 否 无            | 是 wxjava+支付宝SDK+租户隔离+v2/v3智能切换    |
+| **短信服务**  | 否 无       | 是 多厂商支持        | 是 多厂商支持              |
+| **小程序支持** | 否 无       | 否 无            | 是 微信+QQ+支付宝+抖音全平台    |
+| **序列化增强** | 否 无       | 基础转换+手动逐个实现    | 是 SerialMap注解+字段映射   |
 
 ### 2025年最新能力对比
 
-| 能力模块       | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp                          |
+| 能力模块       | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp                          |
 |------------|-----------|----------------|----------------------------------------------|
-| **AI能力**   | ❌ 无       | ❌ 无            | ✅ LangChain4j集成OpenAI/Claude/DeepSeek/通义千问   |
-| **流式聊天**   | ❌ 无       | ❌ 无            | ✅ WebSocket实时AI对话+RAG检索增强                    |
-| **物联网通信**  | ❌ 无       | ❌ 无            | ✅ mica-mqtt高性能客户端+百万级并发+QoS 0/1/2            |
-| **消息队列**   | ❌ 无       | ❌ 无            | ✅ RocketMQ异步解耦+削峰填谷+最终一致性                    |
-| **页面设计器**  | ❌ 无       | ❌ 无            | ✅ 可视化拖拽+30+组件+AI智能生成+一键代码导出                  |
-| **多媒体处理**  | ❌ 无       | ❌ 无            | ✅ 海报生成引擎+GIF动图合成+火山引擎TTS语音                   |
-| **AI辅助开发** | ❌ 无       | ❌ 无            | ✅ Claude Code上下文工程(CLAUDE.md)+智能提示           |
-| **四层架构**   | 三层架构      | 三层架构           | ✅ Controller→Service→DAO→Mapper职责清晰分离        |
-| **查询增强**   | LambdaQuery | LambdaQuery    | ✅ PlusLambdaQuery自动null处理+聚合函数+代码减少70%       |
+| **AI能力**   | 否 无       | 否 无            | 是 LangChain4j集成OpenAI/Claude/DeepSeek/通义千问   |
+| **流式聊天**   | 否 无       | 否 无            | 是 WebSocket实时AI对话+RAG检索增强                    |
+| **物联网通信**  | 否 无       | 否 无            | 是 mica-mqtt高性能客户端+百万级并发+QoS 0/1/2            |
+| **消息队列**   | 否 无       | 否 无            | 是 RocketMQ异步解耦+削峰填谷+最终一致性                    |
+| **页面设计器**  | 否 无       | 否 无            | 是 可视化拖拽+30+组件+AI智能生成+一键代码导出                  |
+| **多媒体处理**  | 否 无       | 否 无            | 是 海报生成引擎+GIF动图合成+火山引擎TTS语音                   |
+| **AI辅助开发** | 否 无       | 否 无            | 是 Claude Code上下文工程(CLAUDE.md)+智能提示           |
+| **四层架构**   | 三层架构      | 三层架构           | 是 Controller→Service→DAO→Mapper职责清晰分离        |
+| **查询增强**   | LambdaQuery | LambdaQuery    | 是 PlusLambdaQuery自动null处理+聚合函数+代码减少70%       |
 
 ### 移动端功能对比
 
-| 移动端功能    | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp     |
+| 移动端功能    | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp     |
 |----------|-----------|----------------|-------------------------|
-| **H5支持** | ❌ 无       | ❌ 无            | ✅ 响应式增强                 |
-| **小程序**  | ❌ 无       | ❌ 无            | ✅ 微信+QQ+支付宝+京东+抖音       |
-| **APP**  | ❌ 无       | ❌ 无            | ✅ UniApp深度重构(基于unibest) |
-| **组件库**  | ❌ 无       | ❌ 无            | ✅ WotUI完全重构+380+图标      |
-| **登录认证** | ❌ 无       | ❌ 无            | ✅ 多平台登录+unionid绑定+自动注册  |
-| **支付集成** | ❌ 无       | ❌ 无            | ✅ usePayment组合函数+完整支付流程 |
-| **示例代码** | ❌ 无       | ❌ 无            | ✅ 完整组件示例+代码查看复制         |
+| **H5支持** | 否 无       | 否 无            | 是 响应式增强                 |
+| **小程序**  | 否 无       | 否 无            | 是 微信+QQ+支付宝+京东+抖音       |
+| **APP**  | 否 无       | 否 无            | 是 UniApp深度重构(基于unibest) |
+| **组件库**  | 否 无       | 否 无            | 是 WotUI完全重构+380+图标      |
+| **登录认证** | 否 无       | 否 无            | 是 多平台登录+unionid绑定+自动注册  |
+| **支付集成** | 否 无       | 否 无            | 是 usePayment组合函数+完整支付流程 |
+| **示例代码** | 否 无       | 否 无            | 是 完整组件示例+代码查看复制         |
 
 ## 开发体验对比
 
 ### 代码质量与规范
 
-| 开发特性     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp |
+| 开发特性     | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp |
 |----------|-----------|----------------|---------------------|
-| **代码注释** | 基础注释      | 基础注释           | ✅ 完整Javadoc规范+代码即文档 |
-| **命名规范** | 基础规范      | 改进规范           | ✅ 全栈统一命名+语义化+唯一性    |
-| **类型安全** | 基础类型      | TypeScript     | ✅ 全栈类型统一+智能提示       |
-| **样板代码** | 较多重复      | 部分优化           | ✅ 极致减少样板代码+泛型适配     |
-| **开发友好** | 基础友好      | 较友好            | ✅ 开发体验优先+可维护性强      |
+| **代码注释** | 基础注释      | 基础注释           | 是 完整Javadoc规范+代码即文档 |
+| **命名规范** | 基础规范      | 改进规范           | 是 全栈统一命名+语义化+唯一性    |
+| **类型安全** | 基础类型      | TypeScript     | 是 全栈类型统一+智能提示       |
+| **样板代码** | 较多重复      | 部分优化           | 是 极致减少样板代码+泛型适配     |
+| **开发友好** | 基础友好      | 较友好            | 是 开发体验优先+可维护性强      |
 
 ### 工具与组合函数函数
 
-| 工具类型     | RuoYi-Vue | RuoYi-Vue-Plus    | ⚡ RuoYi-Plus-UniApp                    |
+| 工具类型     | RuoYi-Vue | RuoYi-Vue-Plus    | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp                    |
 |----------|-----------|-------------------|----------------------------------------|
-| **工具函数** | utils工具类  | 增强工具类             | ✅ Composables组合函数重构+utils增强工具类         |
-| **请求封装** | axios封装   | 增强封装+加密解密         | ✅ useHttp组合函数+加密解密                     |
-| **权限控制** | 基础权限      | 增强权限              | ✅ useAuth组合函数+延迟加载组件                   |
-| **主题切换** | 基础主题      | 主题支持              | ✅ useTheme组合函数                         |
-| **国际化**  | 基础i18n    | 增强i18n            | ✅ useI18n组合函数+智能提示+后端国际化               |
-| **表格增强** | 基础表格      | el-table+vxetable | ✅ el-table+useSelection+useTableHeight |
-| **文件下载** | 基础下载      | 基础下载              | ✅ useDownload组合函数                      |
-| **动画效果** | 基础动画      | CSS动画             | ✅ useAnimation组合函数                     |
+| **工具函数** | utils工具类  | 增强工具类             | 是 Composables组合函数重构+utils增强工具类         |
+| **请求封装** | axios封装   | 增强封装+加密解密         | 是 useHttp组合函数+加密解密                     |
+| **权限控制** | 基础权限      | 增强权限              | 是 useAuth组合函数+延迟加载组件                   |
+| **主题切换** | 基础主题      | 主题支持              | 是 useTheme组合函数                         |
+| **国际化**  | 基础i18n    | 增强i18n            | 是 useI18n组合函数+智能提示+后端国际化               |
+| **表格增强** | 基础表格      | el-table+vxetable | 是 el-table+useSelection+useTableHeight |
+| **文件下载** | 基础下载      | 基础下载              | 是 useDownload组合函数                      |
+| **动画效果** | 基础动画      | CSS动画             | 是 useAnimation组合函数                     |
 
 ## 组件系统对比
 
 ### 前端组件
 
-| 组件类型     | RuoYi-Vue  | RuoYi-Vue-Plus    | ⚡ RuoYi-Plus-UniApp                         |
+| 组件类型     | RuoYi-Vue  | RuoYi-Vue-Plus    | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp                         |
 |----------|------------|-------------------|---------------------------------------------|
-| **表单组件** | Element UI | Element Plus      | ✅ A系列表单组件全套重构                               |
-| **上传组件** | 基础上传       | 基础上传              | ✅ AFormFileUpload+AFormImgUpload +素材管理+前端直传 |
-| **编辑器**  | Quill      | Quill             | ✅ AFormEditor(基于WangEditor)增强富文本            |
-| **媒体库**  | ❌ 无        | 基础文件管理            | ✅ AOssMediaManager+目录管理+批量操作                |
-| **权限指令** | 基础指令       | 基础指令              | ✅ permi+role+admin等完整增强指令                   |
-| **图标组件** | 基础图标       | 基础图标 + iconify图标库 | ✅ Icon组件+类型提示+iconify海量图标库                  |
+| **表单组件** | Element UI | Element Plus      | 是 A系列表单组件全套重构                               |
+| **上传组件** | 基础上传       | 基础上传              | 是 AFormFileUpload+AFormImgUpload +素材管理+前端直传 |
+| **编辑器**  | Quill      | Quill             | 是 AFormEditor(基于WangEditor)增强富文本            |
+| **媒体库**  | 否 无        | 基础文件管理            | 是 AOssMediaManager+目录管理+批量操作                |
+| **权限指令** | 基础指令       | 基础指令              | 是 permi+role+admin等完整增强指令                   |
+| **图标组件** | 基础图标       | 基础图标 + iconify图标库 | 是 Icon组件+类型提示+iconify海量图标库                  |
 
 ### 移动端组件
 
-| 组件类型         | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp         |
+| 组件类型         | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp         |
 |--------------|-----------|----------------|-----------------------------|
-| **UI组件库**    | ❌ 无       | ❌ 无            | ✅ WotUI完全重构+Vue3+TypeScript |
-| **图标组件**     | ❌ 无       | ❌ 无            | ✅ wd-iconify+wd-icon+400+图标 |
-| **分页组件**     | ❌ 无       | ❌ 无            | ✅ wd-paging下滑分页加载           |
-| **tabbar组件** | ❌ 无       | ❌ 无            | ✅ 自定义tabbar组件+灵活控制          |
+| **UI组件库**    | 否 无       | 否 无            | 是 WotUI完全重构+Vue3+TypeScript |
+| **图标组件**     | 否 无       | 否 无            | 是 wd-iconify+wd-icon+400+图标 |
+| **分页组件**     | 否 无       | 否 无            | 是 wd-paging下滑分页加载           |
+| **tabbar组件** | 否 无       | 否 无            | 是 自定义tabbar组件+灵活控制          |
 
 ## 国际化系统对比
 
-| 国际化功能     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp               |
+| 国际化功能     | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp               |
 |-----------|-----------|----------------|-----------------------------------|
-| **前端国际化** | 基础支持      | 增强支持           | ✅ useI18n组合函数+智能提示+菜单国际化+按钮+消息国际化 |
-| **后端国际化** | ❌ 无       | 基础支持           | ✅ I18nMessageInterceptor+接口常量管理   |
-| **消息国际化** | 前端处理      | 前端处理           | ✅ 后端返回国际化+前端兜底                    |
-| **键名管理**  | 硬编码       | 部分优化           | ✅ 统一键名计算+去除硬编码                    |
+| **前端国际化** | 基础支持      | 增强支持           | 是 useI18n组合函数+智能提示+菜单国际化+按钮+消息国际化 |
+| **后端国际化** | 否 无       | 基础支持           | 是 I18nMessageInterceptor+接口常量管理   |
+| **消息国际化** | 前端处理      | 前端处理           | 是 后端返回国际化+前端兜底                    |
+| **键名管理**  | 硬编码       | 部分优化           | 是 统一键名计算+去除硬编码                    |
 
 ## 部署运维对比
 
-| 运维特性         | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp  |
+| 运维特性         | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp  |
 |--------------|-----------|----------------|----------------------|
-| **Docker支持** | 基础        | ✅ 完善配置         | ✅ 优化编排+远程调试          |
-| **容器化部署**    | 基础支持      | 完善支持           | ✅ 完美适配Docker容器化      |
-| **监控告警**     | 基础监控      | monitorAdmin   | ✅ monitorAdmin通知功能增强 |
+| **Docker支持** | 基础        | 是 完善配置         | 是 优化编排+远程调试          |
+| **容器化部署**    | 基础支持      | 完善支持           | 是 完美适配Docker容器化      |
+| **监控告警**     | 基础监控      | monitorAdmin   | 是 monitorAdmin通知功能增强 |
 
 ## 学习使用对比
 
-| 对比维度      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp |
+| 对比维度      | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp |
 |-----------|-----------|----------------|---------------------|
-| **学习难度**  | ⭐⭐⭐ 简单    | ⭐⭐⭐⭐ 中等        | ⭐⭐⭐ 简单              |
-| **文档完整度** | ⭐⭐⭐⭐ 比较完整 | ⭐⭐⭐⭐ 比较完整      | ⭐⭐⭐⭐ 文档完善中+代码即文档    |
-| **代码可读性** | ⭐⭐⭐ 一般    | ⭐⭐⭐⭐ 较好        | ⭐⭐⭐⭐⭐ 极佳            |
-| **上手速度**  | ⭐⭐⭐⭐ 很快   | ⭐⭐⭐⭐ 一般        | ⭐⭐⭐⭐⭐ 极快            |
-| **二次开发**  | ⭐⭐⭐⭐⭐ 容易  | ⭐⭐⭐⭐ 中等        | ⭐⭐⭐⭐⭐ 非常友好          |
-| **维护性**   | ⭐⭐⭐ 一般    | ⭐⭐⭐⭐ 较好        | ⭐⭐⭐⭐⭐ 极佳            |
+| **学习难度**  | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 简单    | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 中等        | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 简单              |
+| **文档完整度** | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 比较完整 | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 比较完整      | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 文档完善中+代码即文档    |
+| **代码可读性** | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 一般    | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 较好        | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 极佳            |
+| **上手速度**  | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 很快   | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 一般        | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 极快            |
+| **二次开发**  | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 容易  | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 中等        | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 非常友好          |
+| **维护性**   | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 一般    | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 较好        | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 极佳            |
 
 ## 性能与扩展性对比
 
-| 性能指标      | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp       |
+| 性能指标      | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp       |
 |-----------|-----------|----------------|---------------------------|
 | **后端性能**  | 一般        | 较好             | 较强                        |
 | **前端性能**  | Vue2性能    | Vue3性能         | Vue3性能+Vite优化             |
-| **移动端性能** | ❌ 无       | ❌ 无            | ✅ 分包加载+优化渲染               |
+| **移动端性能** | 否 无       | 否 无            | 是 分包加载+优化渲染               |
 | **缓存策略**  | Redis单机   | Redis集群+本地缓存   | Redis集群+本地缓存              |
 | **查询优化**  | MyBatis   | MyBatis-Plus   | PlusQuery聚合查询优化           |
-| **实时通信**  | ❌ 无       | WebSocket/SSE  | ✅ WebSocket/SSE 重连退避+状态监控 |
+| **实时通信**  | 否 无       | WebSocket/SSE  | 是 WebSocket/SSE 重连退避+状态监控 |
 
 ## 安全特性对比
 
-| 安全功能     | RuoYi-Vue | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp |
+| 安全功能     | RuoYi-Vue | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp |
 |----------|-----------|----------------|---------------------|
 | **身份认证** | JWT       | Sa-Token       | Sa-Token增强          |
-| **数据加密** | ❌ 无       | 前后端加密          | 前后端加密+移动端加密         |
-| **数据脱敏** | ❌ 无       | ✅ 完整支持         | ✅ 完整支持              |
-| **租户隔离** | ❌ 无       | 租户隔离           | 完整租户隔离+OSS隔离        |
+| **数据加密** | 否 无       | 前后端加密          | 前后端加密+移动端加密         |
+| **数据脱敏** | 否 无       | 是 完整支持         | 是 完整支持              |
+| **租户隔离** | 否 无       | 租户隔离           | 完整租户隔离+OSS隔离        |
 | **权限控制** | RBAC      | RBAC+细粒度       | RBAC+权限指令增强         |
 
 ## 许可证与生态对比
 
-| 项目       | RuoYi-Vue  | RuoYi-Vue-Plus | ⚡ RuoYi-Plus-UniApp |
+| 项目       | RuoYi-Vue  | RuoYi-Vue-Plus | <Icon icon="lucide:zap" /> RuoYi-Plus-UniApp |
 |----------|------------|----------------|---------------------|
 | **开源许可** | Apache 2.0 | MIT            | 闭源需要授权              |
 | **商业使用** | 完全免费       | 完全免费           | 授权后可商用              |
@@ -248,7 +248,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 
 ## 适用场景建议
 
-### 🎯 RuoYi-Vue 适用场景
+### RuoYi-Vue 适用场景
 
 | 场景类型       | 推荐理由            |
 |------------|-----------------|
@@ -256,7 +256,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 | **简单管理系统** | 功能完整、维护稳定、不易扩展  |
 | **传统项目维护** | 技术栈稳定、兼容性好、很少更新 |
 
-### 🚀 RuoYi-Vue-Plus 适用场景
+### RuoYi-Vue-Plus 适用场景
 
 | 场景类型          | 推荐理由                        |
 |---------------|-----------------------------|
@@ -265,7 +265,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 | **中大型项目**     | 功能丰富、架构清晰、扩展性强              |
 | **微服务架构**     | 支持分布式、云原生、容器化               |
 
-### 🌟 RuoYi-Plus-UniApp 适用场景
+### RuoYi-Plus-UniApp 适用场景
 
 | 场景类型           | 推荐理由                  |
 |----------------|-----------------------|
@@ -277,7 +277,7 @@ Docker 容器化部署和远程调试，注重开发体验和代码可维护性�
 | **企业级商业项目**    | 专业技术支持、定制开发服务、商业授权保障  |
 | **对安全性要求高的项目** | 闭源保护、授权控制、专业维护        |
 
-## 💡 总结与选择建议
+## 总结与选择建议
 
 ### 技术发展趋势
 

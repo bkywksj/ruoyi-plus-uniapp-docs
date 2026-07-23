@@ -2,7 +2,7 @@
 
 前端项目的单元测试配置和编写指南。
 
-## 🎯 测试框架
+## 测试框架
 
 项目推荐使用 **Vitest** 作为单元测试框架。
 
@@ -12,7 +12,7 @@
 | **@vue/test-utils** | 2.x | Vue 3 官方测试工具 |
 | **happy-dom** | 最新 | 轻量级 DOM 模拟环境 |
 
-## 📦 安装配置
+## 安装配置
 
 ### 安装依赖
 
@@ -76,7 +76,7 @@ export default defineConfig({
 }
 ```
 
-## 📝 基础测试
+## 基础测试
 
 ### 测试文件组织
 
@@ -142,7 +142,7 @@ describe('string utils', () => {
 })
 ```
 
-## 🧪 组件测试
+## 组件测试
 
 ### 基本组件测试
 
@@ -304,7 +304,7 @@ describe('SearchInput Component', () => {
 })
 ```
 
-## 🔄 异步测试
+## 异步测试
 
 ### API 请求测试
 
@@ -413,7 +413,7 @@ describe('UserList Component', () => {
 })
 ```
 
-## 🏪 Store 测试
+## Store 测试
 
 ### Pinia Store 测试
 
@@ -466,7 +466,7 @@ describe('User Store', () => {
 })
 ```
 
-## 🎭 Mock 技巧
+## Mock 技巧
 
 ### Mock 函数
 
@@ -570,7 +570,7 @@ describe('Navigation Component', () => {
 })
 ```
 
-## 🎨 测试覆盖率
+## 测试覆盖率
 
 ### 运行覆盖率测试
 
@@ -600,7 +600,7 @@ All files                  |   85.23 |    78.45 |   82.11 |   85.67 |
 - **函数覆盖率**: > 80%
 - **行覆盖率**: > 80%
 
-## 📋 最佳实践
+## 最佳实践
 
 ### 测试命名
 
@@ -686,7 +686,7 @@ it('calls internal helper function', () => {
 })
 ```
 
-## 🚀 运行测试
+## 运行测试
 
 ### 常用命令
 
@@ -733,7 +733,7 @@ jobs:
           files: ./coverage/coverage-final.json
 ```
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 测试运行缓慢或超时问题
 

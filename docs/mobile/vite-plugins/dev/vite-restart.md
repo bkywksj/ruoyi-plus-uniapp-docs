@@ -1445,11 +1445,11 @@ import ViteRestart from 'vite-plugin-restart'
 
 | 插件 | 兼容性 | 说明 |
 |------|--------|------|
-| @dcloudio/vite-plugin-uni | ✅ | 完全兼容 |
-| @uni-helper/vite-plugin-uni-pages | ✅ | 完全兼容 |
-| unplugin-auto-import | ✅ | 完全兼容 |
-| unocss | ✅ | 完全兼容 |
-| vite-plugin-compression | ✅ | 完全兼容 |
+| @dcloudio/vite-plugin-uni | 是 | 完全兼容 |
+| @uni-helper/vite-plugin-uni-pages | 是 | 完全兼容 |
+| unplugin-auto-import | 是 | 完全兼容 |
+| unocss | 是 | 完全兼容 |
+| vite-plugin-compression | 是 | 完全兼容 |
 
 ## 扩展阅读
 

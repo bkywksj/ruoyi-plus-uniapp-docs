@@ -78,9 +78,9 @@ updateUser('1', { nickName: '新昵称' })
 
 **最佳实践:**
 
-- ✅ 用于表单编辑场景,允许只修改部分字段
-- ✅ 用于配置对象,提供默认值
-- ❌ 避免过度使用,可能导致类型过于宽松
+- <Ok/> 用于表单编辑场景,允许只修改部分字段
+- <Ok/> 用于配置对象,提供默认值
+- <No/> 避免过度使用,可能导致类型过于宽松
 
 #### Required - 所有属性必选
 
@@ -129,9 +129,9 @@ function validateConfig(config: Required<SystemConfig>) {
 
 **最佳实践:**
 
-- ✅ 用于数据提交前的类型约束
-- ✅ 用于配置对象的完整性检查
-- ❌ 避免与可选链(`?.`)混用,容易产生困惑
+- <Ok/> 用于数据提交前的类型约束
+- <Ok/> 用于配置对象的完整性检查
+- <No/> 避免与可选链(`?.`)混用,容易产生困惑
 
 #### Readonly - 所有属性只读
 
@@ -187,10 +187,10 @@ const API_CONFIG: Readonly<{
 
 **最佳实践:**
 
-- ✅ 用于配置对象,防止运行时修改
-- ✅ 用于 Props 定义,确保不可变性
-- ✅ 用于常量定义,明确表达不可修改意图
-- ❌ 注意只读是浅层的,嵌套对象仍可修改
+- <Ok/> 用于配置对象,防止运行时修改
+- <Ok/> 用于 Props 定义,确保不可变性
+- <Ok/> 用于常量定义,明确表达不可修改意图
+- <No/> 注意只读是浅层的,嵌套对象仍可修改
 
 ### 属性选择工具类型
 
@@ -254,10 +254,10 @@ const options: UserOption[] = [
 
 **最佳实践:**
 
-- ✅ 用于创建轻量级视图模型
-- ✅ 用于 API 请求参数类型
-- ✅ 用于下拉选择器选项类型
-- ⚠️ 提取的字段应该有明确的业务含义
+- <Ok/> 用于创建轻量级视图模型
+- <Ok/> 用于 API 请求参数类型
+- <Ok/> 用于下拉选择器选项类型
+- <Warn/> 提取的字段应该有明确的业务含义
 
 #### Omit - 排除部分属性
 
@@ -318,10 +318,10 @@ type UserPublicInfo = Omit<UserBo, 'password' | 'createTime' | 'updateTime'>
 
 **最佳实践:**
 
-- ✅ 用于排除敏感信息
-- ✅ 用于表单数据定义
-- ✅ 用于 API 响应数据清洗
-- ⚠️ 优先使用 Pick,Omit 作为补充
+- <Ok/> 用于排除敏感信息
+- <Ok/> 用于表单数据定义
+- <Ok/> 用于 API 响应数据清洗
+- <Warn/> 优先使用 Pick,Omit 作为补充
 
 ### 键值映射工具类型
 
@@ -383,10 +383,10 @@ const errors: FormErrors = {
 
 **最佳实践:**
 
-- ✅ 用于创建映射表
-- ✅ 用于枚举到描述的转换
-- ✅ 用于缓存数据结构
-- ⚠️ 注意键名类型约束
+- <Ok/> 用于创建映射表
+- <Ok/> 用于枚举到描述的转换
+- <Ok/> 用于缓存数据结构
+- <Warn/> 注意键名类型约束
 
 ### 函数相关工具类型
 
@@ -438,10 +438,10 @@ const user: FormattedUser = {
 
 **最佳实践:**
 
-- ✅ 用于推导 API 返回类型
-- ✅ 用于工具函数类型提取
-- ✅ 避免重复定义类型
-- ⚠️ 函数需要明确的返回类型
+- <Ok/> 用于推导 API 返回类型
+- <Ok/> 用于工具函数类型提取
+- <Ok/> 避免重复定义类型
+- <Warn/> 函数需要明确的返回类型
 
 #### Parameters - 函数参数类型
 
@@ -497,10 +497,10 @@ function withLoading<T extends (...args: any[]) => any>(fn: T) {
 
 **最佳实践:**
 
-- ✅ 用于函数参数类型复用
-- ✅ 用于高阶函数类型定义
-- ✅ 用于测试用例参数生成
-- ⚠️ 元组类型访问需要索引
+- <Ok/> 用于函数参数类型复用
+- <Ok/> 用于高阶函数类型定义
+- <Ok/> 用于测试用例参数生成
+- <Warn/> 元组类型访问需要索引
 
 #### Awaited - Promise 返回类型
 
@@ -551,10 +551,10 @@ async function example() {
 
 **最佳实践:**
 
-- ✅ 用于异步函数返回类型提取
-- ✅ 用于 Promise 链类型推导
-- ✅ 结合 ReturnType 使用
-- ⚠️ 注意 Promise 嵌套层级
+- <Ok/> 用于异步函数返回类型提取
+- <Ok/> 用于 Promise 链类型推导
+- <Ok/> 结合 ReturnType 使用
+- <Warn/> 注意 Promise 嵌套层级
 
 ## 项目自定义工具类型
 
@@ -1086,13 +1086,13 @@ type UserGetters = Getters<UserVo>
 
 ### 1. 优先使用内置工具类型
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```typescript
 type UserBasic = Pick<UserVo, 'userId' | 'userName' | 'nickName'>
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```typescript
 type UserBasic = {
@@ -1106,13 +1106,13 @@ type UserBasic = {
 
 ### 2. 合理使用类型推导
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```typescript
 type UserData = Awaited<ReturnType<typeof getUserInfo>>
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```typescript
 type UserData = R<UserVo>  // 手动定义
@@ -1122,7 +1122,7 @@ type UserData = R<UserVo>  // 手动定义
 
 ### 3. 避免过度使用 Partial
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```typescript
 interface UserUpdateData {
@@ -1131,7 +1131,7 @@ interface UserUpdateData {
 }
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```typescript
 type UserUpdateData = Partial<UserVo>  // 过于宽松
@@ -1141,13 +1141,13 @@ type UserUpdateData = Partial<UserVo>  // 过于宽松
 
 ### 4. 使用 Readonly 保护数据
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```typescript
 const config: Readonly<SystemConfig> = { /* ... */ }
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```typescript
 const config: SystemConfig = { /* ... */ }
@@ -1157,7 +1157,7 @@ const config: SystemConfig = { /* ... */ }
 
 ### 5. 组合工具类型实现复杂需求
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```typescript
 type UserUpdateForm = Omit<Required<Partial<UserVo>>, 'userId' | 'createTime'>

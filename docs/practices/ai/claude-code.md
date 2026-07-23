@@ -3337,8 +3337,8 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 输入
 - 一句话项目想法，如 `做一个社区团购：PC 后台 + 小程序端`
 流程
-- 阶段一 需求孵化：`WebSearch` / 工作站 research 联网调研 + 头脑风暴，扩成结构化需求写入 `docs/需求文档.md`，🚦人工门确认（不碰代码/坐标）
-- 阶段二 原型生成：调 AI 工作站 ui-studio 产出 `docs/prototypes/<业务>/*.html`（带组件映射表注释），禁止模型自己手搓 HTML，🚦人工门确认
+- 阶段一 需求孵化：`WebSearch` / 工作站 research 联网调研 + 头脑风暴，扩成结构化需求写入 `docs/需求文档.md`，<Icon icon="lucide:traffic-cone" />人工门确认（不碰代码/坐标）
+- 阶段二 原型生成：调 AI 工作站 ui-studio 产出 `docs/prototypes/<业务>/*.html`（带组件映射表注释），禁止模型自己手搓 HTML，<Icon icon="lucide:traffic-cone" />人工门确认
 - 阶段三 创建新项目：执行 `project-init` 孵化，到这一步才改 Maven 坐标/标识符/端口/DB 库名/前端标识，建私有仓库、建库导数据（Java 包名 `plus.ruoyi` 全程不动）
 - 阶段四 起飞：到新项目新开会话粘 `/loop /dev-loop`，自拆任务台账后自主循环
 输出

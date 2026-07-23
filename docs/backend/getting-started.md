@@ -2,18 +2,18 @@
 
 本章节将带你快速启动 Ruoyi-Plus-Uniapp 后端项目，包含完整的环境配置和启动流程。
 
-::: tip 💡 新手建议
+::: tip <Icon icon="lucide:lightbulb" /> 新手建议
 开发项目前建议学习 IDEA 操作和 Git 管理等技巧，可参考教学视频: [IDEA 使用教程](https://www.bilibili.com/video/BV1RM411o7kN)
 :::
 
-## 🎯 环境要求
+## 环境要求
 
 在开始之前，请确保你的开发环境已满足以下要求：
 
 ### 核心环境
 - **Java**: JDK 17+
-  - 📥 [Eclipse Temurin JDK 17 下载地址](https://adoptium.net/temurin/releases/?version=17) (开源免费、免登录，推荐)
-  - 📥 [Oracle JDK 17 下载地址](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) (官方，需登录 Oracle 账号)
+  - <Icon icon="lucide:download" /> [Eclipse Temurin JDK 17 下载地址](https://adoptium.net/temurin/releases/?version=17) (开源免费、免登录，推荐)
+  - <Icon icon="lucide:download" /> [Oracle JDK 17 下载地址](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) (官方，需登录 Oracle 账号)
   - 支持 JDK 17 及以上版本
 
 > **分支提示**：以上为 3.5.x 主线（master）要求。Spring Boot 4 分支（6.x / 6.x-single）环境要求相同，仅框架版本升级至 4.1.0（JDK 21）。各分支差异详见 [分支说明](/changelog#分支说明)。
@@ -25,8 +25,8 @@
   - SQL Server 2017/2019
 
 - **缓存**: Redis 6.x / 7.x
-  - ⚠️ **注意**: 禁止使用 Redis 7.4 版本
-  - 📥 [Windows Redis 下载地址](https://github.com/redis-windows/redis-windows)
+  - <Warn/> **注意**: 禁止使用 Redis 7.4 版本
+  - <Icon icon="lucide:download" /> [Windows Redis 下载地址](https://github.com/redis-windows/redis-windows)
 
 - **构建工具**: Maven 3.6+
 
@@ -40,11 +40,11 @@
 
 ### 开发工具
 - **IntelliJ IDEA**: 2025.1+ (强烈推荐)
-  - ⚠️ **避免使用** IDEA 2023 版本
+  - <Warn/> **避免使用** IDEA 2023 版本
   
 - **HBuilderX**: 仅在开发 App 时需要
 
-## 🔌 IDEA 插件推荐
+## IDEA 插件推荐
 
 安装以下插件可显著提升开发效率：
 
@@ -55,7 +55,7 @@
 - **Rainbow Brackets Lite**: 代码括号高亮显示
 - **Unocss**: 支持 UnoCss 语法提示和补全
 
-## ⚙️ IDEA 配置
+## IDEA 配置
 
 ### 项目编码配置
 确保项目使用正确的字符编码：
@@ -85,7 +85,7 @@
 2. 选择 `Run Configuration Type` → `Docker`
 3. 可以查看 Docker 构建配置和容器状态
 
-## 📁 项目结构
+## 项目结构
 
 ```text
 ruoyi-plus-uniapp/
@@ -99,7 +99,7 @@ ruoyi-plus-uniapp/
 └── pom.xml                   # Maven 父级配置
 ```
 
-## 🚀 快速启动步骤
+## 快速启动步骤
 
 ### 步骤1：项目导入与环境配置
 
@@ -114,7 +114,7 @@ ruoyi-plus-uniapp/
 
 ### 步骤2：项目标识符配置（新项目必需）
 
-> ⚠️ **注意**：如果只是学习现有项目，可以跳过此步骤
+> <Warn/> **注意**：如果只是学习现有项目，可以跳过此步骤
 
 如果是开发新项目，需要为项目制定唯一标识符：
 
@@ -136,7 +136,7 @@ ruoyi-plus-uniapp/
    替换为：your_unique_port
    ```
 
-::: warning 📌 重要说明
+::: warning <Icon icon="lucide:pin" /> 重要说明
 项目标识符将影响以下配置，请确保唯一性：
 - 应用名称
 - 数据库名称
@@ -154,11 +154,11 @@ ruoyi-plus-uniapp/
 
 | 脚本文件 | 说明 | 是否必需 |
 |---------|------|----------|
-| `ry_plus_sys.sql` | 系统核心表 | ✅ 必需 |
-| `ry_plus_job.sql` | 定时任务表 | 🔧 按需安装 |
-| `ry_plus_app.sql` | 移动端业务表 | 📱 按需安装 |
+| `ry_plus_sys.sql` | 系统核心表 | 是 必需 |
+| `ry_plus_job.sql` | 定时任务表 | <Icon icon="lucide:wrench" /> 按需安装 |
+| `ry_plus_app.sql` | 移动端业务表 | <Icon icon="lucide:smartphone" /> 按需安装 |
 
-::: tip 💡 数据库建议
+::: tip <Icon icon="lucide:lightbulb" /> 数据库建议
 - 定时任务数据建议与主数据库使用**不同的库名**
 - 使用 `utf8mb4` 字符集，排序规则为 `utf8mb4_general_ci`
 - 请手动创建数据库并执行对应的 SQL 脚本
@@ -175,7 +175,7 @@ app:
   # base-api: https://your-domain.com  # 如有内网映射则修改为映射基础路径
 ```
 
-::: warning 📌 重要说明
+::: warning <Icon icon="lucide:pin" /> 重要说明
 - **无内网映射**：使用 `http://localhost:5500`
 - **有内网映射**：修改为你的内网映射基础路径，如 `https://your-domain.com`
 :::
@@ -192,11 +192,11 @@ app:
 
 #### 5.2 启动扩展服务（可选）
 在 `ruoyi-extend` 目录下可以启动：
-- 🕐 **定时任务服务**：分布式任务调度
-- 📊 **Admin 监控服务**：应用监控管理
+- <Icon icon="lucide:clock" /> **定时任务服务**：分布式任务调度
+- <Icon icon="lucide:chart-column" /> **Admin 监控服务**：应用监控管理
 
 启动成功后访问：**http://localhost:5500**
 
-::: tip 🎉 恭喜完成！
+::: tip <Icon icon="lucide:party-popper" /> 恭喜完成！
 如果以上步骤都成功完成，说明你已经成功启动了 Ruoyi-Plus-Uniapp 后端项目！现在可以开始后端开发了。
 :::

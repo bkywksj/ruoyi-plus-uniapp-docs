@@ -2,7 +2,7 @@
 
 认证与授权组合函数，提供用户认证与权限检查功能，包括权限字符串检查、角色校验、租户权限和路由访问控制。
 
-## 📋 功能特性
+## 功能特性
 
 - **用户状态**: 登录状态、管理员类型判断(超级管理员、租户管理员)
 - **权限检查**: 单个或多个权限检查，支持 OR 和 AND 逻辑
@@ -13,7 +13,7 @@
 - **通配符支持**: 支持 `*:*:*` 通配符权限标识
 - **类型安全**: 完整的 TypeScript 类型支持
 
-## 🎯 基础用法
+## 基础用法
 
 ### 引入和初始化
 
@@ -116,7 +116,7 @@ const canDeleteUser = hasPermission('system:user:delete')
 - 第二级: 资源名称 (user、role、menu 等)
 - 第三级: 操作类型 (list、add、update、delete、export、import 等)
 
-## 👤 用户状态检查
+## 用户状态检查
 
 ### 登录状态
 
@@ -288,7 +288,7 @@ const isCustomAdmin = isAnyAdmin('custom_super')  // 检查是否为 'superadmin
 - 向后兼容旧系统时，可能需要支持历史角色名称
 - 实现更细粒度的管理员分级时
 
-## 🔐 权限检查
+## 权限检查
 
 ### 单权限检查 (hasPermission)
 
@@ -527,7 +527,7 @@ const hasMultiRoles = hasAllRoles(
 2. 如果是超级管理员，直接返回 `true`，跳过后续检查
 3. 如果不是超级管理员，则进行正常的权限/角色检查
 
-## 🔀 角色检查
+## 角色检查
 
 ### 基本角色检查
 
@@ -642,7 +642,7 @@ const revenue = ref(56789)
 </script>
 ```
 
-## 🏢 租户权限
+## 租户权限
 
 ### 基本租户权限检查
 
@@ -788,7 +788,7 @@ const canFullManage = hasTenantPermission([
 ])
 ```
 
-## 🛣️ 路由访问控制
+## 路由访问控制
 
 ### 单个路由权限检查
 
@@ -980,7 +980,7 @@ export function setupPermissionGuard(router: Router) {
 }
 ```
 
-## 📌 权限指令
+## 权限指令
 
 系统提供了丰富的 Vue 自定义指令，用于在模板中直接进行权限控制。
 
@@ -1148,7 +1148,7 @@ export function setupPermissionGuard(router: Router) {
 | `disable` | 禁用元素 | 添加 `disabled` 属性和 `is-disabled` 类 |
 | `class` | 添加类名 | 添加指定的 className 或默认的 `no-auth` 类 |
 
-## 📚 API 参考
+## API 参考
 
 ### useAuth 返回值
 
@@ -1301,7 +1301,7 @@ interface UseAuthReturn {
 |--------|------|
 | `any[]` | 过滤后有权限访问的路由数组 |
 
-## 🔧 类型定义
+## 类型定义
 
 ### 完整类型定义
 
@@ -1454,7 +1454,7 @@ const AUTH_CONSTANTS = {
 }
 ```
 
-## 🎨 高级用法
+## 高级用法
 
 ### 动态权限控制
 
@@ -1654,7 +1654,7 @@ const clearPermissionCache = () => {
 </script>
 ```
 
-## 🎯 最佳实践
+## 最佳实践
 
 ### 1. 权限常量统一管理
 
@@ -1931,7 +1931,7 @@ const hasPermissionWithLog = (
 </script>
 ```
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 权限检查结果不更新
 
@@ -2140,7 +2140,7 @@ const canAdd = computed(() => hasPermission('system:user:add'))
 </script>
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **权限检查时机**: 确保在权限检查前用户数据已加载完成
 2. **响应式处理**: 如果需要权限结果响应式更新，使用 computed 包装

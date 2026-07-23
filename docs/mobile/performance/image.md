@@ -29,12 +29,12 @@
 
 | 格式 | 压缩类型 | 透明度 | 动画 | 浏览器支持 | 适用场景 | 压缩率 |
 |------|---------|--------|------|-----------|---------|--------|
-| **WebP** | 有损/无损 | ✅ | ✅ | 现代浏览器 | 通用,推荐优先使用 | ⭐⭐⭐⭐⭐ |
-| **AVIF** | 有损/无损 | ✅ | ✅ | 较新浏览器 | 要求极致压缩 | ⭐⭐⭐⭐⭐ |
-| **JPEG** | 有损 | ❌ | ❌ | 所有浏览器 | 照片、复杂图像 | ⭐⭐⭐ |
-| **PNG** | 无损 | ✅ | ❌ | 所有浏览器 | 简单图形、需要透明度 | ⭐⭐ |
-| **GIF** | 无损 | ✅ | ✅ | 所有浏览器 | 简单动画 | ⭐ |
-| **SVG** | 矢量 | ✅ | ✅ | 所有浏览器 | 图标、logo | ⭐⭐⭐⭐⭐ |
+| **WebP** | 有损/无损 | 是 | 是 | 现代浏览器 | 通用,推荐优先使用 | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> |
+| **AVIF** | 有损/无损 | 是 | 是 | 较新浏览器 | 要求极致压缩 | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> |
+| **JPEG** | 有损 | 否 | 否 | 所有浏览器 | 照片、复杂图像 | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> |
+| **PNG** | 无损 | 是 | 否 | 所有浏览器 | 简单图形、需要透明度 | <Icon icon="lucide:star" /><Icon icon="lucide:star" /> |
+| **GIF** | 无损 | 是 | 是 | 所有浏览器 | 简单动画 | <Icon icon="lucide:star" /> |
+| **SVG** | 矢量 | 是 | 是 | 所有浏览器 | 图标、logo | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> |
 
 ### WebP 格式
 
@@ -1066,15 +1066,15 @@ export default defineConfig({
 
 **Base64 内联适用于:**
 
-✅ 小图标(< 10KB)
-✅ 首屏必须的图片
-✅ 不会变化的图片
+<Ok/> 小图标(< 10KB)
+<Ok/> 首屏必须的图片
+<Ok/> 不会变化的图片
 
 **不适用于:**
 
-❌ 大图片(> 10KB)
-❌ 可能更新的图片
-❌ 需要懒加载的图片
+<No/> 大图片(> 10KB)
+<No/> 可能更新的图片
+<No/> 需要懒加载的图片
 
 ---
 

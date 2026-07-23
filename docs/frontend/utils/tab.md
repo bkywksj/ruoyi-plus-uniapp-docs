@@ -2,7 +2,7 @@
 
 标签页导航操作相关工具函数，提供完整的标签页管理功能，包括页面刷新、打开、关闭、更新等操作，适用于后台管理系统的多标签页场景。
 
-## 📖 概述
+## 概述
 
 标签页工具库基于 Vue Router 和 Pinia 状态管理，提供以下核心功能：
 - **页面刷新**：刷新当前打开的标签页
@@ -11,7 +11,7 @@
 - **批量关闭**：关闭所有、左侧、右侧、其他标签页
 - **页面操作**：打开新标签页、更新标签页信息
 
-## 🔄 页面刷新
+## 页面刷新
 
 ### refreshPage
 
@@ -60,7 +60,7 @@ export default {
 2. 从缓存中移除视图
 3. 通过 `/redirect` 路由重新加载页面
 
-## 🔄 页面跳转与关闭
+## 页面跳转与关闭
 
 ### closeOpenPage
 
@@ -148,7 +148,7 @@ const openDynamicPage = (type: string) => {
 }
 ```
 
-## ❌ 关闭操作
+## 关闭操作
 
 ### closePage
 
@@ -200,7 +200,7 @@ const confirmClose = async () => {
 }
 ```
 
-## 🗂️ 批量关闭操作
+## 批量关闭操作
 
 ### closeAllPage
 
@@ -321,7 +321,7 @@ const smartCleanTabs = async () => {
 }
 ```
 
-## 📝 页面更新
+## 页面更新
 
 ### updatePage
 
@@ -375,7 +375,7 @@ const updatePageWithData = async (data: any) => {
 }
 ```
 
-## 🎯 实际应用场景
+## 实际应用场景
 
 ### 1. 标签页右键菜单
 
@@ -779,7 +779,7 @@ export const setupTabsPersistence = async () => {
 }
 ```
 
-## 💡 最佳实践
+## 最佳实践
 
 ### 1. 标签页性能优化
 
@@ -858,7 +858,7 @@ const safeTabOperation = async (operation: () => Promise<any>, operationName: st
 }
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **路由依赖**：所有函数都依赖 Vue Router，确保在路由环境中使用
 2. **状态管理**：需要配合 Pinia 的 TagsViewStore 使用

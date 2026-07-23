@@ -2,7 +2,7 @@
 
 格式化工具函数集合，提供全面的数据格式化功能，包含数值、时间、隐私数据、文本、集合、状态等各种类型的格式化处理。
 
-## 📖 概述
+## 概述
 
 格式化工具库包含以下功能类别：
 - **数值格式化**：处理单位、数字、金额、百分比和单位
@@ -13,7 +13,7 @@
 - **状态与颜色**：根据状态值返回对应的颜色类名
 - **表格数据格式化**：为表格单元格提供通用的格式化功能
 
-## 🔢 数值格式化
+## 数值格式化
 
 ### formatUnit
 
@@ -248,7 +248,7 @@ formatDistance(1234)     // "1.2公里"
 formatDistance(1234, 2)  // "1.23公里"
 ```
 
-## ⏱️ 时间与持续时间
+## 时间与持续时间
 
 ### formatDuration
 
@@ -279,7 +279,7 @@ formatDuration(61, true) // "0小时1分1秒" (显示零小时)
 formatDuration(3600)     // "1小时0分0秒"
 ```
 
-## 🔒 隐私和敏感数据处理
+## 隐私和敏感数据处理
 
 ### formatPrivacy
 
@@ -414,7 +414,7 @@ formatIP('192.168.1.1', { privacy: true })     // "192.168.*.*"
 formatIP('192.168.1.1', { privacy: true, maskChar: 'x' })  // "192.168.x.x"
 ```
 
-## 📝 文本和URL处理
+## 文本和URL处理
 
 ### formatStringLength
 
@@ -500,7 +500,7 @@ formatURL('https://example.com/path?query=123')        // "https://example.com/p
 formatURL('https://example.com/path?query=123', false) // "https://example.com/path"
 ```
 
-## 📋 集合和枚举处理
+## 集合和枚举处理
 
 ### formatList
 
@@ -597,7 +597,7 @@ formatBoolean(1, '开', '关')           // "开"
 formatBoolean(0, '开', '关')           // "关"
 ```
 
-## 🎨 状态与颜色
+## 状态与颜色
 
 ### formatStatusColor
 
@@ -632,7 +632,7 @@ const customMap = { 'error': 'danger', 'ok': 'success' }
 formatStatusColor('error', customMap)  // "danger"
 ```
 
-## 📊 表格数据格式化
+## 表格数据格式化
 
 ### formatTableCell
 
@@ -669,7 +669,7 @@ formatTableCell(1, 'enum', { enumMap: { 0: '禁用', 1: '启用' } })  // "启�
 formatTableCell(true, 'boolean', { trueText: '是', falseText: '否' })  // "是"
 ```
 
-## 💡 使用技巧
+## 使用技巧
 
 ### 1. 表格列配置
 在Vue表格中统一使用格式化函数：
@@ -764,7 +764,7 @@ const users = [
 formatList(users, 'name', { separator: ', ' })  // "Alice, Bob, Charlie"
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **数值精度**：浮点数计算可能有精度问题，重要场景请使用专门的数值库
 2. **格式化选项**：`strict` 模式会在无效输入时返回默认值，非严格模式保持原值
@@ -772,7 +772,7 @@ formatList(users, 'name', { separator: ', ' })  // "Alice, Bob, Charlie"
 4. **国际化**：部分格式化函数使用中文文本，国际化项目需要适配
 5. **类型安全**：在TypeScript中注意类型匹配，避免运行时错误
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 金额格式化出现浮点数精度问题
 

@@ -468,7 +468,7 @@ VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK9s1Pbnn5W+l1hx3ukHL
 VITE_APP_RSA_PRIVATE_KEY = 'MIIBOwIBAAJBAIrZxEhzVAHKJm7BJpXIHWGU3sHJYgRiOOTw3Auj...'
 ```
 
-**⚠️ 安全提醒：**
+**<Warn/> 安全提醒：**
 - 以上为示例密钥，生产环境请使用您自己生成的密钥对
 - 密钥应存储在安全的配置中心，不要直接写在代码中
 - 定期轮换密钥以确保安全性

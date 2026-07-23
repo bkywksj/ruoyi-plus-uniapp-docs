@@ -2,7 +2,7 @@
 
 基于字典数据的标签组件，支持多种显示样式和自动数据获取。
 
-## 📋 基础用法
+## 基础用法
 
 ### 简单使用
 
@@ -74,7 +74,7 @@ const userRoles = ref([
 </script>
 ```
 
-## 🎯 组件实现
+## 组件实现
 
 ### DictTag 组件
 
@@ -406,7 +406,7 @@ const handleClose = (item?: any, index?: number) => {
 
 ```
 
-## 🔧 增强功能
+## 增强功能
 
 ### 字典选择器
 
@@ -672,7 +672,7 @@ const handleChange = (value: (string | number)[]) => {
 </script>
 ```
 
-## 📊 使用示例
+## 使用示例
 
 ### 表格中使用
 
@@ -746,7 +746,7 @@ const handleChange = (value: (string | number)[]) => {
 </template>
 ```
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 字典标签显示为空或显示原始值
 

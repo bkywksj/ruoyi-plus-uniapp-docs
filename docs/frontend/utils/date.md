@@ -2,7 +2,7 @@
 
 日期工具类，提供日期格式化、转换、计算的通用工具函数。自动兼容两种格式语法：`yyyy-MM-dd HH:mm:ss` 和 `YYYY-MM-DD HH:mm:ss`。
 
-## 📖 概述
+## 概述
 
 日期工具库包含以下功能类别：
 - **日期格式化**：将日期转换为特定格式的字符串
@@ -77,7 +77,7 @@
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-## 🎨 日期格式化
+## 日期格式化
 
 ### 格式化字符对照表
 
@@ -411,7 +411,7 @@ formatDateRange(null)            // ""
 formatDateRange([start])         // ""
 ```
 
-## ⏰ 当前时间获取
+## 当前时间获取
 
 ### getCurrentTime
 
@@ -514,7 +514,7 @@ const record = {
 }
 ```
 
-## 🔍 日期解析
+## 日期解析
 
 ### parseDate
 
@@ -560,7 +560,7 @@ const safeParse = (dateStr: string): Date => {
 }
 ```
 
-## 📅 日期范围获取
+## 日期范围获取
 
 ### getTimeStamp
 
@@ -786,7 +786,7 @@ const result3 = addDateRange(params, [])
 // 结果：{ name: 'test', params: {} }
 ```
 
-## 📆 日期范围预设
+## 日期范围预设
 
 ### getDateRangeByType
 
@@ -920,7 +920,7 @@ const dateRange3 = ref(initDateRangeFromQuery(route.query, 'range'))
 // 从 route.query.range 获取日期类型
 ```
 
-## 🧮 日期计算
+## 日期计算
 
 ### getDaysBetween
 
@@ -1097,7 +1097,7 @@ dateAdd(baseDate, 'year', -1)  // 2022-01-15
 const futureDate = dateAdd(dateAdd(baseDate, 'month', 6), 'day', 15)
 ```
 
-## 💡 实际应用场景
+## 实际应用场景
 
 ### 1. 表格时间列格式化
 
@@ -1346,7 +1346,7 @@ onUnmounted(() => {
 </script>
 ```
 
-## 🧪 单元测试
+## 单元测试
 
 ```typescript
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
@@ -1556,7 +1556,7 @@ describe('date 工具', () => {
 })
 ```
 
-## 🚀 性能优化
+## 性能优化
 
 ### 1. 格式化结果缓存
 
@@ -1614,7 +1614,7 @@ const updateClock = useDebounceFn(() => {
 }, 100)
 ```
 
-## 📚 类型定义
+## 类型定义
 
 ```typescript
 /**
@@ -1670,7 +1670,7 @@ export interface RelativeTimeConfig {
 }
 ```
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 日期解析失败
 
@@ -1768,7 +1768,7 @@ const getFullDayRange = (start: Date, end: Date): [string, string] => {
 }
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 ### 1. 时间戳格式
 

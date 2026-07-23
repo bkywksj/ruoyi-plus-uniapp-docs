@@ -126,9 +126,9 @@ src/assets/icons/
 
 | 格式 | 浏览器支持 | 压缩率 | 推荐指数 |
 |------|-----------|--------|---------|
-| WOFF2 | Chrome 36+, Firefox 39+, Edge 14+ | 最高 (~30% 更小) | ⭐⭐⭐⭐⭐ |
-| WOFF | IE9+, 所有现代浏览器 | 高 | ⭐⭐⭐⭐ |
-| TTF | IE9+, 所有浏览器 | 无压缩 | ⭐⭐⭐ |
+| WOFF2 | Chrome 36+, Firefox 39+, Edge 14+ | 最高 (~30% 更小) | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> |
+| WOFF | IE9+, 所有现代浏览器 | 高 | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> |
+| TTF | IE9+, 所有浏览器 | 无压缩 | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> |
 
 ## CSS 配置
 

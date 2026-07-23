@@ -2,7 +2,7 @@
 
 前端项目的调试方法和工具使用指南。
 
-## 🎯 调试工具概览
+## 调试工具概览
 
 | 工具 | 用途 | 适用场景 |
 |------|------|---------|
@@ -12,7 +12,7 @@
 | **Vite DevTools** | Vite 分析 | 模块依赖、性能分析 |
 | **Console API** | 日志输出 | 快速调试、信息追踪 |
 
-## 🔍 Vue DevTools
+## Vue DevTools
 
 ### 安装
 
@@ -123,7 +123,7 @@ meta: { title: '用户管理' }
 - 跳转来源
 - 导航守卫执行
 
-## 🌐 浏览器 DevTools
+## 浏览器 DevTools
 
 ### Console 面板
 
@@ -311,7 +311,7 @@ outline: 1px solid red !important;
 overflow: hidden !important;
 ```
 
-## 💻 VS Code 调试
+## VS Code 调试
 
 ### launch.json 配置
 
@@ -358,7 +358,7 @@ pnpm dev
 - 调用栈
 - 断点管理
 
-## 🔧 Vite 调试
+## Vite 调试
 
 ### 开发模式调试
 
@@ -399,7 +399,7 @@ export default defineConfig(({ command, mode }) => {
 })
 ```
 
-## 🎯 常见调试场景
+## 常见调试场景
 
 ### 组件不渲染
 
@@ -506,7 +506,7 @@ onMounted(() => {
 })
 ```
 
-## 🛠️ 调试技巧
+## 调试技巧
 
 ### 使用 debugger 语句
 
@@ -579,7 +579,7 @@ if (import.meta.env.MODE === 'development') {
 }
 ```
 
-## 📊 调试检查清单
+## 调试检查清单
 
 **开发阶段**：
 - [ ] 组件是否正确渲染
@@ -599,7 +599,7 @@ if (import.meta.env.MODE === 'development') {
 - [ ] 是否有内存泄漏
 - [ ] 打包体积是否合理
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. Vue DevTools 无法连接或检测不到应用
 

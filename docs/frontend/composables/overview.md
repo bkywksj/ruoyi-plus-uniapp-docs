@@ -1,24 +1,24 @@
-# 🎣 组合式函数概览
+# 组合式函数概览
 
 组合式函数(Composables)是 Vue 3 Composition API 的核心概念,它们是利用 Vue 的响应式 API 来封装和复用有状态逻辑的函数。RuoYi-Plus-UniApp 管理端前端项目包含了 17 个精心设计的组合式函数,涵盖认证授权、网络通信、界面控制、数据处理、国际化等各种业务场景。
 
-## 📦 完整清单
+## 完整清单
 
 本项目共包含 **17 个组合式函数**,按功能分为以下 6 大类:
 
 | 分类 | 数量 | 函数列表 |
 |------|------|----------|
-| 🎨 动画相关 | 1 | useAnimation |
-| 🔐 认证授权 | 2 | useAuth, useToken |
-| 🎛️ 界面控制 | 5 | useDialog, useLayout, useResponsiveSpan, useTableHeight, useTheme |
-| 📊 数据处理 | 3 | useDict, useSelection, useDownload |
-| 🌐 网络通信 | 3 | useHttp, useSSE, useWS |
-| 🌍 国际化 | 1 | useI18n |
-| 🛠️ 其他工具 | 2 | usePrint, useAiChat |
+| <Icon icon="lucide:palette" /> 动画相关 | 1 | useAnimation |
+| <Icon icon="lucide:lock-keyhole" /> 认证授权 | 2 | useAuth, useToken |
+| <Icon icon="lucide:sliders-horizontal" /> 界面控制 | 5 | useDialog, useLayout, useResponsiveSpan, useTableHeight, useTheme |
+| <Icon icon="lucide:chart-column" /> 数据处理 | 3 | useDict, useSelection, useDownload |
+| <Icon icon="lucide:globe" /> 网络通信 | 3 | useHttp, useSSE, useWS |
+| <Icon icon="lucide:earth" /> 国际化 | 1 | useI18n |
+| <Icon icon="lucide:hammer" /> 其他工具 | 2 | usePrint, useAiChat |
 
-## 📋 详细分类
+## 详细分类
 
-### 🎨 动画相关
+### 动画相关
 
 #### useAnimation - 动画工具
 
@@ -71,7 +71,7 @@ applyAnimation(element, animationEffects.BOUNCE_IN, () => {
 
 ---
 
-### 🔐 认证授权
+### 认证授权
 
 #### useAuth - 认证与授权
 
@@ -209,7 +209,7 @@ removeToken()
 
 ---
 
-### 🎛️ 界面控制
+### 界面控制
 
 #### useLayout - 统一布局状态管理
 
@@ -668,7 +668,7 @@ AModal 组件会自动提供 `modalSize`,无需手动传入:
 
 ---
 
-### 📊 数据处理
+### 数据处理
 
 #### useDict - 字典数据管理
 
@@ -1038,7 +1038,7 @@ const handleCustomDownload = async () => {
 
 ---
 
-### 🌐 网络通信
+### 网络通信
 
 #### useHttp - HTTP 请求服务
 
@@ -1483,7 +1483,7 @@ onBeforeUnmount(() => {
 
 ---
 
-### 🌍 国际化
+### 国际化
 
 #### useI18n - 增强的国际化
 
@@ -1661,7 +1661,7 @@ const title = translateRouteTitle('dashboard')
 
 ---
 
-## 🚀 使用特点
+## 使用特点
 
 ### 响应式设计
 
@@ -1709,7 +1709,7 @@ const layout = useLayout()
 
 ---
 
-## 💡 最佳实践
+## 最佳实践
 
 ### 命名规范
 
@@ -1835,7 +1835,7 @@ const handleExport = async () => {
 
 ---
 
-## 📖 快速开始
+## 快速开始
 
 在组件中使用组合式函数:
 

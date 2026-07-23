@@ -2,7 +2,7 @@
 
 加密工具类，提供全面的加密、解密、哈希计算等安全功能，基于 CryptoJS 库实现。
 
-## 📖 概述
+## 概述
 
 加密工具库包含以下功能类别：
 - **随机生成**：生成随机字符串和AES密钥
@@ -11,7 +11,7 @@
 - **高级加解密**：自动密钥生成的加密和支持JSON解析的解密
 - **哈希计算**：计算数据的哈希值，用于唯一标识
 
-## 🔧 依赖说明
+## 依赖说明
 
 本工具基于 `crypto-js` 库，使用前请确保已安装：
 
@@ -121,7 +121,7 @@ const encrypted = CryptoJS.AES.encrypt(message, key, {
 })
 ```
 
-## 🎲 随机生成
+## 随机生成
 
 ### generateRandomString
 
@@ -211,7 +211,7 @@ console.log('密钥字数:', aesKey.words.length)
 - 每次调用都会生成不同的密钥
 - 密钥应该妥善保管，不可泄露
 
-## 📄 Base64处理
+## Base64处理
 
 ### Base64编码原理
 
@@ -349,7 +349,7 @@ const urlSafeDecode = (str: string): CryptoJS.lib.WordArray => {
 }
 ```
 
-## 🔐 AES加密/解密
+## AES加密/解密
 
 ### encryptWithAes
 
@@ -471,7 +471,7 @@ console.log(user.name)  // 输出：'John'
 └─────────────────────────────────────────────────────────────────────────┘
 ```
 
-## ⚡ 高级加解密
+## 高级加解密
 
 ### encryptWithAutoKey
 
@@ -613,7 +613,7 @@ const decryptedUser = decryptWithParsing(result.encryptedData, result.key, true)
 console.log(decryptedUser.name)  // 类型安全访问
 ```
 
-## 🔍 哈希计算
+## 哈希计算
 
 ### 哈希算法对比
 
@@ -876,7 +876,7 @@ const quickUpload = async (file: File) => {
 }
 ```
 
-## 💡 实际应用场景
+## 实际应用场景
 
 ### 1. 用户敏感信息加密
 
@@ -1249,7 +1249,7 @@ if (tokenData && tokenData.expiry > Date.now()) {
 }
 ```
 
-## ⚠️ 安全注意事项
+## 安全注意事项
 
 ### 1. 密钥管理
 
@@ -1400,7 +1400,7 @@ const secureSubmit = async (data: object) => {
 }
 ```
 
-## 🧪 单元测试
+## 单元测试
 
 ```typescript
 import { describe, it, expect } from 'vitest'
@@ -1575,7 +1575,7 @@ describe('crypto 工具', () => {
 })
 ```
 
-## 🚀 性能优化
+## 性能优化
 
 ### 1. 大数据分块处理
 
@@ -1697,7 +1697,7 @@ const cachedEncrypt = (data: object): { encryptedData: string; key: CryptoJS.lib
 }
 ```
 
-## 📚 类型定义
+## 类型定义
 
 ```typescript
 import CryptoJS from 'crypto-js'
@@ -1761,7 +1761,7 @@ export interface EncryptedRequestOptions extends RequestInit {
 }
 ```
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 解密后出现乱码
 
@@ -1951,7 +1951,7 @@ const safeDecrypt = <T = string>(
 }
 ```
 
-## 🛡️ 最佳实践
+## 最佳实践
 
 ### 1. 分层加密策略
 

@@ -360,7 +360,7 @@ baseMapper.insertBatch(userList);
 
 ## 最佳实践
 
-### ✅ 推荐做法
+### 推荐做法
 
 | 规范 | 说明 |
 |------|------|
@@ -373,7 +373,7 @@ baseMapper.insertBatch(userList);
 | 时间类型 | 使用 DATETIME 而非 TIMESTAMP |
 | 状态字段 | 使用 CHAR(1) 而非数字 |
 
-### ❌ 避免做法
+### 避免做法
 
 | 问题 | 说明 |
 |------|------|

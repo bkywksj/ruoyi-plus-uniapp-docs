@@ -25,14 +25,14 @@ Signature 签名组件是一个基于 Canvas 实现的高性能手写签名组�
 
 | 平台 | 支持情况 | Canvas API | 说明 |
 |------|----------|-----------|------|
-| 微信小程序 | ✅ | Canvas 2D | 使用新版 Canvas 2D 接口,需开启 `type="2d"` |
-| 支付宝小程序 | ✅ | Canvas | 使用标准 Canvas API |
-| 百度小程序 | ✅ | Canvas | 使用标准 Canvas API |
-| 字节小程序 | ✅ | Canvas | 使用标准 Canvas API |
-| QQ小程序 | ✅ | Canvas | 使用标准 Canvas API |
-| H5 | ✅ | Canvas | 使用标准 Canvas API |
-| App | ✅ | Canvas | 使用标准 Canvas API |
-| 钉钉小程序 | ✅ | Canvas | 导出路径字段为 `filePath` |
+| 微信小程序 | 是 | Canvas 2D | 使用新版 Canvas 2D 接口,需开启 `type="2d"` |
+| 支付宝小程序 | 是 | Canvas | 使用标准 Canvas API |
+| 百度小程序 | 是 | Canvas | 使用标准 Canvas API |
+| 字节小程序 | 是 | Canvas | 使用标准 Canvas API |
+| QQ小程序 | 是 | Canvas | 使用标准 Canvas API |
+| H5 | 是 | Canvas | 使用标准 Canvas API |
+| App | 是 | Canvas | 使用标准 Canvas API |
+| 钉钉小程序 | 是 | Canvas | 导出路径字段为 `filePath` |
 
 ## 基本用法
 

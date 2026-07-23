@@ -2,7 +2,7 @@
 
 浏览器缓存工具集合，提供对浏览器存储机制的完整封装，支持会话级和持久化的数据存储操作。所有缓存键会自动添加应用ID前缀，避免多应用冲突。
 
-## 📖 概述
+## 概述
 
 缓存工具提供两套完整的存储方案：
 
@@ -19,7 +19,7 @@
 - 自动清理：定期清理过期或损坏的缓存
 - 存储统计：提供缓存使用情况统计
 
-## 🔧 核心特性
+## 核心特性
 
 ### 自动前缀机制
 所有缓存键都会自动添加应用ID前缀，避免不同应用之间的数据冲突：
@@ -45,7 +45,7 @@ setTimeout(() => {
 setInterval(autoCleanup, 60 * 60 * 1000)
 ```
 
-## 📦 会话缓存 (sessionCache)
+## 会话缓存 (sessionCache)
 
 基于 `sessionStorage` 的临时存储，页面关闭后数据会被清除。
 
@@ -211,7 +211,7 @@ clearAll(): void
 sessionCache.clearAll()
 ```
 
-## 💾 本地缓存 (localCache)
+## 本地缓存 (localCache)
 
 基于 `localStorage` 的持久化存储，数据将永久保存，支持过期时间管理和自动清理。
 
@@ -388,7 +388,7 @@ if (stats) {
 }
 ```
 
-## 🎯 实际应用场景
+## 实际应用场景
 
 ### 1. 用户认证状态管理
 
@@ -814,7 +814,7 @@ const stats = ShoppingCart.getCartStats()
 console.log(`购物车中有${stats.itemCount}种商品，共${stats.totalQuantity}件`)
 ```
 
-## 🛠️ 高级功能
+## 高级功能
 
 ### 缓存同步机制
 
@@ -893,7 +893,7 @@ class CompressedCache {
 }
 ```
 
-## 📊 性能监控
+## 性能监控
 
 ### 缓存性能分析
 
@@ -952,7 +952,7 @@ const enhancedGet = <T>(key: string): T | null => {
 }
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 ### 1. 存储限制
 - **容量限制**：localStorage通常有5-10MB的限制
@@ -974,7 +974,7 @@ const enhancedGet = <T>(key: string): T | null => {
 - **频繁操作**：避免频繁的存储操作
 - **数据大小**：单个存储项不宜过大
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 缓存数据丢失
 

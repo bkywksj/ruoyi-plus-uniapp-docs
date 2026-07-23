@@ -627,7 +627,7 @@ public static boolean isTenantAdmin(Set<String> rolePermission) {
 
 ### 1. 权限粒度设计
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 // 细粒度权限设计,便于灵活分配
@@ -648,7 +648,7 @@ public R<Void> edit() { ... }
 public R<Void> delete() { ... }
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```java
 // 粗粒度权限,不够灵活
@@ -663,7 +663,7 @@ public R<Long> add() { ... }
 
 ### 2. 敏感操作多重校验
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 /**
@@ -688,7 +688,7 @@ public R<Void> deleteMenu(@PathVariable("menuId") Long menuId) {
 
 ### 3. 合理使用 orRole 参数
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 /**
@@ -709,7 +709,7 @@ public R<List<SysMenuVo>> listMenus(SysMenuBo menuBo) {
 
 ### 4. Service 层权限补充
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Service
@@ -755,7 +755,7 @@ public class SysUserServiceImpl implements ISysUserService {
 
 ### 5. 接口匿名访问控制
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 /**
@@ -792,7 +792,7 @@ public R<Map<String, String>> getPublicConfig() {
 
 ### 6. 动态权限控制
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Service

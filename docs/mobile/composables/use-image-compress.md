@@ -21,15 +21,15 @@
 
 | 平台 | 支持情况 | 压缩实现 | 备注 |
 |------|----------|----------|------|
-| 微信小程序 (MP-WEIXIN) | ✅ 完全支持 | `uni.compressImage` | 支持 `quality` + `compressedWidth/compressHeight` |
-| 抖音小程序 (MP-TOUTIAO) | ✅ 完全支持 | `uni.compressImage` | 支持 `quality` + 尺寸缩放 |
-| APP (APP-PLUS) | ✅ 完全支持 | `uni.compressImage` | 支持 `quality` + 尺寸缩放 |
-| 支付宝小程序 (MP-ALIPAY) | ⚠️ 部分支持 | `uni.compressImage` | 仅支持 `quality`，不支持尺寸缩放 |
-| H5 | ✅ 完全支持 | Canvas 重绘 | 通过 `canvas.toBlob` 输出，支持 JPEG/PNG/WebP |
-| 百度小程序 (MP-BAIDU) | ❌ 跳过压缩 | 原图直传 | 平台支持不一致，保守跳过 |
-| QQ小程序 (MP-QQ) | ❌ 跳过压缩 | 原图直传 | 平台支持不一致，保守跳过 |
-| 飞书小程序 (MP-LARK) | ❌ 跳过压缩 | 原图直传 | 平台支持不一致，保守跳过 |
-| 快手小程序 (MP-KUAISHOU) | ❌ 跳过压缩 | 原图直传 | 平台支持不一致，保守跳过 |
+| 微信小程序 (MP-WEIXIN) | 是 完全支持 | `uni.compressImage` | 支持 `quality` + `compressedWidth/compressHeight` |
+| 抖音小程序 (MP-TOUTIAO) | 是 完全支持 | `uni.compressImage` | 支持 `quality` + 尺寸缩放 |
+| APP (APP-PLUS) | 是 完全支持 | `uni.compressImage` | 支持 `quality` + 尺寸缩放 |
+| 支付宝小程序 (MP-ALIPAY) | 部分 部分支持 | `uni.compressImage` | 仅支持 `quality`，不支持尺寸缩放 |
+| H5 | 是 完全支持 | Canvas 重绘 | 通过 `canvas.toBlob` 输出，支持 JPEG/PNG/WebP |
+| 百度小程序 (MP-BAIDU) | 否 跳过压缩 | 原图直传 | 平台支持不一致，保守跳过 |
+| QQ小程序 (MP-QQ) | 否 跳过压缩 | 原图直传 | 平台支持不一致，保守跳过 |
+| 飞书小程序 (MP-LARK) | 否 跳过压缩 | 原图直传 | 平台支持不一致，保守跳过 |
+| 快手小程序 (MP-KUAISHOU) | 否 跳过压缩 | 原图直传 | 平台支持不一致，保守跳过 |
 
 ::: tip 降级说明
 在不支持压缩的平台上，`compressImage` 会返回 `compressed: false` 且 `path` 为原始路径，业务无需为此分支写额外代码，上传流程照常进行。

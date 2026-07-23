@@ -134,7 +134,7 @@ public enum AccessMode {
 }
 ```
 
-> ⚠️ AppSecret 仅在生成时显示一次，请立即保存。丢失需使用"重置密钥"功能。
+> <Warn/> AppSecret 仅在生成时显示一次，请立即保存。丢失需使用"重置密钥"功能。
 
 ## 接口标识
 

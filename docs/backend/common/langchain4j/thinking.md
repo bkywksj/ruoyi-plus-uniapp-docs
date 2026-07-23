@@ -208,7 +208,7 @@ private ChatModel createDeepSeekChatModel(String modelName, ThinkingOptions thin
 }
 ```
 
-**⚠️ 注意**：必须将 `model-name` 设为 `deepseek-reasoner`，普通的 `deepseek-chat` 不支持推理输出。
+**<Warn/> 注意**：必须将 `model-name` 设为 `deepseek-reasoner`，普通的 `deepseek-chat` 不支持推理输出。
 
 ### 通义千问（Qwen）
 
@@ -275,7 +275,7 @@ private void applyOpenAiReasoning(OpenAiChatModel.OpenAiChatModelBuilder builder
 - `medium`：默认推荐档位，平衡延迟与质量
 - `high`：深度推理，适合复杂数学 / 代码 / 多步规划
 
-**⚠️ 注意**：对普通 `gpt-4o` 等模型开启 thinking 不会有任何效果，OpenAI 服务端会直接忽略 `reasoning_effort` 字段。
+**<Warn/> 注意**：对普通 `gpt-4o` 等模型开启 thinking 不会有任何效果，OpenAI 服务端会直接忽略 `reasoning_effort` 字段。
 
 ### Ollama
 

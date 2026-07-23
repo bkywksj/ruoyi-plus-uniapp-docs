@@ -2,7 +2,7 @@
 
 API 类型定义用于前后端数据交互,确保请求和响应的类型安全。
 
-## 🎯 核心 API 类型
+## 核心 API 类型
 
 ### 1. Result 类型
 
@@ -27,11 +27,11 @@ console.log('用户信息', data)
 ```
 
 **优势**:
-- ✅ 强制错误处理(解构时必须处理 err)
-- ✅ 类型安全(data 自动推导类型)
-- ✅ 简洁优雅(无需 try-catch)
-- ✅ 避免异常穿透(不会意外中断程序)
-- ✅ 便于测试(明确的错误和数据分离)
+- <Ok/> 强制错误处理(解构时必须处理 err)
+- <Ok/> 类型安全(data 自动推导类型)
+- <Ok/> 简洁优雅(无需 try-catch)
+- <Ok/> 避免异常穿透(不会意外中断程序)
+- <Ok/> 便于测试(明确的错误和数据分离)
 
 ### 2. R 类型
 
@@ -130,7 +130,7 @@ const query: PageQuery = {
 }
 ```
 
-## 📦 业务对象类型
+## 业务对象类型
 
 ### 1. BO (Business Object)
 
@@ -215,7 +215,7 @@ export const pageUsers = (query?: UserQuery): Result<PageResult<UserVo>> => {
 }
 ```
 
-## 🔧 HTTP 请求类型
+## HTTP 请求类型
 
 ### CustomHeaders 接口
 
@@ -248,7 +248,7 @@ export const login = (data: LoginBo): Result<LoginVo> => {
 }
 ```
 
-## 📋 API 函数定义规范
+## API 函数定义规范
 
 ### 1. CRUD 操作
 
@@ -410,7 +410,7 @@ export const sendSms = (phone: string, scene: string): Result<void> => {
 }
 ```
 
-## 🎯 组件中使用 API
+## 组件中使用 API
 
 ### 1. 基础使用
 
@@ -590,7 +590,7 @@ onUnmounted(() => {
 })
 ```
 
-## 📝 类型定义文件示例
+## 类型定义文件示例
 
 ### adApi.ts
 
@@ -675,7 +675,7 @@ export interface AdQuery extends PageQuery {
 }
 ```
 
-## 🔄 请求与响应拦截
+## 请求与响应拦截
 
 ### 请求拦截器
 
@@ -792,7 +792,7 @@ http.interceptors.response.use(
 )
 ```
 
-## 🎨 高级用法
+## 高级用法
 
 ### 1. 泛型 API 函数
 
@@ -905,7 +905,7 @@ const getDictList = (): Result<DictItem[]> => {
 }
 ```
 
-## ✅ API 类型最佳实践
+## API 类型最佳实践
 
 ### 1. 明确返回类型
 
@@ -1095,7 +1095,7 @@ const http = axios.create({
 })
 ```
 
-## 📚 总结
+## 总结
 
 API 类型系统提供了完整的前后端交互类型安全保障:
 

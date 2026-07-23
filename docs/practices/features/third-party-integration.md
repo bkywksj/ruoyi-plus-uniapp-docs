@@ -15,15 +15,15 @@ RuoYi-Plus-UniApp 项目集成了多种第三方服务，为企业应用提供�
 
 | 分类 | 服务 | 框架/SDK | 状态 |
 |------|------|---------|------|
-| 支付 | 微信支付、支付宝、余额支付 | WxJava、自研 | ✅ |
-| 登录 | 微信、QQ、微博等20+平台 | JustAuth | ✅ |
-| 短信 | 阿里云、腾讯云等多厂商 | SMS4J | ✅ |
-| 存储 | 阿里云OSS、MinIO等6种 | AWS SDK S3 | ✅ |
-| 微信 | 小程序、公众号 | WxJava | ✅ |
-| 邮件 | SMTP邮件发送 | Spring Mail | ✅ |
-| AI | OpenAI、通义千问等 | LangChain4j | ✅ |
-| 消息 | RocketMQ消息队列 | RocketMQ Client | ✅ |
-| 任务 | SnailJob定时任务 | SnailJob Client | ✅ |
+| 支付 | 微信支付、支付宝、余额支付 | WxJava、自研 | 是 |
+| 登录 | 微信、QQ、微博等20+平台 | JustAuth | 是 |
+| 短信 | 阿里云、腾讯云等多厂商 | SMS4J | 是 |
+| 存储 | 阿里云OSS、MinIO等6种 | AWS SDK S3 | 是 |
+| 微信 | 小程序、公众号 | WxJava | 是 |
+| 邮件 | SMTP邮件发送 | Spring Mail | 是 |
+| AI | OpenAI、通义千问等 | LangChain4j | 是 |
+| 消息 | RocketMQ消息队列 | RocketMQ Client | 是 |
+| 任务 | SnailJob定时任务 | SnailJob Client | 是 |
 
 ---
 

@@ -1397,7 +1397,7 @@ if ('requestIdleCallback' in window) {
 
 ### 1. 确保路由名称唯一
 
-**推荐做法** ✅
+**推荐做法** <Ok/>
 
 ```typescript
 // 路由配置
@@ -1417,7 +1417,7 @@ const routes: RouteRecordRaw[] = [
 ]
 ```
 
-**不推荐做法** ❌
+**不推荐做法** <No/>
 
 ```typescript
 // 路由配置
@@ -1439,7 +1439,7 @@ const routes: RouteRecordRaw[] = [
 
 ### 2. 组件名称与路由名称一致
 
-**推荐做法** ✅
+**推荐做法** <Ok/>
 
 ```vue
 <!-- views/system/user/index.vue -->
@@ -1467,7 +1467,7 @@ defineOptions({
 
 ### 3. 合理使用路由懒加载
 
-**推荐做法** ✅
+**推荐做法** <Ok/>
 
 ```typescript
 // 路由配置 - 使用懒加载
@@ -1479,7 +1479,7 @@ defineOptions({
 }
 ```
 
-**不推荐做法** ❌
+**不推荐做法** <No/>
 
 ```typescript
 import UserIndex from '@/views/system/user/index.vue'  // ❌ 同步导入
@@ -1495,7 +1495,7 @@ import UserIndex from '@/views/system/user/index.vue'  // ❌ 同步导入
 
 ### 4. 避免过深的路由嵌套
 
-**推荐做法** ✅
+**推荐做法** <Ok/>
 
 ```typescript
 // 路由配置 - 2-3 层嵌套
@@ -1514,7 +1514,7 @@ import UserIndex from '@/views/system/user/index.vue'  // ❌ 同步导入
 ]
 ```
 
-**不推荐做法** ❌
+**不推荐做法** <No/>
 
 ```typescript
 // 路由配置 - 过深嵌套(4层+)
@@ -1553,7 +1553,7 @@ import UserIndex from '@/views/system/user/index.vue'  // ❌ 同步导入
 
 ### 5. 正确使用 hidden 和 alwaysShow
 
-**推荐做法** ✅
+**推荐做法** <Ok/>
 
 ```typescript
 // 编辑页面 - 隐藏在菜单中
@@ -1583,7 +1583,7 @@ import UserIndex from '@/views/system/user/index.vue'  // ❌ 同步导入
 
 ### 6. 使用 redirect 设置默认子路由
 
-**推荐做法** ✅
+**推荐做法** <Ok/>
 
 ```typescript
 {
@@ -1608,7 +1608,7 @@ import UserIndex from '@/views/system/user/index.vue'  // ❌ 同步导入
 
 ### 7. 合理配置路由 meta 信息
 
-**推荐做法** ✅
+**推荐做法** <Ok/>
 
 ```typescript
 {
@@ -1629,7 +1629,7 @@ import UserIndex from '@/views/system/user/index.vue'  // ❌ 同步导入
 
 ### 8. 动态路由添加后重新进入
 
-**推荐做法** ✅
+**推荐做法** <Ok/>
 
 ```typescript
 router.beforeEach(async (to, from, next) => {
@@ -1648,7 +1648,7 @@ router.beforeEach(async (to, from, next) => {
 })
 ```
 
-**不推荐做法** ❌
+**不推荐做法** <No/>
 
 ```typescript
 router.beforeEach(async (to, from, next) => {
@@ -1667,7 +1667,7 @@ router.beforeEach(async (to, from, next) => {
 
 ### 9. 注销时清空路由状态
 
-**推荐做法** ✅
+**推荐做法** <Ok/>
 
 ```typescript
 const handleLogout = async () => {
@@ -1692,7 +1692,7 @@ const handleLogout = async () => {
 
 ### 10. 使用 storeToRefs 保持响应式
 
-**推荐做法** ✅
+**推荐做法** <Ok/>
 
 ```typescript
 import { storeToRefs } from 'pinia'
@@ -1704,7 +1704,7 @@ const permissionStore = usePermissionStore()
 const { sidebarRouters, topbarRouters } = storeToRefs(permissionStore)
 ```
 
-**不推荐做法** ❌
+**不推荐做法** <No/>
 
 ```typescript
 import { usePermissionStore } from '@/stores/modules/permission'

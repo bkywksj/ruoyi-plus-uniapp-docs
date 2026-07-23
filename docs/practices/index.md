@@ -2,7 +2,7 @@
 
 欢迎来到 RuoYi-Plus-UniApp 最佳实践指南！这里汇集了项目开发、部署、运维等各个环节的最佳实践经验。
 
-## 🛠️ 工程化
+## 工程化
 
 提升开发效率的工程化实践和工具使用指南。
 
@@ -20,7 +20,7 @@ AI 辅助开发工具 Claude Code 的使用指南：
 
 - [代码生成器使用](/practices/engineering/code-generator) - 快速生成 CRUD 代码
 
-## 📋 开发规范
+## 开发规范
 
 统一的开发规范是团队协作的基础，确保代码质量和可维护性。
 
@@ -32,7 +32,7 @@ AI 辅助开发工具 Claude Code 的使用指南：
 - [数据库规范](/practices/standards/database) - 数据库设计和使用规范
 - [前端开发规范](/practices/standards/frontend) - 前端代码规范
 
-## 🏗️ 架构设计
+## 架构设计
 
 良好的架构设计是系统稳定性和可扩展性的保障。
 
@@ -42,7 +42,7 @@ AI 辅助开发工具 Claude Code 的使用指南：
 - [分布式设计](/practices/architecture/distributed) - 分布式系统设计要点
 - [多租户架构](/practices/architecture/multi-tenant) - 多租户系统设计
 
-## 💻 后端开发
+## 后端开发
 
 后端开发的最佳实践和设计模式。
 
@@ -53,7 +53,7 @@ AI 辅助开发工具 Claude Code 的使用指南：
 - [异常处理机制](/practices/backend/exception-handling) - 统一异常处理
 - [数据校验最佳实践](/practices/backend/validation) - 参数校验规范
 
-## 🔧 功能开发
+## 功能开发
 
 常见功能模块的开发指南。
 
@@ -66,7 +66,7 @@ AI 辅助开发工具 Claude Code 的使用指南：
 - [第三方集成策略](/practices/features/third-party-integration) - 第三方服务集成
 - [国际化实现方案](/practices/features/i18n) - 多语言支持
 
-## 🔒 安全指南
+## 安全指南
 
 安全是系统运行的重要保障，需要从多个维度进行防护。
 
@@ -77,7 +77,7 @@ AI 辅助开发工具 Claude Code 的使用指南：
 - [客户端安全](/practices/security/client) - 前端和移动端安全
 - [安全审计](/practices/security/audit) - 安全审计和日志记录
 
-## 🚀 部署运维
+## 部署运维
 
 高效的部署运维流程确保系统稳定运行。
 
@@ -85,7 +85,7 @@ AI 辅助开发工具 Claude Code 的使用指南：
 
 ---
 
-## 💡 为什么需要最佳实践？
+## 为什么需要最佳实践？
 
 - **提高开发效率** - 统一的规范减少沟通成本
 - **保证代码质量** - 规范的流程确保代码质量
@@ -93,7 +93,7 @@ AI 辅助开发工具 Claude Code 的使用指南：
 - **提升系统性能** - 优化策略提升用户体验
 - **增强系统安全** - 安全实践保护系统和数据
 
-## 🎯 如何使用这些实践？
+## 如何使用这些实践？
 
 1. **循序渐进** - 根据项目阶段选择相应的实践指南
 2. **结合实际** - 根据具体业务场景调整实践方案
@@ -102,7 +102,7 @@ AI 辅助开发工具 Claude Code 的使用指南：
 
 ---
 
-## 📦 技术栈概览
+## 技术栈概览
 
 RuoYi-Plus-UniApp 是一个全栈框架，采用当前主流的技术栈构建。
 
@@ -173,7 +173,7 @@ ruoyi-plus-uniapp-workflow/
 
 ---
 
-## 🏛️ 分层架构详解
+## 分层架构详解
 
 ### 经典三层架构
 
@@ -344,7 +344,7 @@ public class SysUserDaoImpl implements ISysUserDao {
 
 ---
 
-## 🔐 权限控制体系
+## 权限控制体系
 
 ### Sa-Token 集成
 
@@ -402,7 +402,7 @@ TenantHelper.ignore(() -> {
 
 ---
 
-## 📊 缓存策略
+## 缓存策略
 
 ### Spring Cache 集成
 
@@ -462,7 +462,7 @@ public String getNickName(Long userId) {
 
 ---
 
-## 📝 参数校验
+## 参数校验
 
 ### Bean Validation 使用
 
@@ -531,7 +531,7 @@ public R<Void> updateUser(@Validated(EditGroup.class) @RequestBody SysUserBo bo)
 
 ---
 
-## 🔄 事务管理
+## 事务管理
 
 ### Spring 事务使用
 
@@ -587,7 +587,7 @@ public void methodA() {
 
 ---
 
-## 📤 Excel 导入导出
+## Excel 导入导出
 
 ### 导出功能
 
@@ -683,7 +683,7 @@ public class SysUserImportListener extends AnalysisEventListener<SysUserImportVo
 
 ---
 
-## 🔧 异常处理
+## 异常处理
 
 ### 统一异常处理
 
@@ -738,7 +738,7 @@ throw new ServiceException(500, "服务器内部错误");
 
 ---
 
-## 📋 操作日志
+## 操作日志
 
 ### @Log 注解使用
 
@@ -782,7 +782,7 @@ public R<Void> deleteUsers(@PathVariable Long[] userIds) {
 
 ---
 
-## 🛡️ 防重复提交
+## 防重复提交
 
 ### @RepeatSubmit 注解使用
 
@@ -806,15 +806,15 @@ public R<Void> pay(@RequestBody PayRequest request) {
 
 | 场景 | 是否使用 |
 |------|----------|
-| 新增操作 | ✅ 使用 |
-| 修改操作 | ✅ 使用 |
-| 支付操作 | ✅ 使用 |
-| 查询操作 | ❌ 不使用 |
+| 新增操作 | 是 使用 |
+| 修改操作 | 是 使用 |
+| 支付操作 | 是 使用 |
+| 查询操作 | 否 不使用 |
 | 删除操作 | 可选 |
 
 ---
 
-## 🌐 多租户支持
+## 多租户支持
 
 ### 租户隔离
 
@@ -857,7 +857,7 @@ if (TenantHelper.isEnable()) {
 
 ---
 
-## 🔌 事件发布与监听
+## 事件发布与监听
 
 ### 应用事件机制
 
@@ -931,7 +931,7 @@ public class OrderEventListener {
 
 ---
 
-## 📈 性能优化
+## 性能优化
 
 ### 查询优化
 
@@ -995,7 +995,7 @@ public User getUser(Long userId) {
 
 ---
 
-## 🧪 单元测试
+## 单元测试
 
 ### Service 层测试
 
@@ -1078,7 +1078,7 @@ class SysUserControllerTest {
 
 ---
 
-## 📋 开发检查清单
+## 开发检查清单
 
 ### Controller 层检查
 
@@ -1110,7 +1110,7 @@ class SysUserControllerTest {
 
 ---
 
-## 🚀 快速开始指南
+## 快速开始指南
 
 ### 1. 环境准备
 
@@ -1172,7 +1172,7 @@ pnpm dev:mp-weixin
 
 ---
 
-## 📚 学习路径建议
+## 学习路径建议
 
 ### 新手入门
 
@@ -1197,7 +1197,7 @@ pnpm dev:mp-weixin
 
 ---
 
-## 🎯 总结
+## 总结
 
 RuoYi-Plus-UniApp 最佳实践涵盖了以下核心内容：
 

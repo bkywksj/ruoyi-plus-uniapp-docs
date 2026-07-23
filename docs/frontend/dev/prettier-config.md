@@ -2,7 +2,7 @@
 
 深入解析项目的 Prettier 配置和格式化规则。
 
-## 🎯 配置文件
+## 配置文件
 
 ### 文件位置
 
@@ -38,7 +38,7 @@ export default {
 }
 ```
 
-## 📋 配置项详解
+## 配置项详解
 
 ### printWidth: 150
 
@@ -311,7 +311,7 @@ CR (\r)    - 旧 Mac
 - `'crlf'` - 强制 CRLF
 - `'cr'` - 强制 CR
 
-## 🚫 忽略配置
+## 忽略配置
 
 ### .prettierignore
 
@@ -339,7 +339,7 @@ CR (\r)    - 旧 Mac
 - 第三方文件不应修改
 - 二进制/特殊格式文件
 
-## 🛠️ 使用命令
+## 使用命令
 
 ### 格式化所有文件
 
@@ -385,7 +385,7 @@ npx prettier --write . && npx eslint .
 # Git 提交前自动格式化（lint-staged）
 ```
 
-## 🔧 IDE 集成
+## IDE 集成
 
 ### VS Code
 
@@ -440,7 +440,7 @@ npx prettier --write . && npx eslint .
 3. 勾选 **On save** 和 **On Reformat Code**
 4. 设置 **Run for files**: `{**/*,*}.{js,ts,jsx,tsx,vue,css,scss,json}`
 
-## 🎯 最佳实践
+## 最佳实践
 
 ### 保存时自动格式化
 
@@ -491,7 +491,7 @@ const matrix = [
 - 特殊格式的数据结构
 - 需要保持原样的代码
 
-## 🔄 与 ESLint 协同
+## 与 ESLint 协同
 
 ### 规则冲突解决
 
@@ -520,7 +520,7 @@ export default defineConfigWithVueTs(
 | **ESLint** | 代码质量 | 未使用变量、类型错误 |
 | **Prettier** | 代码风格 | 缩进、引号、换行 |
 
-## 📊 配置对比
+## 配置对比
 
 ### 项目配置 vs 默认配置
 
@@ -545,7 +545,7 @@ export default defineConfigWithVueTs(
 
 **项目风格**：介于两者之间，更宽松灵活。
 
-## 🐛 常见问题
+## 常见问题
 
 ### 格式化破坏代码
 

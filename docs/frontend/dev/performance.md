@@ -2,7 +2,7 @@
 
 前端项目的性能分析和优化指南。
 
-## 🎯 性能指标
+## 性能指标
 
 ### 核心Web指标 (Core Web Vitals)
 
@@ -21,7 +21,7 @@
 | **TTFB** | 首字节时间 | < 600ms |
 | **Bundle Size** | 打包体积 | < 500KB |
 
-## 🔍 性能分析工具
+## 性能分析工具
 
 ### 浏览器 DevTools
 
@@ -170,7 +170,7 @@ Update: 8.2ms
 Count: 12 times
 ```
 
-## 📊 构建性能优化
+## 构建性能优化
 
 ### 减少打包体积
 
@@ -329,7 +329,7 @@ build: {
 <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 ```
 
-## ⚡ 运行时性能优化
+## 运行时性能优化
 
 ### 组件优化
 
@@ -524,7 +524,7 @@ const cachedViews = ['UserList', 'RoleList']
 </script>
 ```
 
-## 🌐 网络优化
+## 网络优化
 
 ### HTTP 缓存
 
@@ -564,7 +564,7 @@ router.beforeEach(async (to, from, next) => {
 })
 ```
 
-## 📱 渲染优化
+## 渲染优化
 
 ### 减少 DOM 操作
 
@@ -623,7 +623,7 @@ function processLargeData(data: any[]) {
 }
 ```
 
-## 🔧 性能监控
+## 性能监控
 
 ### Performance API
 
@@ -679,7 +679,7 @@ app.config.errorHandler = (err, instance, info) => {
 }
 ```
 
-## 📋 性能检查清单
+## 性能检查清单
 
 ### 开发阶段
 - [ ] 路由懒加载
@@ -709,7 +709,7 @@ app.config.errorHandler = (err, instance, info) => {
 - [ ] CDN 加速
 - [ ] 服务端渲染 (SSR)
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 首屏加载时间过长导致白屏
 

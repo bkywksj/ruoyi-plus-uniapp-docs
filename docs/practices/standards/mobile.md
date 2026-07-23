@@ -525,7 +525,7 @@ const handleSubmit = () => {
 
 UniApp 模板必须使用 UniApp 内置基础组件而非 HTML 标签,因为小程序不支持 div、span:
 
-| ❌ HTML 标签 | ✅ UniApp 组件 | 用途 |
+| 否 HTML 标签 | 是 UniApp 组件 | 用途 |
 |-------------|--------------|------|
 | `<div>` | `<view>` | 通用容器 |
 | `<span>` / `<p>` | `<text>` | 文本 |
@@ -1317,7 +1317,7 @@ export const shareToFriend = (params: { title: string; path?: string }) => {
 | storage 上限 | ~10MB | ~10MB | 受系统限制 | 5-10MB |
 | 单次请求超时 | 60s | 60s | 可配 | 可配 |
 | 域名白名单 | 必须配置 | 必须配置 | 无 | 同源策略 |
-| WebSocket | ✅ | ✅ | ✅ | ✅ |
+| WebSocket | 是 | 是 | 是 | 是 |
 | 支付能力 | 微信支付 | 支付宝支付 | 全平台 | 微信 H5/支付宝 H5 |
 
 ---

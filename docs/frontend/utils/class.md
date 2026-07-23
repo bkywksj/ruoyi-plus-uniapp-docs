@@ -2,7 +2,7 @@
 
 DOM 元素 class 操作相关工具函数，提供全面的 CSS 类名操作功能，包括检查、添加、移除、切换、替换等常用操作。
 
-## 📖 概述
+## 概述
 
 DOM 类操作工具库提供以下核心功能：
 - **类名检查**：检查元素是否包含指定类名
@@ -13,7 +13,7 @@ DOM 类操作工具库提供以下核心功能：
 - **类名设置**：设置元素的类名（替换所有现有类名）
 - **类名获取**：获取元素的所有类名数组
 
-## 🔍 类名检查
+## 类名检查
 
 ### hasClass
 
@@ -53,7 +53,7 @@ if (hasClass(navItem, 'current')) {
 - 条件渲染和样式判断
 - 事件处理中的状态检查
 
-## ➕ 类名添加
+## 类名添加
 
 ### addClass
 
@@ -88,7 +88,7 @@ addClass(button, 'loading')
 - 状态变化（加载、成功、错误等）
 - 主题切换
 
-## ➖ 类名移除
+## 类名移除
 
 ### removeClass
 
@@ -123,7 +123,7 @@ removeClass(button, 'loading')
 - 清除临时状态
 - 重置元素样式
 
-## 🔄 类名切换
+## 类名切换
 
 ### toggleClass
 
@@ -166,7 +166,7 @@ menuItem.addEventListener('click', () => {
 - 选中状态切换
 - 交互式UI组件
 
-## 🔧 类名替换
+## 类名替换
 
 ### replaceClass
 
@@ -202,7 +202,7 @@ replaceClass(task, 'status-pending', 'status-completed')
 - 样式变更（颜色、尺寸、风格）
 - 等级切换（优先级、重要性）
 
-## 📝 类名设置
+## 类名设置
 
 ### setClass
 
@@ -235,7 +235,7 @@ setClass(element, '')
 - 组件状态重置
 - 动态生成元素的样式设置
 
-## 📋 类名获取
+## 类名获取
 
 ### getClassList
 
@@ -278,7 +278,7 @@ classes.forEach(className => {
 - 条件处理和过滤
 - 样式审计
 
-## 💡 实际应用场景
+## 实际应用场景
 
 ### 1. 模态框控制
 
@@ -485,7 +485,7 @@ class AnimationController {
 }
 ```
 
-## 🎨 CSS 配合使用
+## CSS 配合使用
 
 这些工具函数通常需要配合相应的CSS样式使用：
 
@@ -539,7 +539,7 @@ class AnimationController {
 }
 ```
 
-## ⚡ 性能优化建议
+## 性能优化建议
 
 ### 1. 批量操作优化
 
@@ -589,14 +589,14 @@ function toggleMultipleOptimized(element: HTMLElement) {
 }
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **空值检查**：所有函数都会检查元素和类名是否有效
 2. **类名格式**：类名应该符合CSS类名规范，不包含空格
 3. **性能考虑**：频繁的DOM操作可能影响性能，考虑批量处理
 4. **浏览器兼容性**：这些函数使用了现代DOM API，在老旧浏览器中可能需要polyfill
 
-## 🆚 与原生API对比
+## 与原生API对比
 
 | 功能 | 本工具库 | 原生API |
 |------|---------|---------|
@@ -612,7 +612,7 @@ function toggleMultipleOptimized(element: HTMLElement) {
 - 兼容性处理
 - 额外的功能（如replaceClass、setClass）
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 类名操作在元素不存在或为null时报错
 

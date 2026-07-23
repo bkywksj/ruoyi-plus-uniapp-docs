@@ -1637,22 +1637,22 @@ interface CustomRequestOptions {
 
 | 函数 | H5 | 微信小程序 | 支付宝小程序 | APP | 备注 |
 |------|:---:|:---:|:---:|:---:|------|
-| `copy` | ✅ | ✅ | ✅ | ✅ | H5 需 HTTPS 或 localhost |
-| `paste` | ✅ | ✅ | ✅ | ✅ | H5 需用户授权 |
-| `withHeaders` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `debounce` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `throttle` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `once` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `delay` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `retry` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `withTimeout` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `curry` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `partial` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `memoize` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `serial` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `parallel` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `withRetry` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
-| `rateLimit` | ✅ | ✅ | ✅ | ✅ | 纯 JS 实现 |
+| `copy` | 是 | 是 | 是 | 是 | H5 需 HTTPS 或 localhost |
+| `paste` | 是 | 是 | 是 | 是 | H5 需用户授权 |
+| `withHeaders` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `debounce` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `throttle` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `once` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `delay` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `retry` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `withTimeout` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `curry` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `partial` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `memoize` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `serial` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `parallel` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `withRetry` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
+| `rateLimit` | 是 | 是 | 是 | 是 | 纯 JS 实现 |
 
 ## 性能优化建议
 

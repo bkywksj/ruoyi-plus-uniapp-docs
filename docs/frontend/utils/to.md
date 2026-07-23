@@ -15,7 +15,7 @@
 
 ## 核心函数
 
-### 1. to() - 基础异步处理 ⭐⭐⭐⭐⭐
+### 1. to() - 基础异步处理
 
 **最重要的函数，99% 的场景都会用到**
 
@@ -65,7 +65,7 @@ console.log('请求结果:', data);
 
 ---
 
-### 2. toValidate() - 表单验证专用 ⭐⭐⭐⭐
+### 2. toValidate() - 表单验证专用
 
 **后台管理系统表单验证的利器**
 
@@ -119,7 +119,7 @@ const validateAllForms = async () => {
 
 ---
 
-### 3. toAll() - 批量处理 Promise ⭐⭐⭐⭐
+### 3. toAll() - 批量处理 Promise
 
 **并行执行多个异步操作**
 
@@ -166,7 +166,7 @@ console.log(`上传完成: 成功 ${successCount} 个，失败 ${failCount} 个`
 
 ---
 
-### 4. toWithTimeout() - 超时控制 ⭐⭐⭐
+### 4. toWithTimeout() - 超时控制
 
 **为 Promise 添加超时机制**
 
@@ -204,7 +204,7 @@ console.log('计算结果:', data);
 
 ---
 
-### 5. toSync() - 同步版本 ⭐⭐⭐
+### 5. toSync() - 同步版本
 
 **处理可能抛出异常的同步代码**
 
@@ -244,7 +244,7 @@ console.log('处理结果:', result);
 
 ## 增强功能函数
 
-### 6. toWithRetry() - 自动重试 ⭐⭐⭐
+### 6. toWithRetry() - 自动重试
 
 **适用于网络不稳定场景**
 
@@ -275,7 +275,7 @@ console.log('请求成功:', data);
 
 ---
 
-### 7. toWithDefault() - 带默认值 ⭐⭐
+### 7. toWithDefault() - 带默认值
 
 **失败时使用备用数据**
 
@@ -303,7 +303,7 @@ if (err) {
 
 ---
 
-### 8. toWithLog() - 带调试日志 ⭐⭐
+### 8. toWithLog() - 带调试日志
 
 **开发阶段监控异步操作**
 
@@ -333,7 +333,7 @@ const [err, userData] = await toWithLog(
 
 ## 高级功能函数
 
-### 9. toSequence() - 串行执行 ⭐⭐
+### 9. toSequence() - 串行执行
 
 **按顺序处理有依赖关系的操作**
 
@@ -366,7 +366,7 @@ console.log('所有初始化步骤完成:', results);
 
 ---
 
-### 10. toIf() - 条件执行 ⭐
+### 10. toIf() - 条件执行
 
 **根据条件决定是否执行异步操作**
 
@@ -396,7 +396,7 @@ if (err) {
 
 ---
 
-### 11. toResult() - 类型安全透传 ⭐
+### 11. toResult() - 类型安全透传
 
 **用于已返回 Result 格式的函数**
 

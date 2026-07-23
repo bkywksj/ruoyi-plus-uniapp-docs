@@ -2,7 +2,7 @@
 
 树结构工具函数库，提供全面的树形数据结构处理工具，用于前端各种树形数据的操作和转换。
 
-## 📖 概述
+## 概述
 
 树形工具库提供以下核心功能：
 - **构建树**：将平铺列表转换为嵌套树结构
@@ -17,7 +17,7 @@
 - **获取叶子**：获取所有叶子节点
 - **计算深度**：获取树的最大深度
 
-## 🏗️ 类型定义
+## 类型定义
 
 ### TreeNode 接口
 
@@ -43,7 +43,7 @@ interface TreeOptions {
 }
 ```
 
-## 🌳 构建树结构
+## 构建树结构
 
 ### buildTree
 
@@ -105,7 +105,7 @@ const customTree = buildTree(customList, {
 - 分类层级展示
 - 评论回复树
 
-## 🔍 查找节点
+## 查找节点
 
 ### findTreeNode
 
@@ -172,7 +172,7 @@ const breadcrumbs = path.map(node => node.name).join(' > ')
 console.log(breadcrumbs) // "部门1 > 部门2 > 部门4"
 ```
 
-## 🔧 树操作
+## 树操作
 
 ### filterTree
 
@@ -249,7 +249,7 @@ traverseTree(tree, (node, parent, level) => {
 })
 ```
 
-## ➕ 节点操作
+## 节点操作
 
 ### insertNode
 
@@ -335,7 +335,7 @@ updateNode(
 )
 ```
 
-## 📊 树分析
+## 树分析
 
 ### getLeafNodes
 
@@ -378,7 +378,7 @@ if (depth > 5) {
 }
 ```
 
-## 💡 实际应用场景
+## 实际应用场景
 
 ### 1. 组织架构管理
 
@@ -610,7 +610,7 @@ class CommentTreeSystem {
 }
 ```
 
-## 🎨 Vue 组件集成
+## Vue 组件集成
 
 ```vue
 <template>
@@ -697,7 +697,7 @@ const handleNodeExpand = (node: any, expanded: boolean) => {
 </style>
 ```
 
-## ⚡ 性能优化建议
+## 性能优化建议
 
 ### 1. 大数据量优化
 
@@ -753,14 +753,14 @@ class LazyTreeLoader {
 }
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **循环引用**：确保数据中没有循环引用，可能导致无限递归
 2. **性能考虑**：大量节点时考虑虚拟滚动或分页加载
 3. **内存占用**：深拷贝会增加内存使用，根据需要选择
 4. **数据一致性**：修改树结构时注意保持父子关系的一致性
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 树结构构建时出现节点丢失或重复
 

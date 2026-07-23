@@ -71,23 +71,59 @@ public class SysUserController {
     // ... 其他CRUD方法
 }
 
-// 5. 服务接口 (Service)
-public interface ISysUserService extends IBaseService<SysUser, SysUserBo, SysUserVo> {
-    // 继承基础服务接口，可添加自定义方法
+// 5. 服务接口 (Service) —— 不继承任何基类，直接声明业务方法
+public interface ISysUserService {
+    PageResult<SysUserVo> page(SysUserBo bo, PageQuery pageQuery);
+    Long add(SysUserBo bo);
+    int update(SysUserBo bo);
+    int batchDelete(Collection<Long> ids);
+    // ... 其他业务方法
 }
 
-// 6. 服务实现 (ServiceImpl)
+// 6. 服务实现 (ServiceImpl) —— 注入 DAO 层，负责业务与 Entity↔Bo/Vo 转换
 @Service
-public class SysUserServiceImpl extends BaseServiceImpl<SysUserMapper, SysUser, SysUserBo, SysUserVo> 
-    implements ISysUserService {
-    
+@RequiredArgsConstructor
+public class SysUserServiceImpl implements ISysUserService {
+
+    private final ISysUserDao sysUserDao;
+
     @Override
-    protected PlusLambdaQuery<SysUser> boToQuery(SysUserBo bo) {
-        PlusLambdaQuery<SysUser> lqw = of();
-        lqw.eq(SysUser::getUserName, bo.getUserName());
-        // ... 查询条件构建
+    public PageResult<SysUserVo> page(SysUserBo bo, PageQuery pageQuery) {
+        PlusLambdaQuery<SysUser> wrapper = sysUserDao.buildQueryWrapper(bo);
+        PageResult<SysUser> page = sysUserDao.page(wrapper, pageQuery);
+        return PageResult.convert(page, SysUserVo.class);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Long add(SysUserBo bo) {
+        SysUser entity = MapstructUtils.convert(bo, SysUser.class);
+        sysUserDao.insert(entity);
+        return entity.getUserId();
+    }
+    // ... 其他方法均委托给 DAO 层
+}
+
+// 7. 数据访问接口 (DAO) —— 查询条件在 DAO 层统一构建
+public interface ISysUserDao extends IBaseDao<SysUser> {
+    PlusLambdaQuery<SysUser> buildQueryWrapper(SysUserBo bo);
+}
+
+// 8. 数据访问实现 (DAOImpl)
+@Repository
+public class SysUserDaoImpl extends BaseDaoImpl<SysUserMapper, SysUser> implements ISysUserDao {
+
+    @Override
+    public PlusLambdaQuery<SysUser> buildQueryWrapper(SysUserBo bo) {
+        PlusLambdaQuery<SysUser> lqw = PlusLambdaQuery.of();
+        lqw.eq(bo.getUserName() != null, SysUser::getUserName, bo.getUserName());
+        // ... 其他查询条件（自动处理 null 判断）
         return lqw;
     }
+}
+
+// 9. Mapper —— 仅继承 BaseMapper，专注 SQL 执行
+public interface SysUserMapper extends BaseMapper<SysUser> {
 }
 ```
 
@@ -233,24 +269,28 @@ const handleExport = () => {
 
 #### 后端特殊处理
 ```java
-// 服务实现中的树形查询
+// DAO 层：树形查询条件在 DAO 的 buildQueryWrapper 中构建
 @Override
-protected PlusLambdaQuery<SysDept> boToQuery(SysDeptBo bo) {
-    PlusLambdaQuery<SysDept> lqw = of();
-    lqw.eq(SysDept::getDeptName, bo.getDeptName());
-    lqw.eq(SysDept::getParentId, bo.getParentId());
-    // 不需要分页，返回所有数据用于构建树形结构
+public PlusLambdaQuery<SysDept> buildQueryWrapper(SysDeptBo bo) {
+    PlusLambdaQuery<SysDept> lqw = PlusLambdaQuery.of();
+    lqw.like(bo.getDeptName() != null, SysDept::getDeptName, bo.getDeptName());
+    lqw.eq(bo.getParentId() != null, SysDept::getParentId, bo.getParentId());
     return lqw;
 }
 
+// Service 层：树形不分页，查询全部用于构建树
+@Override
+public List<SysDeptVo> list(SysDeptBo bo) {
+    PlusLambdaQuery<SysDept> wrapper = sysDeptDao.buildQueryWrapper(bo);
+    return MapstructUtils.convert(sysDeptDao.list(wrapper), SysDeptVo.class);
+}
+
 // 控制器中返回树形数据
-@GetMapping("/pageSysDepts")
-public R<PageResult<SysDeptVo>> pageSysDepts(SysDeptBo bo, PageQuery pageQuery) {
-    // 查询所有数据
+@GetMapping("/listSysDepts")
+public R<List<SysDeptVo>> listSysDepts(SysDeptBo bo) {
+    // 查询所有数据后构建树形结构
     List<SysDeptVo> list = sysDeptService.list(bo);
-    // 构建树形结构
-    List<SysDeptVo> treeList = buildTree(list);
-    return R.ok(PageResult.of(treeList));
+    return R.ok(buildTree(list));
 }
 ```
 
@@ -546,22 +586,17 @@ const handleAdd = () => {
 </script>
 ```
 
-### 核心特性
+### 实现机制（重要）
 
-#### 1. 主子表关联
-- **自动关联**：子表记录自动关联主表ID
-- **联动操作**：主表保存后才能操作子表
-- **级联删除**：删除主表时可选择是否删除子表数据
+代码生成器为主子表生成的是**两套相互独立的完整 CRUD**：主表一套（Controller/Service/DAO/Bo/Vo/前端页面），每个子表各一套。二者通过**外键 + parentId** 关联，但在生成的代码里**并不共享事务、也不做级联删除**——理解这一点是正确使用主子表的关键。
 
-#### 2. 数据完整性
-- **事务处理**：主子表操作在同一事务中处理
-- **约束检查**：子表数据的外键约束验证
-- **数据同步**：主子表数据的同步更新
-
-#### 3. 用户体验
-- **分步操作**：先保存主表，再编辑子表
-- **状态提示**：明确显示操作状态和提示信息
-- **批量操作**：支持子表数据的批量导入导出
+- **独立 API、即时保存**：子表由独立子组件（`XxxChild.vue`）承载，调用**自己的**增删改查接口（`addXxx` / `updateXxx` / `deleteXxx`），每次对子表行的操作都会**立即单独提交**，不会和主表打包成一次请求。
+- **先主后子**：子表组件依赖主表主键 `parentId`；主表未保存（无 ID）时子表显示"请先保存主表"。新增主表时，主表保存成功后会回填主键并**保持弹窗打开**，随后才能新增子表行。
+- **外键自动回填**：子表新增记录时，外键字段自动设置为当前主表 ID（`parentId`）。
+- **事务边界（易误解）**：主表的增删改在主表 `Service` 的 `@Transactional` 内，子表的增删改在子表 `Service` 的 `@Transactional` 内，**彼此独立**。生成的代码**不提供**"主表 + 子表一次性提交的统一事务"。
+- **级联删除需手动实现**：生成的主表删除接口**只删主表记录**，不会自动删除关联子表数据。若需级联删除或"主表 + 子表原子提交"，需在主表 `ServiceImpl` 中自行编写（如删除主表前按外键批量删子表、或新增聚合接口在同一事务内保存主子数据）。
+- **子表导入导出**：子表组件内置独立的 Excel 导入 / 导出（`AImportExcel` + 导出接口），导入时自动带上当前 `parentId`。
+- **弹窗组件**：主表编辑弹窗与子表编辑弹窗均使用项目封装的 `AModal` 组件（下方示例中的 `el-dialog` 仅为结构示意）。
 
 ### 配置要点
 
@@ -601,11 +636,11 @@ sequenceDiagram
     U->>M: 点击新增按钮
     M->>U: 显示主表表单
     U->>M: 填写主表信息并保存
-    M->>M: 保存主表数据，获取主表ID
+    M->>M: 调用主表新增接口，返回主表ID并回填、弹窗保持打开
     M->>S: 传递主表ID给子表组件
     S->>U: 显示子表操作界面
-    U->>S: 添加子表数据
-    S->>S: 保存子表数据（包含主表ID）
+    U->>S: 逐行添加子表数据
+    S->>S: 每行调用子表独立接口即时保存（自动带主表ID）
 ```
 
 #### 编辑流程
@@ -618,11 +653,10 @@ sequenceDiagram
     U->>M: 点击编辑按钮
     M->>M: 加载主表数据
     M->>S: 传递主表ID
-    S->>S: 加载子表数据列表
+    S->>S: 按外键加载子表数据列表
     M->>U: 显示主子表编辑界面
-    U->>M: 修改主表信息
-    U->>S: 修改子表信息
-    U->>M: 保存全部修改
+    U->>M: 修改主表并保存（调用主表更新接口，仅提交主表）
+    U->>S: 逐行增删改子表（各自调用子表接口，即时提交）
 ```
 
 ### 注意事项
@@ -631,13 +665,15 @@ sequenceDiagram
     - 必须先保存主表才能操作子表
     - 子表记录必须关联有效的主表ID
 
-2. **删除策略**
-    - 删除主表前需要处理子表数据
-    - 可以选择级联删除或阻止删除
+2. **删除策略（需手动实现级联）**
+    - 生成的主表删除接口只删除主表记录，**不会**自动删除子表数据
+    - 如需级联删除，请在主表 `ServiceImpl.deleteByIds` 中先按外键删除关联子表记录，再删主表
+    - 或在删除前校验是否存在子表数据，存在则阻止删除
 
-3. **事务控制**
-    - 主子表的CUD操作应在同一事务中
-    - 确保数据的一致性和完整性
+3. **事务控制（默认不跨表）**
+    - 生成代码中主表、子表各自在**独立事务**内提交，**并非同一事务**
+    - 子表每行操作即时保存，若中途失败，已保存的行不会回滚
+    - 如需"主表 + 子表"原子提交，需自行新增聚合保存接口，在同一 `@Transactional` 方法内处理主子数据
 
 4. **性能考虑**
     - 子表数据量大时考虑分页加载

@@ -1036,7 +1036,7 @@ public class RedisExceptionHandler {
 
 ### 1. 合理划分异常类型
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Service
@@ -1061,7 +1061,7 @@ public class UserServiceImpl implements IUserService {
 }
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```java
 @Override
@@ -1089,7 +1089,7 @@ public UserVo get(Long id) {
 
 ### 2. 使用业务错误码
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 public class ErrorCode {
@@ -1144,7 +1144,7 @@ const handleUserError = (error: any) => {
 
 ### 3. 完善的日志记录
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Override
@@ -1187,7 +1187,7 @@ public CreateOrderVo createOrder(CreateOrderBo bo) {
 
 ### 4. 事务回滚处理
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Service
@@ -1224,7 +1224,7 @@ public class OrderServiceImpl implements IOrderService {
 
 ### 5. 避免敏感信息泄露
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Override
@@ -1243,7 +1243,7 @@ public UserVo login(String username, String password) {
 }
 ```
 
-**❌ 不推荐:**
+**<No/> 不推荐:**
 
 ```java
 @Override
@@ -1266,7 +1266,7 @@ public UserVo login(String username, String password) {
 
 ### 6. 统一异常处理顺序
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 @Service
@@ -1320,7 +1320,7 @@ public class OrderServiceImpl implements IOrderService {
 
 对于特定领域,可以创建专用的异常类:
 
-**✅ 推荐:**
+**<Ok/> 推荐:**
 
 ```java
 // 支付相关异常
@@ -1394,7 +1394,7 @@ public class PaymentServiceImpl implements IPaymentService {
 - 在 Service 层捕获了异常但没有重新抛出
 - 使用了错误的异常处理方式
 
-**❌ 错误示例:**
+**<No/> 错误示例:**
 
 ```java
 @Override
@@ -1414,7 +1414,7 @@ public boolean createOrder(CreateOrderBo bo) {
 }
 ```
 
-**✅ 正确做法:**
+**<Ok/> 正确做法:**
 
 ```java
 @Override
@@ -1447,7 +1447,7 @@ public boolean createOrder(CreateOrderBo bo) {
 - 事务注解没有配置 `rollbackFor = Exception.class`
 - 异常类型不是 RuntimeException 的子类
 
-**❌ 错误示例:**
+**<No/> 错误示例:**
 
 ```java
 @Override
@@ -1469,7 +1469,7 @@ public boolean createOrder(CreateOrderBo bo) {
 }
 ```
 
-**✅ 正确做法:**
+**<Ok/> 正确做法:**
 
 ```java
 @Override
@@ -1494,7 +1494,7 @@ public boolean createOrder(CreateOrderBo bo) {
 - 直接抛出原始异常消息
 - 没有对技术错误进行业务化翻译
 
-**❌ 错误示例:**
+**<No/> 错误示例:**
 
 ```java
 @Override
@@ -1511,7 +1511,7 @@ public UserVo get(Long id) {
 
 前端收到: `"Could not open JDBC Connection for transaction; nested exception is..."`
 
-**✅ 正确做法:**
+**<Ok/> 正确做法:**
 
 ```java
 @Override
@@ -1546,7 +1546,7 @@ public UserVo get(Long id) {
 
 多个用户同时下单,导致库存扣减异常。
 
-**❌ 错误示例:**
+**<No/> 错误示例:**
 
 ```java
 @Override
@@ -1569,7 +1569,7 @@ public boolean createOrder(CreateOrderBo bo) {
 }
 ```
 
-**✅ 正确做法 - 使用乐观锁:**
+**<Ok/> 正确做法 - 使用乐观锁:**
 
 ```java
 @Override
@@ -1612,7 +1612,7 @@ boolean deductStockWithOptimisticLock(@Param("productId") Long productId,
 
 微服务架构下,调用其他服务失败时的异常处理。
 
-**✅ 推荐做法:**
+**<Ok/> 推荐做法:**
 
 ```java
 @Service

@@ -1163,7 +1163,7 @@ export const useDictStore = defineStore('dict', () => {
 
 ### 1. 优先使用 DictTypes 枚举
 
-**推荐做法 ✅:**
+**推荐做法 <Ok/>:**
 
 ```typescript
 import { useDict, DictTypes } from '@/composables/useDict'
@@ -1171,7 +1171,7 @@ import { useDict, DictTypes } from '@/composables/useDict'
 const { sys_user_sex, dictLoading } = useDict(DictTypes.SYS_USER_SEX)
 ```
 
-**不推荐做法 ❌:**
+**不推荐做法 <No/>:**
 
 ```typescript
 const { sys_user_sex, dictLoading } = useDict('sys_user_sex')
@@ -1235,7 +1235,7 @@ const { sys_user_sex } = useDict(DictTypes.SYS_USER_SEX) // 使用缓存,不请�
 
 一次性加载表单所需的所有字典,而不是在多个地方分别加载:
 
-**推荐做法 ✅:**
+**推荐做法 <Ok/>:**
 
 ```typescript
 // 在页面或表单组件中一次性加载所有需要的字典
@@ -1253,7 +1253,7 @@ const {
 )
 ```
 
-**不推荐做法 ❌:**
+**不推荐做法 <No/>:**
 
 ```typescript
 // 在不同的子组件中分别加载
@@ -1271,7 +1271,7 @@ const { sys_yes_no } = useDict(DictTypes.SYS_YES_NO)
 
 在计算属性或方法中使用 dictStore 工具方法,代码更简洁:
 
-**推荐做法 ✅:**
+**推荐做法 <Ok/>:**
 
 ```typescript
 import { useDictStore } from '@/stores/modules/dict'
@@ -1283,7 +1283,7 @@ const genderText = computed(() => {
 })
 ```
 
-**不推荐做法 ❌:**
+**不推荐做法 <No/>:**
 
 ```typescript
 const { sys_user_sex } = useDict(DictTypes.SYS_USER_SEX)

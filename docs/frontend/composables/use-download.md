@@ -2,7 +2,7 @@
 
 文件下载相关的组合式函数，提供了完整的文件下载解决方案，支持多种下载方式和格式。该组合函数封装了通用下载、Excel导出、OSS文件下载和ZIP压缩包下载等常见场景，并提供统一的加载状态管理和错误处理机制。
 
-## 📋 功能特性
+## 功能特性
 
 - **通用下载**: 基础下载文件方法，支持自定义文件名和请求参数，采用 POST 请求方式
 - **Excel导出**: 支持导出全部数据或当前页数据，带用户选择确认对话框
@@ -15,7 +15,7 @@
 - **统一返回格式**: 所有方法统一返回 `[error, data]` 元组格式，便于错误处理
 - **TypeScript支持**: 完整的类型定义，支持泛型参数
 
-## 🎯 基础用法
+## 基础用法
 
 ### 导入使用
 
@@ -178,7 +178,7 @@ const handleConditionalDownload = async () => {
 </style>
 ```
 
-## 📥 Excel导出
+## Excel导出
 
 ### 导出当前页或全部数据
 
@@ -583,7 +583,7 @@ const handleMultiSheetExport = async () => {
 </script>
 ```
 
-## 🗂️ OSS文件下载
+## OSS文件下载
 
 ### 基本OSS下载
 
@@ -996,7 +996,7 @@ const handleDownloadOss = async (ossId: string) => {
 </style>
 ```
 
-## 🗜️ ZIP文件下载
+## ZIP文件下载
 
 ### 批量下载为ZIP
 
@@ -1314,7 +1314,7 @@ const handlePreviewCode = (row: TableInfo) => {
 </style>
 ```
 
-## 📊 返回值说明
+## 返回值说明
 
 ### useDownload 返回对象
 
@@ -1427,7 +1427,7 @@ const [error] = await downloadZip(
 )
 ```
 
-## 🔧 高级用法
+## 高级用法
 
 ### 结合表格选择使用
 
@@ -1805,7 +1805,7 @@ export const useLargeFileDownload = () => {
 }
 ```
 
-## 📚 类型定义
+## 类型定义
 
 ```typescript
 /**
@@ -1876,7 +1876,7 @@ const params: UserExportParams = {
 const [error] = await exportExcel<UserExportParams>('用户列表', '/api/user/export', params)
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 ### 文件大小限制
 
@@ -1990,7 +1990,7 @@ const downloadWithCleanup = async () => {
 }
 ```
 
-## 🎯 最佳实践
+## 最佳实践
 
 ### 1. 统一的下载按钮状态
 
@@ -2131,7 +2131,7 @@ const handleExportWithLog = async () => {
 }
 ```
 
-## 🔍 常见问题
+## 常见问题
 
 ### 1. 下载的文件内容为空或乱码
 

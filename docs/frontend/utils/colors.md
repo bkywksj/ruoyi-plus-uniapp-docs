@@ -2,7 +2,7 @@
 
 颜色处理相关工具函数，提供颜色验证、转换、混合和主题设置等功能，是前端主题系统和动态样式的核心支撑模块。
 
-## 📖 概述
+## 概述
 
 颜色工具模块提供了一套完整的颜色处理解决方案，涵盖颜色格式验证、颜色空间转换、颜色混合调节等功能。该模块在Element Plus主题定制、动态主题切换、颜色选择器等场景中发挥关键作用。
 
@@ -28,7 +28,7 @@
 - **暗色主题支持**：颜色调节函数支持暗色主题模式
 - **性能优化**：纯函数设计，易于缓存和优化
 
-## 🎨 颜色理论基础
+## 颜色理论基础
 
 ### RGB颜色模型
 
@@ -100,7 +100,7 @@ darkenedValue = originalValue × (1 - level)
 // 结果: #7d9fff
 ```
 
-## 🔧 安装与导入
+## 安装与导入
 
 ### 导入使用
 
@@ -131,7 +131,7 @@ if (isValidHex(userInput)) {
 }
 ```
 
-## 🔍 颜色验证
+## 颜色验证
 
 ### isValidHex
 
@@ -249,7 +249,7 @@ const handleColorChange = (r: number, g: number, b: number) => {
 }
 ```
 
-## 🔄 颜色转换
+## 颜色转换
 
 ### hexToRgb
 
@@ -524,7 +524,7 @@ const shadowStyle = computed(() => {
 })
 ```
 
-## 🎨 颜色混合与调节
+## 颜色混合与调节
 
 ### blendColor
 
@@ -773,7 +773,7 @@ const generateDarkPalette = (primaryColor: string) => {
 const borderColor = darkenColor(backgroundColor.value, 0.1)
 ```
 
-## 🌐 CSS变量
+## CSS变量
 
 ### getCssVar
 
@@ -850,7 +850,7 @@ const syncThemeColors = () => {
 }
 ```
 
-## 🏗️ 实际应用场景
+## 实际应用场景
 
 ### 1. 完整主题色系生成
 
@@ -1259,7 +1259,7 @@ const tagStyle = computed(() => {
 })
 ```
 
-## 🧪 测试
+## 测试
 
 ### 单元测试
 
@@ -1416,7 +1416,7 @@ describe('颜色工具函数测试', () => {
 })
 ```
 
-## 📊 性能优化
+## 性能优化
 
 ### 颜色计算缓存
 
@@ -1493,7 +1493,7 @@ const processColorsAsync = (colors: string[]): Promise<any[]> => {
 }
 ```
 
-## 📚 API 参考
+## API 参考
 
 ### 颜色验证
 
@@ -1524,7 +1524,7 @@ const processColorsAsync = (colors: string[]): Promise<any[]> => {
 |------|------|--------|------|
 | `getCssVar` | `name: string` | `string` | 获取 CSS 变量值 |
 
-## 🔍 类型定义
+## 类型定义
 
 ```typescript
 /**
@@ -1579,7 +1579,7 @@ interface WCAGResult {
 }
 ```
 
-## 🎯 最佳实践
+## 最佳实践
 
 ### 1. 始终验证用户输入
 
@@ -1642,7 +1642,7 @@ const adjustColor = (color: string, level: number): string => {
 }
 ```
 
-## 📝 常见问题
+## 常见问题
 
 ### 1. 颜色转换后偏差
 
@@ -1688,7 +1688,7 @@ onMounted(() => {
 })
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **hex 格式**: 支持 3 位和 6 位格式，可以带或不带 `#` 前缀
 2. **RGB 范围**: RGB 值必须在 0-255 范围内的整数

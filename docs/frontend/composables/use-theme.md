@@ -2,7 +2,7 @@
 
 主题管理组合函数，提供对应用主题的响应式管理功能。useTheme 是整个前端主题系统的核心入口，负责主题色的设置、切换、持久化以及 CSS 变量的动态应用。它与 useLayout 组合函数紧密协作，实现了完整的主题定制能力。
 
-## 📋 功能特性
+## 功能特性
 
 useTheme 组合函数提供了完整的主题管理能力：
 
@@ -14,7 +14,7 @@ useTheme 组合函数提供了完整的主题管理能力：
 - **自动持久化** - 主题配置自动保存到本地存储
 - **深色模式适配** - 与深色模式切换无缝集成
 
-## 🏗️ 架构设计
+## 架构设计
 
 ### 依赖关系
 
@@ -92,7 +92,7 @@ watchEffect(() => {
 })
 ```
 
-## 🎯 基础用法
+## 基础用法
 
 ### 基本主题切换
 
@@ -413,7 +413,7 @@ const themeColors = computed(() => generateThemeColors(currentTheme.value))
 </style>
 ```
 
-## 🔧 API 参考
+## API 参考
 
 ### useTheme 返回值
 
@@ -795,7 +795,7 @@ export interface ThemeColors {
 | 8 | 80% | 80% | 极浅背景 |
 | 9 | 90% | 90% | 接近白色/黑色 |
 
-## 🎨 CSS 变量应用
+## CSS 变量应用
 
 ### Element Plus 主题变量
 
@@ -996,7 +996,7 @@ const allColors = computed(() => {
 </style>
 ```
 
-## 🌙 深色模式集成
+## 深色模式集成
 
 ### 与 useLayout 的深色模式配合
 
@@ -1144,7 +1144,7 @@ export function useAdaptiveTheme() {
 }
 ```
 
-## 🎯 高级用法
+## 高级用法
 
 ### 主题设置面板
 
@@ -1644,7 +1644,7 @@ const customThemeVars = computed(() => {
 </style>
 ```
 
-## 💡 最佳实践
+## 最佳实践
 
 ### 1. 统一通过 useTheme 管理主题
 
@@ -1742,7 +1742,7 @@ const shadowColor = addAlphaToHex(currentTheme.value, 0.15) // 15%
 }
 ```
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 主题色设置后没有生效
 
@@ -1911,7 +1911,7 @@ const chartColors = computed(() => {
 </style>
 ```
 
-## 📊 性能优化
+## 性能优化
 
 ### 避免频繁调用 setTheme
 

@@ -23,52 +23,52 @@ hero:
       link: /demo
 
 features:
-  - icon: 🤖
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2m16 0h2m-7-1v2m-6-2v2"/></g></svg>'
     title: Claude Code 深度集成 (NEW)
     details: 首个 AI 原生全栈框架！54+ 专业技能、15+ 智能命令、3 个自动化钩子，让 AI 真正理解你的代码架构。自动遵循项目规范，智能生成符合标准的代码，开发效率提升 10 倍
     link: /practices/ai/claude-code
-  - icon: 🚀
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></g></svg>'
     title: 后端重大重构
     details: 四层架构（Controller-Service-DAO-Mapper）设计，DAO层统一查询构建，MyBatis Plus增强查询，多租户系统，权限控制，智能代码生成，主子表，支付集成，小程序/公众号集成
     link: /backend/
-  - icon: 💻
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 5a2 2 0 0 1 2 2v8.526a2 2 0 0 0 .212.897l1.068 2.127a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45l1.068-2.127A2 2 0 0 0 4 15.526V7a2 2 0 0 1 2-2zm2.054 10.987H3.946"/></svg>'
     title: 前端全面升级
     details: Vue3 + Vite6 + TypeScript + Pinia + Element Plus + UnoCSS，组合式函数重构，丰富组件，前端直传，工具库完善，国际化增强
     link: /frontend/
-  - icon: 📱
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></g></svg>'
     title: 移动端最佳实践
     details: UniApp + Wd UI重构组件库，跨平台适配，组件示例完善齐全，优雅开发体验，支持微信小程序、H5、App全端覆盖
     link: /mobile/
-  - icon: 🤖
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2m16 0h2m-7-1v2m-6-2v2"/></g></svg>'
     title: AI 能力集成 (NEW)
     details: LangChain4j 企业级集成，支持 OpenAI、Claude、DeepSeek、通义千问，流式聊天，RAG 检索增强，WebSocket 实时对话
     link: /backend/common/langchain4j
-  - icon: 📡
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9m2.9 2.8a6.14 6.14 0 0 0-.8 7.5"/><circle cx="12" cy="9" r="2"/><path d="M16.2 4.8c2 2 2.26 5.11.8 7.47M19.1 1.9a9.96 9.96 0 0 1 0 14.1m-9.6 2h5M8 22l4-11l4 11"/></g></svg>'
     title: 物联网通信 (NEW)
     details: MQTT 客户端集成 (mica-mqtt)，RocketMQ 消息队列，支持设备管理、实时数据采集、异步解耦、削峰填谷
     link: /backend/common/mqtt
-  - icon: 🎨
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 22a1 1 0 0 1 0-20a10 9 0 0 1 10 9a5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z"/><circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/></g></svg>'
     title: 多媒体处理 (NEW)
     details: 海报生成引擎，GIF 动图合成，火山引擎 TTS 语音合成，多音色支持，流式音频生成
-  - icon: 🖼️
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15l-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></g></svg>'
     title: 页面设计器 (NEW)
     details: 可视化拖拽设计，30+组件库，AI智能生成，实时预览，一键生成Vue代码，支持页面/弹窗/抽屉三种模式
     link: /frontend/tools/page-designer
-  - icon: ⚡
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg>'
     title: 最佳实践
     details: 开发规范指南，容器化集群部署，性能优化策略，监控告警体系，代码风格统一，架构扩展预留
     link: /practices/
-  - icon: 🛠️
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m15 12l-9.373 9.373a1 1 0 0 1-3.001-3L12 9m6 6l4-4"/><path d="m21.5 11.5l-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/></g></svg>'
     title: 框架特性
-    details: 全面重构亮点，最新技术栈选择，模块化企业级设计，版本更新记录，技术架构演进，2025年最新集成
+    details: 全面重构亮点，Spring Boot 4 五分支矩阵，全站国际化，AI 深度思考，多租户 Pool↔Silo 迁移，2026 年最新特性
     link: /changelog
-  - icon: 🔧
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>'
     title: 视频教程
     details: 快速入门指南，开发实战教程，部署运维讲解，最佳实践分享，核心技术原理
     link: /video
 
 highlights:
-  - title: 🎯 重构亮点
+  - title: 重构亮点
     details: |
       **四层架构** - Controller-Service-DAO-Mapper清晰分层，职责明确
       **DAO层设计** - 统一在DAO层构建查询条件，Service层专注业务逻辑
@@ -77,7 +77,7 @@ highlights:
       **增强查询** - PlusLambdaQuery、PlusQuery简化MyBatis Plus查询
       **权限完善** - 模块:表:操作三级权限标识符，精确控制
 
-  - title: 🚀 开发体验
+  - title: 开发体验
     details: |
       **智能生成** - 代码生成器自动生成四层架构CRUD代码，包含DAO层查询构建
       **工具丰富** - 全部文件重构，命名优化，注释完善，工具类、组合函数完善
@@ -85,7 +85,7 @@ highlights:
       **国际化** - 后端返回国际化消息，前端智能翻译
       **组件化** - 表单组件、业务组件、移动端组件库重构
 
-  - title: 🏗️ 企业级能力
+  - title: 企业级能力
     details: |
       **多租户** - 完整的租户数据隔离，支持SaaS模式
       **模块化架构** - 分层设计，支持灵活扩展
@@ -94,7 +94,7 @@ highlights:
       **支付集成** - wxjava + 支付宝SDK，支持微信v2/v3智能切换、公钥模式等
       **小程序、公众号集成** - 已接入多平台小程序，公众号等，开箱即用
 
-  - title: 🚀 2025年最新集成
+  - title: 2025年最新集成
     details: |
       **AI能力** - LangChain4j 集成 OpenAI/Claude/DeepSeek/通义千问，流式聊天、RAG检索增强
       **物联网通信** - MQTT 客户端 (mica-mqtt)，支持设备管理、实时数据采集
@@ -102,7 +102,7 @@ highlights:
       **多媒体处理** - 海报生成引擎、GIF合成、火山引擎TTS语音合成
       **页面设计器** - 可视化拖拽设计、30+组件、AI智能生成、一键代码导出
 
-  - title: 🤖 Claude Code 原生支持
+  - title: Claude Code 原生支持
     details: |
       **54+ 专业技能** - 覆盖后端CRUD、前端组件、移动端开发、数据库设计等全栈场景
       **15+ 智能命令** - /dev开发、/crud生成、/check检查、/exp经验沉淀、/progress进度追踪
@@ -111,16 +111,16 @@ highlights:
       **规范自动遵循** - 四层架构、命名规范、代码风格100%自动化执行
 ---
 
-## 🌟 为什么选择 ruoyi-plus-uniapp？
+## 为什么选择 ruoyi-plus-uniapp？
 
-### 📊 重构成果
+### 重构成果
 
 - **减少代码量 70%** - 通过四层架构（Controller-Service-DAO-Mapper）和增强查询大幅减少样板代码
 - **提升开发效率 80%** - 智能代码生成 + DAO层统一查询构建 + 完善工具库
 - **统一开发规范** - 前后端移动端命名规范、类型声明统一、职责分层清晰
 - **完善的文档** - 框架即文档理念，代码自说明
 
-### 📈 项目规模
+### 项目规模
 
 <div style="text-align: center; margin: 30px 0;">
   <ImagePreview src="/images/commit.jpg" :width="800" :height="300" object-fit="contain" alt="RuoYi-Plus-UniApp 项目提交记录" />
@@ -135,42 +135,42 @@ highlights:
 
 本框架基于 RuoYi-Vue-Plus 开源项目进行全面重构，在继承其成熟稳定特性的基础上，进行了大量的优化和创新。通过统一命名规范、优化架构设计、完善文档体系，打造出更加简洁高效、开发友好的全栈解决方案。
 
-### 🔄 演进历程
+### 演进历程
 
 通过**地毯式重构**构建简洁高效、开发友好的全栈框架：
 
-- **🎯 地毯式重构** - 基于ruoyi-vue-plus全面重构，统一命名规范，注重代码质量
-- **⚡ 功能完善** - 多租户、支付集成、微信小程序、监控告警等企业级功能
-- **🏗️ 架构优化** - 模块化设计、性能优化、开发体验提升
+- **<Icon icon="lucide:target" /> 地毯式重构** - 基于ruoyi-vue-plus全面重构，统一命名规范，注重代码质量
+- **<Icon icon="lucide:zap" /> 功能完善** - 多租户、支付集成、微信小程序、监控告警等企业级功能
+- **<Icon icon="lucide:building" /> 架构优化** - 模块化设计、性能优化、开发体验提升
 
-### 💡 适用场景
+### 适用场景
 
-- ✅ **企业管理系统** - 完整的权限体系和多租户支持
-- ✅ **SaaS平台** - 租户隔离、支付集成、监控告警
-- ✅ **移动应用** - 小程序、H5、App全端覆盖
-- ✅ **快速原型** - 代码生成器快速搭建业务模块
+- <Ok/> **企业管理系统** - 完整的权限体系和多租户支持
+- <Ok/> **SaaS平台** - 租户隔离、支付集成、监控告警
+- <Ok/> **移动应用** - 小程序、H5、App全端覆盖
+- <Ok/> **快速原型** - 代码生成器快速搭建业务模块
 
-## 🚀 立即开始
+## 立即开始
 
 选择你感兴趣的技术栈开始学习：
 
 <div class="tip custom-block" style="padding-top: 8px">
 
-[🚀 后端开发](./backend/) - Spring Boot 3 + MyBatis Plus 增强
+[<Icon icon="lucide:rocket" /> 后端开发](./backend/) - Spring Boot 3 + MyBatis Plus 增强
 
-[💻 前端开发](./frontend/) - Vue 3 + TypeScript + Element Plus
+[<Icon icon="lucide:laptop" /> 前端开发](./frontend/) - Vue 3 + TypeScript + Element Plus
 
-[📱 移动开发](./mobile/) - UniApp + 跨平台组件库
+[<Icon icon="lucide:smartphone" /> 移动开发](./mobile/) - UniApp + 跨平台组件库
 
-[⚡ 最佳实践](./practices/) - 开发规范 + 容器化部署
+[<Icon icon="lucide:zap" /> 最佳实践](./practices/) - 开发规范 + 容器化部署
 
-[🛠️ 框架特性](./changelog) - 重构亮点 + 版本更新
+[<Icon icon="lucide:hammer" /> 框架特性](./changelog) - 重构亮点 + 版本更新
 
-[🔧 视频教程](./video) - 入门指南 + 实战教程
+[<Icon icon="lucide:wrench" /> 视频教程](./video) - 入门指南 + 实战教程
 
 </div>
 
-## 💰 授权定价
+## 授权定价
 
 选择适合您的版本，开启高效开发之旅（三个版本代码完全一样，仅授权主体和开发人员数量差异，企业版须有营业执照方可购买）
 
@@ -183,13 +183,13 @@ highlights:
   saving-text="节省 ¥500"
   description="适合个人开发者"
   :features="[
-    '📦 完整源码交付',
-    '🔄 持续更新服务',
-    '🛠️ 自主开发权限',
-    '💼 商业使用授权',
-    '🤝 客户源码交付权',
-    '🛡️ 技术支持服务',
-    '💬 专属答疑群邀请'
+ '完整源码交付',
+ '持续更新服务',
+ '自主开发权限',
+ '商业使用授权',
+ '客户源码交付权',
+ '技术支持服务',
+ '专属答疑群邀请'
   ]"
   button-text="立即购买"
   footer-text="适合个人开发者和小型项目"
@@ -202,13 +202,13 @@ highlights:
   saving-text="节省 ¥800"
   description="开发团队 < 10人"
   :features="[
-    '📦 完整源码交付',
-    '🔄 持续更新服务',
-    '🛠️ 自主开发权限',
-    '💼 商业使用授权',
-    '🤝 客户源码交付权',
-    '🛡️ 技术支持服务',
-    '💬 专属答疑群邀请(可邀1人)'
+ '完整源码交付',
+ '持续更新服务',
+ '自主开发权限',
+ '商业使用授权',
+ '客户源码交付权',
+ '技术支持服务',
+ '专属答疑群邀请(可邀1人)'
   ]"
   recommended
   button-text="立即购买"
@@ -222,13 +222,13 @@ highlights:
   saving-text="节省 ¥1200"
   description="开发团队 10~30人"
   :features="[
-    '📦 完整源码交付',
-    '🔄 持续更新服务',
-    '🛠️ 自主开发权限',
-    '💼 商业使用授权',
-    '🤝 客户源码交付权',
-    '🛡️ 技术支持服务',
-    '💬 专属答疑群邀请(可邀2人)'
+ '完整源码交付',
+ '持续更新服务',
+ '自主开发权限',
+ '商业使用授权',
+ '客户源码交付权',
+ '技术支持服务',
+ '专属答疑群邀请(可邀2人)'
   ]"
   button-text="立即购买"
   footer-text="大型企业的最佳选择"
@@ -237,14 +237,14 @@ highlights:
 </div>
 
 ::: tip 购买说明
-- 💼 **企业授权**：支持商业项目使用，可交付客户源码
-- 🔄 **持续更新**：享受框架功能迭代和Bug修复
-- 🛡️ **技术支持**：提供专业的技术支持服务
-- 👥 **额外邀人**：额外邀人进答疑群 488/人
-- ⚠️ **使用限制**：仅禁止框架二次销售和扩散传播
+- <Icon icon="lucide:briefcase" /> **企业授权**：支持商业项目使用，可交付客户源码
+- <Icon icon="lucide:refresh-cw" /> **持续更新**：享受框架功能迭代和Bug修复
+- <Icon icon="lucide:shield" /> **技术支持**：提供专业的技术支持服务
+- <Icon icon="lucide:users" /> **额外邀人**：额外邀人进答疑群 488/人
+- <Warn/> **使用限制**：仅禁止框架二次销售和扩散传播
 :::
 
-## 🎯 产品矩阵
+## 产品矩阵
 
 抓蛙师出品，覆盖全栈开发、AI 效率工具、桌面应用三大场景
 
@@ -301,7 +301,7 @@ highlights:
 
 </div>
 
-## 🏢 企业信赖
+## 企业信赖
 
 以下企业已选择 ruoyi-plus-uniapp 作为技术底座，覆盖医疗、教育、金融、农业、物联网、电商等多个行业
 
@@ -403,25 +403,25 @@ highlights:
   持续更新中... 共 <strong>100+</strong> 家企业选择信赖
 </div>
 
-## 🛠️ 技术服务 · 承接定制开发
+## 技术服务 · 承接定制开发
 
 **若依科技工作室**(广东省湛江市麻章区湖光镇)由 **抓蛙师** 创办,既是 `ruoyi-plus-uniapp` 全栈框架的作者团队,也对外承接定制化项目开发,**提供完整源码交付,可签订源码交付合同**。
 
-- 🌐 **后台管理系统 / 全栈开发** — 企业管理后台、SaaS 平台、商城、物联网平台
-- 🖥️ **桌面软件开发** — 跨平台桌面应用(Tauri),覆盖 Windows / macOS / Linux
-- 📱 **小程序 / 公众号** — 微信小程序、公众号、H5、App 全端覆盖
-- 🤖 **大模型与 Agent 工程** — RAG 检索增强、工具调用、多智能体编排、知识库工程化
-- 🧠 **项目 AI 技能体系定制** — 为你的项目打造 Claude Code 技能 / 命令 / 钩子,让 AI 懂你的代码、守你的规范
-- 🏭 **行业方案** — 教育、政务、医疗、金融、农业、电商等
+- <Icon icon="lucide:globe" /> **后台管理系统 / 全栈开发** — 企业管理后台、SaaS 平台、商城、物联网平台
+- <Icon icon="lucide:monitor" /> **桌面软件开发** — 跨平台桌面应用(Tauri),覆盖 Windows / macOS / Linux
+- <Icon icon="lucide:smartphone" /> **小程序 / 公众号** — 微信小程序、公众号、H5、App 全端覆盖
+- <Icon icon="lucide:bot" /> **大模型与 Agent 工程** — RAG 检索增强、工具调用、多智能体编排、知识库工程化
+- <Icon icon="lucide:brain" /> **项目 AI 技能体系定制** — 为你的项目打造 Claude Code 技能 / 命令 / 钩子,让 AI 懂你的代码、守你的规范
+- <Icon icon="lucide:factory" /> **行业方案** — 教育、政务、医疗、金融、农业、电商等
 
-> 📞 项目咨询:**198 6657 9313**(电话) · **770492966**(微信 / QQ) · B 站 [@抓蛙师](https://space.bilibili.com/520725002)
+> <Icon icon="lucide:phone" /> 项目咨询:**198 6657 9313**(电话) · **770492966**(微信 / QQ) · B 站 [@抓蛙师](https://space.bilibili.com/520725002)
 
-## 💬 技术支持
+## 技术支持
 
-- 📧 **联系方式**: 770492966 (微信/QQ)
-- 🌐 **官网文档**: https://ruoyi.plus
+- <Icon icon="lucide:mail" /> **联系方式**: 770492966 (微信/QQ)
+- <Icon icon="lucide:globe" /> **官网文档**: https://ruoyi.plus
 
-### 📱 扫码关注
+### 扫码关注
 
 <div style="display: flex; gap: 30px; margin: 20px 0; flex-wrap: wrap; align-items: flex-start;">
   <div style="text-align: center;">

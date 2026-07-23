@@ -6,12 +6,12 @@
 
 ## 核心特性
 
-- 🚀 **开箱即用**：Spring Boot 自动配置，无需复杂设置
-- 📧 **多种格式**：支持纯文本、HTML、带附件邮件
-- 🖼️ **内嵌图片**：支持HTML邮件中的内嵌图片
-- 👥 **批量发送**：支持多收件人、抄送、密送
-- 🔒 **安全连接**：支持SSL/TLS和STARTTLS安全连接
-- ⚙️ **灵活配置**：支持超时设置和多种SMTP服务器
+- <Icon icon="lucide:rocket" /> **开箱即用**：Spring Boot 自动配置，无需复杂设置
+- <Icon icon="lucide:mail" /> **多种格式**：支持纯文本、HTML、带附件邮件
+- <Icon icon="lucide:image" /> **内嵌图片**：支持HTML邮件中的内嵌图片
+- <Icon icon="lucide:users" /> **批量发送**：支持多收件人、抄送、密送
+- <Icon icon="lucide:lock" /> **安全连接**：支持SSL/TLS和STARTTLS安全连接
+- <Icon icon="lucide:settings" /> **灵活配置**：支持超时设置和多种SMTP服务器
 
 ## 快速开始
 

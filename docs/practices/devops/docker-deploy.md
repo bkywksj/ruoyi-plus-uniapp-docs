@@ -6,7 +6,7 @@
 
 **视频教程:**
 
-> 📺 **推荐观看**: [1Panel 部署 RuoYi-Plus-UniApp 完整教程](https://www.bilibili.com/video/BV1Sz421d7nc/)
+> <Icon icon="lucide:tv" /> **推荐观看**: [1Panel 部署 RuoYi-Plus-UniApp 完整教程](https://www.bilibili.com/video/BV1Sz421d7nc/)
 >
 > 视频详细演示了从安装 1Panel 到完成项目部署的全过程,强烈建议配合本文档一起学习。
 
@@ -14,8 +14,8 @@
 
 | 方式 | 难度 | 适合人群 | 特点 |
 |------|------|----------|------|
-| **1Panel 可视化部署** | ⭐ 简单 | 所有开发者 | 图形界面,一键安装,推荐 |
-| Docker Compose 命令行 | ⭐⭐⭐ 中等 | 有 Linux 经验 | 灵活配置,适合定制 |
+| **1Panel 可视化部署** | <Icon icon="lucide:star" /> 简单 | 所有开发者 | 图形界面,一键安装,推荐 |
+| Docker Compose 命令行 | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> 中等 | 有 Linux 经验 | 灵活配置,适合定制 |
 
 ---
 
@@ -500,12 +500,12 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 
 | 检查项 | 状态 | 说明 |
 |--------|------|------|
-| ☐ 修改默认密码 | 必须 | MySQL、Redis、MinIO、监控中心 |
-| ☐ 配置 HTTPS | 必须 | 使用 SSL 证书加密传输 |
-| ☐ 关闭 API 文档 | 推荐 | 设置 `SPRINGDOC_ENABLED=false` |
-| ☐ 配置防火墙 | 必须 | 只开放 80/443 端口 |
-| ☐ 设置备份策略 | 必须 | 定期备份数据库和文件 |
-| ☐ 配置监控告警 | 推荐 | 监控服务状态和资源使用 |
+| <Icon icon="lucide:square" /> 修改默认密码 | 必须 | MySQL、Redis、MinIO、监控中心 |
+| <Icon icon="lucide:square" /> 配置 HTTPS | 必须 | 使用 SSL 证书加密传输 |
+| <Icon icon="lucide:square" /> 关闭 API 文档 | 推荐 | 设置 `SPRINGDOC_ENABLED=false` |
+| <Icon icon="lucide:square" /> 配置防火墙 | 必须 | 只开放 80/443 端口 |
+| <Icon icon="lucide:square" /> 设置备份策略 | 必须 | 定期备份数据库和文件 |
+| <Icon icon="lucide:square" /> 配置监控告警 | 推荐 | 监控服务状态和资源使用 |
 
 ---
 
@@ -555,6 +555,6 @@ tail -f /var/log/nginx/error.log
 
 ## 更多资源
 
-- 📺 **视频教程**: [1Panel 部署教程](https://www.bilibili.com/video/BV1Sz421d7nc/)
-- 🔧 **1Panel 官网**: https://1panel.cn
-- 📖 **Docker 官方文档**: https://docs.docker.com
+- <Icon icon="lucide:tv" /> **视频教程**: [1Panel 部署教程](https://www.bilibili.com/video/BV1Sz421d7nc/)
+- <Icon icon="lucide:wrench" /> **1Panel 官网**: https://1panel.cn
+- <Icon icon="lucide:book-open" /> **Docker 官方文档**: https://docs.docker.com

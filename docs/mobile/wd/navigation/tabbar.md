@@ -1390,7 +1390,7 @@ const activeTab = ref(0)
 
 ### 1. 标签数量建议
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 
 ```vue
 <template>
@@ -1404,7 +1404,7 @@ const activeTab = ref(0)
 </template>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 
 ```vue
 <template>
@@ -1428,7 +1428,7 @@ const activeTab = ref(0)
 
 ### 2. 合理使用徽标
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 
 ```vue
 <template>
@@ -1462,7 +1462,7 @@ const hasNewItems = ref(true)
 </script>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 
 ```vue
 <template>
@@ -1484,7 +1484,7 @@ const hasNewItems = ref(true)
 
 ### 3. 懒加载优化性能
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 
 ```vue
 <template>
@@ -1520,7 +1520,7 @@ const getTabLoaded = (name: string) => {
 </script>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 
 ```vue
 <template>
@@ -1546,7 +1546,7 @@ const getTabLoaded = (name: string) => {
 
 ### 4. 选择合适的模式
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 
 ```vue
 <!-- 静态配置,标签固定不变 - 使用子组件模式 -->
@@ -1576,7 +1576,7 @@ onMounted(async () => {
 </script>
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 
 ```vue
 <!-- 静态配置却使用 Items 模式,增加代码复杂度 -->
@@ -1600,7 +1600,7 @@ const staticTabs = ref([
 
 ### 5. 正确处理安全区域
 
-✅ **推荐做法:**
+<Ok/> **推荐做法:**
 
 ```vue
 <template>
@@ -1619,7 +1619,7 @@ const staticTabs = ref([
 
 ```
 
-❌ **不推荐做法:**
+<No/> **不推荐做法:**
 
 ```vue
 <template>

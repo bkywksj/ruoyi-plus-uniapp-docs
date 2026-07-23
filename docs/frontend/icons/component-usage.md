@@ -61,17 +61,17 @@
 - **CSS 变量集成**：支持 Element Plus 主题色
 - **6 种动画效果**：震动、旋转、上移、放大、缩小、呼吸
 
-## 📦 Icon 组件
+## Icon 组件
 
 ### 组件特性
 
-- ✅ 支持 iconfont 和 iconify 双图标系统
-- ✅ 自动图标类型识别（优先 iconfont，其次 iconify）
-- ✅ 灵活的尺寸设置（预设尺寸、数字或字符串）
-- ✅ 自定义颜色支持
-- ✅ 内置 6 种动画效果
-- ✅ 自动处理 iconfont 和 iconify 样式差异
-- ✅ 完整的 TypeScript 类型支持
+- <Ok/> 支持 iconfont 和 iconify 双图标系统
+- <Ok/> 自动图标类型识别（优先 iconfont，其次 iconify）
+- <Ok/> 灵活的尺寸设置（预设尺寸、数字或字符串）
+- <Ok/> 自定义颜色支持
+- <Ok/> 内置 6 种动画效果
+- <Ok/> 自动处理 iconfont 和 iconify 样式差异
+- <Ok/> 完整的 TypeScript 类型支持
 
 ### 基础用法
 
@@ -185,7 +185,7 @@ interface IconProps {
 | `color` | 图标颜色，支持任何 CSS 颜色值 | `string` | - |
 | `animate` | 动画效果类型 | `AnimateType` | - |
 
-## 🎨 图标识别机制
+## 图标识别机制
 
 ### 自动类型识别
 
@@ -363,7 +363,7 @@ const name = getIconName('home')  // '首页'
 const results = searchIcons('user')  // 返回包含 'user' 的所有图标
 ```
 
-## 📏 尺寸设置
+## 尺寸设置
 
 ### 预设尺寸
 
@@ -495,7 +495,7 @@ const inlineStyles = computed(() => {
 })
 ```
 
-## 🎨 颜色设置
+## 颜色设置
 
 ### CSS 颜色值
 
@@ -579,7 +579,7 @@ const inlineStyles = computed(() => {
 </template>
 ```
 
-## 🎬 动画效果
+## 动画效果
 
 ### 6 种内置动画
 
@@ -797,7 +797,7 @@ const toggleFullscreen = () => {
 </style>
 ```
 
-## 🔧 组合使用
+## 组合使用
 
 ### 完整配置示例
 
@@ -943,21 +943,21 @@ const getStatusColor = (status: Order['status']): string => {
 </script>
 ```
 
-## 📋 IconSelect 组件
+## IconSelect 组件
 
 图标选择器组件，提供图标选择功能，支持搜索和实时预览。
 
 ### 组件特性
 
-- ✅ v-model 双向绑定
-- ✅ 图标搜索（支持代码和名称）
-- ✅ 实时预览（悬停显示图标信息）
-- ✅ 图标网格展示
-- ✅ 选中状态高亮
-- ✅ 支持 817 个图标（644 iconfont + 173 iconify）
-- ✅ 清空功能
-- ✅ 自定义宽度
-- ✅ 空值占位符支持
+- <Ok/> v-model 双向绑定
+- <Ok/> 图标搜索（支持代码和名称）
+- <Ok/> 实时预览（悬停显示图标信息）
+- <Ok/> 图标网格展示
+- <Ok/> 选中状态高亮
+- <Ok/> 支持 817 个图标（644 iconfont + 173 iconify）
+- <Ok/> 清空功能
+- <Ok/> 自定义宽度
+- <Ok/> 空值占位符支持
 
 ### 基础用法
 
@@ -1132,7 +1132,7 @@ const filteredIcons = computed(() => {
 - 输入 `用户` → 显示所有名称包含 "用户" 的图标
 - 输入 `home` → 显示首页相关图标
 
-## 🎯 常见使用场景
+## 常见使用场景
 
 ### 1. 导航菜单
 
@@ -1376,7 +1376,7 @@ const handleCopy = () => console.log('复制')
 </template>
 ```
 
-## 🎨 主题定制
+## 主题定制
 
 ### CSS 变量
 
@@ -1432,7 +1432,7 @@ html.dark .icon-select-wrapper {
 </style>
 ```
 
-## ✅ 最佳实践
+## 最佳实践
 
 ### 1. 优先使用 code 属性
 
@@ -1517,7 +1517,7 @@ const icon = ref('elevator3')
 </template>
 ```
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 图标不显示
 

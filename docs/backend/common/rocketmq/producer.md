@@ -17,9 +17,9 @@ RMSendUtil 是 RuoYi-Plus 封装的消息生产工具类，提供了简洁易用
 
 | 发送方式 | 可靠性 | 性能 | 适用场景 |
 |---------|-------|------|---------|
-| 同步发送 | ⭐⭐⭐ | ⭐⭐ | 重要消息（订单、支付） |
-| 异步发送 | ⭐⭐ | ⭐⭐⭐ | 次要消息（通知、邮件） |
-| 单向发送 | ⭐ | ⭐⭐⭐ | 不重要消息（日志、监控） |
+| 同步发送 | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> | <Icon icon="lucide:star" /><Icon icon="lucide:star" /> | 重要消息（订单、支付） |
+| 异步发送 | <Icon icon="lucide:star" /><Icon icon="lucide:star" /> | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> | 次要消息（通知、邮件） |
+| 单向发送 | <Icon icon="lucide:star" /> | <Icon icon="lucide:star" /><Icon icon="lucide:star" /><Icon icon="lucide:star" /> | 不重要消息（日志、监控） |
 
 ## 同步发送
 

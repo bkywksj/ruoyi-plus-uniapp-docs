@@ -1,4 +1,4 @@
-# 序列化映射 (serialmap) 
+# 序列化映射 (serialmap)
 
 ## 1. 概述
 
@@ -66,11 +66,11 @@ public class UserVo {
 
 | 参数 | 类型 | 必填 | 说明 |
 |------|------|------|------|
-| converter | String | ✓ | 转换器类型标识 |
-| source | String | ✗ | 源字段名称，默认使用当前字段 |
-| param | String | ✗ | 转换器额外参数 |
-| entityClass | Class<?> | ✗ | 数据源实体类 |
-| targetField | String | ✗ | 目标映射字段 |
+| converter | String | 是 | 转换器类型标识 |
+| source | String | 否 | 源字段名称，默认使用当前字段 |
+| param | String | 否 | 转换器额外参数 |
+| entityClass | Class<?> | 否 | 数据源实体类 |
+| targetField | String | 否 | 目标映射字段 |
 
 #### 使用示例
 

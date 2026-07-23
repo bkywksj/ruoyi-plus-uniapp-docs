@@ -2,7 +2,7 @@
 
 RuoYi-Plus 后端采用 Spring Boot 3 + MyBatis-Plus 架构，提供现代化的企业级应用开发框架。
 
-## 📋 架构特点
+## 架构特点
 
 ### 技术栈
 
@@ -39,7 +39,7 @@ ruoyi-plus/
 └── ruoyi-extend/             # 扩展模块
 ```
 
-## 🏗️ 分层架构
+## 分层架构
 
 ### 应用分层
 
@@ -72,7 +72,7 @@ graph LR
     G --> C
 ```
 
-## 🔧 核心组件
+## 核心组件
 
 ### 1. 认证与授权
 
@@ -237,7 +237,7 @@ public class GlobalExceptionHandler {
 }
 ```
 
-## 🎯 设计原则
+## 设计原则
 
 ### 1. 单一职责
 
@@ -350,7 +350,7 @@ public class NotificationService {
 }
 ```
 
-## 🔐 安全架构
+## 安全架构
 
 ### 认证流程
 
@@ -408,7 +408,7 @@ public class StpInterfaceImpl implements StpInterface {
 }
 ```
 
-## 📊 性能优化
+## 性能优化
 
 ### 1. 缓存策略
 
@@ -505,7 +505,7 @@ public class EmailService {
 }
 ```
 
-## 🔍 监控与运维
+## 监控与运维
 
 ### 1. 健康检查
 
@@ -569,7 +569,7 @@ public class BusinessMetrics {
 }
 ```
 
-## 🚀 部署架构
+## 部署架构
 
 ### 1. 单体部署
 

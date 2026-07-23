@@ -2,7 +2,7 @@
 
 图标预设管理用于配置和优化 UnoCSS 图标系统的加载策略,确保常用图标快速可用,提升应用性能。本文档详细介绍图标预设的配置方法、优化策略和最佳实践。
 
-## 🎯 预设概念
+## 预设概念
 
 ### 什么是图标预设
 
@@ -62,7 +62,7 @@ const iconClass = computed(() => `i-ep-${props.name}`)
 | 动态图标 | 支持 | 不支持 |
 | 适用场景 | 常用图标 | 罕用图标 |
 
-## 📋 项目实际配置
+## 项目实际配置
 
 ### 当前项目配置分析
 
@@ -127,7 +127,7 @@ export const ICONIFY_ICONS: IconifyIconItem[] = [
 | MDI | `i-mdi-*` | ~15 | 通用 |
 | 其他 | 多种 | ~18 | 混合 |
 
-## 📋 配置方式
+## 配置方式
 
 ### 1. 手动配置
 
@@ -335,7 +335,7 @@ export default defineConfig({
 }
 ```
 
-## 🔧 高级配置
+## 高级配置
 
 ### 1. presetIcons 配置选项
 
@@ -571,7 +571,7 @@ export default defineConfig({
 })
 ```
 
-## 📊 预设策略
+## 预设策略
 
 ### 1. 核心图标策略
 
@@ -845,7 +845,7 @@ export default defineConfig({
 })
 ```
 
-## 🚀 性能优化
+## 性能优化
 
 ### 1. 预设数量控制
 
@@ -1093,7 +1093,7 @@ const LazyIcon = useLazyIcon('mdi:home')
 </script>
 ```
 
-## 📈 预设分析
+## 预设分析
 
 ### 1. 统计预设数量
 
@@ -1383,7 +1383,7 @@ console.log(`平均每图标: ${analysis.avgSizePerIcon.toFixed(0)} bytes`)
 console.log('\n═══════════════════════════════════════\n')
 ```
 
-## 🛠️ 最佳实践
+## 最佳实践
 
 ### 1. 定期审查
 
@@ -1627,7 +1627,7 @@ jobs:
           path: reports/
 ```
 
-## 📋 配置模板
+## 配置模板
 
 ### 小型项目 (<20 图标)
 
@@ -1758,7 +1758,7 @@ export default defineConfig({
 })
 ```
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 动态图标不显示
 
@@ -1972,7 +1972,7 @@ safelist: [
 <link rel="preconnect" href="https://esm.sh" />
 ```
 
-## 🔧 调试技巧
+## 调试技巧
 
 ### 1. 查看生成的 CSS
 
@@ -2016,7 +2016,7 @@ console.log(`  - 预估大小: ${(safelist.length * 0.5).toFixed(1)}KB`)
 export default defineConfig({ safelist })
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **性能权衡**: 预设过多会增加包体积,过少会影响加载速度,需要根据项目实际情况平衡
 

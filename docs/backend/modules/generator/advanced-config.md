@@ -107,127 +107,90 @@ ${subTableName}     ## 子表名
 ${subTableFkName}   ## 子表外键名
 ```
 
-#### 3. 自定义Service模板示例
+#### 3. 自定义模板示例（四层架构）
+
+框架生成的代码遵循 Controller-Service-DAO-Mapper 四层架构：**查询条件在 DAO 层的 `buildQueryWrapper` 中构建**，Service 层不继承任何基类、只注入 DAO 处理业务。自定义模板时应遵循同样的分层。
+
+自定义 DAOImpl 模板（查询条件构建）：
 
 ```java
-package ${packageName}.service.impl;
+package ${packageName}.dao.impl;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import plus.ruoyi.common.mybatis.core.service.impl.BaseServiceImpl;
+import org.springframework.stereotype.Repository;
+import plus.ruoyi.common.mybatis.core.dao.impl.BaseDaoImpl;
 import plus.ruoyi.common.mybatis.core.query.PlusLambdaQuery;
 import ${packageName}.domain.entity.${ClassName};
 import ${packageName}.domain.bo.${ClassName}Bo;
-import ${packageName}.domain.vo.${ClassName}Vo;
 import ${packageName}.mapper.${ClassName}Mapper;
-import ${packageName}.service.I${ClassName}Service;
+import ${packageName}.dao.I${ClassName}Dao;
 
-import java.util.Collection;
 import java.util.Map;
 
 /**
- * ${functionName}服务实现
- * 
+ * ${functionName} DAO 实现（仅继承 BaseDaoImpl，专注数据访问与查询构建）
+ *
  * @author ${author}
  * @date ${datetime}
  */
 @Slf4j
-@RequiredArgsConstructor
-@Service
-public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}Mapper, ${ClassName}, ${ClassName}Bo, ${ClassName}Vo> 
-    implements I${ClassName}Service {
+@Repository
+public class ${ClassName}DaoImpl extends BaseDaoImpl<${ClassName}Mapper, ${ClassName}> implements I${ClassName}Dao {
 
     /**
-     * 构建查询条件
+     * 构建查询条件（统一在 DAO 层，自动处理 null 判断）
      */
     @Override
-    protected PlusLambdaQuery<${ClassName}> boToQuery(${ClassName}Bo bo) {
+    public PlusLambdaQuery<${ClassName}> buildQueryWrapper(${ClassName}Bo bo) {
         Map<String, Object> params = bo.getParams();
-        PlusLambdaQuery<${ClassName}> lqw = of();
-        
+        PlusLambdaQuery<${ClassName}> lqw = PlusLambdaQuery.of();
 #foreach($column in $columns)
 #if($column.query)
 #if($column.queryType == "EQ")
-        lqw.eq(${ClassName}::get${column.capJavaField}, bo.get${column.capJavaField}());
+        lqw.eq(bo.get${column.capJavaField}() != null, ${ClassName}::get${column.capJavaField}, bo.get${column.capJavaField}());
 #elseif($column.queryType == "LIKE")
-        lqw.like(${ClassName}::get${column.capJavaField}, bo.get${column.capJavaField}());
+        lqw.like(bo.get${column.capJavaField}() != null, ${ClassName}::get${column.capJavaField}, bo.get${column.capJavaField}());
 #elseif($column.queryType == "BETWEEN")
-        lqw.between(${ClassName}::get${column.capJavaField}, 
-            params.get("begin${column.capJavaField}"), 
+        lqw.between(params.get("begin${column.capJavaField}") != null,
+            ${ClassName}::get${column.capJavaField},
+            params.get("begin${column.capJavaField}"),
             params.get("end${column.capJavaField}"));
 #end
 #end
 #end
-        
-        // 模糊查询
-        String searchValue = bo.getSearchValue();
-        if (StringUtils.isNotBlank(searchValue)) {
-            lqw.and(w -> w
-#set($first = true)
-#foreach($column in $columns)
-#if($column.query && $column.javaType == 'String')
-#if(!$first)
-                .or()
-#end
-                .like(${ClassName}::get${column.capJavaField}, searchValue)
-#set($first = false)
-#end
-#end
-            );
-        }
-        
         return lqw;
     }
+}
+```
+
+自定义 ServiceImpl 模板（业务处理，注入 DAO，不继承基类）：
+
+```java
+@Service
+@RequiredArgsConstructor
+public class ${ClassName}ServiceImpl implements I${ClassName}Service {
+
+    private final I${ClassName}Dao ${classname}Dao;
 
     /**
-     * 保存前的数据校验
+     * 新增：可在此加入自定义业务校验
      */
     @Override
-    protected void beforeSave(${ClassName} entity) {
-        log.debug("保存${functionName}前置处理: {}", entity);
-        
-        // 自定义业务校验逻辑
-        validateBusinessRules(entity);
+    @Transactional(rollbackFor = Exception.class)
+    public ${pkColumn.javaType} add(${ClassName}Bo bo) {
+        validateBusinessRules(bo);
+        ${ClassName} entity = MapstructUtils.convert(bo, ${ClassName}.class);
+        ${classname}Dao.insert(entity);
+        return entity.get${pkColumn.capJavaField}();
     }
 
-    /**
-     * 删除前的数据校验
-     */
-    @Override
-    protected void beforeDelete(Collection<${pkColumn.javaType}> ids) {
-        log.debug("删除${functionName}前置处理: {}", ids);
-        
-        // 检查关联数据
-        checkRelatedData(ids);
-    }
-
-    /**
-     * 业务规则校验
-     */
-    private void validateBusinessRules(${ClassName} entity) {
+    /** 业务规则校验 */
+    private void validateBusinessRules(${ClassName}Bo bo) {
         // TODO: 实现具体的业务校验逻辑
     }
+}
+```
 
-    /**
-     * 检查关联数据
-     */
-    private void checkRelatedData(Collection<${pkColumn.javaType}> ids) {
-        // TODO: 检查是否存在关联数据
-    }
-
-    /**
-     * 自定义业务方法示例
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public boolean batchUpdateStatus(Collection<${pkColumn.javaType}> ids, String status) {
-        log.info("批量更新${functionName}状态: ids={}, status={}", ids, status);
-        
-        return lambdaUpdate()
-            .in(${ClassName}::get${pkColumn.capJavaField}, ids)
-            .set(${ClassName}::getStatus, status)
-            .update();
 ### Docker集成
 
 ```dockerfile

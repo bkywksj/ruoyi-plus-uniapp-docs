@@ -2,7 +2,7 @@
 
 响应式栅格组合函数，提供统一的响应式栅格计算逻辑，包含屏幕响应式、容器响应式、弹窗尺寸响应式等多种模式。该组合函数是构建自适应布局的核心工具，广泛应用于表单、卡片网格、弹窗表单等场景。
 
-## 📋 功能特性
+## 功能特性
 
 - **屏幕响应式**: 基于屏幕尺寸的响应式布局，使用 CSS Media Query 检测屏幕断点
 - **容器响应式**: 基于容器宽度的响应式布局，使用 ResizeObserver 监听容器尺寸变化
@@ -14,7 +14,7 @@
 - **自动清理**: 组件卸载时自动清理 ResizeObserver，避免内存泄漏
 - **TypeScript 支持**: 完整的类型定义，提供良好的开发体验
 
-## 🎯 快速开始
+## 快速开始
 
 ### 安装与导入
 
@@ -46,7 +46,7 @@ const { computedSpan, shouldUseCol } = useResponsiveSpan('auto')
 </script>
 ```
 
-## 📐 核心概念
+## 核心概念
 
 ### 栅格系统
 
@@ -132,7 +132,7 @@ const SMALL_MODAL_RESPONSIVE_CONFIG: ResponsiveSpan = {
 }
 ```
 
-## 🔧 组合函数详解
+## 组合函数详解
 
 ### useResponsiveSpan（统一入口）
 
@@ -569,7 +569,7 @@ const { computedSpan, shouldUseCol } = useModalSizeResponsiveSpan('auto', modalS
 </script>
 ```
 
-## 🎨 高级用法
+## 高级用法
 
 ### 动态切换响应式模式
 
@@ -1215,7 +1215,7 @@ const { computedSpan, shouldUseCol } = useResponsiveSpan('auto')
 </script>
 ```
 
-## 📚 API 参考
+## API 参考
 
 ### SpanType 类型
 
@@ -1373,7 +1373,7 @@ const sizeToBreakpoint: Record<string, keyof ResponsiveSpan> = {
 }
 ```
 
-## 🎯 最佳实践
+## 最佳实践
 
 ### 1. 选择合适的响应式模式
 
@@ -1531,7 +1531,7 @@ export const FORM_SPAN_CONFIGS = {
 const { computedSpan } = useResponsiveSpan(FORM_SPAN_CONFIGS.basic)
 ```
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 容器响应式不生效
 
@@ -1731,7 +1731,7 @@ onBeforeUnmount(() => {
 })
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **容器响应式依赖 DOM**: `useContainerResponsiveSpan` 需要 DOM 渲染完成后才能正确计算宽度，建议在 `onMounted` 后使用
 

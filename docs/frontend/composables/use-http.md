@@ -2,7 +2,7 @@
 
 基于 Axios 的 HTTP 请求封装组合函数，提供完整的请求拦截、响应处理、错误处理和安全机制。该组合函数是前端与后端通信的核心工具，集成了认证管理、数据加密、防重复提交、国际化等企业级功能。
 
-## 📋 功能特性
+## 功能特性
 
 - **请求方法封装**: 封装标准 HTTP 方法（GET、POST、PUT、DELETE、REQUEST）
 - **链式调用 API**: 支持链式调用配置，如 `http.noAuth().encrypt().post(...)`
@@ -16,7 +16,7 @@
 - **统一返回格式**: 所有请求统一返回 `[error, data]` 数组格式
 - **TypeScript 支持**: 完整的泛型类型推导
 
-## 🎯 快速开始
+## 快速开始
 
 ### 安装与导入
 
@@ -43,7 +43,7 @@ if (!err) {
 }
 ```
 
-## 📐 核心概念
+## 核心概念
 
 ### 统一返回格式
 
@@ -95,7 +95,7 @@ if (err) {
 }
 ```
 
-## 🔧 基础用法
+## 基础用法
 
 ### GET 请求
 
@@ -190,7 +190,7 @@ if (!err) {
 }
 ```
 
-## 🔗 链式调用 API
+## 链式调用 API
 
 useHttp 支持链式调用配置，使代码更加简洁和语义化。
 
@@ -328,7 +328,7 @@ const [err, data] = await http
   .get('/api/health-check')
 ```
 
-## 🔒 安全功能
+## 安全功能
 
 ### 认证管理
 
@@ -426,7 +426,7 @@ if (config.headers?.repeatSubmit !== false &&
 }
 ```
 
-## 🌐 国际化支持
+## 国际化支持
 
 系统自动添加语言请求头：
 
@@ -440,7 +440,7 @@ config.headers['Content-Language'] = getLanguage()
 // 'zh-TW' - 繁体中文
 ```
 
-## 🏢 多租户支持
+## 多租户支持
 
 系统自动处理租户 ID：
 
@@ -460,7 +460,7 @@ if (config.headers?.tenant !== false) {
 3. 本地缓存中的 tenantId
 4. 默认值 `'000000'`
 
-## 📁 文件操作
+## 文件操作
 
 ### 文件上传
 
@@ -569,7 +569,7 @@ const exportExcel = async () => {
 }
 ```
 
-## 📱 在组件中使用
+## 在组件中使用
 
 ### 数据加载
 
@@ -802,7 +802,7 @@ defineExpose({ open })
 </script>
 ```
 
-## 🏗️ 自定义配置
+## 自定义配置
 
 ### 创建自定义 HTTP 实例
 
@@ -841,7 +841,7 @@ http.axios.interceptors.response.use((response) => {
 })
 ```
 
-## 🎯 API 封装最佳实践
+## API 封装最佳实践
 
 ### 统一 API 模块
 
@@ -1007,7 +1007,7 @@ onMounted(() => {
 </script>
 ```
 
-## 📚 API 参考
+## API 参考
 
 ### useHttp 函数
 
@@ -1125,7 +1125,7 @@ const ErrorMsg = {
 } as const
 ```
 
-## 🎯 最佳实践
+## 最佳实践
 
 ### 1. 使用类型安全的 API
 
@@ -1269,7 +1269,7 @@ const [err, data] = await fetchWithRetry(() =>
 )
 ```
 
-## ❓ 常见问题
+## 常见问题
 
 ### 1. 如何处理登录接口
 
@@ -1361,7 +1361,7 @@ const [err, data] = await http.noRepeatSubmit().get('/api/search', { keyword })
 const [err, result] = await http.timeout(120000).post('/api/upload', formData)
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **GET 请求参数**: GET 请求的 params 会自动转换为 URL 查询字符串
 

@@ -2,7 +2,7 @@
 
 通用验证工具函数集合，提供全面的数据验证功能，包含文件、URL、字符串、类型、数值、日期、中国特定格式、表单、网络标识等各种验证功能。
 
-## 📖 概述
+## 概述
 
 验证器工具库包含以下功能类别：
 - **文件验证**：验证文件类型和数据格式
@@ -17,7 +17,7 @@
 - **金融验证**：验证金融相关格式
 - **社交媒体验证**：验证社交媒体标识格式
 
-## 📁 文件验证
+## 文件验证
 
 ### isBlob
 
@@ -138,7 +138,7 @@ if (isImageFile(file) && isWithinFileSize(file, 2)) {
 }
 ```
 
-## 🌐 URL验证
+## URL验证
 
 ### isExternal
 
@@ -269,7 +269,7 @@ if (isDomain(domain)) {
 }
 ```
 
-## 📝 字符串验证
+## 字符串验证
 
 ### isEmail
 
@@ -347,7 +347,7 @@ isAlphabets('ABC123')    // false
 isAlphabets('ABC-def')   // false
 ```
 
-## 🔢 数值验证
+## 数值验证
 
 ### isNumber
 
@@ -466,7 +466,7 @@ isInRange(15, 18, 60)   // false
 isInRange(65, 18, 60)   // false
 ```
 
-## 📅 日期验证
+## 日期验证
 
 ### isValidDate
 
@@ -689,7 +689,7 @@ isPostalCode('012345')  // false (不能以0开头)
 isPostalCode('12345')   // false (必须6位)
 ```
 
-## 📋 表单验证
+## 表单验证
 
 ### isPassword
 
@@ -854,7 +854,7 @@ isName('张三@')       // false
 isName('123')         // false
 ```
 
-## 🌐 网络标识验证
+## 网络标识验证
 
 ### isIPAddress
 
@@ -950,7 +950,7 @@ isUUID('550e8400-e29b-41d4-a716-446655440000')  // true
 isUUID('invalid-uuid')                          // false
 ```
 
-## 💳 金融验证
+## 金融验证
 
 ### isBankCardNumber
 
@@ -1000,7 +1000,7 @@ isCreditCardNumber('4111111111111111')  // true (Visa测试卡号)
 isCreditCardNumber('4111111111111112')  // false
 ```
 
-## 📱 社交媒体验证
+## 社交媒体验证
 
 ### isSocialMediaUserName
 
@@ -1030,7 +1030,7 @@ isSocialMediaUserName('user123', 'facebook')          // true
 isSocialMediaUserName('user-name', 'linkedin')        // true
 ```
 
-## 🛠️ 通用验证
+## 通用验证
 
 ### isEqual
 
@@ -1112,7 +1112,7 @@ isOneOf('admin', ['admin', 'user'])     // true
 isOneOf('guest', ['admin', 'user'])     // false
 ```
 
-## 💡 使用技巧
+## 使用技巧
 
 ### 1. 表单验证组合
 组合多个验证器创建完整的表单验证：
@@ -1474,7 +1474,7 @@ const formRules = {
 const validator = new RealTimeValidator(document.getElementById('userForm'), formRules)
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 1. **性能考虑**：复杂的验证（如身份证校验位）有一定计算开销
 2. **国际化**：中国特定验证函数不适用于其他国家/地区

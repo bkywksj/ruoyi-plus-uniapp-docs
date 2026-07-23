@@ -106,12 +106,12 @@ public class SysUserController {
 
 **设计要点：**
 
-- ✅ 使用 `@Validated` 启用类级别参数校验
-- ✅ 使用 `@RequiredArgsConstructor` 进行依赖注入
-- ✅ 使用 `@RestController` 自动序列化 JSON
-- ✅ 只注入 Service 层接口
-- ❌ 不注入 DAO 或 Mapper
-- ❌ 不注入其他 Controller
+- <Ok/> 使用 `@Validated` 启用类级别参数校验
+- <Ok/> 使用 `@RequiredArgsConstructor` 进行依赖注入
+- <Ok/> 使用 `@RestController` 自动序列化 JSON
+- <Ok/> 只注入 Service 层接口
+- <No/> 不注入 DAO 或 Mapper
+- <No/> 不注入其他 Controller
 
 ### 依赖注入规范
 
@@ -160,12 +160,12 @@ public R<PageResult<SysUserVo>> pageUsers(SysUserBo user, PageQuery pageQuery) {
 
 **实现要点：**
 
-- ✅ 使用 `@GetMapping` 进行查询操作
-- ✅ 添加 `@SaCheckPermission` 权限控制
-- ✅ 支持多权限 OR 模式（`mode = SaMode.OR`）
-- ✅ 使用 `R.ok()` 封装成功结果
-- ✅ 参数使用 Bo 和 PageQuery 对象
-- ✅ 返回 `PageResult<Vo>` 分页结果
+- <Ok/> 使用 `@GetMapping` 进行查询操作
+- <Ok/> 添加 `@SaCheckPermission` 权限控制
+- <Ok/> 支持多权限 OR 模式（`mode = SaMode.OR`）
+- <Ok/> 使用 `R.ok()` 封装成功结果
+- <Ok/> 参数使用 Bo 和 PageQuery 对象
+- <Ok/> 返回 `PageResult<Vo>` 分页结果
 
 ### 2. 单条查询
 
@@ -197,10 +197,10 @@ public R<SysUserInfoVo> getUser(@PathVariable(value = "userId", required = false
 
 **实现要点：**
 
-- ✅ 支持多路径映射（新增时无 ID，编辑时有 ID）
-- ✅ 使用 `@PathVariable(required = false)` 可选路径参数
-- ✅ 执行数据权限检查（`checkUserDataScope`）
-- ✅ 组装关联数据返回
+- <Ok/> 支持多路径映射（新增时无 ID，编辑时有 ID）
+- <Ok/> 使用 `@PathVariable(required = false)` 可选路径参数
+- <Ok/> 执行数据权限检查（`checkUserDataScope`）
+- <Ok/> 组装关联数据返回
 
 ### 3. 新增
 
@@ -240,14 +240,14 @@ public R<Long> addUser(@Validated @RequestBody SysUserBo bo) {
 
 **实现要点：**
 
-- ✅ 使用 `@PostMapping` 进行新增操作
-- ✅ 添加 `@Log` 记录操作日志
-- ✅ 添加 `@RepeatSubmit` 防重复提交
-- ✅ 使用 `@Validated` 触发参数校验
-- ✅ 执行数据权限检查
-- ✅ 执行唯一性校验
-- ✅ 密码加密处理
-- ✅ 返回新增记录的 ID
+- <Ok/> 使用 `@PostMapping` 进行新增操作
+- <Ok/> 添加 `@Log` 记录操作日志
+- <Ok/> 添加 `@RepeatSubmit` 防重复提交
+- <Ok/> 使用 `@Validated` 触发参数校验
+- <Ok/> 执行数据权限检查
+- <Ok/> 执行唯一性校验
+- <Ok/> 密码加密处理
+- <Ok/> 返回新增记录的 ID
 
 ### 4. 修改
 
@@ -282,10 +282,10 @@ public R<Void> updateUser(@Validated @RequestBody SysUserBo bo) {
 
 **实现要点：**
 
-- ✅ 使用 `@PutMapping` 进行修改操作
-- ✅ 先检查操作权限（`checkUserAllowed`）
-- ✅ 再检查数据权限（`checkUserDataScope`）
-- ✅ 返回类型为 `R<Void>`
+- <Ok/> 使用 `@PutMapping` 进行修改操作
+- <Ok/> 先检查操作权限（`checkUserAllowed`）
+- <Ok/> 再检查数据权限（`checkUserDataScope`）
+- <Ok/> 返回类型为 `R<Void>`
 
 ### 5. 删除
 
@@ -309,11 +309,11 @@ public R<Void> deleteUsers(@NotEmpty(message = I18nKeys.Common.ID_REQUIRED) @Pat
 
 **实现要点：**
 
-- ✅ 使用 `@DeleteMapping` 进行删除操作
-- ✅ 使用 `@NotEmpty` 校验 ID 数组不为空
-- ✅ 使用 `I18nKeys` 支持国际化错误信息
-- ✅ 支持批量删除
-- ✅ 防止删除当前登录用户
+- <Ok/> 使用 `@DeleteMapping` 进行删除操作
+- <Ok/> 使用 `@NotEmpty` 校验 ID 数组不为空
+- <Ok/> 使用 `I18nKeys` 支持国际化错误信息
+- <Ok/> 支持批量删除
+- <Ok/> 防止删除当前登录用户
 
 ---
 
@@ -336,10 +336,10 @@ public void exportUsers(SysUserBo user, PageQuery pageQuery, HttpServletResponse
 
 **实现要点：**
 
-- ✅ 返回类型为 `void`，直接写入 response
-- ✅ 使用 `ExcelUtil.exportExcel()` 导出 Excel
-- ✅ 使用专门的导出 Vo（`SysUserExportVo`）
-- ✅ 第二个参数是工作表名称
+- <Ok/> 返回类型为 `void`，直接写入 response
+- <Ok/> 使用 `ExcelUtil.exportExcel()` 导出 Excel
+- <Ok/> 使用专门的导出 Vo（`SysUserExportVo`）
+- <Ok/> 第二个参数是工作表名称
 
 ### 2. 导出模板
 
@@ -355,9 +355,9 @@ public void templateUsers(HttpServletResponse response) {
 
 **实现要点：**
 
-- ✅ 传入空列表导出模板
-- ✅ 模板名称使用"xxx模板"格式
-- ✅ 使用导入 Vo 类（包含导入提示注解）
+- <Ok/> 传入空列表导出模板
+- <Ok/> 模板名称使用"xxx模板"格式
+- <Ok/> 使用导入 Vo 类（包含导入提示注解）
 
 ### 3. 数据导入
 
@@ -382,10 +382,10 @@ public R<Void> importUsers(@RequestPart("file") MultipartFile file) throws Excep
 
 **实现要点：**
 
-- ✅ 使用 `consumes = MediaType.MULTIPART_FORM_DATA_VALUE` 接收文件
-- ✅ 使用 `@RequestPart` 接收文件参数
-- ✅ 使用自定义 Listener 处理导入逻辑
-- ✅ 返回导入分析结果
+- <Ok/> 使用 `consumes = MediaType.MULTIPART_FORM_DATA_VALUE` 接收文件
+- <Ok/> 使用 `@RequestPart` 接收文件参数
+- <Ok/> 使用自定义 Listener 处理导入逻辑
+- <Ok/> 返回导入分析结果
 
 ### 4. 状态变更
 
@@ -425,8 +425,8 @@ public R<Void> resetUserPwd(@RequestBody SysUserBo user) {
 
 **实现要点：**
 
-- ✅ 使用 `@ApiEncrypt` 加密传输敏感数据
-- ✅ 使用 BCrypt 加密密码
+- <Ok/> 使用 `@ApiEncrypt` 加密传输敏感数据
+- <Ok/> 使用 BCrypt 加密密码
 
 ---
 
@@ -459,11 +459,11 @@ public R<AuthTokenVo> userLogin(@RequestBody String body) {
 
 **实现要点：**
 
-- ✅ 使用 `@SaIgnore` 跳过认证检查（登录接口不需要登录）
-- ✅ 使用 `@ApiEncrypt` 加密传输
-- ✅ 接收 String 类型参数，手动解析 JSON
-- ✅ 使用 `ValidatorUtils.validate()` 手动触发校验
-- ✅ 支持策略模式处理不同登录类型
+- <Ok/> 使用 `@SaIgnore` 跳过认证检查（登录接口不需要登录）
+- <Ok/> 使用 `@ApiEncrypt` 加密传输
+- <Ok/> 接收 String 类型参数，手动解析 JSON
+- <Ok/> 使用 `ValidatorUtils.validate()` 手动触发校验
+- <Ok/> 支持策略模式处理不同登录类型
 
 ### 2. 用户退出
 
@@ -561,9 +561,9 @@ public R<Void> deleteRoles(
 
 **校验注解：**
 
-- ✅ `@NotNull` - 不能为 null
-- ✅ `@NotEmpty` - 集合/数组不能为空
-- ✅ 使用 `I18nKeys` 常量定义错误信息
+- <Ok/> `@NotNull` - 不能为 null
+- <Ok/> `@NotEmpty` - 集合/数组不能为空
+- <Ok/> 使用 `I18nKeys` 常量定义错误信息
 
 ### 2. 请求参数校验
 
@@ -729,8 +729,8 @@ public R<Void> updateUser(@Validated @RequestBody SysUserBo bo) {
 
 - 格式：`模块:功能:操作`
 - 示例：`system:user:query` 表示"系统模块-用户-查询"
-- ✅ 每个接口都应该有权限控制
-- ✅ 权限字符串要与前端菜单配置一致
+- <Ok/> 每个接口都应该有权限控制
+- <Ok/> 权限字符串要与前端菜单配置一致
 
 ---
 
@@ -779,9 +779,9 @@ public interface DictOperType {
 
 **使用规范：**
 
-- ✅ 所有写操作（增删改）必须添加日志
-- ✅ 导入导出操作必须添加日志
-- ❌ 普通查询操作不需要添加日志
+- <Ok/> 所有写操作（增删改）必须添加日志
+- <Ok/> 导入导出操作必须添加日志
+- <No/> 普通查询操作不需要添加日志
 
 ---
 
@@ -805,11 +805,11 @@ public R<Void> updateUser(@Validated @RequestBody SysUserBo bo) {
 
 **使用场景：**
 
-- ✅ 新增操作 - 防止重复创建
-- ✅ 修改操作 - 防止重复更新
-- ✅ 支付操作 - 防止重复支付
-- ❌ 查询操作 - 不需要
-- ❌ 删除操作 - 可选（通常幂等）
+- <Ok/> 新增操作 - 防止重复创建
+- <Ok/> 修改操作 - 防止重复更新
+- <Ok/> 支付操作 - 防止重复支付
+- <No/> 查询操作 - 不需要
+- <No/> 删除操作 - 可选（通常幂等）
 
 **注解参数：**
 
@@ -882,10 +882,10 @@ public R<Void> resetUserPwd(@RequestBody SysUserBo user) {
 
 **使用场景：**
 
-- ✅ 登录接口（密码传输）
-- ✅ 注册接口（密码传输）
-- ✅ 密码重置（密码传输）
-- ✅ 支付相关（敏感数据）
+- <Ok/> 登录接口（密码传输）
+- <Ok/> 注册接口（密码传输）
+- <Ok/> 密码重置（密码传输）
+- <Ok/> 支付相关（敏感数据）
 
 ---
 
@@ -1007,10 +1007,10 @@ public R<Long> addRole(@Validated @RequestBody SysRoleBo bo) {
 
 **异常处理原则：**
 
-- ✅ Service 层抛出 `ServiceException`
-- ✅ Controller 层不捕获异常
-- ✅ 全局异常处理器统一处理
-- ✅ 业务校验失败使用 `R.fail()` 返回
+- <Ok/> Service 层抛出 `ServiceException`
+- <Ok/> Controller 层不捕获异常
+- <Ok/> 全局异常处理器统一处理
+- <Ok/> 业务校验失败使用 `R.fail()` 返回
 
 ---
 

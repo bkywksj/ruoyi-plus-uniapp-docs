@@ -26,7 +26,7 @@ mall/
 
 ## 核心功能
 
-### 🛍️ 商品管理
+### 商品管理
 
 #### 商品实体设计
 ```java
@@ -65,7 +65,7 @@ public interface IGoodsService extends IBaseService<Goods, GoodsBo, GoodsVo> {
 }
 ```
 
-### 📋 订单管理
+### 订单管理
 
 #### 订单实体设计
 ```java
@@ -131,7 +131,7 @@ public enum DictOrderStatus {
 
 ## 支付集成
 
-### 💳 统一支付接口
+### 统一支付接口
 
 商城模块集成了统一支付服务，支持多种支付方式：
 
@@ -210,7 +210,7 @@ public class OrderPayController {
 - **余额支付** (BALANCE)：账户余额扣款
 - **积分支付** (POINTS)：积分抵扣
 
-### 🔄 支付回调处理
+### 支付回调处理
 
 #### 统一回调控制器
 ```java
@@ -301,7 +301,7 @@ public class OrderPaymentEventListener {
 
 ## 业务流程
 
-### 📦 订单创建流程
+### 订单创建流程
 
 1. **商品选择**：用户选择商品和数量
 2. **订单生成**：系统生成唯一订单号
@@ -349,7 +349,7 @@ public CreateOrderVo createOrder(CreateOrderBo bo) {
 }
 ```
 
-### 💰 支付处理流程
+### 支付处理流程
 
 1. **支付发起**：用户选择支付方式发起支付
 2. **订单校验**：验证订单状态、用户权限等
@@ -358,7 +358,7 @@ public CreateOrderVo createOrder(CreateOrderBo bo) {
 5. **异步通知**：接收支付平台异步通知
 6. **状态更新**：更新订单状态并触发后续业务
 
-### 🔄 退款处理流程
+### 退款处理流程
 
 ```java
 @PostMapping("/refundOrder")
@@ -398,7 +398,7 @@ public R<RefundResponse> refundOrder(@RequestBody RefundBo request) {
 
 ## 验证分组
 
-### 📋 分组验证设计
+### 分组验证设计
 
 ```java
 public interface MallGroups {
@@ -450,7 +450,7 @@ public class GoodsBo extends BaseEntity {
 
 ## API接口设计
 
-### 🌐 前端API接口
+### 前端API接口
 
 #### 商品相关接口
 ```java
@@ -503,7 +503,7 @@ POST /api/order/refundOrder
 }
 ```
 
-### 🛠️ 管理后台接口
+### 管理后台接口
 
 #### 商品管理
 ```java
@@ -552,7 +552,7 @@ POST /mall/order/importOrders
 
 ## 数据库设计
 
-### 📊 商品表 (m_goods)
+### 商品表 (m_goods)
 ```sql
 CREATE TABLE m_goods (
     id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '商品ID',
@@ -579,7 +579,7 @@ CREATE TABLE m_goods (
 ) COMMENT='商品表';
 ```
 
-### 📋 订单表 (m_order)
+### 订单表 (m_order)
 ```sql
 CREATE TABLE m_order (
     id BIGINT PRIMARY KEY AUTO_INCREMENT COMMENT '订单ID',
@@ -612,7 +612,7 @@ CREATE TABLE m_order (
 
 ## 使用示例
 
-### 📱 小程序商城集成
+### 小程序商城集成
 
 #### 商品列表页面
 ```javascript
@@ -709,25 +709,25 @@ const wxPay = async (orderNo) => {
 
 ## 最佳实践
 
-### 📋 业务设计
+### 业务设计
 - **订单号生成**：使用时间戳+随机数确保唯一性
 - **状态管理**：设计合理的订单状态流转
 - **并发控制**：库存扣减使用乐观锁或分布式锁
 - **数据一致性**：关键操作使用事务保证
 
-### 🔐 安全考虑
+### 安全考虑
 - **支付安全**：支付金额服务端计算，不信任前端
 - **权限校验**：订单操作验证用户权限
 - **数据校验**：严格校验订单数据完整性
 - **防重提交**：使用防重注解避免重复下单
 
-### 🚀 性能优化
+### 性能优化
 - **缓存策略**：商品信息适当缓存
 - **分页查询**：大数据量使用分页避免内存溢出
 - **异步处理**：支付回调等耗时操作异步处理
 - **索引优化**：合理创建数据库索引
 
-### 🔧 扩展建议
+### 扩展建议
 - **多商品订单**：支持购物车批量下单
 - **优惠券**：集成优惠券抵扣功能
 - **会员体系**：支持会员价格和积分

@@ -15,7 +15,7 @@ job/
 
 ## 核心功能
 
-### 🔧 SnailJob 集成
+### SnailJob 集成
 
 #### 任务执行器注解
 ```java
@@ -37,7 +37,7 @@ public class TestAnnoJobExecutor {
 - **ExecuteResult**: 任务执行结果对象
 - **SnailJobLog**: 分布式日志记录工具
 
-### 📋 任务类型支持
+### 任务类型支持
 
 #### 定时任务
 - **Cron表达式**：支持标准Cron表达式定义执行时间
@@ -56,7 +56,7 @@ public class TestAnnoJobExecutor {
 
 ## 任务示例
 
-### 📊 订单相关任务
+### 订单相关任务
 
 #### 订单超时取消任务
 ```java
@@ -143,7 +143,7 @@ public class OrderStatusSyncExecutor {
 }
 ```
 
-### 📈 数据统计任务
+### 数据统计任务
 
 #### 销售数据统计任务
 ```java
@@ -194,7 +194,7 @@ public class SalesDataStatExecutor {
 }
 ```
 
-### 🔄 数据清理任务
+### 数据清理任务
 
 #### 日志清理任务
 ```java
@@ -235,7 +235,7 @@ public class LogCleanupExecutor {
 }
 ```
 
-### 📧 消息通知任务
+### 消息通知任务
 
 #### 支付成功通知任务
 ```java
@@ -289,7 +289,7 @@ public class PaymentNotifyExecutor {
 
 ## 任务管理
 
-### 📋 任务配置
+### 任务配置
 
 #### 通过配置文件
 ```yaml
@@ -334,7 +334,7 @@ SNAIL_JOB_TOKEN=your-custom-token
 SNAIL_JOB_CLIENT_HOST=192.168.1.101
 ```
 
-### 📋 配置详解
+### 配置详解
 
 #### 核心配置说明
 
@@ -365,7 +365,7 @@ INSERT INTO sj_group_config (id, namespace_id, group_name, token, create_dt, upd
 VALUES (1, 1, 'business-app', 'SJ_cKqBTPzCsWA3VyuCfFoccmuIEGXjr5KT', NOW(), NOW());
 ```
 
-### 🕐 常用Cron表达式
+### 常用Cron表达式
 
 ```bash
 # 每分钟执行一次
@@ -393,7 +393,7 @@ VALUES (1, 1, 'business-app', 'SJ_cKqBTPzCsWA3VyuCfFoccmuIEGXjr5KT', NOW(), NOW(
 0 */5 * * * ?
 ```
 
-### 📊 任务监控
+### 任务监控
 
 #### 执行状态监控
 ```java
@@ -432,7 +432,7 @@ public class TaskMonitorExecutor {
 
 ## 业务集成
 
-### 🔄 与订单模块集成
+### 与订单模块集成
 
 #### 订单超时处理
 
@@ -517,7 +517,7 @@ public class PaymentSuccessHandler {
 }
 ```
 
-### 📈 数据统计集成
+### 数据统计集成
 
 #### 定时统计任务
 
@@ -576,12 +576,12 @@ public class MonthlyReportExecutor {
 
 ## 高可用特性
 
-### 🔧 故障转移
+### 故障转移
 - **多实例部署**：支持多个执行器实例部署，提供高可用保障
 - **任务分片**：大任务自动分片到多个执行器并行处理
 - **故障恢复**：执行器宕机时自动转移任务到其他健康实例
 
-### 📊 负载均衡
+### 负载均衡
 ```java
 @Component
 @JobExecutor(name = "heavyTaskExecutor", 
@@ -612,7 +612,7 @@ public class HeavyTaskExecutor {
 }
 ```
 
-### 🚨 错误处理和重试
+### 错误处理和重试
 ```java
 @Component
 @JobExecutor(name = "retryableTaskExecutor",
@@ -643,7 +643,7 @@ public class RetryableTaskExecutor {
 
 ## 性能优化
 
-### 📈 批处理优化
+### 批处理优化
 ```java
 @Component
 @JobExecutor(name = "batchProcessExecutor")
@@ -691,7 +691,7 @@ public class BatchProcessExecutor {
 }
 ```
 
-### 🎯 异步执行优化
+### 异步执行优化
 ```java
 @Component
 @JobExecutor(name = "asyncOptimizedExecutor")
@@ -742,7 +742,7 @@ public class AsyncOptimizedExecutor {
 
 ## 使用示例
 
-### 📱 业务场景集成
+### 业务场景集成
 
 #### 订单自动确认收货
 ```java
@@ -842,25 +842,25 @@ public class PriceMonitorExecutor {
 
 ## 最佳实践
 
-### 📋 任务设计原则
+### 任务设计原则
 - **幂等性**：确保任务可以安全重复执行
 - **原子性**：单个任务应该是原子操作，要么全成功要么全失败
 - **超时控制**：设置合理的任务超时时间
 - **资源控制**：避免任务占用过多系统资源
 
-### 🔐 安全考虑
+### 安全考虑
 - **权限控制**：敏感任务需要权限验证
 - **参数验证**：严格验证任务输入参数
 - **日志审计**：记录任务执行的详细日志
 - **错误处理**：妥善处理异常，避免敏感信息泄露
 
-### 🚀 性能优化
+### 性能优化
 - **批处理**：大量数据处理使用批处理模式
 - **分页查询**：避免一次性加载大量数据
 - **异步处理**：耗时操作使用异步模式
 - **缓存利用**：合理使用缓存减少数据库压力
 
-### 🔧 监控运维
+### 监控运维
 - **健康检查**：定期检查任务执行器健康状态
 - **性能监控**：监控任务执行时间和资源使用
 - **告警机制**：任务执行异常时及时告警

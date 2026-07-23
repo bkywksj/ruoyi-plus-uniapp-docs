@@ -2,7 +2,7 @@
 
 RuoYi-Plus 提供的全局异常处理机制，统一处理应用中的各种异常情况。
 
-## 📋 异常体系
+## 异常体系
 
 ### 异常类型
 
@@ -124,7 +124,7 @@ public enum ErrorCodeEnum {
 }
 ```
 
-## 🎯 全局异常处理器
+## 全局异常处理器
 
 ### 核心处理器
 
@@ -337,7 +337,7 @@ public class AsyncConfig implements AsyncConfigurer {
 }
 ```
 
-## 🔧 异常使用
+## 异常使用
 
 ### 业务层异常
 
@@ -519,7 +519,7 @@ public class SysUserController extends BaseController {
 }
 ```
 
-## 🚨 异常监控
+## 异常监控
 
 ### 异常统计
 
@@ -698,7 +698,7 @@ public class ExceptionAlertService {
 }
 ```
 
-## 🌐 异常国际化
+## 异常国际化
 
 ### 异常消息国际化配置
 
@@ -866,7 +866,7 @@ public class I18nExceptionHandler {
 }
 ```
 
-## 🔗 异常链处理
+## 异常链处理
 
 ### 异常链追踪
 
@@ -1124,7 +1124,7 @@ public class ExceptionTransformerChain {
 }
 ```
 
-## 📊 异常分级处理
+## 异常分级处理
 
 ### 异常级别定义
 
@@ -1330,7 +1330,7 @@ public class ExceptionPersistenceService {
 }
 ```
 
-## 🚦 限流异常处理
+## 限流异常处理
 
 ### 限流异常定义
 
@@ -1509,7 +1509,7 @@ public class RateLimitAspect {
 }
 ```
 
-## 🌐 分布式异常处理
+## 分布式异常处理
 
 ### 远程调用异常
 
@@ -1737,7 +1737,7 @@ public class DistributedTransactionExceptionHandler {
 }
 ```
 
-## 🧪 测试中的异常验证
+## 测试中的异常验证
 
 ### 单元测试异常验证
 
@@ -1876,7 +1876,7 @@ class GlobalExceptionHandlerIntegrationTest {
 }
 ```
 
-## ⚠️ 注意事项
+## 注意事项
 
 ### 1. 异常处理最佳实践
 
