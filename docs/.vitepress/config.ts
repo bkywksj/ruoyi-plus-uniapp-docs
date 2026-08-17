@@ -1,4 +1,16 @@
 import { defineConfig } from 'vitepress'
+import { dirname, resolve } from 'path'
+import { fileURLToPath } from 'url'
+// @ts-expect-error —— 纯 JS 模块，无类型声明文件
+import { extractDescription } from './seo/description.mjs'
+// @ts-expect-error —— 同上
+import { enhanceSitemap } from './seo/sitemap.mjs'
+
+/** docs 目录绝对路径：pageData.filePath 是相对它的，拼回绝对路径才能读到源文件 */
+const DOCS_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+
+/** 站点根地址（不带结尾斜杠），用于拼 canonical */
+const SITE_URL = 'https://ruoyi.plus'
 
 export default defineConfig({
     title: 'RuoYi-Plus-UniApp 全栈开发文档 — Spring Boot 3 + Vue 3 企业级框架',
@@ -10,7 +22,9 @@ export default defineConfig({
 
     head: [
         ['link', { rel: 'icon', href: '/favicon.ico' }],
-        ['link', { rel: 'canonical', href: 'https://ruoyi.plus/' }],
+        // canonical 不在这里写死 —— 站点级的值会让全部 506 个页面都自称
+        // 「正式地址是首页」，搜索引擎据此可能只收录首页、丢掉所有内页。
+        // 改为在 transformPageData 里逐页生成（见文件末尾）。
         ['meta', { name: 'theme-color', content: '#8b5cf6' }],
         ['meta', { name: 'keywords', content: 'RuoYi,RuoYi-Plus,UniApp,Spring Boot 3,Vue 3,企业级框架,快速开发,全栈开发,后台管理系统,多租户,SaaS,代码生成器,MyBatis Plus,Element Plus,微信小程序' }],
         // OG 标签
@@ -20,7 +34,8 @@ export default defineConfig({
         ['meta', { property: 'og:site_name', content: 'RuoYi-Plus-UniApp' }],
         ['meta', { property: 'og:description', content: '基于 Spring Boot 3 + Vue 3 + UniApp 的企业级快速开发框架，涵盖后端、前端、移动端完整指南' }],
         ['meta', { property: 'og:image', content: 'https://ruoyi.plus/logo.png' }],
-        ['meta', { property: 'og:url', content: 'https://ruoyi.plus/' }],
+        // og:url 同 canonical，逐页生成（见 transformPageData）；
+        // 写死会让任何一页被分享时都显示成首页的卡片。
         // Twitter Card
         ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
         ['meta', { name: 'twitter:title', content: 'RuoYi-Plus-UniApp 全栈开发文档' }],
@@ -1163,7 +1178,10 @@ export default defineConfig({
 
     // 站点地图
     sitemap: {
-        hostname: 'https://ruoyi.plus'
+        hostname: 'https://ruoyi.plus',
+        // 补 lastmod（取自 git 提交时间）+ 按层级区分 priority / changefreq。
+        // 缺 lastmod 时爬虫无从判断哪些页面变过，抓取预算会浪费在没动过的页面上。
+        transformItems: (items) => enhanceSitemap(items, DOCS_ROOT)
     },
 
     // 缓存目录
@@ -1173,6 +1191,78 @@ export default defineConfig({
     transformPageData(pageData) {
         // 禁用最后更新时间以避免构建时大量 git log 调用
         pageData.frontmatter.lastUpdated = false
+
+        // 逐页生成 description。不设的话 506 个页面会共用 config 里那段站点级描述：
+        // 对 SEO 是「重复元描述」，对 GEO 更糟 —— AI 判断「这页讲什么」时该字段权重很高，
+        // 全站一个样等于放弃了让大模型精准引用某一页的机会。
+        // 优先用 frontmatter 手写的，没有才从正文自动提取。
+        if (!pageData.frontmatter.description && pageData.filePath) {
+            const desc = extractDescription(resolve(DOCS_ROOT, pageData.filePath))
+            if (desc) {
+                pageData.description = desc
+            }
+        }
+
+        // 逐页 canonical。本站 cleanUrls: false，同一页面 /x 与 /x.html 都能访问
+        // （实测两者均返回 200），对搜索引擎就是两个 URL 一份内容 —— 权重被摊薄。
+        // 统一声明带 .html 的那个为正式地址，与 sitemap.xml 里的写法保持一致。
+        if (pageData.filePath) {
+            const path = pageData.filePath === 'index.md'
+                ? '/'
+                : `/${pageData.filePath.replace(/\.md$/, '.html').replace(/\/index\.html$/, '/')}`
+            const url = `${SITE_URL}${path}`
+            pageData.frontmatter.head ??= []
+            pageData.frontmatter.head.push(
+                ['link', { rel: 'canonical', href: url }],
+                ['meta', { property: 'og:url', content: url }]
+            )
+
+            // 内容页补一段 TechArticle：站点级只有 WebSite / SoftwareApplication，
+            // 说明不了「这一页在讲什么」。有了它，AI 能明确识别出这是一篇技术文档、
+            // 主题是什么、属于哪个知识体系，比纯正文更容易被准确引用。
+            // 首页是 home 布局（产品介绍而非文章），不套这个类型。
+            if (path !== '/' && pageData.title) {
+                pageData.frontmatter.head.push([
+                    'script', { type: 'application/ld+json' },
+                    JSON.stringify({
+                        '@context': 'https://schema.org',
+                        '@type': 'TechArticle',
+                        headline: pageData.title,
+                        ...(pageData.description ? { description: pageData.description } : {}),
+                        url,
+                        inLanguage: 'zh-CN',
+                        isPartOf: {
+                            '@type': 'WebSite',
+                            name: 'RuoYi-Plus-UniApp 全栈开发文档',
+                            url: SITE_URL
+                        },
+                        author: { '@type': 'Person', name: '抓蛙师' },
+                        publisher: { '@type': 'Organization', name: '若依科技工作室', url: SITE_URL },
+                        // 让 AI 知道读这篇需要什么背景，也补强了框架相关的语义关联
+                        proficiencyLevel: 'Beginner',
+                        about: ['RuoYi-Plus-UniApp', 'Spring Boot 3', 'Vue 3', 'UniApp']
+                    })
+                ])
+            }
+        }
+
+        // 页面级 og/twitter 标题与描述：站点级那份对每一页都是同一句，
+        // 分享出去看不出是哪一页，AI 抓社交元数据时同样拿不到页面主题。
+        if (pageData.title) {
+            const title = `${pageData.title} | RuoYi-Plus-UniApp`
+            const desc = pageData.description
+            pageData.frontmatter.head ??= []
+            pageData.frontmatter.head.push(
+                ['meta', { property: 'og:title', content: title }],
+                ['meta', { name: 'twitter:title', content: title }]
+            )
+            if (desc) {
+                pageData.frontmatter.head.push(
+                    ['meta', { property: 'og:description', content: desc }],
+                    ['meta', { name: 'twitter:description', content: desc }]
+                )
+            }
+        }
 
         return pageData
     }

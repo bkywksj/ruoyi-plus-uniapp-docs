@@ -1,4 +1,60 @@
+# ==================== 通用规则 ====================
+# 文档站全站公开，没有后台与登录墙，无需 Disallow 任何路径
 User-agent: *
 Allow: /
 
+# ==================== AI 爬虫（GEO 关键）====================
+# 显式列出而非依赖上面的 * 规则：部分 AI 爬虫只读自己那一段，
+# 漏掉就等于放弃被 ChatGPT / Claude / Perplexity 等引用的机会。
+
+# OpenAI
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+# Anthropic
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# Google 的 AI 训练与 Gemini 引用（与 Googlebot 的搜索抓取是两回事）
+User-agent: Google-Extended
+Allow: /
+
+# Apple Intelligence / Siri
+User-agent: Applebot-Extended
+Allow: /
+
+# 字节（豆包 / 头条搜索）
+User-agent: Bytespider
+Allow: /
+
+User-agent: ByteDance-Bot
+Allow: /
+
+# 其他
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# ==================== 站点地图与 AI 索引 ====================
 Sitemap: https://ruoyi.plus/sitemap.xml

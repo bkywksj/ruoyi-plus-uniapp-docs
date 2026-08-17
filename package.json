@@ -5,9 +5,11 @@
   "type": "module",
   "scripts": {
     "icons": "node scripts/build-icons.mjs",
+    "llms": "node scripts/build-llms.mjs",
+    "indexnow": "node scripts/indexnow.mjs",
     "predev": "node scripts/build-icons.mjs",
     "dev": "vitepress dev docs",
-    "prebuild": "node scripts/build-icons.mjs",
+    "prebuild": "node scripts/build-icons.mjs && node scripts/build-llms.mjs",
     "build": "cross-env NODE_OPTIONS=\"--max-old-space-size=32768 --expose-gc\" vitepress build docs",
     "deploy": "edgeone pages deploy -n ruoyi-plus-uniapp-doc docs/.vitepress/dist",
     "preview": "vitepress preview docs",
