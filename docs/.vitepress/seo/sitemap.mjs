@@ -79,8 +79,11 @@ const collectGitDates = (docsRoot) => {
  * 全站给 1.0 等于全站没给，所以这里按层级拉开档次。
  */
 const rank = (url) => {
-  // 去掉协议与域名，只看路径部分
-  const path = url.replace(/^https?:\/\/[^/]+/, '')
+  // ⚠️ VitePress 传进 transformItems 的 url 是**不带前导斜杠的相对路径**
+  // （如 backend/common/core.html），域名由它后续自己拼上。按完整 URL 处理会让
+  // 所有匹配落空、全部走兜底值，且不报任何错 —— 只能核对线上 sitemap 才发现。
+  let path = url.replace(/^https?:\/\/[^/]+/, '')
+  if (!path.startsWith('/')) path = '/' + path
   if (path === '/' || path === '/index.html') {
     return { priority: 1.0, changefreq: 'daily' }
   }
