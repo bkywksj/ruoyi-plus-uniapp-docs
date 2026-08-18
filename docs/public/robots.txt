@@ -1,60 +1,77 @@
-# ==================== 通用规则 ====================
-# 文档站全站公开，没有后台与登录墙，无需 Disallow 任何路径
+# RuoYi-Plus-UniApp 文档站 robots.txt —— 显式放行 AI 爬虫与各家搜索引擎 + 声明 sitemap
+#
+# 为什么逐个列出而不是只写末尾的 User-agent: * ：
+# **部分爬虫只读自己那一段**，通用段对它们不生效。漏掉某家 = 放弃那家的收录与引用。
+# 屏蔽 AI 爬虫等于放弃 GEO，除非有版权顾虑，一律显式放行。
+
+# ── AI 爬虫（GEO 关键）──
+
+User-agent: GPTBot            # ChatGPT / OpenAI 训练抓取
+Allow: /
+
+User-agent: OAI-SearchBot     # ChatGPT 联网搜索
+Allow: /
+
+User-agent: ChatGPT-User      # ChatGPT 用户实时取页
+Allow: /
+
+User-agent: ClaudeBot         # Claude / Anthropic
+Allow: /
+
+User-agent: Claude-Web        # Claude 联网
+Allow: /
+
+User-agent: anthropic-ai      # Anthropic 训练抓取
+Allow: /
+
+User-agent: PerplexityBot     # Perplexity
+Allow: /
+
+User-agent: Perplexity-User   # Perplexity 用户实时取页
+Allow: /
+
+User-agent: Google-Extended   # Gemini / AI Overviews（与 Googlebot 的搜索抓取是两回事）
+Allow: /
+
+User-agent: Applebot-Extended # Apple Intelligence / Siri
+Allow: /
+
+User-agent: cohere-ai         # Cohere
+Allow: /
+
+User-agent: Meta-ExternalAgent# Meta AI
+Allow: /
+
+# ── 搜索引擎 ──
+
+User-agent: Googlebot         # Google 搜索
+Allow: /
+
+User-agent: Bingbot           # Bing（ChatGPT 联网搜索也走 Bing）
+Allow: /
+
+User-agent: Baiduspider       # 百度 / 文心一言 —— 中文搜索主力
+Allow: /
+
+# 搜狗（微信搜一搜的站外结果走它）
+User-agent: Sogou web spider
+Allow: /
+
+User-agent: 360Spider         # 360 搜索
+Allow: /
+
+User-agent: YisouSpider       # 神马搜索（UC / 移动端）
+Allow: /
+
+# ── 字节系（豆包 / 头条搜索）──
+
+User-agent: Bytespider        # 豆包 / 字节训练抓取
+Allow: /
+
+User-agent: ByteDance-Bot     # 头条搜索
+Allow: /
+
 User-agent: *
 Allow: /
 
-# ==================== AI 爬虫（GEO 关键）====================
-# 显式列出而非依赖上面的 * 规则：部分 AI 爬虫只读自己那一段，
-# 漏掉就等于放弃被 ChatGPT / Claude / Perplexity 等引用的机会。
-
-# OpenAI
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-# Anthropic
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: Claude-Web
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-# Perplexity
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Perplexity-User
-Allow: /
-
-# Google 的 AI 训练与 Gemini 引用（与 Googlebot 的搜索抓取是两回事）
-User-agent: Google-Extended
-Allow: /
-
-# Apple Intelligence / Siri
-User-agent: Applebot-Extended
-Allow: /
-
-# 字节（豆包 / 头条搜索）
-User-agent: Bytespider
-Allow: /
-
-User-agent: ByteDance-Bot
-Allow: /
-
-# 其他
-User-agent: cohere-ai
-Allow: /
-
-User-agent: Meta-ExternalAgent
-Allow: /
-
-# ==================== 站点地图与 AI 索引 ====================
 Sitemap: https://ruoyi.plus/sitemap.xml
