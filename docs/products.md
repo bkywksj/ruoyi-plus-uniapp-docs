@@ -10,12 +10,12 @@
   icon="lucide:bot"
   logo="/products/ai-workstation.svg"
   name="AI 全能工作站"
-  slogan="一句话搞定一切 · 61个专业模块 · 1246 AI技能"
+  slogan="一句话搞定一切 · 63个专业模块 · 1310 AI技能"
   description="覆盖内容创作、办公效率、多媒体处理、商业财务、设计策略、数据分析、运营协作、效率工具八大领域。用自然语言描述需求，两级智能路由自动识别意图，跨工具协作完成复杂任务。"
   theme="blue"
   badge="42集教程"
   :highlights="[
-    '八大领域61个模块：封面设计、视频制作、PPT/Excel/Word、图片处理、音频合成等',
+    '九大领域63个模块：封面设计、视频制作、PPT/Excel/Word、图片处理、音频合成等',
     '智能路由系统：自然语言交互，自动匹配最佳工具完成任务',
     '多模型协同：Claude + Codex + Gemini 三引擎协作、交叉审查',
     '技能工厂：内置引擎持续生成新技能，工作站能力不断增长',
@@ -143,6 +143,27 @@
   :actions="[
     { text: '访问官网', link: 'https://kb.ruoyi.plus/' },
     { text: '视频讲解', link: 'https://www.bilibili.com/video/BV1xvosBREbr' }
+  ]"
+/>
+
+<AProductCard
+  icon="lucide:file-text"
+  logo="/products/officia.svg"
+  name="Officia"
+  slogan="纯自研零依赖 Java 文档处理套件 —— Aspose 的国产平替"
+  description="Word/Excel/PPT 转 PDF、模板填充与邮件合并、PDF 读写加密、图像处理、条码二维码、邮件归档。从 OOXML 解析到 PDF 渲染全链路自研，运行时只依赖 JDK 标准库，无第三方传递依赖、无授权风险，可商用可闭源分发。"
+  theme="orange"
+  badge="已上 Maven Central"
+  :highlights="[
+    '运行时零第三方依赖：只用 JDK 标准库，mvn dependency:tree 机器可证，不与宿主项目产生版本冲突',
+    '七大能力一次引入：Words / Cells / Slides / Pdf / Email / Imaging / BarCode，一个 officia-all 坐标全都有',
+    '中文不踩坑：TrueType 度量 + keep-GID 子集 + CID/Identity-H 嵌入，PDF 里中文正确显示且可复制可搜索',
+    '洁净室自研：只依据 PDF 32000 / ECMA-376 / MS-DOC 等官方规范实现，不参考任何第三方库源码',
+    '离线席位授权：不联网、不锁机器，授权文件放进 classpath 即自动加载，无需改一行代码'
+  ]"
+  :actions="[
+    { text: '访问官网', link: 'https://officia.ruoyi.plus' },
+    { text: '在线试用', link: 'https://demo.officia.ruoyi.plus' }
   ]"
 />
 
