@@ -10,7 +10,7 @@
   icon="lucide:bot"
   logo="/products/ai-workstation.svg"
   name="AI 全能工作站"
-  slogan="一句话搞定一切 · 63个专业模块 · 1310 AI技能"
+  slogan="一句话搞定一切 · 63个专业模块 · 1299 AI技能"
   description="覆盖内容创作、办公效率、多媒体处理、商业财务、设计策略、数据分析、运营协作、效率工具八大领域。用自然语言描述需求，两级智能路由自动识别意图，跨工具协作完成复杂任务。"
   theme="blue"
   badge="42集教程"
@@ -150,20 +150,21 @@
   icon="lucide:file-text"
   logo="/products/officia.svg"
   name="Officia"
-  slogan="纯自研零依赖 Java 文档处理套件 —— Aspose 的国产平替"
-  description="Word/Excel/PPT 转 PDF、模板填充与邮件合并、PDF 读写加密、图像处理、条码二维码、邮件归档。从 OOXML 解析到 PDF 渲染全链路自研，运行时只依赖 JDK 标准库，无第三方传递依赖、无授权风险，可商用可闭源分发。"
+  slogan="纯自研零依赖 Java 办公套件 —— Word/Excel/PPT 无损转 PDF · Aspose 的国产平替"
+  description="Word/Excel/PPT 无损转 PDF，版式、字体、分页、图表逐一还原、所见即所得；模板填充与邮件合并、PDF 读写加密、PDF 转 Word、OCR 扫描件识别、图像处理、条码二维码、邮件归档。从 OOXML 解析到 PDF 渲染全链路自研，运行时只依赖 JDK 标准库，无第三方传递依赖、无授权风险，可商用可闭源分发。"
   theme="orange"
   badge="已上 Maven Central"
   :highlights="[
-    '运行时零第三方依赖：只用 JDK 标准库，mvn dependency:tree 机器可证，不与宿主项目产生版本冲突',
-    '七大能力一次引入：Words / Cells / Slides / Pdf / Email / Imaging / BarCode，一个 officia-all 坐标全都有',
-    '中文不踩坑：TrueType 度量 + keep-GID 子集 + CID/Identity-H 嵌入，PDF 里中文正确显示且可复制可搜索',
-    '洁净室自研：只依据 PDF 32000 / ECMA-376 / MS-DOC 等官方规范实现，不参考任何第三方库源码',
-    '离线席位授权：不联网、不锁机器，授权文件放进 classpath 即自动加载，无需改一行代码'
+    '无损转 PDF：Word / Excel / PPT 一行代码出 PDF（OfficiaWords.toPdf(docx)），排版、字体、分页、图片、表格逐一还原，无需安装 Office / LibreOffice',
+    '中文不踩坑：TrueType 度量 + keep-GID 子集 + CID/Identity-H 嵌入，PDF 里中文正确显示、可复制可搜索，字体子集体积小',
+    '八大能力一次引入：Words / Cells / Slides / Pdf / Email / Imaging / BarCode / OCR，一个 officia-all 坐标全都有，byte[] 进 byte[] 出',
+    '运行时零第三方依赖：只用 JDK 标准库，mvn dependency:tree 机器可证，不与宿主项目产生任何版本冲突',
+    '洁净室自研 + 离线授权：只依据 PDF 32000 / ECMA-376 等官方规范实现；授权文件放进 classpath 即生效，不联网、不锁机器'
   ]"
   :actions="[
     { text: '访问官网', link: 'https://officia.ruoyi.plus' },
-    { text: '在线试用', link: 'https://demo.officia.ruoyi.plus' }
+    { text: '在线试用', link: 'https://demo.officia.ruoyi.plus' },
+    { text: '视频演示', link: 'https://www.bilibili.com/video/BV1QGuS6SEVp' }
   ]"
 />
 

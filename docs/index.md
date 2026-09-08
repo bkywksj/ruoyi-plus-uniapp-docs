@@ -253,7 +253,7 @@ highlights:
 <a href="https://ai-workstation.ruoyi.plus/" target="_blank" rel="noopener noreferrer" class="product-preview-card">
   <img src="/products/ai-workstation.svg" alt="AI 全能工作站" style="width: 48px; height: 48px; object-fit: contain; margin-bottom: 12px;" />
   <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">AI 全能工作站</h4>
-  <p style="margin: 0 0 8px; font-size: 13px; color: #0B6EF0; font-weight: 500;">一句话搞定一切 · 63个模块 · 1310 AI技能</p>
+  <p style="margin: 0 0 8px; font-size: 13px; color: #0B6EF0; font-weight: 500;">一句话搞定一切 · 63个模块 · 1299 AI技能</p>
   <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">八大领域全覆盖 | 智能路由 | 42集视频教程</p>
 </a>
 
@@ -302,8 +302,8 @@ highlights:
 <a href="https://officia.ruoyi.plus" target="_blank" rel="noopener noreferrer" class="product-preview-card">
   <img src="/products/officia.svg" alt="Officia" style="width: 48px; height: 48px; object-fit: contain; margin-bottom: 12px;" />
   <h4 style="margin: 0 0 8px; font-size: 18px; color: var(--vp-c-text-1);">Officia</h4>
-  <p style="margin: 0 0 8px; font-size: 13px; color: #F59E0B; font-weight: 500;">零依赖 Java 文档处理 · Aspose 平替</p>
-  <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">Word/Excel/PPT→PDF | 模板填充 | 仅需 JDK</p>
+  <p style="margin: 0 0 8px; font-size: 13px; color: #F59E0B; font-weight: 500;">零依赖 Java 办公套件 · 无损转 PDF · Aspose 平替</p>
+  <p style="margin: 0; font-size: 13px; color: var(--vp-c-text-2); line-height: 1.6;">Word/Excel/PPT 无损转 PDF | PDF 加密 | OCR | 仅需 JDK</p>
 </a>
 
 </div>

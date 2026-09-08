@@ -214,3 +214,7 @@ cat ".claude/skills/sync-products/products.json"
 4. **幂等操作**：多次执行 sync 结果一致，不会重复添加
 5. **并行处理**：可以使用 Agent 工具并行处理多个站点的更新
 6. **AProductCard 组件源**：始终以当前项目（ruoyi-plus-uniapp-docs）中的版本为准
+7. **图标渲染差异**：本站新版 AProductCard 通过 `<Icon icon="lucide:xxx">` 渲染图标；目标站若未安装 `@iconify/vue` / `@iconify-icons/lucide`（如 `E:/my/Qt/AgileShot-docs`），复制组件时需将该行替换为 `<span v-else-if="icon" class="product-icon">{{ icon }}</span>`，并在 `icon` 属性传 emoji（`products.json` 中的 `icon` 字段）
+8. **Logo 资源同步**：每次 sync 需把 `docs/public/products/*.{png,svg}` 复制到每个站点的 `docs/public/products/`，卡片和首页预览均通过 `logo="/products/{logo}"` 引用
+9. **保留站点自有段落**：重建 products.md 时保留 frontmatter 及站点特有内容（如 AgileShot-docs 的「框架基石」段），只替换 `.products-grid` 内的卡片
+10. **地址校验**：所有产品官网必须使用 `*.ruoyi.plus` 域名（AiCoder 为 `https://aicoder.ruoyi.plus/`，不是 `aicoder.dev`）
