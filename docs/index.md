@@ -65,6 +65,10 @@ features:
     title: 框架特性
     details: 全面重构亮点，Spring Boot 4 五分支矩阵，全站国际化，AI 深度思考，多租户 Pool↔Silo 迁移，2026 年最新特性
     link: /changelog
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12l2 2l4-4"/></g></svg>'
+    title: 等保二级合规 (NEW)
+    details: 密码策略服务端强制、审计日志归档防删除、数据库备份恢复脚本，覆盖身份鉴别 8.1.4.1 a、安全审计 8.1.4.3 c、数据备份恢复 8.1.4.7 a 三项测评要求
+    link: /practices/features/security-compliance
   - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></g></svg>'
     title: 与上游框架对比
     details: 相对 RuoYi-Vue-Plus 5.x / 6.x 的逐维度差异：四层架构、字段级权限、移动端全栈、支付与 AI 集成、模块清单与依赖版本，逐项标注增量能力
@@ -98,6 +102,7 @@ highlights:
       **模块化架构** - 分层设计，支持灵活扩展
       **监控体系** - Spring Boot Admin + SnailJob任务调度
       **安全防护** - 权限认证、数据脱敏、防重提交、限流
+      **等保二级合规** - 密码策略、审计日志归档防删除、备份恢复脚本与演练记录
       **支付集成** - wxjava + 支付宝SDK，支持微信v2/v3智能切换、公钥模式等
       **小程序、公众号集成** - 已接入多平台小程序，公众号等，开箱即用
 

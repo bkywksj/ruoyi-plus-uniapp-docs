@@ -299,7 +299,7 @@ export default defineConfig({
                                 { text: '模块概览', link: '/backend/modules/business' },
                                 { text: '基础服务 (base)', link: '/backend/modules/business/base' },
                                 { text: '商城模块 (mall)', link: '/backend/modules/business/mall' },
-                                { text: '任务调度 (job)', link: '/backend/modules/business/job' }
+                                { text: '任务调度 (SnailJob)', link: '/backend/modules/business/job' }
                             ]
                         },
                         {
@@ -312,7 +312,8 @@ export default defineConfig({
                                 { text: '流程实例', link: '/backend/modules/workflow/instance' },
                                 { text: '任务管理', link: '/backend/modules/workflow/task' }
                             ]
-                        }
+                        },
+                        { text: '定时任务 (ruoyi-job)', link: '/backend/modules/job' }
                     ]
                 },
                 {
@@ -1040,7 +1041,8 @@ export default defineConfig({
                         { text: '数据安全', link: '/practices/security/data' },
                         { text: 'API安全', link: '/practices/security/api' },
                         { text: '客户端安全', link: '/practices/security/client' },
-                        { text: '安全审计', link: '/practices/security/audit' }
+                        { text: '安全审计', link: '/practices/security/audit' },
+                        { text: '等保二级合规', link: '/practices/features/security-compliance' }
                     ]
                 },
                 {
