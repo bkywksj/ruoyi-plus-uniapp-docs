@@ -148,16 +148,20 @@ PayResultVo result = payService.pay(payBo);
 
 ```java
 @Service
-public class PlatformServiceImpl implements PlatformService {
+@RequiredArgsConstructor
+public class PlatformServiceImpl implements IPlatformService, PlatformService {
+
+    private final IPlatformDao platformDao;
 
     /**
      * 添加平台配置
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long add(PlatformBo bo) {
         Platform platform = MapstructUtils.convert(bo, Platform.class);
-        validEntityBeforeSave(platform);
-        baseMapper.insert(platform);
+        beforeSave(platform);
+        platformDao.insert(platform);
         return platform.getId();
     }
 
@@ -166,8 +170,8 @@ public class PlatformServiceImpl implements PlatformService {
      */
     @Override
     public PlatformVo getByType(String type) {
-        Platform platform = baseMapper.selectOne(
-            new LambdaQueryWrapper<Platform>()
+        Platform platform = platformDao.getOne(
+            PlusLambdaQuery.<Platform>of()
                 .eq(Platform::getType, type)
                 .eq(Platform::getStatus, "0")
         );
@@ -198,16 +202,20 @@ public class PlatformServiceImpl implements PlatformService {
 
 ```java
 @Service
-public class PaymentServiceImpl implements PaymentService {
+@RequiredArgsConstructor
+public class PaymentServiceImpl implements IPaymentService, PaymentService {
+
+    private final IPaymentDao paymentDao;
 
     /**
      * 添加支付配置
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long add(PaymentBo bo) {
         Payment payment = MapstructUtils.convert(bo, Payment.class);
-        validEntityBeforeSave(payment);
-        baseMapper.insert(payment);
+        beforeSave(payment);
+        paymentDao.insert(payment);
         return payment.getId();
     }
 
@@ -216,8 +224,8 @@ public class PaymentServiceImpl implements PaymentService {
      */
     @Override
     public PaymentVo getByType(String type) {
-        Payment payment = baseMapper.selectOne(
-            new LambdaQueryWrapper<Payment>()
+        Payment payment = paymentDao.getOne(
+            PlusLambdaQuery.<Payment>of()
                 .eq(Payment::getType, type)
                 .eq(Payment::getStatus, "0")
         );
@@ -239,30 +247,51 @@ public class PaymentServiceImpl implements PaymentService {
 
 ```java
 @Service
-public class AdServiceImpl extends BaseServiceImpl<AdMapper, Ad> implements AdService {
+@RequiredArgsConstructor
+public class AdServiceImpl implements IAdService {
+
+    private final IAdDao adDao;
+
+    /**
+     * 分页查询广告列表
+     */
+    @Override
+    public PageResult<AdVo> page(AdBo bo, PageQuery pageQuery) {
+        PlusLambdaQuery<Ad> wrapper = adDao.buildQueryWrapper(bo);
+        PageResult<Ad> entityPage = adDao.page(wrapper, pageQuery);
+        return entityPage.convert(AdVo.class);
+    }
 
     /**
      * 查询广告列表
      */
     @Override
-    public Page<AdVo> queryPageList(AdBo bo, PageQuery pageQuery) {
-        LambdaQueryWrapper<Ad> wrapper = buildQueryWrapper(bo);
-        Page<Ad> page = baseMapper.selectPage(pageQuery.build(), wrapper);
-        return page.convert(ad -> MapstructUtils.convert(ad, AdVo.class));
+    public List<AdVo> list(AdBo bo) {
+        PlusLambdaQuery<Ad> wrapper = adDao.buildQueryWrapper(bo);
+        List<Ad> entities = adDao.list(wrapper);
+        return MapstructUtils.convert(entities, AdVo.class);
     }
+}
+```
+
+查询条件统一在 DAO 层构建，Service 层不感知 Wrapper 细节：
+
+```java
+@Repository
+public class AdDaoImpl extends BaseDaoImpl<AdMapper, Ad> implements IAdDao {
 
     /**
-     * 根据位置获取广告
+     * 构建查询条件
      */
     @Override
-    public List<AdVo> getByPosition(String position) {
-        List<Ad> ads = baseMapper.selectList(
-            new LambdaQueryWrapper<Ad>()
-                .eq(Ad::getPosition, position)
-                .eq(Ad::getStatus, "0")
-                .orderByAsc(Ad::getSort)
-        );
-        return MapstructUtils.convertList(ads, AdVo.class);
+    public PlusLambdaQuery<Ad> buildQueryWrapper(AdBo bo) {
+        PlusLambdaQuery<Ad> lqw = PlusLambdaQuery.of();
+
+        // 条件值为 null 时自动跳过，无需手工判空
+        lqw.eq(Ad::getPosition, bo.getPosition());
+        lqw.eq(Ad::getAdType, bo.getAdType());
+        lqw.eq(Ad::getStatus, bo.getStatus());
+        return lqw;
     }
 }
 ```
@@ -280,16 +309,20 @@ public class AdServiceImpl extends BaseServiceImpl<AdMapper, Ad> implements AdSe
 
 ```java
 @Service
+@RequiredArgsConstructor
 public class BindServiceImpl implements IBindService {
+
+    private final IBindDao bindDao;
 
     /**
      * 绑定账号
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void bind(BindBo bo) {
         // 检查是否已绑定
-        Bind exist = baseMapper.selectOne(
-            new LambdaQueryWrapper<Bind>()
+        Bind exist = bindDao.getOne(
+            PlusLambdaQuery.<Bind>of()
                 .eq(Bind::getUserId, bo.getUserId())
                 .eq(Bind::getPlatform, bo.getPlatform())
         );
@@ -298,11 +331,11 @@ public class BindServiceImpl implements IBindService {
             // 更新绑定信息
             exist.setOpenid(bo.getOpenid());
             exist.setUnionid(bo.getUnionid());
-            baseMapper.updateById(exist);
+            bindDao.updateById(exist);
         } else {
             // 新增绑定
             Bind bind = MapstructUtils.convert(bo, Bind.class);
-            baseMapper.insert(bind);
+            bindDao.insert(bind);
         }
     }
 
@@ -311,8 +344,8 @@ public class BindServiceImpl implements IBindService {
      */
     @Override
     public Long getUserIdByOpenid(String platform, String openid) {
-        Bind bind = baseMapper.selectOne(
-            new LambdaQueryWrapper<Bind>()
+        Bind bind = bindDao.getOne(
+            PlusLambdaQuery.<Bind>of()
                 .eq(Bind::getPlatform, platform)
                 .eq(Bind::getOpenid, openid)
         );
@@ -333,22 +366,26 @@ public class BindServiceImpl implements IBindService {
 
 ```java
 @Service
-public class GoodsServiceImpl extends BaseServiceImpl<GoodsMapper, Goods> implements GoodsService {
+@RequiredArgsConstructor
+public class GoodsServiceImpl implements IGoodsService {
+
+    private final IGoodsDao goodsDao;
 
     /**
      * 新增商品
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long add(GoodsBo bo) {
         Goods goods = MapstructUtils.convert(bo, Goods.class);
-        validEntityBeforeSave(goods);
+        beforeSave(goods);
 
         // 设置默认值
         goods.setSales(0L);
         goods.setStock(bo.getStock());
         goods.setStatus("0"); // 待审核
 
-        baseMapper.insert(goods);
+        goodsDao.insert(goods);
         return goods.getId();
     }
 
@@ -357,14 +394,14 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsMapper, Goods> implem
      */
     @Override
     public void online(Long id) {
-        Goods goods = baseMapper.selectById(id);
+        Goods goods = goodsDao.getById(id);
         if (goods == null) {
             throw new ServiceException("商品不存在");
         }
 
         goods.setStatus("1"); // 已上架
         goods.setOnlineTime(new Date());
-        baseMapper.updateById(goods);
+        goodsDao.updateById(goods);
     }
 
     /**
@@ -373,10 +410,13 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsMapper, Goods> implem
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deductStock(Long goodsId, Long quantity) {
-        int rows = baseMapper.deductStock(goodsId, quantity);
-        if (rows == 0) {
+        Goods goods = goodsDao.getById(goodsId);
+        if (goods == null || goods.getStock() < quantity) {
             throw new ServiceException("库存不足");
         }
+
+        goods.setStock(goods.getStock() - quantity);
+        goodsDao.updateById(goods);
     }
 }
 ```
@@ -394,13 +434,12 @@ public class GoodsServiceImpl extends BaseServiceImpl<GoodsMapper, Goods> implem
 
 ```java
 @Service
-public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implements OrderService {
+@RequiredArgsConstructor
+public class OrderServiceImpl implements IOrderService {
 
-    @Autowired
-    private GoodsService goodsService;
-
-    @Autowired
-    private PayService payService;
+    private final IOrderDao orderDao;
+    private final IGoodsService goodsService;
+    private final IPayService payService;
 
     /**
      * 创建订单
@@ -430,11 +469,11 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
         order.setGoodsName(goods.getName());
         order.setGoodsPrice(goods.getPrice());
         order.setQuantity(bo.getQuantity());
-        order.setTotalAmount(totalAmount());
+        order.setTotalAmount(totalAmount);
         order.setStatus("0"); // 待支付
         order.setCreateTime(new Date());
 
-        baseMapper.insert(order);
+        orderDao.insert(order);
 
         // 5. 扣减库存
         goodsService.deductStock(bo.getGoodsId(), bo.getQuantity());
@@ -453,8 +492,8 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void paySuccess(String orderNo, String payNo) {
-        Order order = baseMapper.selectOne(
-            new LambdaQueryWrapper<Order>()
+        Order order = orderDao.getOne(
+            PlusLambdaQuery.<Order>of()
                 .eq(Order::getOrderNo, orderNo)
         );
 
@@ -470,7 +509,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
         order.setStatus("1"); // 已支付
         order.setPayNo(payNo);
         order.setPayTime(new Date());
-        baseMapper.updateById(order);
+        orderDao.updateById(order);
 
         // 发布订单支付成功事件
         SpringUtils.context().publishEvent(new OrderPaySuccessEvent(order));
@@ -481,7 +520,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
      */
     @Override
     public void deliver(DeliverBo bo) {
-        Order order = baseMapper.selectById(bo.getOrderId());
+        Order order = orderDao.getById(bo.getOrderId());
         if (order == null) {
             throw new ServiceException("订单不存在");
         }
@@ -495,7 +534,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
         order.setExpressCompany(bo.getExpressCompany());
         order.setExpressNo(bo.getExpressNo());
         order.setDeliverTime(new Date());
-        baseMapper.updateById(order);
+        orderDao.updateById(order);
     }
 
     /**
@@ -503,7 +542,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
      */
     @Override
     public void receive(Long orderId) {
-        Order order = baseMapper.selectById(orderId);
+        Order order = orderDao.getById(orderId);
         if (order == null) {
             throw new ServiceException("订单不存在");
         }
@@ -515,7 +554,7 @@ public class OrderServiceImpl extends BaseServiceImpl<OrderMapper, Order> implem
         // 更新订单状态
         order.setStatus("3"); // 已完成
         order.setReceiveTime(new Date());
-        baseMapper.updateById(order);
+        orderDao.updateById(order);
 
         // 自动增加销量
         goodsService.increaseSales(order.getGoodsId(), order.getQuantity());
@@ -666,7 +705,11 @@ public class PayServiceImpl implements PayService {
 
 ```java
 @Service
-public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implements CartService {
+@RequiredArgsConstructor
+public class CartServiceImpl implements ICartService {
+
+    private final ICartDao cartDao;
+    private final IGoodsService goodsService;
 
     /**
      * 添加到购物车
@@ -676,8 +719,8 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
         Long userId = SecurityUtils.getUserId();
 
         // 检查是否已存在
-        Cart exist = baseMapper.selectOne(
-            new LambdaQueryWrapper<Cart>()
+        Cart exist = cartDao.getOne(
+            PlusLambdaQuery.<Cart>of()
                 .eq(Cart::getUserId, userId)
                 .eq(Cart::getGoodsId, bo.getGoodsId())
         );
@@ -685,14 +728,14 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
         if (exist != null) {
             // 增加数量
             exist.setQuantity(exist.getQuantity() + bo.getQuantity());
-            baseMapper.updateById(exist);
+            cartDao.updateById(exist);
         } else {
             // 新增购物车项
             Cart cart = new Cart();
             cart.setUserId(userId);
             cart.setGoodsId(bo.getGoodsId());
             cart.setQuantity(bo.getQuantity());
-            baseMapper.insert(cart);
+            cartDao.insert(cart);
         }
     }
 
@@ -702,8 +745,8 @@ public class CartServiceImpl extends BaseServiceImpl<CartMapper, Cart> implement
     @Override
     public List<CartVo> list() {
         Long userId = SecurityUtils.getUserId();
-        List<Cart> carts = baseMapper.selectList(
-            new LambdaQueryWrapper<Cart>()
+        List<Cart> carts = cartDao.list(
+            PlusLambdaQuery.<Cart>of()
                 .eq(Cart::getUserId, userId)
                 .orderByDesc(Cart::getCreateTime)
         );

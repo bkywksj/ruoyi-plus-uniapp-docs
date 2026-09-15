@@ -134,7 +134,7 @@ public interface ISysOssService {
 
 #### 2.2.2 ISysOssDirectoryService - 目录服务接口
 ```java
-public interface ISysOssDirectoryService extends IBaseService<SysOssDirectory, SysOssDirectoryBo, SysOssDirectoryVo> {
+public interface ISysOssDirectoryService {
     
     // 目录树结构
     List<Tree<Long>> getOssDirectoryTreeOptions(SysOssDirectoryBo bo);

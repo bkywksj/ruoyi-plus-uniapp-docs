@@ -56,8 +56,18 @@ public class Platform extends TenantEntity {
 
 #### 核心接口
 ```java
-public interface IPlatformService extends IBaseService<Platform, PlatformBo, PlatformVo> {
-    // 继承基础CRUD操作
+public interface IPlatformService {
+    // 标准CRUD方法（由代码生成器统一生成，实现类注入 IPlatformDao 完成数据访问）
+    PlatformVo get(Long id);
+    List<PlatformVo> list(PlatformBo bo);
+    PageResult<PlatformVo> page(PlatformBo bo, PageQuery pageQuery);
+    Long add(PlatformBo bo);
+    int update(PlatformBo bo);
+    int batchDelete(Collection<Long> ids);
+    int batchSave(List<PlatformBo> boList);
+
+    // 业务扩展方法
+    List<TemplateConfig> getTemplateConfigs(String appid);
 }
 
 // 全局平台服务
@@ -122,7 +132,7 @@ public class Bind extends TenantEntity {
 
 #### 绑定服务
 ```java
-public interface IBindService extends IBaseService<Bind, BindBo, BindVo> {
+public interface IBindService {
     /**
      * 根据平台用户信息获取或创建绑定信息
      */

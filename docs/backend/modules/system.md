@@ -51,10 +51,15 @@
 
 #### Service层 (业务逻辑层)
 - **职责**: 核心业务逻辑，事务管理，数据处理
-- **设计**: 继承`IBaseService`统一CRUD操作
+- **设计**: 不继承任何基类，通过构造器注入 DAO 完成数据访问
 - **特性**: 支持缓存、事务、多租户自动处理
 
-#### Mapper层 (数据访问层)
+#### DAO层 (数据访问层)
+- **职责**: 查询条件构建，通用CRUD封装，对上层屏蔽Wrapper细节
+- **基类**: 接口继承`IBaseDao`，实现类继承`BaseDaoImpl`
+- **特性**: `buildQueryWrapper`统一构建查询条件，Service层无需手工拼装Wrapper
+
+#### Mapper层 (持久化层)
 - **职责**: 数据库操作，复杂查询，结果映射
 - **基类**: 继承`BaseMapperPlus`增强MyBatis-Plus功能
 - **特性**: 自动填充，逻辑删除，多租户隔离
@@ -210,20 +215,40 @@ public class TenantEntity extends BaseEntity {
 
 ### 4.2 统一服务架构
 
-**IBaseService 通用服务接口**:
+Service 层不继承任何基类，每个服务接口按业务语义自行声明方法；通用 CRUD 能力下沉到 DAO 层，由 `IBaseDao` 统一提供。
+
+**IBaseDao 通用数据访问接口**:
 ```java
-public interface IBaseService<T, B, V> {
+public interface IBaseDao<T> {
     // 标准CRUD操作
-    PageResult<V> pageAll(PageQuery pageQuery);
-    List<V> listAll();
-    V get(Long id);
-    Boolean save(B bo);
-    Boolean update(B bo);
-    Boolean deleteByIds(Collection<Long> ids);
+    T getById(Serializable id);
+    List<T> listByIds(Collection<? extends Serializable> ids);
+    T getOne(PlusLambdaQuery<T> wrapper);
+    List<T> list(PlusLambdaQuery<T> wrapper);
+    List<T> listAll();
+    PageResult<T> page(PlusLambdaQuery<T> wrapper, PageQuery pageQuery);
+}
+```
+
+**Service 实现形态**:
+```java
+@RequiredArgsConstructor
+@Service
+public class SysConfigServiceImpl implements ISysConfigService, ConfigService {
+
+    private final ISysConfigDao configDao;
+
+    @Override
+    public List<SysConfigVo> list(SysConfigBo bo) {
+        PlusLambdaQuery<SysConfig> wrapper = configDao.buildQueryWrapper(bo);
+        List<SysConfig> entities = configDao.list(wrapper);
+        return MapstructUtils.convert(entities, SysConfigVo.class);
+    }
 }
 ```
 
 **实现特点**:
+- **职责清晰**: 查询条件在 DAO 层的`buildQueryWrapper`中构建，Service 只专注业务流程
 - **统一分页**: 所有列表查询统一使用`PageQuery`和`PageResult`
 - **自动映射**: 基于MapStruct的对象转换
 - **缓存集成**: 关键数据自动缓存管理
@@ -1281,7 +1306,7 @@ ENTRYPOINT ["java", "-jar", "/app.jar"]
  * @author Lion Li
  * @since 2023-01-01
  */
-public interface ISysUserService extends IBaseService<SysUser, SysUserBo, SysUserVo> {
+public interface ISysUserService {
     
     /**
      * 根据用户名查询用户信息

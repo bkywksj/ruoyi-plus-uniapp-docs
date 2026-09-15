@@ -51,7 +51,7 @@ public class SysConfig extends TenantEntity {
 #### 核心服务接口
 
 ```java
-public interface ISysConfigService extends IBaseService<SysConfig, SysConfigBo, SysConfigVo> {
+public interface ISysConfigService {
 
     // 根据键名获取配置值（带缓存）
     String getConfigByKey(String configKey);

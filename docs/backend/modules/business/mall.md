@@ -59,9 +59,18 @@ public class Goods extends TenantEntity {
 - **搜索功能**：支持多字段模糊搜索
 
 ```java
-public interface IGoodsService extends IBaseService<Goods, GoodsBo, GoodsVo> {
-    // 继承基础CRUD操作
-    // 支持分页查询、条件查询、批量操作等
+public interface IGoodsService {
+    // 标准CRUD方法（由代码生成器统一生成，实现类注入 IGoodsDao 完成数据访问）
+    GoodsVo get(Long id);
+    List<GoodsVo> list(GoodsBo bo);
+    PageResult<GoodsVo> page(GoodsBo bo, PageQuery pageQuery);
+    Long add(GoodsBo bo);
+    int update(GoodsBo bo);
+    int batchDelete(Collection<Long> ids);
+    int batchSave(List<GoodsBo> boList);
+
+    // 业务扩展方法：从SKU同步商品价格、库存等聚合数据
+    void syncGoodsDataFromSku(Long goodsId);
 }
 ```
 
@@ -92,7 +101,7 @@ public class Order extends TenantEntity {
 
 #### 订单服务接口
 ```java
-public interface IOrderService extends IBaseService<Order, OrderBo, OrderVo> {
+public interface IOrderService {
 
     /**
      * 创建订单
