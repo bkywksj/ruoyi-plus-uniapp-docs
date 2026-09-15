@@ -1022,6 +1022,7 @@ export default defineConfig({
                     items: [
                         { text: '权限控制实现', link: '/practices/features/permission-control' },
                         { text: '数据权限设计', link: '/practices/features/data-permission' },
+                        { text: '字段权限设计', link: '/practices/features/field-permission' },
                         { text: '定时任务开发', link: '/practices/features/scheduled-jobs' },
                         { text: '消息推送实现', link: '/practices/features/message-push' },
                         { text: '文件处理方案', link: '/practices/features/file-processing' },

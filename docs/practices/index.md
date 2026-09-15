@@ -59,6 +59,7 @@ AI 辅助开发工具 Claude Code 的使用指南：
 
 - [权限控制实现](/practices/features/permission-control) - 权限系统设计
 - [数据权限设计](/practices/features/data-permission) - 数据级权限控制
+- [字段权限设计](/practices/features/field-permission) - 列级字段隔离
 - [定时任务开发](/practices/features/scheduled-jobs) - 定时任务最佳实践
 - [消息推送实现](/practices/features/message-push) - 消息推送方案
 - [文件处理方案](/practices/features/file-processing) - 文件上传下载

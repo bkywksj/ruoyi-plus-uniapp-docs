@@ -461,6 +461,72 @@ public class UserExportVo {
 ExcelUtil.exportExcel(userList, "用户信息", UserExportVo.class, response);
 ```
 
+#### 2.6 导入导出的字段权限收口
+
+Excel 出入口默认就受字段级权限约束，业务代码无需额外处理。这一层是必要的：`@Sensitive` 注解通过 Jackson 序列化器实现脱敏，只覆盖 JSON 出口，而 FastExcel 是**直接反射读取 VO 字段**的，完全绕过 Jackson——不补这一刀，任何有导出权限的人都能把脱敏字段明文拖走。
+
+**导出侧**在 `ExcelUtil.exportExcel` 主方法内收口，6 个导出重载全部委派到这里：
+
+```java
+public static <T> void exportExcel(List<T> list, String sheetName, Class<T> clazz, boolean merge,
+                                   OutputStream os, List<DropDownOptions> options) {
+    // 按当前登录用户的权限算脱敏副本
+    List<T> masked = ExcelSensitiveHelper.maskList(list, clazz);
+    // 隐藏档字段整列排除（连表头都不留）
+    Set<String> excludeFields = ExcelSensitiveHelper.resolveExcludeFields(clazz);
+
+    ExcelWriterSheetBuilder builder = FastExcel.write(os, clazz)
+        .autoCloseStream(false)
+        .excludeColumnFieldNames(excludeFields)
+        // ...
+        .sheet(sheetName);
+
+    if (merge) {
+        // 合并策略也必须传 masked，否则合并行号算的是另一份数据
+        builder.registerWriteHandler(new CellMergeStrategy(masked, true));
+    }
+    // 必须写 masked：写回原始 list 会让脱敏整条失效
+    builder.doWrite(masked);
+}
+```
+
+`maskList` 不就地修改入参——导出列表可能来自缓存或被调用方复用，就地写入掩码会把脏值污染回去。命中的行做浅拷贝后改写，无需处理时原样返回原列表（零拷贝）。
+
+**导入侧**三个 `importExcel` 重载分别收口。导入走 `@RequestPart MultipartFile`，不经 `@RequestBody` 写入切面，是与导出侧正好镜像的一条绕过通道——页面改不了的字段，做张 Excel 导进去就能改：
+
+```java
+// 无 Listener：读完统一拦
+public static <T> List<T> importExcel(InputStream is, Class<T> clazz) {
+    List<T> rows = FastExcel.read(is).head(clazz).autoCloseStream(false).sheet().doReadSync();
+    return ExcelSensitiveHelper.guardImported(rows, clazz);
+}
+
+// 带 Listener：必须逐行拦
+public static <T> ExcelResult<T> importExcel(InputStream is, Class<T> clazz, ExcelListener<T> listener) {
+    FieldPermissionExcelListener<T> guarded = new FieldPermissionExcelListener<>(listener, clazz);
+    FastExcel.read(is, clazz, guarded).sheet().doRead();
+    return listener.getExcelResult();
+}
+```
+
+带 Listener 的重载**必须逐行拦**：自定义 Listener 常在 `invoke()` 里直接入库（如 `SysUserImportListener` 逐行调 `insertUser` / `updateUser`），等 `doRead()` 返回后再处理结果集，数据早已落库。
+
+无权修改的列被置 null，配合 MyBatis-Plus 的 `updateStrategy: NOT_NULL` 等价于保持库中原值；被忽略的字段会记入请求级上下文，由 Web 层追加到响应 `msg` 告知用户。
+
+**接入要求**：导出 VO / 导入 VO 必须标注 `@FieldResource`，且类角色要正确。
+
+```java
+// 导出 VO：必须与读出口 VO 绑同一资源，否则页面脱敏、导出明文，形成绕过后门
+@FieldResource("system:user")
+public class SysUserExportVo implements Serializable { }
+
+// 导入 VO：类角色必须是 IMPORT，标成默认的 VO 不会被导入拦截识别
+@FieldResource(value = "system:user", type = FieldClassType.IMPORT)
+public class SysUserImportVo implements Serializable { }
+```
+
+未标注解的类原样放行，零影响；`field-permission.enabled=false` 时整条链路旁路。
+
 ### 3. 模板导出
 
 适用于格式固定的报表导出，支持复杂的Excel布局。

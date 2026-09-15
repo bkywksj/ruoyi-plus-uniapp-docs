@@ -1,8 +1,8 @@
 # RuoYi-Plus-UniApp 文档进度清单
 
-> **最后更新**: 2026-06-21（增量同步 67 个上游提交：LangChain4j 1.14.1 全量迁移（概览+chat-service+model-factory+thinking）、微信支付 publicKeyId、新增 useImageCompress 图片压缩 Composable、Undertow 上传限制、dict 字典名 sys_user_gender、OSS 富文本预签名清洗、nvue 扫描配置、AFormMap 搜索候选下拉、Claude Code 实践文档补录 5 技能/5 命令）
-> **整体完成度**: 100% (500/500)
-> **总行数**: 763,000+ 行
+> **最后更新**: 2026-09-15（新增「字段权限设计」：字段级列权限四档访问控制、三种授权主体、四出口统一收口、注解基线与差异行、管理端矩阵与效果预览、前端体验层接入）
+> **整体完成度**: 100% (501/501)
+> **总行数**: 764,800+ 行
 >
 > 按照 `config.ts` 导航顺序整理，用于复查和维护
 >
@@ -18,9 +18,9 @@
 | 前端文档 | 141 | 141 | **100%** |
 | 移动端文档 | 130 | 130 | **100%** |
 | WD 组件库 | 83 | 83 | **100%** |
-| 最佳实践 | 44 | 44 | **100%** |
+| 最佳实践 | 45 | 45 | **100%** |
 | 首页与其他 | 4 | 4 | **100%** |
-| **总计** | **500** | **500** | **100%** |
+| **总计** | **501** | **501** | **100%** |
 
 ---
 
@@ -763,6 +763,7 @@
 |------|------|------|
 | 权限控制实现 | `practices/features/permission-control.md` | ✅ |
 | 数据权限设计 | `practices/features/data-permission.md` | ✅ |
+| 字段权限设计 | `practices/features/field-permission.md` | ✅ |
 | 定时任务开发 | `practices/features/scheduled-jobs.md` | ✅ |
 | 消息推送实现 | `practices/features/message-push.md` | ✅ |
 | 文件处理方案 | `practices/features/file-processing.md` | ✅ |
