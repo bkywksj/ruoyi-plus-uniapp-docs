@@ -33,7 +33,7 @@
 - **技术栈**: VitePress 1.6.3 + Vue 3.5.18 + TypeScript 5.9.2
 - **包管理器**: pnpm (≥8.0.0)
 - **Node 版本**: ≥18.0.0
-- **文档总数**: 323+ 个 Markdown 文档
+- **文档总数**: 507 个 Markdown 文档
 
 ### 核心理念
 
@@ -112,8 +112,8 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 │   ├── plus-uniapp/                 # UniApp 移动端
 │   ├── plus-uniapp-demo/            # UniApp 示例项目
 │   ├── ruoyi-admin/                 # 后端主模块(启动入口)
-│   ├── ruoyi-common/                # 后端通用模块(31个子模块)
-│   ├── ruoyi-modules/               # 后端业务模块(5个子模块)
+│   ├── ruoyi-common/                # 后端通用模块(36个子模块)
+│   ├── ruoyi-modules/               # 后端业务模块(6个子模块)
 │   ├── ruoyi-extend/                # 后端扩展模块(2个子模块)
 │   ├── script/                      # 脚本文件
 │   └── pom.xml                      # Maven 项目配置
@@ -134,7 +134,7 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 
 ### 后端模块详细结构
 
-#### ruoyi-common 通用模块 (32个子模块)
+#### ruoyi-common 通用模块 (36个子模块)
 
 | 模块名称 | 说明 |
 |---------|------|
@@ -157,7 +157,7 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 | `ruoyi-common-mybatis` | MyBatis-Plus配置 |
 | `ruoyi-common-openapi` | OpenAPI接口规范 |
 | `ruoyi-common-oss` | 对象存储(AWS S3兼容) |
-| `ruoyi-common-pay` | 支付模块(含4个子模块) |
+| `ruoyi-common-pay` | 支付模块(含5个子模块: core/微信/支付宝/银联/余额) |
 | `ruoyi-common-ratelimiter` | 限流模块 |
 | `ruoyi-common-redis` | Redis缓存模块(Redisson) |
 | `ruoyi-common-rocketmq` | 消息队列(RocketMQ) |
@@ -181,8 +181,9 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 | `ruoyi-common-pay-alipay` | 支付宝支付 |
 | `ruoyi-common-pay-wechat` | 微信支付 |
 | `ruoyi-common-pay-balance` | 余额支付 |
+| `ruoyi-common-pay-unionpay` | 银联支付 |
 
-#### ruoyi-modules 业务模块 (5个子模块)
+#### ruoyi-modules 业务模块 (6个子模块)
 
 | 模块名称 | 说明 |
 |---------|------|
@@ -191,6 +192,7 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 | `ruoyi-workflow` | 工作流模块(Warm-Flow) |
 | `ruoyi-business` | 业务扩展模块 |
 | `ruoyi-mall` | 商城模块 |
+| `ruoyi-job` | 定时任务业务模块 |
 
 #### ruoyi-extend 扩展模块 (2个子模块)
 
@@ -203,14 +205,14 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 
 | 技术 | 版本 |
 |------|------|
-| Java | 17 |
-| Spring Boot | 3.5.6 |
-| MyBatis-Plus | 3.5.14 |
-| Sa-Token | 1.44.0 |
-| Redisson | 3.51.0 |
-| Hutool | 5.8.40 |
-| Warm-Flow | 1.8.1 |
-| SnailJob | 1.8.0 |
+| Java | 21 |
+| Spring Boot | 3.5.16 |
+| MyBatis-Plus | 3.5.16 |
+| Sa-Token | 1.45.0 |
+| Redisson | 3.52.0 |
+| Hutool | 5.8.43 |
+| Warm-Flow | 1.8.9 |
+| SnailJob | 1.10.0 |
 | LangChain4j | 1.14.1 |
 | LangChain4j Community (DashScope) | 1.14.0-beta24 |
 | WxJava | 4.7.6.B |
@@ -221,15 +223,18 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 
 ### WD UI 组件库分类
 
-| 分类 | 组件数量 | 目录 | 状态 |
-|------|---------|------|------|
-| 基础组件 | 6 | `mobile/wd/basic/` | Button/Icon 已完成 |
-| 布局组件 | 5 | `mobile/wd/layout/` | 待完善 |
-| 导航组件 | 9 | `mobile/wd/navigation/` | 待完善 |
-| 表单组件 | 22 | `mobile/wd/form/` | 待完善 |
-| 展示组件 | 13 | `mobile/wd/display/` | 待完善 |
-| 反馈组件 | 23 | `mobile/wd/feedback/` | 待完善 |
-| **总计** | **78** | - | **2/78 已完成** |
+> 组件数量以源码 `src/wd/components/wd-*/` 目录实测为准(101 个)，部分子组件(如 `col`/`row`、`step`、`tabbar-item`)合并在父组件文档页中。
+
+| 分类 | 组件数量 | 目录 |
+|------|---------|------|
+| 基础组件 | 6 | `mobile/wd/basic/` |
+| 布局组件 | 8 | `mobile/wd/layout/` |
+| 导航组件 | 15 | `mobile/wd/navigation/` |
+| 表单组件 | 28 | `mobile/wd/form/` |
+| 展示组件 | 23 | `mobile/wd/display/` |
+| 反馈组件 | 20 | `mobile/wd/feedback/` |
+| 其他 | 1 | - |
+| **总计** | **101** | 已成页 83 个 |
 
 ---
 

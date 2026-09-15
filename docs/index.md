@@ -16,6 +16,9 @@ hero:
       text: AI 开发体验
       link: /practices/ai/claude-code
     - theme: alt
+      text: 与上游框架对比
+      link: /comparison
+    - theme: alt
       text: 介绍视频
       link: https://www.bilibili.com/video/BV1YrtMzvEaT/
     - theme: alt
@@ -62,6 +65,10 @@ features:
     title: 框架特性
     details: 全面重构亮点，Spring Boot 4 五分支矩阵，全站国际化，AI 深度思考，多租户 Pool↔Silo 迁移，2026 年最新特性
     link: /changelog
+  - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><path d="M13 6h3a2 2 0 0 1 2 2v7"/><path d="M11 18H8a2 2 0 0 1-2-2V9"/></g></svg>'
+    title: 与上游框架对比
+    details: 相对 RuoYi-Vue-Plus 5.x / 6.x 的逐维度差异：四层架构、字段级权限、移动端全栈、支付与 AI 集成、模块清单与依赖版本，逐项标注增量能力
+    link: /comparison
   - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg>'
     title: 视频教程
     details: 快速入门指南，开发实战教程，部署运维讲解，最佳实践分享，核心技术原理
@@ -115,9 +122,10 @@ highlights:
 
 ### 重构成果
 
-- **减少代码量 70%** - 通过四层架构（Controller-Service-DAO-Mapper）和增强查询大幅减少样板代码
-- **提升开发效率 80%** - 智能代码生成 + DAO层统一查询构建 + 完善工具库
-- **统一开发规范** - 前后端移动端命名规范、类型声明统一、职责分层清晰
+- **告别样板代码** - DAO 层封装通用 CRUD 与链式条件构建，单表增删改查无需手写 Wrapper 拼装和 Mapper XML
+- **四层架构解耦** - Controller-Service-DAO-Mapper 分层，数据访问与业务逻辑彻底分离，Service 不再直接操作 Mapper
+- **新模块分钟级交付** - 代码生成器一键产出后端四层、Vue 页面、TS 类型与菜单 SQL，配合完善工具库，建表即可用
+- **统一开发规范** - 前后端移动端命名规范统一、类型声明一致、接口风格拉齐
 - **完善的文档** - 框架即文档理念，代码自说明
 
 ### 项目规模
