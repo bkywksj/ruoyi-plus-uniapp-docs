@@ -5,7 +5,7 @@
       "name": "RuoYi-Plus-UniApp",
       "icon": "🚀",
       "slogan": "Spring Boot 3 + Vue 3 + UniApp 企业级全栈框架",
-      "description": "基于成熟开源项目深度重构的企业级全栈快速开发框架，四层架构设计，涵盖后端、前端管理端、移动端。多租户、支付集成、AI能力、代码生成器，减少代码量70%。",
+      "description": "基于成熟开源项目深度重构的企业级全栈快速开发框架，四层架构设计，涵盖后端、前端管理端、移动端。多租户、支付集成、AI能力、代码生成器，DAO 层通用 CRUD + 链式查询，单表增删改查零样板代码。",
       "theme": "blue",
       "badge": "",
       "highlights": [
