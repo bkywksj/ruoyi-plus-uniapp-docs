@@ -1252,7 +1252,7 @@ ENTRYPOINT ["java", "-jar", "/app.jar"]
 ### 20.1 开发环境搭建
 
 **环境要求**:
-- JDK 17+
+- JDK 21+
 - Maven 3.6+
 - MySQL 5.7+
 - Redis 7.0+
@@ -1340,7 +1340,7 @@ public interface ISysUserService {
 
 系统模块作为整个应用的核心基础，具有以下显著特点：
 
-**技术先进性**: 采用最新的Spring Boot 3.x和JDK 17，结合Sa-Token轻量级安全框架，技术栈新颖且稳定。
+**技术先进性**: 采用最新的Spring Boot 3.x和JDK 21，结合Sa-Token轻量级安全框架，技术栈新颖且稳定。
 
 **架构完整性**: 从认证授权到监控告警，从数据管理到文件存储，提供了企业级应用所需的完整功能模块。
 

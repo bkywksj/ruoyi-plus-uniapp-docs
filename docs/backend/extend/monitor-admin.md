@@ -161,10 +161,10 @@ java -jar target/ruoyi-monitor-admin.jar --spring.profiles.active=dev
 
 ### Dockerfile 说明
 
-项目提供了优化的 Dockerfile，使用 Liberica OpenJDK 17 作为基础镜像：
+项目提供了优化的 Dockerfile，使用 Liberica OpenJDK 21 作为基础镜像：
 
 ```dockerfile
-# 使用贝尔实验室 OpenJDK 17 镜像（支持 CDS 加速启动）
+# 使用贝尔实验室 OpenJDK 21 镜像（支持 CDS 加速启动）
 FROM bellsoft/liberica-openjdk-rocky:17-cds
 
 LABEL maintainer="抓蛙师"
@@ -874,10 +874,10 @@ echo $DINGTALK_SECRET
 
 | 组件 | 版本 | 说明 |
 |------|------|------|
-| Spring Boot | 3.5.12 | 应用基础框架 |
+| Spring Boot | 3.5.16 | 应用基础框架 |
 | Spring Boot Admin | 3.4.x | 监控中心核心 |
 | Spring Security | 6.x | 安全认证框架 |
-| Hutool | 5.8.40 | 工具类库 |
+| Hutool | 5.8.43 | 工具类库 |
 | Lombok | 1.18.x | 代码简化工具 |
 | Logback | 1.5.x | 日志框架 |
 

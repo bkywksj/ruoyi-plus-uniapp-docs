@@ -234,8 +234,8 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 
 | 依赖 | 版本 | 说明 |
 |------|------|------|
-| Java | 17 | JDK版本要求 |
-| Spring Boot | 3.5.8 | 核心框架版本 |
+| Java | 21 | JDK版本要求 |
+| Spring Boot | 3.5.16 | 核心框架版本 |
 | MyBatis | 3.5.16 | 持久层框架 |
 | MyBatis-Plus | 3.5.16 | MyBatis增强 |
 
@@ -252,7 +252,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 
 | 依赖 | 版本 | 说明 |
 |------|------|------|
-| Sa-Token | 1.44.0 | 权限认证 |
+| Sa-Token | 1.45.0 | 权限认证 |
 | JustAuth | 1.16.7 | 社交登录 |
 | BouncyCastle | 1.80 | 加密库 |
 
@@ -260,7 +260,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 
 | 依赖 | 版本 | 说明 |
 |------|------|------|
-| Hutool | 5.8.40 | 工具集合 |
+| Hutool | 5.8.43 | 工具集合 |
 | Lombok | 1.18.40 | 代码简化 |
 | MapStruct-Plus | 1.5.0 | 对象映射 |
 | Guava | 33.4.8-jre | Google工具库 |
@@ -269,7 +269,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 
 | 依赖 | 版本 | 说明 |
 |------|------|------|
-| SnailJob | 1.8.0 | 分布式任务调度 |
+| SnailJob | 1.10.0 | 分布式任务调度 |
 | Lock4j | 2.2.7 | 分布式锁 |
 
 ### 消息通信组件版本
@@ -293,7 +293,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 | 依赖 | 版本 | 说明 |
 |------|------|------|
 | SpringDoc | 2.8.14 | API文档 |
-| Spring Boot Admin | 3.5.5 | 监控管理 |
+| Spring Boot Admin | 3.5.8 | 监控管理 |
 
 ### AI与网络组件版本
 
@@ -307,7 +307,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 
 | 依赖 | 版本 | 说明 |
 |------|------|------|
-| Warm-Flow | 1.8.3 | 工作流引擎 |
+| Warm-Flow | 1.8.9 | 工作流引擎 |
 | IP2Region | 2.7.0 | IP地址定位 |
 | Velocity | 2.3 | 模板引擎 |
 | AnyLine | 8.7.2-20250603 | 动态ORM |
@@ -838,7 +838,8 @@ module-b → module-core
 
 | RuoYi-Plus 版本 | JDK 版本 | Spring Boot 版本 | 说明 |
 |-----------------|----------|------------------|------|
-| 5.5.x | 17+ | 3.5.x | 当前稳定版本 |
+| 5.6.x | 21+ | 3.5.x | 当前稳定版本 |
+| 5.5.x | 17+ | 3.5.x | 历史版本 |
 | 5.4.x | 17+ | 3.4.x | 长期支持版本 |
 | 5.3.x | 17+ | 3.3.x | 维护版本 |
 | 5.2.x | 17+ | 3.2.x | 停止维护 |
@@ -851,7 +852,7 @@ module-b → module-core
 ├────────────────────────────────────────────────────────────────────────────┤
 │  ruoyi-common-bom 5.5.0                                                    │
 │  │                                                                         │
-│  ├── Spring Boot 3.5.8                                                     │
+│  ├── Spring Boot 3.5.16                                                     │
 │  │   ├── Spring Framework 6.2.x                                           │
 │  │   ├── Jakarta EE 10                                                     │
 │  │   └── Tomcat/Undertow 嵌入式服务器                                       │
@@ -860,13 +861,13 @@ module-b → module-core
 │  │   ├── MyBatis 3.5.16                                                    │
 │  │   └── 支持 MySQL 8.x / PostgreSQL 15+ / Oracle 19+                      │
 │  │                                                                         │
-│  ├── Sa-Token 1.44.0                                                       │
+│  ├── Sa-Token 1.45.0                                                       │
 │  │   └── 兼容 Redis 6.x+ / 7.x                                             │
 │  │                                                                         │
 │  ├── Redisson 3.52.0                                                       │
 │  │   └── 兼容 Redis 6.2+ / 7.x                                             │
 │  │                                                                         │
-│  └── Hutool 5.8.40                                                         │
+│  └── Hutool 5.8.43                                                         │
 │      └── 工具类全兼容                                                       │
 └────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -1207,10 +1208,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up JDK 17
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: '17'
+        java-version: '21'
         distribution: 'temurin'
         cache: maven
 
@@ -1661,9 +1662,9 @@ enterprise-platform/
 **主要变更:**
 
 1. **Spring Boot 版本升级**: 3.4.x → 3.5.x
-2. **JDK 最低版本**: 保持 JDK 17
+2. **JDK 最低版本**: 保持 JDK 21
 3. **新增模块**: `ruoyi-common-mqtt`、`ruoyi-common-message`
-4. **依赖版本更新**: Redisson 3.51.0 → 3.52.0
+4. **依赖版本更新**: Redisson 3.52.0 → 3.52.0
 
 **迁移步骤:**
 
@@ -1713,12 +1714,12 @@ redisson:
 **主要变更:**
 
 1. **Spring Boot 版本升级**: 3.3.x → 3.4.x
-2. **Virtual Threads 支持**: 新增虚拟线程配置(JDK 17+)
+2. **Virtual Threads 支持**: 新增虚拟线程配置(JDK 21+)
 
-**JDK 17 迁移注意事项:**
+**JDK 21 迁移注意事项:**
 
 ```java
-// 利用 JDK 17 新特性
+// 利用 JDK 21 新特性
 
 // 1. 虚拟线程配置
 @Configuration
@@ -1956,7 +1957,7 @@ BOM 的导入顺序决定版本优先级，后导入的会覆盖先导入的:
 
 | 组件 | 最低版本 | 推荐版本 |
 |------|----------|----------|
-| JDK | 17 | 17.0.10+ |
+| JDK | 21 | 21.0.10+ |
 | Maven | 3.9.0 | 3.9.9+ |
 | Git | 2.30 | 2.45+ |
 | IDE | IntelliJ 2024.1 | 2024.3+ |

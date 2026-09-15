@@ -111,14 +111,14 @@ RuoYi-Plus-UniApp 是一个全栈框架，采用当前主流的技术栈构建�
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| Java | 17 | LTS 长期支持版本 |
-| Spring Boot | 3.5.12 | 核心框架 |
+| Java | 21 | LTS 长期支持版本 |
+| Spring Boot | 3.5.16 | 核心框架 |
 | MyBatis-Plus | 3.5.16 | ORM 增强框架 |
-| Sa-Token | 1.44.0 | 权限认证框架 |
+| Sa-Token | 1.45.0 | 权限认证框架 |
 | Redisson | 3.52.0 | Redis 客户端 |
-| Hutool | 5.8.40 | Java 工具类库 |
+| Hutool | 5.8.43 | Java 工具类库 |
 | Warm-Flow | 1.8.1 | 工作流引擎 |
-| SnailJob | 1.8.0 | 分布式任务调度 |
+| SnailJob | 1.10.0 | 分布式任务调度 |
 | LangChain4j | 0.35.0 | AI 大模型集成 |
 | WxJava | 4.7.6.B | 微信开发套件 |
 
@@ -1117,7 +1117,7 @@ class SysUserControllerTest {
 
 **必需环境：**
 
-- JDK 17+
+- JDK 21+
 - Maven 3.9+
 - MySQL 5.7+
 - Redis 7.0+

@@ -17,8 +17,8 @@ RuoYi-Plus 提供了完整的测试支持框架，基于 JUnit 5 构建，提供
 
 | 项目 | 要求 | 说明 |
 |------|------|------|
-| Java | 17+ | JUnit 5 要求 |
-| Spring Boot | 3.5.12 | 框架版本 |
+| Java | 21+ | JUnit 5 要求 |
+| Spring Boot | 3.5.16 | 框架版本 |
 | JUnit | 5.10.5 | 测试框架 |
 | AssertJ | 3.27.3 | 断言库 |
 

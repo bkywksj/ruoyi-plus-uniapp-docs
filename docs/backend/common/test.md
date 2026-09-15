@@ -20,7 +20,7 @@ ruoyi-common-test 是 RuoYi-Plus 框架的**测试支持模块**，提供了一�
 | 所属分组 | plus.ruoyi |
 | 核心依赖 | Spring Boot Test, JUnit 5, JavaFaker |
 | 依赖范围 | test (不会打包到生产环境) |
-| 适用版本 | Java 17+ |
+| 适用版本 | Java 21+ |
 
 ## 核心特性
 
@@ -136,7 +136,7 @@ ruoyi-common-test
 | Mockito | 5.15.2 | Mock 框架 |
 | AssertJ | 3.27.3 | 流式断言库 |
 | JavaFaker | 1.0.2 | 测试数据生成 |
-| Hutool | 5.8.40 | 工具类库 |
+| Hutool | 5.8.43 | 工具类库 |
 
 ## 模块架构
 

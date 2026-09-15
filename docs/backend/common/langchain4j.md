@@ -32,7 +32,7 @@
 |------|------|------|
 | LangChain4j | 1.14.1 | LLM应用开发框架（核心、open-ai、ollama、anthropic 集成） |
 | LangChain4j Community (DashScope) | 1.14.0-beta24 | 通义千问集成，已迁出主仓库独立维护 |
-| Spring Boot | 3.5.12 | 自动配置支持 |
+| Spring Boot | 3.5.16 | 自动配置支持 |
 | Redisson | 3.52.0 | Redis客户端 |
 
 ::: warning LangChain4j 1.x API 说明
@@ -1746,7 +1746,7 @@ request.setSystemPrompt("""
     你是一个专业的Java开发助手。
     请遵循以下规则：
     1. 使用中文回答
-    2. 代码示例使用Java 17+语法
+    2. 代码示例使用Java 21+语法
     3. 遵循Spring Boot最佳实践
     4. 添加详细的注释
     """);

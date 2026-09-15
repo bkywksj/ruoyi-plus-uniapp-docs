@@ -101,7 +101,7 @@ java -Xms512m -Xmx1024m \
      -jar ruoyi-admin.jar
 ```
 
-#### 生产环境（JDK 17）
+#### 生产环境（JDK 21）
 
 ```bash
 java -Xms2g -Xmx4g \
@@ -129,7 +129,7 @@ java -Xms2g -Xmx4g \
 |------|------|
 | -Xms | 初始堆内存大小 |
 | -Xmx | 最大堆内存大小 |
-| -XX:+UseG1GC | 使用G1垃圾收集器（JDK17推荐） |
+| -XX:+UseG1GC | 使用G1垃圾收集器（JDK21推荐） |
 | -XX:+UseZGC | 使用ZGC垃圾收集器（JDK21推荐，低延迟） |
 | -XX:MaxGCPauseMillis | 最大GC停顿时间目标 |
 | -XX:+HeapDumpOnOutOfMemoryError | OOM时自动导出堆转储 |

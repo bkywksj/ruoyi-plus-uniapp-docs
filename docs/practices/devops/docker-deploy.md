@@ -219,7 +219,7 @@ docker exec -it ryplus_uni_workflow /bin/bash
 ### Dockerfile 结构解析
 
 ```dockerfile
-# 基础镜像：Liberica JDK 17 (带 CDS 支持)
+# 基础镜像：Liberica JDK 21 (带 CDS 支持)
 FROM bellsoft/liberica-openjdk-rocky:17-cds
 LABEL maintainer="抓蛙师"
 

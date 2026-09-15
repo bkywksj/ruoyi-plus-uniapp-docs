@@ -11,10 +11,10 @@
 在开始之前，请确保你的开发环境已满足以下要求：
 
 ### 核心环境
-- **Java**: JDK 17+
-  - <Icon icon="lucide:download" /> [Eclipse Temurin JDK 17 下载地址](https://adoptium.net/temurin/releases/?version=17) (开源免费、免登录，推荐)
-  - <Icon icon="lucide:download" /> [Oracle JDK 17 下载地址](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html) (官方，需登录 Oracle 账号)
-  - 支持 JDK 17 及以上版本
+- **Java**: JDK 21+
+  - <Icon icon="lucide:download" /> [Eclipse Temurin JDK 21 下载地址](https://adoptium.net/temurin/releases/?version=21) (开源免费、免登录，推荐)
+  - <Icon icon="lucide:download" /> [Oracle JDK 21 下载地址](https://www.oracle.com/java/technologies/javase/jdk21-archive-downloads.html) (官方，需登录 Oracle 账号)
+  - 支持 JDK 21 及以上版本
 
 > **分支提示**：以上为 3.5.x 主线（master）要求。Spring Boot 4 分支（6.x / 6.x-single）环境要求相同，仅框架版本升级至 4.1.0（JDK 21）。各分支差异详见 [分支说明](/changelog#分支说明)。
 
@@ -110,7 +110,7 @@ ruoyi-plus-uniapp/
 #### 1.2 配置 JDK
 1. 点击菜单 `File` → `Project Structure`
 2. 在左侧选择 `Project Settings` → `Project`
-3. 将 `SDK` 设置为 **JDK 17 或更高版本**
+3. 将 `SDK` 设置为 **JDK 21 或更高版本**
 
 ### 步骤2：项目标识符配置（新项目必需）
 

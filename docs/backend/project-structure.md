@@ -2,7 +2,7 @@
 
 ## 项目概览
 
-RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化、分层架构设计原则。项目包含入口模块、通用模块、业务模块和扩展模块四大核心部分,共计 40+ 个子模块,提供完整的企业级应用开发基础设施。
+RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 21+ 构建,遵循模块化、分层架构设计原则。项目包含入口模块、通用模块、业务模块和扩展模块四大核心部分,共计 40+ 个子模块,提供完整的企业级应用开发基础设施。
 
 ::: tip 分支与技术栈
 本文档正文以 **3.5.x 主线（master）** 为准。框架另提供 **Spring Boot 4.1.0 分支（6.x / 6.x-single）**，业务代码与开发规范一致，仅框架版本不同。各分支差异详见 [分支说明](/changelog#分支说明)。
@@ -12,14 +12,14 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| Java | 17+ | 支持 JDK 17 及以上版本 |
+| Java | 21+ | 支持 JDK 21 及以上版本 |
 | Spring Boot | 3.5.x | 核心框架 |
 | MyBatis-Plus | 3.5.16 | ORM 框架 |
-| Sa-Token | 1.44.0 | 认证授权框架 |
+| Sa-Token | 1.45.0 | 认证授权框架 |
 | Redisson | 3.52.0 | Redis 客户端 |
-| Hutool | 5.8.40 | 工具类库 |
+| Hutool | 5.8.43 | 工具类库 |
 | Warm-Flow | 1.8.1 | 工作流引擎 |
-| SnailJob | 1.8.0 | 分布式任务调度 |
+| SnailJob | 1.10.0 | 分布式任务调度 |
 | LangChain4j | 0.35.0 | AI 大模型集成 |
 | WxJava | 4.7.6.B | 微信开发工具包 |
 
@@ -301,7 +301,7 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 17+ 构建,遵循模块化
 
 | 模块 | 说明 | 技术栈 |
 |------|------|--------|
-| `ruoyi-common-satoken` | 认证授权 | Sa-Token 1.44.0 |
+| `ruoyi-common-satoken` | 认证授权 | Sa-Token 1.45.0 |
 | `ruoyi-common-security` | 安全防护 | 加密、防攻击 |
 | `ruoyi-common-encrypt` | 数据加密 | AES/RSA/SM4 |
 | `ruoyi-common-sensitive` | 数据脱敏 | 手机号、身份证等脱敏 |

@@ -1,6 +1,6 @@
 # SnailJob 任务调度服务
 
-分布式任务调度中心 - 基于 SnailJob 1.8.0 提供高性能任务调度与管理能力
+分布式任务调度中心 - 基于 SnailJob 1.10.0 提供高性能任务调度与管理能力
 
 ## 模块简介
 
@@ -203,10 +203,10 @@ java -jar target/ruoyi-snailjob-server.jar --spring.profiles.active=dev
 
 ### Dockerfile 说明
 
-项目提供了优化的 Dockerfile，使用 Liberica OpenJDK 17 作为基础镜像：
+项目提供了优化的 Dockerfile，使用 Liberica OpenJDK 21 作为基础镜像：
 
 ```dockerfile
-# 使用贝尔实验室 OpenJDK 17 镜像（支持 CDS 加速启动）
+# 使用贝尔实验室 OpenJDK 21 镜像（支持 CDS 加速启动）
 FROM bellsoft/liberica-openjdk-rocky:17-cds
 
 LABEL maintainer="抓蛙师"
@@ -1091,8 +1091,8 @@ JAVA_OPTS="-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/logs/"
 
 | 组件 | 版本 | 说明 |
 |------|------|------|
-| SnailJob | 1.8.0 | 分布式任务调度框架 |
-| Spring Boot | 3.5.12 | 应用基础框架 |
+| SnailJob | 1.10.0 | 分布式任务调度框架 |
+| Spring Boot | 3.5.16 | 应用基础框架 |
 | MyBatis Plus | 3.5.16 | 数据持久层 |
 | HikariCP | 5.x | 数据库连接池 |
 | gRPC/Netty | - | RPC 通信 |
