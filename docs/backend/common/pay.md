@@ -18,7 +18,7 @@ RuoYi-Plus 支付模块 (`ruoyi-common-pay`) 是一个统一的支付服务解�
 | 支付方式 | 支持类型 | Handler类 |
 |---------|---------|-----------|
 | 微信支付 | JSAPI、NATIVE、APP、H5 | `WxPayHandler` |
-| 支付宝 | WAP、PAGE、APP | `AliPayHandler` |
+| 支付宝 | WAP、PAGE、APP、NATIVE、BARCODE | `AliPayHandler` |
 | 余额支付 | 账户余额 | `BalancePayHandler` |
 
 ## 快速开始
@@ -189,8 +189,24 @@ String platformCertPath = "-----BEGIN PUBLIC KEY-----\nMIIBIj...\n-----END PUBLI
 微信支付 V3「公钥模式」验签需要一个**独立的公钥ID**（格式 `PUB_KEY_ID_xxx`），它与「证书序列号」`certSerialNo` 是两个不同的标识。早期实现误用证书序列号冒充公钥ID，会导致公钥模式下回调验签失败，因此新增了独立的 `publicKeyId` 字段贯通全链路（`b_payment` 表新增 `public_key_id` 列，`Payment` / `PaymentBo` / `PaymentVo` / `PaymentDTO` / `PayConfig` 均补充该字段）。
 
 - **获取路径**：微信商户平台 → 账户中心 → API 安全 → 微信支付公钥
-- **回退兼容**：`WxPayConfigBuilder` 构建配置时优先使用真实 `publicKeyId`；若该字段为空，则回退使用 `certSerialNo` 并打印告警，保证旧配置向后兼容
+- **绝不回退**：`publicKeyId` 为空时**不会**用 `certSerialNo` 顶替，而是整体退回平台证书模式并给出获取路径指引
+- **格式校验**：公钥ID 非 `PUB_KEY_ID_` 前缀时只告警不阻断，提示疑似误填商户API证书序列号——避免微信后续调整格式时把可用配置判死
 - **适用范围**：仅「微信支付公钥模式」需要填写，「平台证书模式」可留空
+:::
+
+::: warning 为什么不能用证书序列号顶替公钥ID
+按微信支付官方文档，两个标识走的是**不同的请求头**：
+
+- `Authorization` 头的 `serial_no` 填**商户API证书序列号**（公钥模式下仍然必需）
+- `Wechatpay-Serial` 头填**微信支付公钥ID**（`PUB_KEY_ID_` 前缀）
+- 不携带 `Wechatpay-Serial` 时，微信支付会自动改用平台证书签名
+
+早期实现里 `getEffectivePublicKeyId()` 在 `publicKeyId` 为空时回退返回 `certSerialNo`，有两处危害：
+
+1. 把商户API证书序列号发进 `Wechatpay-Serial`，微信侧无法识别该 serial，请求被直接拒绝——表现为「配置看着正常但一直请求不过去」
+2. 这个非空的错误值**绕过了** wxjava 对 `fullPublicKeyModel` + `publicKeyId` 的启动校验（`WxPayConfig.initApiV3HttpClient` 本会抛 `WxPayException`），把启动期就能暴露的配置缺失，推迟成运行期难以定位的请求失败
+
+现在的实现改为三分支：公钥内容为空、公钥ID缺失，两者任一都退回平台证书模式；仅当两者齐全时才启用 `fullPublicKeyModel`。
 :::
 
 #### 证书配置灵活性
@@ -293,6 +309,8 @@ String payUrl = response.getPayUrl();
 - **WAP**: 手机网站支付
 - **PAGE**: 电脑网站支付
 - **APP**: APP支付
+- **NATIVE**: 当面付-扫码支付（商家展示二维码，用户扫）
+- **BARCODE**: 当面付-付款码支付（用户展示付款码，商家扫）
 
 #### 配置要求
 ```java
@@ -342,7 +360,55 @@ PayResponse response = payService.pay(DictPaymentMethod.ALIPAY, request);
 String payInfo = response.getPayUrl();
 ```
 
-### 余额支付
+**当面付-扫码支付 (NATIVE)**
+
+商家展示二维码，用户用支付宝扫码完成支付。适用于 PC 收银台、线下门店等场景，底层调用 `alipay.trade.precreate`。
+
+```java
+PayRequest request = PayRequest.createAlipayNativeRequest(
+    appId, "商品描述", outTradeNo, new BigDecimal("0.01")
+);
+PayResponse response = payService.pay(DictPaymentMethod.ALIPAY, request);
+
+String qrCode = response.getCodeUrl();         // 二维码链接
+String qrImage = response.getQrCodeBase64();   // 已渲染好的 Base64 二维码图片
+```
+
+框架在返回时做了两件额外的事：一是校验支付宝虽返回成功但二维码为空的情况（直接判失败并提示重试），二是顺带用 `QrCodeUtils` 生成 Base64 图片，前端可直接 `img` 标签展示，不必自己再渲染一次。
+
+交易状态返回 `WAIT_PAY`，有效期 30 分钟，实际支付结果通过异步回调通知。
+
+**当面付-付款码支付 (BARCODE)**
+
+用户展示付款码，商家用扫码枪扫描完成扣款。适用于线下门店收银，底层调用 `alipay.trade.pay`，**扣款同步发生**。
+
+```java
+// authCode 为用户付款码：25-30 位数字串，1 分钟有效，过期需用户重新生成
+PayRequest request = PayRequest.createAlipayBarcodeRequest(
+    appId, "商品描述", outTradeNo, new BigDecimal("0.01"), authCode
+);
+PayResponse response = payService.pay(DictPaymentMethod.ALIPAY, request);
+```
+
+#### 付款码支付的四类返回与撤销兜底
+
+条码支付是唯一会**同步扣款**的方式，因此返回结果的处理比其它方式复杂得多。框架把支付宝的返回归为四类：
+
+| 类别 | 支付宝返回 | 框架处理 |
+|------|-----------|---------|
+| 成功 | `10000` | 扣款成功，直接发布支付成功事件 |
+| 等待密码 | `10003` | 返回 `USERPAYING`，交前端轮询订单查询接口 |
+| 明确失败 | 付款码无效 / 余额不足 / 参数错误等 | 资金未变动，直接判失败，**不撤销** |
+| 未知态 | 系统异常 / 网络超时 / `SYSTEM_ERROR` | **查询确认，必要时撤销** |
+
+第四类是关键。网络异常或读超时意味着**此刻钱可能已经扣了**，直接判失败会造成「用户已扣款但商户判失败」的资损。框架的兜底流程是：
+
+1. 先轮询查询确认最终结果，最多 3 次，间隔 2 秒
+2. 查到已支付成功 → 按成功处理
+3. 查到仍在等待用户付款 → 交前端继续轮询，**不撤销**（用户可能还在输密码）
+4. 查询无法确认（交易不存在 / 查询持续异常）→ 调用撤销接口，最多重试 3 次
+
+「明确失败」的子错误码是一份**白名单**：只有在这份名单里的错误码才跳过撤销，不在名单里的未知错误码一律走「查询+撤销」兜底。这个方向是刻意的——宁可多撤销一次（撤销本身对未扣款的交易是无害的），也不能漏撤造成资损。
 
 余额支付是系统内置的支付方式，无需第三方接口，适合积分、储值卡等场景。
 

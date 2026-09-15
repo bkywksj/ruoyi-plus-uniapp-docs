@@ -241,14 +241,15 @@ public R<CaptchaVo> imgCode() {
 
 **发送逻辑**:
 - **手机号校验**: 验证手机号格式和有效性
-- **频率限制**: 每60秒只能发送一次
+- **图形验证码前置**: 发码前先校验图形验证码
+- **三级限流**: 手机号维度、IP 维度、全局熔断
 - **模板管理**: 支持不同场景的短信模板
 - **多平台支持**: 集成多个短信服务商
 
 **验证流程**:
-- 生成6位随机数字验证码
-- 调用SMS4J发送短信
-- Redis存储验证码，设置5分钟有效期
+- 生成 4 位随机数字验证码
+- 调用 SMS4J 发送短信
+- Redis 存储验证码，有效期 2 分钟（`Constants.CAPTCHA_EXPIRATION`）
 - 登录时校验验证码的正确性和时效性
 
 ### 4.3 邮箱验证码
@@ -268,6 +269,89 @@ public void emailCodeImpl(String email) {
         "您本次验证码为：" + code + "，有效性为" + Constants.CAPTCHA_EXPIRATION + "分钟");
 }
 ```
+
+### 4.4 发码接口的防轰炸设计
+
+短信与邮箱发码是整个认证体系里**最容易被滥用**的入口。早期实现只按手机号/邮箱维度限流，攻击者遍历号段或不断更换邮箱即可绕过，后果很实际：
+
+- **短信轰炸**：烧掉短信余额，且短信签名会被运营商封停
+- **邮件轰炸**：SMTP 配额耗尽，发件域名被拉黑
+
+现在的防护分为「前置校验」与「三级限流」两部分。
+
+#### 图形验证码前置
+
+发码前先校验图形验证码，跟随 `system.security.captcha-enabled` 总开关：
+
+```java
+boolean captchaEnabled = configService.getBooleanValue(/* system.security.captcha-enabled */);
+if (captchaEnabled) {
+    // 校验图形验证码
+}
+```
+
+两个设计要点：
+
+- **跟随总开关**：开关关闭时跳过校验。否则前端拿不到 uuid，发码功能会直接不可用
+- **放在限流链之前**：图形验证码输错**不占用限流配额**，避免正常用户手滑几次就被锁
+
+这里的校验方法与 `SysRegisterService.validateCaptcha` 的差别是：**本方法不写登录日志**——发码还不是登录行为。
+
+#### 三级限流
+
+`@RateLimiter` 注解没有 `@Repeatable`，所以三层限流是按维度**拆成三个方法逐层调用**的：
+
+```java
+@RateLimiter(time = 3600, count = 20, limitType = LimitType.IP,
+    message = "操作过于频繁，请稍后再试")
+public void smsCodeIpLimit(String phone) {
+    SpringUtils.getAopProxy(this).smsCodeGlobalLimit(phone);
+}
+
+@RateLimiter(key = "smsCode:global", time = 3600, count = 500,
+    message = "系统繁忙，请稍后再试")
+public void smsCodeGlobalLimit(String phone) {
+    SpringUtils.getAopProxy(this).smsCodeImpl(phone);
+}
+
+@RateLimiter(key = "#phone", time = 60, count = 1)
+public void smsCodeImpl(String phone) { ... }
+```
+
+注意层层之间用 `SpringUtils.getAopProxy(this)` 调用——直接 `this.xxx()` 会走不到 AOP 代理，注解会失效。
+
+三层的职责分工：
+
+| 层级 | 维度 | 阈值 | 作用 |
+|------|------|------|------|
+| 第一层 | IP | 每小时 20 次 | 拦住单 IP 的遍历式攻击 |
+| 第二层 | 全局 | 每小时 500 次 | 费用兜底，IP 维度失效时的最后一道 |
+| 第三层 | 手机号/邮箱 | 每 60 秒 1 次 | 防止同一号码被反复发送 |
+
+**IP 阈值取 20 的依据**：正常用户一小时不会要 20 条验证码。若线上存在大量 NAT 共享出口（园区网、运营商大内网）导致误伤，可上调此值。
+
+**全局熔断为什么必要**：IP 维度在代理池 / 秒拨环境下会完全失效——每个请求都是新 IP。这一层是短信费用的最后兜底。
+
+`count` 需按真实业务峰值调整，**建议取峰值的 3~5 倍**：设置过低会在业务高峰误伤全部用户，过高则失去兜底意义。触发这一层意味着「要么正在被攻击，要么业务量突增」，两种情况都需要人工介入，**建议对该日志接入告警**。
+
+#### 格式校验的附带作用
+
+手机号与邮箱都补了格式校验。除了常规的参数合法性，还有一个容易被忽略的作用：**避免限流 key 空间被调用方开放**。
+
+不校验格式时，攻击者可以传任意字符串作为手机号，每个都会在 Redis 里生成一个独立的限流 key，堆积大量垃圾 key。
+
+### 4.5 邮箱登录开关的拆分
+
+`mail.captcha.enabled` 与 `mail.enabled` 已经解耦：
+
+| 配置项 | 含义 |
+|--------|------|
+| `mail.enabled` | 是否启用邮件发送能力 |
+| `mail.captcha.enabled` | 是否开放邮箱验证码登录入口 |
+
+**能发邮件不等于要开放邮箱登录入口**——很多项目需要邮件通知，但并不希望多一个登录方式。
+
+这与短信侧 `sms.blends` / `sms.captcha.enabled` 的分层保持一致：前者是能力配置，后者是入口开关。
 
 ## 5. 会话管理
 
