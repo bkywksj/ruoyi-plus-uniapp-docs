@@ -701,6 +701,12 @@ public class PayServiceImpl implements PayService {
 
 **4. 购物车管理**
 
+::: warning 规划中，当前版本未实现
+`Cart` / `CartServiceImpl` / `CartMapper` 在 5 个分支仓库与次要参考项目中**均无 Java 实现**，仅在 `docs/prototypes/` 下有 HTML 原型页。mall 模块当前实际提供的服务只有 `IGoodsService`、`IGoodsSkuService`、`IOrderService` 三个。
+
+以下代码为按现行四层架构给出的**参考实现形态**，不对应仓库中的真实代码，请勿据此查找源码。
+:::
+
 提供购物车的增删改查功能。
 
 ```java
