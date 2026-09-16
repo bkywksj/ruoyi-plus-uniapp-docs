@@ -103,34 +103,49 @@ ruoyi-plus-uniapp-docs/           # 文档项目根目录
 
 ### 源码项目结构
 
+框架有 **5 个分支变体**，每个是**独立的本地 git 仓库**、内容都是完整框架（含后端四大模块与全部前端），业务代码与开发规范保持一致，按「租户模型 × 技术栈」区分。
+
 ```
-ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
+ruoyi-plus-uniapp/                    # 上级目录(存放所有仓库)
 ├── ruoyi-plus-uniapp-docs/          # 本文档项目
-├── ruoyi-plus-uniapp-workflow/      # ⭐ 源码参考项目(编写文档时参考)
-│   ├── plus-app/                    # App 应用端
-│   ├── plus-ui/                     # 管理端前端
-│   ├── plus-uniapp/                 # UniApp 移动端
-│   ├── plus-uniapp-demo/            # UniApp 示例项目
-│   ├── ruoyi-admin/                 # 后端主模块(启动入口)
-│   ├── ruoyi-common/                # 后端通用模块(36个子模块)
-│   ├── ruoyi-modules/               # 后端业务模块(6个子模块)
-│   ├── ruoyi-extend/                # 后端扩展模块(2个子模块)
-│   ├── script/                      # 脚本文件
-│   └── pom.xml                      # Maven 项目配置
-└── ruoyi-plus-uniapp/               # 旧源码项目(仅供参考)
-    └── plus-uniapp/                 # UniApp 移动端项目
-        ├── src/
-        │   ├── wd/                  # WD UI 组件库源码
-        │   │   ├── components/      # 组件实现
-        │   │   └── index.ts         # 组件导出
-        │   ├── pages/               # 页面
-        │   ├── stores/              # Pinia 状态管理
-        │   ├── composables/         # 组合式函数
-        │   └── utils/               # 工具函数
-        ├── manifest.json            # 应用配置
-        ├── pages.json               # 页面路由配置
-        └── package.json             # 依赖配置
+│
+├── ruoyi-plus-uniapp-workflow/      # ⭐ workflow 分支 - 编写文档的主要参考
+├── ruoyi-plus-uniapp/               # master 分支
+├── ruoyi-plus-uniapp-single/        # single 分支
+├── ruoyi-plus-uniapp-6x/            # 6.x 分支
+└── ruoyi-plus-uniapp-6x-single/     # 6.x-single 分支(git 分支名为 single-6.x)
 ```
+
+**5 个分支的差异矩阵**：
+
+| 目录 | git 分支名 | Spring Boot | JDK | 多租户 | 工作流 |
+|------|-----------|:---:|:---:|:---:|:---:|
+| `ruoyi-plus-uniapp` | `master` | 3.5.x | 21 | ✅ | ❌ |
+| `ruoyi-plus-uniapp-single` | `single` | 3.5.x | 21 | ❌ | ❌ |
+| `ruoyi-plus-uniapp-workflow` | `workflow` | 3.5.x | 21 | ✅ | ✅ |
+| `ruoyi-plus-uniapp-6x` | `6.x` | 4.1.0 | 21 | ✅ | ✅ |
+| `ruoyi-plus-uniapp-6x-single` | `single-6.x` | 4.1.0 | 21 | ❌ | ✅ |
+
+> ⚠️ `6.x-single` 的**目录名**是 `ruoyi-plus-uniapp-6x-single`，但**真实 git 分支名是 `single-6.x`**。跑 git 命令校验分支时必须用真实分支名，定位仓库才用目录路径。
+
+**每个分支仓库的内部结构一致**：
+
+```
+<任一分支仓库>/
+├── plus-app/                        # App 应用端
+├── plus-ui/                         # 管理端前端
+├── plus-uniapp/                     # UniApp 移动端
+│   └── src/wd/                      # WD UI 组件库源码(components/ + index.ts)
+├── plus-uniapp-demo/                # UniApp 示例项目
+├── ruoyi-admin/                     # 后端主模块(启动入口)
+├── ruoyi-common/                    # 后端通用模块(36个子模块)
+├── ruoyi-modules/                   # 后端业务模块(6个子模块)
+├── ruoyi-extend/                    # 后端扩展模块(2个子模块)
+├── script/                          # 脚本与建库 SQL
+└── pom.xml                          # Maven 项目配置
+```
+
+上级目录下另有两项，**均不属于文档参考范围**：`ruoyi-plus-uniapp-delivery/`（交付产物，非 git 仓库）、`ruoyi-plus-uniapp-single-ddd/`（`single-ddd` 分支的 DDD 架构试验，长期无提交，未纳入文档同步）。
 
 ### 后端模块详细结构
 
@@ -218,8 +233,10 @@ ruoyi-plus-uniapp/                    # 源码项目根目录(上级目录)
 | WxJava | 4.7.6.B |
 
 **⚠️ 重要说明**:
-- **主要参考源码**: `ruoyi-plus-uniapp-workflow` 是最新的完整项目,编写文档时应主要参考此项目
-- **次要参考源码**: `ruoyi-plus-uniapp` 是早期项目,仅在 workflow 项目中找不到对应实现时参考
+- **主要参考源码**: `ruoyi-plus-uniapp-workflow`(workflow 分支)功能最全(多租户 + 工作流),**文档正文一律以此为准**
+- **其余 4 个分支同样是活跃维护的完整框架**,不是「旧项目」或「早期项目」——它们与 workflow 同步更新,只在租户模型与技术栈上有差异
+- **何时需要看其他分支**: 仅当要描述**分支差异**时(如 master/single 无工作流模块、6.x 系列为 Spring Boot 4)。这类内容只应落到分支说明与特性对比处,**不要改写以主线 3.5.x 为准的正文默认口径**
+- **上游项目**: 本框架基于 RuoYi-Vue-Plus 深度重构,上游仓库不在本地,需要对比时查其官方文档
 
 ### WD UI 组件库分类
 
@@ -1424,6 +1441,14 @@ del \\?\D:\path\to\nul
 ---
 
 ## 更新日志
+
+### v1.6.0 (2026-09-16)
+
+- 🔧 修正「源码项目结构」：`ruoyi-plus-uniapp` 此前被描述为「旧源码项目(仅供参考)、只含 plus-uniapp」，实为 **master 分支的完整框架且活跃维护**（近 30 天 56 个提交）
+- 📋 改为按 **5 个分支变体**组织：新增差异矩阵表（目录 / git 分支名 / Spring Boot / JDK / 多租户 / 工作流）
+- ⚠️ 标注 `6.x-single` 的坑：目录名是 `ruoyi-plus-uniapp-6x-single`，真实 git 分支名是 `single-6.x`
+- 📝 重写「参考源码」说明：其余 4 个分支不是「旧项目」，而是与 workflow 同步更新的完整框架；仅在描述分支差异时才需查看，且不得改写以主线 3.5.x 为准的正文口径
+- 🗂️ 注明 `ruoyi-plus-uniapp-delivery`（交付产物，非 git）与 `ruoyi-plus-uniapp-single-ddd`（DDD 试验分支，长期无提交）均不属于文档参考范围
 
 ### v1.5.0 (2025-12-19)
 
