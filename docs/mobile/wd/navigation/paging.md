@@ -24,8 +24,6 @@ Paging 分页加载组件是一个功能强大的智能分页解决方案,专为
 - **完整 TypeScript** - 提供完整的类型定义,包括 Props、Emits、Expose 接口
 - **UnoCSS 样式** - 使用 UnoCSS 原子化CSS,样式简洁高效
 
-参考: src/wd/components/wd-paging/wd-paging.vue:1-88
-
 ## 基本用法
 
 ### 简单列表
@@ -66,8 +64,6 @@ const fetchUsers = async (query: PageQuery) => {
 - `fetch` 函数接收 `PageQuery` 参数,返回 `[error, PageResult]` 格式
 - 使用 `#item` 插槽自定义每条数据的渲染
 - 组件会自动显示加载状态和"没有更多了"提示
-
-参考: src/wd/components/wd-paging/wd-paging.vue:325-326, 1242-1336
 
 ### 带搜索功能
 
@@ -123,8 +119,6 @@ const handleSearch = (keyword: string) => {
 - 搜索关键词自动添加到 `query.searchValue` 参数
 - `show-total` 显示搜索结果总数
 - `@search` 事件在用户搜索时触发
-
-参考: src/wd/components/wd-paging/wd-paging.vue:341-344, 1479-1493
 
 ### Tabs 切换
 
@@ -216,8 +210,6 @@ const handleTabChange = ({ index, name, tab }) => {
 - `tabs-fixed` 启用 Tab 粘性定位
 - `badgeProps` 可以为 Tab 添加徽标
 
-参考: src/wd/components/wd-paging/wd-paging.vue:282-302, 348-353, 1368-1408
-
 ### Radio 筛选
 
 添加 Radio 筛选功能。
@@ -285,8 +277,6 @@ const handleRadioChange = ({ value, option, field }) => {
 - `radio-group-sticky` 启用 Radio 粘性定位
 - 选项超过3个时自动启用水平滚动
 
-参考: src/wd/components/wd-paging/wd-paging.vue:304-314, 355-358, 1410-1478
-
 ### 限制最大记录数
 
 限制最多显示的数据条数,防止过度加载。
@@ -338,8 +328,6 @@ const handleManualLoad = ({ currentRecords, maxRecords }) => {
 - `disabled-auto-load` 禁用自动加载
 - `show-manual-load-button` 显示手动加载按钮
 - 达到限制后显示"已显示全部数据"提示
-
-参考: src/wd/components/wd-paging/wd-paging.vue:334-339, 765-820
 
 ### 自定义空状态
 
@@ -401,8 +389,6 @@ const handleAddBook = () => {
 - 使用 `#empty` 插槽自定义空状态内容
 - 插槽接收 `currentTab`、`currentTabData`、`currentRadioValue`、`currentRadioData` 参数
 - 只在数据为空且不在加载中时显示
-
-参考: src/wd/components/wd-paging/wd-paging.vue:202-217
 
 ### after-items 插槽
 
@@ -467,8 +453,6 @@ const handleAddMember = () => {
 - `#after-items` 插槽在所有数据项之后渲染
 - 插槽接收 `currentPageData`、`displayRecords` 等参数
 - 在所有情况下都显示,包括空状态
-
-参考: src/wd/components/wd-paging/wd-paging.vue:190-200
 
 ## 高级用法
 
@@ -590,8 +574,6 @@ const handleRadioChange = ({ value, option, field, tabIndex }) => {
 - 每个 Tab+Radio 组合的数据独立缓存
 - Tab 的 `data` 和 Radio 的 `field:value` 会自动合并到查询参数
 - 组件自动管理每个组合的分页状态
-
-参考: src/wd/components/wd-paging/wd-paging.vue:39-87, 570-636, 698-723
 
 ### 暴露方法调用
 
@@ -721,8 +703,6 @@ const checkStatus = () => {
 - `canLoadMore()` - 检查是否可以加载更多
 - `scrollRadioIntoView()` - 滚动 Radio 到可视区域
 
-参考: src/wd/components/wd-paging/wd-paging.vue:418-458, 1560-1579
-
 ### 粘性定位配置
 
 配置 Tabs、RadioGroup、搜索框的粘性定位。
@@ -810,8 +790,6 @@ const fetchGoods = async (query: PageQuery) => {
 - `navbar-height` - 导航栏高度,用于计算粘性定位的 top 偏移量
 - `tabs-height` - Tabs 高度,用于计算其他元素的偏移量
 - `radio-group-height` - RadioGroup 高度,用于计算搜索框的偏移量
-
-参考: src/wd/components/wd-paging/wd-paging.vue:389-394, 640-695
 
 ### 数据加载事件
 
@@ -910,8 +888,6 @@ const handleError = (error: Error) => {
 - `@load` 事件在数据加载成功后触发,携带 `PageResult` 和 `tabIndex` 参数
 - `@error` 事件在数据加载失败时触发,携带 `Error` 对象
 - 可以在这些事件中执行统计上报、错误处理等操作
-
-参考: src/wd/components/wd-paging/wd-paging.vue:401-402, 412, 1319, 1331
 
 ### 复杂业务场景
 
@@ -1181,8 +1157,6 @@ const handleToggleMode = () => {
 - 切换自动/手动加载模式
 - 完整的错误处理
 
-参考: src/wd/components/wd-paging/wd-paging.vue:16-88
-
 ## API
 
 ### Props
@@ -1190,9 +1164,9 @@ const handleToggleMode = () => {
 | 参数 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
 | fetch | **必填** API请求函数,接收 `PageQuery` 参数,返回 `[error, PageResult]` | `(query: PageQuery) => Result<PageResult<any>>` | - |
-| params | 额外的查询参数,会合并到 PageQuery 中 | `Record<string, any>` | `{}` |
+| params | 额外的查询参数,会合并到 PageQuery 中;其中显式写的 `pageSize` 优先于 `page-size` | `Record<string, any>` | `{}` |
 | auto | 是否自动加载首页数据 | `boolean` | `true` |
-| page-size | 每页条数 | `number` | `10` |
+| page-size | 每页条数;`params` 中显式传了 `pageSize` 时以后者为准 | `number` | `10` |
 | disabled-auto-load | 是否禁用自动分页加载,禁用后需手动加载更多 | `boolean` | `false` |
 | max-records | 最大记录数限制,0 表示无限制 | `number` | `0` |
 | show-manual-load-button | 是否显示手动加载更多按钮(当禁用自动加载时) | `boolean` | `false` |
@@ -1223,8 +1197,6 @@ const handleToggleMode = () => {
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-paging/wd-paging.vue:319-395, 461-501
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -1236,8 +1208,6 @@ const handleToggleMode = () => {
 | error | 数据加载失败时触发 | `error: Error` |
 | manual-load-more | 手动加载更多时触发 | `event: { currentRecords: number; maxRecords: number }` |
 
-参考: src/wd/components/wd-paging/wd-paging.vue:400-414
-
 ### Slots
 
 | 插槽名 | 说明 | 作用域参数 |
@@ -1245,8 +1215,6 @@ const handleToggleMode = () => {
 | item | 数据项插槽 | `{ item: any, index: number, currentTab: number, currentTabData: PagingTabItem, currentRadioValue: string \| number \| boolean, currentRadioData: RadioOption }` |
 | after-items | 数据项后的插槽,在所有情况下都显示 | `{ currentTab: number, currentTabData: PagingTabItem, currentRadioValue: string \| number \| boolean, currentRadioData: RadioOption, currentPageData: PageResult<any>, displayRecords: any[] }` |
 | empty | 空数据状态插槽 | `{ currentTab: number, currentTabData: PagingTabItem, currentRadioValue: string \| number \| boolean, currentRadioData: RadioOption }` |
-
-参考: src/wd/components/wd-paging/wd-paging.vue:171-217
 
 ### 暴露方法
 
@@ -1263,8 +1231,6 @@ const handleToggleMode = () => {
 | clearTabRadioData | 清空指定 Tab+Radio 组合的数据 | `tabIndex?: number, radioValue?: string \| number \| boolean` | `void` |
 | canLoadMore | 检查是否可以加载更多 | - | `boolean` |
 
-参考: src/wd/components/wd-paging/wd-paging.vue:418-458, 1560-1579
-
 ### 暴露属性
 
 | 属性名 | 说明 | 类型 |
@@ -1277,8 +1243,6 @@ const handleToggleMode = () => {
 | currentRadioData | 当前 Radio 数据 | `ComputedRef<RadioOption \| null>` |
 | isReachEnd | 是否到达结束状态 | `ComputedRef<boolean>` |
 | displayRecords | 实际显示的记录(受 maxRecords 限制) | `ComputedRef<any[]>` |
-
-参考: src/wd/components/wd-paging/wd-paging.vue:440-458, 1560-1579
 
 ### 类型定义
 
@@ -1321,8 +1285,6 @@ export interface PagingRadioGroupConfig {
 export type PagingInstance = ComponentPublicInstance<WdPagingProps, WdPagingExpose>
 ```
 
-参考: src/wd/components/wd-paging/wd-paging.vue:282-314, 1582
-
 ## 最佳实践
 
 ### 1. 合理使用数据缓存
@@ -1359,8 +1321,6 @@ const handleSomeAction = () => {
 - 组件会自动管理缓存,切换Tab时如果有缓存则直接显示
 - 只在数据确实需要刷新时才清空缓存
 - 使用 `clearTabData` 只清空相关 Tab,避免清空所有缓存
-
-参考: src/wd/components/wd-paging/wd-paging.vue:888-964
 
 ### 2. Tab 和 Radio 配置的优先级
 
@@ -1412,8 +1372,6 @@ const globalRadioConfig: PagingRadioGroupConfig = {
 - 每个 Tab 可以有完全不同的筛选维度
 - 全局配置作为默认配置,减少重复代码
 
-参考: src/wd/components/wd-paging/wd-paging.vue:570-636
-
 ### 3. 查询参数的构建逻辑
 
 理解组件如何构建查询参数,正确设置各项配置:
@@ -1425,6 +1383,9 @@ const globalRadioConfig: PagingRadioGroupConfig = {
 // 3. 搜索关键词: searchValue (如果有)
 // 4. Tab 的 data
 // 5. Radio 的 field:value
+//
+// 注意 pageSize 是个例外: params 里显式写的 pageSize 优先于 page-size prop
+//   const effectivePageSize = computed(() => Number(props.params?.pageSize) || props.pageSize)
 
 // ✅ 推荐: 清晰的参数分层
 const params = ref({
@@ -1473,8 +1434,6 @@ const params = ref({
 - Radio 筛选使用 `radioGroupConfig.field`
 - 搜索关键词自动添加到 `searchValue`
 
-参考: src/wd/components/wd-paging/wd-paging.vue:1084-1135
-
 ### 4. 粘性定位的正确配置
 
 粘性定位需要正确计算各元素的高度:
@@ -1515,8 +1474,6 @@ onMounted(() => {
 - Radio 在 Tabs 下方(如果 Tabs 固定)
 - 搜索框在 Radio 下方(如果 Radio 固定)
 
-参考: src/wd/components/wd-paging/wd-paging.vue:640-695
-
 ### 5. 限制最大记录数的使用
 
 合理使用 `maxRecords` 和 `disabledAutoLoad` 控制数据加载:
@@ -1552,8 +1509,6 @@ const handleManualLoadMore = ({ currentRecords, maxRecords }) => {
 - 配合 `disabledAutoLoad` 和 `showManualLoadButton` 使用
 - 达到限制后引导用户使用搜索功能
 - 短列表(几十到一两百条)可以不限制
-
-参考: src/wd/components/wd-paging/wd-paging.vue:765-820
 
 ## 常见问题
 
@@ -1597,8 +1552,6 @@ const fetchData = async (query: PageQuery) => {
   return [null, data] // 如果fetch失败,会抛出异常而不是返回[error, null]
 }
 ```
-
-参考: src/wd/components/wd-paging/wd-paging.vue:325-326, 1242-1336
 
 ### 2. Radio 选项过多时如何处理?
 
@@ -1648,8 +1601,6 @@ const getSecondaryRadioConfig = (mainCategory) => {
   }
 }
 ```
-
-参考: src/wd/components/wd-paging/wd-paging.vue:304-314, 594-602, 969-1082
 
 ### 3. 如何在操作后刷新列表?
 
@@ -1703,8 +1654,6 @@ const handleChangeStatus = async (id: string, newStatus: string) => {
 }
 ```
 
-参考: src/wd/components/wd-paging/wd-paging.vue:888-964, 1341-1343
-
 ### 4. 粘性定位不生效怎么办?
 
 **问题原因:**
@@ -1746,8 +1695,6 @@ onMounted(() => {
 
 // ❌ 常见错误: page 设置了 height: 100vh 但内容不足以滚动
 ```
-
-参考: src/wd/components/wd-paging/wd-paging.vue:640-695
 
 ### 5. 如何实现下拉刷新?
 
@@ -1813,32 +1760,34 @@ onPullDownRefresh(() => {
 </template>
 ```
 
-参考: src/wd/components/wd-paging/wd-paging.vue:1341-1343
-
 ## 注意事项
 
 1. **fetch 函数返回格式** - fetch 函数必须返回 `[error, result]` 格式,result 需符合 `PageResult<any>` 结构
 
 2. **数据缓存机制** - 组件为每个 Tab+Radio 组合独立缓存数据,切换时无需重新加载,理解这一点对使用组件很重要
 
-3. **查询参数构建顺序** - 查询参数按顺序合并: params → searchValue → tab.data → radio.field:value
+3. **请求竞态由组件内部处理** - 快速切 Tab 或连续搜索时,组件用自增序号 `requestSeq` 丢弃过期响应,并在同一时刻快照「查询参数 + 目标数据槽 key + 追加基准」三者,保证写回严格对应。业务侧的 `fetch` 函数**不需要**自行做防抖或取消
 
-4. **Tab 和 Radio 配置优先级** - Tab 级别的 `radioGroupConfig` 优先级高于全局 `radioGroupConfig`
+4. **首屏请求允许后发取代先发** - 只有「加载更多」是串行的(避免同一页被重复追加);首屏与刷新不做 loading 拦截,否则上一个 Tab 的请求未返回时会静默吞掉新 Tab 的请求,表现为切过去的 Tab 永远空白
 
-5. **粘性定位的层级** - 三个粘性元素的 z-index: Tabs(90) > Radio(80) > Search(70),确保正确的视觉层级
+5. **查询参数构建顺序** - 查询参数按顺序合并: params → searchValue → tab.data → radio.field:value;`pageSize` 例外,`params` 中显式传入的优先
 
-6. **IntersectionObserver 的创建时机** - 组件会在数据加载完成后自动创建观察器,无需手动管理
+6. **Tab 和 Radio 配置优先级** - Tab 级别的 `radioGroupConfig` 优先级高于全局 `radioGroupConfig`
 
-7. **maxRecords 的影响** - 设置 `maxRecords` 后,`displayRecords` 会被截取,但 `pageData.records` 仍包含所有已加载数据
+7. **粘性定位的层级** - 三个粘性元素的 z-index: Tabs(90) > Radio(80) > Search(70),确保正确的视觉层级
 
-8. **清空数据的影响** - `clearAllData` 会清空所有缓存并销毁观察器,`clearTabData` 只清空指定 Tab 的缓存
+8. **IntersectionObserver 的创建时机** - 组件会在数据加载完成后自动创建观察器,无需手动管理
 
-9. **Radio 水平滚动阈值** - `scrollThreshold` 默认为 3,选项数量超过此值时启用水平滚动
+9. **maxRecords 的影响** - 设置 `maxRecords` 后,`displayRecords` 会被截取,但 `pageData.records` 仍包含所有已加载数据
 
-10. **搜索功能的实现** - 搜索关键词自动添加到 `query.searchValue`,后端需要支持此参数
+10. **清空数据的影响** - `clearAllData` 会清空所有缓存并销毁观察器,`clearTabData` 只清空指定 Tab 的缓存
 
-11. **首次加载状态** - 组件区分首次加载(`firstLoading`)和加载更多(`loading`),首次加载时显示全屏loading
+11. **Radio 水平滚动阈值** - `scrollThreshold` 默认为 3,选项数量超过此值时启用水平滚动
 
-12. **暴露属性是响应式的** - 通过 ref 访问的 `pageData`、`loading` 等属性都是响应式的,可以在模板中直接使用
+12. **搜索功能的实现** - 搜索关键词自动添加到 `query.searchValue`,后端需要支持此参数
 
-参考: src/wd/components/wd-paging/wd-paging.vue:1-1675
+13. **首次加载状态** - 组件区分首次加载(`firstLoading`)和加载更多(`loading`),首次加载时显示全屏loading
+
+14. **暴露属性是响应式的** - 通过 ref 访问的 `pageData`、`loading` 等属性都是响应式的,可以在模板中直接使用
+
+15. **二次开发时不要把列表项的 `:key` 改成 `item.id`** - 组件内部对 `displayRecords` 的 `v-for` 必须用 `itemIndex` 作 key。uni-app 在小程序端把「v-for 中的作用域插槽」编译成父子两侧各自 `wx:for`,slot 名两边都按渲染下标生成(`item-{下标}`)。改用 `item.id` 会让父按下标复用节点、子按 id 销毁重建 outlet,两侧复用策略不同步;列表长度变化(切 Tab 回来 / 搜索 / 刷新)时就会出现「数据 N 条、实际只渲染出 M 条」的错位丢失

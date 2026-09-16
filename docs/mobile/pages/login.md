@@ -169,6 +169,65 @@ const refreshCaptcha = () => {
 
 ### 短信验证码
 
+#### 图形验证码前置
+
+发码接口加了图形验证码前置校验，用于拦短信轰炸（遍历号段会烧掉短信余额并招致签名被运营商封停）。移动端 `phoneLogin` 页据此新增一块图形验证码输入：
+
+```vue
+<!-- 图形验证码：发短信的前置校验；后端关掉开关时整块不显示 -->
+<view v-if="captchaEnabled" class="mt-4 flex items-center">
+  <wd-input v-model="imgCodeValue" placeholder="请输入图形验证码" no-border />
+  <image v-if="captchaImg" :src="captchaImg" class="captcha-img ml-3" mode="aspectFit" @click="refreshCaptcha" />
+</view>
+```
+
+发码接口相应增加两个参数：
+
+```typescript
+/**
+ * @param code 图形验证码
+ * @param uuid 图形验证码唯一标识，由 imgCode 接口下发
+ */
+export const smsCode = (phone: string, code?: string, uuid?: string): Result<void> => {
+  return http.get<void>('/auth/smsCode', { phone, code, uuid }, withHeaders({ auth: false }))
+}
+```
+
+#### 三个容易忽略的点
+
+**① 开关字段的默认值方向**
+
+```typescript
+/* 开启时后端不显式回传该字段，取 VO 默认值 true；只有关闭时才显式回 false */
+captchaEnabled.value = data.captchaEnabled ?? true
+```
+
+后端只在**关闭**时才显式下发 `false`，开启时不带该字段。所以 `?? true` 的方向不能反过来写。
+
+**② 图形验证码是一次性消费，发完必须换一张**
+
+```typescript
+/*
+  后端无论校验成败都已把它删掉，所以发完就得换一张。
+  成功时也要换 —— 用户从验证码页返回本页再次发码，带的还是那个失效 uuid，必然失败。
+*/
+if (captchaEnabled.value) refreshCaptcha()
+```
+
+关键在**成功时也要换**。只在失败分支刷新的话，用户走完「发码 → 验证码页 → 返回」再次发码时，带的仍是已被消费的 uuid，必然失败，而界面上图片没变，用户完全看不出问题在哪。
+
+**③ 提前拦下空的图形验证码**
+
+```typescript
+/* 开着图形验证码却没填，后端必然拒绝，提前拦下省一次无谓往返 */
+if (captchaEnabled.value && !imgCodeValue.value) {
+  useToast().error('请输入图形验证码')
+  return
+}
+```
+
+#### 倒计时与发送
+
 ```typescript
 import { smsCode as sendSms } from '@/api/system/auth/authApi'
 
