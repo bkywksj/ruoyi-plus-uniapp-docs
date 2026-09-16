@@ -24,8 +24,6 @@ InputNumber 计数器组件是一个专业的数字输入控件,由减号按钮�
 - **自定义样式** - 支持自定义输入框宽度、前后置图标、标签配置,满足各种 UI 设计需求
 - **值变化拦截** - 提供 `beforeChange` 钩子函数,支持在值变化前执行自定义验证或异步操作
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:1-112
-
 ## 基本用法
 
 ### 基础计数器
@@ -53,8 +51,6 @@ const value1 = ref(1)
 - 点击减号按钮数值递减,点击加号按钮数值递增
 - 当数值达到最小值时减号按钮自动禁用,达到最大值时加号按钮自动禁用
 - 可直接在输入框中键入数字,失焦时自动校正到有效范围
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:229-257
 
 ### 设置范围和步进
 
@@ -113,8 +109,6 @@ const value4 = ref(0)
 - `step-strictly` 开启严格步进模式后,输入的值会自动修正为步进值的整数倍
 - 严格步进模式下会计算最接近的合法值,确保值始终符合 `min + n * step` 的规则
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:136-143
-
 ### 精度控制
 
 使用 `precision` 属性控制数值的小数位数。
@@ -171,8 +165,6 @@ const value7 = ref(0.00)
 - 组件内部使用 `formatToPrecision` 函数处理精度,通过 `Math.round` 避免浮点数精度问题
 - 输入过程中允许输入中间状态(如 `1.`,`.5`),失焦时自动格式化为指定精度
 - 精度设置会影响显示格式,`precision=2` 时值为 1 会显示为 `1.00`
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:293-296
 
 ### 禁用状态
 
@@ -233,8 +225,6 @@ const value11 = ref(5)
 - `disable-plus` 仅禁用加号按钮,输入框和减号按钮仍可用
 - 这些属性可以组合使用,实现精细的权限控制
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:146-153
-
 ### 隐藏输入框
 
 使用 `without-input` 属性隐藏中间的输入框,仅保留加减按钮。
@@ -282,8 +272,6 @@ const value13 = ref(0)
 - 建议与 `long-press` 属性配合使用,提供长按连续调节功能,提升操作效率
 - 此模式下组件宽度会自动调整,只显示两个按钮
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:154-155
-
 ### 长按连续调节
 
 开启 `long-press` 属性后,长按加减按钮可快速连续调节数值。
@@ -329,8 +317,6 @@ const value15 = ref(0)
 - 连续调节的间隔时间为 250ms,即每 250ms 触发一次加减操作
 - 手指离开或滑出按钮区域时停止连续调节
 - 长按功能通过 `handleTouchStart` 和 `handleTouchEnd` 事件配合定时器实现
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:669-685
 
 ### 允许空值
 
@@ -378,8 +364,6 @@ const value17 = ref(0)
 - `allow-null` 为 `false`(默认)时,清空输入框失焦后会自动填充 `min` 值
 - 允许空值模式下,需确保业务逻辑能正确处理空字符串值
 - 可配合 `placeholder` 属性提示用户输入
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:159-160
 
 ## 高级用法
 
@@ -490,8 +474,6 @@ const handleReset = () => {
 - `center` 属性使标签和输入器垂直居中对齐
 - 验证失败时在组件下方显示错误提示信息
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:175-196
-
 ### 自定义图标
 
 使用 `prefix-icon`、`suffix-icon` 属性或插槽自定义前后置图标。
@@ -569,8 +551,6 @@ const handleIconClick = () => {
 - 点击图标会触发 `clickprefixicon` 或 `clicksuffixicon` 事件
 - 使用 `prefix`/`suffix` 插槽可自定义更复杂的内容
 - 当有 `label` 时,`prefix-icon` 显示在标签内部;无 `label` 时显示在输入器前方
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:11-36
 
 ### 值变化拦截
 
@@ -674,8 +654,6 @@ const handleConfirm = (value: number | string): Promise<boolean> => {
 - 返回 `true` 或 Promise resolve `true` 时允许值变化
 - 组件内部使用 `callInterceptor` 工具函数统一处理同步和异步拦截
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:553-571
-
 ### 实时/失焦更新
 
 通过 `immediate-change` 属性控制值的更新时机。
@@ -739,8 +717,6 @@ const handleBlur = () => {
 - 失焦更新模式适合需要减少事件触发频率或进行复杂计算的场景
 - 无论哪种模式,点击加减按钮都会立即触发 `change` 事件
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:168-169
-
 ### 初始值修正
 
 通过 `update-on-init` 属性控制是否在初始化时自动修正 `v-model` 值。
@@ -790,8 +766,6 @@ const value28 = ref(13)
 - 修正规则包括:步进值对齐、范围限制、精度格式化
 - 设置为 `false` 时,初始值保持原样,只在用户交互时才修正
 - 适用于从服务端获取数据,不希望初始渲染时改变值的场景
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:438-451
 
 ### 自定义输入框宽度
 
@@ -852,8 +826,6 @@ const value32 = ref(1)
 - 建议根据精度和数值范围合理设置宽度,避免显示不完整
 - 过窄的宽度可能导致数字显示不全,过宽则浪费空间
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:156-157
-
 ### 输入类型
 
 通过 `input-type` 属性控制输入框的键盘类型。
@@ -901,8 +873,6 @@ const value34 = ref(0.00)
 - 组件会根据 `precision` 自动设置 `input-mode` 为 `'numeric'` 或 `'decimal'`
 - 键盘类型影响移动端输入体验,建议根据实际需求选择
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:52-64
-
 ## API
 
 ### Props
@@ -943,8 +913,6 @@ const value34 = ref(0.00)
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-label-class | 自定义标签样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:126-196
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -956,8 +924,6 @@ const value34 = ref(0.00)
 | clickprefixicon | 点击前置图标时触发 | - |
 | clicksuffixicon | 点击后置图标时触发 | - |
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:199-214
-
 ### Slots
 
 | 插槽名 | 说明 | 参数 |
@@ -965,8 +931,6 @@ const value34 = ref(0.00)
 | label | 自定义标签内容 | - |
 | prefix | 自定义前置内容 | - |
 | suffix | 自定义后置内容 | - |
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:218-227
 
 ### 类型定义
 
@@ -1087,8 +1051,6 @@ interface WdInputNumberSlots extends Slots {
 }
 ```
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:113-227
-
 ## 主题定制
 
 InputNumber 组件提供了丰富的 CSS 变量用于主题定制,支持浅色和深色两种主题模式。
@@ -1179,8 +1141,6 @@ const toggleTheme = () => {
 </script>
 ```
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:763-816
-
 ## 最佳实践
 
 ### 1. 合理设置范围和步进值
@@ -1215,8 +1175,6 @@ const toggleTheme = () => {
 - 金额输入场景设置 `precision="2"` 和 `step="0.01"`
 - 合理设置 `max` 值,防止输入过大数字导致业务异常
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:136-143
-
 ### 2. 精度和步进值保持一致
 
 `precision` 和 `step` 的小数位数应保持一致,避免出现显示和步进不匹配的问题。
@@ -1246,8 +1204,6 @@ const toggleTheme = () => {
 **原因:**
 - `step="0.1"` 配合 `precision="2"` 会导致每次递增显示为 `0.10`、`0.20`,不够直观
 - 保持一致可确保步进值和显示格式协调统一
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:293-306
 
 ### 3. 严格步进模式的使用场景
 
@@ -1289,8 +1245,6 @@ const toggleTheme = () => {
 - 建议配合 `update-on-init="false"` 避免初始值被意外修正
 - 确保 `min` 值是 `step` 的整数倍,否则可能出现边界问题
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:310-366
-
 ### 4. 长按功能的合理使用
 
 `long-press` 适用于需要大幅度调节数值的场景,配合较大的 `step` 值使用效果更佳。
@@ -1329,8 +1283,6 @@ const toggleTheme = () => {
 - 范围超过 100 的场景建议开启长按功能
 - 配合 `step` 值设置合理的递增/递减量
 - 小范围调节(如 1-10)不建议开启,避免误触
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:669-685
 
 ### 5. 表单验证的正确配置
 
@@ -1382,8 +1334,6 @@ const toggleTheme = () => {
 - 结合 `before-change` 实现值变化前的校验
 - 使用 `prop` 关联表单字段,启用自动验证
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:175-196
-
 ## 常见问题
 
 ### 1. 浮点数精度问题
@@ -1425,8 +1375,6 @@ const value = ref(0.0)
 </script>
 ```
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:293-296
-
 ### 2. 严格步进模式下的初始值修正
 
 **问题描述:**
@@ -1459,8 +1407,6 @@ import { ref } from 'vue'
 const value = ref(13)
 </script>
 ```
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:438-451
 
 ### 3. 长按功能在某些平台不生效
 
@@ -1497,8 +1443,6 @@ const value = ref(13)
   </view>
 </template>
 ```
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:669-685
 
 ### 4. 输入框宽度不够导致数字显示不全
 
@@ -1550,8 +1494,6 @@ const value2 = ref(0.0000)
 const value3 = ref(100000)
 </script>
 ```
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:156-157
 
 ### 5. beforeChange 钩子导致值无法更新
 
@@ -1626,8 +1568,6 @@ const handleAsyncBeforeChangeWrong = (value: number | string): Promise<boolean> 
 }
 ```
 
-参考: src/wd/components/wd-input-number/wd-input-number.vue:553-571
-
 ## 注意事项
 
 1. **v-model 类型**: `v-model` 的值类型为 `number | string`,当 `allow-null` 为 `true` 时可能为空字符串,业务代码需做类型判断
@@ -1653,5 +1593,3 @@ const handleAsyncBeforeChangeWrong = (value: number | string): Promise<boolean> 
 11. **图标事件**: `clickprefixicon` 和 `clicksuffixicon` 事件只在点击图标时触发,点击输入框或加减按钮不会触发
 
 12. **初始值修正**: `update-on-init` 默认为 `true`,组件初始化时会修正不符合规则的初始值,如不需要可设为 `false`
-
-参考: src/wd/components/wd-input-number/wd-input-number.vue:229-257

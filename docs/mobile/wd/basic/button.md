@@ -18,8 +18,6 @@ Button 组件是 WD UI 的基础组件之一,提供了丰富的样式和功能�
 - 支持小程序开放能力(获取用户信息、手机号等)
 - 完整的TypeScript类型支持
 
-参考: src/wd/components/wd-button/wd-button.vue:1-827
-
 ## 基础用法
 
 ### 按钮类型
@@ -64,8 +62,6 @@ Button 组件是 WD UI 的基础组件之一,提供了丰富的样式和功能�
 | `text` | 文本按钮 | 轻量操作、链接式操作 |
 | `icon` | 图标按钮 | 纯图标操作 |
 
-参考: src/wd/components/wd-button/wd-button.vue:204
-
 ### 幽灵按钮
 
 通过 `plain` 属性设置幽灵按钮,背景透明,显示边框。
@@ -94,8 +90,6 @@ Button 组件是 WD UI 的基础组件之一,提供了丰富的样式和功能�
 - 文字和边框颜色与按钮类型对应
 - 适用于浅色背景
 
-参考: src/wd/components/wd-button/wd-button.vue:707-731
-
 ### 禁用状态
 
 通过 `disabled` 属性禁用按钮,禁用后按钮不可点击。
@@ -123,8 +117,6 @@ Button 组件是 WD UI 的基础组件之一,提供了丰富的样式和功能�
 - 禁用状态下不会触发点击事件
 - 禁用时不会显示 hover 效果
 - 禁用时 loading 状态优先级更高
-
-参考: src/wd/components/wd-button/wd-button.vue:372-376, 578-580
 
 ## 按钮尺寸
 
@@ -166,8 +158,6 @@ Button 组件是 WD UI 的基础组件之一,提供了丰富的样式和功能�
 | `medium` | 80rpx | 0 32rpx | 28rpx | 12rpx |
 | `small` | 68rpx | 0 24rpx | 24rpx | 8rpx |
 
-参考: src/wd/components/wd-button/wd-button.vue:622-675
-
 ### 块级按钮
 
 通过 `block` 属性设置块级按钮,宽度100%。
@@ -192,8 +182,6 @@ Button 组件是 WD UI 的基础组件之一,提供了丰富的样式和功能�
 - 页面底部操作按钮
 - 需要占满容器宽度的场景
 
-参考: src/wd/components/wd-button/wd-button.vue:775-777
-
 ## 按钮形状
 
 ### 圆角按钮
@@ -216,8 +204,6 @@ Button 组件是 WD UI 的基础组件之一,提供了丰富的样式和功能�
 - `round="false"`: 使用默认圆角(根据尺寸决定)
 - `round="true"`: 圆角半径为 999rpx
 
-参考: src/wd/components/wd-button/wd-button.vue:678-680
-
 ### 细边框
 
 通过 `hairline` 属性设置细边框,边框宽度为 0.5px。
@@ -237,8 +223,6 @@ Button 组件是 WD UI 的基础组件之一,提供了丰富的样式和功能�
 **注意**:
 - 仅在幽灵按钮(`plain`)时生效
 - 使用 `0.5px` 边框实现 hairline 效果
-
-参考: src/wd/components/wd-button/wd-button.vue:734-772
 
 ## 加载状态
 
@@ -301,8 +285,6 @@ const handleSubmit = async () => {
 - 幽灵按钮的加载图标为反色
 - 可通过 `loadingColor` 属性自定义加载图标颜色
 
-参考: src/wd/components/wd-button/wd-button.vue:310-354, 583-594
-
 ### 自定义加载颜色
 
 ```vue
@@ -320,8 +302,6 @@ const handleSubmit = async () => {
   </view>
 </template>
 ```
-
-参考: src/wd/components/wd-button/wd-button.vue:149
 
 ## 图标按钮
 
@@ -371,8 +351,6 @@ const handleSubmit = async () => {
 | `iconColor` | 图标颜色 | `string` | - |
 | `classPrefix` | 图标类名前缀 | `string` | `'wd-icon'` |
 
-参考: src/wd/components/wd-button/wd-button.vue:82-89, 139-143, 802-807
-
 ### 纯图标按钮
 
 设置 `type="icon"` 可以创建圆形的纯图标按钮。
@@ -403,8 +381,6 @@ const handleSubmit = async () => {
 - 圆形形状(border-radius: 50%)
 - 无内边距
 - 适合工具栏、操作栏等场景
-
-参考: src/wd/components/wd-button/wd-button.vue:780-799
 
 ## 小程序开放能力
 
@@ -443,8 +419,6 @@ const handleGetUserInfo = (detail: any) => {
 </script>
 ```
 
-参考: src/wd/components/wd-button/wd-button.vue:152, 388-390
-
 ### 获取手机号
 
 ```vue
@@ -470,8 +444,6 @@ const handleGetPhoneNumber = (detail: any) => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-button/wd-button.vue:381-383
 
 ### 打开客服会话
 
@@ -509,8 +481,6 @@ const handleContact = (detail: any) => {
 | `sendMessagePath` | 消息卡片路径 | `string` |
 | `sendMessageImg` | 消息卡片图片 | `string` |
 | `showMessageCard` | 是否显示消息卡片 | `boolean` |
-
-参考: src/wd/components/wd-button/wd-button.vue:159-166, 407-409
 
 ### 支付宝小程序授权
 
@@ -556,8 +526,6 @@ const handleGetUserInfo = (detail: any) => {
 |---------|------|
 | `phoneNumber` | 获取手机号 |
 | `userInfo` | 获取用户信息 |
-
-参考: src/wd/components/wd-button/wd-button.vue:174, 251, 396-402
 
 ### 其他开放能力
 
@@ -634,8 +602,6 @@ const handleChooseAvatar = (detail: any) => {
 | `agreePrivacyAuthorization` | 同意隐私协议 | 微信小程序 |
 | `getRealtimePhoneNumber` | 获取用户实时手机号 | 微信小程序 |
 
-参考: src/wd/components/wd-button/wd-button.vue:219-248
-
 ## 高级用法
 
 ### 隐形按钮
@@ -672,8 +638,6 @@ const handleCardClick = () => {
 - 绝对定位,覆盖父元素
 - z-index: 9999
 - 无任何视觉效果(边框、阴影、hover效果)
-
-参考: src/wd/components/wd-button/wd-button.vue:132, 545-575
 
 ### 阻止点击冒泡
 
@@ -712,8 +676,6 @@ const handleButtonClick = () => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-button/wd-button.vue:4, 49, 156
 
 ### 自定义样式
 
@@ -755,8 +717,6 @@ const handleButtonClick = () => {
 </style>
 ```
 
-参考: src/wd/components/wd-button/wd-button.vue:116-119
-
 ## API
 
 ### Props
@@ -792,8 +752,6 @@ const handleButtonClick = () => {
 | customStyle | 自定义样式 | `string` | - |
 | customClass | 自定义类名 | `string` | - |
 
-参考: src/wd/components/wd-button/wd-button.vue:115-175, 254-267
-
 #### openType 类型
 
 | 值 | 说明 | 平台 |
@@ -810,8 +768,6 @@ const handleButtonClick = () => {
 | `agreePrivacyAuthorization` | 同意隐私协议 | 微信 |
 | `getRealtimePhoneNumber` | 获取用户实时手机号（需基础库 2.21.2+） | 微信 |
 
-参考: src/wd/components/wd-button/wd-button.vue:219-248
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -827,23 +783,17 @@ const handleButtonClick = () => {
 | agreeprivacyauthorization | 用户同意隐私协议事件回调 | `detail: any` |
 | getrealtimephonenumber | 获取用户实时手机号回调（`open-type="getRealtimePhoneNumber"`） | `detail: any` |
 
-参考: src/wd/components/wd-button/wd-button.vue:180-201, 372-454
-
 ### Slots
 
 | 名称 | 说明 |
 |------|------|
 | default | 按钮文本内容 |
 
-参考: src/wd/components/wd-button/wd-button.vue:44-46, 90-92
-
 ### 外部样式类
 
 | 类名 | 说明 |
 |------|------|
 | custom-class | 根节点样式类 |
-
-参考: src/wd/components/wd-button/wd-button.vue:119
 
 ## 主题定制
 
@@ -901,8 +851,6 @@ const handleButtonClick = () => {
 }
 ```
 
-参考: src/wd/components/common/abstracts/variable.scss
-
 ### 暗黑模式
 
 组件支持暗黑模式,在暗黑主题下自动适配。
@@ -938,8 +886,6 @@ const handleButtonClick = () => {
   }
 }
 ```
-
-参考: src/wd/components/wd-button/wd-button.vue:453-488
 
 ## 最佳实践
 
@@ -1083,8 +1029,6 @@ const handleSubmit = async () => {
 </template>
 ```
 
-参考: src/wd/components/wd-button/wd-button.vue:372-376
-
 ### 2. 小程序开放能力不生效?
 
 **原因**:
@@ -1106,8 +1050,6 @@ const handleSubmit = async () => {
   </wd-button>
 </template>
 ```
-
-参考: src/wd/components/wd-button/wd-button.vue:11, 56
 
 ### 3. 自定义样式不生效?
 
@@ -1152,8 +1094,6 @@ const handleSubmit = async () => {
 </template>
 ```
 
-参考: src/wd/components/wd-button/wd-button.vue:149
-
 ### 5. 支付宝小程序授权失败?
 
 **解决方案**:
@@ -1171,5 +1111,3 @@ const handleSubmit = async () => {
   </wd-button>
 </template>
 ```
-
-参考: src/wd/components/wd-button/wd-button.vue:396-402

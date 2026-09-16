@@ -20,8 +20,6 @@ Segmented 分段器是一个用于在多个选项之间进行单选切换的组�
 - **触觉反馈** - 可选的振动反馈，增强移动端交互体验
 - **暗色主题** - 内置暗色模式支持，自动适配深色界面风格
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:1-42
-
 ---
 
 ## 基本用法
@@ -56,8 +54,6 @@ const options1 = ['选项1', '选项2', '选项3']
 - 默认选中第一个选项
 - 选中值必须与 options 中的某个值匹配
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:70-77, 103-109
-
 ### 数字选项
 
 options 支持数字类型的选项。
@@ -86,8 +82,6 @@ const options2 = [1, 2, 3, 4, 5]
 - options 可以是数字数组
 - v-model:value 绑定的值类型要与 options 保持一致
 - 数字选项常用于分页、步骤等场景
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:70-77
 
 ### 对象选项
 
@@ -131,8 +125,6 @@ const handleChange = (option: SegmentedOption) => {
 - 可以添加 `disabled` 属性禁用单个选项
 - `payload` 属性可以存储任意附加数据
 - 通过 `change` 事件可以获取完整的选项对象
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:52-59, 77
 
 ### 禁用选项
 
@@ -179,8 +171,6 @@ const options5: SegmentedOption[] = [
 - 单个禁用通过 `option.disabled` 判断
 - 禁用样式添加 `is-disabled` 类名
 - 点击时检查禁用状态，禁用则直接返回
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:72, 8, 56, 213-217, 321-324
 
 ### 不同尺寸
 
@@ -229,8 +219,6 @@ const options8 = ['选项1', '选项2', '选项3']
 - middle 尺寸适合常规场景
 - small 尺寸适合紧凑布局、表单内嵌
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:74-75, 107, 305-318
-
 ### 振动反馈
 
 启用振动反馈，切换选项时触发短促振动。
@@ -263,8 +251,6 @@ const options9 = ['选项1', '选项2', '选项3', '选项4']
 - 只在选项切换时触发，点击当前选项不触发
 - 需要设备支持振动功能
 - 建议用于移动端应用，提升触觉体验
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:78-79, 108, 191-193
 
 ### 自定义标签
 
@@ -327,8 +313,6 @@ const options11: SegmentedOption[] = [
 - 插槽内容会替换默认的文字显示
 - 可以在插槽中添加图标、徽标、自定义样式等
 - 插槽内容需要自行处理样式和布局
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:12-21
 
 ---
 
@@ -398,8 +382,6 @@ const toggleDisabled = () => {
 - 删除当前选中的选项时，会自动选中第一项
 - 动态修改禁用状态时，组件会自动更新样式
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:138-152, 186-196
-
 ### 实例方法
 
 通过 ref 调用组件实例方法。
@@ -449,8 +431,6 @@ const changeValue = () => {
   - `animation`: 是否启用动画，默认 `true`
 - 通常在动态修改选项后需要手动调用此方法
 - 组件内部已自动处理大部分场景，手动调用仅用于特殊情况
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:98-100, 158-180, 229-231
 
 ### 事件监听
 
@@ -521,8 +501,6 @@ const handleUpdateValue = (value: string | number) => {
 - 事件触发顺序：`click` → `update:value`（如果值改变）→ `change`（如果值改变）
 - 点击当前选中项会触发 `click` 事件，但不会触发 `change` 和 `update:value` 事件
 - 点击禁用项只触发 `click` 事件，不触发其他事件
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:85-92, 213-226
 
 ### 配合内容区域使用
 
@@ -704,8 +682,6 @@ const priceOptions = ['全部', '0-100', '100-500', '500+']
 | options | 数据集合，支持字符串/数字数组或对象数组 | `(string \| number \| SegmentedOption)[]` | - |
 | vibrateShort | 切换选项时是否振动 | `boolean` | `false` |
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:64-80, 103-109
-
 ### SegmentedOption 类型
 
 ```typescript
@@ -722,8 +698,6 @@ export interface SegmentedOption {
 }
 ```
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:52-59
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -732,23 +706,17 @@ export interface SegmentedOption {
 | change | 选项改变时触发 | `option: SegmentedOption \| { value: string \| number }` |
 | click | 点击选项时触发（包括禁用选项） | `option: SegmentedOption \| { value: string \| number }` |
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:85-92, 213-226
-
 ### Slots
 
 | 插槽名 | 说明 | 参数 |
 |--------|------|------|
 | label | 自定义选项标签内容 | `{ option: SegmentedOption \| { value: string \| number } }` |
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:12-21
-
 ### 实例方法
 
 | 方法名 | 说明 | 参数 | 返回值 |
 |--------|------|------|--------|
 | updateActiveStyle | 更新滑块偏移量 | `(animation?: boolean) => void` | - |
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:98-100, 158-180, 229-231
 
 ### 类型定义
 
@@ -815,8 +783,6 @@ interface WdSegmentedExpose {
 export type SegmentedInstance = ComponentPublicInstance<WdSegmentedProps, WdSegmentedExpose>
 ```
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:45-100, 233
-
 ---
 
 ## 主题定制
@@ -844,8 +810,6 @@ $-segmented-item-acitve-bg: #fff;                       // 激活项背景色
   $-color-theme: #4d80f0;                               // 激活项背景色（暗色模式下使用主题色）
 }
 ```
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:236-345
 
 ### 自定义样式
 
@@ -910,8 +874,6 @@ const options = ['选项1', '选项2', '选项3']
 </script>
 
 ```
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:236-345
 
 ---
 
@@ -1255,8 +1217,6 @@ const updateOptions = async () => {
 - 使用 `nextTick` 确保 DOM 更新完成
 - 修改选项时同步更新 value 值
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:158-180, 229-231
-
 ### 2. 如何实现选项的条件渲染？
 
 **问题原因:**
@@ -1315,8 +1275,6 @@ const handleSwitchChange = (val: boolean) => {
 - 选项变化时检查当前选中值是否仍然有效
 - 无效时重置为默认值
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:138-152
-
 ### 3. 为什么点击事件没有触发？
 
 **问题原因:**
@@ -1370,8 +1328,6 @@ const handleChange = (option: SegmentedOption) => {
 - `click` 事件在点击任何选项时触发
 - `change` 事件只在选项切换成功时触发
 - 禁用选项只触发 `click` 事件，不触发 `change` 事件
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:213-226
 
 ### 4. 如何实现选项的异步加载？
 
@@ -1496,57 +1452,33 @@ const getLabelStyle = (value: string | number) => {
 - 使用 :deep() 深度选择器修改内部样式
 - 结合 custom-class 添加自定义样式类
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:12-21, 65-68
-
 ---
 
 ## 注意事项
 
 1. **v-model 绑定值**：绑定值必须与 options 中某个选项的 value 匹配。如果不匹配，组件会自动选中第一个选项并触发 `update:value` 和 `change` 事件。
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:138-152
-
 2. **选项类型一致性**：options 数组中的元素类型应该保持一致，要么全是字符串/数字，要么全是对象。混合类型虽然支持，但不推荐使用。
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:77
 
 3. **对象选项的 value 必填**：使用对象数组时，每个对象必须包含 `value` 属性，否则会导致选项无法正常显示和选中。
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:52-59
-
 4. **禁用优先级**：如果组件整体禁用（`disabled="true"`），所有选项都不可点击，单个选项的 `disabled` 属性会被忽略。
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:213-217
 
 5. **事件触发条件**：`change` 事件只在选项真正切换时触发，点击当前选中项或禁用项不会触发。`click` 事件在点击任何选项时都会触发。
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:213-226
-
 6. **振动功能限制**：`vibrateShort` 功能依赖设备支持，部分设备或浏览器环境可能不支持。建议在移动端使用，PC 端自动忽略。
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:191-193
 
 7. **选项数量建议**：选项数量建议控制在 2-5 个，过多会导致选项过于拥挤，影响用户体验。超过 5 个选项时建议使用其他组件（如 Tabs 或下拉选择）。
 
 8. **动态修改选项**：动态修改 options 后，如果滑块位置异常，需要手动调用 `updateActiveStyle` 方法更新样式。
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:158-180
-
 9. **插槽内容宽度**：使用 label 插槽自定义内容时，注意控制内容宽度。过宽的内容会导致选项溢出或文字截断。
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:339-343
 
 10. **样式隔离**：组件使用 `styleIsolation: 'shared'` 模式，自定义样式时需要注意样式作用域和优先级。
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:40
-
 11. **初始化时机**：组件挂载后会自动初始化滑块位置。如果在 `v-if` 中使用，确保组件显示后再初始化。
 
-参考: src/wd/components/wd-segmented/wd-segmented.vue:202-206
-
 12. **payload 数据**：`payload` 属性可以存储任意附加数据，在事件回调中可以获取。建议将业务相关的数据存储在 payload 中，保持 value 的简洁性。
-
-参考: src/wd/components/wd-segmented/wd-segmented.vue:58
 
 ---
 

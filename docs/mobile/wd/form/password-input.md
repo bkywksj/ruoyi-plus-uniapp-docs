@@ -24,8 +24,6 @@ PasswordInput 密码输入框组件是一个专业的网格式密码输入控件
 - **背景色定制** - 通过 `bgColor` 属性自定义格子背景色,匹配整体设计风格
 - **键盘配置** - 提供丰富的键盘配置选项,包括标题、层级、蒙层、安全区域等
 
-参考: src/wd/components/wd-password-input/wd-password-input.vue:1-66
-
 ## 基本用法
 
 ### 基础密码输入
@@ -54,8 +52,6 @@ const password = ref('')
 - 默认不显示密文遮罩,直接显示输入的数字
 - 输入完成后点击键盘"完成"按钮关闭键盘
 
-参考: src/wd/components/wd-password-input/wd-password-input.vue:114-134
-
 ### 密文显示
 
 使用 `mask` 属性开启密文显示,用圆点代替数字。
@@ -80,8 +76,6 @@ const password = ref('')
 - `mask` 为 `true` 时,输入的数字显示为圆点
 - 圆点样式可通过 CSS 变量定制
 - 适用于支付密码、交易密码等高安全性场景
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:79-80
 
 ### 自定义长度
 
@@ -121,8 +115,6 @@ const password3 = ref('')
 - `length` 默认为 4,可设置为任意正整数
 - 常用长度: 4位(支付密码)、6位(交易密码、验证码)、8位(登录密码)
 - 长度越长,单个格子宽度会自动调整以适应屏幕
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:87-88
 
 ### 自定义间距
 
@@ -169,8 +161,6 @@ const password4 = ref('')
 - 值可以是数字(单位 rpx)或字符串(如 `'24rpx'`, `'1em'`)
 - 间距影响整体视觉效果,建议根据格子大小和屏幕宽度调整
 
-参考: src/wd/components/wd-password-input/wd-password-input.vue:85-86
-
 ### 自定义背景色
 
 使用 `bg-color` 属性自定义格子背景色。
@@ -215,8 +205,6 @@ const password4 = ref('')
 - `bg-color` 默认为 `#F8F8F8`,浅灰色背景
 - 支持任意 CSS 颜色值:十六进制、RGB、颜色名称等
 - 背景色应与页面背景形成对比,确保格子清晰可见
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:91-92
 
 ### 提示信息
 
@@ -295,8 +283,6 @@ const validatePassword = () => {
 - 两个属性同时存在时,只显示 `error-info`
 - 可以配合验证逻辑动态显示不同提示
 
-参考: src/wd/components/wd-password-input/wd-password-input.vue:82-84
-
 ### 键盘配置
 
 自定义内置键盘的各项配置。
@@ -353,8 +339,6 @@ const password3 = ref('')
 - `keyboard-delete-text` 自定义删除按钮文字,默认为"删除"
 - `keyboard-modal` 控制是否显示蒙层,默认为 `false`
 - 更多键盘配置见 API 文档
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:96-111
 
 ## 高级用法
 
@@ -417,8 +401,6 @@ const handleKeyboardClose = () => {
 - 监听 `focus` 事件显示自定义键盘
 - 监听 `blur` 事件隐藏键盘并更新聚焦状态
 - 外部键盘的 `v-model` 需要绑定到同一个密码变量
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:94-95
 
 ### 支付密码验证
 
@@ -527,8 +509,6 @@ const handlePasswordComplete = () => {
 - 验证失败后自动清空密码并显示错误提示
 - 使用 `isValidating` 标志防止重复验证
 - 实际项目中应调用后端接口进行验证
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:164-178
 
 ### 验证码输入
 
@@ -642,8 +622,6 @@ startCountdown()
 - 验证码长度常见为 4 位或 6 位
 - 提供倒计时和重新发送功能,优化用户体验
 - 输入完成自动验证,无需手动提交
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:79-80
 
 ### 设置支付密码
 
@@ -766,8 +744,6 @@ const submitPassword = async () => {
 - 两次密码不一致时清空第二次输入并提示
 - 设置成功后自动返回上一页
 
-参考: src/wd/components/wd-password-input/wd-password-input.vue:164-178
-
 ## API
 
 ### Props
@@ -794,8 +770,6 @@ const submitPassword = async () => {
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-password-input/wd-password-input.vue:71-112
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -803,8 +777,6 @@ const submitPassword = async () => {
 | update:modelValue | v-model 值变化时触发 | `value: string` |
 | focus | 输入框获得焦点时触发 | `event: Event` |
 | blur | 输入框失去焦点时触发 | - |
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:136
 
 ### 类型定义
 
@@ -855,8 +827,6 @@ interface WdPasswordInputProps {
   keyboardSafeAreaInsetBottom?: boolean
 }
 ```
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:68-112
 
 ## 主题定制
 
@@ -950,8 +920,6 @@ const toggleTheme = () => {
 </script>
 ```
 
-参考: src/wd/components/wd-password-input/wd-password-input.vue:225-248
-
 ## 最佳实践
 
 ### 1. 根据场景选择密文模式
@@ -987,8 +955,6 @@ const toggleTheme = () => {
 - 支付密码、交易密码等敏感信息使用密文遮罩
 - 验证码、邀请码等非敏感信息不使用密文,方便用户确认
 - 用户可能需要核对的场景不建议使用密文
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:79-80
 
 ### 2. 合理设置密码长度
 
@@ -1028,8 +994,6 @@ const toggleTheme = () => {
 - 常用长度: 4位(PIN码)、6位(支付密码/验证码)
 - 长度过长会导致格子过小,影响体验
 - 长度应与安全需求匹配,避免过度设计
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:87-88
 
 ### 3. 提供清晰的提示信息
 
@@ -1081,8 +1045,6 @@ const staticInfo = '请输入密码'
 - 提供输入进度提示,让用户知道还需输入几位
 - 验证失败时显示明确的错误原因
 - 避免使用过于模糊的提示文字
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:82-84
 
 ### 4. 输入完成自动验证
 
@@ -1142,8 +1104,6 @@ const handleSubmit = () => {
 - 使用 `isValidating` 标志防止重复验证
 - 验证失败后自动清空密码,方便重新输入
 
-参考: src/wd/components/wd-password-input/wd-password-input.vue:164-178
-
 ### 5. 错误处理和重试机制
 
 合理处理验证失败的情况,提供重试机会。
@@ -1200,8 +1160,6 @@ const validatePassword = async () => {
 - 区分密码错误和网络错误,提供不同提示
 - 验证失败后清空密码,避免用户修改错误的密码
 
-参考: src/wd/components/wd-password-input/wd-password-input.vue:164-178
-
 ## 常见问题
 
 ### 1. 键盘无法弹出
@@ -1232,8 +1190,6 @@ const validatePassword = async () => {
   />
 </template>
 ```
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:189-208
 
 ### 2. 光标不显示
 
@@ -1269,8 +1225,6 @@ const password = ref('')
 const isFocused = ref(false)
 </script>
 ```
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:142-145
 
 ### 3. 格子显示不正常
 
@@ -1313,8 +1267,6 @@ const isFocused = ref(false)
   />
 </template>
 ```
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:148-161
 
 ### 4. 提示信息不显示
 
@@ -1363,8 +1315,6 @@ const isFocused = ref(false)
 **优先级:**
 - `error-info` 优先级高于 `info`
 - 两者同时存在时,只显示 `error-info`
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:26-34
 
 ### 5. 外部键盘配合使用问题
 
@@ -1435,8 +1385,6 @@ const handleKeyboardClose = () => {
 - `focused` 和 `keyboardVisible` 需要保持同步
 - 监听所有相关事件,确保状态一致
 
-参考: src/wd/components/wd-password-input/wd-password-input.vue:189-218
-
 ## 注意事项
 
 1. **默认聚焦**: 组件默认 `focused` 为 `true`,点击后自动弹出键盘,无需手动控制
@@ -1462,5 +1410,3 @@ const handleKeyboardClose = () => {
 11. **响应式**: 确保 `v-model` 绑定的是响应式变量(使用 `ref` 或 `reactive` 创建)
 
 12. **格子样式**: 格子为正方形设计,宽度自动计算,长度过长时单个格子会变小
-
-参考: src/wd/components/wd-password-input/wd-password-input.vue:114-134

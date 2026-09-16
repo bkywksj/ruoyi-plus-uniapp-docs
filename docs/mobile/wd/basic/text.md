@@ -19,8 +19,6 @@ Text 文本组件是一个功能强大的文本展示组件,提供丰富的文�
 - **插槽扩展** - 提供 prefix/suffix 前后置插槽,灵活组合内容
 - **TypeScript 支持** - 完整的类型定义,开发时享受类型提示和检查
 
-参考: src/wd/components/wd-text/wd-text.vue:1-567
-
 ## 基本用法
 
 ### 文本类型
@@ -63,8 +61,6 @@ WD Text 组件提供 7 种预设主题类型,适用于不同的信息层级和�
 - `success`: 成功绿色,用于成功提示
 - `warning`: 警告橙色,用于警告提示
 - `error`: 错误红色,用于错误提示
-
-参考: src/wd/components/wd-text/wd-text.vue:100, 116-117, 219-226, 537-564
 
 ### 文本大小和颜色
 
@@ -109,8 +105,6 @@ WD Text 组件提供 7 种预设主题类型,适用于不同的信息层级和�
 - 支持所有 CSS 颜色值格式(十六进制、RGB、RGBA、CSS变量等)
 - 颜色通过 inline style 直接应用,不受样式隔离影响
 
-参考: src/wd/components/wd-text/wd-text.vue:121, 133, 5
-
 ### 粗体和文本装饰
 
 通过 `bold` 和 `decoration` 属性控制文本的粗细和装饰线。
@@ -154,8 +148,6 @@ WD Text 组件提供 7 种预设主题类型,适用于不同的信息层级和�
 - `line-through`: 删除线,常用于折扣前价格、已删除内容
 - `overline`: 上划线,较少使用
 - `none`: 无装饰线(默认值)
-
-参考: src/wd/components/wd-text/wd-text.vue:129, 124, 234-236, 426-428
 
 ### 多行省略
 
@@ -212,8 +204,6 @@ WD Text 组件提供 7 种预设主题类型,适用于不同的信息层级和�
 - 省略号自动添加在文本末尾
 - 配合 `block` 属性可实现块级元素的多行省略
 
-参考: src/wd/components/wd-text/wd-text.vue:139, 229-231, 436-443
-
 ### 块级显示
 
 通过 `block` 属性将文本设置为块级元素,占据整行宽度。
@@ -266,8 +256,6 @@ WD Text 组件提供 7 种预设主题类型,适用于不同的信息层级和�
 - 块级模式下配合 `lines` 属性可实现固定高度的多行省略
 - 块级模式下带图标时,左右布局的文本会占据剩余空间(flex: 1)
 
-参考: src/wd/components/wd-text/wd-text.vue:144, 239-241, 430-434, 476-501
-
 ## 文本格式化
 
 ### 日期格式化
@@ -317,8 +305,6 @@ const orders = ref([
 - 输出格式固定为 `YYYY-MM-DD`
 - 使用 dayjs 库进行格式化
 - 无效时间戳会返回原始文本
-
-参考: src/wd/components/wd-text/wd-text.vue:122, 382-395
 
 ### 价格格式化
 
@@ -403,8 +389,6 @@ const products = ref([
 - 支持字符串和数字类型输入
 - 无效数字返回原始文本
 
-参考: src/wd/components/wd-text/wd-text.vue:122, 398-400, 322-345
-
 ### 电话号码脱敏
 
 通过 `mode="phone"` 和 `format="true"` 实现电话号码中间四位脱敏。
@@ -476,8 +460,6 @@ const handleCall = (phone: string) => {
 - 要求输入为 11 位数字
 - 不符合格式的输入会报错或返回原文
 
-参考: src/wd/components/wd-text/wd-text.vue:127, 131, 296-298, 290-315
-
 ### 姓名脱敏
 
 通过 `mode="name"` 和 `format="true"` 实现姓名脱敏处理。
@@ -537,8 +519,6 @@ const comments = ref([
 - 三字姓名: 李小明 → 李*明
 - 四字姓名: 欧阳修文 → 欧**文
 - 保留首尾字符,中间用星号替换
-
-参考: src/wd/components/wd-text/wd-text.vue:127, 131, 299-309
 
 ## 图标组合
 
@@ -611,8 +591,6 @@ const comments = ref([
 - `icon-size`: 图标大小,默认 32rpx
 - `icon-color`: 图标颜色,默认继承文本颜色
 - `icon-spacing`: 图标与文字间距,默认 8rpx
-
-参考: src/wd/components/wd-text/wd-text.vue:147-157, 45-72, 450-468
 
 ### 上下图标
 
@@ -711,8 +689,6 @@ const tabs = [
 - 上下布局使用 flex 布局,图标和文字垂直排列
 - 适用于 TabBar、数据展示、图标按钮等场景
 
-参考: src/wd/components/wd-text/wd-text.vue:14-41, 504-519, 470-474
-
 ## 插槽扩展
 
 ### 前后置插槽
@@ -762,8 +738,6 @@ const tabs = [
 - `suffix` 属性/插槽: 在文本后添加内容
 - 插槽优先级高于属性
 - 插槽内可以放置任意内容(文本、图标、组件等)
-
-参考: src/wd/components/wd-text/wd-text.vue:9-11, 74-77, 136-137
 
 ## 字典翻译
 
@@ -847,8 +821,6 @@ const getOrderStatusType = (status: number) => {
 - 未找到匹配项时直接显示 `text` 原值
 - 支持数字和字符串类型的 value
 
-参考: src/wd/components/wd-text/wd-text.vue:159, 351-364
-
 ## API
 
 ### Props
@@ -878,15 +850,11 @@ const getOrderStatusType = (status: number) => {
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: src/wd/components/wd-text/wd-text.vue:110-160, 171-189
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | click | 点击文本时触发 | `event: Event` |
-
-参考: src/wd/components/wd-text/wd-text.vue:165-168, 410-412
 
 ### Slots
 
@@ -894,8 +862,6 @@ const getOrderStatusType = (status: number) => {
 |------|------|
 | prefix | 前置内容,优先级高于 prefix 属性 |
 | suffix | 后置内容,优先级高于 suffix 属性 |
-
-参考: src/wd/components/wd-text/wd-text.vue:9-11, 74-77
 
 ### 类型定义
 
@@ -946,8 +912,6 @@ interface WdTextEmits {
 }
 ```
 
-参考: src/wd/components/wd-text/wd-text.vue:97-168
-
 ## 主题定制
 
 Text 组件通过 SCSS 变量和 CSS 类名实现主题定制。
@@ -988,8 +952,6 @@ $-text-error-color: #f5222d;    // error 类型
   </view>
 </template>
 ```
-
-参考: src/wd/components/wd-text/wd-text.vue:537-564
 
 ## 最佳实践
 
@@ -1159,8 +1121,6 @@ const statusTypeMap = {
 </template>
 ```
 
-参考: src/wd/components/wd-text/wd-text.vue:436-443, 531-535
-
 ### 2. 格式化不生效
 
 **问题原因:**
@@ -1189,8 +1149,6 @@ const statusTypeMap = {
 </template>
 ```
 
-参考: src/wd/components/wd-text/wd-text.vue:370-404
-
 ### 3. 图标位置不正确
 
 **问题原因:**
@@ -1215,8 +1173,6 @@ const statusTypeMap = {
   </wd-text>
 </template>
 ```
-
-参考: src/wd/components/wd-text/wd-text.vue:268-281, 444-501
 
 ### 4. 字典翻译显示原值
 
@@ -1246,8 +1202,6 @@ const statusTypeMap = {
   <wd-text :text="data || 0" :options="options" />
 </template>
 ```
-
-参考: src/wd/components/wd-text/wd-text.vue:351-364
 
 ### 5. 点击事件无响应
 
@@ -1291,5 +1245,3 @@ const handleTextClick = () => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-text/wd-text.vue:410-412

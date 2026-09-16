@@ -24,8 +24,6 @@ Toast 轻提示是一个轻量级的消息通知组件,用于向用户显示简�
 - **回调函数** - 提供 opened 和 closed 回调,方便在展示和关闭时执行自定义逻辑
 - **响应式配置** - 基于 Vue 3 响应式系统,配置变化即时生效
 
-参考: src/wd/components/wd-toast/wd-toast.vue:1-522
-
 ## 基本用法
 
 ### 基础提示
@@ -57,8 +55,6 @@ const showToast = () => {
 - **无图标**: 纯文本提示
 - **自动关闭**: 2秒后自动关闭
 
-参考: src/wd/components/wd-toast/useToast.ts:51-54
-
 ### 成功提示
 
 显示操作成功的提示,内置绿色对勾图标。
@@ -86,8 +82,6 @@ const showSuccess = () => {
 - **图标**: 绿色圆形对勾图标
 - **默认时长**: 1500ms (1.5秒)
 - **适用场景**: 表单提交成功、数据保存成功、删除成功等
-
-参考: src/wd/components/wd-toast/useToast.ts:303-307
 
 ### 错误提示
 
@@ -117,8 +111,6 @@ const showError = () => {
 - **默认时长**: 2000ms (2秒)
 - **适用场景**: 表单验证失败、网络请求失败、操作权限不足等
 
-参考: src/wd/components/wd-toast/useToast.ts:310-314
-
 ### 警告提示
 
 显示警告信息,内置橙色感叹号图标。
@@ -147,8 +139,6 @@ const showWarning = () => {
 - **默认时长**: 2000ms (2秒)
 - **适用场景**: 数据即将过期、操作风险提示、配额即将用尽等
 
-参考: src/wd/components/wd-toast/useToast.ts:316-321
-
 ### 信息提示
 
 显示一般信息,内置灰色信息图标。
@@ -176,8 +166,6 @@ const showInfo = () => {
 - **图标**: 灰色圆形信息图标
 - **默认时长**: 2000ms (2秒)
 - **适用场景**: 功能说明、提示文案、中性通知等
-
-参考: src/wd/components/wd-toast/useToast.ts:323-328
 
 ### 加载提示
 
@@ -212,8 +200,6 @@ const hideLoading = () => {
 - **默认时长**: 0 (不自动关闭)
 - **遮罩层**: 默认开启,阻止用户操作
 - **适用场景**: 数据请求、文件上传、异步处理等
-
-参考: src/wd/components/wd-toast/useToast.ts:293-299
 
 ### 自定义显示时长
 
@@ -261,8 +247,6 @@ const showForever = () => {
 - **duration > 0**: 指定时长后自动关闭,单位 ms
 - **duration = 0**: 不自动关闭,需调用 `toast.close()` 手动关闭
 - **默认值**: 普通提示 2000ms,成功提示 1500ms,加载提示 0
-
-参考: src/wd/components/wd-toast/useToast.ts:270-274
 
 ### 位置设置
 
@@ -326,8 +310,6 @@ const showBottom = () => {
 - **middle**: 屏幕正中,适合重要提示
 - **bottom**: 距离底部 40vh,适合底部操作反馈
 
-参考: src/wd/components/wd-toast/wd-toast.vue:496-506
-
 ## 高级用法
 
 ### 垂直排列
@@ -368,8 +350,6 @@ const showHorizontal = () => {
 - **horizontal**: 图标和文本水平排列,图标在左,文本在右
 - **vertical**: 图标和文本垂直排列,图标在上,文本在下
 
-参考: src/wd/components/wd-toast/wd-toast.vue:440-465
-
 ### 自定义图标
 
 使用自定义图标替代内置图标。
@@ -401,8 +381,6 @@ const showCustomIcon = () => {
 - **iconClass**: 图标类名,支持字体图标或 Iconify 图标
 - **iconSize**: 图标尺寸,默认与内置图标一致
 - **classPrefix**: 图标类名前缀,默认 `wd-icon`
-
-参考: src/wd/components/wd-toast/wd-toast.vue:41-47
 
 ### 遮罩层
 
@@ -456,8 +434,6 @@ const withoutCover = () => {
 - **cover: true**: 显示半透明遮罩层,阻止用户操作,loading 默认开启
 - **cover: false**: 无遮罩层,用户可以继续操作页面
 
-参考: src/wd/components/wd-toast/wd-toast.vue:3-9
-
 ### 加载类型
 
 Loading 图标支持两种类型:ring(环形)和 outline(外边框)。
@@ -504,8 +480,6 @@ const showOutline = () => {
 - **ring**: 环形加载动画,带渐变效果,视觉丰富
 - **outline**: 外边框加载动画,简洁清晰
 
-参考: src/wd/components/wd-toast/wd-toast.vue:19-25
-
 ### 自定义加载样式
 
 自定义 Loading 图标的颜色和尺寸。
@@ -542,8 +516,6 @@ const showCustomLoading = () => {
 - **loadingColor**: 加载图标颜色,默认 `#4D80F0`
 - **loadingSize**: 加载图标尺寸,默认 45
 - **loadingType**: 加载图标类型,默认 `outline`
-
-参考: src/wd/components/wd-toast/wd-toast.vue:217-218
 
 ### 回调函数
 
@@ -594,8 +566,6 @@ const showWithCallback = () => {
 **回调说明:**
 - **opened**: Toast 完全展示后触发(fade 动画结束)
 - **closed**: Toast 完全关闭后触发(fade 动画结束)
-
-参考: src/wd/components/wd-toast/wd-toast.vue:404-419
 
 ### 多实例管理
 
@@ -672,8 +642,6 @@ const closeToast3 = () => {
 - 每个实例独立管理,互不影响
 - 同位置的多个 Toast 会自动计算偏移,避免重叠
 
-参考: src/wd/components/wd-toast/useToast.ts:142-157
-
 ### 位置偏移计算
 
 多个相同位置的 Toast 会自动计算偏移量,避免重叠显示。
@@ -721,8 +689,6 @@ const closeAll = () => {
 - 第 2 个 Toast: offsetY = 60rpx
 - 第 3 个 Toast: offsetY = 120rpx
 - 以此类推,每个增加 60rpx
-
-参考: src/wd/components/wd-toast/useToast.ts:78-92
 
 ### 异步操作提示
 
@@ -775,8 +741,6 @@ const handleSubmit = async () => {
 3. 操作完成后关闭 loading
 4. 根据结果显示成功或失败提示
 
-参考: src/wd/components/wd-toast/useToast.ts:293-299
-
 ### 动态更新内容
 
 在 Toast 显示过程中动态更新内容。
@@ -827,8 +791,6 @@ const startCountdown = () => {
 - 适用于进度提示、倒计时等场景
 - 更新时保持其他配置不变
 
-参考: src/wd/components/wd-toast/useToast.ts:222-275
-
 ## API
 
 ### Toast 方法
@@ -844,8 +806,6 @@ const startCountdown = () => {
 | info | 信息提示 | `ToastOptions \| string` |
 | loading | 加载提示 | `ToastOptions \| string` |
 | close | 关闭 Toast | - |
-
-参考: src/wd/components/wd-toast/wd-toast.vue:143-164
 
 ### ToastOptions
 
@@ -868,8 +828,6 @@ Toast 配置选项接口:
 | cover | 是否显示遮罩层 | `boolean` | `false` |
 | opened | 完全展示后的回调 | `() => void` | - |
 | closed | 完全关闭后的回调 | `() => void` | - |
-
-参考: src/wd/components/wd-toast/wd-toast.vue:99-138
 
 ### 组件 Props
 
@@ -894,8 +852,6 @@ Toast 组件属性(用于模板声明):
 | closed | 完全关闭后的回调 | `() => void` | - |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
-
-参考: src/wd/components/wd-toast/wd-toast.vue:169-206
 
 ### 类型定义
 
@@ -987,8 +943,6 @@ export interface Toast {
 }
 ```
 
-参考: src/wd/components/wd-toast/wd-toast.vue:76-164
-
 ## 最佳实践
 
 ### 1. 合理选择提示类型
@@ -1040,8 +994,6 @@ const saveData = () => {
 - **info**: 功能说明、提示文案、一般通知
 - **loading**: 数据加载、文件上传、异步处理
 
-参考: src/wd/components/wd-toast/useToast.ts:293-328
-
 ### 2. 设置合适的显示时长
 
 根据提示内容长度设置合理的显示时长:
@@ -1082,8 +1034,6 @@ const longMsg = () => {
 - 中等消息(6-15 字): 2000-3000ms
 - 长消息(15+ 字): 3000-5000ms
 - 加载提示: 0 (不自动关闭)
-
-参考: src/wd/components/wd-toast/useToast.ts:51-54
 
 ### 3. 加载提示要手动关闭
 
@@ -1137,8 +1087,6 @@ const fetchData = () => {
 - 使用 try-catch 确保异常时也能关闭
 - 关闭后再显示结果提示
 
-参考: src/wd/components/wd-toast/useToast.ts:293-299
-
 ### 4. 避免频繁提示
 
 避免短时间内连续显示多个 Toast,影响用户体验:
@@ -1190,8 +1138,6 @@ const badExample = () => {
 - 使用防抖限制提示频率
 - 相同内容不要重复提示
 
-参考: src/wd/components/wd-toast/useToast.ts:222-275
-
 ### 5. 多实例合理使用
 
 只有在确实需要同时显示多个 Toast 时才使用多实例:
@@ -1234,8 +1180,6 @@ const moduleB = () => {
 - 大部分场景使用单实例即可
 - 过多实例会导致屏幕拥挤
 - 记得在模板中声明对应的 `<wd-toast>`
-
-参考: src/wd/components/wd-toast/useToast.ts:142-157
 
 ## 常见问题
 
@@ -1282,8 +1226,6 @@ const showToast = () => {
 - 确认 selector 与 useToast 参数一致
 - 检查是否有其他元素 z-index 超过 1000
 - 使用开发工具检查 DOM 中是否有 Toast 元素
-
-参考: src/wd/components/wd-toast/wd-toast.vue:10-53
 
 ### 2. Loading 提示无法关闭
 
@@ -1335,8 +1277,6 @@ const sendRequest = () => {
 - 在 finally 块中关闭更保险
 - 确保所有分支都调用 close
 - 多实例时确认关闭正确的实例
-
-参考: src/wd/components/wd-toast/useToast.ts:188-217
 
 ### 3. 多个 Toast 重叠显示
 
@@ -1397,8 +1337,6 @@ const showSequential = () => {
 - 确保 selector 不同
 - 相同位置的 Toast 会自动计算偏移
 
-参考: src/wd/components/wd-toast/useToast.ts:78-135
-
 ### 4. Toast 内容不更新
 
 **问题原因:**
@@ -1438,8 +1376,6 @@ const updateMessage = () => {
 - 每次调用 show/success 等方法都会更新内容
 - 动态内容要使用响应式变量
 - 不要复用配置对象
-
-参考: src/wd/components/wd-toast/useToast.ts:222-275
 
 ### 5. 回调函数不执行
 
@@ -1488,8 +1424,6 @@ const performNextAction = () => {
 - 使用箭头函数避免 this 问题
 - 确认回调名称正确: opened / closed
 - 回调在动画完成后执行,不是立即执行
-
-参考: src/wd/components/wd-toast/wd-toast.vue:404-419
 
 ## 注意事项
 

@@ -64,8 +64,6 @@ RuoYi-Plus-UniApp的多租户设计具有以下核心特性:
 - **域名识别** - 支持通过域名自动识别租户身份
 - **数据同步** - 字典、配置、角色等数据自动同步到新租户
 
-参考: `ruoyi-common/ruoyi-common-tenant/src/main/java/plus/ruoyi/common/tenant/helper/TenantHelper.java:1-303`
-
 ---
 
 ## 多租户模式
@@ -209,8 +207,6 @@ public class PlusTenantLineHandler implements TenantLineHandler {
     }
 }
 ```
-
-参考: `ruoyi-common/ruoyi-common-tenant/src/main/java/plus/ruoyi/common/tenant/handle/PlusTenantLineHandler.java:1-91`
 
 **2. SQL自动改写示例**
 
@@ -481,8 +477,6 @@ public class TenantHelper {
 }
 ```
 
-参考: `ruoyi-common/ruoyi-common-tenant/src/main/java/plus/ruoyi/common/tenant/helper/TenantHelper.java:1-303`
-
 **2. 使用示例**
 
 ```java
@@ -632,8 +626,6 @@ public class TenantKeyPrefixHandler extends KeyPrefixHandler {
     }
 }
 ```
-
-参考: `ruoyi-common/ruoyi-common-tenant/src/main/java/plus/ruoyi/common/tenant/handle/TenantKeyPrefixHandler.java:1-102`
 
 **2. Redis键隔离示例**
 
@@ -802,8 +794,6 @@ public class SysTenant extends BaseEntity {
 }
 ```
 
-参考: `ruoyi-modules/ruoyi-system/src/main/java/plus/ruoyi/system/tenant/domain/SysTenant.java:1-104`
-
 ### 租户创建
 
 **1. 创建租户流程**
@@ -933,8 +923,6 @@ public boolean insertTenant(SysTenantBo bo) {
 }
 ```
 
-参考: `ruoyi-modules/ruoyi-system/src/main/java/plus/ruoyi/system/tenant/service/impl/SysTenantServiceImpl.java:220-322`
-
 **2. 租户ID生成**
 
 ```java
@@ -959,8 +947,6 @@ private String generateTenantId(List<String> tenantIds) {
     return numbers;
 }
 ```
-
-参考: `ruoyi-modules/ruoyi-system/src/main/java/plus/ruoyi/system/tenant/service/impl/SysTenantServiceImpl.java:330-338`
 
 ### 租户校验
 
@@ -1013,8 +999,6 @@ public void checkTenant(String tenantId) {
 }
 ```
 
-参考: `ruoyi-modules/ruoyi-system/src/main/java/plus/ruoyi/system/auth/service/SysLoginService.java:280-313`
-
 **2. 账户余额校验**
 
 ```java
@@ -1043,8 +1027,6 @@ public boolean checkAccountBalance(String tenantId) {
     return tenant.getAccountCount() - userNumber > 0;
 }
 ```
-
-参考: `ruoyi-modules/ruoyi-system/src/main/java/plus/ruoyi/system/tenant/service/impl/SysTenantServiceImpl.java:507-520`
 
 ---
 
@@ -1141,8 +1123,6 @@ private Long createTenantRole(String tenantId, Long packageId) {
 }
 ```
 
-参考: `ruoyi-modules/ruoyi-system/src/main/java/plus/ruoyi/system/tenant/service/impl/SysTenantServiceImpl.java:347-377`
-
 **3. 同步租户套餐**
 
 ```java
@@ -1199,8 +1179,6 @@ public boolean syncTenantPackage(String tenantId, Long packageId) {
     return true;
 }
 ```
-
-参考: `ruoyi-modules/ruoyi-system/src/main/java/plus/ruoyi/system/tenant/service/impl/SysTenantServiceImpl.java:539-565`
 
 ---
 
@@ -1364,8 +1342,6 @@ public String getTenantIdByDomain(String domain) {
 }
 ```
 
-参考: `ruoyi-modules/ruoyi-system/src/main/java/plus/ruoyi/system/tenant/service/impl/SysTenantServiceImpl.java:955-966`
-
 **2. 请求头识别**
 
 ```java
@@ -1425,8 +1401,6 @@ private String extractHostFromRequest(HttpServletRequest request) {
     }
 }
 ```
-
-参考: `ruoyi-modules/ruoyi-system/src/main/java/plus/ruoyi/system/tenant/service/impl/SysTenantServiceImpl.java:922-987`
 
 **3. 用户登录识别**
 

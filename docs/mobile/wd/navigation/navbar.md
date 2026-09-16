@@ -20,8 +20,6 @@ Navbar (导航栏) 是一个页面顶部导航组件,为页面提供导航功能
 - **微信H5优化** - 在微信公众号 H5 环境下自动隐藏自定义导航栏
 - **安全区域** - 支持顶部安全区域适配,兼容刘海屏
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:1-753
-
 ## 基本用法
 
 ### 基础导航栏
@@ -49,8 +47,6 @@ Navbar (导航栏) 是一个页面顶部导航组件,为页面提供导航功能
 - 导航栏默认固定在页面顶部 (fixed: true)
 - 自动适配状态栏高度
 - 自动生成占位元素,避免内容被遮挡
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:194, 197
 
 ### 带返回按钮
 
@@ -91,8 +87,6 @@ const shouldAutoBack = computed(() => {
   return backTexts.includes(finalLeftText.value) || backIcons.includes(finalLeftIcon.value)
 })
 ```
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:354-361, 557-594
 
 ### 胶囊模式
 
@@ -135,9 +129,6 @@ const handleBackHome = () => {
 - `show-home` 控制是否显示首页按钮
 - 胶囊组件会自动处理返回和跳转首页逻辑
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:152-157, 12-23
-参考: src/wd/components/wd-navbar-capsule/wd-navbar-capsule.vue:1-297
-
 ### 右侧按钮
 
 添加右侧按钮,常用于分享、搜索等操作。
@@ -173,8 +164,6 @@ const handleSearch = () => {
 - `right-icon` 设置右侧图标
 - `right-text` 设置右侧文字
 - 监听 `click-right` 事件处理点击
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:125-134, 53-68, 600-604
 
 ### 自定义样式
 
@@ -213,8 +202,6 @@ const handleShare = () => {
 - `title-color` 设置标题颜色
 - `left-icon-color` 设置左侧图标颜色
 - `right-icon-color` 设置右侧图标颜色
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:136-139, 110-112, 120-121, 131-132
 
 ### 使用插槽
 
@@ -283,8 +270,6 @@ const handleMore = () => {
 - `#right` 插槽自定义右侧内容
 - `#capsule` 插槽自定义胶囊内容
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:31-43, 46-50, 58-68
-
 ## 进阶用法
 
 ### 禁用按钮
@@ -339,8 +324,6 @@ const handleSave = () => {
 - 禁用时透明度降低,无法点击
 - 常用于表单未填写完整时禁用提交按钮
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:122-123, 133-134, 558, 601
-
 ### 监听高度
 
 监听导航栏高度计算完成事件,获取精确高度。
@@ -379,8 +362,6 @@ const handleHeightReady = (height: number) => {
 - 高度包含状态栏高度
 - 单位为 rpx
 - 适用于需要根据导航栏高度调整布局的场景
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:178-179, 404, 448, 484
 
 ### 不显示占位
 
@@ -423,8 +404,6 @@ const handleHeightReady = (height: number) => {
 - 常用于头图场景,实现沉浸式效果
 - 建议配合半透明背景色使用
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:145-146, 408-410
-
 ### 自定义高度
 
 自定义导航栏的高度。
@@ -457,8 +436,6 @@ const handleHeightReady = (height: number) => {
 - 可同时调整 `title-size` 和 `title-bold` 优化标题显示
 - 自定义高度不包含状态栏高度
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:138-139, 106-112
-
 ### 显示边框
 
 显示导航栏底部边框。
@@ -488,8 +465,6 @@ const handleHeightReady = (height: number) => {
 - 设置 `bordered="true"` 显示底部边框
 - 边框使用 0.5px 细线实现
 - 默认颜色为 #ebedf0
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:141, 7, 739-741
 
 ### 调整层级
 
@@ -521,8 +496,6 @@ const handleHeightReady = (height: number) => {
 - 默认值为 99
 - 仅在 `fixed="true"` 时生效
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:147-148, 196, 8
-
 ### 关闭安全区域
 
 关闭顶部安全区域适配。
@@ -552,8 +525,6 @@ const handleHeightReady = (height: number) => {
 - `safe-area-inset-top` 控制是否适配状态栏
 - 默认值为 true,会自动加上状态栏高度
 - 设置为 false 时导航栏会紧贴屏幕顶部
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:149-150, 197, 8
 
 ### 单胶囊模式
 
@@ -597,8 +568,6 @@ const handleHeightReady = (height: number) => {
 - 隐藏边框和中间分隔线
 - 图标靠左对齐
 
-参考: src/wd/components/wd-navbar-capsule/wd-navbar-capsule.vue:109-117, 248-271
-
 ## API
 
 ### Navbar Props
@@ -636,8 +605,6 @@ const handleHeightReady = (height: number) => {
 | `custom-class` | 自定义根节点样式类 | `string` | `''` |
 | `custom-style` | 自定义根节点内联样式 | `string` | `''` |
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:94-164, 183-205
-
 ### Navbar Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -648,8 +615,6 @@ const handleHeightReady = (height: number) => {
 | `click-right` | 点击右侧按钮时触发 | `-` |
 | `height-ready` | 导航栏高度计算完成时触发 | `height: number` |
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:169-180
-
 ### Navbar Slots
 
 | 插槽名 | 说明 |
@@ -658,8 +623,6 @@ const handleHeightReady = (height: number) => {
 | `left` | 自定义左侧内容 |
 | `right` | 自定义右侧内容 |
 | `capsule` | 自定义胶囊内容 |
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:14, 31, 58
 
 ### NavbarCapsule Props
 
@@ -680,16 +643,12 @@ const handleHeightReady = (height: number) => {
 | `custom-class` | 自定义根节点样式类 | `string` | `''` |
 | `custom-style` | 自定义根节点内联样式 | `string` | `''` |
 
-参考: src/wd/components/wd-navbar-capsule/wd-navbar-capsule.vue:42-77, 90-101
-
 ### NavbarCapsule Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | `back` | 点击返回按钮时触发 | `-` |
 | `back-home` | 点击首页按钮时触发 | `-` |
-
-参考: src/wd/components/wd-navbar-capsule/wd-navbar-capsule.vue:82-87
 
 ### 类型定义
 
@@ -795,9 +754,6 @@ interface WdNavbarCapsuleProps {
 }
 ```
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:91-164
-参考: src/wd/components/wd-navbar-capsule/wd-navbar-capsule.vue:39-77
-
 ## 主题定制
 
 ### CSS 变量
@@ -861,9 +817,6 @@ Navbar 组件支持暗黑模式:
   }
 }
 ```
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:627-643
-参考: src/wd/components/wd-navbar-capsule/wd-navbar-capsule.vue:170-205
 
 ## 最佳实践
 
@@ -1078,8 +1031,6 @@ onShow(() => {
 })
 ```
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:466-488
-
 ### 2. 自动返回不生效
 
 **问题原因:**
@@ -1114,8 +1065,6 @@ const shouldAutoBack = computed(() => {
 })
 ```
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:354-361
-
 ### 3. 胶囊样式异常
 
 **问题原因:**
@@ -1148,8 +1097,6 @@ const getSingleModeClass = () => {
 }
 ```
 
-参考: src/wd/components/wd-navbar-capsule/wd-navbar-capsule.vue:109-117, 248-271
-
 ### 4. 微信H5标题不显示
 
 **问题原因:**
@@ -1180,8 +1127,6 @@ watch(() => props.title, (newTitle) => {
   }
 })
 ```
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:384-395, 533-540
 
 ### 5. 状态栏颜色异常
 
@@ -1219,8 +1164,6 @@ if (props.statusBarTextStyle) {
 }
 ```
 
-参考: src/wd/components/wd-navbar/wd-navbar.vue:100-101, 186, 504-509
-
 ## 注意事项
 
 1. **固定定位**: 导航栏默认固定在页面顶部,会自动生成占位元素避免内容被遮挡。
@@ -1246,6 +1189,3 @@ if (props.statusBarTextStyle) {
 11. **占位计算**: 占位高度通过查询DOM节点计算,可能存在延迟,建议监听 `height-ready` 事件获取准确高度。
 
 12. **安全区域**: `safe-area-inset-top` 控制是否适配刘海屏,默认开启,关闭后导航栏会紧贴屏幕顶部。
-
-参考: src/wd/components/wd-navbar/wd-navbar.vue:1-753
-参考: src/wd/components/wd-navbar-capsule/wd-navbar-capsule.vue:1-297

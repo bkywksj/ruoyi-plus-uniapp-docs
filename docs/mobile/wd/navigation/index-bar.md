@@ -19,8 +19,6 @@ IndexBar 索引栏是一个用于列表索引分类显示和快速定位的导�
 - **位置计算** - 自动计算各个锚点的位置，实现精准的滚动定位
 - **暗色主题** - 内置暗色模式支持，自动适配深色界面风格
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:1-50
-
 ---
 
 ## 基本用法
@@ -71,8 +69,6 @@ const getContactsByLetter = (letter: string) => {
 - `index` 属性设置锚点的索引值，显示在右侧索引栏
 - IndexBar 会自动收集所有 IndexAnchor 生成右侧索引栏
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:2-34, src/wd/components/wd-index-anchor/wd-index-anchor.vue:6-14, 46
-
 ### 吸顶效果
 
 启用吸顶效果后，滚动时当前分类标题会固定在顶部。
@@ -120,8 +116,6 @@ const getContactsByLetter = (letter: string) => {
 - 吸顶模式下，当前激活的锚点会固定在顶部
 - 适用于内容较多、需要明确分类标识的场景
 - 吸顶元素使用 `position: sticky` 实现
-
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:62, src/wd/components/wd-index-anchor/wd-index-anchor.vue:82-84, 150-156
 
 ### 自定义锚点内容
 
@@ -183,8 +177,6 @@ const cityGroups = [
 - 不使用插槽时，默认显示 `index` 属性的值
 - 自定义内容可以包含图标、文字、样式等
 - 适合需要丰富视觉效果的场景
-
-参考: src/wd/components/wd-index-anchor/wd-index-anchor.vue:11-13
 
 ---
 
@@ -528,8 +520,6 @@ const handleCategoryClick = (item: CategoryItem) => {
 |------|------|------|--------|
 | sticky | 索引锚点是否吸顶 | `boolean` | `false` |
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:60-63, 66-68
-
 ### IndexAnchor Props
 
 | 参数 | 说明 | 类型 | 默认值 |
@@ -538,15 +528,11 @@ const handleCategoryClick = (item: CategoryItem) => {
 | customClass | 自定义根节点样式类 | `string` | `''` |
 | index | 索引值，显示在右侧索引栏 | `number \| string` | - |
 
-参考: src/wd/components/wd-index-anchor/wd-index-anchor.vue:40-47, 64-68
-
 ### IndexBar Slots
 
 | 插槽名 | 说明 | 参数 |
 |--------|------|------|
 | default | 默认插槽，放置 IndexAnchor 和内容 | - |
-
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:13
 
 ### IndexAnchor Slots
 
@@ -554,15 +540,11 @@ const handleCategoryClick = (item: CategoryItem) => {
 |--------|------|------|
 | default | 自定义锚点内容，不使用时显示 index 值 | - |
 
-参考: src/wd/components/wd-index-anchor/wd-index-anchor.vue:11-13
-
 ### IndexAnchor 实例方法
 
 | 方法名 | 说明 | 参数 | 返回值 |
 |--------|------|------|--------|
 | getInfo | 获取锚点位置信息 | `() => void` | - |
-
-参考: src/wd/components/wd-index-anchor/wd-index-anchor.vue:52-61, 90-96, 106-111
 
 ### 类型定义
 
@@ -610,8 +592,6 @@ export interface WdIndexAnchorExpose {
 export type WdIndexAnchorInstance = ComponentPublicInstance<WdIndexAnchorProps, WdIndexAnchorExpose>
 ```
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:55-63, src/wd/components/wd-index-anchor/wd-index-anchor.vue:22, 40-61, 114
-
 ---
 
 ## 主题定制
@@ -643,8 +623,6 @@ $-color-theme: #4d80f0;                                  // 激活索引颜色
   $-color-gray-8: #48484a;                              // 锚点背景色（暗色）
 }
 ```
-
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:233-276, src/wd/components/wd-index-anchor/wd-index-anchor.vue:117-157
 
 ### 自定义样式
 
@@ -691,8 +669,6 @@ const letters = ['A', 'B', 'C', 'D', 'E']
 </script>
 
 ```
-
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:238-245, src/wd/components/wd-index-anchor/wd-index-anchor.vue:122-128
 
 ---
 
@@ -951,8 +927,6 @@ const letters = ['A', 'B', 'C', 'D', 'E']
 - 检查 IndexAnchor 的 index 是否唯一
 - 确保 letters 数组有数据
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:22-29, src/wd/components/wd-index-anchor/wd-index-anchor.vue:46
-
 ### 2. 吸顶效果不生效怎么办？
 
 **问题原因:**
@@ -982,8 +956,6 @@ const letters = ['A', 'B', 'C', 'D', 'E']
 - 确保 `sticky` 属性设置为 `true`
 - 确保内容足够多，可以滚动
 - 吸顶依赖 `position: sticky`，部分旧浏览器不支持
-
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:62, src/wd/components/wd-index-anchor/wd-index-anchor.vue:82-84, 150-156
 
 ### 3. 点击索引栏没有跳转？
 
@@ -1032,8 +1004,6 @@ onMounted(() => {
 - 确保 DOM 渲染完成后再计算位置
 - 检查 index 值是否正确
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:126-138, 211-218
-
 ### 4. 如何实现索引栏的自定义样式？
 
 **问题原因:**
@@ -1060,8 +1030,6 @@ onMounted(() => {
 - 使用 `:deep()` 深度选择器修改组件内部样式
 - 通过 `custom-class` 为锚点添加自定义类名
 - 注意样式优先级，必要时使用 `!important`
-
-参考: src/wd/components/wd-index-anchor/wd-index-anchor.vue:42-44
 
 ### 5. 如何监听当前激活的索引？
 
@@ -1116,57 +1084,33 @@ const handleScroll = (event: any) => {
 - 可以通过滚动监听自行实现索引跟踪
 - 或在列表项中使用 Intersection Observer API
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:77-79, 151-172
-
 ---
 
 ## 注意事项
 
 1. **容器高度必须设置**：IndexBar 组件依赖固定高度的容器才能正常工作，必须为其设置 `height: 100vh` 或固定的像素值，否则索引栏可能无法显示或功能异常。
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:250-252
-
 2. **index 值必须唯一**：每个 IndexAnchor 的 `index` 属性值必须唯一，重复的 index 会导致索引栏显示异常和跳转错误。
-
-参考: src/wd/components/wd-index-anchor/wd-index-anchor.vue:46
 
 3. **吸顶依赖 sticky 定位**：吸顶效果使用 CSS `position: sticky` 实现，部分旧版本浏览器或小程序可能不支持，使用前请确认兼容性。
 
-参考: src/wd/components/wd-index-anchor/wd-index-anchor.vue:150-156
-
 4. **初始化时机**：组件在 `onMounted` 后会计算各个锚点的位置，如果内容是异步加载的，需要在数据加载完成后手动调用 `getInfo` 方法更新位置。
 
-参考: src/wd/components/wd-index-anchor/wd-index-anchor.vue:90-103
-
 5. **触摸事件的阻止**：索引栏的触摸事件使用了 `.stop.prevent` 修饰符，阻止了事件冒泡和默认行为，避免在自定义逻辑中再次阻止。
-
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:17-20
 
 6. **滚动性能优化**：大数据列表建议按字母分组渲染，避免一次性渲染所有数据导致性能问题。可以考虑使用虚拟列表优化。
 
 7. **index 类型**：index 支持 `number` 和 `string` 类型，可以使用字母、数字、符号或 Emoji 作为索引值，但建议保持简洁（1-2个字符）。
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:55, src/wd/components/wd-index-anchor/wd-index-anchor.vue:22, 46
-
 8. **钉钉小程序特殊处理**：组件对钉钉小程序做了特殊兼容处理，使用了额外的包裹层，其他平台无需关注。
-
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:4-6, 31-33, src/wd/components/wd-index-anchor/wd-index-anchor.vue:3-5, 15-17, 131-141
 
 9. **自动高亮**：滚动内容时，右侧索引栏会自动高亮当前所在位置的索引，这是通过计算滚动位置和锚点位置实现的。
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:151-172, 265-274
-
 10. **暗色主题**：组件内置暗色主题支持，在根元素添加 `wot-theme-dark` 类名即可启用，索引和锚点颜色会自动适配。
-
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:238-245, src/wd/components/wd-index-anchor/wd-index-anchor.vue:122-128
 
 11. **位置计算延迟**：组件初始化时会延迟 100ms 计算位置信息，如果页面渲染较慢，可能需要手动调整延迟时间。
 
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:126-138
-
 12. **滚动容器**：IndexBar 内部使用 `scroll-view` 组件实现滚动，滚动容器的高度自动继承 IndexBar 的高度。
-
-参考: src/wd/components/wd-index-bar/wd-index-bar.vue:7-14, 253-256
 
 ---
 

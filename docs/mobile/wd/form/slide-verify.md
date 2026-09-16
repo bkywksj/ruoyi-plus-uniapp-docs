@@ -20,8 +20,6 @@ SlideVerify 滑动验证组件要求用户手动将滑块拖动到轨道末端�
 - **公开 `reset` 方法** - 通过 `ref` 调用重置方法，便于在"短信发送失败"等业务场景重新验证
 - **可被插槽扩展** - 提示文字、成功文案、滑块图标、成功图标全部开放插槽自定义
 
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:1-297
-
 ## 基本用法
 
 ### 最小化示例
@@ -64,8 +62,6 @@ function handleSuccess() {
 - 滑块到达轨道末端（容差范围内）时触发 `success`
 - 滑动未完成并松手时触发 `fail`，滑块自动回弹到起点
 
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:102-136, 249-266
-
 ### 自定义尺寸
 
 通过 `width` 和 `height` 自定义轨道尺寸，`width` 支持百分比（如 `'100%'`）。
@@ -95,8 +91,6 @@ function handleSuccess() {
 - 推荐高度 ≥ `60rpx`，否则手指触控点容易偏离滑块
 - 滑块按钮的宽度会自动等于轨道高度（保持正方形）
 
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:70-76, 182-200
-
 ### 自定义颜色
 
 ```vue
@@ -125,8 +119,6 @@ function handleSuccess() {
 - `backgroundColor` 控制未滑过区域的底色
 - `activeBackgroundColor` 控制已滑过区域的填充颜色，同时被应用到成功图标的圆形底
 - 两个颜色值支持任何 CSS 合法颜色，包括 `rgba`、渐变字符串
-
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:83-87, 183-188, 202-208
 
 ### 自定义图标
 
@@ -161,8 +153,6 @@ function handleSuccess() {
 - `icon` 使用 WD UI 图标体系中的任意名称
 - 图标大小支持数字（rpx）或带单位字符串
 - 若默认图标不够用，可通过 `icon` / `success-icon` 插槽完全自定义
-
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:29-38, 88-94, 130-133
 
 ## 进阶用法
 
@@ -218,8 +208,6 @@ declare function requestSendSms(): Promise<void>
 - 调用 `reset()` 后不会自动再次触发 `fail` 事件
 - 组件卸载前会自动清理内部定时器，不必手动处理
 
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:111-119, 268-293
-
 ### 监听滑动进度
 
 `change` 事件在拖动过程中频繁触发，可用于实时展示进度条或统计滑动轨迹。
@@ -266,8 +254,6 @@ function onFail() {
 - `change.offsetX` 为像素值，可能受不同平台的 DPR 影响
 - `change` 不会在 `fail`/`success` 之后继续触发
 
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:56-65, 239-247
-
 ### 禁用状态
 
 业务请求未就绪时（如用户未勾选协议），可以禁用组件。
@@ -292,8 +278,6 @@ const agreed = ref(false)
 - `disabled` 时不响应任何触摸事件，`pointer-events: none`
 - 组件内部会给根节点加 `is-disabled` 类，透明度变为禁用默认值（由 CSS 变量控制）
 - 验证成功后 `isPass` 为 true，也会进入"不可操作"的计算态
-
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:166-181, 400-404
 
 ### 自定义文字与插槽
 
@@ -354,8 +338,6 @@ const agreed = ref(false)
 }
 </style>
 ```
-
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:5-38
 
 ### 集成到登录流程
 
@@ -488,8 +470,6 @@ function submit() {
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:67-99, 121-136
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -497,8 +477,6 @@ function submit() {
 | success | 验证成功时触发 | - |
 | fail | 拖动未到达终点即松手时触发 | - |
 | change | 拖动过程中触发（高频事件） | `{ offsetX: number; percent: number }` |
-
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:101-111, 239-266
 
 ### Slots
 
@@ -509,8 +487,6 @@ function submit() {
 | icon | 未验证时滑块内部的图标区域 |
 | success-icon | 验证成功时滑块内部的图标区域 |
 
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:5-38
-
 ### Methods
 
 通过 `ref` 获取实例后可调用：
@@ -518,8 +494,6 @@ function submit() {
 | 方法名 | 说明 | 参数 | 返回值 |
 |--------|------|------|--------|
 | reset | 重置验证状态（清除 `isPass`、`currentPosition`，播放回弹动画） | - | `void` |
-
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:113-119, 268-293
 
 ### 类型定义
 
@@ -566,8 +540,6 @@ interface WdSlideVerifyExpose {
 export type SlideVerifyInstance = ComponentPublicInstance<WdSlideVerifyProps, WdSlideVerifyExpose>
 ```
 
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:56-119, 294-296
-
 ## 主题定制
 
 ### CSS 变量
@@ -604,8 +576,6 @@ const themeVars = {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:299-411
 
 ## 最佳实践
 
@@ -712,8 +682,6 @@ function onVerified() {
 </view>
 ```
 
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:217-223, 249-266
-
 ### 2. 禁用状态下样式没变灰
 
 **问题原因:**
@@ -750,8 +718,6 @@ const slideRef2 = ref<SlideVerifyInstance>()
 </script>
 ```
 
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:140-141
-
 ### 4. 在 iOS Safari 中滑动页面也跟着滚
 
 **问题原因:**
@@ -784,5 +750,3 @@ const slideRef2 = ref<SlideVerifyInstance>()
 <!-- 使用具体数值而非百分比作为高度 -->
 <wd-slide-verify :height="80" />
 ```
-
-参考: src/wd/components/wd-slide-verify/wd-slide-verify.vue:192-200

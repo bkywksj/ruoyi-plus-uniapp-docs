@@ -26,8 +26,6 @@ Checkbox 复选框组件用于在一组备选项中进行多选。复选框是�
 - **方法暴露** - 提供 toggle 方法支持外部控制选中状态
 - **TypeScript 支持** - 完整的类型定义,提供优秀的开发体验
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:1-620
-
 ## 基本用法
 
 ### 基础用法
@@ -55,8 +53,6 @@ const checked = ref(false)
 - 未选中时值为 false,选中时值为 true
 - 点击复选框或标签文字都可以切换状态
 - 组件会自动处理选中和未选中的视觉反馈
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:153-160
 
 ### 自定义选中值
 
@@ -100,8 +96,6 @@ const status = ref('inactive')
 - 单独使用时必须同时设置 trueValue 和 falseValue
 - 在 CheckboxGroup 中使用时,这两个属性无效
 - 组件通过对比 modelValue 与 trueValue 判断是否选中
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:81-84,117-118,153-160
 
 ### 形状变体
 
@@ -149,8 +143,6 @@ const checked3 = ref(true)
 - **button**: 按钮样式,选中时带边框和背景色,适合标签选择场景
 - 按钮样式的选中图标显示在文字左侧
 - 不同形状可以在同一个 CheckboxGroup 中混用
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:75-76,181-183,427-443,499-546
 
 ### 尺寸规格
 
@@ -212,8 +204,6 @@ const checked3 = ref(true)
 - 尺寸影响复选框图标、勾选图标和标签文字的大小
 - 在 CheckboxGroup 中可以统一设置尺寸
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:86-87,134-138,144-147,228-231,594-617
-
 ### 禁用状态
 
 通过 disabled 属性禁用复选框。
@@ -264,8 +254,6 @@ const checked4 = ref(true)
 - 在 CheckboxGroup 中,可以通过组的 disabled 全局禁用
 - 单个复选框的 disabled 优先级高于组的 disabled
 - disabled 可以设置为 null,此时仅受组的 disabled 控制
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:79-80,196-215,315-316,558-591
 
 ### 自定义颜色
 
@@ -322,8 +310,6 @@ const checked5 = ref(true)
 - 单个复选框的 checkedColor 优先级高于组的 checkedColor
 - 禁用状态下自定义颜色不生效
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:77-78,187-191,483-497,537-544
-
 ### 文字最大宽度
 
 通过 maxWidth 限制标签文字的最大宽度,超出部分显示省略号。
@@ -362,8 +348,6 @@ const checked3 = ref(false)
 - 文字内容会使用 text-overflow: ellipsis 处理
 - 适用于需要固定布局宽度的场景
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:88,35-37,460-465
-
 ### 自定义样式类
 
 提供多个样式类属性,实现精细的样式控制。
@@ -396,8 +380,6 @@ const checked1 = ref(true)
 - **customShapeClass**: 应用到形状元素(复选框图标),控制图标样式
 - **customStyle**: 应用到根元素的内联样式
 - 使用 :deep() 确保样式能够穿透组件作用域
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:64-71,110-114
 
 ## 高级用法
 
@@ -435,8 +417,6 @@ const checkedList = ref<number[]>([1, 3])
 - 选中时,Checkbox 的 model-value 会添加到数组中
 - 取消选中时,会从数组中移除对应的值
 - 在组合使用时,Checkbox 的 trueValue/falseValue 无效
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:124-125,153-160,263-271,315-331
 
 ### 内联显示
 
@@ -479,8 +459,6 @@ const list2 = ref<number[]>([1, 2])
 - inline 为 true 时,复选框水平排列,自动换行
 - 内联显示适合选项较少且文字简短的场景
 - 内联模式下保留右边距,最后一个元素右边距为 0
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:220-223,548-556
 
 ### 网格布局
 
@@ -540,8 +518,6 @@ const list3 = ref<number[]>([2])
 - 网格布局会自动换行,添加底部间距
 - 适合标签选择、筛选条件等场景
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:237-258
-
 ### 选择数量限制
 
 通过 CheckboxGroup 的 max 和 min 属性限制选择数量。
@@ -600,8 +576,6 @@ const list3 = ref<number[]>([1, 2])
 - 限制状态下禁用的复选框显示禁用样式
 - 取消选择或选择其他项后,禁用状态自动解除
 - min 和 max 可以单独使用或组合使用
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:196-215
 
 ### 统一配置
 
@@ -682,8 +656,6 @@ const list4 = ref<number[]>([1, 2])
 - 单个复选框可以通过设置自己的属性覆盖组的配置
 - 灵活的配置机制适应各种复杂需求
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:181-183,187-191,196-215,228-231
-
 ### 暴露方法
 
 Checkbox 组件暴露了 toggle 方法,可以通过 ref 调用。
@@ -746,8 +718,6 @@ const handleUncheck = () => {
 - 在 CheckboxGroup 中使用时,toggle 会同步更新组的值
 - 适合通过程序逻辑控制复选框状态的场景
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:103-107,315-331,334-336
-
 ## API
 
 ### Props
@@ -768,8 +738,6 @@ const handleUncheck = () => {
 | custom-label-class | 自定义标签元素样式类 | `string` | `''` |
 | custom-shape-class | 自定义形状元素(复选框图标)样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:63-89,110-119
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -777,23 +745,17 @@ const handleUncheck = () => {
 | update:modelValue | v-model 绑定值变化时触发 | `value: string \| number \| boolean` |
 | change | 复选框状态变化时触发,在 CheckboxGroup 中传递的是是否选中的布尔值 | `{ value: string \| number \| boolean }` |
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:94-99,320-329
-
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 复选框的标签文字内容 |
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:34-37
-
 ### 暴露方法
 
 | 方法名 | 说明 | 参数 | 返回值 |
 |--------|------|------|--------|
 | toggle | 切换当前选中状态,禁用状态下调用无效 | - | `void` |
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:103-107,315-331
 
 ### 类型定义
 
@@ -862,8 +824,6 @@ export type CheckboxInstance = ComponentPublicInstance<
   WdCheckboxExpose
 >
 ```
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:42-107,338-339
 
 ## 主题定制
 
@@ -934,8 +894,6 @@ export type CheckboxInstance = ComponentPublicInstance<
 </style>
 ```
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:342-619
-
 ### 暗黑模式
 
 组件支持暗黑模式,通过添加 `wot-theme-dark` 类名自动切换:
@@ -961,8 +919,6 @@ const checked = ref(true)
 - 文字颜色自动反转
 - 禁用状态也有对应的暗色样式
 - 按钮模式在暗色下有特殊适配
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:348-413
 
 ## 最佳实践
 
@@ -992,8 +948,6 @@ const checked = ref(true)
 - 避免硬编码数字索引
 - 更容易维护和扩展
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:263-271
-
 ### 2. 正确使用 trueValue/falseValue
 
 单独使用时,trueValue 和 falseValue 必须同时设置。
@@ -1018,8 +972,6 @@ const checked = ref(true)
 - 只设置一个时,另一个使用默认值可能导致意外行为
 - 明确的值定义避免类型混淆
 - 在 TypeScript 中有更好的类型推断
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:81-84,117-118,153-160
 
 ### 3. 合理使用禁用状态
 
@@ -1051,8 +1003,6 @@ const checked = ref(true)
 - 全局禁用适用于临时性状态(加载、提交等)
 - 单个禁用适用于永久性限制(权限、等级等)
 - 使用 null 值让单个复选框仅受组控制
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:196-215
 
 ### 4. 优化大量选项的性能
 
@@ -1095,8 +1045,6 @@ const selectedCount = computed(() => selected.value.length)
 - 避免在模板中使用复杂表达式
 - 使用 computed 缓存计算结果
 - 考虑虚拟列表(选项数量 > 1000)
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:237-258
 
 ### 5. 监听变化事件
 
@@ -1163,8 +1111,6 @@ const handlePermissionChange = ({ value }: { value: string[] }) => {
 - 需要阻止状态变化: 在 change 事件中处理
 - CheckboxGroup 中: 监听组的 change 事件更合理
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:315-331
-
 ## 常见问题
 
 ### 1. 为什么 Checkbox 的值没有更新?
@@ -1202,8 +1148,6 @@ const handlePermissionChange = ({ value }: { value: string[] }) => {
 </wd-checkbox-group>
 ```
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:263-271,305-309
-
 ### 2. trueValue/falseValue 在 CheckboxGroup 中不生效?
 
 **问题原因:**
@@ -1235,8 +1179,6 @@ const handlePermissionChange = ({ value }: { value: string[] }) => {
   <wd-checkbox true-value="item2">选项2</wd-checkbox>
 </wd-checkbox-group>
 ```
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:81-84,153-160
 
 ### 3. 如何实现全选功能?
 
@@ -1291,8 +1233,6 @@ const handleGroupChange = () => {
 </script>
 ```
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:315-331
-
 ### 4. 禁用状态下颜色如何自定义?
 
 **问题原因:**
@@ -1324,8 +1264,6 @@ const handleGroupChange = () => {
 - checkedColor 仅对非禁用状态生效
 - 禁用状态需要通过 CSS 变量定制
 - 暗黑模式下禁用样式有单独的变量
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:558-591
 
 ### 5. 如何让复选框只读而不是禁用?
 
@@ -1374,8 +1312,6 @@ const handleGroupChange = () => {
 2. 自定义禁用样式: 保留禁用功能,但样式正常
 3. 根据场景选择合适的方式
 
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:315-316
-
 ## 注意事项
 
 1. **modelValue 必须设置**: 在 CheckboxGroup 中使用时,每个 Checkbox 必须设置 model-value 属性,否则无法正确管理选中状态
@@ -1401,5 +1337,3 @@ const handleGroupChange = () => {
 11. **toggle 方法限制**: 通过 ref 调用 toggle 方法时,如果复选框处于禁用状态,调用不会生效
 
 12. **暗黑模式适配**: 使用暗黑模式时,需要在外层容器添加 wot-theme-dark 类名,组件会自动适配深色样式
-
-参考: src/wd/components/wd-checkbox/wd-checkbox.vue:1-620

@@ -26,8 +26,6 @@ Radio 单选框组件用于在一组备选项中进行单选。单选框是表�
 - **文字控制** - 支持最大宽度限制,超出显示省略号
 - **TypeScript 支持** - 完整的类型定义,提供优秀的开发体验
 
-参考: src/wd/components/wd-radio/wd-radio.vue:1-544
-
 ## 基本用法
 
 ### 基础用法
@@ -61,8 +59,6 @@ const value = ref(1)
 - Radio 的 value 属性标识该选项的值
 - 同一组内只能有一个 Radio 被选中
 - 点击任何 Radio 都会更新 RadioGroup 的值
-
-参考: src/wd/components/wd-radio/wd-radio.vue:81-86,205-210
 
 ### 形状变体
 
@@ -116,8 +112,6 @@ const value3 = ref(3)
 - **button**: 按钮样式,选中时带边框和背景色,适合标签选择场景
 - 不同形状可以在同一个 RadioGroup 中混用
 - 按钮样式支持响应式尺寸调整
-
-参考: src/wd/components/wd-radio/wd-radio.vue:49-50,92-94,331-363,365-414
 
 ### 尺寸规格
 
@@ -179,8 +173,6 @@ const value4 = ref(2)
 - 尺寸影响单选框图标、标签文字和按钮的大小
 - 在 RadioGroup 中可以统一设置尺寸
 
-参考: src/wd/components/wd-radio/wd-radio.vue:55-56,130-132,396-413,498-541
-
 ### 禁用状态
 
 通过 disabled 属性禁用单选框。
@@ -233,8 +225,6 @@ const value3 = ref(2)
 - 在 RadioGroup 中,可以通过组的 disabled 全局禁用
 - 单个单选框的 disabled 优先级高于组的 disabled
 - disabled 可以设置为 null,此时仅受组的 disabled 控制
-
-参考: src/wd/components/wd-radio/wd-radio.vue:53-54,108-113,207,460-496
 
 ### 自定义颜色
 
@@ -297,8 +287,6 @@ const value4 = ref(2)
 - 单个单选框的 checkedColor 优先级高于组的 checkedColor
 - 禁用状态下自定义颜色不生效
 
-参考: src/wd/components/wd-radio/wd-radio.vue:51-52,100-102,319-329,353-362,387-393
-
 ### 图标位置
 
 通过 iconPlacement 属性控制图标在文字的左侧或右侧。
@@ -359,8 +347,6 @@ const value4 = ref(2)
 - 通过 CSS flex-direction 实现位置切换
 - 按钮样式不受此属性影响
 
-参考: src/wd/components/wd-radio/wd-radio.vue:61-62,138-143,416-418,451-457
-
 ### 文字最大宽度
 
 通过 maxWidth 限制标签文字的最大宽度,超出部分显示省略号。
@@ -396,8 +382,6 @@ const value = ref(1)
 - 超出宽度的文字会显示省略号(...)
 - 文字内容会使用 word-break: break-all 换行
 - 适用于需要固定布局宽度的场景
-
-参考: src/wd/components/wd-radio/wd-radio.vue:59-60,10,310-317
 
 ## 高级用法
 
@@ -453,8 +437,6 @@ const value3 = ref(1)
 - inline 为 true 时,单选框水平排列,自动换行
 - 内联显示适合选项较少且文字简短的场景
 - 内联模式下保留右边距,自动调整间距
-
-参考: src/wd/components/wd-radio/wd-radio.vue:57-58,119-124,420-458
 
 ### 网格布局
 
@@ -513,8 +495,6 @@ const value3 = ref(3)
 - 按钮模式下会自动减去 margin
 - 网格布局会自动换行
 - 适合标签选择、筛选条件等场景
-
-参考: src/wd/components/wd-radio/wd-radio.vue:149-169
 
 ### 统一配置
 
@@ -597,8 +577,6 @@ const value4 = ref(2)
 - 单个单选框可以通过设置自己的属性覆盖组的配置
 - 灵活的配置机制适应各种复杂需求
 
-参考: src/wd/components/wd-radio/wd-radio.vue:92-94,100-102,108-113,119-124,130-132,138-143
-
 ### 动态选项
 
 通过 v-for 渲染动态选项列表。
@@ -675,8 +653,6 @@ const selected2 = ref(1)
 - 适合从接口获取选项数据的场景
 - 支持响应式数据更新
 
-参考: src/wd/components/wd-radio/wd-radio.vue:47-48
-
 ## API
 
 ### Props
@@ -694,21 +670,15 @@ const selected2 = ref(1)
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点内联样式 | `string` | `''` |
 
-参考: src/wd/components/wd-radio/wd-radio.vue:41-63,66-72
-
 ### Events
 
 Radio 组件本身不直接触发事件,所有事件都由 RadioGroup 统一管理。请参考 RadioGroup 组件的 Events 文档。
-
-参考: src/wd/components/wd-radio/wd-radio.vue:205-210
 
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 单选框的标签文字内容 |
-
-参考: src/wd/components/wd-radio/wd-radio.vue:8-13
 
 ### 类型定义
 
@@ -750,8 +720,6 @@ interface WdRadioProps {
   iconPlacement?: RadioIconPlacement
 }
 ```
-
-参考: src/wd/components/wd-radio/wd-radio.vue:22,41-63
 
 ## 主题定制
 
@@ -830,8 +798,6 @@ interface WdRadioProps {
 </style>
 ```
 
-参考: src/wd/components/wd-radio/wd-radio.vue:213-543
-
 ### 暗黑模式
 
 组件支持暗黑模式,通过添加 `wot-theme-dark` 类名自动切换:
@@ -861,8 +827,6 @@ const value = ref(1)
 - 禁用状态也有对应的暗色样式
 - 按钮模式在暗色下有特殊适配
 
-参考: src/wd/components/wd-radio/wd-radio.vue:218-275
-
 ## 最佳实践
 
 ### 1. 合理设置 value
@@ -890,8 +854,6 @@ const value = ref(1)
 - 便于后端接口对接
 - 避免硬编码数字索引
 - 更容易维护和扩展
-
-参考: src/wd/components/wd-radio/wd-radio.vue:47-48,81-86
 
 ### 2. 选择合适的形状
 
@@ -926,8 +888,6 @@ const value = ref(1)
 - 问卷调查: check
 - 设置选项: dot
 
-参考: src/wd/components/wd-radio/wd-radio.vue:92-94,331-414
-
 ### 3. 合理使用禁用状态
 
 根据业务逻辑灵活使用全局禁用和单个禁用。
@@ -957,8 +917,6 @@ const value = ref(1)
 - 全局禁用适用于临时性状态(加载、提交等)
 - 单个禁用适用于永久性限制(权限、等级等)
 - 使用 null 值让单个单选框仅受组控制
-
-参考: src/wd/components/wd-radio/wd-radio.vue:108-113,207
 
 ### 4. 优化大量选项的性能
 
@@ -1003,8 +961,6 @@ const selectedLabel = computed(() => {
 - 避免在模板中使用复杂表达式
 - 使用 computed 缓存计算结果
 - 考虑虚拟列表(选项数量 > 1000)
-
-参考: src/wd/components/wd-radio/wd-radio.vue:149-169
 
 ### 5. 监听变化事件
 
@@ -1053,8 +1009,6 @@ const handleChange = ({ value }: { value: string }) => {
 - 需要访问旧值: 使用 watch
 - 需要阻止状态变化: 在 change 事件中处理
 
-参考: src/wd/components/wd-radio/wd-radio.vue:205-210
-
 ## 常见问题
 
 ### 1. 为什么 Radio 的值没有更新?
@@ -1090,8 +1044,6 @@ const handleChange = ({ value }: { value: string }) => {
 </wd-radio-group>
 ```
 
-参考: src/wd/components/wd-radio/wd-radio.vue:74-75,81-86
-
 ### 2. 如何设置默认选中项?
 
 **问题原因:**
@@ -1120,8 +1072,6 @@ const value = ref(2) // 默认选中选项2
 // const value = ref(4) // 没有 value 为 4 的选项
 </script>
 ```
-
-参考: src/wd/components/wd-radio/wd-radio.vue:81-86
 
 ### 3. 按钮样式如何自定义宽度?
 
@@ -1161,8 +1111,6 @@ const value = ref(2) // 默认选中选项2
 - 按钮样式有默认的 min-width 和 max-width
 - 使用 CSS 变量更推荐
 - 也可以通过 itemWidth 统一控制
-
-参考: src/wd/components/wd-radio/wd-radio.vue:373-386,395-413
 
 ### 4. 如何实现单选框的只读状态?
 
@@ -1216,8 +1164,6 @@ const value = ref(2) // 默认选中选项2
 2. 自定义禁用样式: 保留禁用功能,但样式正常
 3. 根据场景选择合适的方式
 
-参考: src/wd/components/wd-radio/wd-radio.vue:205-210,460-496
-
 ### 5. 图标位置切换不生效?
 
 **问题原因:**
@@ -1251,8 +1197,6 @@ const value = ref(2) // 默认选中选项2
 - 按钮样式不显示图标,因此该属性无效
 - 需要配合 inline 或非按钮样式使用
 
-参考: src/wd/components/wd-radio/wd-radio.vue:138-143,416-457
-
 ## 注意事项
 
 1. **必须与 RadioGroup 组合**: Radio 组件必须放在 RadioGroup 内使用,单独使用无法实现单选功能
@@ -1278,5 +1222,3 @@ const value = ref(2) // 默认选中选项2
 11. **事件处理**: Radio 组件本身不触发事件,所有事件由 RadioGroup 统一管理,需要在 RadioGroup 上监听 change 事件
 
 12. **暗黑模式适配**: 使用暗黑模式时,需要在外层容器添加 wot-theme-dark 类名,组件会自动适配深色样式
-
-参考: src/wd/components/wd-radio/wd-radio.vue:1-544

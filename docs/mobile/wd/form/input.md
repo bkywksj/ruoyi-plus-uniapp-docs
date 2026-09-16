@@ -20,8 +20,6 @@ Input 输入框是表单组件中最基础和最常用的组件,用于接收用�
 - **只读禁用** - 支持只读和禁用状态,只读模式通过遮罩层实现,保持良好的视觉效果
 - **暗黑模式** - 内置暗黑模式支持,自动适配系统主题,提供一致的用户体验
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:1-979
-
 ## 基本用法
 
 ### 基础输入框
@@ -51,8 +49,6 @@ const value = ref('')
 - 使用 `v-model` 绑定输入值,支持双向数据绑定
 - `placeholder` 设置占位提示文本
 - 默认类型为 `text`,支持任意文本输入
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:229-230
 
 ### 输入框类型
 
@@ -119,8 +115,6 @@ const idcard = ref('')
 - `safe-password`: 安全密码输入
 - `nickname`: 昵称输入
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:148-158, 217-218
-
 ### 密码输入
 
 通过 `show-password` 属性启用密码显示/隐藏切换功能。
@@ -150,8 +144,6 @@ const password = ref('')
 - `show-password` 启用密码切换功能
 - 显示眼睛图标,点击可切换密码的显示/隐藏状态
 - 内部使用 `password` 属性控制输入框的密码模式
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:231-232, 49, 84-89, 391, 548-550
 
 ### 清空按钮
 
@@ -198,8 +190,6 @@ const value2 = ref('这是输入内容')
   - `focus`: 聚焦且有内容时显示
 - `focus-when-clear` 控制清空后是否自动聚焦(默认 `true`)
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:233-234, 261-264, 474-486, 555-569
-
 ### 字数统计
 
 通过 `show-word-limit` 和 `maxlength` 属性显示字数统计。
@@ -228,8 +218,6 @@ const value = ref('')
 - `maxlength` 设置最大字符数,-1 表示不限制
 - `show-word-limit` 显示字数统计,格式为 "当前字数/最大字数"
 - 超出最大字数时,当前字数显示为红色
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:219-220, 241-242, 90-100, 491-494
 
 ### 带标签的输入框
 
@@ -267,8 +255,6 @@ const value2 = ref('')
 - `label` 设置左侧标签文字
 - `label-width` 自定义标签宽度,支持 rpx/px 单位
 - 标签宽度优先级:组件 `labelWidth` > Form `labelWidth` > 默认值
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:243-245, 407-420
 
 ### 前后置图标
 
@@ -347,8 +333,6 @@ const handleSuffixClick = () => {
 - `suffix` 插槽可自定义后置内容
 - `clickprefixicon` 和 `clicksuffixicon` 事件监听图标点击
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:237-240, 11-18, 30-37, 101-107, 627-629, 620-622
-
 ## 高级用法
 
 ### 只读和禁用
@@ -393,8 +377,6 @@ const disabledValue = ref('这是禁用内容')
 - `readonly` 通过遮罩层实现只读,用户无法编辑
 - `disabled` 完全禁用输入框,样式变灰且无法交互
 - 只读和禁用状态下都不显示清空按钮
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:221-222, 235-236, 51, 73, 821-833
 
 ### 表单验证集成
 
@@ -507,8 +489,6 @@ const handleReset = () => {
 - 验证失败时自动显示错误提示信息
 - 支持自定义 `errorMessageOffset` 调整错误信息位置
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:255-260, 269-270, 401, 499-504, 509-524
-
 ### 右对齐输入
 
 通过 `align-right` 属性使输入内容右对齐。
@@ -549,8 +529,6 @@ const value2 = ref('')
 - `align-right` 设置输入内容右对齐
 - 适用于金额、数量等数字输入场景
 - 配合 `type="digit"` 或 `type="number"` 使用效果更佳
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:227-228, 45, 927-929
 
 ### 自定义样式
 
@@ -619,8 +597,6 @@ const value4 = ref('')
 - `custom-inner-class` 设置输入框内部类名
 - `custom-label-class` 设置标签类名
 - `size` 设置组件尺寸,支持 `large`
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:179-190, 247-248, 253-254, 835-845, 887-910
 
 ### 键盘控制
 
@@ -718,8 +694,6 @@ const selectText = () => {
 - `adjust-position` 键盘弹起时是否自动上推页面
 - `hold-keyboard` 聚焦状态下点击页面是否保持键盘
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:199-215, 54-62, 604-615
-
 ### 占位符样式
 
 自定义占位符的样式和类名。
@@ -755,8 +729,6 @@ const value2 = ref('')
 - `placeholder-style` 设置占位符内联样式
 - `placeholder-class` 设置占位符 CSS 类名
 - 支持设置颜色、字体大小、字重等样式
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:193-198, 58, 64, 813-819
 
 ## API
 
@@ -810,8 +782,6 @@ const value2 = ref('')
 | custom-inner-class | 输入框内部自定义类名 | `string` | `''` |
 | custom-label-class | 标签自定义类名 | `string` | `''` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:178-271, 312-350
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -827,8 +797,6 @@ const value2 = ref('')
 | clicksuffixicon | 点击后置图标时触发 | - |
 | click | 点击输入框时触发 | `event: MouseEvent` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:276-297, 555-636
-
 ### Slots
 
 | 插槽名 | 说明 |
@@ -836,8 +804,6 @@ const value2 = ref('')
 | prefix | 自定义前置图标内容 |
 | suffix | 自定义后置图标内容 |
 | label | 自定义标签内容 |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:302-309
 
 ### 类型定义
 
@@ -996,8 +962,6 @@ interface WdInputEmits {
 }
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:143-297
-
 ## 主题定制
 
 ### CSS 变量
@@ -1065,8 +1029,6 @@ const value = ref('')
 </script>
 
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:639-978
 
 ## 最佳实践
 
@@ -1284,8 +1246,6 @@ const heavyComputation = () => {
 - 长列表中按需渲染输入框组件
 - 合理使用防抖处理频繁输入
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:598-601
-
 ## 常见问题
 
 ### 1. 为什么字数统计不显示?
@@ -1322,8 +1282,6 @@ const value1 = ref('')
 const value2 = ref('')
 </script>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:491-494
 
 ### 2. 清空按钮点击后输入框没有聚焦
 
@@ -1367,8 +1325,6 @@ const handleClear = async () => {
 }
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:555-569
-
 ### 3. 表单验证错误信息不显示
 
 **问题原因:**
@@ -1410,8 +1366,6 @@ const rules: Record<string, FormItemRule[]> = {
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:499-504
-
 ### 4. 密码切换图标不显示
 
 **问题原因:**
@@ -1444,8 +1398,6 @@ const rules: Record<string, FormItemRule[]> = {
 - 不要同时设置 `suffix-icon`,会导致图标显示冲突
 - 密码切换图标优先级高于自定义后置图标
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:84-89
-
 ### 5. 输入框内容不对齐
 
 **问题原因:**
@@ -1475,8 +1427,6 @@ const rules: Record<string, FormItemRule[]> = {
 
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:251-252, 878-880
-
 ## 注意事项
 
 1. **输入类型限制**: 不同的 `type` 会调起不同的键盘,选择合适的类型提升输入体验
@@ -1502,5 +1452,3 @@ const rules: Record<string, FormItemRule[]> = {
 11. **性能优化**: 避免在 `input` 事件中执行耗时操作,建议在 `blur` 或 `confirm` 事件中处理
 
 12. **键盘控制**: `confirm-type` 设置键盘确认按钮样式,`adjust-position` 控制键盘弹起行为
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-input/wd-input.vue:1-979

@@ -24,8 +24,6 @@ Search 搜索框组件是一个专业的搜索输入控件,提供了完整的搜
 - **完整事件** - 提供 `search`、`change`、`focus`、`blur`、`clear`、`cancel` 等完整事件,满足各种交互需求
 - **国际化支持** - 内置多语言支持,占位符和取消按钮文字可自动翻译
 
-参考: src/wd/components/wd-search/wd-search.vue:1-89
-
 ## 基本用法
 
 ### 基础搜索框
@@ -62,8 +60,6 @@ const handleSearch = ({ value: searchValue }: { value: string }) => {
 - 点击键盘右下角的"搜索"按钮触发 `search` 事件
 - 有输入内容时右侧自动显示清除按钮
 - 右侧显示"取消"按钮,点击触发 `cancel` 事件
-
-参考: src/wd/components/wd-search/wd-search.vue:151-165
 
 ### 隐藏取消按钮
 
@@ -107,8 +103,6 @@ const handleSearch = ({ value }: { value: string }) => {
 - 隐藏取消按钮后,用户只能通过键盘搜索按钮或失焦来结束输入
 - 适用于搜索框嵌入页面内部,而非独立搜索页面的场景
 
-参考: src/wd/components/wd-search/wd-search.vue:110-111
-
 ### 浅色主题
 
 使用 `light` 属性启用浅色主题,搜索框背景为白色。
@@ -143,8 +137,6 @@ const handleSearch = ({ value }: { value: string }) => {
 - `light` 为 `true` 时,搜索框输入区域背景为白色
 - 默认(非 light 模式)下,输入区域背景为浅灰色
 - 浅色主题适合深色背景页面,如独立搜索页面的顶部
-
-参考: src/wd/components/wd-search/wd-search.vue:108-109
 
 ### 占位符左对齐
 
@@ -188,8 +180,6 @@ const value2 = ref('')
 - `placeholder-left` 为 `true` 时,始终显示真实输入框,占位符左对齐
 - 左对齐模式更符合传统输入框交互,居中模式更突出搜索功能
 
-参考: src/wd/components/wd-search/wd-search.vue:116-117
-
 ### 自动聚焦
 
 使用 `focus` 属性实现自动聚焦,页面加载时自动弹出键盘。
@@ -222,8 +212,6 @@ const handleSearch = ({ value }: { value: string }) => {
 - `focus` 为 `true` 时,组件加载完成后自动聚焦输入框
 - 自动聚焦会触发键盘弹出,适用于独立搜索页面
 - 如果页面有多个输入框,建议只对主要搜索框设置自动聚焦
-
-参考: src/wd/components/wd-search/wd-search.vue:228-246
 
 ### 清空后聚焦
 
@@ -267,8 +255,6 @@ const value2 = ref('')
 - 默认情况下,清除后输入框失焦,隐藏键盘
 - 适用于需要连续搜索的场景,用户清空后可以立即输入新内容
 
-参考: src/wd/components/wd-search/wd-search.vue:264-285
-
 ### 禁用状态
 
 使用 `disabled` 属性禁用搜索框。
@@ -296,8 +282,6 @@ const value = ref('')
 - `disabled` 为 `true` 时,输入框无法点击和输入
 - 禁用状态下,清除按钮、取消按钮等交互功能全部失效
 - 适用于搜索功能暂时不可用的场景
-
-参考: src/wd/components/wd-search/wd-search.vue:112-113
 
 ## 高级用法
 
@@ -365,8 +349,6 @@ const value4 = ref('')
 - 值可以是数字(单位 rpx)或字符串(如 `'16rpx'`, `'8px'`)
 - 圆角大小会影响搜索框的视觉风格,选择合适的值以匹配整体设计
 
-参考: src/wd/components/wd-search/wd-search.vue:126-127
-
 ### 自定义占位符样式
 
 使用 `placeholder-style` 和 `placeholder-class` 属性自定义占位符样式。
@@ -409,8 +391,6 @@ const value2 = ref('')
 - `placeholder-style` 支持内联样式字符串,可设置 `color`、`font-size`、`font-weight`
 - `placeholder-class` 支持自定义样式类,需要添加 `!important` 提升优先级
 - 样式同时应用于覆盖层和真实输入框的占位符
-
-参考: src/wd/components/wd-search/wd-search.vue:122-125
 
 ### 最大长度限制
 
@@ -456,8 +436,6 @@ const value2 = ref('')
 - `maxlength` 默认值为 -1,表示无限制
 - 设置为正整数时,输入字符数达到限制后无法继续输入
 - 适用于搜索关键词有长度要求的场景,如商品编号、订单号等
-
-参考: src/wd/components/wd-search/wd-search.vue:114-115
 
 ### 前置插槽
 
@@ -509,8 +487,6 @@ const value2 = ref('')
 - `prefix` 插槽内容显示在搜索输入区域的左侧
 - 可以添加图标、文字、选择器等自定义内容
 - 常用于添加分类筛选、范围选择等功能
-
-参考: src/wd/components/wd-search/wd-search.vue:10-11
 
 ### 自定义取消按钮
 
@@ -591,8 +567,6 @@ const handleIconClick = () => {
 - 使用 `cancel-txt` 属性可以快速修改取消按钮的文字
 - 使用 `suffix` 插槽可以完全自定义右侧内容
 - 插槽内容会替换默认的取消按钮,需要自行处理点击事件
-
-参考: src/wd/components/wd-search/wd-search.vue:67-72
 
 ### 搜索历史记录
 
@@ -688,8 +662,6 @@ const clearHistory = () => {
 - 历史记录存储在响应式数组中,实际项目应存储到本地存储
 - 点击历史项直接填充到搜索框并触发搜索
 
-参考: src/wd/components/wd-search/wd-search.vue:299-337
-
 ### 搜索联想
 
 结合搜索框实现搜索关键词联想功能。
@@ -782,8 +754,6 @@ const selectSuggest = (item: string) => {
 - 实际项目中应调用后端接口获取联想数据
 - 点击联想项填充到搜索框并触发搜索
 
-参考: src/wd/components/wd-search/wd-search.vue:252-258
-
 ## API
 
 ### Props
@@ -807,8 +777,6 @@ const selectSuggest = (item: string) => {
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-input-class | 自定义输入框样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-search/wd-search.vue:94-128
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -822,16 +790,12 @@ const selectSuggest = (item: string) => {
 | cancel | 点击取消按钮时触发 | `{ value: string }` |
 | click | 点击整个搜索框区域时触发（**仅在 `disabled` 为 `true` 时触发**，常用于跳转至独立搜索页） | - |
 
-参考: src/wd/components/wd-search/wd-search.vue:132-150, 331-340
-
 ### Slots
 
 | 插槽名 | 说明 | 参数 |
 |--------|------|------|
 | prefix | 自定义搜索框前置内容 | - |
 | suffix | 自定义搜索框后置内容(取消按钮) | - |
-
-参考: src/wd/components/wd-search/wd-search.vue:10-72
 
 ### 类型定义
 
@@ -895,8 +859,6 @@ interface WdSearchEmits {
   cancel: [{ value: string }]
 }
 ```
-
-参考: src/wd/components/wd-search/wd-search.vue:91-148
 
 ## 主题定制
 
@@ -994,8 +956,6 @@ const toggleTheme = () => {
 </script>
 ```
 
-参考: src/wd/components/wd-search/wd-search.vue:345-387
-
 ## 最佳实践
 
 ### 1. 选择合适的主题模式
@@ -1023,8 +983,6 @@ const toggleTheme = () => {
 - 页面背景为深色(如导航栏)时使用 `light` 主题
 - 页面背景为浅色时使用默认主题
 - 避免背景和搜索框颜色过于接近,确保视觉对比度
-
-参考: src/wd/components/wd-search/wd-search.vue:497-507
 
 ### 2. 合理使用自动聚焦
 
@@ -1059,8 +1017,6 @@ const toggleTheme = () => {
 - 专门的搜索页面可使用自动聚焦,方便用户直接输入
 - 首页、列表页等非搜索为主的页面不要使用自动聚焦
 - 自动聚焦会弹出键盘,可能遮挡页面内容
-
-参考: src/wd/components/wd-search/wd-search.vue:228-246
 
 ### 3. 防抖优化搜索请求
 
@@ -1107,8 +1063,6 @@ const searchAPI = (keyword: string) => {
 - 实时搜索建议防抖时间为 300-500ms
 - 搜索联想建议防抖时间为 200-300ms
 - 避免每次输入都调用接口,造成性能浪费
-
-参考: src/wd/components/wd-search/wd-search.vue:252-258
 
 ### 4. 保存搜索历史
 
@@ -1162,8 +1116,6 @@ const handleSearchWrong = ({ value }: { value: string }) => {
 - 限制历史记录数量(如 10 条),避免占用过多存储空间
 - 提供清空历史功能,让用户可以管理历史记录
 
-参考: src/wd/components/wd-search/wd-search.vue:291-293
-
 ### 5. 搜索结果页面跳转
 
 合理处理搜索和取消事件,实现页面跳转逻辑。
@@ -1215,8 +1167,6 @@ const handleSearchWrong = ({ value }: { value: string }) => {
 - 使用 `encodeURIComponent` 编码关键词,避免特殊字符导致问题
 - 取消按钮建议返回上一页,符合用户预期
 
-参考: src/wd/components/wd-search/wd-search.vue:329-337
-
 ## 常见问题
 
 ### 1. 占位符不居中显示
@@ -1254,8 +1204,6 @@ const value2 = ref('')  // 设置了 placeholder-left,始终左对齐
 </script>
 ```
 
-参考: src/wd/components/wd-search/wd-search.vue:19-29
-
 ### 2. 自动聚焦不生效
 
 **问题描述:**
@@ -1289,8 +1237,6 @@ const value2 = ref('')
 </script>
 ```
 
-参考: src/wd/components/wd-search/wd-search.vue:228-246
-
 ### 3. 清除按钮不显示
 
 **问题描述:**
@@ -1320,8 +1266,6 @@ const keyword = ref('')
 // let keyword = ''
 </script>
 ```
-
-参考: src/wd/components/wd-search/wd-search.vue:57-63
 
 ### 4. 取消按钮点击无反应
 
@@ -1372,8 +1316,6 @@ const handleCancel = () => {
   </wd-search>
 </template>
 ```
-
-参考: src/wd/components/wd-search/wd-search.vue:329-337
 
 ### 5. 搜索事件触发时机不对
 
@@ -1432,8 +1374,6 @@ const handleChange = ({ value }: { value: string }) => {
 - `search` 事件: 用户主动触发搜索(点击键盘搜索按钮)
 - `change` 事件: 输入内容变化时触发,适合实时搜索
 
-参考: src/wd/components/wd-search/wd-search.vue:291-293
-
 ## 注意事项
 
 1. **占位符显示机制**: 组件默认使用覆盖层实现居中占位符,点击后切换为真实输入框,这是为了实现更好的视觉效果
@@ -1459,5 +1399,3 @@ const handleChange = ({ value }: { value: string }) => {
 11. **国际化**: 组件内置国际化支持,如果没有设置 `placeholder` 和 `cancel-txt`,会使用默认的翻译文字
 
 12. **清除按钮**: 清除按钮固定在输入框右侧,无法通过属性调整位置,如需自定义可使用自定义样式
-
-参考: src/wd/components/wd-search/wd-search.vue:151-165

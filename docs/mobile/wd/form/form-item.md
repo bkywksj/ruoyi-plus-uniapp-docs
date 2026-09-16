@@ -23,8 +23,6 @@ FormItem 表单项组件是表单控件的容器组件,基于 Cell 组件封装,
 - **图标支持** - 支持在标签前显示图标
 - **点击反馈** - 支持点击反馈和右侧箭头显示
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:1-39
-
 ## 基本用法
 
 ### 基础用法
@@ -70,8 +68,6 @@ const rules = {
 - `label` 显示表单项标签
 - FormItem 会自动注册到父级 Form 组件
 - 验证错误会自动显示在表单项下方
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:3-22, 79-93
 
 ### 必填标识
 
@@ -119,8 +115,6 @@ const phoneRules = [
 - 验证规则中包含 `required: true` 也会显示必填星号
 - 必填星号显示在标签左侧
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:5, 54-55
-
 ### 自定义标签宽度
 
 通过 `labelWidth` 设置标签宽度,覆盖 Form 的设置。
@@ -163,8 +157,6 @@ const formData = ref({
 - 支持数字或字符串格式
 - 支持 rpx、px、% 等单位
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:61, 102-115
-
 ### 垂直布局
 
 使用 `vertical` 实现标签和内容的上下布局。
@@ -199,8 +191,6 @@ const formData = ref({
 - 适用于多行文本、文件上传等高度较大的控件
 - 标签显示在上方,内容显示在下方
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:75, 15
-
 ### 垂直居中
 
 使用 `center` 实现标签和内容的垂直居中对齐。
@@ -234,8 +224,6 @@ const formData = ref({
 - `center="true"` 标签和内容垂直居中
 - 适用于开关、单选、复选等高度较小的控件
 - 默认为顶部对齐
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:57, 9
 
 ### 显示右侧箭头
 
@@ -296,8 +284,6 @@ const showDatePicker = () => {
 - 自动开启点击反馈效果
 - 适用于选择器、跳转页面等场景
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:63, 12
-
 ### 添加图标
 
 使用 `icon` 在标签前显示图标。
@@ -337,8 +323,6 @@ const formData = ref({
 - 图标显示在标签文本左侧
 - 使用 `customIconClass` 自定义图标样式
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:67, 7-8
-
 ### 尺寸设置
 
 使用 `size` 设置表单项尺寸。
@@ -374,8 +358,6 @@ const formData = ref({
 - `size="large"` 设置大尺寸
 - 大尺寸会增加内边距和字体大小
 - 默认为普通尺寸
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:73, 14
 
 ### 组件级验证规则
 
@@ -436,8 +418,6 @@ const itemRules = [
 - FormItem 的 `rules` 会追加到 Form 的 `rules` 之后
 - 验证时按顺序执行所有规则
 - 遇到第一个错误立即停止
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:52-53
 
 ### 自定义样式
 
@@ -507,8 +487,6 @@ const formData = ref({
 - 可以同时使用两者实现复杂样式
 - 自定义样式不会影响内部布局和功能
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:69-70, 26-29
-
 ## 高级用法
 
 ### 自定义错误显示
@@ -567,8 +545,6 @@ const handleSubmit = async () => {
 - 设置 Form 的 `error-type="none"` 禁用自动错误显示
 - 通过 validate 返回的 errors 自己处理错误显示
 - 可以实现更灵活的错误提示效果
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:18-20, 121-126
 
 ### 动态表单项
 
@@ -650,8 +626,6 @@ const removeContact = (index: number) => {
 - 配合动态规则实现完整的验证功能
 - 支持动态增删表单项
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:50
-
 ### 条件显示
 
 根据条件动态显示表单项。
@@ -701,8 +675,6 @@ const formData = ref({
 - 使用 `v-if` 控制表单项显示
 - 验证时只会验证显示的表单项
 - 配合动态规则实现条件验证
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:3-22
 
 ### 表单项联动
 
@@ -840,8 +812,6 @@ const handleSubmit = async () => {
 - 使用 `disabled` 控制表单项的可用状态
 - 通过 `clearValidate` 清除特定字段的验证错误
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:3-22, 50
-
 ### 表单项分组
 
 使用分组标题组织表单项。
@@ -952,8 +922,6 @@ const rules = {
 - 适用于字段较多的复杂表单
 - 可以使用不同的样式区分不同分组
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:3-22
-
 ## API
 
 ### Props
@@ -975,15 +943,11 @@ const rules = {
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:44-76, 79-93
-
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 表单控件内容 |
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:17
 
 ### 类型定义
 
@@ -1010,8 +974,6 @@ export interface FormItemRule {
 }
 ```
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:25
-
 ## 主题定制
 
 ### CSS 变量
@@ -1024,8 +986,6 @@ FormItem 组件提供了以下 CSS 变量用于主题定制:
 --wd-form-item-error-message-font-size: 24rpx;
 --wd-form-item-error-message-line-height: 1.4;
 ```
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:140-161
 
 ### 暗黑模式
 
@@ -1042,8 +1002,6 @@ FormItem 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色�
   </wd-config-provider>
 </template>
 ```
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:145-149
 
 ### 自定义主题示例
 
@@ -1221,8 +1179,6 @@ const nameRules = [
 </script>
 ```
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:5, 54-55
-
 ### 2. 如何隐藏错误信息?
 
 **问题原因:**
@@ -1238,8 +1194,6 @@ const nameRules = [
   </wd-form-item>
 </wd-form>
 ```
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:18-20, 121-126
 
 ### 3. 标签宽度不生效?
 
@@ -1264,8 +1218,6 @@ const nameRules = [
   </wd-form-item>
 </wd-form>
 ```
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:102-115
 
 ### 4. 动态表单验证失败?
 
@@ -1305,8 +1257,6 @@ const rules = computed(() => {
 })
 </script>
 ```
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:50
 
 ### 5. 如何实现自定义表单项?
 
@@ -1357,8 +1307,6 @@ const increase = () => {
 
 ```
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:17
-
 ## 注意事项
 
 ### 1. prop 是必填属性
@@ -1367,15 +1315,11 @@ const increase = () => {
 - prop 值必须与 model 中的字段对应
 - 不设置 prop 将无法进行验证
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:50
-
 ### 2. 自动注册机制
 
 - FormItem 会自动注册到父级 Form 组件
 - 不需要手动管理 FormItem 列表
 - 必须在 Form 组件内使用
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:96
 
 ### 3. 标签宽度优先级
 
@@ -1383,15 +1327,11 @@ const increase = () => {
 - 支持数字和字符串格式
 - 支持 rpx、px、% 等单位
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:102-115
-
 ### 4. 错误信息来源
 
 - 错误信息来自父级 Form 的 errorMessages
 - FormItem 不存储错误信息,只负责显示
 - 错误信息由 Form 的 validate 方法设置
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:121-126
 
 ### 5. 规则合并机制
 
@@ -1399,23 +1339,17 @@ const increase = () => {
 - 验证时按顺序执行所有规则
 - 遇到第一个错误立即停止
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:52-53
-
 ### 6. 边框显示逻辑
 
 - 第一个 FormItem 不显示上边框
 - 其他 FormItem 根据 Form 的 border 属性决定
 - 可以通过自定义样式覆盖
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:132-137
-
 ### 7. 基于 Cell 组件
 
 - FormItem 基于 Cell 组件封装
 - 继承 Cell 的所有样式和功能
 - 可以使用 Cell 的所有属性
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:3-16, 29
 
 ### 8. 布局模式说明
 
@@ -1424,20 +1358,14 @@ const increase = () => {
 - `vertical="true"` 上下布局
 - 根据表单控件类型选择合适的布局
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:9, 15
-
 ### 9. 嵌套路径支持
 
 - prop 支持嵌套路径,使用 `.` 分隔
 - 如 `user.name`、`contacts.0.phone`
 - 适用于复杂的数据结构
 
-参考: src/wd/components/wd-form-item/wd-form-item.vue:50
-
 ### 10. 插槽使用
 
 - 默认插槽用于放置表单控件
 - 一个 FormItem 通常只包含一个表单控件
 - 可以包含自定义内容
-
-参考: src/wd/components/wd-form-item/wd-form-item.vue:17

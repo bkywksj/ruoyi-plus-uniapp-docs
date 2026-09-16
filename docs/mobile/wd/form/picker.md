@@ -22,8 +22,6 @@ Picker 组件采用声明式配置的方式,通过 columns 属性传入数据源
 - **清空功能** - 支持清空已选值,通过 clearable 属性启用,点击清空图标快速重置选择
 - **加载状态** - 支持加载中状态,适用于异步获取数据、列联动加载等场景,提供良好的加载反馈
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:1-1059
-
 ## 基本用法
 
 ### 基础单列选择
@@ -68,8 +66,6 @@ const handleConfirm = ({ value, selectedItems }: any) => {
 - `label` 设置选择器左侧的标签文案
 - 点击选择器会弹出底部选择面板
 - confirm 事件返回选中值和选中项对象
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:212-214
 
 ### 多列选择
 
@@ -122,8 +118,6 @@ const handleConfirm = ({ value }: any) => {
 - 每个子数组代表一列的数据
 - confirm 事件返回的 value 为数组,包含每列选中的值
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:213
-
 ### 对象数组选择
 
 使用对象数组作为数据源,通过 valueKey 和 labelKey 指定字段。
@@ -175,8 +169,6 @@ const handleConfirm = ({ value, selectedItems }: any) => {
 - `v-model` 绑定的是 valueKey 对应的字段值
 - selectedItems 返回完整的对象数据
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:207-210, 284-285
-
 ### 禁用和只读
 
 通过 disabled 和 readonly 属性控制选择器状态。
@@ -223,8 +215,6 @@ const fruits = ['苹果', '香蕉', '橙子', '葡萄', '西瓜']
 - `disabled` 属性禁用选择器,点击无反应,文本显示灰色
 - `readonly` 属性设置只读,点击无反应,但文本保持正常颜色
 - 禁用和只读状态都不会打开选择面板
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:168-171, 652-653
 
 ### 自定义展示格式
 
@@ -293,8 +283,6 @@ const formatCity = (item: any, { labelKey }: any) => {
 - 第二个参数包含 valueKey 和 labelKey 配置
 - 可以根据需求自定义任意格式的展示文本
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:217-218, 428-434, 703-714
-
 ### 必填标识和验证
 
 结合表单使用,支持必填标识和错误提示。
@@ -342,8 +330,6 @@ const cities = ['北京', '上海', '深圳']
 - `error` 属性会将值和箭头显示为红色
 - 结合 wd-form 使用时,会自动显示验证错误信息
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:183-194, 369-387
-
 ### 清空功能
 
 启用清空按钮,快速清除已选值。
@@ -385,8 +371,6 @@ const handleClear = () => {
 - 有值时会显示清空图标,替代右侧箭头
 - 点击清空图标会触发 clear 事件
 - 清空后 v-model 值会被重置为空字符串或空数组
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:228, 392-401, 622-639
 
 ## 高级用法
 
@@ -522,8 +506,6 @@ const handleConfirm = ({ value, selectedItems }: any) => {
 - setColumnData 方法可以动态更新任意列的数据源
 - resolve 必须调用,否则会阻塞后续操作
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:215-216
-
 ### 确认前校验
 
 通过 beforeConfirm 钩子在确认前进行校验或异步处理。
@@ -594,8 +576,6 @@ const handleConfirm = ({ value }: any) => {
 - 可以在 beforeConfirm 中进行网络请求、数据校验等
 - resolve(false) 会阻止选择器关闭,用户可以重新选择
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:197-198, 575-596
-
 ### 加载状态
 
 使用 loading 状态显示加载中,适用于异步加载数据的场景。
@@ -663,8 +643,6 @@ const handleConfirm = ({ value }: any) => {
 - 可以在 open 事件中加载数据
 - setLoading 方法可以在任意时机调用
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:172-175, 261, 645-647
-
 ### 自定义插槽
 
 使用插槽自定义选择器的触发区域。
@@ -721,8 +699,6 @@ const cities = ['北京', '上海', '深圳']
 - `use-default-slot` 启用默认插槽,完全自定义触发区域
 - `use-label-slot` 启用标签插槽,仅自定义标签部分
 - 自定义插槽提供了更灵活的样式定制能力
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:189-192
 
 ### 表单集成
 
@@ -828,8 +804,6 @@ const handleReset = () => {
 - 验证错误信息会自动显示在选择器下方
 - 支持表单的 validate、clearValidate 等方法
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:221-224, 302-303, 358-364
-
 ### 方法调用
 
 通过 ref 获取组件实例,调用组件方法。
@@ -883,8 +857,6 @@ const handleSetLoading = () => {
 - `close()` - 关闭选择器弹框
 - `setLoading(loading)` - 设置加载状态
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:255-262, 686-695, 795-799
-
 ## API
 
 ### Props
@@ -929,8 +901,6 @@ const handleSetLoading = () => {
 | custom-value-class | 自定义值样式类 | `string` | `''` |
 | custom-view-class | 自定义选择器视图样式类 | `string` | `''` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:152-229, 265-293
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -941,16 +911,12 @@ const handleSetLoading = () => {
 | cancel | 取消选择时触发 | - |
 | clear | 清空选择时触发 | - |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:234-250
-
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 自定义触发区域,需设置 use-default-slot 为 true |
 | label | 自定义标签,需设置 use-label-slot 为 true |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:10-24
 
 ### Methods
 
@@ -959,8 +925,6 @@ const handleSetLoading = () => {
 | open | 打开选择器弹框 | - | `void` |
 | close | 关闭选择器弹框 | - | `void` |
 | setLoading | 设置加载状态 | `loading: boolean` | `void` |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:255-262, 686-695, 795-799
 
 ### 类型定义
 
@@ -1008,8 +972,6 @@ type PickerViewColumnChange = (
 ) => void
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:124-148
-
 ## 主题定制
 
 ### CSS 变量
@@ -1054,8 +1016,6 @@ $-form-item-error-message-font-size: 24rpx;
 $-form-item-error-message-line-height: 32rpx;
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:807-1058
-
 ### 暗色主题
 
 组件内置暗色主题支持:
@@ -1099,8 +1059,6 @@ $-form-item-error-message-line-height: 32rpx;
   }
 }
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:810-874
 
 ## 最佳实践
 
@@ -1369,8 +1327,6 @@ value.value = ['A', '1']  // ✅ 替换整个数组
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:720-734
-
 ### 2. 列联动不生效
 
 **问题原因:**
@@ -1411,8 +1367,6 @@ const handleColumnChange = (pickerView, value, index, resolve) => {
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:215-216
-
 ### 3. displayFormat 不生效
 
 **问题原因:**
@@ -1447,8 +1401,6 @@ const formatValue = (items, { labelKey }) => {
 }
 </script>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:428-434, 703-714
 
 ### 4. beforeConfirm 阻塞问题
 
@@ -1495,8 +1447,6 @@ const handleBeforeConfirm = (value, resolve) => {
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:575-596
-
 ### 5. 表单验证不生效
 
 **问题原因:**
@@ -1541,8 +1491,6 @@ const rules = {
 }
 </script>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:221-224, 358-387
 
 ## 注意事项
 
@@ -1605,5 +1553,3 @@ const rules = {
     - 组件在 H5、小程序、App 都支持
     - immediateChange 仅微信和支付宝小程序支持
     - 暗色主题需要配合主题切换使用
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-picker/wd-picker.vue:1-1059

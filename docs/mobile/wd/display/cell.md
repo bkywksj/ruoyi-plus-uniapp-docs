@@ -26,8 +26,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
 - **插槽扩展** - 提供 icon、title、label、default、right-icon 等多个插槽，实现完全自定义
 - **暗黑模式** - 内置暗黑模式支持，自动适配主题切换
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:1-493
-
 ## 基本用法
 
 ### 基础单元格
@@ -54,8 +52,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
 - `value` 设置右侧内容文本
 - 通常配合 `wd-cell-group` 使用，形成单元格组
 - 单元格默认有上边框，通过 CellGroup 控制边框显示
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:101-104
 
 ### 展示描述信息
 
@@ -88,8 +84,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
 - label 支持多行文本显示
 - 有 label 时，单元格会增加上下内边距
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:107-108, 404-408
-
 ### 显示图标
 
 通过 icon 属性设置左侧图标。
@@ -115,8 +109,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
 - 图标默认显示在标题左侧
 - 可通过 `icon-color` 自定义图标颜色
 - 图标会自动垂直居中对齐
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:105-106, 20-27, 411-418
 
 ### 链接跳转
 
@@ -156,8 +148,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
 - `replace` 设置为 `true` 时使用 `uni.redirectTo` 替换当前页面
 - 设置 is-link 会自动开启点击反馈效果
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:110-115, 253-266, 436-444
-
 ### 大尺寸
 
 通过 size 属性设置单元格大小。
@@ -189,8 +179,6 @@ Cell 组件不仅可以作为独立展示单元使用，还深度集成了表单
 - `size="large"` 设置大尺寸
 - 大尺寸会增加字体大小和内边距
 - 图标尺寸也会相应增大
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:119-120, 466-483
 
 ### 垂直居中
 
@@ -234,8 +222,6 @@ const value2 = ref(false)
 - 默认为顶部对齐(flex-start)
 - 适合与开关、单选、复选等组件配合使用
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:125-126, 486-490
-
 ### 上下布局
 
 通过 vertical 属性实现标题和内容的上下布局。
@@ -277,8 +263,6 @@ const images = ref('')
 - 内容左对齐显示
 - 适合多行文本、文件上传等高度较大的内容
 - 上下布局时右侧区域会有顶部外边距
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:129-130, 328-342
 
 ### 必填标识
 
@@ -328,8 +312,6 @@ const email = ref('')
 - 必填标识会增加左侧内边距
 - 也可以通过表单验证规则自动显示
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:127-128, 213-228, 359-370
-
 ## 高级用法
 
 ### 自定义样式
@@ -377,8 +359,6 @@ const email = ref('')
 - `title-bold` 标题文字加粗
 - `value-color` 自定义内容颜色，右侧箭头会跟随此颜色
 - `icon-color` 自定义图标颜色
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:146-155, 234-248
 
 ### 左侧竖线装饰
 
@@ -428,8 +408,6 @@ const email = ref('')
 - 仅在没有 icon 时生效
 - 适合强调重要信息或分类标识
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:146-149, 373-388
-
 ### 右侧弹性布局
 
 通过 right-flex 属性控制右侧区域的弹性比例。
@@ -467,8 +445,6 @@ const email = ref('')
 - 默认为 1，左右平分空间
 - 增大值可以让右侧占据更多空间
 - 减小值可以让左侧占据更多空间
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:157-159, 46-49
 
 ### 表单集成
 
@@ -568,8 +544,6 @@ const handleReset = () => {
 - 错误信息会自动从 Form 组件获取
 - 支持 required 和自定义 validator
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:132-135, 202-228, 447-453
-
 ### 使用插槽
 
 通过插槽实现完全自定义的单元格内容。
@@ -633,8 +607,6 @@ const rate = ref(4)
 - `#default` 插槽：自定义右侧内容
 - `#right-icon` 插槽：自定义右侧图标(替代箭头)
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:20-68
-
 ## API
 
 ### Props
@@ -672,15 +644,11 @@ const rate = ref(4)
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:95-163, 170-195
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | click | 点击单元格时触发 | - |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:164-167, 253-266
 
 ### Slots
 
@@ -691,8 +659,6 @@ const rate = ref(4)
 | title | 自定义标题 |
 | label | 自定义描述信息 |
 | right-icon | 自定义右侧图标,替代箭头 |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:20-68
 
 ### CellGroup Props
 
@@ -709,8 +675,6 @@ const rate = ref(4)
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
 > `insert` 开启后会套用 CSS 变量 `--wot-cell-group-insert-radius`（默认 `16rpx`）和 `--wot-cell-group-insert-margin`（默认 `0 24rpx`），可在 ConfigProvider 中统一覆盖。
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell-group/wd-cell-group.vue:55-70, 141-147
 
 ## 主题定制
 
@@ -760,8 +724,6 @@ Cell 组件提供了以下 CSS 变量用于主题定制:
 --wd-cell-vertical-top: 16rpx;
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:269-493
-
 ### 暗黑模式
 
 Cell 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色主题:
@@ -783,8 +745,6 @@ Cell 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色主�
 - 内容颜色: `$-dark-color3`
 - 边框颜色: `$-dark-border-color`
 - 悬停背景: `$-dark-background4`
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:275-302
 
 ## 最佳实践
 
@@ -890,8 +850,6 @@ Cell 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色主�
 </wd-cell-group>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:121-122, 198-200, 314-318
-
 ### 2. 点击无响应
 
 **问题原因:**
@@ -907,8 +865,6 @@ Cell 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色主�
 <wd-cell title="点击我" is-link @click="handleClick" />
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:110-117, 253-266
-
 ### 3. 标题和内容不对齐
 
 **问题原因:**
@@ -922,8 +878,6 @@ Cell 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色主�
   <wd-switch v-model="value" />
 </wd-cell>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:125-126, 486-490
 
 ### 4. 表单验证不生效
 
@@ -947,8 +901,6 @@ const rules = {
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:132-135, 202-228
-
 ### 5. 左侧竖线不显示
 
 **问题原因:**
@@ -964,54 +916,28 @@ const rules = {
 <wd-cell title="标题" icon="user" left-border />
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:14, 146-149, 373-388
-
 ## 注意事项
 
 1. **边框控制** - border 属性默认继承 CellGroup，单独使用时需手动设置
 
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:198-200
-
 2. **点击反馈** - is-link 会自动开启点击反馈，也可单独设置 clickable
-
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:6-8, 256-257
 
 3. **跳转方式** - to 配合 is-link 使用，默认 navigateTo，replace 为 true 时使用 redirectTo
 
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:259-265
-
 4. **布局选择** - center 适合开关等小组件，vertical 适合多行内容
-
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:328-342, 486-490
 
 5. **必填标识** - required 或验证规则中的 required 都会显示星号
 
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:213-228
-
 6. **左侧装饰** - left-border 仅在没有 icon 时生效，颜色由 icon-color 控制
-
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:14, 373-388
 
 7. **表单集成** - 在表单中使用必须设置 prop 属性
 
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:132-135
-
 8. **错误信息** - 错误信息来自 Form 组件，Cell 只负责显示
-
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:204-210
 
 9. **标题宽度** - title-width 支持 rpx、px、% 等单位
 
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:15-16
-
 10. **插槽优先级** - 插槽内容优先于 props，同时设置时插槽生效
-
-    参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:31-42
 
 11. **颜色跟随** - value-color 会同时应用到右侧内容和箭头图标
 
-    参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:52-61
-
 12. **右侧弹性** - right-flex 默认为 1，可调整左右区域的空间分配
-
-    参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-cell/wd-cell.vue:46-49

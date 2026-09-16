@@ -22,8 +22,6 @@ Switch 组件提供了简洁的 API 和丰富的自定义选项。不仅支持�
 - **初始值验证** - 组件挂载时自动验证初始值有效性,无效值会自动设置为非激活值
 - **轻量简洁** - 组件实现简洁,代码量小,性能优秀,适合频繁使用的场景
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:1-211
-
 ## 基本用法
 
 ### 基础开关
@@ -69,8 +67,6 @@ const handleChange = ({ value }: { value: boolean }) => {
 - 使用 `updateValue` 方法统一处理值更新和事件触发
 - 内置 0.3s 过渡动画实现平滑切换效果
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:58, 101-128, 156
-
 ### 禁用状态
 
 通过 disabled 属性禁用开关。
@@ -112,8 +108,6 @@ const value3 = ref(false)
 - 禁用状态下,开关显示半透明效果(opacity: 0.5)
 - 禁用状态不会触发 change 事件
 - 常用于权限不足或条件不满足的场景
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:59-60, 111, 206-208
 
 ### 自定义颜色
 
@@ -167,8 +161,6 @@ const value4 = ref(false)
 - 颜色支持十六进制、RGB 等 CSS 颜色格式
 - 自定义颜色会同时应用到背景和边框
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:65-68
-
 ### 自定义尺寸
 
 通过 size 属性调整开关大小。
@@ -217,8 +209,6 @@ const value4 = ref(true)
 - 宽度会根据高度自动计算,保持比例
 - 支持数字或字符串格式
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:69-70
-
 ### 自定义值
 
 通过 active-value 和 inactive-value 自定义激活和非激活的值。
@@ -266,8 +256,6 @@ const value3 = ref('no')
 - `inactive-value` 设置开关关闭时的值,默认为 `false`
 - 支持 boolean、string、number 三种类型
 - 适配后端接口要求特定值的场景(如 1/0、'Y'/'N')
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:61-64, 90-91, 113
 
 ## 高级用法
 
@@ -355,8 +343,6 @@ const handleBeforeChange2 = async ({ value, resolve }: any) => {
 - 适用于需要后端验证的场景,如检查权限
 - 适用于需要前置条件的场景,如检查依赖项
 - resolve 必须调用,否则开关状态不会改变
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:71-72, 116-124
 
 ### 权限控制
 
@@ -451,8 +437,6 @@ const handlePermissionChange = ({ value }: any) => {
 - 适用于应用设置页面的权限管理
 - 可以实现权限之间的依赖关系
 - 建议在 change 事件中调用 API 保存设置
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:110-128
 
 ### 批量设置
 
@@ -554,8 +538,6 @@ watch(settings, () => {
 - 建议使用 watch 监听状态变化
 - 注意处理主从开关的联动逻辑
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:110-127
-
 ### 加载状态
 
 在异步操作时显示加载状态。
@@ -625,8 +607,6 @@ const handleSyncChange = async ({ value, resolve }: any) => {
 - 建议使用 wd-loading 组件显示加载状态
 - 注意处理异步失败的情况
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:116-124
-
 ## API
 
 ### Props
@@ -644,16 +624,12 @@ const handleSyncChange = async ({ value, resolve }: any) => {
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:51-73, 86-92
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | update:modelValue | 值更新时触发 | `value: boolean \| string \| number` |
 | change | 开关状态改变时触发 | `{ value: boolean \| string \| number }` |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:78-83
 
 ### 类型定义
 
@@ -673,8 +649,6 @@ interface SwitchBeforeChangeOption {
  */
 type SwitchBeforeChange = (option: SwitchBeforeChangeOption) => void
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:36-46
 
 ## 主题定制
 
@@ -698,8 +672,6 @@ Switch 组件提供了以下 CSS 变量用于主题定制:
 --wd-switch-active-shadow-color: rgba(24, 144, 255, 0.4);
 --wd-switch-inactive-shadow-color: rgba(0, 0, 0, 0.1);
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:142-210
 
 ### 自定义主题示例
 
@@ -770,8 +742,6 @@ const value3 = ref(true)
 - 可以针对不同场景定义不同主题
 - 支持单独定制尺寸、颜色、阴影等
 - 建议将主题变量统一管理
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:148-208
 
 ## 最佳实践
 
@@ -911,8 +881,6 @@ const value = ref(1)  // 数字
 </template>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:134-139
-
 ### 2. beforeChange 不生效
 
 **问题原因:**
@@ -940,8 +908,6 @@ const handleBeforeChange = ({ value, resolve }) => {
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:116-124
-
 ### 3. 自定义颜色不生效
 
 **问题原因:**
@@ -957,8 +923,6 @@ const handleBeforeChange = ({ value, resolve }) => {
 <wd-switch v-model="value" active-color="#FF4757" />
 <wd-switch v-model="value" active-color="rgb(255, 71, 87)" />
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:5-6, 66-68
 
 ### 4. 动画效果问题
 
@@ -977,8 +941,6 @@ const handleBeforeChange = ({ value, resolve }) => {
 - 背景色变化同步进行
 - 不支持自定义动画时长
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:156, 178
-
 ### 5. 禁用状态下的事件
 
 **问题原因:**
@@ -995,41 +957,23 @@ const handleBeforeChange = ({ value, resolve }) => {
 - 点击事件在方法开始处被拦截
 - 不会触发 change 或 update:modelValue 事件
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:110-111, 206-208
-
 ## 注意事项
 
 1. **值类型要求** - modelValue 类型必须与 activeValue 和 inactiveValue 匹配,不要混用不同类型
 
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:58, 61-64
-
 2. **初始值验证** - 组件会在挂载时验证初始值,无效值会自动设置为 inactiveValue
-
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:134-139
 
 3. **beforeChange 必须调用 resolve** - 如果设置了 beforeChange,必须调用 resolve,否则状态不会改变
 
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:116-128
-
 4. **禁用状态** - 禁用状态下开关不可点击,不会触发任何事件
-
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:110-111, 206-208
 
 5. **颜色格式** - activeColor 和 inactiveColor 支持所有 CSS 颜色格式
 
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:5-6
-
 6. **尺寸单位** - size 属性的单位为 rpx,会自动添加
-
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:5, 22
 
 7. **动画效果** - 组件内置 0.3s 的过渡动画,不可自定义
 
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:156, 178
-
 8. **事件触发** - change 事件在 beforeChange 验证通过后触发
-
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:101-104
 
 9. **异步处理** - beforeChange 支持异步操作,建议显示加载状态
 
@@ -1038,5 +982,3 @@ const handleBeforeChange = ({ value, resolve }) => {
 11. **无障碍访问** - 建议为开关添加描述性标签,提升可访问性
 
 12. **平台兼容** - 组件在 H5、小程序、App 等平台表现一致
-
-   参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-switch/wd-switch.vue:24-30

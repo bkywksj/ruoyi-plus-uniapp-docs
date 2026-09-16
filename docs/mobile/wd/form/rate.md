@@ -22,8 +22,6 @@ Rate 组件采用图标渲染的方式实现评分显示,默认使用星形图�
 - **灵活配置** - 可自定义评分数量、图标尺寸、图标间距等多个视觉参数
 - **分段颜色** - activeColor 支持传入颜色数组,根据评分值自动切换不同颜色段,适用于优良中差等分级场景
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:1-290
-
 ## 基本用法
 
 ### 基础评分
@@ -53,8 +51,6 @@ const score = ref(3)
 - 点击星星可以进行评分,点击第 n 个星星表示评 n 分
 - 组件默认显示 5 个星星,可通过 num 属性自定义
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:64-65
-
 ### 只读状态
 
 将组件设置为只读状态,用于纯展示场景。
@@ -82,8 +78,6 @@ const score = ref(4.5)
 - 只读状态下组件颜色和样式保持正常,与可编辑状态视觉上无差异
 - 只读状态不会触发 change 事件
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:67
-
 ### 禁用状态
 
 禁用评分组件,显示特殊的禁用颜色。
@@ -110,8 +104,6 @@ const score = ref(3)
 - 禁用状态下,选中的星星显示灰色渐变(disabledColor)
 - 禁用状态适用于评分已关闭、暂不可用等场景
 - 可通过 disabledColor 属性自定义禁用颜色
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:81-82
 
 ### 自定义评分数量
 
@@ -155,8 +147,6 @@ const score3 = ref(7)
 - 可以设置为任意正整数,常见的有 3 星、5 星、10 星等
 - 评分值的范围为 0 到 num
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:62-63
-
 ### 自定义尺寸和间距
 
 自定义图标的尺寸和间距。
@@ -196,8 +186,6 @@ const score = ref(3)
 - `space` 属性控制图标之间的间距,单位为 rpx,默认值为 8
 - size 和 space 支持传入数字或字符串,会自动转换为 rpx 单位
 - 建议 space 值设置为 size 的 1/4 到 1/8,保持良好的视觉比例
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:68-71
 
 ### 自定义颜色
 
@@ -264,8 +252,6 @@ const score4 = ref(2)
 - 颜色通过 CSS 的 background-clip 技术应用到图标上
 - 建议 color 使用浅色,activeColor 使用鲜艳颜色,保持良好对比度
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:72-75
-
 ### 自定义图标
 
 使用不同的图标替换默认的星形图标。
@@ -324,8 +310,6 @@ const score3 = ref(3)
 - 建议 icon 使用线框图标,activeIcon 使用填充图标,保持视觉一致性
 - 可以使用任意 IconName 类型的图标,包括字体图标和 UnoCSS 图标
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:76-79
-
 ## 高级用法
 
 ### 半星评分
@@ -375,8 +359,6 @@ const score3 = ref(4.5)
 - 滑动评分时也支持半星,会自动判断触摸位置
 - 半星状态通过 CSS 裁剪实现,不需要额外的半星图标
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:85-86, 281-288
-
 ### 滑动评分
 
 支持滑动手势快速评分。
@@ -423,8 +405,6 @@ const handleChange = ({ value }: { value: number }) => {
 - 在移动端设备上,滑动比点击更自然
 - 滑动评分支持半星,会根据滑动位置自动判断
 - 只读和禁用状态下滑动评分不生效
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:234-253
 
 ### 监听评分变化
 
@@ -483,8 +463,6 @@ const handleChange = ({ value }: { value: number }) => {
 - 无论是点击还是滑动评分,都会触发 change 事件
 - 可以在 change 事件中执行业务逻辑,如提交评分、记录日志等
 - 事件参数是解构对象 `{ value: number }`,需要通过解构获取评分值
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:92-96, 227-228
 
 ### 分段颜色
 
@@ -561,8 +539,6 @@ const getRatingLevel = (value: number): string => {
 - activeColor 数组第二个元素通常为较亮或成功色(绿色、蓝色)
 - 分段颜色仍然支持渐变,可以传入 linear-gradient 字符串
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:74-75, 130-143
-
 ### 禁用颜色定制
 
 自定义禁用状态下的星星颜色。
@@ -617,8 +593,6 @@ const score3 = ref(5)
 - 禁用颜色可以根据设计规范自定义
 - 建议使用较浅的颜色,视觉上表示不可用状态
 - 禁用颜色不影响只读状态,只读状态仍然使用 activeColor
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:82-83, 112
 
 ### 表单场景应用
 
@@ -777,8 +751,6 @@ const handleReset = () => {
 - 可以结合 allow-half 实现更精确的评分
 - 评分初始值为 0 表示未评分,可用于验证逻辑
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:64-65, 223-229
-
 ## API
 
 ### Props
@@ -801,16 +773,12 @@ const handleReset = () => {
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:56-90, 99-116
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | update:modelValue | 评分值更新时触发 | `value: number` |
 | change | 评分变化时触发 | `{ value: number }` |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:91-96
 
 ### Slots
 
@@ -864,8 +832,6 @@ interface WdRateEmits {
 }
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:56-96
-
 ## 主题定制
 
 ### CSS 变量
@@ -899,8 +865,6 @@ Rate 组件使用图标渲染,颜色通过 Props 控制,不提供 CSS 变量定�
 }
 </style>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:57-60
 
 ## 最佳实践
 
@@ -1072,8 +1036,6 @@ const score = ref(3)  // 数字类型
 <wd-rate v-model="score" />
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:173-176
-
 ### 2. 半星不显示
 
 **问题原因:**
@@ -1100,8 +1062,6 @@ const score2 = ref(4.5)  // 显示 4 个半星
 const score3 = ref(3.7)  // 只显示 3 个整星,0.7 被忽略
 </script>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:184-185
 
 ### 3. 分段颜色不生效
 
@@ -1135,8 +1095,6 @@ const score = ref(3)  // 3 分,显示红色
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:134-143, 152-154
-
 ### 4. 滑动评分不响应
 
 **问题原因:**
@@ -1162,8 +1120,6 @@ const score = ref(3)  // 3 分,显示红色
   </view>
 </scroll-view>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:224, 271
 
 ### 5. 自定义图标不显示
 
@@ -1202,8 +1158,6 @@ const score = ref(3)  // 3 分,显示红色
   />
 </view>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:42, 76-79
 
 ## 注意事项
 
@@ -1266,5 +1220,3 @@ const score = ref(3)  // 3 分,显示红色
     - 组件在 H5、小程序、App 等平台都支持
     - 滑动评分在小程序中需要注意触摸事件兼容性
     - 渐变颜色在某些旧版本小程序可能不支持
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-rate/wd-rate.vue:1-290

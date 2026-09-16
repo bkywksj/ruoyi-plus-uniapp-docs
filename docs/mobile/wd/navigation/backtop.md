@@ -20,8 +20,6 @@ Backtop 回到顶部组件用于返回页面顶部的操作按钮。当页面滚
 - **层级控制** - 可设置 z-index,确保按钮始终在最上层
 - **轻量简洁** - 组件实现简洁,代码量少,性能优秀
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:1-96
-
 ## 基本用法
 
 ### 基础用法
@@ -66,8 +64,6 @@ onPageScroll((e: any) => {
 - 默认滚动超过 600rpx 时显示按钮
 - 点击按钮平滑滚动回到顶部
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:49-50, 84-95
-
 ### 自定义显示时机
 
 自定义滚动到多少距离时显示按钮。
@@ -106,8 +102,6 @@ onPageScroll((e: any) => {
 - `top` 属性设置显示阈值,单位为 rpx
 - 组件通过计算属性判断: `scrollTop > top` 时显示
 - 默认值为 600rpx,可根据页面高度调整
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:51-52, 71, 84
 
 ### 方形按钮
 
@@ -151,8 +145,6 @@ onPageScroll((e: any) => {
 - 方形: `border-radius: 8rpx`
 - 默认为圆形
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:59-60, 75, 119-127
-
 ### 自定义位置
 
 自定义按钮距离屏幕底部和右侧的距离。
@@ -194,8 +186,6 @@ onPageScroll((e: any) => {
 - `bottom` 设置距离屏幕底部的距离,单位 rpx,默认 200rpx
 - `right` 设置距离屏幕右侧的距离,单位 rpx,默认 40rpx
 - 组件使用 `position: fixed` 定位,通过 `bottom` 和 `right` 样式控制位置
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:61-64, 76-77
 
 ### 自定义滚动时间
 
@@ -240,8 +230,6 @@ onPageScroll((e: any) => {
 - 可设置为 300-500ms 获得更平滑的效果
 - 使用 `uni.pageScrollTo` 的 `duration` 参数实现
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:53-54, 72, 90-95
-
 ### 自定义图标样式
 
 自定义图标的样式。
@@ -282,8 +270,6 @@ onPageScroll((e: any) => {
 - `icon-style` 属性设置图标的自定义样式
 - 可以修改图标大小、颜色等
 - 样式会传递给内部的 `wd-icon` 组件
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:57-58, 74, 10-15
 
 ### 自定义按钮内容
 
@@ -327,8 +313,6 @@ onPageScroll((e: any) => {
 - 使用默认插槽自定义按钮内容
 - 如果提供了插槽内容,默认的 `wd-icon` 不会显示
 - 可以自定义任意内容,如文字、图标组合等
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:9-16
 
 ## 高级用法
 
@@ -394,8 +378,6 @@ const handleBacktopClick = () => {
 - 回到顶部需要设置 scroll-view 的 `scroll-top` 属性
 - 先设置为 -1,再设置为 0,确保属性变化能被检测到
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:90-95
-
 ### 多个回到顶部按钮
 
 在一个页面中使用多个回到顶部按钮。
@@ -450,8 +432,6 @@ onPageScroll((e: any) => {
 - 可以在同一页面放置多个回到顶部按钮
 - 通过设置不同的 `bottom` 值避免重叠
 - 可以为不同按钮设置不同的功能(回到顶部、快捷菜单等)
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:61-64
 
 ### 响应式位置调整
 
@@ -511,8 +491,6 @@ onPageScroll((e: any) => {
 - 使用 `uni.getSystemInfoSync()` 获取屏幕宽度
 - 通过 computed 属性动态计算按钮位置
 - 小屏幕设备使用较小的边距,避免遮挡内容
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:61-64, 76-77
 
 ### 带进度指示
 
@@ -581,8 +559,6 @@ onPageScroll((e: any) => {
 - 在按钮中显示进度数字
 - 使用渐变背景显示进度条
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:9-16
-
 ### 条件显示
 
 根据不同条件显示回到顶部按钮。
@@ -643,8 +619,6 @@ const toggleBacktop = () => {
 - 可以根据用户权限、设置选项等条件显示
 - 组件内部已经通过 `scrollTop > top` 控制按钮显示,外层的 `v-if` 是组件级别的控制
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:84
-
 ### 自定义主题样式
 
 自定义按钮的主题样式。
@@ -704,8 +678,6 @@ onPageScroll((e: any) => {
 - 通过 CSS 渐变背景创建主题效果
 - 添加阴影增强视觉效果
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:46-47, 70
-
 ## API
 
 ### Props
@@ -723,15 +695,11 @@ onPageScroll((e: any) => {
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:43-65, 68-78
-
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 自定义按钮内容,默认为 backtop 图标 |
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:9-16
 
 ### 类型定义
 
@@ -768,8 +736,6 @@ interface WdBacktopProps {
 }
 ```
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:35-65
-
 ## 主题定制
 
 ### CSS 变量
@@ -782,8 +748,6 @@ $-backtop-bg: rgba(0, 0, 0, 0.6) !default;      // 背景颜色
 $-backtop-icon-size: 40rpx !default;             // 图标大小
 $-color-gray-8: #eeeeee !default;                // 图标颜色
 ```
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:98-129
 
 ### 自定义样式
 
@@ -815,8 +779,6 @@ $-color-gray-8: #eeeeee !default;                // 图标颜色
 </style>
 ```
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:44-47, 69-70
-
 ## 最佳实践
 
 ### 1. 合理设置显示阈值
@@ -845,8 +807,6 @@ $-color-gray-8: #eeeeee !default;                // 图标颜色
 - 通常设置为 1-2 个屏幕高度
 - 太小会造成视觉干扰,太大则失去意义
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:51-52, 71, 84
-
 ### 2. 选择合适的滚动时间
 
 根据页面滚动距离选择合适的动画时间:
@@ -872,8 +832,6 @@ $-color-gray-8: #eeeeee !default;                // 图标颜色
 - 滚动时间应该和滚动距离成正比
 - 100-500ms 是比较合适的范围
 - 太短感觉突兀,太长用户等待时间长
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:53-54, 72, 90-95
 
 ### 3. 避免遮挡重要内容
 
@@ -910,8 +868,6 @@ $-color-gray-8: #eeeeee !default;                // 图标颜色
 - 留出足够的安全距离
 - 确保按钮在拇指易触区域(屏幕下半部分)
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:61-64, 76-77
-
 ### 4. 使用合适的形状
 
 根据设计风格选择合适的按钮形状:
@@ -932,8 +888,6 @@ $-color-gray-8: #eeeeee !default;                // 图标颜色
 - 圆形更加柔和、现代
 - 方形更加正式、稳重
 - 保持与页面整体设计风格的一致性
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:59-60, 75, 119-127
 
 ### 5. 正确监听页面滚动
 
@@ -970,8 +924,6 @@ const handleScroll = (e: any) => {
 - 页面滚动使用 `onPageScroll` 生命周期
 - scroll-view 滚动使用 `@scroll` 事件
 - 必须将滚动距离传递给组件的 `scroll-top` 属性
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:49-50, 84
 
 ## 常见问题
 
@@ -1011,8 +963,6 @@ onPageScroll((e: any) => {
 </script>
 ```
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:49-52, 84
-
 ### 2. scroll-view 中如何使用?
 
 **问题原因:**
@@ -1048,8 +998,6 @@ const handleScroll = (e: any) => {
 </script>
 
 ```
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:49-50
 
 ### 3. 点击按钮后没有回到顶部?
 
@@ -1106,8 +1054,6 @@ const handleBacktopClick = () => {
 
 ```
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:90-95
-
 ### 4. 如何自定义按钮样式?
 
 **问题原因:**
@@ -1148,8 +1094,6 @@ const handleBacktopClick = () => {
 </style>
 ```
 
-参考: src/wd/components/wd-backtop/wd-backtop.vue:9-16, 44-47, 69-70
-
 ### 5. 按钮层级太低,被其他元素遮挡?
 
 **问题原因:**
@@ -1174,8 +1118,6 @@ const handleBacktopClick = () => {
 - 组件默认 z-index 为 99
 - 如果被遮挡,检查页面中其他元素的 z-index
 - 将回到顶部按钮的 z-index 设置为最高值
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:55-56, 73
 
 ## 注意事项
 
@@ -1202,5 +1144,3 @@ const handleBacktopClick = () => {
 11. **自定义样式优先级** - 使用 `custom-class` 时,确保样式类不是 scoped 的,或使用 `:deep()`
 
 12. **多个按钮** - 可以在同一页面放置多个回到顶部按钮,但要注意避免位置重叠
-
-参考: src/wd/components/wd-backtop/wd-backtop.vue:1-130

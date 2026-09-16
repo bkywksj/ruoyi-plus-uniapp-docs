@@ -22,8 +22,6 @@ Grid 宫格组件是一个强大的网格布局容器,用于在页面中展示�
 - **插槽扩展** - 支持内容插槽、图标插槽、文字插槽,实现高度自定义的内容展示
 - **暗黑模式** - 完整支持暗黑主题,自动适配边框和背景色
 
-参考: src/wd/components/wd-grid/wd-grid.vue:1-443
-
 ## 基本用法
 
 ### 基础宫格(子组件模式)
@@ -55,8 +53,6 @@ Grid 宫格组件是一个强大的网格布局容器,用于在页面中展示�
 - `wd-grid-item` 是子项组件,展示具体内容
 - 子组件模式通过父子组件通信自动计算布局样式
 - 默认 column 为 4,即每行显示4个网格项
-
-参考: src/wd/components/wd-grid/wd-grid.vue:71-73
 
 ### 基础宫格(items模式)
 
@@ -103,8 +99,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 **技术实现:**
 - 组件内部通过 `isItemsMode` 计算属性判断使用哪种模式
 - items 模式下使用 v-for 循环渲染,子组件模式使用 slot 插槽
-
-参考: src/wd/components/wd-grid/wd-grid.vue:7-74, 211-213
 
 ### 自定义列数
 
@@ -173,8 +167,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 - 子组件模式下通过 `updateItemStyle` 方法更新样式
 - items 模式下通过 `getItemStyle` 方法计算样式
 
-参考: src/wd/components/wd-grid/wd-grid.vue:166-167, 255-270, 342-363
-
 ### 显示边框
 
 通过 `border` 属性控制网格项之间是否显示边框,边框采用 0.5px 细线实现。
@@ -226,8 +218,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 - 边框样式通过 CSS 类名控制: `is-first`、`is-right`、`is-border`、`is-last`
 - 组件监听 border 变化,自动更新子项的边框类名
 - 暗黑模式下边框颜色自动切换为 `$-dark-border-color`
-
-参考: src/wd/components/wd-grid/wd-grid.vue:167-168, 276-288, 501-551
 
 ### 设置间距
 
@@ -296,8 +286,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 - 通过透明背景+内边距实现间距效果
 - gutter 与 border 同时使用时,边框会自动添加圆角效果(is-round)
 
-参考: src/wd/components/wd-grid/wd-grid.vue:172, 5, 349-353
-
 ### 正方形格子
 
 通过 `square` 属性将网格项固定为正方形,保持宽高比为 1:1。
@@ -363,8 +351,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 - 内容区域样式: `position: absolute; top: 0; right: 0; left: 0; height: 100%;`
 - square + gutter 组合时,内容区域需要调整 right 和 bottom 偏移
 
-参考: src/wd/components/wd-grid/wd-grid.vue:163-164, 356-360, 570-578
-
 ### 点击反馈
 
 通过 `clickable` 属性开启网格项的点击高亮效果,提供更好的交互体验。
@@ -423,8 +409,6 @@ const handleItemClick = (item: number) => {
 - 使用 UniApp 的 :hover-class 实现点击反馈
 - 未开启 clickable 时,:hover-class 设置为 'none'
 - 暗黑模式下自动切换为 `$-grid-item-hover-bg-dark`
-
-参考: src/wd/components/wd-grid/wd-grid.vue:161-162, 174, 19-22
 
 ### 页面跳转
 
@@ -506,8 +490,6 @@ const handleItemClick = (item: number) => {
 - 点击处理函数 `handleClick` 内部调用 UniApp 的页面跳转 API
 - 支持 items 模式和子组件模式两种跳转方式
 - 无效的 linkType 会在控制台输出错误警告
-
-参考: src/wd/components/wd-grid-item/wd-grid-item.vue:109-112, 292-321
 
 ### 徽标显示
 
@@ -598,8 +580,6 @@ const handleItemClick = (item: number) => {
 - items 模式使用 `getBadgeProps` 方法合并徽标属性
 - 子组件模式使用 `customBadgeProps` 计算属性合并徽标属性
 - 使用 `deepAssign` 和 `omitBy` 工具函数处理属性合并
-
-参考: src/wd/components/wd-grid-item/wd-grid-item.vue:121-130, 195-209
 
 ## 高级用法
 
@@ -712,8 +692,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 - 组件内部使用 v-for 循环渲染 items 数组
 - 通过 `getItemClass`、`getItemStyle`、`getItemContentClass`、`getItemContentStyle` 方法计算样式
 
-参考: src/wd/components/wd-grid/wd-grid.vue:106-148, 159-160
-
 ### 插槽自定义内容
 
 使用默认插槽完全自定义网格项内容,适合复杂布局场景。
@@ -810,8 +788,6 @@ const handleProductClick = (item: Product) => {
 - 适合实现商品卡片、信息卡片等复杂布局
 - 建议配合 square 属性统一网格项高度
 
-参考: src/wd/components/wd-grid-item/wd-grid-item.vue:19, 114-115
-
 ### 图标和文字插槽
 
 使用具名插槽分别自定义图标和文字部分,保持默认布局结构。
@@ -875,8 +851,6 @@ const handleProductClick = (item: Product) => {
 - use-text-slot 属性开启文字插槽,使用 `#text` 具名插槽自定义文字
 - 可以同时开启两个插槽,实现完全自定义的布局
 - 插槽模式仍保持默认的上下布局结构
-
-参考: src/wd/components/wd-grid-item/wd-grid-item.vue:26-28, 38-41, 116-119
 
 ### items 模式使用插槽
 
@@ -966,8 +940,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 - 插槽使用 v-if 条件渲染,根据配置项决定是否使用插槽
 - 作用域插槽通过 :item 和 :index 传递数据
 - 插槽名称支持自定义,默认使用索引生成
-
-参考: src/wd/components/wd-grid/wd-grid.vue:24-66
 
 ### 背景颜色定制
 
@@ -1060,8 +1032,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 - 子组件模式通过 `gutterContentStyle` 计算属性应用
 - items 模式通过 `getItemContentStyle` 方法应用
 
-参考: src/wd/components/wd-grid/wd-grid.vue:169-170, 380-388
-
 ### 自定义 hover 样式
 
 通过 `hover-class` 属性自定义网格项的点击高亮样式。
@@ -1136,8 +1106,6 @@ const handleItemClick = (item: GridItem, index: number) => {
 - 必须配合 clickable 属性使用
 - 自定义样式需要使用 `:deep()` 深度选择器
 - 自定义样式建议添加 `!important` 提高优先级
-
-参考: src/wd/components/wd-grid/wd-grid.vue:174, 19-22
 
 ### 响应式列数
 
@@ -1214,8 +1182,6 @@ onMounted(() => {
 - 监听器使用 watch 实现,支持 deep 和 immediate 选项
 - 列数变化时会触发 `initChildrenGridItems` 重新初始化
 
-参考: src/wd/components/wd-grid/wd-grid.vue:255-270
-
 ## API
 
 ### Grid Props
@@ -1232,8 +1198,6 @@ onMounted(() => {
 | hover-class | 自定义内容区域 hover-class | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
-
-参考: src/wd/components/wd-grid/wd-grid.vue:153-175
 
 ### GridItem Props
 
@@ -1258,15 +1222,11 @@ onMounted(() => {
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-grid-item/wd-grid-item.vue:90-131
-
 ### Grid Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | item-click | 点击网格项时触发(仅 items 模式) | `item: GridItem, index: number` |
-
-参考: src/wd/components/wd-grid/wd-grid.vue:180-183
 
 ### GridItem Events
 
@@ -1274,15 +1234,11 @@ onMounted(() => {
 |--------|------|----------|
 | itemclick | 点击网格项时触发(子组件模式) | `-` |
 
-参考: src/wd/components/wd-grid-item/wd-grid-item.vue:136-139
-
 ### Grid Slots
 
 | 插槽名 | 说明 | 参数 |
 |--------|------|------|
 | - | 默认插槽,放置 wd-grid-item 子组件(子组件模式) | `-` |
-
-参考: src/wd/components/wd-grid/wd-grid.vue:72
 
 ### GridItem Slots
 
@@ -1292,8 +1248,6 @@ onMounted(() => {
 | icon | 自定义图标内容 | `-` |
 | text | 自定义文字内容 | `-` |
 
-参考: src/wd/components/wd-grid-item/wd-grid-item.vue:19, 27, 38
-
 ### GridItem 实例方法
 
 通过 ref 获取 GridItem 实例,调用实例方法。
@@ -1302,8 +1256,6 @@ onMounted(() => {
 |--------|------|------|--------|
 | setItemClass | 设置网格项样式类名 | `classes: string` | `-` |
 | init | 初始化网格项 | `-` | `-` |
-
-参考: src/wd/components/wd-grid-item/wd-grid-item.vue:144-151, 327-329, 252-279
 
 ### 类型定义
 
@@ -1478,8 +1430,6 @@ export interface WdGridItemExpose {
 }
 ```
 
-参考: src/wd/components/wd-grid/wd-grid.vue:94-184, src/wd/components/wd-grid-item/wd-grid-item.vue:68-151
-
 ## 主题定制
 
 Grid 组件支持通过 CSS 变量进行主题定制。
@@ -1538,8 +1488,6 @@ Grid 组件支持通过 CSS 变量进行主题定制。
 </script>
 
 ```
-
-参考: src/wd/components/wd-grid/wd-grid.vue:446-610
 
 ## 最佳实践
 
@@ -1771,8 +1719,6 @@ const menuItems = computed(() => {
 </template>
 ```
 
-参考: src/wd/components/wd-grid/wd-grid.vue:255-270
-
 ### 2. 点击事件不触发
 
 **问题原因:**
@@ -1823,8 +1769,6 @@ const handleClick = () => {
   <!-- items 模式应该监听 item-click 而不是 click -->
 </template>
 ```
-
-参考: src/wd/components/wd-grid/wd-grid.vue:414-442, src/wd/components/wd-grid-item/wd-grid-item.vue:292-321
 
 ### 3. 边框显示不正确
 
@@ -1881,8 +1825,6 @@ const handleClick = () => {
   </wd-grid>
 </template>
 ```
-
-参考: src/wd/components/wd-grid/wd-grid.vue:230-246, 317-335, 501-551
 
 ### 4. 正方形模式高度异常
 
@@ -1945,8 +1887,6 @@ const handleClick = () => {
   </wd-grid>
 </template>
 ```
-
-参考: src/wd/components/wd-grid/wd-grid.vue:356-360, 570-578
 
 ### 5. items 模式插槽不显示
 
@@ -2036,8 +1976,6 @@ const items = [
 ]
 </script>
 ```
-
-参考: src/wd/components/wd-grid/wd-grid.vue:24-66
 
 ## 注意事项
 

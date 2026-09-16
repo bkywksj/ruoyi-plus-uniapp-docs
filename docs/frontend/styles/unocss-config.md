@@ -13,8 +13,6 @@ RuoYi-Plus-UniApp 前端项目使用 **UnoCSS** 作为原子化 CSS 引擎,提�
 - **完整的 TypeScript 支持** - 类型安全的配置和使用
 - **与主题系统集成** - 通过 CSS 变量与项目主题系统无缝对接
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:1-213
-
 ## 配置文件
 
 UnoCSS 的配置文件位于项目根目录,文件名为 `uno.config.ts`。该文件使用 TypeScript 编写,提供完整的类型提示和检查。
@@ -57,8 +55,6 @@ export default defineConfig({
 })
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:1-22
-
 ## 快捷方式
 
 快捷方式(`shortcuts`)允许将常用的样式组合定义为简单的类名,提高开发效率,避免重复编写相同的类名组合。
@@ -95,8 +91,6 @@ shortcuts: {
 - `border-b border-b-solid border-[var(--el-border-color-light)]`: 底部边框
 - `mb-5 mt-0`: 外边距设置
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:33-35
-
 ### 布局快捷方式
 
 #### 居中对齐布局
@@ -124,8 +118,6 @@ shortcuts: {
   </button>
 </template>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:38
 
 #### 两端对齐布局
 
@@ -155,8 +147,6 @@ shortcuts: {
 </template>
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:39
-
 #### 绝对定位居中
 
 ```typescript
@@ -184,8 +174,6 @@ shortcuts: {
   </div>
 </template>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:40
 
 ### 容器快捷方式
 
@@ -231,8 +219,6 @@ shortcuts: {
 - `shadow`: 阴影效果
 - `p-4`: 内边距 16px
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:43
-
 ### 标签快捷方式
 
 ```typescript
@@ -272,8 +258,6 @@ shortcuts: {
 }
 </style>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:46
 
 ## 主题配置
 
@@ -339,8 +323,6 @@ theme: {
 - `danger`: 危险/错误状态颜色(红色)
 - `info`: 信息/提示状态颜色(灰色)
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:62-67
-
 #### 文本颜色
 
 ```typescript
@@ -389,8 +371,6 @@ colors: {
 2. `text-base`: 基础文本,正文内容
 3. `text-secondary`: 次要文本,补充说明
 4. `text-muted`: 弱化文本,不重要信息
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:70-73
 
 #### 边框颜色
 
@@ -443,8 +423,6 @@ colors: {
 </template>
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:76-78
-
 #### 背景颜色
 
 ```typescript
@@ -485,8 +463,6 @@ colors: {
   </div>
 </template>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:81-83
 
 #### 菜单颜色
 
@@ -551,8 +527,6 @@ colors: {
 </template>
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:86-94
-
 ### 间距系统
 
 ```typescript
@@ -608,8 +582,6 @@ theme: {
 - `header`: 头部高度(默认 50px)
 - `tags-view`: 标签视图高度(默认 34px)
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:98-102
-
 ### 字体配置
 
 ```typescript
@@ -642,8 +614,6 @@ theme: {
   </div>
 </template>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:105-107
 
 ### 阴影配置
 
@@ -684,8 +654,6 @@ theme: {
   </button>
 </template>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:110-113
 
 ### 圆角配置
 
@@ -731,8 +699,6 @@ theme: {
 </template>
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:116-119
-
 ## 安全列表
 
 安全列表(`safelist`)确保某些类名即使未在代码中显式使用也会被包含在最终生成的CSS中。这对于动态生成的类名特别有用。
@@ -771,8 +737,6 @@ const menuItems = ref([
 - 通过将所有图标类名添加到安全列表,确保它们被包含在最终CSS中
 - `ICONIFY_ICONS` 是项目中预定义的图标列表
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:125-128
-
 ## 自定义规则
 
 自定义规则(`rules`)允许定义 UnoCSS 预设无法满足的特殊样式规则。
@@ -797,8 +761,6 @@ rules: [
 </template>
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:141
-
 #### 头部高度
 
 ```typescript
@@ -814,8 +776,6 @@ rules: [
   </header>
 </template>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:142
 
 ### 滚动条规则
 
@@ -859,8 +819,6 @@ rules: [
 </template>
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:145-147
-
 ### 文本处理规则
 
 #### 单行文本省略
@@ -899,8 +857,6 @@ rules: [
   </ul>
 </template>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:150
 
 #### 多行文本省略
 
@@ -945,8 +901,6 @@ rules: [
 </template>
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:151-159
-
 ### 定位规则
 
 ```typescript
@@ -981,8 +935,6 @@ rules: [
   </div>
 </template>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:163
 
 ## 预设配置
 
@@ -1031,8 +983,6 @@ presets: [
   </div>
 </template>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:178
 
 ### presetAttributify
 
@@ -1095,8 +1045,6 @@ presets: [
 - 避免类名过长
 - 更好的可读性
 - IDE 自动补全支持更好
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:181
 
 ### presetIcons
 
@@ -1166,8 +1114,6 @@ presets: [
 </template>
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:184
-
 ### presetTypography
 
 排版预设,提供丰富的文本排版相关样式。
@@ -1227,8 +1173,6 @@ presets: [
 </template>
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:187
-
 ### presetWebFonts
 
 Web 字体预设,支持在线字体的便捷使用。
@@ -1273,8 +1217,6 @@ presetWebFonts({
   </div>
 </template>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:190-195
 
 ## 转换器配置
 
@@ -1336,8 +1278,6 @@ transformers: [
 </style>
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:208
-
 ### transformerVariantGroup
 
 变体组转换器,简化多变体编写。
@@ -1397,8 +1337,6 @@ transformers: [
 - 减少重复的变体前缀
 - 提高代码可读性
 - 更容易维护
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:211
 
 ## 最佳实践
 
@@ -1580,8 +1518,6 @@ theme: {
 }
 ```
 
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:62
-
 ### 3. 图标不显示
 
 **问题原因:**
@@ -1607,8 +1543,6 @@ theme: {
 const iconClass = 'i-carbon-user' // 需要在 uno.config.ts safelist 中
 </script>
 ```
-
-参考: ruoyi-plus-uniapp-workflow/plus-ui/uno.config.ts:125-128
 
 ### 4. 响应式断点不生效
 

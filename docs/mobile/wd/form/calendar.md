@@ -24,8 +24,6 @@ Calendar 日历选择器是一个功能全面的日期选择组件，提供多�
 - **秒级控制** - datetime 类型可隐藏秒选择，简化时间选择
 - **暗黑模式** - 完整支持暗黑主题，自动适配系统主题切换
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:1-123
-
 ## 基本用法
 
 ### 单日选择
@@ -66,8 +64,6 @@ const handleConfirm = ({ value, type }: any) => {
 - 默认显示格式为 `YYYY-MM-DD`
 - 可选范围默认为当前月份前后各6个月
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:206-207, 324-335, 408-411
-
 ### 多日选择
 
 设置 `type="dates"` 选择多个日期，返回时间戳数组。
@@ -101,8 +97,6 @@ const dates1 = ref<number[]>([])
 - 默认显示格式为多个日期用逗号分隔：`YYYY-MM-DD, YYYY-MM-DD`
 - 可以选择任意数量的日期
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:206-207, 412-417
-
 ### 日期时间选择
 
 设置 `type="datetime"` 选择日期和时间，返回13位时间戳。
@@ -134,8 +128,6 @@ const datetime1 = ref<number>(Date.now())
 - `modelValue` 为13位时间戳格式
 - 默认显示格式为 `YYYY-MM-DD HH:mm:ss`
 - 选择日期后会弹出时间选择器
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:206-207, 424-425
 
 ### 周选择
 
@@ -169,8 +161,6 @@ const week1 = ref<number>(Date.now())
 - 默认显示格式为 `第XX周（YYYY年）`
 - 点击任意一天会选中整周
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:206-207, 430-439
-
 ### 月选择
 
 设置 `type="month"` 选择月份，返回该月第一天的时间戳。
@@ -202,8 +192,6 @@ const month1 = ref<number>(Date.now())
 - `modelValue` 为该月第一天的13位时间戳
 - 默认显示格式为 `YYYY / MM`
 - 点击任意月份会选中该月
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:206-207, 464-465
 
 ### 日期范围选择
 
@@ -238,8 +226,6 @@ const dateRange1 = ref<number[]>([])
 - 默认显示格式为 `开始时间 至 结束时间`
 - 点击第一次选择开始日期，第二次选择结束日期
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:206-207, 418-423
-
 ### 日期时间范围选择
 
 设置 `type="datetimerange"` 选择日期时间范围，返回包含开始和结束时间戳的数组。
@@ -271,8 +257,6 @@ const datetimeRange1 = ref<number[]>([])
 - `modelValue` 为包含两个时间戳的数组
 - 默认显示格式为两行：开始时间和结束时间分别显示
 - 选择日期后会分别为开始和结束时间选择具体时刻
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:206-207, 426-429
 
 ### 周范围选择
 
@@ -306,8 +290,6 @@ const weekRange1 = ref<number[]>([])
 - 默认显示格式为 `第XX周（YYYY年） - 第XX周（YYYY年）`
 - 点击任意一天会选中整周
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:206-207, 441-462
-
 ### 月范围选择
 
 设置 `type="monthrange"` 选择月份范围，返回包含开始月和结束月的时间戳数组。
@@ -339,8 +321,6 @@ const monthRange1 = ref<number[]>([])
 - `modelValue` 为包含两个时间戳的数组
 - 默认显示格式为 `YYYY / MM 至 YYYY / MM`
 - 点击第一次选择开始月份，第二次选择结束月份
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:206-207, 466-471
 
 ## 高级用法
 
@@ -393,8 +373,6 @@ const maxDate = computed(() => {
 - 默认范围为当前月份前后各6个月
 - 超出范围的日期会被禁用
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:208-210, 325-335
-
 ### 最大范围限制
 
 范围选择类型支持通过 `max-range` 限制最大可选天数。
@@ -429,8 +407,6 @@ const dateRange2 = ref<number[]>([])
 - 仅在范围选择类型（daterange/weekrange/monthrange）下生效
 - 选择超出范围会显示错误提示
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:216-218
-
 ### 允许选择同一天
 
 范围选择时，通过 `allow-same-day` 允许开始和结束日期为同一天。
@@ -462,8 +438,6 @@ const dateRange3 = ref<number[]>([])
 - `allow-same-day` 为 `true` 时允许选择同一天
 - 默认值为 `false`，不允许同一天
 - 仅在范围选择类型下生效
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:220, 337
 
 ### 默认时间设置
 
@@ -497,8 +471,6 @@ const dateRange4 = ref<number[]>([])
 - 单值类型为字符串 `HH:mm:ss`，范围类型为包含两个字符串的数组
 - 常用于设置开始时间为 `00:00:00`，结束时间为 `23:59:59`
 - 仅影响选中后的时间戳，不影响日期选择
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:222
 
 ### 时间过滤器
 
@@ -549,8 +521,6 @@ type CalendarTimeFilter = (
 - 返回过滤后的值数组
 - 仅在 `type="datetime"` 或 `type="datetimerange"` 时生效
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:129-131, 224
-
 ### 隐藏秒选择
 
 datetime 类型可以通过 `hide-second` 隐藏秒选择，简化时间选择。
@@ -582,8 +552,6 @@ const datetime3 = ref<number>()
 - `hide-second` 为 `true` 时隐藏秒选择
 - 默认值为 `false`，显示秒选择
 - 仅在 `type="datetime"` 或 `type="datetimerange"` 时生效
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:226, 338
 
 ### 类型切换功能
 
@@ -617,8 +585,6 @@ const switchValue = ref<number>()
 - 单值类型可在 date/week/month 之间切换
 - 范围类型可在 daterange/weekrange/monthrange 之间切换
 - 切换时会自动调整选择模式和显示格式
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:53-58, 266, 349, 620-635, 702-708
 
 ### 快捷选项
 
@@ -686,8 +652,6 @@ type CalendarOnShortcutsClick = (option: {
 - 函数返回值为选中的日期（时间戳或时间戳数组）
 - 快捷选项显示在弹窗顶部标题下方
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:60-72, 185-193, 268-271, 350, 759-773
-
 ### 自定义显示格式化
 
 通过 `display-format` 自定义顶部显示的日期格式。
@@ -736,8 +700,6 @@ type CalendarDisplayFormat = (
 - 函数接收选中值（时间戳或时间戳数组）和日历类型
 - 返回格式化后的显示字符串
 - 只影响顶部显示值，不影响内部逻辑
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:158, 260-261, 408-473, 527-539
 
 ### 范围内部显示格式化
 
@@ -792,8 +754,6 @@ type CalendarInnerDisplayFormat = (
 - 返回格式化后的字符串
 - 仅在范围选择类型下生效
 - 用于格式化面板内部的开始/结束时间显示
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:163-167, 262-263, 479-506, 512-521
 
 ### 确认前校验
 
@@ -856,8 +816,6 @@ type CalendarBeforeConfirm = (option: {
 - 必须调用 `resolve(true)` 才能继续确认
 - 调用 `resolve(false)` 会阻止确认
 - 可以在函数中执行异步操作
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:172-180, 274-275, 728-738
 
 ### 表单验证
 
@@ -924,8 +882,6 @@ const handleReset = () => {
 - 也可以在 form 的 `rules` 中统一配置
 - 验证失败时会自动显示错误信息
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:277-280, 545-572
-
 ### 独立使用
 
 设置 `with-cell="false"` 独立使用日历组件，不显示内置单元格。
@@ -970,8 +926,6 @@ const handleConfirm = ({ value }: any) => {
 - `with-cell="false"` 时不显示内置单元格
 - 通过 ref 调用 `open` 方法手动打开
 - 适用于自定义触发元素的场景
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:4-37, 289-290, 357, 661-681
 
 ## API
 
@@ -1024,8 +978,6 @@ const handleConfirm = ({ value }: any) => {
 | custom-label-class | 自定义label样式类 | `string` | - |
 | custom-value-class | 自定义value样式类 | `string` | - |
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:198-291, 321-359
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -1036,8 +988,6 @@ const handleConfirm = ({ value }: any) => {
 | cancel | 取消选择时触发 | - |
 | open | 打开选择器时触发 | - |
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:296-308
-
 ### Slots
 
 | 插槽名 | 说明 |
@@ -1046,8 +996,6 @@ const handleConfirm = ({ value }: any) => {
 | label | 自定义标签内容 |
 | confirm-left | 确认按钮左侧区域（与确认按钮同一弹性容器，`display: flex; align-items: center;`） |
 | confirm-right | 确认按钮右侧区域，常用于放置辅助按钮（如"清除"/"今天"） |
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:5, 19, 114-121
 
 ### Methods
 
@@ -1080,8 +1028,6 @@ const openCalendar = () => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:313-318, 661-696, 776-779
 
 ### 类型定义
 
@@ -1157,8 +1103,6 @@ export type CalendarInstance = ComponentPublicInstance<
 >
 ```
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:127-193, 781-782
-
 ## 主题定制
 
 ### CSS 变量
@@ -1204,8 +1148,6 @@ $-form-item-error-message-line-height: 1.2;
 // 其他变量
 $-color-white: #fff;
 ```
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:786-788
 
 ### 暗黑模式
 
@@ -1254,8 +1196,6 @@ Calendar 组件完整支持暗黑模式，在 `wot-theme-dark` 类下会自动�
 }
 ```
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:791-833
-
 ### 自定义样式类
 
 组件提供多个自定义样式类属性：
@@ -1292,8 +1232,6 @@ Calendar 组件完整支持暗黑模式，在 `wot-theme-dark` 类下会自动�
 }
 </style>
 ```
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:200-202, 281-286
 
 ## 最佳实践
 
@@ -1571,8 +1509,6 @@ const dateRange = computed({
 </script>
 ```
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:606-614
-
 ### 2. 类型切换后值格式不匹配
 
 **问题描述：**
@@ -1618,8 +1554,6 @@ const handleConfirm = ({ value, type }: any) => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:204-205, 620-635
 
 ### 3. 快捷选项返回值格式错误
 
@@ -1674,8 +1608,6 @@ const handleShortcutClick = ({ item, index }: any) => {
 </script>
 ```
 
-参考: src/wd/components/wd-calendar/wd-calendar.vue:759-773
-
 ### 4. 确认按钮一直禁用
 
 **问题描述：**
@@ -1712,8 +1644,6 @@ watch(dateRange, (value) => {
 })
 </script>
 ```
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:588-600
 
 ### 5. 表单验证不生效
 
@@ -1762,8 +1692,6 @@ const rules = {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-calendar/wd-calendar.vue:277-280, 545-572
 
 ## 注意事项
 

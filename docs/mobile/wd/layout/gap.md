@@ -20,8 +20,6 @@ Gap 间隙槽组件是一个轻量级的布局辅助组件,用于在页面中创
 - **虚拟节点** - 启用 virtualHost,不会在 DOM 中创建额外包装元素,保持结构简洁
 - **单位自动转换** - 高度值自动添加单位,数字默认转为 rpx,字符串保持原样
 
-参考: src/wd/components/wd-gap/wd-gap.vue:1-62
-
 ## 基本用法
 
 ### 基础间距
@@ -50,8 +48,6 @@ Gap 间隙槽组件是一个轻量级的布局辅助组件,用于在页面中创
 - 组件渲染为一个空的 view 元素,通过 height 属性控制高度
 - 默认背景透明,不影响页面背景
 - 可在任意元素之间插入,实现间距效果
-
-参考: src/wd/components/wd-gap/wd-gap.vue:2-6, 44
 
 ### 自定义高度
 
@@ -111,8 +107,6 @@ Gap 间隙槽组件是一个轻量级的布局辅助组件,用于在页面中创
 - 使用 `addUnit` 函数处理单位转换
 - 通过 `isDef` 判断是否设置了 height 属性
 
-参考: src/wd/components/wd-gap/wd-gap.vue:35, 5
-
 ### 不同单位
 
 height 属性支持多种 CSS 单位格式。
@@ -166,8 +160,6 @@ height 属性支持多种 CSS 单位格式。
 - **推荐使用**: rpx 单位,实现跨设备响应式适配
 - **vh 单位**: 适合创建占据视口高度比例的间距
 - **rem/em**: 适合需要根据字体大小动态调整的场景
-
-参考: src/wd/components/wd-gap/wd-gap.vue:35, addUnit函数
 
 ### 背景颜色
 
@@ -234,8 +226,6 @@ height 属性支持多种 CSS 单位格式。
 - 使用 `isDef` 判断是否设置了 bgColor
 - 未设置时不添加 background 样式,使用默认透明背景
 
-参考: src/wd/components/wd-gap/wd-gap.vue:31, 42, 5
-
 ### 底部安全区
 
 通过 `safe-area-bottom` 属性自动适配底部安全区,适用于全面屏设备。
@@ -281,8 +271,6 @@ height 属性支持多种 CSS 单位格式。
 - 使用 CSS 的 `env()` 和 `constant()` 函数获取安全区高度
 - `padding-bottom: env(safe-area-inset-bottom)`
 - 兼容旧版 iOS 使用 `constant(safe-area-inset-bottom)`
-
-参考: src/wd/components/wd-gap/wd-gap.vue:4, 33, 56-59
 
 ## 高级用法
 
@@ -376,8 +364,6 @@ const handleProductClick = (item: Product) => {
 - 相比 margin-bottom,Gap 组件更灵活,易于调整
 - 支持动态列表,间距自动适配
 
-参考: src/wd/components/wd-gap/wd-gap.vue:2-6
-
 ### 分隔线效果
 
 结合小高度和背景色,实现分隔线效果。
@@ -446,8 +432,6 @@ const handleProductClick = (item: Product) => {
 - **渐变**: 2-4rpx 高度 + 渐变背景,实现渐变分隔效果
 - 相比 border,Gap 组件可以实现更多样的分隔效果
 
-参考: src/wd/components/wd-gap/wd-gap.vue:31, 35
-
 ### 占位元素
 
 在页面底部使用 Gap 组件作为占位元素,避免内容被底部栏遮挡。
@@ -499,8 +483,6 @@ const handleProductClick = (item: Product) => {
 - Gap 组件作为普通元素,占据文档流空间
 - 底部栏使用 fixed 定位,脱离文档流
 - 通过 Gap 占位,预留底部栏所需空间
-
-参考: src/wd/components/wd-gap/wd-gap.vue:2-6
 
 ### 自定义样式
 
@@ -560,8 +542,6 @@ const handleProductClick = (item: Product) => {
 - 样式优先级: custom-style > custom-class > bg-color
 - 支持所有 CSS 属性:边框、圆角、阴影、动画等
 
-参考: src/wd/components/wd-gap/wd-gap.vue:26-28, 5
-
 ### 响应式间距
 
 根据屏幕尺寸动态调整间距高度。
@@ -614,8 +594,6 @@ onMounted(() => {
   - 平板横屏/桌面 (≥ 1024px): 40rpx
 - 使用响应式变量,确保间距适配不同设备
 
-参考: src/wd/components/wd-gap/wd-gap.vue:35
-
 ## API
 
 ### Props
@@ -627,8 +605,6 @@ onMounted(() => {
 | safe-area-bottom | 是否开启底部安全区 | `boolean` | `false` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
-
-参考: src/wd/components/wd-gap/wd-gap.vue:24-36
 
 ### Events
 
@@ -659,8 +635,6 @@ interface WdGapProps {
 }
 ```
 
-参考: src/wd/components/wd-gap/wd-gap.vue:21-36
-
 ## 主题定制
 
 Gap 组件本身没有主题变量,样式完全由 Props 控制。
@@ -680,8 +654,6 @@ Gap 组件本身没有主题变量,样式完全由 Props 控制。
 </script>
 
 ```
-
-参考: src/wd/components/wd-gap/wd-gap.vue:48-61
 
 ## 最佳实践
 
@@ -965,8 +937,6 @@ const SPACING = {
 </style>
 ```
 
-参考: src/wd/components/wd-gap/wd-gap.vue:5
-
 ### 2. 底部安全区高度异常
 
 **问题原因:**
@@ -1016,8 +986,6 @@ const SPACING = {
 </template>
 ```
 
-参考: src/wd/components/wd-gap/wd-gap.vue:33, 56-59
-
 ### 3. 背景色不显示
 
 **问题原因:**
@@ -1053,8 +1021,6 @@ const SPACING = {
 <wd-gap :height="20" bg-color="blue color" />
 <!-- 颜色值格式错误 -->
 ```
-
-参考: src/wd/components/wd-gap/wd-gap.vue:31, 42, 5
 
 ### 4. 列表中间距渲染过多
 
@@ -1115,8 +1081,6 @@ const SPACING = {
 </template>
 ```
 
-参考: src/wd/components/wd-gap/wd-gap.vue:2-6
-
 ### 5. 自定义样式不生效
 
 **问题原因:**
@@ -1174,8 +1138,6 @@ const SPACING = {
   <!-- 应该是 custom-class,不是 customClass -->
 </template>
 ```
-
-参考: src/wd/components/wd-gap/wd-gap.vue:26-28, 4-5
 
 ## 注意事项
 

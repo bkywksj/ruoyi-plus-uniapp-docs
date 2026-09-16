@@ -20,8 +20,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 - **暗黑模式** - 完整支持暗黑主题,自动适配线条和文字颜色
 - **灵活扩展** - 支持 customClass 和 customStyle 实现高度自定义
 
-参考: src/wd/components/wd-divider/wd-divider.vue:1-188
-
 ## 基本用法
 
 ### 基础分割线
@@ -50,8 +48,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 - 默认启用 hairline 细线效果(0.5px)
 - 默认颜色为浅灰色
 - 组件自带上下外边距,无需额外设置间距
-
-参考: src/wd/components/wd-divider/wd-divider.vue:2-18, 70-71
 
 ### 带文字的分割线
 
@@ -84,8 +80,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 - 使用 `::before` 和 `::after` 伪元素创建左右两侧的线条
 - 插槽内容位于伪元素之间
 - 通过 flex 布局实现居中对齐
-
-参考: src/wd/components/wd-divider/wd-divider.vue:17, 9-12, 120-129
 
 ### 内容位置
 
@@ -139,8 +133,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 - 右对齐限制右侧伪元素最大宽度
 - 居中时左右伪元素 flex: 1 平分空间
 
-参考: src/wd/components/wd-divider/wd-divider.vue:54-55, 68, 11-12, 132-143
-
 ### 虚线样式
 
 通过 `dashed` 属性设置分割线为虚线样式。
@@ -190,8 +182,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 - 通过 CSS 类名 `is-dashed` 控制
 - 设置伪元素的 `border-style: dashed`
 - 虚线间隔由浏览器默认渲染
-
-参考: src/wd/components/wd-divider/wd-divider.vue:57, 69, 6, 154-159
 
 ### 细线效果
 
@@ -248,8 +238,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 - 水平分割线: `transform: scaleY(0.5)`
 - 垂直分割线: `transform: scaleX(0.5)`
 - 保持线条居中,不影响布局
-
-参考: src/wd/components/wd-divider/wd-divider.vue:60-61, 71, 7, 146-151, 180-184
 
 ### 垂直分割线
 
@@ -317,8 +305,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 - 通过 `::before` 伪元素创建垂直线条
 - 隐藏 `::after` 伪元素
 
-参考: src/wd/components/wd-divider/wd-divider.vue:59, 70, 8, 17, 162-185
-
 ### 自定义颜色
 
 通过 `color` 属性设置分割线和文字的颜色。
@@ -382,8 +368,6 @@ Divider 分割线组件用于在页面中创建视觉分隔,将内容划分为�
 - color 属性通过内联样式设置: `color: ${color};`
 - 伪元素的 border-color 使用 CSS 变量继承
 - 插槽内容的颜色自动继承
-
-参考: src/wd/components/wd-divider/wd-divider.vue:53, 15, 101, 111
 
 ## 高级用法
 
@@ -457,8 +441,6 @@ const handleLoadMore = () => {
 - 可以使用 flex 布局组合多个元素
 - 内容颜色会继承 color 属性,也可以单独设置
 
-参考: src/wd/components/wd-divider/wd-divider.vue:17
-
 ### 列表分组
 
 使用分割线对列表进行分组展示。
@@ -530,8 +512,6 @@ const group3 = ref([
 - 分割线文字可以使用自定义样式
 - 适合设置页、选项列表等场景
 
-参考: src/wd/components/wd-divider/wd-divider.vue:54-55, 53
-
 ### 操作区分隔
 
 在操作栏中使用垂直分割线分隔不同操作。
@@ -602,8 +582,6 @@ const handleDelete = () => console.log('删除')
 - 分割线自动垂直居中对齐
 - 配合 flex 布局使用效果最佳
 
-参考: src/wd/components/wd-divider/wd-divider.vue:59, 162-185
-
 ### 结合其他组件
 
 分割线与其他UI组件组合使用。
@@ -661,8 +639,6 @@ const handleDelete = () => console.log('删除')
 - 分割线可以与表单、标签页、列表等组件组合
 - 作为视觉分隔工具,提升页面层次感
 - 可以使用不同样式适配不同场景
-
-参考: src/wd/components/wd-divider/wd-divider.vue:2-18
 
 ### 自定义样式
 
@@ -739,8 +715,6 @@ const handleDelete = () => console.log('删除')
 - 可以添加边框、阴影、背景、圆角、动画等样式
 - 支持伪元素样式定制
 
-参考: src/wd/components/wd-divider/wd-divider.vue:48-50, 13, 15
-
 ## API
 
 ### Props
@@ -755,8 +729,6 @@ const handleDelete = () => console.log('删除')
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-divider/wd-divider.vue:46-62
-
 ### Events
 
 Divider 组件无事件。
@@ -766,8 +738,6 @@ Divider 组件无事件。
 | 插槽名 | 说明 | 参数 |
 |--------|------|------|
 | - | 默认插槽,仅水平分割线支持,用于插入文字或自定义内容 | `-` |
-
-参考: src/wd/components/wd-divider/wd-divider.vue:17
 
 ### 类型定义
 
@@ -803,8 +773,6 @@ interface WdDividerProps {
   hairline?: boolean
 }
 ```
-
-参考: src/wd/components/wd-divider/wd-divider.vue:33-62
 
 ## 主题定制
 
@@ -879,8 +847,6 @@ Divider 组件支持通过 CSS 变量进行主题定制。
 </script>
 
 ```
-
-参考: src/wd/components/wd-divider/wd-divider.vue:78-187
 
 ## 最佳实践
 
@@ -1042,8 +1008,6 @@ Divider 组件支持通过 CSS 变量进行主题定制。
 </view>
 ```
 
-参考: src/wd/components/wd-divider/wd-divider.vue:60-61, 146-151
-
 ### 2. 垂直分割线文字不显示
 
 **问题原因:**
@@ -1071,8 +1035,6 @@ Divider 组件支持通过 CSS 变量进行主题定制。
 <wd-divider vertical>文字</wd-divider>
 <!-- 文字不会显示 -->
 ```
-
-参考: src/wd/components/wd-divider/wd-divider.vue:17, 59
 
 ### 3. 内容位置不生效
 
@@ -1105,8 +1067,6 @@ Divider 组件支持通过 CSS 变量进行主题定制。
 <!-- 垂直分割线不支持内容位置 -->
 ```
 
-参考: src/wd/components/wd-divider/wd-divider.vue:54-55, 9-12
-
 ### 4. 虚线效果不明显
 
 **问题原因:**
@@ -1136,8 +1096,6 @@ Divider 组件支持通过 CSS 变量进行主题定制。
 <wd-divider dashed hairline color="#f0f0f0" />
 <!-- 几乎看不见 -->
 ```
-
-参考: src/wd/components/wd-divider/wd-divider.vue:57, 69, 154-159
 
 ### 5. 自定义样式不生效
 
@@ -1192,8 +1150,6 @@ Divider 组件支持通过 CSS 变量进行主题定制。
 }
 </style>
 ```
-
-参考: src/wd/components/wd-divider/wd-divider.vue:48-50, 13, 15
 
 ## 注意事项
 

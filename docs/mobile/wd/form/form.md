@@ -23,8 +23,6 @@ Form 表单组件是用于数据录入和校验的容器组件,统一管理表�
 - **重置功能** - 一键清除所有验证错误信息
 - **TypeScript 支持** - 完整的类型定义,提供良好的开发体验
 
-参考: src/wd/components/wd-form/wd-form.vue:1-27
-
 ## 基本用法
 
 ### 基础表单
@@ -108,8 +106,6 @@ const handleReset = () => {
 - `rules` 定义验证规则,key 对应表单项的 `prop`
 - 表单项必须设置 `prop` 属性才能被验证
 - 通过 ref 调用 `validate()` 方法进行验证
-
-参考: src/wd/components/wd-form/wd-form.vue:74-113, 212-378
 
 ### 验证规则类型
 
@@ -213,8 +209,6 @@ const rules = {
 - `min`/`max`: 字符串验证长度,数字验证值,数组验证长度
 - `message`: 验证失败时的错误提示
 
-参考: src/wd/components/wd-form/wd-form.vue:236-314
-
 ### 自定义验证函数
 
 使用 `validator` 自定义复杂的验证逻辑。
@@ -298,8 +292,6 @@ const rules = {
 - 返回字符串表示自定义错误信息
 - 支持访问表单数据进行关联验证
 
-参考: src/wd/components/wd-form/wd-form.vue:316-357
-
 ### 异步验证
 
 validator 支持异步验证,返回 Promise。
@@ -358,8 +350,6 @@ const rules = {
 - Promise resolve `false` 使用 rule.message
 - Promise resolve `string` 使用该字符串作为错误信息
 - Promise reject 使用 reject 的值或 rule.message
-
-参考: src/wd/components/wd-form/wd-form.vue:320-346
 
 ### 错误提示类型
 
@@ -443,8 +433,6 @@ const validate = async (form: FormInstance) => {
 - `errorType="toast"`: 使用 toast 弹窗显示第一个错误
 - `errorType="none"`: 不显示错误信息,仅返回验证结果
 
-参考: src/wd/components/wd-form/wd-form.vue:87, 189-206
-
 ### 部分字段验证
 
 验证指定的一个或多个字段。
@@ -524,8 +512,6 @@ const validateAll = async () => {
 - `validate()`: 验证所有字段
 - 验证成功时自动清除对应字段的错误信息
 
-参考: src/wd/components/wd-form/wd-form.vue:212-378
-
 ### 统一标签宽度
 
 通过 `labelWidth` 统一设置所有表单项的标签宽度。
@@ -569,8 +555,6 @@ const formData = ref({
 - 支持 `rpx`、`px`、`%` 等单位
 - 表单项可以通过自己的 `labelWidth` 覆盖
 
-参考: src/wd/components/wd-form/wd-form.vue:89
-
 ### 输入时重置验证
 
 控制输入时是否自动清除错误信息。
@@ -613,8 +597,6 @@ const rules = {
 **使用说明:**
 - `resetOnChange="true"`: 输入时自动清除错误(默认)
 - `resetOnChange="false"`: 保持错误显示,直到下次验证
-
-参考: src/wd/components/wd-form/wd-form.vue:85, 143-146
 
 ## 高级用法
 
@@ -831,8 +813,6 @@ const handleReset = () => {
 - 支持分组展示,提升用户体验
 - 一键提交验证所有字段
 
-参考: src/wd/components/wd-form/wd-form.vue:212-378
-
 ### 动态表单项
 
 动态添加或删除表单项。
@@ -932,8 +912,6 @@ const handleSubmit = async () => {
 - 使用 `computed` 动态生成验证规则
 - 支持任意层级的嵌套对象和数组
 
-参考: src/wd/components/wd-form/wd-form.vue:232
-
 ### 条件验证
 
 根据条件动态调整验证规则。
@@ -1020,8 +998,6 @@ const rules = computed<FormRules>(() => {
 - 配合 `v-if` 控制表单项显示
 - 验证时只会验证当前显示的字段
 
-参考: src/wd/components/wd-form/wd-form.vue:161-183
-
 ## API
 
 ### Props
@@ -1035,8 +1011,6 @@ const rules = computed<FormRules>(() => {
 | label-width | 统一设置表单项标签宽度 | `string \| number` | - |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
-
-参考: src/wd/components/wd-form/wd-form.vue:74-90, 106-113
 
 ### Methods
 
@@ -1082,8 +1056,6 @@ const resetValidation = () => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-form/wd-form.vue:95-103, 212-391
 
 ### 类型定义
 
@@ -1134,8 +1106,6 @@ export type FormItemRuleWithoutValidator = Omit<FormItemRule, 'validator'>
  */
 export type FormInstance = ComponentPublicInstance<WdFormProps, WdFormExpose>
 ```
-
-参考: src/wd/components/wd-form/wd-form.vue:28-70, 394
 
 ## 最佳实践
 
@@ -1329,8 +1299,6 @@ const rules = {
 </script>
 ```
 
-参考: src/wd/components/wd-form/wd-form.vue:161-183
-
 ### 2. 如何验证嵌套对象?
 
 **问题原因:**
@@ -1374,8 +1342,6 @@ const rules = {
 </script>
 ```
 
-参考: src/wd/components/wd-form/wd-form.vue:232
-
 ### 3. 如何在 validator 中访问其他字段?
 
 **问题原因:**
@@ -1397,8 +1363,6 @@ const rules = {
   ],
 }
 ```
-
-参考: src/wd/components/wd-form/wd-form.vue:316-357
 
 ### 4. 异步验证失败但没有提示?
 
@@ -1430,8 +1394,6 @@ const rules = {
 }
 ```
 
-参考: src/wd/components/wd-form/wd-form.vue:320-346
-
 ### 5. 如何重置表单数据?
 
 **问题原因:**
@@ -1457,8 +1419,6 @@ const handleReset = () => {
 }
 ```
 
-参考: src/wd/components/wd-form/wd-form.vue:383-385
-
 ## 注意事项
 
 ### 1. model 属性必须传递
@@ -1467,15 +1427,11 @@ const handleReset = () => {
 - `model` 应该是响应式对象(ref 或 reactive)
 - 不要在 model 中使用计算属性
 
-参考: src/wd/components/wd-form/wd-form.vue:81
-
 ### 2. prop 命名规范
 
 - prop 值必须与 model 中的字段路径一致
 - 支持嵌套路径,使用 `.` 分隔,如 `user.name`
 - 数组索引也使用 `.`,如 `contacts.0.phone`
-
-参考: src/wd/components/wd-form/wd-form.vue:232
 
 ### 3. 验证规则说明
 
@@ -1483,8 +1439,6 @@ const handleReset = () => {
 - `min`/`max`: 字符串和数组验证长度,数字验证值
 - `pattern`: 使用正则表达式验证
 - `validator`: 可以返回 boolean、string、Promise
-
-参考: src/wd/components/wd-form/wd-form.vue:46-64
 
 ### 4. validator 返回值类型
 
@@ -1494,15 +1448,11 @@ const handleReset = () => {
 - Promise resolve: 同上规则
 - Promise reject: 使用 reject 的值或 rule.message
 
-参考: src/wd/components/wd-form/wd-form.vue:316-357
-
 ### 5. 错误提示类型
 
 - `message`: 在表单项下方显示错误(默认)
 - `toast`: 使用 toast 显示第一个错误
 - `none`: 不显示错误,只返回验证结果
-
-参考: src/wd/components/wd-form/wd-form.vue:87, 189-206
 
 ### 6. 规则合并机制
 
@@ -1510,15 +1460,11 @@ const handleReset = () => {
 - FormItem 的 rules 会追加到 Form rules 之后
 - 验证时按顺序执行,遇到错误立即停止
 
-参考: src/wd/components/wd-form/wd-form.vue:161-183
-
 ### 7. resetOnChange 说明
 
 - 默认为 `true`,输入时自动清除对应字段错误
 - 设置为 `false` 时,错误会一直显示直到下次验证
 - 不影响验证逻辑,只影响错误显示
-
-参考: src/wd/components/wd-form/wd-form.vue:85
 
 ### 8. validate 方法说明
 
@@ -1527,23 +1473,17 @@ const handleReset = () => {
 - 传数组: 验证多个字段
 - 返回 Promise,包含 valid 和 errors
 
-参考: src/wd/components/wd-form/wd-form.vue:212-378
-
 ### 9. 异步验证注意事项
 
 - 所有异步验证会并行执行
 - 使用 `Promise.all` 等待所有异步验证完成
 - 异步验证错误不会中断后续规则验证
 
-参考: src/wd/components/wd-form/wd-form.vue:362
-
 ### 10. labelWidth 优先级
 
 - FormItem 的 labelWidth 优先于 Form 的 labelWidth
 - 可以为每个表单项设置不同的 labelWidth
 - 支持 rpx、px、% 等单位
-
-参考: src/wd/components/wd-form/wd-form.vue:89
 
 ### 11. 动态表单项注意事项
 
@@ -1556,5 +1496,3 @@ const handleReset = () => {
 - `reset()` 只清除验证错误信息
 - 不会重置表单数据
 - 需要手动重置 model 数据
-
-参考: src/wd/components/wd-form/wd-form.vue:383-385

@@ -19,8 +19,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
 - **轻量级实现** - 使用 Web 字体技术,体积小、性能高、缩放不失真
 - **事件支持** - 支持点击和触摸事件,可作为交互元素使用
 
-参考: src/wd/components/wd-icon/wd-icon.vue:1-2156
-
 ## 基本用法
 
 ### 字体图标
@@ -60,8 +58,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
 - 图标会自动继承父元素的字体大小和颜色
 - 所有图标名称都有 TypeScript 类型提示,避免拼写错误
 
-参考: src/wd/components/wd-icon/wd-icon.vue:24-420, 544-606
-
 ### UnoCSS 图标
 
 支持使用 UnoCSS 原子化图标,图标名称以 `i-` 开头。这种方式需要项目中配置了 UnoCSS。
@@ -84,8 +80,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
 - UnoCSS 图标使用 SVG 或背景图方式渲染,支持 1em x 1em 尺寸
 - 通过 vertical-align: middle 实现垂直居中对齐
 - 颜色和大小继承父元素样式
-
-参考: src/wd/components/wd-icon/wd-icon.vue:422-424, 482-486, 497-499, 579-585
 
 ### 图片图标
 
@@ -113,8 +107,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
 - `object-position: center` 确保图片居中显示
 - 继承父元素的 border-radius 圆角样式
 - 自动处理图片溢出,防止布局错乱
-
-参考: src/wd/components/wd-icon/wd-icon.vue:4, 475-478, 494-496, 587-605
 
 ## 图标样式
 
@@ -153,8 +145,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
 - 图片图标不受 color 属性影响
 - 未设置 color 时,图标继承父元素的文本颜色
 
-参考: src/wd/components/wd-icon/wd-icon.vue:445, 514-516
-
 ### 图标大小
 
 通过 `size` 属性设置图标大小,支持数字(单位 rpx)和字符串(带单位)。
@@ -185,8 +175,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
 - 默认大小为 40rpx(约 20px)
 - 图标使用 font-size 控制大小,缩放不失真
 - 推荐使用 rpx 单位以适配不同屏幕尺寸
-
-参考: src/wd/components/wd-icon/wd-icon.vue:447-448, 467, 518-520
 
 ### 自定义样式
 
@@ -227,8 +215,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
 - `custom-class` 会被添加到组件的 class 列表中
 - 样式合并顺序: 基础样式 → color/size → customStyle
 - 支持所有 CSS 属性,包括 transform、animation、filter 等
-
-参考: src/wd/components/wd-icon/wd-icon.vue:439-440, 491-493, 522-524
 
 ## 图标分类
 
@@ -312,8 +298,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
 - 屏幕控制: fullscreen, fullscreen-fill, exit-fullscreen, exit-fullscreen-fill, zoom-in, zoom-in-fill, zoom-out, zoom-out-fill
 - 其他: translate, translate-fill, keywords, keywords-fill
 
-参考: src/wd/components/wd-icon/wd-icon.vue:25-119
-
 ### 导航箭头类(28个)
 
 各种方向和样式的箭头图标,用于导航、分页、展开收起等场景。
@@ -384,8 +368,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
 - page-*: 分页控件的首页/尾页跳转
 - backtop: 返回顶部按钮
 - unfold-*: 展开/收起更多内容
-
-参考: src/wd/components/wd-icon/wd-icon.vue:121-148
 
 ### 状态指示类(38个)
 
@@ -464,8 +446,6 @@ Icon 图标组件为应用提供统一的图标展示方案,支持三种图标�
 **完整图标列表:**
 warn, warn-fill, info, info-fill, loading, loading-fill, locked, locked-fill, unlocked, unlocked-fill, visible, visible-fill, hidden, hidden-fill, time, time-fill, clock, clock-fill, star, star-fill, heart, heart-fill, favorite, favorite-fill, like, like-fill, dislike, dislike-fill, flag, flag-fill, pin, pin-fill, secured, secured-fill, notification, notification-fill, tips, tips-fill
 
-参考: src/wd/components/wd-icon/wd-icon.vue:150-187
-
 ### 用户相关类(24个)
 
 用户、团队、权限等人员相关图标。
@@ -506,8 +486,6 @@ warn, warn-fill, info, info-fill, loading, loading-fill, locked, locked-fill, un
 
 **完整图标列表:**
 user, user-fill, user-add, user-add-fill, user-circle, user-circle-fill, user-talk, user-talk-fill, user-group, user-group-fill, team, team-fill, contact, contact-fill, admin, admin-fill, vip, vip-fill, crown, crown-fill, diamon, diamon-fill, male, male-fill, female, female-fill
-
-参考: src/wd/components/wd-icon/wd-icon.vue:189-214
 
 ### 通讯媒体类(46个)
 
@@ -569,8 +547,6 @@ user, user-fill, user-add, user-add-fill, user-circle, user-circle-fill, user-ta
 
 **完整图标列表:**
 call, call-fill, phone, phone-fill, message, message-fill, mail, mail-fill, chat, chat-fill, video, video-fill, audio, audio-fill, camera, camera-fill, image, image-fill, mobile, mobile-fill, vibrate, vibrate-fill, sound, sound-fill, wifi, wifi-fill, wifi-error, wifi-error-fill, bluetooth, bluetooth-fill, signal, signal-fill, battery, battery-fill, cloud, cloud-fill, cloud-upload, cloud-upload-fill, cloud-download, cloud-download-fill, internet, internet-fill, detection, detection-fill, iphone, iphone-fill
-
-参考: src/wd/components/wd-icon/wd-icon.vue:216-261
 
 ### 商业功能类(32个)
 
@@ -640,8 +616,6 @@ call, call-fill, phone, phone-fill, message, message-fill, mail, mail-fill, chat
 **完整图标列表:**
 cart, cart-fill, payment, payment-fill, order, order-fill, coupon, coupon-fill, gift, gift-fill, wallet, wallet-fill, card, card-fill, shop, shop-fill, goods, goods-fill, money, money-fill, discount, discount-fill, qrcode, qrcode-fill, bag, bag-fill, delivery, delivery-fill, subscribe, subscribe-fill, read, read-fill, company, company-fill
 
-参考: src/wd/components/wd-icon/wd-icon.vue:263-296
-
 ### 文件管理类(36个)
 
 文件、文件夹、各类文档格式图标。
@@ -700,8 +674,6 @@ cart, cart-fill, payment, payment-fill, order, order-fill, coupon, coupon-fill, 
 **完整图标列表:**
 file, file-fill, file-add, file-add-fill, file-copy, file-copy-fill, file-paste, file-paste-fill, folder, folder-fill, folder-open, folder-open-fill, folder-add, folder-add-fill, file-word, file-word-fill, file-excel, file-excel-fill, file-ppt, file-ppt-fill, file-pdf, file-pdf-fill, file-unknown, file-unknown-fill, attach, attach-fill, book, book-fill
 
-参考: src/wd/components/wd-icon/wd-icon.vue:298-325
-
 ### 工具功能类(34个)
 
 日历、地图、工具、设备等功能性图标。
@@ -744,8 +716,6 @@ file, file-fill, file-add, file-add-fill, file-copy, file-copy-fill, file-paste,
 **完整图标列表:**
 calendar, calendar-fill, location, location-fill, map, map-fill, tools, tools-fill, laptop, laptop-fill, desktop, desktop-fill, app, app-fill, history, history-fill, service, service-fill, layers, layers-fill, fork, fork-fill, cursor, cursor-fill, pointing-hand, pointing-hand-fill, keyboard, keyboard-fill, keyboard-delete, keyboard-delete-fill, ellipsis, ellipsis-fill
 
-参考: src/wd/components/wd-icon/wd-icon.vue:327-358
-
 ### 数据图表类(20个)
 
 图表、数据、趋势等数据可视化相关图标。
@@ -782,8 +752,6 @@ calendar, calendar-fill, location, location-fill, map, map-fill, tools, tools-fi
 **完整图标列表:**
 chart, chart-fill, chart-bar, chart-bar-fill, trending-up, trending-down, data, data-fill, asc, desc, move, move-fill, rectangle, rectangle-fill, demo, demo-fill
 
-参考: src/wd/components/wd-icon/wd-icon.vue:360-375
-
 ### 社交功能类(26个)
 
 评论、回复、关注等社交互动图标。
@@ -816,8 +784,6 @@ chart, chart-fill, chart-bar, chart-bar-fill, trending-up, trending-down, data, 
 
 **完整图标列表:**
 comment, comment-fill, reply, reply-fill, mention, mention-fill, hashtag, hashtag-fill, follow, follow-fill, unfollow, unfollow-fill, follower, follower-fill, friend-add, friend-add-fill, group-chat, group-chat-fill, emoji, emoji-fill, moments, moments-fill
-
-参考: src/wd/components/wd-icon/wd-icon.vue:377-398
 
 ### 平台品牌类(20个)
 
@@ -858,8 +824,6 @@ comment, comment-fill, reply, reply-fill, mention, mention-fill, hashtag, hashta
 
 **完整图标列表:**
 wechat, wechat-fill, qq, qq-fill, weibo, weibo-fill, alipay, alipay-fill, github, github-fill, apple, apple-fill, android, android-fill, windows, windows-fill, chrome, chrome-fill, tiktok, tiktok-fill
-
-参考: src/wd/components/wd-icon/wd-icon.vue:400-419
 
 ## 事件处理
 
@@ -962,8 +926,6 @@ const handleSave = () => {
 - 图标本身没有禁用状态,需要通过样式和逻辑控制
 - 可以在父容器上添加 pointer-events: none 禁用点击
 
-参考: src/wd/components/wd-icon/wd-icon.vue:456-457, 533-535
-
 ## 高级用法
 
 ### 自定义图标字体
@@ -1021,8 +983,6 @@ const handleSave = () => {
 - 组件会生成 `${classPrefix}-${name}` 格式的类名
 - 通过 CSS `@font-face` 加载自定义字体文件
 - 使用 `:before` 伪元素设置字体图标内容
-
-参考: src/wd/components/wd-icon/wd-icon.vue:449, 466, 500-502
 
 ### 动画效果
 
@@ -1159,16 +1119,12 @@ const handleComment = () => {
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: src/wd/components/wd-icon/wd-icon.vue:437-450
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | click | 点击图标时触发 | `event: Event` |
 | touch | 触摸图标时触发(已声明但未实现) | `event: Event` |
-
-参考: src/wd/components/wd-icon/wd-icon.vue:455-460, 533-535
 
 ### 类型定义
 
@@ -1211,8 +1167,6 @@ interface WdIconEmits {
   touch: [event: Event]
 }
 ```
-
-参考: src/wd/components/wd-icon/wd-icon.vue:24-460
 
 ## 主题定制
 
@@ -1274,8 +1228,6 @@ Icon 组件通过继承父元素的 color 和 font-size 实现主题定制,也�
   font-style: normal;
 }
 ```
-
-参考: src/wd/components/wd-icon/wd-icon.vue:544-562
 
 ## 最佳实践
 
@@ -1425,8 +1377,6 @@ const iconName = 'homes' // ❌ 拼写错误
 </script>
 ```
 
-参考: src/wd/components/wd-icon/wd-icon.vue:544-562
-
 ### 2. 图标大小不准确
 
 **问题原因:**
@@ -1448,8 +1398,6 @@ const iconName = 'homes' // ❌ 拼写错误
   </view>
 </template>
 ```
-
-参考: src/wd/components/wd-icon/wd-icon.vue:518-520
 
 ### 3. UnoCSS 图标不显示
 
@@ -1477,8 +1425,6 @@ export default defineConfig({
 # 3. 使用图标
 <wd-icon name="i-carbon-home" size="24" />
 ```
-
-参考: src/wd/components/wd-icon/wd-icon.vue:482-486, 497-499
 
 ### 4. 图标颜色无法修改
 
@@ -1509,8 +1455,6 @@ export default defineConfig({
 </template>
 ```
 
-参考: src/wd/components/wd-icon/wd-icon.vue:514-516
-
 ### 5. 小程序中图标锯齿
 
 **问题原因:**
@@ -1534,5 +1478,3 @@ export default defineConfig({
   />
 </template>
 ```
-
-参考: src/wd/components/wd-icon/wd-icon.vue:568-572

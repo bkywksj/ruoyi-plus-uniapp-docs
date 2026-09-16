@@ -20,8 +20,6 @@ Tabbar 标签栏组件是一个底部导航栏组件,用于在不同页面或功
 - **安全区域适配** - 自动处理 iPhone X 等刘海屏设备的底部安全区域,`safeAreaInsetBottom` 属性确保标签栏在各种设备上都能正确显示
 - **灵活定制** - 支持自定义图标、文字大小、层级、边框、插槽等,提供丰富的配置选项和插槽,满足各种个性化需求
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:1-503
-
 ## 基本用法
 
 ### 子组件模式
@@ -53,8 +51,6 @@ const activeTab = ref('home')
 - 每个 `wd-tabbar-item` 代表一个标签项,通过 `icon` 和 `title` 设置图标和文字
 - `name` 属性是标签的唯一标识,如果不设置则使用索引值
 - 标签栏默认固定在页面底部,需要为页面内容预留底部空间
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:46-48
 
 ### Items 配置模式
 
@@ -106,8 +102,6 @@ const tabbarItems = ref<WdTabbarItemProps[]>([
 - 配置对象支持 `name`、`title`、`icon`、`activeIcon`、`value`、`isDot` 等属性
 - 数组模式更适合从后端接口获取配置或需要动态修改标签项的场景
 - 可以直接在配置中设置徽标相关属性,无需额外嵌套
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:12-44, src/wd/components/wd-tabbar/wd-tabbar.vue:164-166
 
 ### 带徽标显示
 
@@ -164,8 +158,6 @@ const messageCount = ref(128)
 - `badge-props` 属性可以透传更多配置给 Badge 组件,如位置、颜色、偏移等
 - 徽标会自动继承标签栏的激活颜色,也可以单独定制
 
-参考: src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:7, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:111-130
-
 ### 圆角样式
 
 通过 `shape` 属性设置标签栏的形状,支持默认矩形和圆角胶囊两种样式。
@@ -209,8 +201,6 @@ const activeTab2 = ref(0)
 - `shape="round"` 为圆角胶囊样式,标签栏左右各有 32rpx 边距,带圆角和阴影效果
 - 圆角样式的视觉效果更加现代化,适合年轻化、时尚化的应用设计
 - 圆角样式在固定定位时,底部安全区域的处理方式与默认样式不同
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:9, src/wd/components/wd-tabbar/wd-tabbar.vue:418-445
 
 ### 自定义颜色
 
@@ -283,8 +273,6 @@ const activeTab3 = ref(0)
 - 颜色会应用到标签的图标和文字上,自动处理样式继承
 - 支持任何 CSS 颜色值,包括十六进制、RGB、颜色名称等
 - 颜色优先级:子组件单独设置 > 标签栏统一设置 > 主题默认值
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:268-279, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:178-207
 
 ### 切换图标
 
@@ -376,8 +364,6 @@ const items = ref<WdTabbarItemProps[]>([
 - Items 模式下同样支持 `activeIcon` 配置
 - 如果不设置 `activeIcon`,则激活和未激活状态使用相同图标,仅颜色不同
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:229-239, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:214-222
-
 ### 自定义图标插槽
 
 使用插槽可以完全自定义标签的图标内容,实现更复杂的视觉效果。
@@ -450,8 +436,6 @@ const items = ref<WdTabbarItemProps[]>([
 - 插槽接收 `active` 参数,表示当前标签是否激活,可以根据状态渲染不同内容
 - 可以使用图片、自定义图标、动画效果等实现个性化的标签图标
 - 使用插槽后,`icon` 和 `active-icon` 属性将被忽略
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:26-33, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:12-19
 
 ## 高级用法
 
@@ -554,8 +538,6 @@ const getPageLoaded = (name: string) => {
 - 使用 `v-show` 控制页面显示隐藏,保持已加载页面的状态
 - 这种方式可以显著减少应用的初始加载时间和内存占用
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:329-334, src/wd/components/wd-tabbar/wd-tabbar.vue:365-375, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:228-239
-
 ### 非固定定位
 
 标签栏可以不固定在底部,作为普通内联元素使用。
@@ -615,8 +597,6 @@ const activeTab2 = ref(0)
 - 非固定模式适合特殊的页面布局需求,如分段导航、模块切换等
 - 可以与圆角样式结合,实现类似选项卡的效果
 - 非固定模式下,安全区域适配仍然生效,但通常不需要
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:100-113, src/wd/components/wd-tabbar/wd-tabbar.vue:190-198
 
 ### 监听切换事件
 
@@ -718,8 +698,6 @@ const trackPageView = (tabName: number | string) => {
 - 事件在组件内部 `modelValue` 更新后触发
 - Items 模式和子组件模式都会触发 change 事件
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:126-129, src/wd/components/wd-tabbar/wd-tabbar.vue:172-176, src/wd/components/wd-tabbar/wd-tabbar.vue:326-338
-
 ### 自定义尺寸
 
 通过 `iconSize` 和 `fontSize` 属性自定义图标和文字的大小。
@@ -804,8 +782,6 @@ const activeTab4 = ref(0)
 - 在单个标签项上设置可以覆盖标签栏的统一设置
 - 内部通过 CSS 变量实现,优先级:标签项 > 标签栏 > 默认值
 - 默认值:图标 48rpx,文字 24rpx
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:116-119, src/wd/components/wd-tabbar/wd-tabbar.vue:287-301, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:136-158
 
 ### 调整层级和边框
 
@@ -894,8 +870,6 @@ const activeTab4 = ref(0)
 - 圆角样式(`shape="round"`)没有顶部边框,`bordered` 属性对圆角样式无效
 - 边框仅在 `shape="default"` 时生效
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:9-10, src/wd/components/wd-tabbar/wd-tabbar.vue:102-115, src/wd/components/wd-tabbar/wd-tabbar.vue:442-444
-
 ### 关闭安全区域
 
 某些情况下可能需要关闭底部安全区域适配。
@@ -977,8 +951,6 @@ const activeTab4 = ref(0)
 - 圆角样式(`shape="round"`)通过 `bottom` 属性调整位置,避免被安全区域遮挡
 - 在 iPhone X 及以上机型中,安全区域高度通常为 34px
 - 如果页面已经处理了安全区域,可以关闭此选项避免重复处理
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:4-6, src/wd/components/wd-tabbar/wd-tabbar.vue:104-105, src/wd/components/wd-tabbar/wd-tabbar.vue:424-439
 
 ### 路由模式集成
 
@@ -1119,8 +1091,6 @@ onMounted(() => {
 - 页面加载时通过 `getCurrentPages()` 获取当前路径,同步到 `activeTab`
 - 这种方式可以实现完整的路由功能,包括浏览器地址栏同步(H5)、页面栈管理等
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:326-338
-
 ## API
 
 ### Tabbar Props
@@ -1142,8 +1112,6 @@ onMounted(() => {
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:89-120
-
 ### Tabbar Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -1152,16 +1120,12 @@ onMounted(() => {
 | change | 标签切换时触发 | `value: number \| string` - 当前选中标签的索引或名称 |
 | update:items | items 数组更新事件,当 loaded 状态改变时触发 | `items: WdTabbarItemProps[]` - 更新后的 items 数组 |
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:125-132
-
 ### Tabbar Slots
 
 | 插槽名 | 说明 | 参数 |
 |--------|------|------|
 | default | 默认插槽,用于放置 `wd-tabbar-item` 子组件 | - |
 | icon-{name} | 自定义图标插槽(Items 模式),`{name}` 为标签的 name 属性 | `{ active: boolean }` - 是否激活 |
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:26-33, src/wd/components/wd-tabbar/wd-tabbar.vue:46-48
 
 ### TabbarItem Props
 
@@ -1181,23 +1145,17 @@ onMounted(() => {
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:55-83
-
 ### TabbarItem Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | update:loaded | loaded 状态更新事件 | `loaded: boolean` - 更新后的 loaded 状态 |
 
-参考: src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:88-91
-
 ### TabbarItem Slots
 
 | 插槽名 | 说明 | 参数 |
 |--------|------|------|
 | icon | 自定义图标内容 | `{ active: boolean }` - 当前标签是否激活 |
-
-参考: src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:12-19
 
 ### 类型定义
 
@@ -1294,8 +1252,6 @@ interface WdTabbarItemEmits {
 }
 ```
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:81-132, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:52-91
-
 ## 主题定制
 
 ### CSS 变量
@@ -1383,8 +1339,6 @@ const activeTab = ref(0)
 </script>
 
 ```
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:379-501
 
 ## 最佳实践
 
@@ -1641,8 +1595,6 @@ const staticTabs = ref([
 - 页面仅需预留标签栏本身的高度即可
 - 如果手动关闭了标签栏的安全区域适配,则需要在页面级别处理
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:1-503, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:1-305
-
 ## 常见问题
 
 ### 1. 标签栏遮挡页面内容
@@ -1695,8 +1647,6 @@ const activeTab = ref(0)
   </wd-tabbar>
 </template>
 ```
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:3-6, src/wd/components/wd-tabbar/wd-tabbar.vue:190-198
 
 ### 2. 徽标不显示或显示不正确
 
@@ -1763,8 +1713,6 @@ const hasNewItems = ref(true)
   </wd-tabbar>
 </template>
 ```
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:245-261, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:111-130
 
 ### 3. 激活状态不正确或不同步
 
@@ -1838,8 +1786,6 @@ watch(activeTab, (newValue) => {
 </script>
 ```
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:217-220, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:164-172
-
 ### 4. 自定义插槽不生效
 
 **问题原因:**
@@ -1895,8 +1841,6 @@ const tabs = ref([
 ])
 </script>
 ```
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:26-33, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:12-19
 
 ### 5. 圆角样式在某些设备上显示异常
 
@@ -1971,8 +1915,6 @@ const isSmallScreen = computed(() => systemInfo.windowWidth < 375)
 </template>
 ```
 
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:418-430, src/wd/components/wd-tabbar/wd-tabbar.vue:9-10
-
 ## 注意事项
 
 1. **标签栏默认固定定位** - 组件默认使用 `position: fixed` 固定在页面底部,会脱离文档流。如果不需要固定定位,请设置 `:fixed="false"`。
@@ -1998,5 +1940,3 @@ const isSmallScreen = computed(() => systemInfo.windowWidth < 375)
 11. **懒加载的自动触发** - 组件会在首次点击标签时自动将 `loaded` 设置为 `true`,并触发 `update:items` 事件。如果使用子组件模式,需要监听 `update:loaded` 事件手动同步状态。
 
 12. **层级设置的影响范围** - `z-index` 属性仅在 `fixed="true"` 时生效。如果标签栏与其他固定定位元素存在遮挡关系,可能需要调整层级值。默认值为 99,通常足够使用。
-
-参考: src/wd/components/wd-tabbar/wd-tabbar.vue:1-503, src/wd/components/wd-tabbar-item/wd-tabbar-item.vue:1-305

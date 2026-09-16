@@ -22,8 +22,6 @@ CheckboxGroup 组件支持两种使用模式:options 数组模式和子组件模
 - **自定义样式** - 支持自定义选中颜色、复选框间距、每项宽度等样式,提供丰富的样式定制能力
 - **禁用控制** - 支持全局禁用和单项禁用,达到 min/max 限制时自动禁用相关选项
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:1-939
-
 ## 基本用法
 
 ### 基础用法
@@ -66,8 +64,6 @@ const handleChange = (val: string[]) => {
 - `options` 配置选项数组,每项包含 value 和 label
 - change 事件在选中值改变时触发
 - 默认形状为圆形,默认尺寸为 default
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:245-246
 
 ### 三种形状
 
@@ -117,8 +113,6 @@ const options = [
 - `shape="button"` 按钮形式,选中时显示勾选图标
 - 按钮形式适合需要突出显示的场景
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:248-249
-
 ### 三种尺寸
 
 通过 size 属性设置复选框尺寸。
@@ -165,8 +159,6 @@ const options = [
 - `size="default"` 默认尺寸,图标 32rpx
 - `size="large"` 大尺寸,图标 45rpx
 - 不同尺寸的文字大小也会相应调整
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:260-261, 360-373
 
 ### 禁用状态
 
@@ -215,8 +207,6 @@ const optionsWithDisabled = [
 - 选项级 `disabled: true` 禁用单个选项
 - 禁用的选项显示灰色,不可点击
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:252-253, 457-476
-
 ### 同行展示
 
 通过 inline 属性使复选框在同一行显示。
@@ -258,8 +248,6 @@ const options = [
 - `inline` 属性使复选框横向排列
 - 适合选项较少且文字较短的场景
 - 超出宽度会自动换行
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:258-259
 
 ### 自定义颜色
 
@@ -308,8 +296,6 @@ const options = [
 - 支持十六进制、RGB 等 CSS 颜色格式
 - 按钮形式下会应用到边框和文字颜色
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:250-251
-
 ### 字符串值格式
 
 modelValue 支持逗号分隔的字符串格式。
@@ -348,8 +334,6 @@ const options = [
 - 组件会自动识别并正确处理
 - 通过 `separator` 属性可自定义分隔符
 - 适配某些后端接口要求字符串格式的场景
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:262-263, 412-431
 
 ### 子组件模式
 
@@ -402,8 +386,6 @@ const value = ref(['apple'])
 - 每个 wd-checkbox 可以完全自定义内容
 - 适合需要复杂布局的场景
 - wd-checkbox-group 会自动管理子组件状态
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:84-86, 167-169, 332, 572-579
 
 ## 高级用法
 
@@ -465,8 +447,6 @@ const options = [
 - min 常用于"至少选 N 项"的场景
 - max 常用于"最多选 N 项"的场景
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:254-257, 467-473, 585-600
-
 ### 自定义宽度
 
 通过 item-width 属性控制每个复选框的宽度,实现多列布局。
@@ -522,8 +502,6 @@ const options = [
 - 百分比适合响应式布局
 - 固定值适合对齐要求严格的场景
 - 按钮模式建议使用百分比
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:264-265, 385-387, 501-522
 
 ### 表单集成
 
@@ -626,8 +604,6 @@ const handleReset = () => {
 - prop 必须与表单字段名一致
 - 验证规则支持 required 和自定义 validator
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:268-289, 378-407
-
 ### 自定义插槽
 
 通过插槽实现完全自定义的选项内容。
@@ -720,8 +696,6 @@ const options = [
 - checked 参数可用于动态样式
 - 每个选项都可以有独立的插槽
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:70-81, 152-163, 219-222
-
 ## API
 
 ### Props
@@ -753,16 +727,12 @@ const options = [
 | custom-label-class | 自定义标签样式类 | `string` | `''` |
 | custom-icon-class | 自定义前置图标样式类 | `string` | `''` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:237-290, 303-323
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | update:modelValue | 值更新时触发 | `value: Array<string \| number \| boolean> \| string` |
 | change | 值变化时触发 | `value: Array<string \| number \| boolean> \| string` |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:295-300
 
 ### Slots
 
@@ -772,8 +742,6 @@ const options = [
 | label | 自定义标签(表单模式) |
 | prefix | 自定义前置图标(表单模式) |
 | option-{index} | 自定义选项内容,需设置 option.useSlot |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:70-96
 
 ### CheckboxOption
 
@@ -789,8 +757,6 @@ options 数组中每项的配置:
 | maxWidth | 最大宽度 | `string` | - |
 | customLabelClass | 自定义标签样式类名 | `string` | - |
 | customShapeClass | 自定义形状样式类名 | `string` | - |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:212-232
 
 ## 主题定制
 
@@ -837,8 +803,6 @@ CheckboxGroup 组件提供了以下 CSS 变量用于主题定制:
 --wd-checkbox-button-disabled-border: #e1e3e6;
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:657-937
-
 ### 暗黑模式
 
 CheckboxGroup 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色主题:
@@ -858,8 +822,6 @@ CheckboxGroup 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用�
 - 文本颜色: `$-dark-color`
 - 禁用状态颜色: `$-dark-color-gray`
 - 按钮模式背景: `$-dark-background`
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:663-732
 
 ### 自定义主题示例
 
@@ -937,8 +899,6 @@ const options = [
 - 可以针对不同场景定义不同主题
 - 支持单独定制尺寸、颜色、间距等
 - 暗黑模式由 ConfigProvider 统一控制
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:734-937
 
 ## 最佳实践
 
@@ -1047,8 +1007,6 @@ const options = [
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:444-451, 528-552
-
 ### 2. min/max 不生效
 
 **问题原因:**
@@ -1066,8 +1024,6 @@ const value = ref(['1', '2'])  // 2 项,符合 min=2
   <wd-checkbox-group v-model="value" :options="options" :min="2" :max="4" />
 </template>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:254-257, 635-654
 
 ### 3. 表单验证不生效
 
@@ -1095,8 +1051,6 @@ const rules = {
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:280-283, 391-407
-
 ### 4. 按钮模式宽度问题
 
 **问题原因:**
@@ -1113,8 +1067,6 @@ const rules = {
   item-width="33.333%"
 />
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:501-522
 
 ### 5. 字符串模式值格式错误
 
@@ -1138,8 +1090,6 @@ const value = ref('1|2|3')
 </template>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:418-431, 540-552
-
 ## 注意事项
 
 1. **值格式支持** - modelValue 支持数组和逗号分隔字符串两种格式,组件会自动识别
@@ -1154,5 +1104,3 @@ const value = ref('1|2|3')
 10. **性能优化** - options 数组建议缓存,避免频繁创建
 11. **插槽使用** - 需要自定义内容时设置 option.useSlot 和 slotName
 12. **平台兼容** - 组件在 H5、小程序、App 都完全支持
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-checkbox-group/wd-checkbox-group.vue:1-939

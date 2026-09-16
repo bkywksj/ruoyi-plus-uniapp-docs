@@ -20,9 +20,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 - **自动清除浮动** - Row 组件自动清除浮动,保持布局稳定
 - **灵活组合** - 可以嵌套使用,实现复杂的多层级布局
 
-参考: src/wd/components/wd-row/wd-row.vue:1-71
-参考: src/wd/components/wd-col/wd-col.vue:1-104
-
 ## 基本用法
 
 ### 基础布局
@@ -91,8 +88,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 - Col 组件的 span 属性控制列宽,值为 1-24
 - 一行内所有列的 span 总和建议为 24,超过 24 会自动换行
 - span 默认值为 24,即占满整行
-
-参考: src/wd/components/wd-col/wd-col.vue:37-48, 88-102
 
 ### 不等宽列
 
@@ -165,8 +160,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 - 根据实际需求设置不同的 span 值
 - 常见比例: 8:16 (1:2), 6:12:6 (1:2:1), 5:14:5 (1:3:1)
 - 灵活组合可以实现各种复杂的布局需求
-
-参考: src/wd/components/wd-col/wd-col.vue:92-94
 
 ### 列间距
 
@@ -249,9 +242,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 - Row: `margin-left: -gutter/2; margin-right: -gutter/2;`
 - Col: `padding-left: gutter; padding-right: gutter;`
 
-参考: src/wd/components/wd-row/wd-row.vue:36, 6
-参考: src/wd/components/wd-col/wd-col.vue:6
-
 ### 列偏移
 
 通过 Col 组件的 offset 属性设置列的左侧偏移距离,单位为栅格数。
@@ -323,8 +313,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 **常见用法:**
 - 居中布局: `span="12" offset="6"` (12 栅格宽度,左侧偏移 6 栅格)
 - 右对齐: `span="8" offset="16"` (8 栅格宽度,左侧偏移 16 栅格)
-
-参考: src/wd/components/wd-col/wd-col.vue:39-40, 97-99
 
 ### 混合布局
 
@@ -401,9 +389,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 - 一行内列的 span + offset 总和不应超过 24
 - 超过 24 栅格的列会自动换行显示
 
-参考: src/wd/components/wd-row/wd-row.vue:1-71
-参考: src/wd/components/wd-col/wd-col.vue:1-104
-
 ### 自定义样式
 
 通过 custom-class 和 custom-style 自定义行和列的样式。
@@ -476,9 +461,6 @@ Row-Col (行列布局) 是一套基于 24 栅格系统的布局组件,通过 Row
 - 可以添加边框、阴影、背景色等自定义效果
 - 灵活实现各种视觉风格
 
-参考: src/wd/components/wd-row/wd-row.vue:31-34
-参考: src/wd/components/wd-col/wd-col.vue:33-36
-
 ## 进阶用法
 
 ### 响应式布局
@@ -548,8 +530,6 @@ onMounted(() => {
 - 通过 computed 动态计算 span 值
 - 根据屏幕宽度自动调整列数
 - 适用于商品列表、图片画廊等场景
-
-参考: src/wd/components/wd-col/wd-col.vue:37-38, 92-94
 
 ### 嵌套布局
 
@@ -626,8 +606,6 @@ Row 和 Col 可以嵌套使用,实现复杂的多层级布局。
 - 每个 Row 组件都是独立的栅格容器
 - 嵌套的 Row 不会继承父级 Row 的 gutter 值
 - 需要为每个 Row 单独设置 gutter
-
-参考: src/wd/components/wd-row/wd-row.vue:46-48
 
 ### 卡片列表布局
 
@@ -713,8 +691,6 @@ const handleCardClick = (card: Card) => {
 - 每个卡片占据 12 栅格 (2 列布局)
 - 结合图标、文字、数字等元素
 - 适用于功能入口、数据看板等场景
-
-参考: src/wd/components/wd-col/wd-col.vue:1-104
 
 ### 表单布局
 
@@ -803,9 +779,6 @@ const handleCardClick = (card: Card) => {
 - 结合 offset 实现标签-输入框的对齐
 - 适用于各种表单布局场景
 
-参考: src/wd/components/wd-row/wd-row.vue:1-71
-参考: src/wd/components/wd-col/wd-col.vue:1-104
-
 ### 宫格导航
 
 使用栅格布局实现宫格导航效果。
@@ -872,8 +845,6 @@ const handleNavClick = (nav: NavItem) => {
 - 5 列: 需要自定义实现,栅格系统不支持
 - 3 列: `span="8"` (24 ÷ 8 = 3)
 - 2 列: `span="12"` (24 ÷ 12 = 2)
-
-参考: src/wd/components/wd-col/wd-col.vue:92-94
 
 ### 图片画廊
 
@@ -996,9 +967,6 @@ const handleNavClick = (nav: NavItem) => {
 - 结合嵌套布局实现复杂的图片排列
 - 适用于相册、商品展示等场景
 
-参考: src/wd/components/wd-row/wd-row.vue:1-71
-参考: src/wd/components/wd-col/wd-col.vue:1-104
-
 ## API
 
 ### Row Props
@@ -1009,8 +977,6 @@ const handleNavClick = (nav: NavItem) => {
 | `custom-class` | 自定义根节点样式类 | `string` | `''` |
 | `custom-style` | 自定义根节点内联样式 | `string` | `''` |
 
-参考: src/wd/components/wd-row/wd-row.vue:30-37, 40-44
-
 ### Col Props
 
 | 参数 | 说明 | 类型 | 默认值 |
@@ -1020,23 +986,17 @@ const handleNavClick = (nav: NavItem) => {
 | `custom-class` | 自定义根节点样式类 | `string` | `''` |
 | `custom-style` | 自定义根节点内联样式 | `string` | `''` |
 
-参考: src/wd/components/wd-col/wd-col.vue:32-41, 44-49
-
 ### Row Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | `default` | 行的内容,通常放置多个 Col 组件 |
 
-参考: src/wd/components/wd-row/wd-row.vue:9
-
 ### Col Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | `default` | 列的内容 |
-
-参考: src/wd/components/wd-col/wd-col.vue:9
 
 ### 类型定义
 
@@ -1067,9 +1027,6 @@ interface WdColProps {
   offset?: number
 }
 ```
-
-参考: src/wd/components/wd-row/wd-row.vue:27-37
-参考: src/wd/components/wd-col/wd-col.vue:29-41
 
 ## 主题定制
 
@@ -1115,9 +1072,6 @@ Row-Col 组件没有提供特定的 CSS 变量,可以通过 `custom-class` 和 `
 }
 </style>
 ```
-
-参考: src/wd/components/wd-row/wd-row.vue:56-70
-参考: src/wd/components/wd-col/wd-col.vue:77-86
 
 ## 最佳实践
 
@@ -1360,8 +1314,6 @@ onMounted(() => {
 </template>
 ```
 
-参考: src/wd/components/wd-row/wd-row.vue:62-68
-
 ### 2. gutter 设置无效
 
 **问题原因:**
@@ -1389,8 +1341,6 @@ if (props.gutter < 0) {
   console.error('warning(wd-row): attribute gutter must be greater than or equal to 0')
 }
 ```
-
-参考: src/wd/components/wd-row/wd-row.vue:50-53
 
 ### 3. 列宽度不准确
 
@@ -1422,8 +1372,6 @@ if (props.gutter < 0) {
   box-sizing: border-box;
 }
 ```
-
-参考: src/wd/components/wd-col/wd-col.vue:83-86
 
 ### 4. offset 偏移不生效
 
@@ -1458,8 +1406,6 @@ if (span < 0 || offset < 0) {
 }
 ```
 
-参考: src/wd/components/wd-col/wd-col.vue:58-66
-
 ### 5. 嵌套布局 gutter 叠加
 
 **问题原因:**
@@ -1487,8 +1433,6 @@ if (span < 0 || offset < 0) {
 - 嵌套时根据层级调整 gutter 值
 - 外层 gutter 大,内层 gutter 小
 
-参考: src/wd/components/wd-row/wd-row.vue:46-48
-
 ## 注意事项
 
 1. **24 栅格系统**: Row-Col 组件基于 24 栅格系统,span 值范围为 1-24,超过 24 的列会自动换行。
@@ -1514,6 +1458,3 @@ if (span < 0 || offset < 0) {
 11. **宽度计算**: 列宽度通过 `calc(100% / 24 * span)` 计算,offset 偏移通过 `margin-left: calc(100% / 24 * offset)` 实现。
 
 12. **性能考虑**: 大量使用嵌套布局时,注意性能影响,建议合理规划布局层级,避免过度嵌套。
-
-参考: src/wd/components/wd-row/wd-row.vue:1-71
-参考: src/wd/components/wd-col/wd-col.vue:1-104

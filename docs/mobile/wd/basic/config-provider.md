@@ -22,8 +22,6 @@ ConfigProvider 是 WD UI 提供的全局配置组件,用于向下传递配置信
 - **零侵入设计** - 不影响原有组件结构,通过 CSS 变量实现主题定制
 - **性能优化** - 使用计算属性缓存样式转换,避免重复计算
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:1-2119
-
 ## 工作原理
 
 ConfigProvider 通过以下机制实现全局配置:
@@ -90,9 +88,6 @@ provide(CONFIG_PROVIDER_KEY, { style: cssVarsStyle })
 ```
 
 子组件可通过 `inject(CONFIG_PROVIDER_KEY)` 获取最近一层 ConfigProvider 的主题样式，实现跨层级主题覆盖。
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:3-6,2046-2068
-参考: src/wd/components/composables/useConfigProvider.ts:1-108
 
 ## 基本用法
 
@@ -165,8 +160,6 @@ const toggleTheme = () => {
 - `theme="dark"`: 深色模式
 - 所有子组件会自动应用对应的主题样式
 - 切换主题时无需刷新页面,样式实时更新
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:24,2032,2041
 
 ### 自定义主题颜色
 
@@ -288,8 +281,6 @@ const switchPreset = (name: string) => {
 - 组件内部自动转换为 CSS 变量,如 `--wot-color-theme`
 - 修改 `theme-vars` 后,所有组件样式实时更新
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:2034,2060-2081
-
 ### 按钮组件主题定制
 
 自定义按钮组件的样式变量:
@@ -350,8 +341,6 @@ const buttonThemeVars = computed(() => ({
 - `buttonSmallRadius`/`buttonMediumRadius`/`buttonLargeRadius`: 按钮圆角
 - `buttonSmallFs`/`buttonMediumFs`/`buttonLargeFs`: 按钮字体大小
 - `buttonPrimaryBgColor`/`buttonSuccessBgColor`等: 按钮背景色
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:234-312
 
 ### 输入框组件主题定制
 
@@ -460,8 +449,6 @@ const inputThemeVars = computed(() => currentThemeConfig.value.vars)
 - `inputPlaceholderColor`: 占位符颜色
 - `inputBg`: 输入框背景色
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:599-656
-
 ### 标签和徽标组件
 
 自定义标签和徽标组件的样式:
@@ -526,8 +513,6 @@ const customThemeVars = ref({
 </script>
 
 ```
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:203-230,1199-1240
 
 ### 嵌套配置
 
@@ -612,8 +597,6 @@ const child2Theme = ref({
 - 子级配置会覆盖父级的同名变量
 - 未定义的变量会继承父级配置
 - CSS 变量的继承特性使得嵌套配置非常高效
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:3-6
 
 ## 高级用法
 
@@ -705,8 +688,6 @@ const buttonTheme = ref({
 </script>
 
 ```
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:234-312
 
 ### 深色模式主题变量
 
@@ -804,8 +785,6 @@ const toggleMode = () => {
 </script>
 
 ```
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:98-121
 
 ### 颜色系统定制
 
@@ -934,8 +913,6 @@ const colorSystemVars = computed(() => ({
 
 ```
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:29-146
-
 ## API
 
 ### Props
@@ -947,15 +924,11 @@ const colorSystemVars = computed(() => ({
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:2025-2043
-
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 需要应用主题配置的内容 |
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:4
 
 ### 类型定义
 
@@ -1136,8 +1109,6 @@ export type ConfigProviderThemeVars = BaseThemeVars &
   // ... 还有 50+ 个组件主题变量接口
 ```
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:23-2021
-
 ## 主题变量完整列表
 
 ### 按钮组件 (ButtonThemeVars)
@@ -1166,8 +1137,6 @@ export type ConfigProviderThemeVars = BaseThemeVars &
 | buttonErrorColor | 错误按钮颜色 | `#ffffff` |
 | buttonErrorBgColor | 错误按钮背景色 | `#f5222d` |
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:234-312
-
 ### 输入框组件 (InputThemeVars)
 
 | 变量名 | 说明 | 默认值 |
@@ -1185,8 +1154,6 @@ export type ConfigProviderThemeVars = BaseThemeVars &
 | inputClearColor | 输入框清除颜色 | `#999999` |
 | inputBg | 输入框背景 | `#ffffff` |
 | inputCellHeight | 输入框单元格高度 | `96rpx` |
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:599-656
 
 ### 标签组件 (TagThemeVars)
 
@@ -1208,8 +1175,6 @@ export type ConfigProviderThemeVars = BaseThemeVars &
 | tagRoundRadius | 标签圆形圆角 | `20rpx` |
 | tagCloseSize | 标签关闭大小 | `24rpx` |
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:1199-1240
-
 ### 徽标组件 (BadgeThemeVars)
 
 | 变量名 | 说明 | 默认值 |
@@ -1226,11 +1191,7 @@ export type ConfigProviderThemeVars = BaseThemeVars &
 | badgeInfo | 徽标信息颜色 | `#909399` |
 | badgeDotSize | 徽标圆点大小 | `16rpx` |
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:203-230
-
 **说明**: 由于主题变量数量庞大(2000+),这里只列出部分常用组件的变量。完整的变量列表请参考源码中的类型定义。
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:29-2021
 
 ## 最佳实践
 
@@ -1504,8 +1465,6 @@ const customTheme: ConfigProviderThemeVars = {
 - 拼写错误在编译时就能发现
 - 类型安全,减少运行时错误
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:1956-2035
-
 ## 常见问题
 
 ### 1. 主题变量不生效
@@ -1550,8 +1509,6 @@ const themeVars = {
 2. 确认变量名是否正确转换为 `--wot-{kebab-case}`
 3. 使用 TypeScript 类型定义,编译时会提示错误
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:2050-2053,2060-2072
-
 ### 2. 嵌套配置优先级问题
 
 **问题原因:**
@@ -1592,8 +1549,6 @@ const themeVars = {
 - 子级未定义的变量会继承父级配置
 - 配置只影响 ConfigProvider 内部的子组件
 - CSS 变量遵循 DOM 树的继承规则
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:3-6
 
 ### 3. 深色模式样式不完整
 
@@ -1654,8 +1609,6 @@ const darkVars = {
 - 自定义样式使用 CSS 变量而非硬编码
 - 测试所有组件在深色模式下的显示效果
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:98-121
-
 ### 4. 性能问题
 
 **问题原因:**
@@ -1704,8 +1657,6 @@ const themeVars = computed(() => ({
 - 避免在 theme-vars 中放置频繁变化的数据
 - 组件内部已使用 computed 缓存样式转换
 
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:2078-2081
-
 ### 5. CSS 变量名不匹配
 
 **问题原因:**
@@ -1738,8 +1689,6 @@ const themeVars = {
 1. 使用浏览器开发者工具查看元素的 computed styles
 2. 搜索 `--wot-` 前缀的 CSS 变量
 3. 确认变量名是否正确转换
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:2050-2072
 
 ## 注意事项
 
@@ -1774,5 +1723,3 @@ const themeVars = {
    - H5 端支持所有特性
    - 小程序端部分平台可能有 CSS 变量限制
    - 建议在目标平台测试主题效果
-
-参考: src/wd/components/wd-config-provider/wd-config-provider.vue:2050-2115

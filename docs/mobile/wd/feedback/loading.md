@@ -24,8 +24,6 @@ Loading 加载指示器是一个轻量级的加载动画组件,用于表示数�
 - **样式隔离友好** - 使用 shared 模式,支持全局样式覆盖和自定义主题
 - **轻量级实现** - 核心代码不到 200 行,打包体积小,性能开销低
 
-参考: src/wd/components/wd-loading/wd-loading.vue:1-193
-
 ## 基本用法
 
 ### 基础加载指示器
@@ -49,8 +47,6 @@ Loading 加载指示器是一个轻量级的加载动画组件,用于表示数�
 - **颜色**: #4D80F0(蓝色)
 - **尺寸**: 45rpx
 - **动画**: 2 秒/圈旋转
-
-参考: src/wd/components/wd-loading/wd-loading.vue:50-56
 
 ### 加载类型
 
@@ -89,8 +85,6 @@ Loading 组件提供两种加载指示器类型,通过 `type` 属性设置:
 - ring 类型使用双 linearGradient 渐变,从主色渐变到中间色,再从透明渐变到中间色
 - outline 类型使用单 linearGradient,从透明渐变到白色,叠加在实心圆环上
 - 顶部圆点(ring)使用 `<circle>` 元素,坐标 (100, 10),半径 10
-
-参考: src/wd/components/wd-loading/wd-loading.vue:72-91
 
 ### 自定义颜色
 
@@ -154,8 +148,6 @@ Loading 组件提供两种加载指示器类型,通过 `type` 属性设置:
 intermediateColor.value = gradient(props.color, '#ffffff', 2)[1]
 ```
 
-参考: src/wd/components/wd-loading/wd-loading.vue:144-148
-
 ### 自定义尺寸
 
 通过 `size` 属性设置加载指示器的尺寸,支持数字(默认 rpx)和字符串(带单位)两种格式。
@@ -215,8 +207,6 @@ iconSize.value = addUnit(newVal)
 // 数字 → 添加 rpx
 // 已带单位的字符串 → 直接使用
 ```
-
-参考: src/wd/components/wd-loading/wd-loading.vue:97-106
 
 ### 类型与颜色组合
 
@@ -281,8 +271,6 @@ iconSize.value = addUnit(newVal)
 - outline 类型简洁清晰,适合按钮或小区域加载提示
 - 颜色建议与业务状态对应:蓝色(信息)、绿色(成功)、橙色(警告)、红色(错误)
 
-参考: src/wd/components/wd-loading/wd-loading.vue:78-90
-
 ### 内联使用
 
 Loading 组件默认为 `display: inline-block`,可以直接内联在文本或其他元素中使用。
@@ -317,8 +305,6 @@ Loading 组件默认为 `display: inline-block`,可以直接内联在文本或�
 - 组件设置了 `vertical-align: middle`,与文本垂直居中对齐
 - `font-size: 0` 和 `line-height: 0` 消除内联元素的空白间隙
 - 通过调整 size 属性匹配文本大小,建议文本 28rpx 对应 loading 30rpx
-
-参考: src/wd/components/wd-loading/wd-loading.vue:157-163
 
 ### 在按钮中使用
 
@@ -390,8 +376,6 @@ const handleSuccessClick = () => {
 - Loading 颜色设置为白色,与按钮背景形成对比
 - 文本动态切换,提示当前操作状态
 
-参考: src/wd/components/wd-loading/wd-loading.vue:157-163
-
 ### 自定义样式
 
 通过 `customClass` 和 `customStyle` 属性自定义组件样式。
@@ -438,8 +422,6 @@ const handleSuccessClick = () => {
 - `customStyle`: 内联样式字符串,直接应用到根元素
 - 可以添加背景、边框、阴影等装饰效果
 - 注意保持 Loading 区域足够大,避免动画被裁剪
-
-参考: src/wd/components/wd-loading/wd-loading.vue:4-6
 
 ## 高级用法
 
@@ -489,8 +471,6 @@ const hideFullLoading = () => {
 - Loading 颜色设置为白色,与深色背景形成对比
 - `z-index: 9999` 确保遮罩层在最上层
 - 点击遮罩层可关闭(根据业务需求决定是否允许)
-
-参考: src/wd/components/wd-loading/wd-loading.vue:157-163
 
 ### 局部加载遮罩
 
@@ -560,8 +540,6 @@ const refreshData = () => {
 - 遮罩层背景半透明白色,保持与页面整体风格一致
 - 使用 `v-if` 切换数据列表和加载状态,避免内容叠加
 - 设置 `min-height` 保证遮罩层有足够的显示空间
-
-参考: src/wd/components/wd-loading/wd-loading.vue:157-163
 
 ### 列表加载更多
 
@@ -660,8 +638,6 @@ const loadMore = () => {
 - 防止重复触发:加载中或无更多数据时直接返回
 - 数据加载完成后显示"没有更多数据"提示
 
-参考: src/wd/components/wd-loading/wd-loading.vue:157-163
-
 ### 骨架屏占位
 
 在首次加载时使用 Loading 作为骨架屏占位,提升用户体验。
@@ -731,8 +707,6 @@ onMounted(() => {
 - 骨架屏结构与真实内容布局保持一致,减少加载完成后的跳变
 - 使用 `v-if` 切换骨架屏和真实内容
 - 在 `onMounted` 中加载数据,完成后隐藏骨架屏
-
-参考: src/wd/components/wd-loading/wd-loading.vue:157-163
 
 ### 动态切换类型
 
@@ -838,8 +812,6 @@ const sizeOptions = [
 - Loading 组件绑定响应式变量,实时更新显示效果
 - 预览区域显示当前配置信息,方便调试
 
-参考: src/wd/components/wd-loading/wd-loading.vue:97-138
-
 ### SVG 自定义与扩展
 
 理解组件的 SVG 生成机制,实现自定义加载动画(高级用法)。
@@ -923,8 +895,6 @@ const sizeOptions = [
    ```
    将 SVG 字符串编码为 base64 格式,通过 `background-image` 应用
 
-参考: src/wd/components/wd-loading/wd-loading.vue:58-123
-
 ### 响应式加载状态
 
 根据数据加载的不同阶段显示不同的 Loading 样式。
@@ -999,8 +969,6 @@ const setStage = (newStage: Stage) => {
 - 成功/失败状态使用静态图标替代 Loading 动画
 - 失败状态提供重试按钮,触发重新加载
 
-参考: src/wd/components/wd-loading/wd-loading.vue:97-138
-
 ## API
 
 ### Props
@@ -1012,8 +980,6 @@ const setStage = (newStage: Stage) => {
 | size | 加载指示器尺寸,数字默认 rpx,支持带单位字符串 | `string \| number` | `45` |
 | custom-style | 自定义根节点内联样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
-
-参考: src/wd/components/wd-loading/wd-loading.vue:35-47
 
 ### Events
 
@@ -1053,8 +1019,6 @@ export interface WdLoadingProps {
 }
 ```
 
-参考: src/wd/components/wd-loading/wd-loading.vue:27-47
-
 ## 主题定制
 
 ### CSS 变量
@@ -1064,8 +1028,6 @@ Loading 组件支持以下 CSS 变量进行主题定制:
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
 | `$-loading-size` | 加载指示器默认尺寸 | `90rpx` |
-
-参考: src/wd/components/wd-loading/wd-loading.vue:162-163
 
 ### 自定义主题
 
@@ -1101,8 +1063,6 @@ Loading 组件支持以下 CSS 变量进行主题定制:
 </script>
 
 ```
-
-参考: src/wd/components/wd-loading/wd-loading.vue:151-181
 
 ### 暗黑模式
 
@@ -1156,8 +1116,6 @@ const isDark = ref(false)
 - 按钮内、小区域加载:使用 outline 类型,简洁不喧宾夺主
 - 列表加载更多:使用 ring 类型,尺寸 40-50rpx
 
-参考: src/wd/components/wd-loading/wd-loading.vue:72-91
-
 ### 2. 合理设置尺寸
 
 根据容器大小和视觉层级设置合适的 Loading 尺寸:
@@ -1200,8 +1158,6 @@ const isDark = ref(false)
 - 卡片/区块级加载: 50-70rpx
 - 按钮/小区域加载: 28-40rpx
 - 内联文本加载: 与文本字号一致或略小
-
-参考: src/wd/components/wd-loading/wd-loading.vue:97-106
 
 ### 3. 颜色与品牌一致
 
@@ -1248,8 +1204,6 @@ Loading 颜色应与品牌主题或业务状态保持一致:
 - 状态色: 成功(绿)、警告(橙)、错误(红)
 - 对比色: 确保 Loading 与背景有足够对比度
 - 避免使用过于鲜艳或刺眼的颜色
-
-参考: src/wd/components/wd-loading/wd-loading.vue:144-148
 
 ### 4. 防止重复触发
 
@@ -1315,8 +1269,6 @@ const loadMore = () => {
 - 使用 `v-if` 而非 `v-show`,减少不必要的渲染
 - 加载完成后及时重置 loading 状态
 
-参考: src/wd/components/wd-loading/wd-loading.vue:1-193
-
 ### 5. 提供加载反馈
 
 加载时提供明确的文字提示,提升用户体验:
@@ -1374,8 +1326,6 @@ const loadingStage = computed(() => {
 - 复杂操作可显示当前阶段
 - 文字简洁明了,避免过长描述
 
-参考: src/wd/components/wd-loading/wd-loading.vue:157-163
-
 ## 常见问题
 
 ### 1. Loading 在某些平台不显示或不旋转
@@ -1416,8 +1366,6 @@ const loadingStage = computed(() => {
 - 在真机上测试,部分模拟器可能无法正确显示 SVG
 - 检查是否有全局 CSS 覆盖了 Loading 的样式
 
-参考: src/wd/components/wd-loading/wd-loading.vue:166-171
-
 ### 2. 多个 Loading 实例颜色错乱
 
 **问题原因:**
@@ -1450,8 +1398,6 @@ const svgDefineId2 = context.id++
   </view>
 </template>
 ```
-
-参考: src/wd/components/wd-loading/wd-loading.vue:58-61
 
 ### 3. Loading 尺寸设置无效
 
@@ -1490,8 +1436,6 @@ const svgDefineId2 = context.id++
 - 确认父容器没有设置 `width` 和 `height` 限制
 - 检查是否有全局样式覆盖了组件样式
 - 使用浏览器开发工具检查实际应用的样式
-
-参考: src/wd/components/wd-loading/wd-loading.vue:97-106
 
 ### 4. Loading 颜色变化不生效
 
@@ -1543,8 +1487,6 @@ const changeColor = () => {
 </script>
 ```
 
-参考: src/wd/components/wd-loading/wd-loading.vue:129-148
-
 ### 5. Loading 动画不流畅或卡顿
 
 **问题原因:**
@@ -1586,8 +1528,6 @@ const changeColor = () => {
 - 减少页面其他复杂动画和渲染
 - 在低端设备上使用较小的 Loading 尺寸
 - 组件已使用硬件加速(`transform`)优化动画性能
-
-参考: src/wd/components/wd-loading/wd-loading.vue:166-191
 
 ## 注意事项
 

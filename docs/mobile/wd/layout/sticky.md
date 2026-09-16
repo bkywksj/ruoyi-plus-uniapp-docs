@@ -20,8 +20,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 - **IntersectionObserver** - 使用交叉观察器 API 实现高性能的滚动监听
 - **状态暴露** - 暴露粘性状态和方法,便于外部组件进行控制和交互
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:1-263
-
 ## 基本用法
 
 ### 基础吸顶
@@ -55,8 +53,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 - Sticky 组件会自动监听页面滚动
 - 当内容滚动到顶部时,自动切换为 `position: fixed` 固定定位
 - 脱离吸顶状态时,自动恢复为 `position: absolute` 绝对定位
-
-参考: src/wd/components/wd-sticky/wd-sticky.vue:136-160
 
 ### 设置偏移距离
 
@@ -100,8 +96,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 - 多个 Sticky 组件可以设置不同的 `offset-top` 值,形成层叠吸顶效果
 - H5 端会自动加上导航栏高度(44px)进行计算
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:42-44, 120-131
-
 ### 设置层级
 
 通过 `z-index` 属性设置吸顶元素的层级,避免与其他悬浮元素冲突。
@@ -143,8 +137,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 - `z-index` 属性控制吸顶元素的层叠顺序
 - 多个吸顶元素重叠时,z-index 值较大的会显示在上层
 - 默认 z-index 为 1,可根据实际需求调整
-
-参考: src/wd/components/wd-sticky/wd-sticky.vue:41, 69, 200-210, 215-225
 
 ### 配合容器使用
 
@@ -194,9 +186,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 - 通过 IntersectionObserver 监听容器与视口的交叉状态
 - 当容器底部到达视口顶部时,将 Sticky 切换为绝对定位
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:86, 136-142
-参考: src/wd/components/wd-sticky-box/wd-sticky-box.vue:1-187
-
 ### 自定义样式
 
 通过 `custom-class` 和 `custom-style` 自定义吸顶元素的样式。
@@ -236,8 +225,6 @@ Sticky (吸顶布局) 是一个粘性定位组件,用于在页面滚动时将元
 - `custom-class` 添加自定义 CSS 类名
 - `custom-style` 添加内联样式
 - 可实现圆角、阴影、渐变等各种视觉效果
-
-参考: src/wd/components/wd-sticky/wd-sticky.vue:35-38, 200-210
 
 ### 筛选条吸顶
 
@@ -314,8 +301,6 @@ const handleFilterClick = (id: string) => {
 - 结合图标组件实现更丰富的视觉效果
 - 适用于电商、内容平台等需要筛选功能的场景
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:1-263
-
 ## 进阶用法
 
 ### 多个吸顶元素
@@ -391,8 +376,6 @@ const handleFilterClick = (id: string) => {
 - StickyBox 使用 Map 存储对每个子 Sticky 的观察器
 - 每个 Sticky 都会向 StickyBox 注册,并建立独立的监听
 - 通过 `uid` 标识不同的 Sticky 实例
-
-参考: src/wd/components/wd-sticky-box/wd-sticky-box.vue:50, 59-80, 111-140
 
 ### 暴露状态和方法
 
@@ -489,8 +472,6 @@ onMounted(() => {
 - `stickyState.boxLeaved`: 是否离开容器
 - `setPosition(boxLeaved, position, top)`: 手动设置位置
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:49-63, 77-84, 114-118, 239-243
-
 ### 导航栏吸顶
 
 实现商品详情页的导航栏吸顶效果,包含多个 Tab 切换。
@@ -579,8 +560,6 @@ const handleTabClick = (id: string) => {
 - 适用于商品详情、文章详情等页面的导航吸顶
 - Tab 栏吸顶后保持可见,方便切换内容
 - 结合条件渲染实现内容切换
-
-参考: src/wd/components/wd-sticky/wd-sticky.vue:1-263
 
 ### 列表分组吸顶
 
@@ -676,8 +655,6 @@ const handleContactClick = (contact: Contact) => {
 - 滚动时,当前分组标题吸顶显示
 - 适用于通讯录、城市列表等分组列表场景
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:1-263
-
 ### 响应式尺寸变化
 
 Sticky 组件集成了 Resize 组件,自动响应内容尺寸变化。
@@ -728,8 +705,6 @@ const toggleHeight = () => {
 - `handleResize` 方法在尺寸变化时触发
 - 更新 `stickyState` 的宽高值
 - 重新调用 `observerContentScroll` 更新监听器
-
-参考: src/wd/components/wd-sticky/wd-sticky.vue:6-8, 188-195
 
 ### 平台兼容处理
 
@@ -807,8 +782,6 @@ top = 44
 // #endif
 ```
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:124-130, 145-147, 177-180
-
 ## API
 
 ### Sticky Props
@@ -820,16 +793,12 @@ top = 44
 | `custom-class` | 自定义根节点样式类 | `string` | `''` |
 | `custom-style` | 自定义根节点内联样式 | `string` | `''` |
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:34-44, 66-71
-
 ### StickyBox Props
 
 | 参数 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
 | `custom-class` | 自定义根节点样式类 | `string` | `''` |
 | `custom-style` | 自定义根节点内联样式 | `string` | `''` |
-
-参考: src/wd/components/wd-sticky-box/wd-sticky-box.vue:34-40, 43-46
 
 ### Sticky Expose
 
@@ -844,8 +813,6 @@ top = 44
 | `stickyState.boxLeaved` | 是否离开容器 | `boolean` |
 | `offsetTop` | 偏移顶部距离,单位 px | `number` |
 | `setPosition` | 手动设置位置 | `(boxLeaved: boolean, position: string, top: number) => void` |
-
-参考: src/wd/components/wd-sticky/wd-sticky.vue:49-63, 77-84, 114-118, 239-243
 
 ### 类型定义
 
@@ -897,9 +864,6 @@ interface WdStickyBoxProps {
 type StickyInstance = ComponentPublicInstance<WdStickyProps, WdStickyExpose>
 ```
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:31-63, 245-246
-参考: src/wd/components/wd-sticky-box/wd-sticky-box.vue:32-40
-
 ## 主题定制
 
 ### CSS 变量
@@ -940,8 +904,6 @@ Sticky 组件支持通过 CSS 变量进行主题定制:
 }
 </style>
 ```
-
-参考: src/wd/components/wd-sticky/wd-sticky.vue:249-262
 
 ## 最佳实践
 
@@ -1183,8 +1145,6 @@ const toggleSticky = () => {
 </template>
 ```
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:102-106, 165-183
-
 ### 2. H5 端吸顶位置不准确
 
 **问题原因:**
@@ -1219,8 +1179,6 @@ top = 44
 // #endif
 return top + props.offsetTop
 ```
-
-参考: src/wd/components/wd-sticky/wd-sticky.vue:122-131
 
 ### 3. 在容器中吸顶元素一直是绝对定位
 
@@ -1258,8 +1216,6 @@ if (stickyBox && stickyBox.boxStyle && stickyState.height >= stickyBox.boxStyle.
 }
 ```
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:136-142
-
 ### 4. 多个吸顶元素层叠显示不正确
 
 **问题原因:**
@@ -1296,8 +1252,6 @@ if (stickyBox && stickyBox.boxStyle && stickyState.height >= stickyBox.boxStyle.
 - 第二个元素的 `offset-top` 应该 ≥ 第一个元素的高度
 - 先吸顶的元素 z-index 应该更高
 - 计算偏移时要考虑前面元素的累计高度
-
-参考: src/wd/components/wd-sticky/wd-sticky.vue:200-210, 215-225
 
 ### 5. 内容尺寸变化后吸顶位置错乱
 
@@ -1348,8 +1302,6 @@ setTimeout(() => {
 - 尺寸变化时会自动调用 `handleResize` 方法
 - 该方法会重新计算吸顶位置并更新监听器
 
-参考: src/wd/components/wd-sticky/wd-sticky.vue:6-8, 188-195
-
 ## 注意事项
 
 1. **滚动容器**: Sticky 需要在有滚动能力的容器中使用,确保页面或父容器设置了 `overflow-y: auto` 和固定高度。
@@ -1375,6 +1327,3 @@ setTimeout(() => {
 11. **监听器管理**: 组件内部会自动管理 IntersectionObserver 的创建和销毁,无需手动干预。
 
 12. **绝对定位**: 非吸顶状态下使用 `position: absolute`,需要确保父容器有相对定位(`position: relative`)。
-
-参考: src/wd/components/wd-sticky/wd-sticky.vue:1-263
-参考: src/wd/components/wd-sticky-box/wd-sticky-box.vue:1-187

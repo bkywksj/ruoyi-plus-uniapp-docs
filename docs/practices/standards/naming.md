@@ -45,8 +45,6 @@ plus.ruoyi.Business.base.service  // 不应混用大小写
 plus_ruoyi_business_base_service  // 不应使用下划线
 ```
 
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/service/IAdService.java:1`
-
 ---
 
 ### 类名命名
@@ -69,8 +67,6 @@ public class home_controller { }      // 不应使用下划线
 public class HomeCtrl { }             // 应完整拼写 Controller
 ```
 
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/api/app/HomeController.java:35`
-
 ---
 
 #### Service 接口
@@ -92,8 +88,6 @@ public interface Iad_service { }      // 不应使用下划线
 public interface IAdSvc { }           // 应完整拼写 Service
 ```
 
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/service/IAdService.java:16`
-
 ---
 
 #### Service 实现类
@@ -113,8 +107,6 @@ public class AdServiceImplementation { } // 过长,应使用 Impl
 public class AdService { }            // 缺少 Impl 后缀
 public class AdSvcImpl { }            // Service 不应缩写
 ```
-
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/service/impl/AdServiceImpl.java:30`
 
 ---
 
@@ -136,8 +128,6 @@ public interface ad_mapper { }        // 不应使用下划线
 public interface AdMap { }            // 应完整拼写 Mapper
 ```
 
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/mapper/AdMapper.java:16`
-
 ---
 
 #### DAO 接口
@@ -155,8 +145,6 @@ public interface AdDao { }            // 缺少 I 前缀
 public interface IAdDAO { }           // Dao 应为 Dao 不是 DAO
 public interface IAdMapper { }        // Dao 层应用 Dao 不是 Mapper
 ```
-
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/dao/IAdDao.java:13`
 
 ---
 
@@ -185,8 +173,6 @@ public class ad { }                   // 首字母应大写
 public class AD { }                   // 不应全大写
 ```
 
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/domain/Ad.java:19`
-
 ---
 
 #### 业务对象 (Bo)
@@ -208,8 +194,6 @@ public class Ad_Bo { }                // 不应使用下划线
 public class AdBo_ { }                // 不应有尾部下划线
 ```
 
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/domain/bo/AdBo.java:27`
-
 ---
 
 #### 视图对象 (Vo)
@@ -229,8 +213,6 @@ public class AdViewObject { }         // 过长,应使用 Vo
 public class AdView { }               // 应使用 Vo 后缀
 ```
 
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/domain/vo/AdVo.java`
-
 ---
 
 #### DTO 对象
@@ -248,8 +230,6 @@ public class PlatformDto { }          // 应为 DTO 不是 Dto
 public class PlatformDTo { }          // 应为 DTO 不是 DTo
 public class PlatformDataTransferObject { } // 过长,应使用 DTO
 ```
-
-参考: `ruoyi-common/ruoyi-common-core/src/main/java/plus/ruoyi/common/core/domain/dto/PlatformDTO.java:18`
 
 ---
 
@@ -272,8 +252,6 @@ public class fileUtils { }            // 首字母应大写
 public class DateHelper { }           // 应使用 Utils 不是 Helper
 ```
 
-参考: `ruoyi-common/ruoyi-common-core/src/main/java/plus/ruoyi/common/core/utils/DateUtils.java`
-
 ---
 
 #### 常量类
@@ -292,8 +270,6 @@ public interface Constant { }         // 应为 Constants 不是 Constant
 public interface CONSTANTS { }        // 不应全大写
 public interface ConstDef { }         // 应使用完整 Constants
 ```
-
-参考: `ruoyi-common/ruoyi-common-core/src/main/java/plus/ruoyi/common/core/constant/Constants.java:8`
 
 ---
 
@@ -336,8 +312,6 @@ public R<Void> remove_user(Long id) { }      // 不应使用下划线
 - `export` - 导出
 - `import` - 导入
 
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/api/app/HomeController.java:50-80`
-
 ---
 
 #### Service 方法
@@ -369,8 +343,6 @@ void remove(Long id);                 // 应使用 delete 不是 remove
 void del(Long id);                    // 不应缩写
 ```
 
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/base/service/IAdService.java:18-73`
-
 ---
 
 ### 变量命名
@@ -400,8 +372,6 @@ private final IGoodsService m_goodsService;     // 不应使用匈牙利命名�
 private final RedisUtils REDIS_UTILS;           // 不应全大写
 ```
 
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/api/app/HomeController.java:37-42`
-
 ---
 
 #### 局部变量
@@ -424,8 +394,6 @@ List<Ad> list = adDao.list(wrapper);            // 使用保留关键字
 String name = user.getUserName();               // 语义不够明确
 boolean b = validateInput(input);               // 变量名过于简单
 ```
-
-参考: `ruoyi-modules/ruoyi-business/src/main/java/plus/ruoyi/business/api/app/HomeController.java:52`
 
 ---
 
@@ -461,8 +429,6 @@ String encryptHeader = "ENC_";        // 应全大写加下划线
 int maxSize = 100;                    // 应全大写加下划线
 ```
 
-参考: `ruoyi-common/ruoyi-common-core/src/main/java/plus/ruoyi/common/core/constant/Constants.java:13-70`
-
 ---
 
 ## 前端 Vue/TypeScript 命名规范
@@ -489,8 +455,6 @@ aAiAssistant.vue                      // 首字母应大写
 AiAssistant.Vue                       // 扩展名应小写
 a-ai-assistant.vue                    // 不应使用连字符
 ```
-
-参考: `plus-ui/src/components/AAi/AAiAssistant.vue`
 
 ---
 
@@ -519,8 +483,6 @@ ad.api.ts                             // 不应使用多个点
 - `*Types.ts` - 类型定义文件
 - `*.generated.ts` - 自动生成的文件
 
-参考: `plus-ui/src/api/business/base/ad/adApi.ts`
-
 ---
 
 #### 工具函数文件
@@ -542,8 +504,6 @@ cache-util.ts                         // 不需要 util 后缀
 cacheUtils.ts                         // 不需要 Utils 后缀
 ```
 
-参考: `plus-ui/src/utils/cache.ts`
-
 ---
 
 #### Composables 文件
@@ -564,8 +524,6 @@ aiChat.ts                             // 缺少 use 前缀
 Use_Dict.ts                           // 不应使用下划线
 usedict.ts                            // Dict 首字母应大写
 ```
-
-参考: `plus-ui/src/composables/useAiChat.ts`
 
 ---
 
@@ -590,8 +548,6 @@ const USERINFO = ref(null)            // 不应全大写
 const user_info = ref(null)           // 不应使用下划线
 ```
 
-参考: `plus-ui/src/stores/modules/dict.ts:35`
-
 ---
 
 #### 常量
@@ -612,8 +568,6 @@ const DefaultColor = '#1890ff'        // 应全大写
 const apiBaseUrl = '/api'             // 应全大写
 const dict_module = 'dict'            // 应全大写
 ```
-
-参考: `plus-ui/src/stores/modules/dict.ts:17`
 
 ---
 
@@ -649,8 +603,6 @@ const iconClass = () => { }           // 应添加动词前缀 get
 - `calculate` - 计算
 - `format` - 格式化
 
-参考: `plus-ui/src/stores/modules/dict.ts:43-98`
-
 ---
 
 #### Composables 函数
@@ -669,8 +621,6 @@ export const dict = (...args: string[]) => { }        // 缺少 use 前缀
 export const Dict = (...args: string[]) => { }        // 缺少 use 前缀
 export const Use_Dict = (...args: string[]) => { }    // 不应使用下划线
 ```
-
-参考: `plus-ui/src/composables/useDict.ts:80`
 
 ---
 
@@ -696,8 +646,6 @@ interface Ad_Query { }               // 不应使用下划线
 interface ad_query { }               // 应使用大驼峰
 ```
 
-参考: `plus-ui/src/api/business/base/ad/adTypes.ts`
-
 ---
 
 #### 类型别名 (Type)
@@ -716,8 +664,6 @@ export type buttonType = 'primary' | 'success'        // 首字母应大写
 export type Button_Type = 'primary' | 'success'       // 不应使用下划线
 export type BUTTON_TYPE = 'primary' | 'success'       // 不应全大写
 ```
-
-参考: `plus-ui/src/composables/useDict.ts:6-37`
 
 ---
 
@@ -741,8 +687,6 @@ export enum DictTypes {
   sys_Audit_Status = 'sys_audit_status',   // 不应混用命名风格
 }
 ```
-
-参考: `plus-ui/src/composables/useDict.ts:6-37`
 
 ---
 
@@ -778,8 +722,6 @@ export const queryAds = (query?: AdQuery) => { }         // 应使用 page/list/
 - `export` - 导出
 - `import` - 导入
 
-参考: `plus-ui/src/api/business/base/ad/adApi.ts:8-46`
-
 ---
 
 ### Store 命名
@@ -797,8 +739,6 @@ export const dictStore = defineStore('dict', () => { })     // 缺少 use 前缀
 export const useDictStorage = defineStore('dict', () => { }) // 应为 Store 不是 Storage
 export const useDict = defineStore('dict', () => { })        // 缺少 Store 后缀
 ```
-
-参考: `plus-ui/src/stores/modules/dict.ts:19`
 
 ---
 
@@ -825,8 +765,6 @@ phone_login.vue                       // 不应使用下划线
 PhoneLogin.vue                        // 首字母不应大写
 ```
 
-参考: `plus-uniapp/src/pages/auth/login.vue`
-
 ---
 
 #### 组件文件
@@ -848,8 +786,6 @@ button.vue                            // WD组件应有 wd- 前缀
 Wd-Button.vue                         // 前缀和名称都不应大写
 ```
 
-参考: `plus-uniapp/src/wd/components/wd-button/wd-button.vue`
-
 ---
 
 #### API 文件
@@ -869,8 +805,6 @@ HomeApi.ts                            // 首字母不应大写
 home-api.ts                           // 不应使用连字符
 home_api.ts                           // 不应使用下划线
 ```
-
-参考: `plus-uniapp/src/api/app/home/homeApi.ts`
 
 ---
 
@@ -907,8 +841,6 @@ defineOptions({
 })
 ```
 
-参考: CLAUDE.md 文档:316-323行
-
 ---
 
 ### 接口命名
@@ -937,8 +869,6 @@ interface WdButtonProperties { }      // 应为 Props 不是 Properties
 interface IWdButtonProps { }          // 不需要 I 前缀
 ```
 
-参考: CLAUDE.md 文档:325-333行
-
 ---
 
 #### Emits 接口
@@ -966,8 +896,6 @@ interface WdButtonEvents { }          // 应为 Emits 不是 Events
 interface IWdButtonEmits { }          // 不需要 I 前缀
 ```
 
-参考: CLAUDE.md 文档:335-342行
-
 ---
 
 ### 变量和函数命名
@@ -993,8 +921,6 @@ const IsLoading = ref(false)          // 首字母不应大写
 const login_form = ref({})            // 不应使用下划线
 const HandleLogin = async () => { }   // 首字母不应大写
 ```
-
-参考: `plus-uniapp/src/pages/auth/login.vue:161-417`
 
 ---
 
@@ -1034,8 +960,6 @@ b-ad                                  -- 应使用下划线
 - `sys_` - System,系统表
 - `gen_` - Generator,代码生成表
 - `qrtz_` - Quartz,定时任务表
-
-参考: `script/sql/ry_plus_app.sql:7-207`
 
 ---
 
@@ -1078,8 +1002,6 @@ AD_NAME                               -- 不应全大写
 - 排序字段使用 `sort_order`
 - 状态字段使用 `status`
 
-参考: `script/sql/ry_plus_app.sql:9-31`
-
 ---
 
 ### 索引命名
@@ -1118,8 +1040,6 @@ key idx-order-no (order_no)           // 应使用下划线
 - `uk_` - Unique Key,唯一索引
 - `idx_` - Index,普通索引
 - `fk_` - Foreign Key,外键(项目中未使用外键)
-
-参考: `script/sql/ry_plus_app.sql:133-166`
 
 ---
 
@@ -1161,8 +1081,6 @@ decimal                               -- 应指定精度
 - 金额使用 `decimal(10, 2)`
 - 时间使用 `datetime`
 
-参考: `script/sql/ry_plus_app.sql:9-200`
-
 ---
 
 ### 注释规范
@@ -1196,8 +1114,6 @@ create table b_ad
 - 表必须有 `comment`
 - 注释使用中文
 - 注释简洁明了
-
-参考: `script/sql/ry_plus_app.sql:7-31`
 
 ---
 

@@ -117,8 +117,6 @@ RuoYi-Plus-UniApp采用**前后端分离**的全栈架构,支持**多端统一**
 | **SpringDoc** | 2.8.13 | API文档 | - OpenAPI 3.0<br>- Swagger UI<br>- 自动生成 |
 | **MinIO/AWS S3** | - | 对象存储 | - S3兼容<br>- 可私有化<br>- 高可用 |
 
-参考: ruoyi-plus-uniapp/pom.xml:15-72
-
 ### 前端技术栈 (PC管理端)
 
 | 技术 | 版本 | 说明 | 选型理由 |
@@ -132,8 +130,6 @@ RuoYi-Plus-UniApp采用**前后端分离**的全栈架构,支持**多端统一**
 | **UnoCSS** | 66.5.2 | 原子化CSS | - 按需生成<br>- 体积小<br>- 自定义灵活 |
 | **Axios** | 1.8.4 | HTTP客户端 | - 拦截器<br>- 请求取消<br>- 主流选择 |
 
-参考: plus-ui/package.json:22-51
-
 ### 移动端技术栈
 
 | 技术 | 版本 | 说明 | 选型理由 |
@@ -145,8 +141,6 @@ RuoYi-Plus-UniApp采用**前后端分离**的全栈架构,支持**多端统一**
 | **TypeScript** | 5.7.2 | 类型系统 | - 类型检查<br>- 智能提示<br>- 重构方便 |
 | **UnoCSS** | 65.4.2 | 原子化CSS | - 性能优秀<br>- 体积小<br>- 自定义 |
 | **WD UI** | 自维护 | UI组件库 | - UniApp适配<br>- 功能完善<br>- 自定义扩展 |
-
-参考: plus-uniapp/package.json:63-83
 
 ### 中间件选型
 
@@ -708,8 +702,6 @@ ruoyi-plus-uniapp/
     └── ruoyi-snailjob-server/  # 任务调度服务器
 ```
 
-参考: ruoyi-plus-uniapp/pom.xml:403-408
-
 ### 核心模块说明
 
 #### 1. ruoyi-admin (启动模块)
@@ -839,8 +831,6 @@ plus-ui/                        # PC管理端
 └── package.json                # 依赖配置
 ```
 
-参考: plus-ui/package.json
-
 ### 移动端模块结构
 
 ```text
@@ -885,8 +875,6 @@ plus-uniapp/                    # UniApp移动端
 ├── tsconfig.json               # TypeScript配置
 └── package.json                # 依赖配置
 ```
-
-参考: plus-uniapp/package.json
 
 ---
 
@@ -1889,7 +1877,6 @@ public class R<T> {
     private T data;
 }
 ```
-
 
 ---
 

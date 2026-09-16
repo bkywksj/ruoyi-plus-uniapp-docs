@@ -19,8 +19,6 @@ Avatar 头像组件用于展示用户、实体或系统角色的可视化标识�
 - **自适应样式** - 自定义数字尺寸时，内部字体大小与图标大小会按比例（0.375× 与 0.5×）自动计算
 - **CSS 变量主题** - 支持通过 `wd-config-provider` 或全局 CSS 变量覆盖背景色、文字色、圆角半径
 
-参考: src/wd/components/wd-avatar/wd-avatar.vue:1-245
-
 ## 基本用法
 
 ### 图片头像
@@ -52,8 +50,6 @@ Avatar 头像组件用于展示用户、实体或系统角色的可视化标识�
 - `mode` 透传到原生 `image` 的 `mode`，默认为 `scaleToFill`，推荐头像场景使用 `aspectFill`
 - 加载失败时会触发 `error` 事件并切换到后续展示模式
 
-参考: src/wd/components/wd-avatar/wd-avatar.vue:4, 62-64, 234-239
-
 ### 文字头像
 
 当用户没有头像时，展示姓名前两个字符作为占位。
@@ -75,8 +71,6 @@ Avatar 头像组件用于展示用户、实体或系统角色的可视化标识�
 - 英文缩写推荐传入 2 位大写字母（如 `'AB'`）
 - 如果同时设置了 `src` 和 `text`，优先使用图片，图片加载失败后自动回退到文字
 
-参考: src/wd/components/wd-avatar/wd-avatar.vue:6, 222-231
-
 ### 图标头像
 
 对于匿名用户、系统账号或角色标识，使用图标更合适。
@@ -96,8 +90,6 @@ Avatar 头像组件用于展示用户、实体或系统角色的可视化标识�
 
 - `icon` 使用 WD UI 的图标名，需与内置图标体系保持一致
 - 图标大小会根据头像尺寸自动匹配（预设尺寸走映射表，数字尺寸按 `size × 0.5` 计算）
-
-参考: src/wd/components/wd-avatar/wd-avatar.vue:5, 117-125, 209-220
 
 ### 三种模式的优先级与降级
 
@@ -128,8 +120,6 @@ Avatar 头像组件用于展示用户、实体或系统角色的可视化标识�
 </template>
 ```
 
-参考: src/wd/components/wd-avatar/wd-avatar.vue:2-9, 90-93
-
 ## 尺寸
 
 ### 预设尺寸
@@ -154,8 +144,6 @@ Avatar 头像组件用于展示用户、实体或系统角色的可视化标识�
 | `normal`（默认） | 64rpx | 24rpx | 28rpx |
 | `small` | 48rpx | 20rpx | 22rpx |
 
-参考: src/wd/components/wd-avatar/wd-avatar.vue:99-125
-
 ### 自定义数字尺寸
 
 传入纯数字时表示像素大小（单位 rpx），字体和图标尺寸会按比例自动计算。
@@ -175,8 +163,6 @@ Avatar 头像组件用于展示用户、实体或系统角色的可视化标识�
 - 自定义数字尺寸时，字体大小 = `Math.round(size × 0.375)`
 - 图标大小 = `Math.round(size × 0.5)`
 - 推荐使用偶数，避免缩放模糊
-
-参考: src/wd/components/wd-avatar/wd-avatar.vue:161-220
 
 ## 形状
 
@@ -207,8 +193,6 @@ Avatar 头像组件用于展示用户、实体或系统角色的可视化标识�
 
 - `round` 使用 `border-radius: 50%`
 - `square` 使用 `border-radius: 8rpx`，可通过 CSS 变量 `--wot-avatar-square-radius` 覆盖
-
-参考: src/wd/components/wd-avatar/wd-avatar.vue:3, 52-53, 289-298
 
 ## 颜色定制
 
@@ -273,8 +257,6 @@ const users = [
 </script>
 ```
 
-参考: src/wd/components/wd-avatar/wd-avatar.vue:54-57, 173-176, 192-195
-
 ## 图片加载失败处理
 
 当 `src` 加载失败时，组件会触发 `error` 事件并自动切换到图标或文字占位，无需业务额外处理。
@@ -312,8 +294,6 @@ function handleAvatarError(event: Event) {
 - 组件内部维护 `hasError` 状态，不会反复尝试加载
 - 若需要"重试"能力，可以在 `error` 之后动态修改 `src` 为其他候选地址
 
-参考: src/wd/components/wd-avatar/wd-avatar.vue:4, 69-72, 90-92, 234-239
-
 ## 头像组
 
 ### 基础用法
@@ -337,8 +317,6 @@ function handleAvatarError(event: Event) {
 - 不限制子头像数量，默认全部展示
 - 推荐子头像尺寸统一，若不统一请显式设置每个头像的 `size`
 
-参考: src/wd/components/wd-avatar-group/wd-avatar-group.vue:2-12, 122-147
-
 ### 最大数量与溢出计数
 
 设置 `max-count` 控制最多展示几个头像，超出部分折叠为 `+N`。
@@ -361,8 +339,6 @@ function handleAvatarError(event: Event) {
 - `max-count` 默认为 `0`，表示不限制
 - 当子头像数量 > `maxCount` 时，末尾自动追加一个 `+N` 计数头像
 - 计数头像会复用 `wd-avatar` 的预设尺寸样式，保证视觉一致
-
-参考: src/wd/components/wd-avatar-group/wd-avatar-group.vue:5-10, 36-43, 80-106
 
 ### 重叠方向
 
@@ -394,8 +370,6 @@ function handleAvatarError(event: Event) {
 - `left-up`：内部使用 `flex-direction: row-reverse`，左侧头像堆在最上层
 - 通常"消息未读的发言者"推荐 `right-up`，"最近联系人"推荐 `left-up`
 
-参考: src/wd/components/wd-avatar-group/wd-avatar-group.vue:2-12, 28-31, 122-147
-
 ### 统一尺寸与形状
 
 在 `wd-avatar-group` 上设置 `size` 和 `shape`，所有子头像会自动继承。
@@ -415,9 +389,6 @@ function handleAvatarError(event: Event) {
 - 子头像的 `size` 和 `shape` 会在未显式设置时从父组件继承
 - 子头像若显式传了自己的 `size` / `shape`，以自身为准
 - 推荐一个头像组内只使用统一尺寸，避免视觉错乱
-
-参考: src/wd/components/wd-avatar/wd-avatar.vue:127-147
-参考: src/wd/components/wd-avatar-group/wd-avatar-group.vue:46-49, 62-68
 
 ## 典型场景
 
@@ -529,23 +500,17 @@ function handleAvatarError(event: Event) {
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: src/wd/components/wd-avatar/wd-avatar.vue:40-64, 74-87
-
 ### WdAvatar Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|---------|
 | error | 图片加载失败时触发（组件内部会同步切换到降级展示） | `event: Event` |
 
-参考: src/wd/components/wd-avatar/wd-avatar.vue:66-72, 234-239
-
 ### WdAvatar Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 在头像内部追加内容（位于 `image / icon / text` 之后），常用于叠加角标或装饰元素 |
-
-参考: src/wd/components/wd-avatar/wd-avatar.vue:7
 
 ### WdAvatarGroup Props
 
@@ -558,15 +523,11 @@ function handleAvatarError(event: Event) {
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: src/wd/components/wd-avatar-group/wd-avatar-group.vue:36-60
-
 ### WdAvatarGroup Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 头像组子项，推荐放置 `wd-avatar` |
-
-参考: src/wd/components/wd-avatar-group/wd-avatar-group.vue:4
 
 ### 类型定义
 
@@ -611,8 +572,6 @@ export interface WdAvatarGroupProps {
   customStyle?: string
 }
 ```
-
-参考: src/wd/components/wd-avatar/wd-avatar.vue:27-35, 40-64, 240-244
 
 ## 主题定制
 
@@ -664,9 +623,6 @@ const themeVars = {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-avatar/wd-avatar.vue:247-321
-参考: src/wd/components/wd-avatar-group/wd-avatar-group.vue:114-156
 
 ## 最佳实践
 
@@ -781,8 +737,6 @@ function avatarColor(seed: string) {
 </wd-avatar-group>
 ```
 
-参考: src/wd/components/wd-avatar-group/wd-avatar-group.vue:80-106
-
 ### 3. 数字尺寸下字体/图标不协调
 
 **问题原因:**
@@ -828,8 +782,6 @@ function avatarColor(seed: string) {
   <wd-avatar text="B" />
 </wd-avatar-group>
 ```
-
-参考: src/wd/components/wd-avatar/wd-avatar.vue:127-147
 
 ### 5. 图片一直加载不出来，但没有触发 `error`
 

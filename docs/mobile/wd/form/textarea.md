@@ -20,8 +20,6 @@ Textarea 文本域是一个功能强大的多行文本输入组件,用于收集�
 - **只读禁用** - 支持只读和禁用状态,只读模式通过遮罩层实现,保持良好的视觉一致性
 - **暗黑模式** - 内置暗黑模式支持,自动适配系统主题,提供一致的用户体验
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:1-925
-
 ## 基本用法
 
 ### 基础文本域
@@ -51,8 +49,6 @@ const value = ref('')
 - 使用 `v-model` 绑定输入值,支持双向数据绑定
 - `placeholder` 设置占位提示文本
 - 默认行数为自适应,根据内容自动调整高度
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:151-152
 
 ### 固定行数
 
@@ -90,8 +86,6 @@ const value2 = ref('')
 - 固定行数模式下,内容超出时显示垂直滚动条
 - 通过 `resize: none` 禁用用户调整大小
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:169-507
-
 ### 自动高度
 
 启用 `auto-height` 属性后,文本域高度会根据内容自动调整。
@@ -119,8 +113,6 @@ const value = ref('')
 - 设置 `auto-height` 为 `true` 启用自动高度
 - 文本域高度会随着输入内容的增加而自动增长
 - 适用于内容长度不确定的场景
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:167-168
 
 ### 限制最大行数
 
@@ -152,8 +144,6 @@ const value = ref('')
 - 内容超出最大高度时显示滚动条
 - 必须配合 `auto-height` 使用,且不能同时设置 `rows`
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:171-523
-
 ### 字数统计
 
 通过 `show-word-limit` 和 `maxlength` 属性显示字数统计。
@@ -183,8 +173,6 @@ const value = ref('')
 - `show-word-limit` 显示字数统计,格式为 "当前字数/最大字数"
 - 使用 `Array.from` 处理多码元字符(如 emoji),确保字数统计准确
 - 超出最大字数时,当前字数显示为红色
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:161-162, 205-206, 465-471
 
 ### 带标签的文本域
 
@@ -224,8 +212,6 @@ const value2 = ref('')
 - `label` 设置左侧标签文字
 - `label-width` 自定义标签宽度,支持 rpx/px 单位
 - 标签宽度优先级:组件 `labelWidth` > Form `labelWidth` > 默认值
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:207-210, 334-347
 
 ### 清空按钮
 
@@ -273,8 +259,6 @@ const value2 = ref('这是一段文本内容')
   - `always`: 有内容时始终显示
   - `focus`: 聚焦且有内容时显示
 - `focus-when-clear` 控制清空后是否自动聚焦(默认 `true`)
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:199-200, 223-226, 398-407, 537-551
 
 ## 高级用法
 
@@ -330,8 +314,6 @@ const handleIconClick = () => {
 - `prefix` 插槽可自定义前置内容
 - `clickprefixicon` 事件监听图标点击
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:203-204, 12-19, 613-615
-
 ### 只读和禁用
 
 只读和禁用状态有不同的视觉和交互效果。
@@ -376,8 +358,6 @@ const disabledValue = ref('这是禁用内容,完全不可交互')
 - `readonly` 通过遮罩层实现只读,用户无法编辑但可以查看
 - `disabled` 完全禁用文本域,样式变灰且无法交互
 - 只读和禁用状态下都不显示清空按钮
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:159-160, 201-202, 70, 838-850
 
 ### 表单验证集成
 
@@ -464,8 +444,6 @@ const handleReset = () => {
 - `required` 显示必填标识(红色星号)
 - 验证失败时自动显示错误提示信息
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:219-222, 328-329, 420-426, 431-446
-
 ### 自定义样式
 
 通过自定义类名和样式属性调整文本域外观。
@@ -524,8 +502,6 @@ const value3 = ref('')
 - `custom-textarea-container-class` 设置文本域容器类名
 - `custom-label-class` 设置标签类名
 - `size` 设置组件尺寸,支持 `large`
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:139-148, 211-212, 899-922
 
 ### 键盘控制
 
@@ -627,8 +603,6 @@ const selectText = () => {
 - `cursor-spacing` 设置光标与键盘的距离
 - `adjust-position` 键盘弹起时是否自动上推页面
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:176-189, 592-608
-
 ### 占位符样式
 
 自定义占位符的样式和类名。
@@ -666,8 +640,6 @@ const value2 = ref('')
 - `placeholder-style` 设置占位符内联样式
 - `placeholder-class` 设置占位符 CSS 类名
 - 微信小程序端会自动修复占位符对齐问题
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:154-158, 353-364, 475-478
 
 ## API
 
@@ -720,8 +692,6 @@ const value2 = ref('')
 | custom-textarea-class | textarea元素自定义类名 | `string` | `''` |
 | custom-label-class | 标签自定义类名 | `string` | `''` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:138-231, 268-307
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -736,16 +706,12 @@ const value2 = ref('')
 | keyboardheightchange | 键盘高度变化时触发 | `detail: any` |
 | clickprefixicon | 点击前置图标时触发 | - |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:236-257, 537-615
-
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | prefix | 自定义前置图标内容 |
 | label | 自定义标签内容 |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:262-265
 
 ### 类型定义
 
@@ -891,8 +857,6 @@ interface WdTextareaEmits {
 }
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:111-257
-
 ## 主题定制
 
 ### CSS 变量
@@ -950,8 +914,6 @@ const value = ref('')
 </script>
 
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:625-924
 
 ## 最佳实践
 
@@ -1185,8 +1147,6 @@ const heavyComputation = () => {
 - 长列表中按需渲染文本域组件
 - 合理使用防抖处理频繁输入
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:583-587
-
 ## 常见问题
 
 ### 1. 为什么字数统计不显示?
@@ -1223,8 +1183,6 @@ const value1 = ref('')
 const value2 = ref('')
 </script>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:412-415
 
 ### 2. 如何实现自动高度但限制最大高度?
 
@@ -1269,8 +1227,6 @@ const value2 = ref('')
 - 同时设置 `rows` 会导致 `maxRows` 失效
 - 每行高度约为 48rpx
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:513-524
-
 ### 3. 小程序端占位符对齐问题
 
 **问题原因:**
@@ -1308,8 +1264,6 @@ const computedPlaceholderStyle = computed(() => {
   />
 </template>
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:353-364
 
 ### 4. 清空按钮点击后文本域没有聚焦
 
@@ -1353,8 +1307,6 @@ const handleClear = async () => {
 }
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:537-551
-
 ### 5. 表单验证错误信息不显示
 
 **问题原因:**
@@ -1396,8 +1348,6 @@ const rules: Record<string, FormItemRule[]> = {
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:420-426
-
 ## 注意事项
 
 1. **高度模式互斥**: `rows`、`auto-height`、`maxRows` 三个属性有优先级关系,`rows` 优先级最高,设置后会忽略 `maxRows`
@@ -1423,5 +1373,3 @@ const rules: Record<string, FormItemRule[]> = {
 11. **性能优化**: 避免在 `input` 事件中执行耗时操作,建议在 `blur` 或 `confirm` 事件中处理
 
 12. **键盘控制**: `confirm-type` 设置键盘确认按钮样式,`adjust-position` 控制键盘弹起行为
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-textarea/wd-textarea.vue:1-925

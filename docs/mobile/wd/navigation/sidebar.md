@@ -20,8 +20,6 @@ Sidebar 侧边栏是一个垂直展示的导航组件，用于在不同的内容
 - **自定义插槽** - 支持自定义侧边栏项内容和图标，可实现复杂的自定义布局
 - **暗色主题** - 内置暗色模式支持，自动适配深色界面风格
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:1-63
-
 ---
 
 ## 基本用法
@@ -57,8 +55,6 @@ const activeKey = ref('1')
 - `value` 值必须唯一，用于标识侧边栏项
 - 默认激活 value 与 v-model 绑定值匹配的项
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:41-43, 124-125, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:50-53
-
 ### Items 数组模式
 
 通过 `items` 数组配置侧边栏项，适合动态数据场景。
@@ -92,8 +88,6 @@ const items: SidebarItem[] = [
 - 每个 item 必须包含 `label` 和 `value` 属性
 - `value` 必须唯一
 - 适合从后端获取数据或动态生成侧边栏项的场景
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:5-39, 68-96, 122-123
 
 ### 带图标
 
@@ -137,8 +131,6 @@ const items: SidebarItem[] = [
 - Items 模式在 item 对象中设置 `icon` 属性
 - 图标名称来自项目配置的图标库
 - 图标显示在文字左侧
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:31-33, 78, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:9-11, 59
 
 ### 带徽标
 
@@ -193,8 +185,6 @@ const items: SidebarItem[] = [
 - 徽标显示在文字右上角
 - 支持所有 Badge 组件的属性，通过 `badgeProps` 透传
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:34-36, 74-83, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:12-14, 54-56, 60-63, 94-107
-
 ### 禁用项
 
 禁用特定的侧边栏项，禁用项不可点击。
@@ -240,8 +230,6 @@ const items: SidebarItem[] = [
 - 禁用项样式置灰且不可点击
 - 点击禁用项不会触发任何事件
 - 禁用项不能被选中
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:213, 249, 84, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:65, 81, 153-154
 
 ### 事件监听
 
@@ -308,8 +296,6 @@ const handleItemClickSub = () => {
 - `item-click` 事件：点击侧边栏项时触发（Items 模式），参数包含 `item` 和 `index`
 - `itemclick` 事件：子组件上的点击事件（子组件模式）
 - 事件触发顺序：`item-click`/`itemclick` → `change` → `update:modelValue`
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:133-140, 189-192, 248-256, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:71-74, 153-161
 
 ---
 
@@ -443,8 +429,6 @@ const handleBeforeChange = async (option: SidebarBeforeChangeOption) => {
 - 可以在 beforeChange 中执行异步操作（如网络请求、权限验证等）
 - 常用于需要用户确认、权限验证、数据保存提示等场景
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:101-112, 127, 169-182
-
 ### 自定义内容插槽
 
 使用插槽自定义侧边栏项的内容。
@@ -520,8 +504,6 @@ const items: SidebarItem[] = [
 - 默认插槽名为 `item-${index}`，可通过 `slotName` 自定义
 - 插槽接收 `item`、`index`、`active` 参数
 - 自定义图标插槽可通过 `useIconSlot` 和 `iconSlotName` 实现
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:13-38, 85-92, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:8-11
 
 ### 配合内容区域使用
 
@@ -701,8 +683,6 @@ const toggleBadge = () => {
 - 删除当前选中项后应切换到其他项
 - 动态修改 label、badge 等属性会立即生效
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:160-162
-
 ---
 
 ## API
@@ -716,8 +696,6 @@ const toggleBadge = () => {
 | items | 侧边栏项数据数组（Items 模式） | `SidebarItem[]` | `[]` |
 | modelValue / v-model | 当前导航项的值 | `number \| string` | `0` |
 | beforeChange | 在改变前执行的钩子函数 | `SidebarBeforeChange` | - |
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:116-128, 143-148
 
 ### SidebarItem Props
 
@@ -733,8 +711,6 @@ const toggleBadge = () => {
 | isDot | 是否点状徽标 | `boolean` | `false` |
 | max | 徽标最大值 | `number` | `99` |
 | disabled | 是否禁用 | `boolean` | `false` |
-
-参考: src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:44-66, 77-82
 
 ### SidebarItem 类型（Items 模式）
 
@@ -773,8 +749,6 @@ export interface SidebarItem {
 }
 ```
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:68-96
-
 ### Sidebar Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -783,15 +757,11 @@ export interface SidebarItem {
 | change | 选中项变化时触发 | `{ value: number \| string, label: string }` |
 | item-click | 点击侧边栏项时触发（Items 模式） | `item: SidebarItem, index: number` |
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:133-140, 189-192, 248-256
-
 ### SidebarItem Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | itemclick | 点击侧边栏项时触发 | - |
-
-参考: src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:71-74, 157
 
 ### Sidebar Slots
 
@@ -802,16 +772,12 @@ export interface SidebarItem {
 | icon-${index} | Items 模式下的自定义图标插槽 | `{ item: SidebarItem, index: number }` |
 | [自定义插槽名] | Items 模式下通过 `slotName` / `iconSlotName` 指定的自定义插槽 | `{ item: SidebarItem, index: number, active?: boolean }` |
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:13-38
-
 ### SidebarItem Slots
 
 | 插槽名 | 说明 | 参数 |
 |--------|------|------|
 | default | 侧边栏项内容（包含徽标） | - |
 | icon | 自定义图标 | - |
-
-参考: src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:8-11
 
 ### 类型定义
 
@@ -928,8 +894,6 @@ interface WdSidebarItemEmits {
 }
 ```
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:68-140, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:44-74
-
 ---
 
 ## 主题定制
@@ -971,8 +935,6 @@ $-sidebar-icon-size: 32rpx;                              // 图标大小
   $-dark-color-gray: #555;
 }
 ```
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:259-379, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:164-262
 
 ### 自定义样式
 
@@ -1055,8 +1017,6 @@ const items: SidebarItem[] = [
 </script>
 
 ```
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:259-379
 
 ---
 
@@ -1371,8 +1331,6 @@ const loadCategoryData = (categoryId: string | number) => {
 - 为内容组件添加 `key` 强制重新渲染
 - 检查 v-model 绑定是否正确
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:189-192
-
 ### 2. 如何实现侧边栏的二级菜单？
 
 **问题原因:**
@@ -1515,8 +1473,6 @@ const handleCustomClick = (item: SidebarItem) => {
 - 通过 `pointer-events: none` 阻止点击
 - 或在点击事件中检查 `disabled` 属性
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:249, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:153-154
-
 ### 4. 如何动态修改侧边栏项的样式？
 
 **问题原因:**
@@ -1643,51 +1599,27 @@ watch(activeKey, (newValue) => {
 
 1. **value 唯一性**：每个侧边栏项的 `value` 必须唯一，否则会导致选中状态异常。重复的 value 会导致无法正确识别当前选中项。
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:72, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:53
-
 2. **label 必填**：侧边栏项必须设置 `label` 属性，这是显示给用户的文字。如果使用自定义插槽，可以不设置 label，但需要在插槽中提供内容。
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:70, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:51
 
 3. **beforeChange 异步处理**：在 `beforeChange` 钩子中执行异步操作时，必须等待操作完成后再调用 `resolve`，否则可能导致切换时机不正确。
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:169-182
-
 4. **禁用项不触发事件**：禁用的侧边栏项点击后不会触发 `change` 事件，也不会更新 `modelValue`，但会触发 `item-click` 事件（Items 模式）。
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:249, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:153-154
 
 5. **徽标值为 0**：当 `badge` 值为 `0` 时，徽标会显示为 0。如果不想显示，应该设置为 `null` 或不设置 badge 属性。
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:74, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:55, 80
-
 6. **插槽使用限制**：子组件模式只支持 `icon` 插槽。Items 模式支持自定义内容插槽和图标插槽，但需要设置 `useSlot` 或 `useIconSlot` 为 `true`。
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:85-92, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:8
 
 7. **圆角效果**：激活项的前一项和后一项会自动添加圆角效果（前缀项右下圆角，后缀项右上圆角），这是组件的默认设计。如果不需要，可以通过样式覆盖。
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:218-220, 352-358
-
 8. **高度设置**：Sidebar 组件本身高度为 100%，需要为父容器设置具体高度，否则侧边栏可能无法正常显示。
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:302
 
 9. **动态修改 items**：动态修改 `items` 数组后，组件会响应式更新。但如果修改的是当前选中项，需要确保新的 items 中仍然存在该 value，否则会自动选中第一项。
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:160-162
-
 10. **badgeProps 优先级**：当同时设置 `badgeProps` 和 `badge`、`isDot`、`max` 属性时，badgeProps 中的相同属性优先级更高。
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:229-241, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:94-107
 
 11. **事件触发顺序**：点击侧边栏项时，事件触发顺序为：`item-click`/`itemclick` → beforeChange（如果设置）→ `change` → `update:modelValue`。
 
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:248-256, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:153-161
-
 12. **样式隔离**：组件使用 `styleIsolation: 'shared'` 模式，自定义样式时需要注意样式作用域和优先级。使用 `:deep()` 深度选择器可以修改组件内部样式。
-
-参考: src/wd/components/wd-sidebar/wd-sidebar.vue:61, src/wd/components/wd-sidebar-item/wd-sidebar-item.vue:32
 
 ---
 

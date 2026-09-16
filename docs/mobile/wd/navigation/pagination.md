@@ -20,8 +20,6 @@ Pagination 分页组件用于在数据量过多时,将数据分页展示,提供�
 - **智能隐藏** - 提供单页隐藏功能,当总页数只有1页时可选择隐藏分页组件
 - **国际化** - 内置国际化支持,自动根据语言环境显示相应文本
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:1-199
-
 ## 基本用法
 
 ### 基础分页
@@ -48,8 +46,6 @@ const current = ref(1)
 - `total-page` 属性设置总页数
 - 组件默认隐藏单页分页(`hideIfOnePage` 默认为 `true`)
 - 页码从1开始计数
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:82-99
 
 ### 自动计算总页数
 
@@ -80,8 +76,6 @@ const current = ref(1)
 - 当 `total` 为95,`pageSize` 为10时,计算结果为10页
 - 优先级: 如果同时设置了 `total` 和 `totalPage`,优先使用 `total` 计算
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:148-168
-
 ### 图标模式
 
 使用图标替代文本,更加美观简洁。
@@ -110,8 +104,6 @@ const current = ref(1)
 - 左箭头通过 CSS `transform: rotate(180deg)` 旋转右箭头实现
 - 图标根据按钮状态自动应用不同样式类: `wd-pager__nav--active` 和 `wd-pager__nav--disabled`
 - 图标大小由 CSS 变量 `$-pagination-icon-size` 控制
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:17-46, 271-274
 
 ### 显示分页信息
 
@@ -144,8 +136,6 @@ const current = ref(1)
 - 信息文本样式由 `wd-pager__message` 类控制
 - 如果未设置 `total`,则不显示总条数信息
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:50-54, 236-241
-
 ### 自定义按钮文本
 
 自定义上一页和下一页的按钮文本。
@@ -175,8 +165,6 @@ const current = ref(1)
 - 如果未设置,则使用国际化文本 `translate('prev')` 和 `translate('next')`
 - 只在非图标模式下生效,图标模式下忽略自定义文本
 - 支持任意长度的文本,但建议保持简短
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:17, 41, 94-97
 
 ### 监听页码变化
 
@@ -245,8 +233,6 @@ const handlePageChange = (event: { value: number }) => {
 - 可以在 `change` 事件中执行异步数据加载、页面滚动等操作
 - 配合 computed 属性实现数据分页显示
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:105-110, 174-198
-
 ### 显示单页分页
 
 即使只有一页数据,也显示分页组件。
@@ -275,8 +261,6 @@ const current = ref(1)
 - 默认值为 `true`,即单页时隐藏组件
 - 组件根节点使用 `v-if="!(hideIfOnePage && totalPageNum === 1)"` 控制显示
 - 单页时上一页和下一页按钮都处于禁用状态
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:4, 98-99, 121
 
 ## 高级用法
 
@@ -364,8 +348,6 @@ const handlePageChange = (event: { value: number }) => {
 - 使用 computed 属性计算当前页数据,实现前端分页
 - 页码变化时自动滚动到页面顶部,提升用户体验
 - 支持切换为服务端分页,只需修改 `handlePageChange` 方法
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:2-199
 
 ### 服务端分页
 
@@ -489,8 +471,6 @@ onMounted(() => {
 - 使用 `async/await` 处理异步请求
 - 添加错误处理,提升用户体验
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:82-84, 148-168
-
 ### 筛选后分页
 
 结合筛选功能,实现筛选后的数据分页。
@@ -608,8 +588,6 @@ const handlePageChange = (event: { value: number }) => {
 - 分页组件的 `total` 属性使用筛选后的数据长度
 - 筛选和分页逻辑完全解耦,易于维护
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:82-84, 148-168
-
 ### 分页缓存
 
 实现页码缓存,用户离开页面后再次进入时恢复到之前的页码。
@@ -716,8 +694,6 @@ onUnmounted(() => {
 - 页码变化时自动更新缓存
 - 可以根据需要在 `onUnmounted` 中清理缓存
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:82-84, 105-110
-
 ### 跳转到指定页
 
 提供输入框,允许用户直接跳转到指定页码。
@@ -822,8 +798,6 @@ const handleJump = () => {
 - 在跳转前验证页码的合法性(范围检查)
 - 直接修改 `current` 值实现跳转,组件会自动更新显示
 - 添加友好的错误提示,提升用户体验
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:82-84
 
 ### 无限滚动与分页结合
 
@@ -946,8 +920,6 @@ loadPage(1)
 - 两种加载方式互不干扰,提供灵活的导航方式
 - 添加加载状态和结束提示,提升用户体验
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:2-199
-
 ## API
 
 ### Props
@@ -966,16 +938,12 @@ loadPage(1)
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:73-100
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | change | 页码变化时触发 | `event: { value: number }` |
 | update:modelValue | 当前页码更新时触发,用于 v-model 双向绑定 | `value: number` |
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:105-110
 
 ### 方法
 
@@ -986,8 +954,6 @@ loadPage(1)
 | handleNext | 处理下一页点击事件 | - | `void` |
 | handlePrev | 处理上一页点击事件 | - | `void` |
 | updateTotalPage | 更新总页数,根据 total 和 pageSize 计算 | - | `void` |
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:148-198
 
 ### 类型定义
 
@@ -1031,8 +997,6 @@ interface WdPaginationEmits {
 }
 ```
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:73-110
-
 ## 主题定制
 
 ### CSS 变量
@@ -1051,8 +1015,6 @@ $-pagination-nav-content-fs: 28rpx !default;         // 页码文本字体大小
 $-pagination-nav-sepatator-padding: 0 12rpx !default; // 分隔符内边距
 $-pagination-nav-current-color: #4d80f0 !default;    // 当前页码颜色
 ```
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:201-281
 
 ### 暗黑模式
 
@@ -1086,8 +1048,6 @@ const isDark = ref(false)
 const current = ref(1)
 </script>
 ```
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:206-215
 
 ### 自定义样式
 
@@ -1124,8 +1084,6 @@ const current = ref(1)
 </style>
 ```
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:78-80
-
 ## 最佳实践
 
 ### 1. 选择合适的总页数设置方式
@@ -1159,8 +1117,6 @@ const current = ref(1)
 - 后端分页场景,直接使用后端返回的 `total-page`
 - 避免同时设置两种方式,以免造成混淆
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:82-99, 148-168
-
 ### 2. 合理使用显示模式
 
 根据界面设计和内容密度选择合适的显示模式:
@@ -1193,8 +1149,6 @@ const current = ref(1)
 - 图标模式更简洁,适合移动端和空间受限的场景
 - 文本模式更清晰,适合老年用户和无障碍场景
 - `show-message` 适合需要展示详细分页信息的场景
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:86-89
 
 ### 3. 页码变化时处理滚动位置
 
@@ -1230,8 +1184,6 @@ const handlePageChange = (event: { value: number }) => {
 - 使用 `uni.pageScrollTo` 实现平滑滚动
 - `duration` 设置为 300ms 提供流畅的动画效果
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:105-110
-
 ### 4. 合理处理筛选和分页的关系
 
 筛选条件变化时,应重置页码到第一页:
@@ -1257,8 +1209,6 @@ watch(category, () => {
 - 筛选条件变化后,数据总数可能变化,当前页码可能无效
 - 始终重置到第一页,确保用户看到筛选结果
 - 也可以检查当前页码是否超出新的总页数,然后调整
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:82-84
 
 ### 5. 单页时的显示策略
 
@@ -1293,8 +1243,6 @@ watch(category, () => {
 - 普通列表,单页时隐藏分页,界面更简洁
 - 搜索结果或表格,始终显示分页,保持布局一致性
 - 后台管理系统建议始终显示,方便用户了解数据量
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:4, 98-99
 
 ## 常见问题
 
@@ -1335,8 +1283,6 @@ const handlePageChange = (event: { value: number }) => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:105-110, 174-198
 
 ### 2. 如何实现服务端分页?
 
@@ -1390,8 +1336,6 @@ onMounted(() => {
 </script>
 ```
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:82-84, 148-168
-
 ### 3. 总页数计算不正确怎么办?
 
 **问题原因:**
@@ -1426,8 +1370,6 @@ watch(total, (newTotal) => {
 </script>
 ```
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:84, 148-168
-
 ### 4. 如何禁用分页按钮?
 
 **问题原因:**
@@ -1456,8 +1398,6 @@ watch(total, (newTotal) => {
 - 上一页按钮: 当 `modelValue <= 1` 时自动禁用
 - 下一页按钮: 当 `modelValue >= totalPageNum` 时自动禁用
 - 禁用时按钮的 `disabled` 属性为 `true`,图标样式变为 `wd-pager__nav--disabled`
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:10-14, 34-37, 174-198
 
 ### 5. 如何自定义分页样式?
 
@@ -1504,8 +1444,6 @@ watch(total, (newTotal) => {
 </style>
 ```
 
-参考: src/wd/components/wd-pagination/wd-pagination.vue:218-281
-
 ## 注意事项
 
 1. **页码从1开始** - 组件的页码从1开始计数,不是从0开始,使用时注意数组索引转换
@@ -1531,5 +1469,3 @@ watch(total, (newTotal) => {
 11. **暗黑模式自动适配** - 组件内置暗黑模式样式,通过 `wot-theme-dark` 类名自动切换
 
 12. **分页信息显示条件** - 启用 `show-message` 后,如果未设置 `total` 属性,则不显示总条数信息,只显示当前页和每页条数
-
-参考: src/wd/components/wd-pagination/wd-pagination.vue:1-281

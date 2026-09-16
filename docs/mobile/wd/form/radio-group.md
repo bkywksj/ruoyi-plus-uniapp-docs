@@ -20,8 +20,6 @@ RadioGroup 单选框组组件用于在一组选项中进行单选操作。组件
 - **禁用控制** - 支持全局禁用或单项禁用,灵活控制可选状态
 - **自定义样式** - 支持自定义选中颜色、自定义插槽内容等
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:1-120
-
 ## 基本用法
 
 ### options 模式
@@ -66,8 +64,6 @@ const handleChange = (val: string | number | boolean) => {
 - `@change` 事件在选中值变化时触发
 - 默认使用 check(对勾)形状
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:188-191, 305-307
-
 ### 子组件模式
 
 使用 wd-radio 子组件,提供更灵活的自定义能力。
@@ -98,8 +94,6 @@ const value = ref(1)
 - RadioGroup 通过 `useChildren` 管理子组件
 - 每个 wd-radio 可以单独设置属性
 - 值可以是 string、number 或 boolean 类型
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:59-61, 117-119, 269-270, 348-351
 
 ### 圆点形状(dot)
 
@@ -136,8 +130,6 @@ const options: RadioOption[] = [
 - 圆点通过 CSS `::before` 伪元素实现
 - 选中时圆点从中心缩放展开,带有动画效果
 - 圆点样式: 外圆边框 + 内圆填充
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:193-194, 248, 587-619
 
 ### 按钮形状(button)
 
@@ -177,8 +169,6 @@ const options: RadioOption[] = [
 - 按钮之间有 20rpx 的右边距
 - 支持自动换行
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:193-194, 621-670
-
 ### 横向排列(inline)
 
 单选项横向排列显示。
@@ -215,8 +205,6 @@ const options: RadioOption[] = [
 - 每项之间有右边距
 - shape 图标会显示在左侧或右侧
 - 支持自动换行
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:201-202, 676-714
 
 ### 不同尺寸
 
@@ -299,8 +287,6 @@ const options: RadioOption[] = [
 - 按钮模式下,尺寸影响按钮高度、内边距、字体大小
 - CSS 变量定义了各尺寸的具体数值
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:199-200, 250, 652-669, 755-798
-
 ### 禁用状态
 
 禁用全部或单个选项。
@@ -365,8 +351,6 @@ const optionsWithDisabled: RadioOption[] = [
 - 单个选项通过 `option.disabled` 禁用
 - 禁用项点击无响应
 - 禁用样式: 文字变灰、图标变灰、按钮背景变灰
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:197-198, 249, 410-416, 716-752
 
 ## 高级用法
 
@@ -467,8 +451,6 @@ const handleSubmit = async () => {
 - `label-width` 可自定义标签宽度
 - 支持完整的表单验证规则
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:3-72, 209-231, 273-334
-
 ### 自定义每项宽度
 
 使用 `itemWidth` 自定义每项的宽度,实现多列布局。
@@ -553,8 +535,6 @@ const moreOptions: RadioOption[] = [
 - 使用 `display: inline-flex` 和 `vertical-align: top` 实现换行布局
 - 按钮模式会减去 margin 避免宽度溢出
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:205-206, 312-314, 384-404, 532-540
-
 ### 自定义选中颜色
 
 自定义选中状态的颜色。
@@ -617,8 +597,6 @@ const options: RadioOption[] = [
 - dot 模式: 圆点边框和背景颜色变化
 - button 模式: 边框和文字颜色变化
 - 颜色通过 CSS `color` 属性应用
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:195-196, 33, 48, 52, 91, 106, 110
 
 ### 图标位置
 
@@ -683,8 +661,6 @@ const options: RadioOption[] = [
 - auto: 根据情况自动判断
 - 只在 inline 模式下生效
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:203-204, 252, 672-713
-
 ### 自定义选项内容
 
 通过插槽自定义选项的显示内容。
@@ -741,8 +717,6 @@ const options: RadioOption[] = [
 - 可通过 `option.slotName` 自定义插槽名
 - 插槽接收 `option`、`index`、`checked` 参数
 - 可以在插槽中使用任意组件
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:35-42, 93-100, 167-174
 
 ### 配合表单验证
 
@@ -852,8 +826,6 @@ const handleSubmit = async () => {
 - 验证失败时显示错误提示
 - 配合 Form 组件的 validate 方法使用
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:223-224, 318-334
-
 ### 动态选项
 
 根据条件动态改变选项列表。
@@ -950,8 +922,6 @@ const selectedText = computed(() => {
 - 切换上级选项时,重置下级选择
 - 使用 computed 计算最终显示文本
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:190-191, 236-241
-
 ## API
 
 ### Props
@@ -981,16 +951,12 @@ const selectedText = computed(() => {
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:182-231, 244-261
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
 |--------|------|----------|
 | update:modelValue | v-model 更新事件 | `value: string \| number \| boolean` |
 | change | 值变化时触发 | `value: string \| number \| boolean` |
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:236-241, 340-343
 
 ### Slots
 
@@ -1000,8 +966,6 @@ const selectedText = computed(() => {
 | label | 自定义左侧标题内容(表单模式) | - |
 | prefix | 自定义前置图标(表单模式) | - |
 | option-{index} | 自定义选项内容,需配合 `option.useSlot` 使用 | `{ option: RadioOption, index: number, checked: boolean }` |
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:35-42, 59-71, 93-100
 
 ### 类型定义
 
@@ -1041,8 +1005,6 @@ export interface RadioOption {
   [key: string]: any
 }
 ```
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:144-177
 
 ## 主题定制
 
@@ -1092,8 +1054,6 @@ $-radio-button-large-min-width: 140rpx !default;
 $-radio-button-large-fs: 32rpx !default;
 ```
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:449-800
-
 ### 暗黑模式
 
 组件内置暗黑模式支持,通过 `wot-theme-dark` 类名自动切换:
@@ -1137,8 +1097,6 @@ const options = [
 </script>
 ```
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:454-515
-
 ## 最佳实践
 
 ### 1. 选择合适的模式
@@ -1177,8 +1135,6 @@ const options = [
 - 简单列表数据用 options 模式
 - 需要复杂自定义时用子组件模式
 - options 模式代码更简洁,维护更方便
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:305-307
 
 ### 2. 合理使用形状和布局
 
@@ -1227,8 +1183,6 @@ const options = [
 - 长文本使用默认check模式
 - 使用 itemWidth 控制每行显示数量
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:193-206
-
 ### 3. 正确处理禁用状态
 
 合理使用全局禁用和单项禁用:
@@ -1263,8 +1217,6 @@ const options = [
 - 全局禁用用于整体控制(如表单提交中)
 - 单项禁用用于业务逻辑控制(如权限限制)
 - 避免所有选项都禁用,应该隐藏组件
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:197-198, 410-416
 
 ### 4. 表单验证的使用
 
@@ -1315,8 +1267,6 @@ const rules = {
 - `required` 属性只影响样式,验证需要在 `rules` 中配置
 - 复杂验证使用自定义 validator
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:219-224, 318-334
-
 ### 5. itemWidth 的正确使用
 
 合理设置 itemWidth 实现多列布局:
@@ -1358,8 +1308,6 @@ const rules = {
 - 按钮模式会自动减去margin,无需手动计算
 - 考虑不同屏幕宽度,优先使用百分比
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:205-206, 384-404
-
 ## 常见问题
 
 ### 1. 为什么设置了 itemWidth 但没有生效?
@@ -1395,8 +1343,6 @@ const rules = {
   :options="options"
 />
 ```
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:312-314, 384-404, 532-540
 
 ### 2. options 模式下如何自定义每个选项的样式?
 
@@ -1440,8 +1386,6 @@ const options = [
 />
 ```
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:35-42, 167-174
-
 ### 3. 表单模式下 label 宽度如何控制?
 
 **问题原因:**
@@ -1480,8 +1424,6 @@ const options = [
   <!-- 使用组件自身的 100rpx -->
 </wd-form>
 ```
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:211-212, 279-292
 
 ### 4. 如何实现"全不选"功能?
 
@@ -1530,8 +1472,6 @@ const optionsWithNone = [
 </script>
 ```
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:188-189, 340-343
-
 ### 5. 为什么 change 事件触发了两次?
 
 **问题原因:**
@@ -1574,8 +1514,6 @@ const handleChange = (val: string | number | boolean) => {
 - `change` 用于业务逻辑处理
 - 通常只需监听 `change` 事件
 
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:236-241, 340-343
-
 ## 注意事项
 
 1. **value 类型** - modelValue 支持 string、number、boolean 三种类型,选项的 value 也要保持一致
@@ -1601,5 +1539,3 @@ const handleChange = (val: string | number | boolean) => {
 11. **change 事件** - 只在用户操作时触发,程序设置 v-model 不触发
 
 12. **响应式 options** - options 数组是响应式的,可以动态修改,组件会自动更新
-
-参考: src/wd/components/wd-radio-group/wd-radio-group.vue:1-801

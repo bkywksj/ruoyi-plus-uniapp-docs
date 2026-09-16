@@ -22,8 +22,6 @@ Transition 是 WD UI 提供的过渡动画组件,用于在元素显示和隐藏�
 - **精确的状态控制** - 基于 Promise 的状态管理,确保动画状态切换的准确性和可中断性
 - **TypeScript 支持** - 完整的类型定义,提供优秀的开发体验和类型安全
 
-参考: src/wd/components/wd-transition/wd-transition.vue:1-458
-
 ## 基本用法
 
 ### 基础动画
@@ -57,8 +55,6 @@ const visible = ref(false)
 - `show` 属性控制组件的显示状态,为 `true` 时执行进入动画,为 `false` 时执行离开动画
 - 默认使用 `fade` 淡入淡出动画,动画持续时间为 300ms
 - 组件内容通过默认插槽传入,可以是任意 Vue 组件或 HTML 元素
-
-参考: src/wd/components/wd-transition/wd-transition.vue:3-11
 
 ### 淡入淡出动画
 
@@ -125,8 +121,6 @@ const show5 = ref(false)
 - 使用 `transform: translate3d()` 实现位移动画,开启 GPU 硬件加速
 - 结合 `opacity` 实现透明度变化
 - 使用 `transition-property` 同时过渡 transform 和 opacity 属性
-
-参考: src/wd/components/wd-transition/wd-transition.vue:354-444
 
 ### 滑动动画
 
@@ -210,8 +204,6 @@ const show4 = ref(false)
 - 不改变透明度,只有位移效果
 - 使用 `transition-property: transform` 仅过渡 transform 属性
 
-参考: src/wd/components/wd-transition/wd-transition.vue:393-456
-
 ### 缩放动画
 
 缩放动画通过改变元素的缩放比例和透明度,创造出放大或缩小的视觉效果:
@@ -270,8 +262,6 @@ const show2 = ref(false)
 - **zoom-in**: 对话框、模态框、提示框、成功/失败提示等
 - **zoom-out**: 特殊强调效果、游戏化交互、奖励提示等
 
-参考: src/wd/components/wd-transition/wd-transition.vue:417-444
-
 ### 自定义动画时长
 
 通过 `duration` 属性可以自定义动画的持续时间,支持统一设置或分别设置进入和离开动画的时长:
@@ -321,8 +311,6 @@ const show3 = ref(false)
 - 组件内部根据 `duration` 的类型判断是统一时长还是分别设置
 - 通过 CSS `transition-duration` 属性控制动画时长
 - 离开动画结束后使用定时器确保生命周期回调正确触发
-
-参考: src/wd/components/wd-transition/wd-transition.vue:213-224,273-280
 
 ### 动画组合
 
@@ -376,8 +364,6 @@ const show3 = ref(false)
 - 通过 `getClassNames` 方法处理数组形式的 `name` 属性
 - 循环遍历数组,依次添加每个动画类型的 CSS 类名
 - 多个动画的 `transition-property` 会合并生效
-
-参考: src/wd/components/wd-transition/wd-transition.vue:177-203
 
 ## 自定义动画
 
@@ -463,8 +449,6 @@ const show3 = ref(false)
 - 支持所有 CSS3 transform、opacity、filter 等动画属性
 - 建议使用 `cubic-bezier` 缓动函数创造更自然的动画效果
 
-参考: src/wd/components/wd-transition/wd-transition.vue:65-75,177-203
-
 ### 完全自定义动画
 
 不使用 `name` 属性,只通过自定义 CSS 类名实现完全自定义的动画效果:
@@ -504,8 +488,6 @@ const show = ref(false)
 - 可以使用 CSS `animation` 和 `@keyframes` 创建更复杂的动画效果
 - 不依赖内置动画类型,完全由开发者控制动画细节
 - 适合特殊场景的动画需求,如游戏化交互、品牌特色动画等
-
-参考: src/wd/components/wd-transition/wd-transition.vue:177-203
 
 ## 高级特性
 
@@ -573,8 +555,6 @@ watch(show2, (newVal) => {
 - 通过 `v-if="!lazyRender || inited"` 控制内容的条件渲染
 - 首次进入动画时设置 `inited.value = true`
 
-参考: src/wd/components/wd-transition/wd-transition.vue:4,58,118,228
-
 ### 销毁控制
 
 通过 `destroy` 属性控制动画结束后是否销毁子节点,默认为 `true`:
@@ -624,8 +604,6 @@ const show2 = ref(false)
 - 通过 `display` 状态和 `destroy` 属性控制元素的显示和隐藏
 - 使用内联样式动态设置 `display: none`
 - 离开动画结束后根据 `destroy` 属性决定是否设置 `display.value = false`
-
-参考: src/wd/components/wd-transition/wd-transition.vue:6,62,105,167-169
 
 ### 生命周期钩子
 
@@ -743,8 +721,6 @@ const onClick = () => {
 - **leave**: 清理资源、取消请求
 - **after-leave**: 重置状态、释放内存、触发下一步操作
 
-参考: src/wd/components/wd-transition/wd-transition.vue:81-96,154-170,209-243,263-302
-
 ## API
 
 ### Props
@@ -765,8 +741,6 @@ const onClick = () => {
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-style | 自定义根节点样式 | `string` | `''` |
 
-参考: src/wd/components/wd-transition/wd-transition.vue:47-76,99-112
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -779,15 +753,11 @@ const onClick = () => {
 | leave | 离开时触发 | - |
 | after-leave | 离开后触发 | - |
 
-参考: src/wd/components/wd-transition/wd-transition.vue:81-96
-
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 默认插槽,需要添加过渡效果的内容 |
-
-参考: src/wd/components/wd-transition/wd-transition.vue:10
 
 ### 类型定义
 
@@ -863,8 +833,6 @@ interface WdTransitionEmits {
 }
 ```
 
-参考: src/wd/components/wd-transition/wd-transition.vue:28-96
-
 ## 内置动画类型
 
 ### 淡入淡出系列
@@ -879,8 +847,6 @@ interface WdTransitionEmits {
 | `fade-left` | 从左侧淡入 | `translate3d(-100%, 0, 0) + opacity` | 左侧内容切换 |
 | `fade-right` | 从右侧淡入 | `translate3d(100%, 0, 0) + opacity` | 右侧内容切换、步骤切换 |
 
-参考: src/wd/components/wd-transition/wd-transition.vue:354-444
-
 ### 滑动系列
 
 滑动动画只改变位置,不改变透明度,适合大面积内容的切换:
@@ -892,8 +858,6 @@ interface WdTransitionEmits {
 | `slide-left` | 向左滑入 | `translate3d(-100%, 0, 0)` | 右侧抽屉、详情页 |
 | `slide-right` | 向右滑入 | `translate3d(100%, 0, 0)` | 左侧导航、侧边栏 |
 
-参考: src/wd/components/wd-transition/wd-transition.vue:393-456
-
 ### 缩放系列
 
 缩放动画通过改变元素的缩放比例和透明度,创造出放大或缩小的视觉效果:
@@ -902,8 +866,6 @@ interface WdTransitionEmits {
 |---------|---------|----------|---------|
 | `zoom-in` | 从 0.8 倍放大到 1 倍 | `scale(0.8) → scale(1) + opacity` | 对话框、模态框、提示框 |
 | `zoom-out` | 从 1.2 倍缩小到 1 倍 | `scale(1.2) → scale(1) + opacity` | 特殊强调、游戏化效果 |
-
-参考: src/wd/components/wd-transition/wd-transition.vue:417-444
 
 ## 最佳实践
 
@@ -1128,8 +1090,6 @@ const onAfterLeave = () => {
 - slide + zoom 组合不推荐,效果冲突
 - 测试实际效果,避免过度设计
 
-参考: src/wd/components/wd-transition/wd-transition.vue:177-203
-
 ## 常见问题
 
 ### 1. 动画不生效
@@ -1175,8 +1135,6 @@ const visible = ref(false)
 </script>
 
 ```
-
-参考: src/wd/components/wd-transition/wd-transition.vue:54,56,320-326
 
 ### 2. 离开动画不执行
 
@@ -1241,8 +1199,6 @@ const handleBadToggle = () => {
 - 快速切换会中断之前的动画 Promise
 - 离开动画依赖进入动画完成
 
-参考: src/wd/components/wd-transition/wd-transition.vue:134-148,263-302
-
 ### 3. 自定义动画类名不生效
 
 **问题原因:**
@@ -1280,8 +1236,6 @@ const handleBadToggle = () => {
 </template>
 
 ```
-
-参考: src/wd/components/wd-transition/wd-transition.vue:65-75,177-203
 
 ### 4. 懒渲染后内容不显示
 
@@ -1351,8 +1305,6 @@ const fetchData = async () => {
 </script>
 ```
 
-参考: src/wd/components/wd-transition/wd-transition.vue:4,58,118,228
-
 ### 5. 在小程序中动画性能差
 
 **问题原因:**
@@ -1396,8 +1348,6 @@ const fetchData = async () => {
 - 使用 `translate3d` 代替 `translate` 开启 GPU 加速
 - 避免在动画过程中改变 `box-shadow`、`border-radius` 等属性
 
-参考: src/wd/components/wd-transition/wd-transition.vue:354-456
-
 ## 注意事项
 
 1. **平台兼容性**
@@ -1425,5 +1375,3 @@ const fetchData = async () => {
    - 自定义动画类名可能受到样式隔离影响
    - 如需全局生效,在样式中使用 `::v-deep` 或将样式定义在全局
    - 组件已配置 `styleIsolation: 'shared'`,可以共享全局样式
-
-参考: src/wd/components/wd-transition/wd-transition.vue:19-26

@@ -24,8 +24,6 @@ Upload 上传组件是一个功能强大的文件上传组件,专为移动端设
 - **数量限制** - 支持最大上传数量限制,达到上限自动隐藏上传按钮
 - **预览尺寸控制** - 提供 small、medium、large 三种预览尺寸
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1-16
-
 ## 基本用法
 
 ### 图片上传(默认)
@@ -54,8 +52,6 @@ const images = ref<string>('https://example.com/img1.jpg,https://example.com/img
 - 默认返回逗号分隔的 URL 字符串
 - `limit` 限制最大上传数量
 - 自动显示上传进度和成功/失败状态
-
-参考: src/wd/components/wd-upload/wd-upload.vue:642-706
 
 ### ossId 返回模式
 
@@ -87,8 +83,6 @@ const attachments = ref<string>('123,456,789')
 - 兼容旧的 URL 格式数据,自动识别
 - ossId 模式下可以获取完整的文件信息(文件名、URL、大小等)
 
-参考: src/wd/components/wd-upload/wd-upload.vue:942-965, 972-1059
-
 ### 视频上传
 
 上传视频文件,支持视频预览。
@@ -119,8 +113,6 @@ const videos = ref<string>('')
 - `compressed` 是否压缩视频
 - 视频预览显示播放按钮,点击可预览
 
-参考: src/wd/components/wd-upload/wd-upload.vue:64-96, 1501-1533
-
 ### 文件上传
 
 上传各类文档文件,自动显示文件类型图标。
@@ -149,8 +141,6 @@ const files = ref<string>('')
 - 根据文件扩展名自动显示对应图标
 - 点击文件可预览(支持的格式)
 
-参考: src/wd/components/wd-upload/wd-upload.vue:98-103, 808-848
-
 ### 混合上传(图片+视频)
 
 同时支持图片和视频上传。
@@ -177,8 +167,6 @@ const media = ref<string>('')
 - `accept="media"` 同时支持图片和视频
 - 自动识别文件类型并正确显示
 - 图片和视频统一计入 limit 限制
-
-参考: src/wd/components/wd-upload/wd-upload.vue:754-773
 
 ### 数组格式绑定
 
@@ -215,8 +203,6 @@ const fileList = ref<UploadFile[]>([
 - 数组中包含完整的文件信息(url、name、uid、size、status 等)
 - 适合需要获取文件详细信息的场景
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1648-1688
-
 ### 禁用状态
 
 禁用上传功能。
@@ -242,8 +228,6 @@ const images = ref<string>('https://example.com/img1.jpg')
 - `disabled="true"` 禁用上传
 - 禁用后无法选择文件,无法删除已有文件
 - 唤起按钮置灰显示
-
-参考: src/wd/components/wd-upload/wd-upload.vue:1444-1445
 
 ### 文件大小限制
 
@@ -280,8 +264,6 @@ const handleOversize = ({ file }) => {
 - 超出大小的文件不会上传,触发 `oversize` 事件
 - 默认值为 `Number.MAX_VALUE`(不限制)
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1417
-
 ## 高级用法
 
 ### 直传模式
@@ -313,8 +295,6 @@ const images = ref<string>('')
 - `directoryId` 指定目录 ID
 - `directoryPath` 指定目录路径
 - 直传模式下文件直接上传到 OSS,不经过业务服务器
-
-参考: src/wd/components/wd-upload/wd-upload.vue:1211-1288
 
 ### beforeUpload 上传前校验
 
@@ -363,8 +343,6 @@ const handleBeforeUpload = (option: UploadBeforeUploadOption) => {
 - 可以进行文件类型、内容等校验
 - 支持异步校验
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1422-1432
-
 ### beforeChoose 选择前钩子
 
 在用户选择文件前进行拦截。
@@ -406,8 +384,6 @@ const handleBeforeChoose = (option: UploadBeforeChooseOption) => {
 - `beforeChoose` 在打开文件选择器前触发
 - 可以根据当前文件列表判断是否允许继续选择
 - 通过 `resolve(true/false)` 控制是否打开选择器
-
-参考: src/wd/components/wd-upload/wd-upload.vue:1444-1458
 
 ### beforeRemove 删除前确认
 
@@ -452,8 +428,6 @@ const handleBeforeRemove = (option: UploadBeforeRemoveOption) => {
 - 可以弹出确认框或进行其他检查
 - 通过 `resolve(true/false)` 控制是否删除
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1342-1359
-
 ### beforePreview 预览前钩子
 
 在预览文件前进行拦截。
@@ -496,8 +470,6 @@ const handleBeforePreview = (option: UploadBeforePreviewOption) => {
 - 可以根据文件状态判断是否允许预览
 - 通过 `resolve(true/false)` 控制是否预览
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1549-1562
-
 ### buildFormData 自定义表单数据
 
 在上传前构建自定义的表单数据。
@@ -538,8 +510,6 @@ const handleBuildFormData = (option: UploadBuildFormDataOption) => {
 - `buildFormData` 在构建上传表单数据时触发
 - 可以添加自定义字段到表单数据中
 - 通过 `resolve(formData)` 返回最终的表单数据
-
-参考: src/wd/components/wd-upload/wd-upload.vue:1242-1266
 
 ### 自定义上传方法
 
@@ -601,8 +571,6 @@ const customUpload: UploadMethod = (uploadFile, formData, options) => {
 - 必须调用 `onSuccess`、`onError`、`onProgress` 回调
 - 可以使用自己的上传接口和逻辑
 - 返回 `UploadTask` 以支持取消上传
-
-参考: src/wd/components/wd-upload/wd-upload.vue:379-400, 1211-1288
 
 ### 表单集成
 
@@ -684,8 +652,6 @@ const handleReset = () => {
 - 支持自定义 `validator` 函数
 - 验证失败时自动显示错误提示
 
-参考: src/wd/components/wd-upload/wd-upload.vue:722-895
-
 ### 表单布局模式
 
 表单模式下支持水平/垂直两种布局。
@@ -724,8 +690,6 @@ const images2 = ref<string>('')
 - `formLayout="vertical"` 垂直布局,预览列表在下方
 - `formLayout="horizontal"` 水平布局,预览列表横向排列
 - `maxPreviewInHorizontal` 水平布局时每行最大预览数量
-
-参考: src/wd/components/wd-upload/wd-upload.vue:915-928
 
 ### 预览尺寸控制
 
@@ -771,8 +735,6 @@ const images3 = ref<string>('')
 - `previewSize="medium"` 160rpx × 160rpx (默认)
 - `previewSize="large"` 210rpx × 210rpx
 
-参考: src/wd/components/wd-upload/wd-upload.vue:859-865, 2020-2044
-
 ### 清空功能
 
 显示清空按钮,一键清除所有文件。
@@ -804,8 +766,6 @@ const handleClear = () => {
 - 点击清空按钮会清除所有文件
 - 触发 `clear` 事件
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1364-1369
-
 ### 自定义上传按钮
 
 使用默认插槽自定义上传按钮样式。
@@ -834,8 +794,6 @@ const images = ref<string>('')
 - 使用默认插槽自定义上传按钮
 - 可以完全自定义按钮样式和内容
 - 保持原有的上传功能
-
-参考: src/wd/components/wd-upload/wd-upload.vue:136-142
 
 ### 自定义预览覆盖层
 
@@ -867,8 +825,6 @@ const images = ref<string>('')
 - `preview-cover` 插槽提供 `file` 和 `index` 参数
 - 可以显示自定义的标签、信息等
 - 覆盖层会显示在预览图上方
-
-参考: src/wd/components/wd-upload/wd-upload.vue:132
 
 ## API
 
@@ -936,8 +892,6 @@ const images = ref<string>('')
 | build-form-data | 构建表单数据钩子 | `UploadBuildFormData` | - |
 | upload-method | 自定义上传方法 | `UploadMethod` | - |
 
-参考: src/wd/components/wd-upload/wd-upload.vue:440-581, 642-706
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -954,8 +908,6 @@ const images = ref<string>('')
 | clear | 清空文件时触发 | - |
 | field-change | 字段值变化时触发(用于表单验证) | `value: UploadFileItem[]` |
 
-参考: src/wd/components/wd-upload/wd-upload.vue:588-611
-
 ### Slots
 
 | 插槽名 | 说明 | 参数 |
@@ -964,8 +916,6 @@ const images = ref<string>('')
 | label | 自定义标题 | - |
 | prefix | 自定义前置图标 | - |
 | preview-cover | 自定义预览覆盖层 | `{ file: UploadFileItem, index: number }` |
-
-参考: src/wd/components/wd-upload/wd-upload.vue:28-43, 132, 136-142
 
 ### Methods
 
@@ -1026,8 +976,6 @@ const handleGetValue = () => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-upload/wd-upload.vue:618-637, 1796-1845
 
 ### 类型定义
 
@@ -1153,8 +1101,6 @@ export type UploadMethod = (
 export type UploadInstance = ComponentPublicInstance<WdUploadProps, WdUploadExpose>
 ```
 
-参考: src/wd/components/wd-upload/wd-upload.vue:218-400, 1848
-
 ## 主题定制
 
 ### CSS 变量
@@ -1187,8 +1133,6 @@ Upload 组件提供了以下 CSS 变量用于主题定制:
 --wd-upload-cover-icon-size: 64rpx;
 ```
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1851-2236
-
 ### 暗黑模式
 
 Upload 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色主题:
@@ -1216,8 +1160,6 @@ Upload 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色主
   }
 }
 ```
-
-参考: src/wd/components/wd-upload/wd-upload.vue:1857-1886
 
 ### 自定义主题示例
 
@@ -1495,8 +1437,6 @@ const handleFail = ({ error, file }) => {
 </script>
 ```
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1110-1128, 1165-1193
-
 ### 2. 如何实现图片压缩?
 
 **问题原因:**
@@ -1527,8 +1467,6 @@ const handleBeforeUpload = ({ files, resolve }) => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-upload/wd-upload.vue:667
 
 ### 3. 如何实现拖拽排序?
 
@@ -1593,8 +1531,6 @@ const moveDown = (index: number) => {
 </script>
 ```
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1655-1670
-
 ### 4. 如何实现自定义文件名?
 
 **问题原因:**
@@ -1632,8 +1568,6 @@ const handleBuildFormData = (option: UploadBuildFormDataOption) => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-upload/wd-upload.vue:1242-1266
 
 ### 5. 如何实现断点续传?
 
@@ -1699,8 +1633,6 @@ const customUpload: UploadMethod = (uploadFile, formData, options) => {
 </script>
 ```
 
-参考: src/wd/components/wd-upload/wd-upload.vue:379-400, 1211-1288
-
 ## 注意事项
 
 ### 1. v-model 数据格式
@@ -1710,16 +1642,12 @@ const customUpload: UploadMethod = (uploadFile, formData, options) => {
 - 数组格式包含完整的文件信息
 - 只有上传成功的文件才会更新到 v-model
 
-参考: src/wd/components/wd-upload/wd-upload.vue:1110-1128
-
 ### 2. returnMode 模式说明
 
 - `returnMode="url"` 返回文件 URL 地址(默认)
 - `returnMode="ossId"` 返回 OSS 文件 ID
 - ossId 模式兼容旧的 URL 数据,自动识别格式
 - ossId 模式会调用接口获取文件详细信息
-
-参考: src/wd/components/wd-upload/wd-upload.vue:942-1059
 
 ### 3. 文件类型限制
 
@@ -1730,8 +1658,6 @@ const customUpload: UploadMethod = (uploadFile, formData, options) => {
 - `accept="media"` 同时支持图片和视频
 - `accept="all"` 不限制类型
 
-参考: src/wd/components/wd-upload/wd-upload.vue:754-803
-
 ### 4. 钩子函数调用时机
 
 - `beforeChoose`: 打开文件选择器**之前**
@@ -1741,8 +1667,6 @@ const customUpload: UploadMethod = (uploadFile, formData, options) => {
 - `beforePreview`: 预览文件**之前**
 - 所有钩子必须调用 `resolve()` 才能继续流程
 
-参考: src/wd/components/wd-upload/wd-upload.vue:307-374
-
 ### 5. 上传状态说明
 
 - `pending`: 待上传(已选择但未上传)
@@ -1751,16 +1675,12 @@ const customUpload: UploadMethod = (uploadFile, formData, options) => {
 - `fail`: 上传失败
 - 可以通过 `statusKey` 自定义状态字段名
 
-参考: src/wd/components/wd-upload/wd-upload.vue:227
-
 ### 6. 文件预览支持
 
 - 图片: 使用 `uni.previewImage` 原生预览
 - 视频: 微信小程序使用 `uni.previewMedia`,其他平台使用自定义播放器
 - 文档: 使用 `uni.openDocument` 打开(需要下载到本地)
 - 自定义预览: 使用 `beforePreview` 钩子
-
-参考: src/wd/components/wd-upload/wd-upload.vue:1466-1621
 
 ### 7. 表单集成注意事项
 
@@ -1769,16 +1689,12 @@ const customUpload: UploadMethod = (uploadFile, formData, options) => {
 - 支持 `required` 和自定义 `validator`
 - 表单重置时会清空文件列表
 
-参考: src/wd/components/wd-upload/wd-upload.vue:722-895
-
 ### 8. 直传模式注意事项
 
 - 直传模式需要后端支持 OSS 签名接口
 - 适用于大文件或高并发场景
 - 小文件使用直传会增加签名请求开销
 - `moduleName`、`directoryId`、`directoryPath` 用于文件分类
-
-参考: src/wd/components/wd-upload/wd-upload.vue:1211-1288
 
 ### 9. 性能优化建议
 
@@ -1788,16 +1704,12 @@ const customUpload: UploadMethod = (uploadFile, formData, options) => {
 - 设置合理的 `limit` 限制上传数量
 - 使用 `maxSize` 限制文件大小
 
-参考: src/wd/components/wd-upload/wd-upload.vue:667, 672
-
 ### 10. 自定义上传方法注意事项
 
 - 必须返回 `UniApp.UploadTask` 以支持取消上传
 - 必须调用 `onSuccess`、`onError`、`onProgress` 回调
 - `onSuccess` 的响应数据必须包含 `url` 字段
 - ossId 模式下响应数据应包含 `ossId` 字段
-
-参考: src/wd/components/wd-upload/wd-upload.vue:379-400
 
 ### 11. 事件处理说明
 
@@ -1807,13 +1719,9 @@ const customUpload: UploadMethod = (uploadFile, formData, options) => {
 - `progress`: 上传进度变化时触发
 - `field-change`: 用于表单验证,在文件列表变化时触发
 
-参考: src/wd/components/wd-upload/wd-upload.vue:588-611
-
 ### 12. 样式定制建议
 
 - 优先使用 CSS 变量进行主题定制
 - 使用 `custom-class`、`custom-evoke-class`、`custom-preview-class` 添加自定义样式
 - 需要穿透组件样式时使用 `:deep()` 选择器
 - 预览尺寸通过 `previewSize` 控制,支持 small/medium/large
-
-参考: src/wd/components/wd-upload/wd-upload.vue:1851-2236

@@ -22,8 +22,6 @@ Resize 是 WD UI 提供的尺寸监听组件,用于监听元素尺寸变化并�
 - **跨平台兼容** - 兼容 H5、小程序等多个平台,统一的 API 接口
 - **TypeScript 支持** - 完整的类型定义,提供优秀的开发体验
 
-参考: src/wd/components/wd-resize/wd-resize.vue:1-263
-
 ## 工作原理
 
 Resize 组件采用独特的双滚动检测机制来监听元素尺寸变化:
@@ -43,8 +41,6 @@ Resize 组件采用独特的双滚动检测机制来监听元素尺寸变化:
 ### 事件过滤
 
 组件会过滤掉初始化时的前3次无效滚动事件,只在真正的尺寸变化时触发回调。
-
-参考: src/wd/components/wd-resize/wd-resize.vue:18-48,120-143
 
 ## 基本用法
 
@@ -107,8 +103,6 @@ const setWidth = (width: number) => {
 - 通过 `@resize` 事件监听尺寸变化
 - 回调函数接收一个对象,包含 width、height、top、left、bottom、right 六个属性
 - 组件会在内容尺寸变化时自动触发回调
-
-参考: src/wd/components/wd-resize/wd-resize.vue:82-84,176-217
 
 ### 动态内容监听
 
@@ -197,8 +191,6 @@ const removeItem = () => {
 - 加载更多内容
 - 异步数据加载
 
-参考: src/wd/components/wd-resize/wd-resize.vue:169-222
-
 ### 图表容器监听
 
 监听图表容器尺寸变化,自动重绘图表:
@@ -259,8 +251,6 @@ const toggleFullscreen = () => {
 - 图表容器尺寸改变时,需要调用图表实例的 resize 方法重新渲染
 - 常见场景: 全屏切换、横竖屏切换、侧边栏展开/收起
 - ECharts、uCharts 等图表库都支持 resize 方法
-
-参考: src/wd/components/wd-resize/wd-resize.vue:176-217
 
 ### 响应式布局
 
@@ -350,8 +340,6 @@ const setContainerWidth = (width: number) => {
 - 自适应卡片排列
 - 根据容器宽度显示/隐藏元素
 - 动态调整字体大小
-
-参考: src/wd/components/wd-resize/wd-resize.vue:176-217
 
 ### 折叠面板监听
 
@@ -451,8 +439,6 @@ const handlePanelResize = (info: Record<string, any>) => {
 - 通过监听尺寸变化,可以同步更新其他依赖高度的逻辑
 - 适合需要精确知道内容高度的场景
 
-参考: src/wd/components/wd-resize/wd-resize.vue:176-217
-
 ### 虚拟滚动容器
 
 监听虚拟滚动容器尺寸,计算可视区域项目数量:
@@ -527,8 +513,6 @@ const toggleExpand = () => {
 - 根据容器高度动态计算渲染项数
 - 自适应可视区域
 
-参考: src/wd/components/wd-resize/wd-resize.vue:176-217
-
 ## 高级用法
 
 ### 自定义容器尺寸
@@ -569,8 +553,6 @@ const handleResize = (info: Record<string, any>) => {
 - 可以设置固定宽高或百分比
 - 样式会应用到 Resize 组件的根元素
 
-参考: src/wd/components/wd-resize/wd-resize.vue:5-8,70-71
-
 ### 自定义样式类
 
 通过 `custom-class` 和 `custom-container-class` 自定义样式:
@@ -610,8 +592,6 @@ const handleResize = (info: Record<string, any>) => {
 - `custom-class`: 应用到根元素的自定义类名
 - `custom-container-class`: 应用到容器元素的自定义类名
 - 使用 `:deep()` 穿透组件样式隔离
-
-参考: src/wd/components/wd-resize/wd-resize.vue:6,13,72-75
 
 ### 位置信息获取
 
@@ -687,8 +667,6 @@ const handlePositionResize = (info: Record<string, any>) => {
 - `right`: 元素右侧距离页面左侧的距离
 - 滚动页面时,top 和 bottom 值会实时变化
 
-参考: src/wd/components/wd-resize/wd-resize.vue:180-182,213-215
-
 ## API
 
 ### Props
@@ -698,8 +676,6 @@ const handlePositionResize = (info: Record<string, any>) => {
 | custom-style | 自定义根节点样式 | `string` | `''` |
 | custom-class | 自定义根节点样式类 | `string` | `''` |
 | custom-container-class | 自定义容器样式类 | `string` | `''` |
-
-参考: src/wd/components/wd-resize/wd-resize.vue:69-76,87-91
 
 ### Events
 
@@ -715,15 +691,11 @@ const handlePositionResize = (info: Record<string, any>) => {
 - `bottom`: 元素底部距离页面顶部的距离(px)
 - `right`: 元素右侧距离页面左侧的距离(px)
 
-参考: src/wd/components/wd-resize/wd-resize.vue:81-84,180-182,213-215
-
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 默认插槽,需要监听尺寸变化的内容 |
-
-参考: src/wd/components/wd-resize/wd-resize.vue:15
 
 ### 类型定义
 
@@ -767,8 +739,6 @@ interface ResizeInfo {
 }
 ```
 
-参考: src/wd/components/wd-resize/wd-resize.vue:66-84
-
 ## 技术原理
 
 ### 双滚动检测机制
@@ -811,8 +781,6 @@ Resize 组件采用两个 scroll-view 分别检测元素变大和变小:
 - 滚动位置设置为 `3 * height` 和 `3 * width`
 - 当容器变小时,滚动条自动调整到边界,触发滚动事件
 
-参考: src/wd/components/wd-resize/wd-resize.vue:21-48,135-143
-
 ### 滚动位置重置
 
 每次检测到尺寸变化后,需要重置滚动位置以准备下一次检测:
@@ -832,8 +800,6 @@ const scrollToBottom = ({ lastWidth, lastHeight }: { lastWidth: number; lastHeig
 - 使用闭包记录上次的宽高(`lastWidth`、`lastHeight`)
 - 扩展检测滚动位置 = 极大值 + 上次尺寸
 - 收缩检测滚动位置 = 当前尺寸 × 3 + 上次尺寸
-
-参考: src/wd/components/wd-resize/wd-resize.vue:120-143
 
 ### 事件过滤机制
 
@@ -863,8 +829,6 @@ onScrollHandler = () => {
 - 第2-3次事件: 滚动条初始化,过滤掉
 - 第4次及以后: 真正的尺寸变化,触发回调
 
-参考: src/wd/components/wd-resize/wd-resize.vue:112-222
-
 ### 容器尺寸同步
 
 为了防止父容器尺寸坍塌,组件会立即同步容器尺寸:
@@ -878,8 +842,6 @@ width.value = newWidth
 - 容器使用 `position: absolute` 脱离文档流
 - 通过动态设置根元素的 `width` 和 `height` 样式保持布局
 - 确保 Resize 组件不会影响原有布局
-
-参考: src/wd/components/wd-resize/wd-resize.vue:7,109-111,165-166,194-195,238-242
 
 ## 最佳实践
 
@@ -1175,8 +1137,6 @@ const handleResize = (info: Record<string, any>) => {
 - 提升性能,特别是在复杂操作中
 - 避免频繁触发导致的卡顿
 
-参考: src/wd/components/wd-resize/wd-resize.vue:169-222
-
 ## 常见问题
 
 ### 1. 初始化时触发多次 resize 事件
@@ -1228,8 +1188,6 @@ const handleResize = (info: Record<string, any>) => {
 - 第1次事件是组件初始化完成的通知
 - 第2-3次事件是滚动条初始化产生的
 
-参考: src/wd/components/wd-resize/wd-resize.vue:112-113,177-188
-
 ### 2. 尺寸变化但事件未触发
 
 **问题原因:**
@@ -1266,8 +1224,6 @@ const handleResize = (info: Record<string, any>) => {
 - 确保 Resize 组件的父容器尺寸可以随内容变化
 - 避免使用固定宽高限制容器
 - 如需限制尺寸,使用 `max-width`/`max-height` 而非 `width`/`height`
-
-参考: src/wd/components/wd-resize/wd-resize.vue:238-242
 
 ### 3. 在滚动容器中位置信息不准确
 
@@ -1317,8 +1273,6 @@ const handleResize = (info: Record<string, any>) => {
 - `top`、`bottom`、`left`、`right` 是相对于视口的位置
 - 在滚动容器中,需要加上滚动偏移量获取绝对位置
 - H5 端可以使用 `element.offsetTop` 获取相对于文档的位置
-
-参考: src/wd/components/wd-resize/wd-resize.vue:153-158,170-175
 
 ### 4. 性能问题:频繁触发 resize 事件
 
@@ -1390,8 +1344,6 @@ const performExpensiveOperation = (info: Record<string, any>) => {
 - 防抖延迟建议: 100-200ms
 - 节流间隔建议: 100-150ms
 
-参考: src/wd/components/wd-resize/wd-resize.vue:169-222
-
 ### 5. 在弹窗/抽屉中无法正常工作
 
 **问题原因:**
@@ -1462,8 +1414,6 @@ const handleResize = (info: Record<string, any>) => {
 - 使用 `nextTick` 确保 DOM 更新完成
 - 给予足够的延迟时间(如 100ms)等待渲染完成
 
-参考: src/wd/components/wd-resize/wd-resize.vue:151-227
-
 ## 注意事项
 
 1. **容器约束**
@@ -1495,5 +1445,3 @@ const handleResize = (info: Record<string, any>) => {
    - 不适合监听 window 或 viewport 尺寸变化
    - 不适合监听固定尺寸的容器
    - 适合监听内容驱动的动态尺寸变化
-
-参考: src/wd/components/wd-resize/wd-resize.vue:9-12,238-242

@@ -22,8 +22,6 @@ Slider 组件采用触摸事件处理和实时计算的方式实现滑动效果�
 - **禁用状态** - 提供禁用功能,禁用状态下滑块不可拖动,进度条显示半透明效果
 - **暗色主题** - 内置暗色主题适配,自动调整文字和背景颜色以适应深色模式
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:1-546
-
 ## 基本用法
 
 ### 基础滑块
@@ -53,8 +51,6 @@ const value = ref(50)
 - 拖动滑块可以改变数值,松开后值会自动对齐到步进值
 - 滑块上方会显示当前值的标签
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:133
-
 ### 双滑块模式
 
 通过传入数组值启用双滑块模式,用于选择范围。
@@ -83,8 +79,6 @@ const range = ref([20, 80])
 - 数组第一个元素为左滑块的值,第二个元素为右滑块的值
 - 两个滑块都可以独立拖动,但左滑块不能超过右滑块
 - 进度条会显示在两个滑块之间的区域
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:339
 
 ### 自定义范围
 
@@ -130,8 +124,6 @@ const temperature = ref(25)
 - `max` 属性设置滑块的最大值,默认为 100
 - 滑块值会自动限制在 min 和 max 之间
 - min 可以为负数,支持负数范围的选择
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:126-129
 
 ### 步进值设置
 
@@ -185,8 +177,6 @@ const value4 = ref(5.0)
 - 支持小数步进值,如 0.1、0.5 等
 - 步进值必须大于 0,否则会显示警告并使用 1 作为步进值
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:130-131, 237-251
-
 ### 禁用状态
 
 将滑块设置为禁用状态,不可拖动。
@@ -228,8 +218,6 @@ const range = ref([20, 80])
 - 禁用状态下,滑块按钮会隐藏(visibility: hidden)
 - 进度条显示半透明效果(opacity: 0.25)
 - 最小最大值标签颜色变浅,表示禁用状态
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:118-119, 356-360, 536-543
 
 ### 隐藏标签
 
@@ -278,8 +266,6 @@ const value4 = ref(50)
 - `hide-min-max` 属性隐藏左右两侧的最小最大值标签
 - 两个属性可以同时使用,实现完全无标签的简洁样式
 - 隐藏标签后,组件高度会相应减小
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:114-117
 
 ### 自定义颜色
 
@@ -340,8 +326,6 @@ const value4 = ref(80)
 - `active-color` 设置激活部分的背景颜色,默认为主题色
 - 颜色支持纯色值、十六进制、RGB、渐变等 CSS 颜色格式
 - 渐变色使用 CSS linear-gradient 语法
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:121-124, 365-371, 393-396
 
 ## 高级用法
 
@@ -420,8 +404,6 @@ const addLog = (message: string) => {
 - 可以在 dragend 事件中处理最终值,如提交数据、保存设置等
 - 事件参数通过解构获取: `({ value }) => {}`
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:140-146, 287-333
-
 ### 双滑块范围选择
 
 使用双滑块实现范围选择功能。
@@ -492,8 +474,6 @@ const handleSearch = () => {
 - 适用于价格筛选、年龄范围、日期区间等场景
 - 建议设置合适的步进值,避免范围过于精细
 - 可以在 dragend 事件中处理范围变更,如触发搜索等
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:198-209, 382-386
 
 ### 音量控制应用
 
@@ -603,8 +583,6 @@ const setVolume = (value: number) => {
 - 可以预设快捷按钮,如静音、50%、最大
 - 建议步进值设为 1,提供精确控制
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:126-131
-
 ### 亮度调节应用
 
 实现屏幕亮度调节功能。
@@ -670,8 +648,6 @@ const handleBrightnessChange = ({ value }: { value: number }) => {
 - 亮度调节通常使用步进值 5 或 10
 - 在 dragend 事件中调用系统 API,避免频繁调用
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:126-131
-
 ### 自定义样式类
 
 通过样式类自定义滑块的外观。
@@ -716,8 +692,6 @@ const value2 = ref(60)
 - `custom-min-class` 自定义最小值标签的样式类
 - `custom-max-class` 自定义最大值标签的样式类
 - 使用 `:deep()` 穿透样式作用域
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:105-112
 
 ### 动态初始化
 
@@ -786,8 +760,6 @@ const handleTabChange = async () => {
   - 父容器宽度动态变化
   - 滑块从 display: none 变为可见
 - 调用时机应该在 DOM 更新完成之后
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:153-156, 276-281, 423-425, 427-429
 
 ### 表单集成应用
 
@@ -934,8 +906,6 @@ const handleReset = () => {
 - 双滑块适用于选择范围,如价格区间、日期范围等
 - 表单验证时注意检查范围的合理性
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:133
-
 ## API
 
 ### Props
@@ -956,8 +926,6 @@ const handleReset = () => {
 | custom-min-class | 自定义最小值的样式类名 | `string` | `''` |
 | custom-max-class | 自定义最大值的样式类名 | `string` | `''` |
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:104-134, 159-173
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -966,8 +934,6 @@ const handleReset = () => {
 | dragstart | 开始拖动滑块时触发 | `{ value: number \| number[] }` |
 | dragmove | 拖动滑块过程中触发 | `{ value: number \| number[] }` |
 | dragend | 结束拖动滑块时触发 | `{ value: number \| number[] }` |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:139-148
 
 ### Slots
 
@@ -978,8 +944,6 @@ Slider 组件不提供插槽。
 | 方法名 | 说明 | 参数 | 返回值 |
 |--------|------|------|--------|
 | initSlider | 初始化滑块宽度,在容器宽度变化或滑块从隐藏变为可见时调用 | - | `void` |
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:153-156, 276-281, 427-429
 
 ### 类型定义
 
@@ -1055,8 +1019,6 @@ interface WdSliderExpose {
 export type SliderInstance = ComponentPublicInstance<WdSliderProps, WdSliderExpose>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:88-156, 432
-
 ## 主题定制
 
 ### CSS 变量
@@ -1074,8 +1036,6 @@ $-slider-handle-bg: #fff;             // 滑块按钮背景色
 $-slider-axie-bg: #e8e8e8;            // 进度条边框颜色
 $-slider-disabled-color: #c8c9cc;     // 禁用文字颜色
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:437-458
 
 ### 暗色主题
 
@@ -1106,8 +1066,6 @@ $-slider-disabled-color: #c8c9cc;     // 禁用文字颜色
   }
 }
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:440-458
 
 ## 最佳实践
 
@@ -1295,8 +1253,6 @@ onMounted(() => {
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:237-251, 303-324
-
 ### 2. 双滑块值不正确
 
 **问题原因:**
@@ -1339,8 +1295,6 @@ const range = ref([20, 80])  // 在 0-100 范围内
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:198-209
-
 ### 3. 滑块在弹窗或标签页中显示异常
 
 **问题原因:**
@@ -1376,8 +1330,6 @@ const showPopup = () => {
 </script>
 ```
 
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:276-281, 423-425
-
 ### 4. 步进值对齐不准确
 
 **问题原因:**
@@ -1409,8 +1361,6 @@ const showPopup = () => {
 - 组件使用 `Number.parseFloat(...toFixed(10))` 处理浮点数精度
 - 步进值 ≤ 0 会触发警告并使用 1
 - 建议步进值是范围的约数,确保可以到达最大值
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:237-251
 
 ### 5. 自定义颜色不生效
 
@@ -1451,8 +1401,6 @@ const showPopup = () => {
   active-color="linear-gradient(90deg, #FF6B6B 0%, #FF4757 100%)"
 />
 ```
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:365-398
 
 ## 注意事项
 
@@ -1515,5 +1463,3 @@ const showPopup = () => {
     - 组件在 H5、小程序、App 等平台都支持
     - 触摸事件在各平台表现一致
     - 渐变颜色在某些旧版本小程序可能不支持
-
-参考: ../ruoyi-plus-uniapp/plus-uniapp/src/wd/components/wd-slider/wd-slider.vue:1-546

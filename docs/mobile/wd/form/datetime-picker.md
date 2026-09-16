@@ -24,8 +24,6 @@ DatetimePicker 日期时间选择器是一个功能全面的日期时间选择�
 - **即时响应** - 支持手指松开时立即触发 change 事件，提升交互体验
 - **暗黑模式** - 完整支持暗黑主题，自动适配系统主题切换
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:1-165
-
 ## 基本用法
 
 ### 日期选择
@@ -66,8 +64,6 @@ const handleConfirm = ({ value }: { value: number }) => {
 - 默认显示格式为 `YYYY-MM-DD`
 - 可选范围默认为当前年份前后各10年
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:268, 365-367, 682-686
-
 ### 年月选择
 
 设置 `type="year-month"` 选择年月，返回时间戳格式。
@@ -99,8 +95,6 @@ const date2 = ref<number>(Date.now())
 - `modelValue` 为时间戳格式
 - 默认显示格式为 `YYYY-MM`
 - 选中日期为该月的第一天
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:268, 687-688
 
 ### 时间选择
 
@@ -135,8 +129,6 @@ const time1 = ref('12:30')
 - 默认显示格式为 `HH:mm`
 - 小时范围默认 0-23，分钟范围默认 0-59
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:268, 368-371, 689-692
-
 ### 日期时间选择
 
 设置 `type="datetime"` 选择完整的日期时间，返回时间戳格式。
@@ -169,8 +161,6 @@ const datetime1 = ref<number>(Date.now())
 - 默认显示格式为 `YYYY-MM-DD HH:mm`
 - 综合了日期和时间选择功能
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:268, 365, 693-696
-
 ### 年份选择
 
 设置 `type="year"` 仅选择年份，返回时间戳格式。
@@ -202,8 +192,6 @@ const year1 = ref<number>(Date.now())
 - `modelValue` 为时间戳格式
 - 默认显示格式为年份数字
 - 选中日期为该年的1月1日
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:268, 683-684
 
 ### 日期范围限制
 
@@ -252,8 +240,6 @@ const maxDate = computed(() => {
 - 默认范围为当前年份前后各10年
 - 超出范围的日期会被禁用
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:269-272, 366-367
-
 ### 时间范围限制
 
 时间类型支持通过 `min-hour`、`max-hour`、`min-minute`、`max-minute` 限制时间范围。
@@ -289,8 +275,6 @@ const time2 = ref('09:00')
 - `min-minute` / `max-minute` 限制分钟范围，默认 0-59
 - 仅在 `type="time"` 或 `type="datetime"` 时生效
 - 可以灵活组合使用
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:273-280, 368-371
 
 ### 秒级精度
 
@@ -341,8 +325,6 @@ const datetime2 = ref<number>(Date.now())
 - 时间类型的 modelValue 格式变为 `HH:mm:ss`
 - 可通过 `min-second` 和 `max-second` 限制秒数范围
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:281-286, 372-374, 690-696
-
 ### 禁用和只读
 
 设置 `disabled` 或 `readonly` 禁止用户操作。
@@ -383,8 +365,6 @@ const date5 = ref<number>(Date.now())
 - `readonly` 为 `true` 时只读，值显示为正常颜色
 - 两种状态都无法打开选择面板
 - 在 `showPopup` 方法中会检查这两个状态
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:229-232, 779
 
 ## 高级用法
 
@@ -448,8 +428,6 @@ const handleRangeConfirm = ({ value }: { value: number[] }) => {
 - 开始时间和结束时间分别由两个 DatetimePickerView 实例管理
 - 自动处理边界关系，防止选择无效范围（开始时间 > 结束时间）
 - 通过 `customColumnFormatter` 为超出边界的选项添加禁用状态
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:28-44, 91-100, 1018-1021, 615-645
 
 ### 自定义过滤器
 
@@ -526,8 +504,6 @@ type DatetimePickerViewFilter = (
 - 可以基于当前已选值进行动态过滤
 - 组件会在初始化时验证函数类型
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:172-173, 287-288, 1048-1055
-
 ### 自定义选项格式化
 
 通过 `formatter` 函数自定义选择器内部选项的显示文本。
@@ -589,8 +565,6 @@ type DatetimePickerViewFormatter = (
 - 只影响选择器内部选项的显示，不影响顶部显示值
 - 使用 `formatter` 后，`displayFormat` 需要手动处理格式化逻辑
 - 组件会在初始化时验证函数类型
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:173, 289-290, 639, 1057-1065
 
 ### 自定义显示格式化
 
@@ -657,8 +631,6 @@ type DatetimePickerDisplayFormat = (
 - 只影响顶部显示值，不影响选择器内部选项
 - 使用 `formatter` 后，默认 `displayFormat` 会失效，需要手动提供
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:200, 292, 653-698, 1037-1045
-
 ### 区域选择 Tab 标签格式化
 
 区域选择模式下，通过 `display-format-tab-label` 自定义 Tab 标签的显示格式。
@@ -704,8 +676,6 @@ type DatetimePickerDisplayFormatTabLabel = (
 - 函数接收选中项数组，返回格式化后的字符串
 - Tab 标签显示在面板顶部的"开始"和"结束"区域
 - 组件会在初始化时验证函数类型
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:214, 295-296, 656-658, 1077-1085
 
 ### 确认前校验
 
@@ -813,8 +783,6 @@ type DatetimePickerBeforeConfirm = (
 - 可以通过 picker 实例的 `setLoading` 方法控制加载状态
 - 组件会在初始化时验证函数类型
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:205-209, 293-294, 936-946, 1067-1075
-
 ### 默认值
 
 通过 `default-value` 设置默认日期，打开面板时自动定位到指定日期。
@@ -855,8 +823,6 @@ const defaultDate = computed(() => {
 - 当 `modelValue` 为空时，使用默认值初始化面板
 - 默认值不会自动赋值给 `modelValue`，仅用于面板初始定位
 - 在 `getDefaultInnerValue` 方法中处理默认值逻辑
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:297-298, 468-480
 
 ### 加载状态
 
@@ -903,8 +869,6 @@ const handleOpen = async () => {
 - 通过 `loading-color` 自定义加载颜色（完整十六进制格式）
 - 加载状态下点击确认按钮会直接关闭面板
 - 可以通过 `setLoading` 方法动态设置加载状态
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:233-236, 910-913, 968-970
 
 ### 表单验证
 
@@ -986,8 +950,6 @@ const handleReset = () => {
 - 也可以在 form 的 `rules` 中统一配置
 - 验证失败时会自动显示错误信息
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:301-304, 987-1010
-
 ### 自定义插槽
 
 通过插槽自定义标签区域和整体内容。
@@ -1051,8 +1013,6 @@ const openPicker = () => {
 - 默认插槽完全自定义显示内容
 - 使用默认插槽时需要手动触发打开（通过 ref 调用 `open` 方法）
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:11, 14-24
-
 ## API
 
 ### Props
@@ -1107,8 +1067,6 @@ const openPicker = () => {
 | custom-label-class | 自定义 label 样式类 | `string` | - |
 | custom-value-class | 自定义 value 样式类 | `string` | - |
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:219-315, 348-382
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -1120,16 +1078,12 @@ const openPicker = () => {
 | open | 打开选择器时触发 | - |
 | toggle | 区域选择时切换 Tab 触发 | `value: string \| number` |
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:320-333
-
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 完全自定义选择器内容 |
 | label | 自定义标签内容 |
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:11, 14-24
 
 ### Methods
 
@@ -1163,8 +1117,6 @@ const openPicker = () => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:338-345, 975-984, 1120-1124
 
 ### 类型定义
 
@@ -1227,8 +1179,6 @@ export type DatetimePickerInstance = ComponentPublicInstance<
 >
 ```
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:169-176, 197-215, 1127-1130
-
 ## 主题定制
 
 ### CSS 变量
@@ -1279,8 +1229,6 @@ $-form-item-error-message-line-height: 1.2;
 // 其他变量
 $-color-white: #fff;
 ```
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:1134-1137
 
 ### 暗黑模式
 
@@ -1338,8 +1286,6 @@ DatetimePicker 组件完整支持暗黑模式，在 `wot-theme-dark` 类下会�
 }
 ```
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:1139-1186
-
 ### 自定义样式类
 
 组件提供多个自定义样式类属性，便于精细化样式控制：
@@ -1381,8 +1327,6 @@ DatetimePicker 组件完整支持暗黑模式，在 `wot-theme-dark` 类下会�
 }
 </style>
 ```
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:221-224, 305-312
 
 ## 最佳实践
 
@@ -1691,8 +1635,6 @@ const timeWithSecond = ref('12:30:45')
 </script>
 ```
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:434-455
-
 ### 2. 区域选择开始时间大于结束时间
 
 **问题描述：**
@@ -1736,8 +1678,6 @@ const dateRange = computed({
 })
 </script>
 ```
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:512-613, 809-880
 
 ### 3. 使用 formatter 后显示格式异常
 
@@ -1796,8 +1736,6 @@ const formatDisplay = (items: any[]) => {
 </script>
 ```
 
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:653-698
-
 ### 4. 默认值不生效
 
 **问题描述：**
@@ -1836,8 +1774,6 @@ const defaultDate = ref<number>(Date.now() + 7 * 24 * 3600 * 1000)
 const date = ref<number>(Date.now() + 7 * 24 * 3600 * 1000)
 </script>
 ```
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:468-480
 
 ### 5. 表单验证时机不正确
 
@@ -1913,8 +1849,6 @@ const handleSubmit = () => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-datetime-picker/wd-datetime-picker.vue:301-304, 987-1010
 
 ## 注意事项
 

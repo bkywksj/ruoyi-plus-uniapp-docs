@@ -24,8 +24,6 @@ ColPicker 多列选择器是一个功能强大的级联选择组件,专为移动
 - **灵活插槽** - 支持自定义 label 插槽和默认插槽,满足复杂 UI 需求
 - **超出省略** - 支持选中值超出容器时自动省略显示
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:1-98
-
 ## 基本用法
 
 ### 使用内置省市区数据
@@ -65,8 +63,6 @@ const displayText = computed(() => {
 - `v-model` 绑定的是省市区编码数组,如 `['110000', '110100', '110101']`
 - 组件内部会根据编码自动显示对应的省市区名称
 - 内置数据包含全国所有省、市、区县信息
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:475-494
 
 ### 自定义列数据
 
@@ -119,8 +115,6 @@ const handleConfirm = ({ value, selectedItems }) => {
 - 每个选项默认需要 `label`(显示文本) 和 `value`(值) 字段
 - `v-model` 绑定的值数组长度需要与列数一致
 - 适用于数据结构简单、层级固定的场景
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:743-773
 
 ### 动态列加载(columnChange)
 
@@ -193,8 +187,6 @@ const handleColumnChange = (option: ColPickerColumnChangeOption) => {
 - 通过 `finish(false)` 中断选择(不关闭弹窗)
 - 适用于树形数据、异步加载、按需加载等场景
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:517-664
-
 ### 自动补全功能
 
 开启 `autoComplete` 后,当 `columns` 长度小于 `v-model` 长度时,自动触发 `columnChange` 补全数据。
@@ -256,8 +248,6 @@ const handleColumnChange = (option: ColPickerColumnChangeOption) => {
 - 补全过程会根据 `v-model` 的值逐级调用 `columnChange`
 - 适用于回显已选数据、深度链接等场景
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:685-705
-
 ### 自定义显示格式
 
 使用 `displayFormat` 自定义选中值的显示格式。
@@ -289,8 +279,6 @@ const formatDisplay = (selectedItems: Record<string, any>[]) => {
 - `displayFormat` 接收选中项数组,返回格式化后的字符串
 - `selectedItems` 是包含完整选项信息的对象数组
 - 可以自由组合显示格式,如 `省-市-区`、`省>市>区` 等
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:440-469
 
 ### 确认前验证
 
@@ -351,8 +339,6 @@ const handleBeforeConfirm = (
 - 调用 `resolve(false)` 验证失败,选择器保持打开状态
 - 支持异步验证,如 API 请求校验
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:566-598
-
 ### 禁用和只读状态
 
 通过 `disabled` 和 `readonly` 控制组件的可交互性。
@@ -387,8 +373,6 @@ const region2 = ref<(string | number)[]>(['310000', '310100', '310101'])
 - `readonly="true"` 只读模式,显示正常,但无法点击打开选择器
 - 禁用和只读状态下不显示右侧箭头图标
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:885-890
-
 ### 错误状态
 
 通过 `error` 属性显示错误状态。
@@ -415,8 +399,6 @@ const region = ref<(string | number)[]>([])
 **使用说明:**
 - `error="true"` 时,选中值和箭头显示为红色
 - 通常配合表单验证使用,手动设置较少
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:1082-1089
 
 ## 高级用法
 
@@ -467,8 +449,6 @@ const customColumns = ref([
 - `tipKey` 指定提示文本字段名,默认 `'tip'`
 - 提示文本会显示在选项名称下方,字体较小
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:205-210
-
 ### 选项禁用
 
 在选项数据中设置 `disabled: true` 禁用某个选项。
@@ -502,8 +482,6 @@ const columns = ref([
 **使用说明:**
 - 禁用的选项文字置灰,点击无效
 - 禁用状态不影响其他选项的选择
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:78-80
 
 ### 带提示的选项
 
@@ -553,8 +531,6 @@ const columns = ref([
 - 提示文本使用较小字号和灰色文字
 - 可以配合禁用状态使用,提示用户原因
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:85-87
-
 ### 加载状态自定义
 
 自定义 loading 图标颜色。
@@ -597,8 +573,6 @@ const handleColumnChange = (option: ColPickerColumnChangeOption) => {
 - `loadingColor` 设置 loading 图标的颜色
 - 默认值为 `'#4D80F0'`(蓝色)
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:91-93
-
 ### 底部线条自定义
 
 自定义底部激活线条的宽度和高度。
@@ -639,8 +613,6 @@ const columns = ref([
 - `lineHeight` 设置线条高度,单位 `rpx`,默认 `6rpx`
 - 线条会随列切换进行平滑过渡动画
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:332-379
-
 ### 超出省略显示
 
 开启 `ellipsis` 后,选中值超出容器宽度时自动省略。
@@ -667,8 +639,6 @@ const region = ref<(string | number)[]>(['230000', '230100', '230103'])
 **使用说明:**
 - `ellipsis="true"` 时,超出部分显示 `...`
 - 默认为 `false`,超出时换行显示
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:1134-1136
 
 ### 自定义弹窗配置
 
@@ -708,8 +678,6 @@ const columns = ref([
 - `closeOnClickModal` 是否允许点击遮罩关闭,默认 `true`
 - `zIndex` 弹窗层级,默认 `100`
 - `safeAreaInsetBottom` 是否适配底部安全区域,默认 `true`
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:42-51
 
 ### 表单集成
 
@@ -800,8 +768,6 @@ const handleReset = () => {
 - 支持自定义 `validator` 函数验证
 - 验证失败时自动显示错误提示和错误状态
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:826-879
-
 ### 自定义样式类
 
 使用自定义样式类调整组件外观。
@@ -840,8 +806,6 @@ const columns = ref([
 - `customLabelClass` 自定义 label 样式类
 - `customValueClass` 自定义 value 样式类
 - 需要使用 `:deep()` 穿透组件样式隔离
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:166-169
 
 ### 使用插槽
 
@@ -898,8 +862,6 @@ const handleOpen = () => {
 - 使用默认插槽时,需要设置 `use-default-slot="true"`
 - 默认插槽可以完全自定义触发器的样式和交互
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:7-41
-
 ## API
 
 ### Props
@@ -941,8 +903,6 @@ const handleOpen = () => {
 | custom-label-class | 自定义 label 样式类 | `string` | `''` |
 | custom-value-class | 自定义 value 样式类 | `string` | `''` |
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:165-236
-
 ### Events
 
 | 事件名 | 说明 | 回调参数 |
@@ -951,16 +911,12 @@ const handleOpen = () => {
 | confirm | 确认选择时触发 | `{ value: (string \| number)[], selectedItems: Record<string, any>[] }` |
 | close | 关闭选择器时触发 | - |
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:241-249
-
 ### Slots
 
 | 插槽名 | 说明 |
 |--------|------|
 | default | 自定义默认内容,需设置 `use-default-slot` |
 | label | 自定义左侧标题,需设置 `use-label-slot` |
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:8-24
 
 ### Methods
 
@@ -992,8 +948,6 @@ const openPicker = () => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:254-259, 928-937, 982-985
 
 ### 类型定义
 
@@ -1039,8 +993,6 @@ export type ColPickerBeforeConfirm = (
 export type ColPickerInstance = ComponentPublicInstance<WdColPickerProps, WdColPickerExpose>
 ```
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:133-161, 988
-
 ## 主题定制
 
 ### CSS 变量
@@ -1075,8 +1027,6 @@ ColPicker 组件提供了以下 CSS 变量用于主题定制:
 --wd-col-picker-list-color-tip: #999;
 --wd-col-picker-list-checked-icon-size: 32rpx;
 ```
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:991-1236
 
 ### 暗黑模式
 
@@ -1118,8 +1068,6 @@ ColPicker 组件支持暗黑模式,在 `wot-theme-dark` 类下自动应用暗色
   }
 }
 ```
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:997-1050
 
 ### 自定义主题示例
 
@@ -1384,8 +1332,6 @@ const handleColumnChange = (option: ColPickerColumnChangeOption) => {
 </script>
 ```
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:517-664
-
 ### 2. 为什么内置省市区数据不生效?
 
 **问题原因:**
@@ -1412,8 +1358,6 @@ const region = ref<(string | number)[]>([])
 const columns = ref<Record<string, any>[][] | undefined>(undefined)
 </script>
 ```
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:475-494
 
 ### 3. 如何实现三级以上的级联选择?
 
@@ -1457,8 +1401,6 @@ const mockData = {
 </script>
 ```
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:517-664
-
 ### 4. 如何自定义选中值的显示格式?
 
 **问题原因:**
@@ -1498,8 +1440,6 @@ const formatRegion = (selectedItems: Record<string, any>[]) => {
 }
 </script>
 ```
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:440-469
 
 ### 5. 为什么自动补全功能不工作?
 
@@ -1556,8 +1496,6 @@ const loadChildren = async (parentValue: string | number) => {
 </script>
 ```
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:670-705
-
 ## 注意事项
 
 ### 1. v-model 值类型
@@ -1574,8 +1512,6 @@ const loadChildren = async (parentValue: string | number) => {
 - 可以通过 `valueKey`、`labelKey`、`tipKey` 自定义字段名
 - 当不传 `columns` 或传入空数组时,自动使用内置省市区数据
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:174
-
 ### 3. columnChange 回调规范
 
 - 必须调用 `resolve(nextColumn)` 或 `finish()`
@@ -1584,16 +1520,12 @@ const loadChildren = async (parentValue: string | number) => {
 - `finish(false)` 中断选择,不关闭选择器
 - 异步加载时要处理错误情况,避免 loading 一直显示
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:517-664
-
 ### 4. autoComplete 使用场景
 
 - 适用于编辑页面回显已选数据
 - 适用于深度链接直接定位到具体选项
 - 需要配合 `columnChange` 回调使用
 - 当 `index === -1` 时表示初始化补全
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:685-705
 
 ### 5. beforeConfirm 验证规范
 
@@ -1602,16 +1534,12 @@ const loadChildren = async (parentValue: string | number) => {
 - `resolve(false)` 验证失败,选择器保持打开
 - 支持异步验证,如 API 请求
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:566-598
-
 ### 6. 表单集成注意事项
 
 - 需要设置 `prop` 属性用于表单验证
 - 可以在组件上设置 `rules`,也可以在 `wd-form` 上统一设置
 - `required` 属性会自动显示必填星号
 - 表单验证失败时自动显示错误提示和错误状态
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:826-879
 
 ### 7. 内置省市区数据说明
 
@@ -1621,16 +1549,12 @@ const loadChildren = async (parentValue: string | number) => {
 - 自动处理直辖市、特别行政区等特殊情况
 - 部分市辖区可能没有区县数据,此时选择市级即完成
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:292-294
-
 ### 8. 插槽使用注意
 
 - 使用 `label` 插槽需要设置 `use-label-slot="true"`
 - 使用默认插槽需要设置 `use-default-slot="true"`
 - 默认插槽会完全替换内置的触发器UI
 - 使用默认插槽时需要手动处理点击事件,调用 `open()` 方法
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:7-24, 179-182
 
 ### 9. 性能优化建议
 
@@ -1639,16 +1563,12 @@ const loadChildren = async (parentValue: string | number) => {
 - 使用内置省市区数据时无需担心性能,数据已优化
 - 避免在 `displayFormat` 中进行复杂计算
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:517-664
-
 ### 10. 样式定制建议
 
 - 优先使用 CSS 变量进行主题定制
 - 使用 `custom-class`、`custom-label-class`、`custom-value-class` 添加自定义样式
 - 需要穿透组件样式时使用 `:deep()` 选择器
 - 暗黑模式下自动应用暗色主题,无需额外配置
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:991-1236
 
 ### 11. 事件处理注意
 
@@ -1657,13 +1577,9 @@ const loadChildren = async (parentValue: string | number) => {
 - 如果需要区分确认和取消,使用 `confirm` 事件
 - `update:modelValue` 只在确认时触发,取消时不触发
 
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:500-512
-
 ### 12. 底部激活线条说明
 
 - 底部线条会自动跟随当前激活的列移动
 - 可以通过 `lineWidth` 和 `lineHeight` 自定义线条大小
 - 线条移动有平滑过渡动画
 - 线条颜色可以通过 CSS 变量 `--wd-col-picker-line-color` 修改
-
-参考: src/wd/components/wd-col-picker/wd-col-picker.vue:332-379
