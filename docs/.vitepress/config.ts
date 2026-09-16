@@ -382,7 +382,8 @@ export default defineConfig({
                         { text: '标签视图(TagsView)', link: '/frontend/layout/tags-view' },
                         { text: '主内容区(AppMain)', link: '/frontend/layout/app-main' },
                         { text: '设置面板(Settings)', link: '/frontend/layout/settings' },
-                        { text: '前台布局 (HomeLayout)', link: '/frontend/layout/home-layout' }
+                        { text: '前台布局 (HomeLayout)', link: '/frontend/layout/home-layout' },
+                        { text: '认证页 (AuthLayout)', link: '/frontend/layout/auth-layout' }
                     ]
                 },
                 {
