@@ -114,7 +114,7 @@ RuoYi-Plus-UniApp采用**前后端分离**的全栈架构,支持**多端统一**
 | **Redisson** | 3.52.0 | Redis客户端 | - 分布式锁<br>- 集合操作<br>- 生产级 |
 | **MySQL** | 5.7+ | 关系数据库 | - 开源免费<br>- 性能优秀<br>- 成熟稳定 |
 | **Hutool** | 5.8.43 | 工具类库 | - 功能全面<br>- 易于使用<br>- 国产优秀 |
-| **SpringDoc** | 2.8.13 | API文档 | - OpenAPI 3.0<br>- Swagger UI<br>- 自动生成 |
+| **SpringDoc** | 2.8.17 | API文档 | - OpenAPI 3.0<br>- Swagger UI<br>- 自动生成 |
 | **MinIO/AWS S3** | - | 对象存储 | - S3兼容<br>- 可私有化<br>- 高可用 |
 
 ### 前端技术栈 (PC管理端)

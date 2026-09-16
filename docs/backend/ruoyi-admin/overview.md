@@ -246,7 +246,7 @@ ruoyi-admin 模块依赖的核心技术栈版本：
 | MyBatis-Plus | 3.5.16 | ORM框架 |
 | Sa-Token | 1.45.0 | 认证授权框架 |
 | Redisson | 3.52.0 | Redis客户端 |
-| Warm-Flow | 1.8.1 | 工作流引擎 |
+| Warm-Flow | 1.8.9 | 工作流引擎 |
 
 ## 最佳实践
 

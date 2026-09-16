@@ -236,7 +236,7 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 |------|------|------|
 | Java | 21 | JDK版本要求 |
 | Spring Boot | 3.5.16 | 核心框架版本 |
-| MyBatis | 3.5.16 | 持久层框架 |
+| MyBatis | 3.5.19 | 持久层框架 |
 | MyBatis-Plus | 3.5.16 | MyBatis增强 |
 
 ### 数据处理组件版本
@@ -254,14 +254,14 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 |------|------|------|
 | Sa-Token | 1.45.0 | 权限认证 |
 | JustAuth | 1.16.7 | 社交登录 |
-| BouncyCastle | 1.80 | 加密库 |
+| BouncyCastle | 1.83 | 加密库 |
 
 ### 工具库版本
 
 | 依赖 | 版本 | 说明 |
 |------|------|------|
 | Hutool | 5.8.43 | 工具集合 |
-| Lombok | 1.18.40 | 代码简化 |
+| Lombok | 1.18.44 | 代码简化 |
 | MapStruct-Plus | 1.5.0 | 对象映射 |
 | Guava | 33.4.8-jre | Google工具库 |
 
@@ -292,14 +292,15 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 
 | 依赖 | 版本 | 说明 |
 |------|------|------|
-| SpringDoc | 2.8.14 | API文档 |
+| SpringDoc | 2.8.17 | API文档 |
 | Spring Boot Admin | 3.5.8 | 监控管理 |
 
 ### AI与网络组件版本
 
 | 依赖 | 版本 | 说明 |
 |------|------|------|
-| LangChain4j | 0.35.0 | AI大模型集成 |
+| LangChain4j | 1.14.1 | AI大模型集成 |
+| LangChain4j Community | 1.14.0-beta24 | DashScope(通义千问)等社区模型接入 |
 | Forest | 1.7.1 | HTTP客户端 |
 | AWS SDK | 2.28.22 | S3存储 |
 
@@ -308,9 +309,32 @@ BOM (Bill of Materials) 是 Maven 提供的一种依赖管理机制，允许在�
 | 依赖 | 版本 | 说明 |
 |------|------|------|
 | Warm-Flow | 1.8.9 | 工作流引擎 |
-| IP2Region | 2.7.0 | IP地址定位 |
+| IP2Region | 3.3.7 | IP地址定位 |
 | Velocity | 2.3 | 模板引擎 |
-| AnyLine | 8.7.2-20250603 | 动态ORM |
+| AnyLine | 8.7.3-20260319 | 动态ORM |
+
+### 安全顶版依赖
+
+有一类依赖框架自身并不直接使用，声明在 `dependencyManagement` 里**纯粹是为了强制顶掉传递依赖带进来的低版本**。
+
+| 依赖 | 版本 | 顶版原因 |
+|------|------|---------|
+| fastjson | 1.2.84 | 修复 CVE-2026-16723（CVSS 9.0 RCE） |
+
+```xml
+<!-- 限制框架中的 fastjson 版本 -->
+<fastjson.version>1.2.84</fastjson.version>
+```
+
+**为什么必须顶版**：`1.2.68` 至 `1.2.83` 在 `checkAutoType` 白名单校验**之前**就对用户可控的类名做 `getResourceAsStream` 资源探测。在 Spring Boot fat-jar 部署下，**无需开启 AutoType、无需 classpath 中存在 gadget** 即可远程代码执行——也就是说常规的「关掉 AutoType 就安全」的经验在这个漏洞上不成立。
+
+`1.2.84` 是 1.x 分支的安全补丁版。
+
+**影响哪些路径**：JustAuth、RocketMQ、Alipay-SDK 三条传递依赖都会引入 fastjson，在 `dependencyManagement` 中统一管控可以一次覆盖全部三条。
+
+**为什么不能等上游修**：JustAuth `1.16.7` 自身仍依赖 `1.2.83`，且上游已停止更新，只能由本处强制顶版。升级 JustAuth 并不能解决问题。
+
+> 二次开发时若要调整这类版本，务必先确认新版本已修复对应 CVE。它们不出现在业务代码的 `import` 里，改动后不会有任何编译或运行报错提示，问题只会在被攻击时暴露。
 
 ## 使用指南
 

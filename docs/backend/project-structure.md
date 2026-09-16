@@ -18,9 +18,9 @@ RuoYi-Plus-UniApp 后端采用 Spring Boot 3.x + Java 21+ 构建,遵循模块化
 | Sa-Token | 1.45.0 | 认证授权框架 |
 | Redisson | 3.52.0 | Redis 客户端 |
 | Hutool | 5.8.43 | 工具类库 |
-| Warm-Flow | 1.8.1 | 工作流引擎 |
+| Warm-Flow | 1.8.9 | 工作流引擎 |
 | SnailJob | 1.10.0 | 分布式任务调度 |
-| LangChain4j | 0.35.0 | AI 大模型集成 |
+| LangChain4j | 1.14.1 | AI 大模型集成 |
 | WxJava | 4.7.6.B | 微信开发工具包 |
 
 ## 完整目录结构
