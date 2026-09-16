@@ -22,8 +22,8 @@
     "6.x": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x",
       "gitBranch": "6.x",
-      "lastSyncCommit": null,
-      "lastSyncDate": null
+      "lastSyncCommit": "c543902f059c5f1a3475e77a471829fbd7921654",
+      "lastSyncDate": "2026-09-15T22:26:25+08:00"
     },
     "6.x-single": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x-single",
@@ -140,6 +140,13 @@
         "docs/.vitepress/config.ts",
         "PROJECT_PROGRESS.md"
       ]
+    },
+    {
+      "branch": "6.x",
+      "commit": "c543902f059c5f1a3475e77a471829fbd7921654",
+      "date": "2026-09-15T22:26:25+08:00",
+      "summary": "初始化节点。6.x 为 Spring Boot 4.1.0 / JDK 21 / 多租户 / 工作流分支，业务代码与 workflow 主线一致，HEAD 与 workflow 的 9e21e43 为同一笔业务提交的镜像（同日期同标题，hash 不同）。文档正文以主线为准，本分支后续只需关注 SB4 相关的差异化提交（依赖升级、API 变更等），落到分支说明与特性对比处，不改写正文默认口径。",
+      "updatedDocs": []
     }
   ]
 }
