@@ -7,7 +7,7 @@
 **核心特性:**
 
 - **可视化配置** - 使用图片预览方式直观展示各种布局和主题效果
-- **三种菜单布局** - 支持垂直(Vertical)、混合(Mixed)、水平(Horizontal)三种菜单布局模式
+- **四种菜单布局** - 支持垂直(Vertical)、混合(Mixed)、水平(Horizontal)、双列(DualColumn)四种菜单布局模式
 - **主题风格切换** - 浅色/深色主题一键切换，支持 View Transition API 圆形扩散动画
 - **菜单风格定制** - 侧边栏支持深色和浅色两种独立风格
 - **预设主题色** - 提供七种预定义主题色，圆形色块直观选择
@@ -92,46 +92,50 @@ Config/
     </div>
 
     <!-- 菜单布局区域 -->
-    <el-divider content-position="center">菜单布局</el-divider>
-    <div class="grid grid-cols-3 gap-x-1 text-center">
+    <el-divider content-position="center">{{ t('Menu Layout', '菜单布局') }}</el-divider>
+    <div class="grid grid-cols-2 gap-x-1 gap-y-2 text-center justify-items-center">
       <div>
         <img
           src="@/assets/images/settings/menu-layout-vertical.png"
           alt="vertical"
           class="w-20 h-12 rounded-[--radius-md] cursor-pointer"
-          :class="{
-            'border-3px! border-[--el-color-primary]! border-solid!':
-              layout.menuLayout.value === MenuLayoutMode.Vertical
-          }"
+          :class="{ 'border-3px! border-[--el-color-primary]! border-solid!': layout.menuLayout.value === MenuLayoutMode.Vertical }"
           @click="handleMenuLayoutChange(MenuLayoutMode.Vertical)"
         />
-        <div class="text-xs mt-1">垂直</div>
+        <div class="text-xs mt-1">{{ t('Vertical', '垂直') }}</div>
       </div>
       <div>
         <img
           src="@/assets/images/settings/menu-layout-horizontal.png"
           alt="horizontal"
           class="w-20 h-12 rounded-[--radius-md] cursor-pointer"
-          :class="{
-            'border-3px! border-[--el-color-primary]! border-solid!':
-              layout.menuLayout.value === MenuLayoutMode.Horizontal
-          }"
+          :class="{ 'border-3px! border-[--el-color-primary]! border-solid!': layout.menuLayout.value === MenuLayoutMode.Horizontal }"
           @click="handleMenuLayoutChange(MenuLayoutMode.Horizontal)"
         />
-        <div class="text-xs mt-1">水平</div>
+        <div class="text-xs mt-1">{{ t('Horizontal', '水平') }}</div>
       </div>
       <div>
         <img
           src="@/assets/images/settings/menu-layout-mixed.png"
           alt="mixed"
           class="w-20 h-12 rounded-[--radius-md] cursor-pointer"
-          :class="{
-            'border-3px! border-[--el-color-primary]! border-solid!':
-              layout.menuLayout.value === MenuLayoutMode.Mixed
-          }"
+          :class="{ 'border-3px! border-[--el-color-primary]! border-solid!': layout.menuLayout.value === MenuLayoutMode.Mixed }"
           @click="handleMenuLayoutChange(MenuLayoutMode.Mixed)"
         />
-        <div class="text-xs mt-1">混合</div>
+        <div class="text-xs mt-1">{{ t('Mixed', '混合') }}</div>
+      </div>
+      <div>
+        <!-- 双列布局：CSS 线框缩略示意（无 png 资源） -->
+        <div
+          class="dual-thumb w-20 h-12 rounded-[--radius-md] cursor-pointer"
+          :class="{ 'border-3px! border-[--el-color-primary]! border-solid!': layout.menuLayout.value === MenuLayoutMode.DualColumn }"
+          @click="handleMenuLayoutChange(MenuLayoutMode.DualColumn)"
+        >
+          <div class="dt-rail"><i></i><i></i><i></i><i></i></div>
+          <div class="dt-sub"><i></i><i></i><i></i><i></i></div>
+          <div class="dt-main"><i></i><i></i><i></i></div>
+        </div>
+        <div class="text-xs mt-1">{{ t('Dual', '双列') }}</div>
       </div>
     </div>
 
@@ -612,7 +616,7 @@ watch(
 
 ## 菜单布局系统
 
-### 三种布局模式
+### 四种布局模式
 
 ```typescript
 /** 菜单布局模式枚举 */
@@ -622,19 +626,23 @@ export enum MenuLayoutMode {
   /** 混合布局（顶部+左侧） */
   Mixed = 'mixed',
   /** 水平布局（纯顶部） */
-  Horizontal = 'horizontal'
+  Horizontal = 'horizontal',
+  /** 双列布局（左图标列 + 右子菜单列） */
+  DualColumn = 'dual-column'
 }
 ```
 
 #### 布局模式对比
 
-| 特性 | 垂直布局 | 混合布局 | 水平布局 |
-|------|---------|---------|---------|
-| 侧边栏显示 | 是 显示 | 是 显示 | 否 隐藏 |
-| 顶部导航 | 否 关闭 | 是 开启 | 是 开启 |
-| 菜单层级 | 完整层级 | 一级在顶部，子级在侧边 | 完整层级在顶部 |
-| 菜单风格可选 | 是 可选 | 是 可选 | 否 禁用 |
-| 适用场景 | 菜单项较多 | 兼顾两者 | 菜单项较少 |
+| 特性 | 垂直布局 | 混合布局 | 水平布局 | 双列布局 |
+|------|---------|---------|---------|---------|
+| 侧边栏显示 | 是 显示 | 是 显示 | 否 隐藏 | 是 显示 |
+| 顶部导航 | 否 关闭 | 是 开启 | 是 开启 | 否 关闭 |
+| 菜单层级 | 完整层级 | 一级在顶部，子级在侧边 | 完整层级在顶部 | 一级为图标列，子级在右列 |
+| 菜单风格可选 | 是 可选 | 是 可选 | 否 禁用 | 是 可选 |
+| 适用场景 | 菜单项较多 | 兼顾两者 | 菜单项较少 | 一级模块多、子菜单不深 |
+
+双列布局的缩略图是**CSS 线框绘制**而非 png，因为 `assets/images/settings/` 下没有对应的图片资源。线框风格刻意对齐其它三张图（灰底卡片 + 白栏 + 灰菜单条），保证四个选项视觉一致。
 
 ### 布局切换处理
 
@@ -662,6 +670,15 @@ const handleMenuLayoutChange = (mode: MenuLayoutMode) => {
       layout.topNav.value = true
       layout.toggleSideBarHide(false)
       // 侧边栏将根据选中的顶级菜单动态显示子菜单
+      break
+
+    case MenuLayoutMode.DualColumn:
+      // 双列布局：关闭顶部导航，显示侧边栏（左图标列 + 右子菜单列）
+      layout.topNav.value = false
+      layout.toggleSideBarHide(false)
+      // 复位为完整侧边栏路由：从混合/水平切回时保证数据干净
+      // （双列左列读 topbarRoutes，不受此影响）
+      permissionStore.setSidebarRouters(permissionStore.defaultRoutes as any)
       break
 
     case MenuLayoutMode.Horizontal:
