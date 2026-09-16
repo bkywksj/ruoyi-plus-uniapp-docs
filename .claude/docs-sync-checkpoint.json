@@ -4,8 +4,8 @@
     "master": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp",
       "gitBranch": "master",
-      "lastSyncCommit": null,
-      "lastSyncDate": null
+      "lastSyncCommit": "c3422092976a80713d038bf883e48e58a1c46a78",
+      "lastSyncDate": "2026-09-15T22:26:24+08:00"
     },
     "single": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-single",
@@ -146,6 +146,13 @@
       "commit": "c543902f059c5f1a3475e77a471829fbd7921654",
       "date": "2026-09-15T22:26:25+08:00",
       "summary": "初始化节点。6.x 为 Spring Boot 4.1.0 / JDK 21 / 多租户 / 工作流分支，业务代码与 workflow 主线一致，HEAD 与 workflow 的 9e21e43 为同一笔业务提交的镜像（同日期同标题，hash 不同）。文档正文以主线为准，本分支后续只需关注 SB4 相关的差异化提交（依赖升级、API 变更等），落到分支说明与特性对比处，不改写正文默认口径。",
+      "updatedDocs": []
+    },
+    {
+      "branch": "master",
+      "commit": "c3422092976a80713d038bf883e48e58a1c46a78",
+      "date": "2026-09-15T22:26:24+08:00",
+      "summary": "初始化节点。master 为 Spring Boot 3.5.16 / JDK 21 / 多租户 / 无工作流分支，已实测确认：ruoyi-modules 下无 ruoyi-workflow，含 ruoyi-job 内置定时任务模块。HEAD 与 workflow 的 9e21e43、6.x 的 c543902 是同一笔业务提交的镜像（同标题，时间戳相差 1 秒）。该仓库近 30 天有 56 个提交，处于活跃维护状态 —— 注意 CLAUDE.md「源码项目结构」一节仍把它描述为「旧源码项目(仅供参考)，只含 plus-uniapp」，与实际不符（实为完整框架：ruoyi-admin/common/modules/extend + 全部前端），待修正。文档正文以主线为准，本分支后续只需关注相对 workflow 的差异（主要是无工作流模块）。",
       "updatedDocs": []
     }
   ]
