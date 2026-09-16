@@ -21,7 +21,7 @@ allowed-tools: Read, Grep, Glob, Bash, Edit, Write, Agent, TaskCreate, TaskUpdat
   - `frontend`：只检查前端相关提交
   - `mobile`：只检查移动端相关提交
   - `--init`：初始化，记录**指定分支**当前最新 commit 为起点
-  - `--dry-run`：只分析不执行更新，预览需要更新的内容
+  - `--dry-run`：只分析不执行更新，预览需要更新的内容（**不推进检查点**）
   - 可组合使用，如：`6.x backend --dry-run`、`single --init`、`workflow frontend`
 
 ## 核心配置
@@ -164,7 +164,12 @@ git -C <目标分支 path> diff-tree --no-commit-id -r --name-only <commit-hash>
 
 ### 第七步：执行更新（仅 normal 模式）
 
-如果是 `--dry-run` 模式，输出报告后跳到第八步。
+> 🔴 如果是 `--dry-run` 模式，**输出报告后直接结束，不执行第八步**。
+> dry-run 的语义是「只看不做」：文档一行未改，检查点就绝不能推进。
+> 推进了会把这批未处理的提交标记为已同步，下次正式跑直接跳过，
+> 待办静默丢失且无任何提示 —— 这是本技能最危险的误用。
+>
+> 若确实已在别处手工同步完这批提交，需要补推节点，请显式执行 `--init`。
 
 如果是 `normal` 模式：
 
@@ -186,7 +191,9 @@ git -C <目标分支 path> diff-tree --no-commit-id -r --name-only <commit-hash>
 - 删除的功能需从文档中移除
 - **文档正文以主线(master/workflow, 3.5.x)为准**，SB4/单租户的差异只落到分支说明与特性对比，不改写正文默认口径
 
-### 第八步：记录新节点
+### 第八步：记录新节点（仅 normal 与 init 模式）
+
+**dry-run 模式不执行本步。**
 
 1. 获取**目标分支**当前最新 commit：
    ```bash
@@ -200,7 +207,9 @@ git -C <目标分支 path> diff-tree --no-commit-id -r --name-only <commit-hash>
 
 3. 如果是 normal 模式且有文档更新，同时更新 `PROJECT_PROGRESS.md` 中对应文档的状态
 
-### 第九步：输出最终结果
+### 第九步：输出最终结果（仅 normal 与 init 模式）
+
+dry-run 在第六步输出分析报告后即结束，不输出本节内容。
 
 ```markdown
 ## 更新完成
@@ -226,3 +235,4 @@ git -C <目标分支 path> diff-tree --no-commit-id -r --name-only <commit-hash>
 7. **保留历史**：syncHistory 记录便于回溯，最多保留 50 条，每条须带 `branch` 字段
 8. **只跑离线 git**：仅使用 `log`/`show`/`diff-tree`/`rev-parse` 等离线命令，不执行 `fetch`/`pull`/`push`（远程操作走 Sigil）
 9. **处理异常**：如果某分支仓库不存在、不在预期分支或 git 命令失败，给出明确提示，不擅自切分支
+10. **dry-run 绝不推进检查点**：只有 normal（真的改了文档）与 init（显式补推节点）才写 `lastSyncCommit`。dry-run 推进节点会让这批待办在下次同步时被静默跳过，且无任何提示
