@@ -28,8 +28,8 @@
     "6.x-single": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x-single",
       "gitBranch": "single-6.x",
-      "lastSyncCommit": null,
-      "lastSyncDate": null
+      "lastSyncCommit": "ab69e351b399dedd1056c80cb9ff8a568b322a3f",
+      "lastSyncDate": "2026-09-15T22:26:25+08:00"
     }
   },
   "syncHistory": [
@@ -160,6 +160,13 @@
       "commit": "50198fa4f32dec6ba1d5be3ba96a216b8c740055",
       "date": "2026-09-15T22:26:24+08:00",
       "summary": "初始化节点。single 为 Spring Boot 3.5.16 / JDK 21 / 单租户 / 无工作流分支。实测确认：ruoyi-common 下无 ruoyi-common-tenant 模块，ruoyi-modules 下无 ruoyi-workflow（含 ruoyi-job）。全仓库 TenantHelper 仅 1 处引用，且只在 JobPlatformContext.java 的 Javadoc 注释中作说明文字出现，非实际代码 —— 印证 ruoyi-job 模块在各分支间仅 JobConstants 一个文件存在差异（Redis 键前缀），其余逐字节一致。HEAD 与 workflow 的 9e21e43、6.x 的 c543902、master 的 c342209 为同一笔业务提交的镜像。文档正文以主线为准，本分支后续只需关注去多租户相关的差异化提交。",
+      "updatedDocs": []
+    },
+    {
+      "branch": "6.x-single",
+      "commit": "ab69e351b399dedd1056c80cb9ff8a568b322a3f",
+      "date": "2026-09-15T22:26:25+08:00",
+      "summary": "初始化节点。6.x-single 为 Spring Boot 4.1.0 / JDK 21 / 单租户 / 有工作流分支。实测确认四项特征全部相符：pom 为 SB 4.1.0 + JDK 21（与 6.x 一致）、ruoyi-common 下无 ruoyi-common-tenant、ruoyi-modules 下有 ruoyi-workflow。⚠️ 校验用的是登记的 gitBranch 字段 single-6.x，而非目录名推出的 6.x-single —— 按目录名校验会直接失败，这是本技能明确标注的坑。HEAD 与其余四分支为同一笔业务提交的镜像。至此 5 个分支全部完成初始化。文档正文以主线(3.5.x)为准，本分支后续只需关注 SB4 + 去多租户两类差异化提交，落到 changelog.md 顶部的分支说明表与特性对比处。",
       "updatedDocs": []
     }
   ]
