@@ -1,510 +1,103 @@
 # 与上游框架对比
 
-## 写在前面
+RuoYi-Plus-UniApp 基于 [Dromara RuoYi-Vue-Plus](https://plus-doc.dromara.org/) 深度重构。上游成熟的技术底座——Sa-Token 认证、Redisson 缓存、MyBatis-Plus ORM、SnailJob 任务调度、数据脱敏、接口加密、多数据源、Docker 编排——全部继承并持续跟进。
 
-RuoYi-Plus-UniApp 基于 [Dromara RuoYi-Vue-Plus](https://plus-doc.dromara.org/) 深度重构而来。**上游那套经过多年打磨的能力，我们全部继承**——Sa-Token 认证、Redisson 缓存、MyBatis-Plus ORM、SnailJob 任务调度、数据脱敏、接口加密、多数据源、Docker 编排等等，这些不是我们的创新，本页也不会把它们列成「我们的优势」。
+本页聚焦一件事：**在这个底座之上，我们做了哪些增量**。
 
-本页只回答一个问题：**在上游的基础上，我们改了什么、加了什么。**
+对比对象为上游两条线：**5.x**（稳定主线，revision 5.6.1）与 **6.x**（Spring Boot 4 新线，revision 5.5.3）。
 
-我们同时也是上游项目的赞助商，两个项目是协作关系而非竞争关系。选型时如果上游已经满足需求，直接用上游是完全合理的选择。
+## 能力总览
 
-### 对比基准
-
-本页所有数据来自三份源码的实际读取，而非官网宣传口径：
-
-| 对比对象 | 版本 | 说明 |
-|---------|------|------|
-| **RuoYi-Plus-UniApp** | revision 5.6.1（workflow 分支） | 本文档对应的框架 |
-| **RuoYi-Vue-Plus 5.x** | revision 5.6.1 | 上游稳定主线 |
-| **RuoYi-Vue-Plus 6.x** | revision 5.5.3（README 标 6.0.0） | 上游 Spring Boot 4 新线 |
-
-统计口径说明：模块数取 `pom.xml` 中 `<module>` 声明数并与目录数交叉核对；代码行数为 `.vue`、`.ts`、`.tsx`、`.scss` 文件累计；「上游没有某能力」的结论均为多关键字全仓检索后的判断，排除 `target/` 与 `node_modules/`。
-
----
-
-## 一、版本基线
-
-三方的核心依赖版本高度接近——**我们与上游 5.x 的绝大多数中间件版本完全一致**。差异主要在运行时基线与个别组件。
-
-| 依赖 | 我们 | 上游 5.x | 上游 6.x |
-|------|:---:|:---:|:---:|
-| **Java** | **21** | 17 | **21** |
-| **Spring Boot** | **3.5.16** | 3.5.14 | **4.1.0** |
-| MyBatis-Plus | 3.5.16 | 3.5.16 | 3.5.16 |
-| Sa-Token | 1.45.0 | 1.45.0 | 1.45.0 |
-| Redisson | 3.52.0 | 3.52.0 | **4.6.1** |
-| Hutool | 5.8.43 | 5.8.43 | 5.8.46 |
-| SpringDoc | 2.8.17 | 2.8.17 | **3.0.3** |
-| Warm-Flow | **1.8.9** | 1.8.5 | 1.8.8 |
-| SnailJob | 1.10.0 | 1.10.0 | **2.0.0** |
-| Lock4j | 2.2.7 | 2.2.7 | 2.2.7 |
-| dynamic-datasource | 4.3.1 | 4.3.1 | 4.5.0 |
-| JustAuth | 1.16.7 | 1.16.7 | 1.16.7 |
-| SMS4J | 3.3.5 | 3.3.5 | 3.3.5 |
-| Excel 引擎 | FastExcel 1.3.0 | FastExcel 1.3.0 | Fesod 2.0.2 |
-| Web 容器 | Undertow | Undertow | Jetty |
-
-**如何解读这张表**：
-
-- 我们相对 5.x 的版本差距是「跟进更勤」（Spring Boot 补丁位、Warm-Flow 小版本），**不是代际差**。任何声称「技术栈更先进」的说法在这张表面前都站不住脚。
-- 6.x 是真正的代际跃迁：Spring Boot 4 + Redisson 4.x + SpringDoc 3.x，JDK 最低要求抬到 21。代价见第九节。
-- 我们提供 **Spring Boot 4 分支**（`6.x` / `6.x-single`），Java 21 + Spring Boot 4.1.0，与上游 6.x 同代。
-
----
-
-## 二、总览
-
-| 维度 | 我们 | 上游 5.x | 上游 6.x |
-|------|------|---------|---------|
-| 后端分层 | **四层** Controller→Service→DAO→Mapper | 三层 Controller→Service→Mapper | 三层 |
-| common 基础设施模块 | **36 个** | 24 个 | 24 个 |
-| 业务模块 | system / workflow / generator / job / **business** / **mall** | system / workflow / generator / job / demo | system / workflow / gen / job / demo / ai |
+| 维度 | RuoYi-Plus-UniApp | 上游 5.x | 上游 6.x |
+|------|------|:---:|:---:|
+| **AI 技能体系** | **61 技能 + 19 命令 + 3 钩子** | 无 | 6 个子代理 |
+| **移动端** | **4 个工程 + 101 组件 + 18 平台** | 无 | 无 |
+| **后端分层** | **四层** Controller→Service→DAO→Mapper | 三层 | 三层 |
+| **列级字段权限** | **四档 × 三主体 × 四出口** | 无 | 无 |
+| **支付能力** | **微信 / 支付宝 / 银联 / 余额** | 无 | 无 |
+| **微信生态** | **小程序 + 公众号** | 无 | 无 |
+| **AI 大模型** | **LangChain4j 自建（30 类）** | 无 | 第三方组件 |
+| **等保二级** | **密码策略 / 日志归档 / 备份恢复** | 无 | 无 |
+| **多租户** | **支持**（3.5.x 与 4.x 双线均有） | 支持 | 不支持 |
+| 基础设施模块 | **36 个** | 24 个 | 24 个 |
+| 业务模块 | system / workflow / generator / job / **business** / **mall** | + demo | + demo / ai |
+| 管理端前端 | 仓内 plus-ui，**13.2 万行** | 仓内，2.8 万行 | 独立仓库 |
+| 代码生成器 | 19 模板，**含 DAO 层与主子表** | 16 模板 | 20 模板，含 React |
 | 行级数据权限 | 支持 | 支持 | 支持 |
-| **列级字段权限** | **支持** | 不支持 | 不支持 |
-| 多租户 | **支持** | 支持 | **不支持** |
-| 等保二级适配 | **支持** | 不支持 | 不支持 |
-| 支付能力 | **微信/支付宝/银联/余额** | 无 | 无 |
-| 微信生态 | **小程序 + 公众号** | 无 | 无 |
-| AI 集成 | **LangChain4j 自建** | 无 | Snail AI（第三方组件） |
-| **AI 技能体系** | **61 技能 + 19 命令 + 3 钩子** | **无** | 6 个子代理 + 1 个 Codex 技能包 |
-| 管理端前端 | 仓内 plus-ui | 仓内 plus-ui | 独立仓库 |
-| **移动端** | **4 个工程 + 101 组件** | **无** | **无** |
-| 代码生成器模板 | 19 个（Velocity） | 16 个（Velocity） | 20 个（FreeMarker，含 React） |
 | 数据库支持 | MySQL / Oracle / PostgreSQL / SQL Server | 同左 | 同左 |
-| 开源协议 | 闭源，需授权 | MIT | MIT |
+| 运行时 | Java 21 + Spring Boot 3.5.16 | Java 17 + 3.5.14 | Java 21 + 4.1.0 |
+| 开源协议 | 闭源授权 | MIT | MIT |
 
 ---
 
-## 三、后端分层架构
+## 一、AI 技能体系
 
-这是我们相对上游**最结构性的改动**。
+框架自带一套让 AI 理解本项目架构的工程化配置。四层架构、DAO 层规范、三级权限标识符、字典枚举命名、前后端类型对齐——这些约定不再依赖人去读文档、去记，而是变成 AI 可直接消费的上下文。
 
-### 分层对照
+### 规模与时间线
 
-| 层 | 我们 | 上游 5.x / 6.x |
-|----|------|---------------|
-| Controller | `SysDeptController` | `SysDeptController extends BaseController` |
-| Service 接口 | `ISysDeptService` | `ISysDeptService` |
-| Service 实现 | `SysDeptServiceImpl` | `SysDeptServiceImpl` |
-| **DAO 接口** | **`ISysDeptDao extends IBaseDao<SysDept>`** | **无此层** |
-| **DAO 实现** | **`SysDeptDaoImpl extends BaseDaoImpl<SysDeptMapper, SysDept>`** | **无此层** |
-| Mapper | `SysDeptMapper extends BaseMapper<SysDept>` | `SysDeptMapper extends BaseMapperPlus<SysDept, SysDeptVo>` |
-
-### Service 层是否直接操作 Mapper
-
-上游 Service 直接注入 Mapper：
-
-```java
-// 上游 5.x：SysDeptServiceImpl
-private final SysDeptMapper baseMapper;
-private final SysRoleMapper roleMapper;
-private final SysUserMapper userMapper;
-```
-
-我们的 Service 只见 DAO，不见 Mapper：
-
-```java
-// 我们：SysDeptServiceImpl
-private final ISysDeptDao deptDao;
-private final ISysRoleDao roleDao;
-private final ISysUserDao userDao;
-```
-
-### 实测层文件数（ruoyi-system 模块）
-
-| 层 | 我们 | 上游 5.x | 上游 6.x |
+| 项 | RuoYi-Plus-UniApp | 上游 5.x | 上游 6.x |
 |----|:---:|:---:|:---:|
-| controller | 32 | 20 | 19 |
-| service/impl | 33 | 21 | 20 |
-| **dao 接口** | **28** | **0** | **0** |
-| **dao 实现** | **28** | **0** | **0** |
-| mapper | 28 | 21 | 20 |
-| domain | 109 | 68 | 63 |
+| **专业技能（SKILL.md）** | **61** | 无 | 无 |
+| **智能命令** | **19** | 无 | 无 |
+| **自动化钩子** | **3** | 无 | 无 |
+| 子代理（subagent） | 2 | 无 | 6 |
+| Codex 镜像 | **全量同步** | 无 | 1 个技能包 |
+| 技能内容总量 | **45,181 行** | — | 约 5 篇参考文档 |
+| **上线时间** | **2025-09** | 至今未提供 | 2026-03 |
 
-全项目 `ruoyi-modules` 下共 **42 个 DaoImpl**，分布在 business / generator / job / mall / system / workflow 等 12 个 dao 目录。两个上游的 `ruoyi-modules` 下 dao 目录数为 **0**。
+我们是业内首个把 AI 工程化配置做进框架的全栈项目，比上游早约 18 个月。上游 6.x 于 2026 年 3 月引入的是 6 个后端子代理定义加一个 Codex 技能包，不含技能库、命令与钩子机制。
 
-### 纪律执行情况
+### 61 个技能的覆盖面
 
-`ruoyi-modules` 下 57 个 `ServiceImpl` 中，仅 **4 个**仍引用 Mapper，全部在工作流模块，且注入的是 Warm-Flow 第三方 ORM 的 Mapper（外部框架无法套 DAO 层）。**ruoyi-system 的 33 个 ServiceImpl 中引用 Mapper 的数量为 0**。
+技能不是通用编程技巧，而是「在这个项目里，这件事应该怎么做」。
 
-### 这个改动的代价
+| 分组 | 覆盖内容 |
+|------|---------|
+| **开发主线** | CRUD 全栈开发、API 开发、架构设计、代码范式、后端注解 |
+| **权限与安全** | 行级数据权限、多租户、安全防护、日志审计 |
+| **前端三端** | PC 端 UI、移动端 UI、移动端设计、APP 适配、UniApp 多平台、HTML 转码 |
+| **业务能力** | 支付集成、微信生态、AI 大模型、物联网 MQTT、消息队列、工作流引擎、社交登录、通知系统 |
+| **基础设施** | Redis 缓存、定时任务、实时通信、文件 OSS、JSON 序列化、国际化、数据库操作、工具库、图标管理、多媒体处理、第三方 API |
+| **测试与排障** | PC / 移动端 E2E 测试、测试开发、Bug 侦探、性能诊断、错误处理 |
+| **工程运维** | Git 工作流、部署指南、本地启动、环境配置、项目初始化、项目迁移、框架同步、交付同步、模块裁剪、双端状态管理 |
+| **协作与沉淀** | 头脑风暴、技术决策、方案编写、任务追踪、经验沉淀、技能自扩展、项目导航 |
+| **跨 AI 协同** | Codex、Gemini、Antigravity 三个 CLI 的协同调度 |
 
-四层不是纯收益，如实说明两点成本：
+### 三层执行保障
 
-- **类文件数量增加**：每个业务实体多出 DAO 接口 + DAO 实现两个文件。
-- **自调用需显式取代理**：DaoImpl 内部调用自身带 `@DataPermission` 的方法时，必须写 `SpringUtils.getAopProxy(this).list(lqw)` 才能走到切面，否则数据权限静默失效。这是分层引入的额外心智负担。
+| 层次 | 机制 | 作用 |
+|------|------|------|
+| **技能库** | 61 个 SKILL.md，按场景自动匹配 | AI 知道该用哪套规范 |
+| **命令入口** | 19 个斜杠命令 | 高频动作一条命令直达，如 `/crud` 生成含 DAO 层的完整四层代码 |
+| **强制钩子** | 工具调用层拦截 | 不依赖 AI 自觉：输入时强制技能评估、危险命令前置拦截、会话结束自动收尾 |
 
-作为交换，数据权限注解从上游的「打在 Mapper 的 default 方法上、靠 `StaticMethodMatcherPointcut` 匹配 JDK 动态代理」简化为「打在 DaoImpl 重写方法上、标准 `@Aspect` 切面」，实现从三个类收敛到一个类。
+与上游 6.x 的差别不只在数量：我们是**自动匹配 + 强制执行**，上游子代理需要显式调用且无拦截机制；我们覆盖全栈链路，上游仅限后端。
 
----
+### 双 AI 平台
 
-## 四、查询构建与 DAO 能力
+技能体系同时提供 Claude Code 与 Codex 两套镜像，内容保持同步，换工具不必重新配置。
 
-### IBaseDao 提供的方法（21 个）
-
-| 分组 | 方法 |
-|------|------|
-| 查询 | `getById` / `listByIds` / `getOne`（2 个重载）/ `list` / `listAll` / `page` / `mapList` |
-| 统计 | `count` / `exists`（2 个重载） |
-| 写入 | `insert` / `batchInsert` / `save` / `batchSave` / `updateById` / `update` |
-| 链式更新 | `lambdaUpdate()` → `PlusLambdaUpdate<T>` |
-| 删除 | `deleteById` / `deleteByIds` / `delete` |
-
-所有条件方法**只接受 `PlusLambdaQuery<T>`**，不接受原生 `Wrapper`——业务侧无法绕过增强 Wrapper。
-
-### 上游的对应物
-
-上游两版**都不存在 `IServicePlus`**（旧版本曾有，5.6.1 / 5.5.3 已无）。唯一对应物是 `BaseMapperPlus<T, V>`：
-
-| 能力 | 我们 | 上游 5.x | 上游 6.x |
-|------|:---:|:---:|:---:|
-| 实体→VO 自动转换 | 无（上移到 Service 用 `MapstructUtils`） | **15 个 `selectVoXxx` 重载** | 同 5.x |
-| 分页直接返回 `PageResult` | **是** | 否（返回 `IPage`，Service 再转） | 否 |
-| 链式查询 | 仅更新链 | 无 | **`LambdaCrudChainWrapper`（909 行）** |
-| 子查询构建器 | **无** | 无 | **有** |
-| 联表查询构建器 | **无** | 无 | **有**（mybatis-plus-join） |
-
-业务侧 Mapper 基类的选择完全相反：我们 42 个 Mapper 继承原生 `BaseMapper`（仅 1 个继承 `BaseMapperPlus`），上游 5.x 有 30 个、6.x 有 32 个继承 `BaseMapperPlus`。根本分歧在于「VO 转换放哪一层」——我们放 Service，上游耦合进 Mapper 泛型。
-
-### PlusLambdaQuery 的核心能力
-
-| 能力 | 说明 |
-|------|------|
-| **默认 null 安全** | `checkValueEffective` 是所有条件方法的门卫，值为 null 或空串时该条件不生成 SQL，覆盖 `eq/ne/gt/ge/lt/le/like` 等 12 个方法 |
-| **BETWEEN 单端降级** | 只有起始值时自动降级为 `>=`，只有结束值时降级为 `<=`，两端皆空则整条件不加 |
-| **日期字符串预解析** | `between` 前先跑 `tryParseDateStr`，规避 Oracle 的 ORA-01861 隐式转换报错 |
-| **IN 集合元素过滤** | 集合内的 null / 空串元素被剔除后才拼 SQL，过滤后为空则整条件不加 |
-| **聚合函数** | `sum / min / max / count / avg / aggfunc`，各带「字段」与「字段+别名」两个重载 |
-| **跨数据库 LIKE** | `likeCast / likeLeftCast / likeRightCast` 自动按方言转换（MySQL/PG 用 `CAST AS VARCHAR`、Oracle 用 `TO_CHAR`、SQL Server 用 `CAST AS NVARCHAR(MAX)`） |
-
-### 同一个查询的三方写法对照
-
-同样是「部门列表条件查询」，看等价代码：
-
-```java
-// 上游 5.x —— 方法在 Service 里，判空靠调用方手写
-LambdaQueryWrapper<SysDept> lqw = Wrappers.lambdaQuery();
-lqw.eq(SysDept::getDelFlag, SystemConstants.NORMAL);
-lqw.eq(ObjectUtil.isNotNull(bo.getDeptId()), SysDept::getDeptId, bo.getDeptId());
-lqw.like(StringUtils.isNotBlank(bo.getDeptName()), SysDept::getDeptName, bo.getDeptName());
-lqw.between(params.get("beginTime") != null && params.get("endTime") != null,
-    SysDept::getCreateTime, params.get("beginTime"), params.get("endTime"));
-```
-
-```java
-// 上游 6.x —— 方法仍在 Service 里，改用另起名的 IfPresent / IfText 系列
-LambdaQueryBuilder<SysDept> builder = QueryBuilder.lambda(SysDept.class)
-    .eq(SysDept::getDelFlag, SystemConstants.NORMAL)
-    .eqIfPresent(SysDept::getDeptId, bo.getDeptId())
-    .likeIfText(SysDept::getDeptName, bo.getDeptName())
-    .betweenParams(SysDept::getCreateTime, params, "beginTime", "endTime");
-return builder.build();   // 需显式 build() 拆出 Wrapper
-```
-
-```java
-// 我们 —— 方法在 DAO 里，方法名与 MyBatis-Plus 原生一致，默认判空
-PlusLambdaQuery<SysDept> lqw = PlusLambdaQuery.of(SysDept.class);
-lqw.eq(SysDept::getIsDeleted, DictBooleanFlag.NO.getValue());
-lqw.eq(SysDept::getDeptId, bo.getDeptId());
-lqw.like(SysDept::getDeptName, bo.getDeptName());
-lqw.orderByAsc(SysDept::getAncestors);
-return lqw;   // 本身就是 Wrapper，无需 build()
-```
-
-单个条件的写法长度对照：
-
-| 版本 | 写法 | 字符数 | 判空由谁负责 |
-|------|------|:---:|------|
-| 上游 5.x | `lqw.like(StringUtils.isNotBlank(bo.getDeptName()), SysDept::getDeptName, bo.getDeptName())` | 88 | 调用方手写，取值写两遍 |
-| 上游 6.x | `.likeIfText(SysDept::getDeptName, bo.getDeptName())` | 48 | 方法名自带语义，需记住 `IfText` / `IfPresent` 之分 |
-| 我们 | `lqw.like(SysDept::getDeptName, bo.getDeptName())` | 46 | 默认安全，方法名与原生一致 |
-
-### 平衡说明
-
-相对 5.x，我们和 6.x 都大幅削减了判空样板。相对 6.x：
-
-- **我们的优势**：零学习成本（方法名即 MyBatis-Plus 原生名）、BETWEEN 单端降级、跨库 `likeCast`。6.x 的 `betweenIfPresent` 一端为 null 就丢弃整个条件，不降级。
-- **我们的劣势**：**没有子查询构建器，也没有联表查询构建器**。这两类需求我们仍需落到 XML，而 6.x 可以用 `selectSub / eqSub / inSub / existsSub` 与 `QueryBuilder.lambdaJoin()` 在 Java 侧完成。
+技能的完整清单、每个技能的触发词与使用示例、命令逐条说明、钩子实现机制，在「最佳实践 → AI 开发」章节展开。
 
 ---
 
-## 五、响应封装
+## 二、移动端全栈
 
-| 维度 | 我们 | 上游 5.x | 上游 6.x |
-|------|------|---------|---------|
-| 分页返回类 | `PageResult<T>` | `TableDataInfo<T>` | `PageResult<T>` |
-| Controller 分页返回形态 | `R<PageResult<T>>` | **`TableDataInfo<T>` 裸返回，不套 `R`** | `R<PageResult<T>>` |
-| 响应壳数量 | **1 种** | **2 种**（分页 `{code,msg,rows,total}` / 非分页 `{code,msg,data}`） | 1 种 |
-| 分页字段 | `records / total / current / size / last` | `rows / total / code / msg` | `rows / total` |
-| 页码回传 | **有** `current` / `size` | 无 | 无 |
-| 是否末页 | **有** `last` | 无 | 无 |
-| 类型转换 | **有** `convert(Class)` / `map(Function)` | 无 | 无 |
-| `R` 消息国际化 | **自动识别 i18n key 并翻译** | 硬编码中文 | 硬编码中文 |
-| `R` 带参国际化 | **有** `ok(msg, args...)` 等 4 个 | 无 | 无 |
-| `R.status()` 系列 | **有** 5 个重载 | 无 | 无 |
-| `isSuccess` 空安全 | 否 | 否 | **是** |
-| `BaseController` 基类 | **无**（Controller 全部是裸 `@RestController`） | 有 | 有 |
+上游两条线均不含移动端工程，管理端是唯一前端。移动端是我们独有的完整维度。
 
-`R.status()` 让 Controller 更薄——`return R.status(deptService.updateDept(dept))` 直接把 `boolean` 或影响行数转成统一响应。
-
-**平衡说明**：「统一响应壳」只是相对 5.x 的优势，6.x 已经收敛到 `R<PageResult<T>>`。另外三方的 `PageQuery` 字段与默认值完全一致，此处没有差异。
-
----
-
-## 六、基础设施模块
-
-| 项目 | common 子模块数 |
-|------|:---:|
-| **我们** | **36** |
-| 上游 5.x | 24 |
-| 上游 6.x | 24 |
-
-### 仅我们独有（12 个，两个上游都没有）
-
-| 模块 | 能力 |
-|------|------|
-| `ruoyi-common-pay` | 支付聚合层，含 5 个子模块（core / 微信 / 支付宝 / 银联 / 余额），微信 V2/V3 双版本自动选择 |
-| `ruoyi-common-langchain4j` | AI 能力层（30 个类）：多模型工厂、会话记忆、RAG 知识库、WebSocket 流式对话 |
-| `ruoyi-common-miniapp` | 微信小程序：小程序码生成、订阅消息 |
-| `ruoyi-common-mp` | 微信公众号：JS-SDK 签名、模板消息，token 走 Redis 集群共享 |
-| `ruoyi-common-media` | 图像处理：缩放/水印/滤镜链式 API、二维码、营销海报合成、GIF 动图 |
-| `ruoyi-common-doctemplate` | Word 模板渲染（POI-TL）：占位符、图片、表格行循环 |
-| `ruoyi-common-serialMap` | 序列化映射，上游 `translation` 的超集（11 个实现 vs 5 个） |
-| `ruoyi-common-http` | 声明式第三方 HTTP 客户端（Forest）：高德地图、火山引擎 TTS |
-| `ruoyi-common-rocketmq` | RocketMQ：同步/异步/顺序/延迟消息、Topic 运维、连通性诊断 |
-| `ruoyi-common-message` | 统一消息调度：多通道路由、按优先级降级、广播，已接入 5 个通道 |
-| `ruoyi-common-openapi` | 开放 API 网关：AppKey/AppSecret 签名、时间戳防重放、自动换发登录态 |
-| `ruoyi-common-test` | 测试脚手架：分层测试基类 + 假数据构造器，被 25 个 pom 引用 |
-
-### 序列化映射 vs 上游 translation
-
-同一类能力，我们是上游的超集：
-
-| 内置实现 | 我们 `serialMap` | 上游 `translation` |
-|---------|:---:|:---:|
-| 用户名 / 昵称 / 部门名 / 字典 / OSS URL | 有 | 有 |
-| 头像 | **有** | 无 |
-| 预签名 URL | **有** | 无 |
-| 通用实体字段映射 | **有** | 无 |
-| 目录名 | **有** | 无 |
-| 国际化翻译 | **有** | 无 |
-| 合计 | **11 个** | 5 个 |
-
----
-
-## 七、权限体系
-
-### 行级数据权限
-
-三方的 `@DataPermission` 注解定义**完全一致**，六档数据范围也一致。差异在实现细节：
-
-| 项 | 我们 | 上游 5.x | 上游 6.x |
-|----|------|---------|---------|
-| 切面实现 | 单个 `@Aspect` 类 | Advisor + Advice + Pointcut 三件套 | 同 5.x |
-| 注解落点 | DaoImpl 重写方法 | Mapper 的 default 方法 | 同 5.x |
-| Mapper 包扫描 + mapperId 缓存 | **有** | 无 | 无 |
-| `denyAll()` 兜底拒绝 | **有** | 无 | 无 |
-| 数据范围枚举带中文标签 | **有** | 无 | 无 |
-
-### 列级字段权限（我们独有）
-
-**同一条记录，不同角色看到和改到不同的列。** 这是行级数据权限解决不了的那一半问题。
-
-上游检索结果——以下 9 个关键字在两个上游仓库的命中数**均为 0**：`FieldResource`、`FieldPermission`、`field_permission`、`字段权限`、`FieldPerm`、`columnPermission`、`列级`、`maskField`、`GenFieldPerm`。上游只有「字段级**加密**」和静态的 `@Sensitive` 脱敏——脱敏对所有人一视同仁，不按主体授权。
-
-| 能力 | 我们 | 上游 5.x | 上游 6.x |
-|------|:---:|:---:|:---:|
-| 四档访问控制（隐藏/脱敏/只读/可写） | **有** | 无 | 无 |
-| 三种授权主体（角色/部门/用户） | **有** | 无 | 无 |
-| JSON 序列化出口拦截 | **有** | 无 | 无 |
-| Excel 导出出口拦截 | **有** | 无 | 无 |
-| JSON 写入拦截 | **有** | 无 | 无 |
-| Excel 导入拦截 | **有** | 无 | 无 |
-| 配置矩阵（字段 × 主体） | **有** | 无 | 无 |
-| 效果预览（按真实用户） | **有** | 无 | 无 |
-| 收权影响面统计 | **有** | 无 | 无 |
-
-四个出口共用同一个决策服务，保证语义一致：同一用户在页面看不到的字段，导出也导不出、写入也改不了、做张 Excel 导进去同样覆盖不掉。
-
----
-
-## 八、安全与等保合规
-
-以下关键字在两个上游仓库的命中数均为 **0**：`PasswordPolicy`、`pwdUpdateTime`、`LogArchive`、`日志归档`、`backup.sh`、`restore.sh`、`强制修改密码`、`等保`。
-
-| 能力 | 我们 | 上游 5.x | 上游 6.x |
-|------|:---:|:---:|:---:|
-| 密码复杂度策略 | **有** | 无 | 无 |
-| 历史密码防重用 | **有** | 无 | 无 |
-| 密码到期提醒 | **有** | 无 | 无 |
-| 首次登录强制改密 | **有** | 无 | 无 |
-| 策略参数在线可调 | **有**（8 条配置项） | 无 | 无 |
-| 审计日志定期归档 | **有**（每日 03:00，含归档表与前端查询） | 无 | 无 |
-| 数据库备份 / 恢复脚本 | **有**（含恢复演练记录模板） | 无 | 无 |
-| 初始密码强度 | 强口令 | `123456` | `123456` |
-
-对应等保二级的 8.1.4.1 a（身份鉴别）、8.1.4.3 c（安全审计）、8.1.4.7 a（数据备份恢复）三项条款。
-
----
-
-## 九、多租户：5.x 与 6.x 的分水岭
-
-上游 6.x 为拥抱 Spring Boot 4，**整体移除了多租户能力**。这一点在官方 README 的定位表述里也能看到——从 5.x 的「针对分布式集群**与多租户**场景」改为 6.x 的「针对分布式集群场景」。
-
-实测证据：
-
-| 证据项 | 上游 5.x | 上游 6.x |
-|--------|:---:|:---:|
-| `ruoyi-common-tenant` 模块 | 存在（7 个包） | **不存在** |
-| 引用 `TenantEntity` / `TenantHelper` 的文件 | **34 个** | **0 个** |
-| 含 `sys_tenant` 的 SQL 脚本 | 4 个 | **0 个** |
-| 租户相关 Java 文件 | 42 个 | **0 个** |
-| 实体基类规范 | `extends TenantEntity` | 官方文档明列为禁止，须 `extends BaseEntity` |
-
-6.x 中唯一出现 `TenantLineInnerInterceptor` 的地方是一段罗列 MyBatis-Plus 可选插件的 **javadoc 注释**，没有对应的 Bean 注册。
-
-**这意味着**：依赖多租户的存量业务无法平迁上游 6.x。
-
-而我们的 **6.x 分支两者都要**——Java 21 + Spring Boot 4.1.0 的运行时跃迁照做，多租户能力完整保留：
-
-| | 上游 5.x | 上游 6.x | 我们 master/workflow | 我们 6.x 分支 |
-|---|:---:|:---:|:---:|:---:|
-| Spring Boot | 3.5.14 | **4.1.0** | 3.5.16 | **4.1.0** |
-| Java | 17 | 21 | 21 | 21 |
-| 多租户 | 有 | **无** | **有** | **有** |
-
-需要说明的是，6.x 移除的只有多租户。幂等、限流、SSE、WebSocket 四项**并没有被砍掉**，只是从独立模块合并进了 `common-redis` 与 `common-push`。
-
-### 我们的分支矩阵
-
-| 分支 | Spring Boot | 多租户 | 工作流 |
-|------|:---:|:---:|:---:|
-| master | 3.5.x | 有 | 无 |
-| single | 3.5.x | 无 | 无 |
-| workflow | 3.5.x | 有 | 有 |
-| 6.x | 4.1.0 | 有 | 有 |
-| 6.x-single | 4.1.0 | 无 | 有 |
-
----
-
-## 十、代码生成器
-
-| 项 | 我们 | 上游 5.x | 上游 6.x |
-|----|:---:|:---:|:---:|
-| 模板引擎 | Velocity | Velocity | **FreeMarker** |
-| 模板文件数 | **19** | 16 | 20 |
-| Java 各层 | 有 | 有 | 有 |
-| **DAO 接口 + 实现** | **有** | 无 | 无 |
-| Mapper + XML | 有 | 有 | 有 |
-| TypeScript 类型 + API | 有 | **有** | 有 |
-| Vue 列表页 / 树表页 | 有 | 有 | 有 |
-| **Vue 主子表子页** | **有** | 无 | 无 |
-| React 页面 | 无 | 无 | **有** |
-| SQL 菜单脚本（四种库） | 有 | 有 | 有 |
-| 移动端 / UniApp 页面 | **不生成** | 不生成 | 不生成 |
-
-配置能力差异：
-
-| 能力 | 我们 | 上游 5.x | 上游 6.x |
-|------|:---:|:---:|:---:|
-| 单表 / 树表模板 | 有 | 有 | 有 |
-| **主子表模板** | **有** | 无 | 无 |
-| **菜单自动入库** | **有** | 无 | 无 |
-| 菜单图标 / 排序可配 | **有** | 无 | 无 |
-| 后端模块名 / 前端根目录可配 | **有** | 无 | 无 |
-| 前端框架可选（Vue / React） | 无 | 无 | **有** |
-
-**两点如实说明**：TypeScript 类型与 API 文件的生成**不是我们独有**，上游 5.x 同样具备；我们的生成器**不产出移动端页面**，移动端页面仍需手写。
-
----
-
-## 十一、管理端前端
-
-上游 6.x 仓库内**不含前端工程**，前端已拆为独立仓库，本次未纳入核实，故本节只与 5.x 对比。
-
-### 体量
-
-| 指标 | 我们 | 上游 5.x |
-|------|---:|---:|
-| src 代码行数 | **132,172** | 28,185 |
-| `.vue` 文件 | **213** | 99 |
-| `components/` 下组件 | **77** | 28 |
-| API 层 `.ts` 文件 | **89** | 60 |
-| Pinia store | 6 个 / 1,877 行 | 7 个 / 756 行 |
-| i18n 词条 | **1,507 行 / 50 个命名空间** | 85 行 / 4 个命名空间 |
-| 权限指令 | **12 个** | 3 个 |
-| 构建插件 | 12 个 | 8 个 |
-
-核心框架版本双方**同代同级**（Vue 3.5 / Vite 6 / Pinia 3 / UnoCSS 66），互有小版本领先，不存在代际差。
-
-### 结构差异
-
-| 维度 | 我们 | 上游 5.x |
-|------|------|---------|
-| 组合式函数层 | **`composables/` 18 个文件 / ~6,915 行**，且 auto-import 全局注入免 import | `hooks/` 仅 1 个文件，能力散落在 `plugins/`(7) 与 `utils/`(19) |
-| 工具函数 | `utils/` 18 文件 / 8,240 行，**纯函数** | `utils/` 19 文件 / 1,517 行，混有状态逻辑 |
-| 路由 | 守卫独立 + `modules/` 模块化拆分 | 单个 `router/index.ts` + 根级 `permission.ts` |
-| 样式 | 7-1 架构（abstracts / base / components / layout / themes / vendors） | 扁平 8 个 scss |
-| 主题 | CSS 变量体系（亮 35 + 暗 46 个变量）+ 五层背景层级 + 切换动画 | 仅 JS 生成 Element Plus 主色梯度 |
-| 菜单布局模式 | **4 种**（含双列布局） | 2 种 |
-| 图标 | 三源统一 `<Icon>`（iconfont / iconify / 本地 sprite）+ 2,538 行类型声明 | 多套写法并存，无类型 |
-
-### 自研组件
-
-我们 77 个组件中 **69 个是 `A` 前缀的业务级封装**，上游 28 个基本都是「一个目录一个 `index.vue`」的小部件。
-
-| 组件族 | 数量 | 代表 |
-|--------|:---:|------|
-| 表单封装 `AForm` | 14 | 表格弹窗选择器、高德地图选点、富文本、省市区级联 |
-| 卡片模板 `ACard` | 23 | 统计、图表、时间轴、价格、天气等卡片 |
-| 图表 `AChart` | 10 | 折线/柱状/双向柱状/饼图/雷达/散点/K线/地图 |
-| AI 能力 `AAi` | 4 | 文本润色、测试数据生成、内容审核 |
-| 主题视觉 `ATheme` | 5 | 主题色选择、粒子背景、水印 |
-| 独立业务组件 | 13 | 通用表格、搜索表单、统一弹窗、详情弹窗、虚拟滚动过滤树、OSS 媒体库、Excel 导入 |
-
-### API 层与代码生成
-
-我们的 API 层采用 `xxxApi.ts` + `xxxTypes.ts` 具名约定，上游统一为 `index.ts` + `types.ts`。
-
-**需要澄清**：上游也为每个模块提供独立类型文件，差异在命名与组织约定，不是「上游没有类型定义」。
-
-我们这套命名是配套基建的产物——`vite/plugins/openapi/`（6 个文件 / 2,384 行）从后端 OpenAPI 文档自动生成 API 与类型文件，具备 MD5 防覆盖（内容变化时生成 `.generated.ts` 参考文件而非覆盖手改代码）、CRUD 七级优先级自动排序、按模块/文件/函数通配忽略。上游无同类插件。
-
-### 互有独占的业务模块
-
-| 我们独有 | 上游独有 |
-|---------|---------|
-| 商城（商品 / SKU / 订单）、支付配置、广告位、平台配置、账号绑定 | 客户端管理 |
-| 字段权限配置页、OpenAPI 密钥管理 | demo 演示模块 |
-| 可视化页面设计器（14 文件 / 7,660 行，含 AI 生成与优化） | — |
-
----
-
-## 十二、移动端
-
-**这是我们 100% 的独有维度。** 上游两个版本的移动端特征文件（`manifest.json`、`pages.json`、`uni.scss`、`*.uvue`、`*.uts`、`@dcloudio/*` 依赖）命中数**均为 0**。上游 5.x 唯一的前端是 PC 管理端 plus-ui，6.x 则是纯后端 Maven 工程。
-
-### 四个移动端工程
+### 四个工程
 
 | 工程 | 定位 | 技术形态 |
 |------|------|---------|
 | `plus-uniapp` | **主力工程**：小程序 / H5 / 公众号 / 非原生 APP | Vue3 + TS，Vite CLI 构建 |
-| `plus-app` | **原生 APP 专用**（涉及原生插件开发时使用） | Vue3 + TS，HBuilderX 运行打包，含 `nativeplugins/` |
+| `plus-app` | **原生 APP 专用**，涉及原生插件开发时使用 | HBuilderX 运行打包，含原生插件目录 |
 | `plus-uniapp-demo` | **组件演示 + 业务模板库** | 106 个演示页 + 9 类行业模板 |
-| `plus-uniappx` | **UniApp X 版本**，编译为纯原生 APP | UTS + UVue（113 个 `.uts` + 115 个 `.uvue`） |
+| `plus-uniappx` | **UniApp X**，编译为纯原生 APP | UTS + UVue（113 + 115 个源文件） |
 
-### 技术栈
+### WD UI 组件库
 
-| 维度 | 版本 |
-|------|------|
-| UniApp | 3.0.0-4060620250520001 |
-| Vue / TypeScript | 3.4.21 / 5.7.2 |
-| 状态管理 | Pinia 2.0.36 |
-| 构建 | Vite 6.4.2 |
-| 样式 | SCSS + UnoCSS 65.4.2 |
-| UI 组件库 | **WD UI 101 个组件**（自维护 wot-design-uni 分支，源码内置，内置 15 种语言） |
-
-### 组件库构成（101 个）
+自维护的 wot-design-uni 深度改造分支，源码内置，**101 个组件**，内置 15 种语言。
 
 | 分类 | 数量 |
 |------|:---:|
@@ -516,125 +109,458 @@ return lqw;   // 本身就是 Wrapper，无需 build()
 | 基础 | 6 |
 | 其他 | 1 |
 
-### 发布平台（18 个）
+### 18 个发布平台
 
 | 类别 | 平台 |
 |------|------|
 | Web | H5 |
 | 小程序（11） | 微信、支付宝、百度、QQ、字节跳动、京东、快手、飞书、小红书、鸿蒙元服务 |
-| APP（4） | app、android、ios、**鸿蒙** |
+| APP（4） | app、Android、iOS、**鸿蒙** |
 | 快应用（3） | webview、华为、联盟 |
 
----
+### 技术栈
 
-## 十三、AI 与物联网
-
-| 能力 | 我们 | 上游 5.x | 上游 6.x |
-|------|------|:---:|------|
-| AI 框架 | **LangChain4j 1.14.1 自建**（30 个类） | 无 | Snail AI（第三方闭源组件，本体仅 2 个类的开关壳） |
-| 模型支持 | DeepSeek / 通义千问 / Claude / OpenAI / Ollama | — | 依赖第三方组件 |
-| 会话记忆 | **有**（Redis 存储） | — | 依赖第三方组件 |
-| RAG 知识库 | **有**（memory / Milvus / PGVector） | — | 依赖第三方组件 |
-| 流式对话 | **有**（WebSocket） | — | 依赖第三方组件 |
-| MQTT 物联网 | **有** | 无 | 有 |
-| RocketMQ 消息队列 | **有** | 无 | 无 |
-
-**路线差异**：6.x 的 AI 能力绑定在闭源商业组件上，模块本身不含任何 AI 逻辑；我们的实现全部开源自建，模型工厂、会话记忆、RAG 检索链路都可改可控。
+UniApp 3.0 + Vue 3.4.21 + TypeScript 5.7.2 + Pinia 2.0.36 + Vite 6.4.2 + SCSS/UnoCSS 65.4.2。
 
 ---
 
-## 十四、AI 技能体系
+## 三、后端四层架构
 
-框架自带一套让 AI 理解本项目架构的工程化配置——**这是我们投入最久、也最早落地的一块**。
+上游是 Controller → Service → Mapper 三层，Service 直接注入并操作 Mapper。我们在中间增加 DAO 层，把数据访问从业务逻辑中彻底剥离。
 
-### 核查口径
+### 分层对照
 
-统计只认**上游官方仓库的远端分支**（`gitee.com/dromara/RuoYi-Vue-Plus`），不含任何第三方 fork 中的贡献：上游 5.x 取 `origin/5.X`，上游 6.x 取 `origin/6.X`。
+| 层 | RuoYi-Plus-UniApp | 上游 5.x / 6.x |
+|----|------|---------------|
+| Controller | `SysDeptController` | `SysDeptController extends BaseController` |
+| Service 接口 | `ISysDeptService` | `ISysDeptService` |
+| Service 实现 | `SysDeptServiceImpl` | `SysDeptServiceImpl` |
+| **DAO 接口** | **`ISysDeptDao extends IBaseDao<SysDept>`** | 无此层 |
+| **DAO 实现** | **`SysDeptDaoImpl extends BaseDaoImpl<SysDeptMapper, SysDept>`** | 无此层 |
+| Mapper | `SysDeptMapper extends BaseMapper<SysDept>` | `SysDeptMapper extends BaseMapperPlus<SysDept, SysDeptVo>` |
 
-### 规模与时间线
+Service 层的依赖注入直观体现了这个差异：
 
-| 项 | 我们 | 上游 5.x | 上游 6.x |
+```java
+// 上游：Service 直接持有 Mapper
+private final SysDeptMapper baseMapper;
+private final SysRoleMapper roleMapper;
+private final SysUserMapper userMapper;
+
+// RuoYi-Plus-UniApp：Service 只见 DAO
+private final ISysDeptDao deptDao;
+private final ISysRoleDao roleDao;
+private final ISysUserDao userDao;
+```
+
+### 落地规模
+
+以 `ruoyi-system` 模块为例：
+
+| 层 | RuoYi-Plus-UniApp | 上游 5.x | 上游 6.x |
 |----|:---:|:---:|:---:|
-| **专业技能（SKILL.md）** | **61** | **0** | **0** |
-| **智能命令** | **19** | **0** | **0** |
-| **自动化钩子** | **3** | **0** | **0** |
-| 子代理（subagent） | 2 | 0 | 6 |
-| Codex 镜像 | **全量同步** | 无 | 1 个技能包 |
-| 技能内容总量 | **45,181 行** | 0 | 约 5 个 reference 文档 |
-| **首次引入** | **2025-09-18** | 至今无 | 2026-03-30 |
+| controller | 32 | 20 | 19 |
+| service/impl | 33 | 21 | 20 |
+| **dao 接口** | **28** | 0 | 0 |
+| **dao 实现** | **28** | 0 | 0 |
+| mapper | 28 | 21 | 20 |
+| domain | 109 | 68 | 63 |
 
-**逐项说明**：
+全项目共 **42 个 DAO 实现**，分布在 business / generator / job / mall / system / workflow 等 12 个模块。分层纪律执行彻底：57 个 ServiceImpl 中仅 4 个仍引用 Mapper，且都是 Warm-Flow 第三方 ORM 的 Mapper（外部框架无法纳入 DAO 层），`ruoyi-system` 的 33 个 ServiceImpl 引用 Mapper 数为 0。
 
-- **上游 5.x 完全没有 AI 工程化配置**——`origin/5.X` 上 `.claude/`、`.codex/`、`AGENTS.md`、`CLAUDE.md` 文件数均为 0。
-- **上游 6.x 于 2026-03-30 引入**，内容是 6 个后端 subagent 定义加 1 个 Codex 技能包，**没有 SKILL.md、没有斜杠命令、没有钩子**。
-- 我们的体系 **2025-09-18 上线，比上游早约 18 个月**，且持续迭代至今。
+### 带来的收益与成本
 
-### 能力结构差异
+**收益**：数据访问逻辑集中在 DAO 层，Service 专注业务编排；数据权限注解从上游「打在 Mapper 的 default 方法上、靠 `StaticMethodMatcherPointcut` 匹配动态代理」简化为「打在 DAO 实现的重写方法上、标准 `@Aspect` 切面」，实现从三个类收敛到一个类。
 
-| 维度 | 我们 | 上游 6.x |
-|------|------|---------|
-| 组织形式 | 61 个独立 SKILL.md，按场景自动匹配 | 6 个 subagent 定义，需显式调用 |
-| 覆盖范围 | 后端 / 前端 / 移动端 / APP 原生 / 中间件 / 测试 / 部署 / 协作全链路 | 仅后端（CRUD、javadoc、查询权限等） |
-| 强制执行 | 钩子在工具调用层拦截，不依赖 AI 自觉 | 无钩子机制 |
-| 命令入口 | 19 个斜杠命令固化高频动作 | 无 |
-| 多 AI 平台 | Claude Code 与 Codex 双镜像同步 | 单个 Codex 技能包 |
-
-技能分组、每个技能的触发词与使用示例、19 个命令的逐条说明、3 个钩子的实现机制，都在「最佳实践 → AI 开发」章节展开，本页不再重复。
-
-### 这件事的实际价值
-
-框架的架构约定越多，新人和 AI 的上手成本就越高——四层架构、DAO 层规范、三级权限标识符、字典枚举命名、前后端类型对齐，这些规则写在文档里需要人去读、去记。技能体系把这些规则变成 AI 可直接消费的上下文：
-
-- **生成的代码天然符合规范**，不用先写完再返工改成四层架构
-- **新人不必先通读全部文档**，让 AI 按技能指引做，产出就是符合项目风格的
-- **规范变更只需改技能**，不必指望每个人都重新看一遍文档
+**成本**：每个业务实体多出 DAO 接口与实现两个文件；DAO 实现内部调用自身带 `@DataPermission` 的方法时，需要显式取代理 `SpringUtils.getAopProxy(this).list(lqw)` 才能触发切面。
 
 ---
 
-## 十五、数据库与运维
+## 四、查询构建
 
-三方的数据库支持枚举**完全一致**：MySQL / Oracle / PostgreSQL / SQL Server。三方**均不支持达梦与人大金仓**。
+### IBaseDao 通用能力
 
-| 项 | 我们 | 上游 5.x | 上游 6.x |
+DAO 基类开箱提供 21 个方法，覆盖单表操作的绝大多数场景：
+
+| 分组 | 方法 |
+|------|------|
+| 查询 | `getById` / `listByIds` / `getOne`（2 个重载）/ `list` / `listAll` / `page` / `mapList` |
+| 统计 | `count` / `exists`（2 个重载） |
+| 写入 | `insert` / `batchInsert` / `save` / `batchSave` / `updateById` / `update` |
+| 链式更新 | `lambdaUpdate()` |
+| 删除 | `deleteById` / `deleteByIds` / `delete` |
+
+所有条件方法只接受增强 Wrapper `PlusLambdaQuery<T>`，业务侧无法绕过。
+
+### PlusLambdaQuery 增强特性
+
+| 特性 | 说明 |
+|------|------|
+| **默认判空** | 值为 null 或空串时条件不生成 SQL，覆盖 `eq/ne/gt/ge/lt/le/like` 等 12 个方法 |
+| **BETWEEN 单端降级** | 只有起始值自动降级为 `>=`，只有结束值降级为 `<=`，两端皆空则不加条件 |
+| **日期预解析** | `between` 前自动转换日期字符串，规避 Oracle ORA-01861 隐式转换报错 |
+| **IN 元素过滤** | 集合内 null 与空串元素自动剔除，过滤后为空则不加条件 |
+| **聚合函数** | `sum / min / max / count / avg`，各带「字段」与「字段 + 别名」重载 |
+| **跨库 LIKE** | 按方言自动转换（MySQL/PG 用 `CAST AS VARCHAR`、Oracle 用 `TO_CHAR`、SQL Server 用 `CAST AS NVARCHAR(MAX)`） |
+
+### 同一查询的写法对照
+
+```java
+// 上游 5.x —— 判空条件由调用方手写，取值写两遍
+LambdaQueryWrapper<SysDept> lqw = Wrappers.lambdaQuery();
+lqw.eq(SysDept::getDelFlag, SystemConstants.NORMAL);
+lqw.eq(ObjectUtil.isNotNull(bo.getDeptId()), SysDept::getDeptId, bo.getDeptId());
+lqw.like(StringUtils.isNotBlank(bo.getDeptName()), SysDept::getDeptName, bo.getDeptName());
+lqw.between(params.get("beginTime") != null && params.get("endTime") != null,
+    SysDept::getCreateTime, params.get("beginTime"), params.get("endTime"));
+```
+
+```java
+// 上游 6.x —— 另起名的 IfPresent / IfText 系列，需显式 build()
+LambdaQueryBuilder<SysDept> builder = QueryBuilder.lambda(SysDept.class)
+    .eq(SysDept::getDelFlag, SystemConstants.NORMAL)
+    .eqIfPresent(SysDept::getDeptId, bo.getDeptId())
+    .likeIfText(SysDept::getDeptName, bo.getDeptName())
+    .betweenParams(SysDept::getCreateTime, params, "beginTime", "endTime");
+return builder.build();
+```
+
+```java
+// RuoYi-Plus-UniApp —— 方法名与 MyBatis-Plus 原生一致，默认判空，本身即 Wrapper
+PlusLambdaQuery<SysDept> lqw = PlusLambdaQuery.of(SysDept.class);
+lqw.eq(SysDept::getIsDeleted, DictBooleanFlag.NO.getValue());
+lqw.eq(SysDept::getDeptId, bo.getDeptId());
+lqw.like(SysDept::getDeptName, bo.getDeptName());
+lqw.orderByAsc(SysDept::getAncestors);
+return lqw;
+```
+
+单个模糊查询条件的写法长度：上游 5.x 88 字符，上游 6.x 48 字符，我们 46 字符。区别在于我们保持原生方法名、零学习成本，且 BETWEEN 单端有值时仍然生效——上游 6.x 的 `betweenIfPresent` 一端为 null 即丢弃整个条件。
+
+### 能力边界
+
+上游 6.x 在查询构建上提供了我们尚未覆盖的两项能力：**子查询构建器**（`selectSub` / `eqSub` / `inSub` / `existsSub`）与**联表查询构建器**（基于 mybatis-plus-join）。这两类场景我们目前通过 XML 实现。
+
+---
+
+## 五、权限体系
+
+### 行级数据权限
+
+三方注解定义一致，六档数据范围（全部 / 自定义 / 本部门 / 部门及以下 / 仅本人 / 部门及以下或本人）相同。我们的实现增强：
+
+| 项 | RuoYi-Plus-UniApp | 上游 5.x / 6.x |
+|----|------|---------------|
+| 切面实现 | 单个 `@Aspect` 类 | Advisor + Advice + Pointcut 三件套 |
+| Mapper 包扫描与 ID 缓存 | **支持** | 无 |
+| `denyAll()` 兜底拒绝 | **支持** | 无 |
+| 数据范围枚举中文标签 | **支持** | 无 |
+
+### 列级字段权限
+
+同一条记录，不同角色看到和改到不同的列——这是行级权限解决不了的另一半问题。上游两条线均无此能力，其数据脱敏注解是静态的，对所有人一视同仁，不按主体授权。
+
+**四档访问控制**：
+
+| 档位 | JSON 表现 | Excel 导出 | 写入 |
+|------|----------|-----------|------|
+| 隐藏 | 无该 key | 整列消失（含表头） | 提交被忽略 |
+| 脱敏 | 值打码 | 值打码 | 提交被忽略 |
+| 只读 | 明文 | 明文 | 提交被忽略 |
+| 可写 | 明文 | 明文 | 正常写入 |
+
+**三种授权主体**：角色（主力粒度）、部门（可沿部门树向下继承）、用户（临时例外授权）。多主体命中时逐字段取最宽松档位，与行级权限的多角色并集语义一致。
+
+**四个出口统一收口**：JSON 序列化、Excel 导出、JSON 写入、Excel 导入共用同一决策服务。同一用户在页面看不到的字段，导出也导不出、调接口也改不了、做张 Excel 导进去同样覆盖不掉。
+
+**配套管理能力**：字段 × 主体配置矩阵、按真实用户的效果预览、收权影响面统计（提示「收紧后仍有 N 人因其他主体可见」）。
+
+---
+
+## 六、开箱即用的业务能力
+
+上游定位是通用后台框架，不含具体业务能力。以下模块为我们独有，开箱可用于生产。
+
+### 支付
+
+聚合层采用策略 + 注册表模式，统一四种渠道的下单、退款、回调：
+
+| 渠道 | 能力 |
+|------|------|
+| 微信支付 | V2 / V3 双版本自动选择 |
+| 支付宝 | 完整对接 |
+| 银联 | 完整对接 |
+| 余额支付 | 内置账户体系 |
+
+配套商城模块提供商品、SKU、订单、发货与统一支付回调。
+
+### 微信生态
+
+| 模块 | 能力 |
+|------|------|
+| 小程序 | 小程序码生成、订阅消息、手机号授权自动绑定 |
+| 公众号 | JS-SDK 签名、模板消息，token 走 Redis 集群共享 |
+
+### AI 大模型
+
+基于 LangChain4j 自建，30 个实现类，全链路开源可控：
+
+| 能力 | 说明 |
+|------|------|
+| 多模型 | DeepSeek、通义千问、Claude、OpenAI、Ollama |
+| 会话记忆 | Redis 存储 |
+| RAG 知识库 | memory / Milvus / PGVector 三种向量库 |
+| 流式对话 | WebSocket 实时推送 |
+
+上游 6.x 的 AI 能力绑定在第三方闭源组件上，模块本身仅两个配置类，不含 AI 逻辑。
+
+### 物联网与消息
+
+MQTT 客户端（设备管理、实时数据采集）、RocketMQ 消息队列（同步 / 异步 / 顺序 / 延迟消息、Topic 运维、连通性诊断）。
+
+### 其他独有能力
+
+| 模块 | 能力 |
+|------|------|
+| 多媒体处理 | 链式图像处理、二维码、营销海报合成、GIF 动图 |
+| Word 模板 | 占位符、图片、表格行循环，一行链式导出 docx |
+| 开放 API | AppKey/AppSecret 签名、时间戳防重放、自动换发登录态 |
+| 声明式 HTTP | 高德地图（定位 / 地理编码 / 天气）、火山引擎 TTS |
+| 统一消息调度 | 多通道路由、按优先级降级、广播，已接入 5 个通道 |
+
+---
+
+## 七、基础设施模块
+
+| 项目 | common 子模块数 |
+|------|:---:|
+| **RuoYi-Plus-UniApp** | **36** |
+| 上游 5.x | 24 |
+| 上游 6.x | 24 |
+
+多出的 12 个模块全部指向可直接变现的业务能力：支付（含 5 个子模块）、AI 大模型、微信小程序、微信公众号、多媒体处理、Word 模板、序列化映射、声明式 HTTP、RocketMQ、统一消息调度、开放 API、测试脚手架。
+
+### 序列化映射
+
+Jackson 序列化期把 ID 自动转成名称、头像、字典标签、OSS 直链等，是上游同类能力的超集：
+
+| 内置实现 | RuoYi-Plus-UniApp | 上游 |
+|---------|:---:|:---:|
+| 用户名 / 昵称 / 部门名 / 字典 / OSS URL | 支持 | 支持 |
+| 头像 | **支持** | 无 |
+| 预签名 URL | **支持** | 无 |
+| 通用实体字段映射 | **支持** | 无 |
+| 目录名 | **支持** | 无 |
+| 国际化翻译 | **支持** | 无 |
+| 合计 | **11 个** | 5 个 |
+
+---
+
+## 八、安全与等保合规
+
+面向等保二级测评的三项条款提供开箱支撑，上游两条线均无对应能力。
+
+| 能力 | 对应条款 |
+|------|---------|
+| 密码复杂度策略 | 身份鉴别 8.1.4.1 a |
+| 历史密码防重用 | 同上 |
+| 密码到期提醒 | 同上 |
+| 首次登录强制改密（服务端拦截） | 同上 |
+| 策略参数在线可调（8 条配置项） | 同上 |
+| 审计日志定期归档（每日自动，含归档表与前端查询） | 安全审计 8.1.4.3 c |
+| 数据库备份与恢复脚本（含恢复演练记录模板） | 数据备份恢复 8.1.4.7 a |
+
+初始密码默认使用强口令，而非上游的 `123456`。
+
+---
+
+## 九、多租户与分支矩阵
+
+上游 6.x 为拥抱 Spring Boot 4 移除了多租户能力——官方定位从 5.x 的「分布式集群与多租户」改为「分布式集群」，租户模块、租户实体基类、相关建表脚本全部移除，实体基类规范也从继承租户基类改为继承普通基类。依赖多租户的存量业务无法平迁 6.x。
+
+我们的 Spring Boot 4 分支两者兼得：
+
+| | 上游 5.x | 上游 6.x | 我们 3.5.x 主线 | 我们 4.x 分支 |
+|---|:---:|:---:|:---:|:---:|
+| Spring Boot | 3.5.14 | **4.1.0** | 3.5.16 | **4.1.0** |
+| Java | 17 | 21 | 21 | 21 |
+| 多租户 | 支持 | **不支持** | **支持** | **支持** |
+
+### 五个分支变体
+
+业务代码与开发规范完全一致，按「租户模型 × 技术栈」区分：
+
+| 分支 | Spring Boot | 多租户 | 工作流 |
+|------|:---:|:---:|:---:|
+| `master` | 3.5.x | 支持 | 无 |
+| `single` | 3.5.x | 无 | 无 |
+| `workflow` | 3.5.x | 支持 | 支持 |
+| `6.x` | 4.1.0 | 支持 | 支持 |
+| `6.x-single` | 4.1.0 | 无 | 支持 |
+
+---
+
+## 十、代码生成器
+
+| 项 | RuoYi-Plus-UniApp | 上游 5.x | 上游 6.x |
+|----|:---:|:---:|:---:|
+| 模板引擎 | Velocity | Velocity | FreeMarker |
+| 模板文件数 | **19** | 16 | 20 |
+| Java 各层 | 支持 | 支持 | 支持 |
+| **DAO 接口 + 实现** | **支持** | 无 | 无 |
+| Mapper + XML | 支持 | 支持 | 支持 |
+| TypeScript 类型 + API | 支持 | 支持 | 支持 |
+| Vue 列表页 / 树表页 | 支持 | 支持 | 支持 |
+| **主子表子页** | **支持** | 无 | 无 |
+| React 页面 | 无 | 无 | 支持 |
+| SQL 菜单脚本（四种库） | 支持 | 支持 | 支持 |
+| **菜单自动入库** | **支持** | 无 | 无 |
+| **菜单图标 / 排序可配** | **支持** | 无 | 无 |
+| **后端模块名 / 前端目录可配** | **支持** | 无 | 无 |
+
+三方生成器均不产出移动端页面。
+
+---
+
+## 十一、管理端前端
+
+上游 6.x 的前端已拆分为独立仓库，本节与 5.x 对比。核心框架版本双方同代（Vue 3.5 / Vite 6 / Pinia 3 / UnoCSS 66）。
+
+### 体量
+
+| 指标 | RuoYi-Plus-UniApp | 上游 5.x |
+|------|---:|---:|
+| src 代码行数 | **132,172** | 28,185 |
+| `.vue` 文件 | **213** | 99 |
+| 自研组件 | **77** | 28 |
+| API 层文件 | **89** | 60 |
+| i18n 词条 | **1,507 行 / 50 命名空间** | 85 行 / 4 命名空间 |
+| 权限指令 | **12** | 3 |
+| 构建插件 | **12** | 8 |
+
+### 自研组件体系
+
+77 个组件中 69 个是 `A` 前缀的业务级封装：
+
+| 组件族 | 数量 | 代表能力 |
+|--------|:---:|---------|
+| 表单封装 | 14 | 表格弹窗选择器、高德地图选点、富文本、省市区级联、图片与附件上传 |
+| 卡片模板 | 23 | 统计、图表、时间轴、价格、天气等成品卡片 |
+| 图表 | 10 | 折线 / 柱状 / 双向柱状 / 饼图 / 雷达 / 散点 / K 线 / 地图 |
+| AI 能力 | 4 | 文本润色、测试数据生成、内容审核 |
+| 主题视觉 | 5 | 主题色选择、粒子背景、水印 |
+| 业务组件 | 13 | 通用表格、搜索表单、统一弹窗、详情弹窗、虚拟滚动过滤树、OSS 媒体库、Excel 导入 |
+
+### 架构差异
+
+| 维度 | RuoYi-Plus-UniApp | 上游 5.x |
+|------|------|---------|
+| 组合式函数 | **独立 `composables/` 层，18 个文件**，auto-import 全局注入 | 能力散落在 plugins / utils / hooks 三处 |
+| 工具函数 | 18 个文件，**纯函数** | 19 个文件，混有状态逻辑 |
+| 路由 | 守卫独立 + 模块化拆分 | 单文件 + 根级守卫 |
+| 样式 | 7-1 架构分层 | 扁平 8 个 scss |
+| 主题 | **CSS 变量体系**（亮 35 + 暗 46 变量）+ 五层背景层级 + 切换动画 | JS 生成主色梯度 |
+| 菜单布局 | **4 种**（含双列布局） | 2 种 |
+| 图标 | **三源统一入口** + 2,538 行类型声明 | 多套写法并存，无类型 |
+
+### API 代码生成
+
+内置 OpenAPI 代码生成插件（6 个文件 / 2,384 行），从后端接口文档自动生成 API 与类型文件：MD5 防覆盖（内容变化时生成参考文件而非覆盖手改代码）、CRUD 七级优先级自动排序、按模块 / 文件 / 函数通配忽略。上游无同类基建。
+
+### 独有业务模块
+
+商城（商品 / SKU / 订单）、支付配置、广告位、平台配置、账号绑定、字段权限配置页、OpenAPI 密钥管理、**可视化页面设计器**（14 个文件 / 7,660 行，含 AI 生成与优化）。
+
+---
+
+## 十二、响应封装
+
+| 维度 | RuoYi-Plus-UniApp | 上游 5.x | 上游 6.x |
+|------|------|---------|---------|
+| 响应壳数量 | **1 种** | **2 种**（分页与非分页结构不同） | 1 种 |
+| 分页字段 | `records / total / current / size / last` | `rows / total / code / msg` | `rows / total` |
+| 页码回传 | **支持** | 无 | 无 |
+| 是否末页 | **支持** | 无 | 无 |
+| 分页结果类型转换 | **支持** | 无 | 无 |
+| 消息国际化 | **自动识别并翻译** | 硬编码中文 | 硬编码中文 |
+| 带参国际化 | **支持** | 无 | 无 |
+| `R.status()` 快捷封装 | **5 个重载** | 无 | 无 |
+
+上游 5.x 的分页接口返回 `{code, msg, rows, total}`、非分页返回 `{code, msg, data}`，前端需处理两种结构；我们统一为 `{code, msg, data}` 一种，`data` 内额外提供页码、页大小与末页标记。
+
+`R.status()` 让 Controller 更薄——`return R.status(deptService.updateDept(dept))` 直接把布尔值或影响行数转成统一响应。
+
+---
+
+## 十三、数据库与运维
+
+三方均支持 MySQL、Oracle、PostgreSQL、SQL Server 四种数据库。
+
+| 项 | RuoYi-Plus-UniApp | 上游 5.x | 上游 6.x |
 |----|:---:|:---:|:---:|
 | 建库脚本（每种库） | **6 个** | 3 个 | 3~4 个 |
-| 升级脚本组织方式 | **按功能**（21 个文件，四库 × 5 类功能） | 按版本号（50 个） | **无 update 目录** |
-| 数据库备份 / 恢复脚本 | **有** | 无 | 无 |
-| Docker 编排文件 | **6 个**（完整版 / 数据库 / 监控 / RocketMQ / 应用 / SnailJob） | 2 个 | 2 个 |
+| 升级脚本组织 | **按功能分类**（21 个） | 按版本号（50 个） | 无升级目录 |
+| **数据库备份 / 恢复脚本** | **提供** | 无 | 无 |
+| Docker 编排文件 | **6 个**（完整版 / 数据库 / 监控 / RocketMQ / 应用 / 任务调度） | 2 个 | 2 个 |
 
 ---
 
-## 十六、选型建议
+## 十四、运行时与依赖
 
-### 选上游 RuoYi-Vue-Plus 5.x
+核心中间件版本三方高度接近，我们与上游 5.x 的绝大多数依赖完全一致，差异集中在运行时基线。
 
-- 需要 **MIT 协议**、完全开源可商用、不接受授权费用
-- 只做 PC 管理端，没有移动端需求
+| 依赖 | RuoYi-Plus-UniApp | 上游 5.x | 上游 6.x |
+|------|:---:|:---:|:---:|
+| **Java** | **21** | 17 | **21** |
+| **Spring Boot** | **3.5.16** | 3.5.14 | **4.1.0** |
+| MyBatis-Plus | 3.5.16 | 3.5.16 | 3.5.16 |
+| Sa-Token | 1.45.0 | 1.45.0 | 1.45.0 |
+| Redisson | 3.52.0 | 3.52.0 | 4.6.1 |
+| Hutool | 5.8.43 | 5.8.43 | 5.8.46 |
+| SpringDoc | 2.8.17 | 2.8.17 | 3.0.3 |
+| Warm-Flow | **1.8.9** | 1.8.5 | 1.8.8 |
+| SnailJob | 1.10.0 | 1.10.0 | 2.0.0 |
+| Lock4j | 2.2.7 | 2.2.7 | 2.2.7 |
+| dynamic-datasource | 4.3.1 | 4.3.1 | 4.5.0 |
+| JustAuth | 1.16.7 | 1.16.7 | 1.16.7 |
+| SMS4J | 3.3.5 | 3.3.5 | 3.3.5 |
+| Excel 引擎 | FastExcel 1.3.0 | FastExcel 1.3.0 | Fesod 2.0.2 |
+| Web 容器 | Undertow | Undertow | Jetty |
+
+我们在 3.5.x 稳定主线上采用 Java 21，同时提供与 6.x 同代的 Spring Boot 4 分支，稳定与尝鲜两条路径都可选。
+
+---
+
+## 十五、选型建议
+
+### 适合选上游 5.x
+
+- 需要 MIT 协议，完全开源可商用，不接受授权费用
+- 只做 PC 管理端，无移动端需求
 - 不需要支付、微信生态、AI 能力
-- 希望依托 Dromara 社区生态与活跃度
+- 希望依托 Dromara 社区生态
 
-### 选上游 RuoYi-Vue-Plus 6.x
+### 适合选上游 6.x
 
-- 想尽早用上 **Spring Boot 4 + JDK 21** 技术栈
-- **不需要多租户**（这是硬前提）
+- 希望尽早使用 Spring Boot 4 + JDK 21
+- **不需要多租户**（硬前提）
 - 需要子查询 / 联表的 Java 侧链式构建
 - 需要 React 前端代码生成
 - 接受前端在独立仓库维护
 
-### 选 RuoYi-Plus-UniApp
+### 适合选 RuoYi-Plus-UniApp
 
 - 需要 **PC 管理端 + 移动端全栈**一套交付（小程序 / H5 / APP / 鸿蒙）
-- 需要**开箱即用的支付能力**（微信 / 支付宝 / 银联 / 余额）
-- 需要微信小程序、公众号深度集成
-- 需要**列级字段权限**（同一记录按角色控制字段可见可改）
-- 需要**等保二级**合规支撑（密码策略、日志归档、备份恢复）
-- 需要自建可控的 **AI 能力**而非绑定第三方闭源组件
-- 希望 **AI 辅助开发开箱即用**——61 个技能让 AI 直接产出符合本框架规范的代码，新人不必先通读全部文档
+- 需要**开箱即用的支付能力**与微信小程序、公众号深度集成
+- 需要**列级字段权限**，按角色控制同一记录的字段可见可改
+- 需要**等保二级**合规支撑
+- 需要**自建可控的 AI 能力**，而非绑定第三方闭源组件
+- 希望 **AI 辅助开发开箱即用**，让 AI 直接产出符合框架规范的代码
 - 需要 **Spring Boot 4 与多租户兼得**
 - 能接受闭源授权模式
 
-### 三者共同具备
+### 三方共同具备
 
-Sa-Token 认证与权限注解、JustAuth 三方登录、Redisson 缓存与分布式锁、MyBatis-Plus ORM 与多数据源、SnailJob 分布式任务调度、数据脱敏与加解密、接口传输加密、行级数据权限、Excel 导入导出、SpringDoc 接口文档、国际化、Docker 部署、四种关系数据库支持、Warm-Flow 工作流（我们的 workflow / 6.x 分支）。
+Sa-Token 认证与权限注解、JustAuth 三方登录、Redisson 缓存与分布式锁、MyBatis-Plus ORM 与多数据源、SnailJob 分布式任务调度、数据脱敏与加解密、接口传输加密、行级数据权限、Excel 导入导出、SpringDoc 接口文档、国际化、Docker 部署、四种关系数据库支持、Warm-Flow 工作流。
 
-这些能力来自上游多年的积累，选任何一方都能得到。
+这些能力源自上游多年积累，选择任何一方都能获得。
