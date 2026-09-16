@@ -87,7 +87,7 @@ ruoyi-admin
 ├── 核心业务模块
 │   ├── ruoyi-system        # 系统核心功能（用户、角色、菜单、部门等）
 │   ├── ruoyi-business      # 业务功能模块
-│   └── ruoyi-mall          # 商城模块（商品、订单、购物车等）
+│   └── ruoyi-mall          # 商城模块（商品、SKU、订单等）
 │
 ├── 功能增强模块
 │   ├── ruoyi-workflow      # 工作流模块（Warm-Flow）
@@ -104,7 +104,7 @@ ruoyi-admin
 |------|------|------|
 | ruoyi-system | 系统核心功能，包含用户、角色、菜单、部门、字典等基础管理 | 是 |
 | ruoyi-business | 业务功能扩展，包含首页统计、广告管理等业务功能 | 是 |
-| ruoyi-mall | 商城功能模块，包含商品、订单、购物车、支付等电商功能 | 是 |
+| ruoyi-mall | 商城功能模块，包含商品、SKU、订单、支付等电商功能 | 是 |
 | ruoyi-workflow | 工作流引擎，基于Warm-Flow实现流程管理和审批 | 是 |
 | ruoyi-generator | 代码生成器，支持根据数据库表生成前后端代码 | 是 |
 | spring-boot-admin-client | Spring Boot Admin监控客户端，用于应用健康监控 | 否 |
