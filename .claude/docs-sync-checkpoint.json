@@ -16,8 +16,8 @@
     "workflow": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-workflow",
       "gitBranch": "workflow",
-      "lastSyncCommit": "bb0d0d82fb317d46c3ab08a1afb6e6c3ffd935b5",
-      "lastSyncDate": "2026-06-17T21:06:41+08:00"
+      "lastSyncCommit": "9e21e43400f425c15d36dfcc692a528018a63c5d",
+      "lastSyncDate": "2026-09-15T22:26:25+08:00"
     },
     "6.x": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x",
@@ -108,6 +108,37 @@
         "docs/practices/ai/claude-code.md",
         "docs/.vitepress/config.ts",
         "CLAUDE.md"
+      ]
+    },
+    {
+      "branch": "workflow",
+      "commit": "9e21e43400f425c15d36dfcc692a528018a63c5d",
+      "date": "2026-09-15T22:26:25+08:00",
+      "summary": "推进节点至 9e21e43（2026-06-17 → 2026-09-15，共 82 个提交）。本批内容已在本会话通过三轮 dry-run 分析后手工同步完毕，故用 --init 补推节点。 backend(38 提交)：1) 新增 ruoyi-job 轻量级内置定时任务模块文档（1039 行，此前零覆盖，与 SnailJob 为并存选型关系）；2) 新增等保二级合规文档（699 行，密码策略/审计日志归档/备份恢复，对应 8.1.4.1a、8.1.4.3b·c、8.1.4.7a）；3) 清理 14 处已废弃的 IBaseService/BaseServiceImpl 继承示例，统一为「Service 不继承基类 + 注入 DAO」现行四层架构；4) 支付补支付宝当面付(NATIVE/BARCODE)与条码撤销兜底，并修正已移除的微信 V3 publicKeyId 回退 certSerialNo 描述；5) 认证补发码三级限流与图形验证码前置，修正验证码位数 6→4、有效期 5→2 分钟；6) 依赖版本 17 文件 44 处对齐 pom（SpringBoot 3.5.16 / Sa-Token 1.45.0 / Hutool 5.8.43 / SnailJob 1.10.0 / Redisson 3.52.0 / Warm-Flow 1.8.9 / SBA 3.5.8）；7) Java 17→21 全站 20 文件 53 处，并修正「JDK17 不支持虚拟线程」等语义冲突表述；8) 删除无源码支撑的购物车章节并修正 mall 模块构成描述。 frontend(24 提交)：1) 新增认证页 AuthLayout 文档（502 行）；2) 补双列布局模式并修正 MenuLayoutMode 枚举缺失 DualColumn（文档贴的类型定义与源码不符）；3) 补页签溢出交互与视觉层次设计。 mobile(4 提交)：1) wd-paging 补 pageSize 优先级变更与请求竞态说明；2) 登录页补图形验证码前置。 另全站清理 1375 处「参考: src/xxx:行号」引用格式（47 文件），对齐 CLAUDE.md 第 7 条。 跳过：workflow 上游同步 bug 修复、生成器模板内部修复、compose 环境变量、异常日志级别调整、字段权限 UI 修复与性能优化（field-permission.md 已覆盖）。 遗留：fastjson 1.2.84（CVE-2026-16723）未在任何依赖表中出现，未擅自新增表行。",
+      "updatedDocs": [
+        "docs/practices/features/security-compliance.md",
+        "docs/backend/modules/job.md",
+        "docs/frontend/layout/auth-layout.md",
+        "docs/backend/common/pay.md",
+        "docs/backend/modules/system/auth.md",
+        "docs/backend/common/bom.md",
+        "docs/backend/modules/business.md",
+        "docs/backend/modules/business/base.md",
+        "docs/backend/modules/business/mall.md",
+        "docs/backend/modules/system.md",
+        "docs/backend/modules/system/config.md",
+        "docs/backend/modules/system/oss.md",
+        "docs/backend/ruoyi-admin/configuration.md",
+        "docs/backend/ruoyi-admin/overview.md",
+        "docs/frontend/layout/layout-overview.md",
+        "docs/frontend/layout/settings.md",
+        "docs/frontend/layout/tags-view.md",
+        "docs/mobile/pages/login.md",
+        "docs/mobile/wd/navigation/paging.md",
+        "docs/practices/engineering/code-generator.md",
+        "docs/index.md",
+        "docs/.vitepress/config.ts",
+        "PROJECT_PROGRESS.md"
       ]
     }
   ]
