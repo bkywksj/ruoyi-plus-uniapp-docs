@@ -8,9 +8,10 @@
 
 ### Claude Code
 
-AI 辅助开发工具 Claude Code 的使用指南：
+框架自带一套完整的 AI 工程化配置——**61 个专业技能、19 个智能命令、3 个自动化钩子**，覆盖后端 CRUD、前端组件、移动端、中间件集成、测试验收、部署交付全链路。让 AI 直接理解本项目的四层架构与开发规范，生成的代码天然符合项目风格，不必每次重新解释。
 
-- [Skills 技能系统](/practices/engineering/claude-code-skills) - 自定义技能扩展 Claude Code 能力
+- [AI 开发体验总览](/practices/ai/claude-code) - **推荐首读**，61 个技能的定位、触发词与使用示例，19 个命令入口，3 个钩子机制
+- [Skills 技能系统](/practices/engineering/claude-code-skills) - 技能编写规范与项目已有技能清单
 - [Commands 自定义命令](/practices/engineering/claude-code-commands) - 创建和使用自定义命令
 - [Hooks 钩子机制](/practices/engineering/claude-code-hooks) - 钩子系统实现自动化流程
 - [MCP 服务器配置](/practices/engineering/claude-code-mcp) - MCP 服务器集成配置

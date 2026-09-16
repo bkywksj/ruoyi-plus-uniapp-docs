@@ -7,8 +7,8 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - [x] 介绍内容已完成，覆盖双配置与三大机制的整体定位
 - [x] 核心特性已完成，包含技能规模、命令入口与钩子机制
 - [x] 上下文工程已完成，说明 `CLAUDE.md` 与 `AGENTS.md` 协同方式
-- [x] 技能系统已完成，包含 54 个技能的场景与示例
-- [x] 命令系统已完成，按 13 个使用入口拆解
+- [x] 技能系统已完成，包含 61 个技能的场景与示例
+- [x] 命令系统已完成，按 19 个使用入口拆解
 - [x] 钩子系统已完成，覆盖三类 JS 钩子的触发与输出
 - [x] 最佳实践已完成，强调规范优先与流程闭环
 - [x] 实战案例已完成，覆盖新功能、文档同步、工作流同步
@@ -16,7 +16,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - [x] 续写提示已保留，如需扩展可追加更多技能场景或案例
 
 ## 核心特性
-- 技能体系：`.claude/skills` 目录现有 59 个技能目录，覆盖架构、后端、前端、移动端、APP原生、AI、协作、计划、测试验收、工程规范、部署运维、交付、中间件集成与物联网
+- 技能体系：`.claude/skills` 目录现有 61 个技能目录，覆盖架构、后端、前端、移动端、APP原生、AI、协作、计划、测试验收、工程规范、部署运维、交付、中间件集成与物联网
 - 命令体系：`.claude/commands` 提供 18 个命令文件，`/init-docs` 内含两种模式，合计 19 个使用入口（不含 local 相关的上游同步命令，这些命令仅在源码项目中使用）
 - 钩子体系：`.claude/hooks` 提供 3 个 JavaScript 钩子，分别负责技能强制评估、工具安全拦截与结束收尾
 - 配置入口：`.claude/settings.json` 统一绑定 `UserPromptSubmit`、`PreToolUse`（5s超时）、`Stop`（10s超时）三类触发点
@@ -71,16 +71,16 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 技能文件包含 YAML 头部，记录 `name`、`description`、触发场景与触发词
 - 强制技能评估流程由钩子注入，未匹配技能时需明确说明
 
-### 分类总览（59 个技能）
+### 分类总览（61 个技能）
 - 业务与架构：crud-development、api-development、architecture-design、workflow-engine
 - 后端能力：backend-annotations、data-permission、error-handler、security-guard、multi-tenant、json-serialization、test-development、log-audit
 - 前端与移动：ui-pc、ui-mobile、ui-design-mobile、store-pc、store-mobile、uniapp-platform、i18n-development
 - APP原生：app-adapter
 - 中间件与集成：redis-cache、scheduled-jobs、realtime-communication、notification-system、message-queue、iot-mqtt、third-party-api、social-login
-- 工程与质量：code-patterns、git-workflow、project-navigator、utils-toolkit、performance-doctor、icon-management
+- 工程与质量：code-patterns、git-workflow、project-navigator、utils-toolkit、performance-doctor、icon-management、dev-startup、database-ops
 - 计划与测试验收：writing-plans、e2e-test-pc、e2e-test-mobile
 - 部署与交付：deployment-guide、env-config、delivery-sync、module-strip
-- AI 与协作：ai-langchain4j、collaborating-with-codex、collaborating-with-gemini、task-tracker
+- AI 与协作：ai-langchain4j、collaborating-with-codex、collaborating-with-gemini、collaborating-with-antigravity、task-tracker
 - 业务集成：payment-integration、wechat-integration、file-oss-management、media-processing
 - 诊断与规划：bug-detective、brainstorm、tech-decision、html-to-code
 - 迁移与扩展：project-init、project-migration、framework-sync、add-skill、exp-sediment
@@ -316,6 +316,41 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 示例
 - 用户: 需要查看项目禁止事项（后端/前端/移动端）
 - 用户: 需要命名规范速查
+
+### collaborating-with-antigravity
+
+定位
+- 当用户明确点名要用 Google Antigravity CLI（agy）协同时使用此 Skill，把指定任务委托给 agy 执行并整合结果。与另外两个协同技能的差别在于 agy 原生支持非交互与结构化输出，不需要 Python 桥接脚本。
+
+触发场景
+- 明确要求用 Antigravity / agy 执行某个任务
+- 要求多模型交叉验证，并点名 Antigravity 作为其中一方
+- 要求外部模型返回严格 JSON 结构（`--json-schema` 强制结构化输出）
+- 要求接续之前的 agy 会话（`--continue` / `--conversation ID`）
+
+触发词
+- `Antigravity`
+- `反重力`
+- `agy`
+- `agy协同`
+- `委托给 Antigravity`
+
+不适用场景
+- 未点名 Antigravity 时一律不激活：UI/前端原型走 ui-pc、ui-mobile、html-to-code；代码审查走 code-patterns；Bug 排查走 bug-detective；方案探索走 brainstorm、tech-decision
+- 只说"多模型""交叉验证"但没点名具体 CLI 的，不自作主张拉起本技能
+
+三个协同技能的能力边界
+
+| 能力 | `agy` | `gemini` CLI | `codex` CLI |
+|------|:---:|:---:|:---:|
+| 调用方式 | 直接命令行 | Python 桥接 | Python 桥接 / 官方插件 |
+| 结构化输出 | 原生 `--output-format json` | 桥接自行封装 | 桥接自行封装 |
+| 强制 JSON Schema | 支持 `--json-schema` | 不支持 | 不支持 |
+| 可选模型 | 15 个（跨三家厂商） | 仅 Gemini | 仅 GPT |
+
+示例
+- 用户: 用 agy 帮我交叉验证这个方案
+- 用户: 委托给 Antigravity 执行并返回 JSON
 
 ### collaborating-with-codex
 
@@ -1667,6 +1702,42 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 示例
 - 用户: 怎么接收 IoT 设备的 MQTT 消息
 - 用户: 设备上下线状态怎么监控
+
+### dev-startup
+
+定位
+- 当需要在本地从零搭建开发环境、首次启动项目、安装运行时依赖时自动使用此 Skill。流程为：环境检查 → 基础工具安装 → 数据库初始化 → 启动后端 → 启动前端/移动端 → 健康验证。
+
+触发场景
+- 新机器首次拉项目，需要装 JDK / Maven / Node / pnpm / 数据库 / Redis
+- 后端启动报 plugin prefix 错、端口被占、数据库连不上
+- 前端 `pnpm install` 失败（镜像超时 / ECONNRESET / META_FETCH_FAIL）
+- 不确定用 IDEA / 命令行 / pnpm script 哪种方式启动
+- 启动后需要验证健康检查端点
+- 需要切换 Node 版本（nvm 操作）
+
+触发词
+- `本地启动`
+- `首次启动`
+- `跑起来`
+- `装环境`
+- `安装依赖`
+- `pnpm install`
+- `启动后端`
+- `启动前端`
+- `端口占用`
+- `健康检查`
+- `nvm`
+
+边界说明
+- 生产部署 / Docker / Nginx 走 deployment-guide
+- 配置字段含义走 env-config
+- 启动成功后的业务 bug 走 bug-detective
+- 建表 / 字典 / 菜单走 database-ops
+
+示例
+- 用户: 新电脑怎么把项目跑起来
+- 用户: pnpm install 一直超时
 
 ### deployment-guide
 

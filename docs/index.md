@@ -28,7 +28,7 @@ hero:
 features:
   - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2m16 0h2m-7-1v2m-6-2v2"/></g></svg>'
     title: Claude Code 深度集成 (NEW)
-    details: 首个 AI 原生全栈框架！54+ 专业技能、15+ 智能命令、3 个自动化钩子，让 AI 真正理解你的代码架构。自动遵循项目规范，智能生成符合标准的代码，开发效率提升 10 倍
+    details: 首个 AI 原生全栈框架！61 个专业技能、19 个智能命令、3 个自动化钩子，让 AI 真正理解你的代码架构。自动遵循项目规范，智能生成符合标准的代码，开发效率提升 10 倍
     link: /practices/ai/claude-code
   - icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/></g></svg>'
     title: 后端重大重构
@@ -116,8 +116,8 @@ highlights:
 
   - title: Claude Code 原生支持
     details: |
-      **54+ 专业技能** - 覆盖后端CRUD、前端组件、移动端开发、数据库设计等全栈场景
-      **15+ 智能命令** - /dev开发、/crud生成、/check检查、/exp经验沉淀、/progress进度追踪
+      **61 个专业技能** - 覆盖后端CRUD、前端组件、移动端开发、数据库设计等全栈场景
+      **19 个智能命令** - /dev开发、/crud生成、/check检查、/exp经验沉淀、/progress进度追踪
       **3 个自动化钩子** - 技能强制评估、工具调用拦截、会话结束处理
       **完整上下文工程** - CLAUDE.md + AGENTS.md 双配置，AI深度理解项目架构
       **规范自动遵循** - 四层架构、命名规范、代码风格100%自动化执行

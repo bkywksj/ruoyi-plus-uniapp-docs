@@ -545,78 +545,41 @@ return lqw;   // 本身就是 Wrapper，无需 build()
 
 ## 十四、AI 技能体系
 
-这是我们投入最久、也最容易被忽略的一块——**框架自带一套让 AI 真正理解本项目架构的工程化配置**，而不是让开发者对着通用 AI 反复解释「我们的项目是四层架构、DAO 怎么写、权限标识符什么格式」。
+框架自带一套让 AI 理解本项目架构的工程化配置——**这是我们投入最久、也最早落地的一块**。
 
-### 核查口径（重要）
+### 核查口径
 
-统计只认**上游官方仓库的远端分支**（`gitee.com/dromara/RuoYi-Vue-Plus`），不含任何第三方 fork 中的贡献：
+统计只认**上游官方仓库的远端分支**（`gitee.com/dromara/RuoYi-Vue-Plus`），不含任何第三方 fork 中的贡献：上游 5.x 取 `origin/5.X`，上游 6.x 取 `origin/6.X`。
 
-- 上游 5.x：取 `origin/5.X`
-- 上游 6.x：取 `origin/6.X`
-
-### 规模对照
+### 规模与时间线
 
 | 项 | 我们 | 上游 5.x | 上游 6.x |
 |----|:---:|:---:|:---:|
-| **专业技能（SKILL.md）** | **61** | **0** | 0 |
-| **智能命令** | **19** | **0** | 0 |
-| **自动化钩子** | **3** | **0** | 0 |
+| **专业技能（SKILL.md）** | **61** | **0** | **0** |
+| **智能命令** | **19** | **0** | **0** |
+| **自动化钩子** | **3** | **0** | **0** |
 | 子代理（subagent） | 2 | 0 | 6 |
-| Codex 镜像技能包 | **有**（与 Claude 技能同步） | 无 | 1 个 |
+| Codex 镜像 | **全量同步** | 无 | 1 个技能包 |
 | 技能内容总量 | **45,181 行** | 0 | 约 5 个 reference 文档 |
-| 首次引入时间 | **2025-09-18** | 至今无 | 2026-03-30 |
+| **首次引入** | **2025-09-18** | 至今无 | 2026-03-30 |
 
 **逐项说明**：
 
-- **上游 5.x 完全没有任何 AI 工程化配置**——`origin/5.X` 上 `.claude/`、`.codex/`、`AGENTS.md`、`CLAUDE.md` 文件数均为 0。
-- **上游 6.x 于 2026-03-30 引入**，内容是 6 个后端 subagent 定义（`backend-crud`、`backend-javadoc`、`backend-query-permission` 等）加 1 个 Codex 技能包（含 3 个 reference 文档）。**没有 SKILL.md、没有斜杠命令、没有钩子**。
-- 我们的体系 **2025-09-18 上线**，比上游早约 18 个月，且持续迭代至今。
+- **上游 5.x 完全没有 AI 工程化配置**——`origin/5.X` 上 `.claude/`、`.codex/`、`AGENTS.md`、`CLAUDE.md` 文件数均为 0。
+- **上游 6.x 于 2026-03-30 引入**，内容是 6 个后端 subagent 定义加 1 个 Codex 技能包，**没有 SKILL.md、没有斜杠命令、没有钩子**。
+- 我们的体系 **2025-09-18 上线，比上游早约 18 个月**，且持续迭代至今。
 
-### 61 个技能覆盖什么
+### 能力结构差异
 
-不是通用编程技巧，而是**本框架的具体约定**——每个技能都写着「在这个项目里，这件事应该怎么做」。
+| 维度 | 我们 | 上游 6.x |
+|------|------|---------|
+| 组织形式 | 61 个独立 SKILL.md，按场景自动匹配 | 6 个 subagent 定义，需显式调用 |
+| 覆盖范围 | 后端 / 前端 / 移动端 / APP 原生 / 中间件 / 测试 / 部署 / 协作全链路 | 仅后端（CRUD、javadoc、查询权限等） |
+| 强制执行 | 钩子在工具调用层拦截，不依赖 AI 自觉 | 无钩子机制 |
+| 命令入口 | 19 个斜杠命令固化高频动作 | 无 |
+| 多 AI 平台 | Claude Code 与 Codex 双镜像同步 | 单个 Codex 技能包 |
 
-| 分组 | 技能 | 解决的问题 |
-|------|------|-----------|
-| **开发主线** | `crud-development`、`api-development`、`code-patterns`、`backend-annotations`、`architecture-design` | 四层架构怎么落地、DAO 层怎么写、注解怎么用 |
-| **权限与安全** | `data-permission`、`multi-tenant`、`security-guard`、`log-audit` | 行级权限注解落点、租户隔离、等保要求 |
-| **前端三端** | `ui-pc`、`ui-mobile`、`ui-design-mobile`、`app-adapter`、`uniapp-platform`、`html-to-code` | PC 端与移动端各自的组件规范，避免把 `wd-*` 写进 PC 端 |
-| **业务能力** | `payment-integration`、`wechat-integration`、`ai-langchain4j`、`iot-mqtt`、`message-queue`、`workflow-engine`、`social-login`、`notification-system` | 支付/微信/AI/物联网等模块的接入方式 |
-| **基础设施** | `redis-cache`、`file-oss-management`、`scheduled-jobs`、`realtime-communication`、`json-serialization`、`i18n-development`、`database-ops`、`utils-toolkit`、`icon-management`、`media-processing`、`third-party-api` | 各中间件在本框架中的封装用法 |
-| **测试与排障** | `e2e-test-pc`、`e2e-test-mobile`、`test-development`、`bug-detective`、`performance-doctor`、`error-handler` | 端到端测试、问题定位、性能诊断 |
-| **工程运维** | `git-workflow`、`deployment-guide`、`dev-startup`、`env-config`、`project-init`、`project-migration`、`framework-sync`、`delivery-sync`、`module-strip`、`store-pc`、`store-mobile` | 从初始化到上架的全流程 |
-| **协作与沉淀** | `brainstorm`、`tech-decision`、`writing-plans`、`task-tracker`、`exp-sediment`、`add-skill`、`project-navigator` | 方案评估、任务追踪、经验沉淀、技能自扩展 |
-| **跨 AI 协同** | `collaborating-with-codex`、`collaborating-with-gemini`、`collaborating-with-antigravity` | 与其他 AI CLI 协同作业 |
-
-### 19 个斜杠命令
-
-把高频动作固化成一条命令，不必每次描述需求：
-
-| 命令 | 作用 |
-|------|------|
-| `/crud` | 按四层架构生成完整 CRUD（含 DAO 层、TS 类型、Vue 页面、菜单 SQL） |
-| `/dev`、`/dev-loop`、`/start`、`/kickoff` | 启动开发、进入迭代循环 |
-| `/check` | 按项目规范做代码检查 |
-| `/next`、`/progress`、`/add-todo`、`/update-status` | 任务推进与进度追踪 |
-| `/exp` | 把本次踩坑沉淀成可复用经验 |
-| `/deploy` | 部署流程 |
-| `/sync`、`/sync-branches-local`、`/framework-sync`、`/sync-delivery` | 多分支与交付产物同步 |
-| `/strip-modules` | 按需裁剪模块 |
-| `/init-docs`、`/loop-gen` | 文档初始化与批量生成 |
-
-### 3 个自动化钩子
-
-钩子是体系的执行保障——**不依赖 AI 自觉，而是在工具调用层强制拦截**：
-
-| 钩子 | 触发时机 | 作用 |
-|------|---------|------|
-| `skill-forced-eval.cjs` | 每次用户输入 | 强制 AI 先评估该用哪个技能，再动手，杜绝「跳过规范直接写」 |
-| `pre-tool-use.cjs` | Bash / Write 执行前 | 前置安全校验，拦截危险操作 |
-| `stop.cjs` | 会话结束 | 清理资源、更新检查点 |
-
-### 双 AI 平台镜像
-
-技能体系同时提供 **Claude Code**（`.claude/`）与 **Codex**（`.codex/`）两套镜像，内容保持同步，换 AI 工具不用重新配置。上游 6.x 的 Codex 支持是单个技能包，我们是全量镜像。
+技能分组、每个技能的触发词与使用示例、19 个命令的逐条说明、3 个钩子的实现机制，都在「最佳实践 → AI 开发」章节展开，本页不再重复。
 
 ### 这件事的实际价值
 

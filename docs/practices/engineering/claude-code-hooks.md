@@ -372,7 +372,7 @@ ruoyi-plus-uniapp-workflow 项目使用三个 JavaScript 钩子文件实现自�
 
 | 钩子文件 | 事件类型 | 核心功能 |
 |---------|---------|---------|
-| `skill-forced-eval.js` | UserPromptSubmit | 注入48个技能评估流程，强制逐个激活匹配技能 |
+| `skill-forced-eval.js` | UserPromptSubmit | 注入 61 个技能的评估流程，强制逐个激活匹配技能 |
 | `pre-tool-use.js` | PreToolUse | 拦截危险Bash命令（`rm -rf /`、`drop database`等），警告敏感文件写入 |
 | `stop.js` | Stop | 清理误创建的 `nul` 文件，播放完成提示音（跨平台） |
 
