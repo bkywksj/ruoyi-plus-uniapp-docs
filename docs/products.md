@@ -10,7 +10,7 @@
   icon="lucide:bot"
   logo="/products/ai-workstation.svg"
   name="AI 全能工作站"
-  slogan="一句话搞定一切 · 63个专业模块 · 1299 AI技能"
+  slogan="一句话搞定一切 · 63个专业模块 · 1301 AI技能"
   description="覆盖内容创作、办公效率、多媒体处理、商业财务、设计策略、数据分析、运营协作、效率工具八大领域。用自然语言描述需求，两级智能路由自动识别意图，跨工具协作完成复杂任务。"
   theme="blue"
   badge="42集教程"
