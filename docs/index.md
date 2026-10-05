@@ -332,6 +332,7 @@ highlights:
     <span class="company-tag">中运交投（深圳）投资集团有限公司</span>
     <span class="company-tag">淮沪煤电有限公司田集发电厂</span>
     <span class="company-tag">山重建机有限公司</span>
+    <span class="company-tag">西双版纳再回楼民宿有限公司</span>
     <span class="company-tag">江门市得实计算机外部设备有限公司</span>
     <span class="company-tag">北京国泰大华科技有限公司</span>
     <span class="company-tag">华创旗晟（华东）科技有限公司</span>
@@ -416,6 +417,19 @@ highlights:
     <span class="company-tag">山东东八区信息科技有限公司</span>
     <span class="company-tag">步阳集团有限公司</span>
     <span class="company-tag">宜昌市西陵区星露软件开发工作室</span>
+    <span class="company-tag">云南大通汇电子科技有限公司</span>
+    <span class="company-tag">福州飞邮无人机有限公司</span>
+    <span class="company-tag">合肥和科信息科技有限公司</span>
+    <span class="company-tag">云南农垦集团有限责任公司</span>
+    <span class="company-tag">天津市岳华科技有限公司</span>
+    <span class="company-tag">北京赛柏蓝健康科技有限公司</span>
+    <span class="company-tag">河北地质大学</span>
+    <span class="company-tag">广州瑞博医疗设备有限公司</span>
+    <span class="company-tag">贝恩医疗设备（广州）有限公司</span>
+    <span class="company-tag">青岛创捷中云科技有限公司</span>
+    <span class="company-tag">贵州绿数智能科技有限公司</span>
+    <span class="company-tag">东莞市泓成汽车服务有限公司</span>
+    <span class="company-tag">武汉以清软件工作室</span>
   </div>
 </div>
 
