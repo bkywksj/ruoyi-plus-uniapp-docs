@@ -105,7 +105,7 @@ src/
 |------|------|---------|
 | `app` | 应用基础信息 | id, title, env, publicPath |
 | `api` | API 服务配置 | baseUrl |
-| `security` | 安全相关配置 | apiEncrypt, rsaPublicKey, rsaPrivateKey |
+| `security` | 安全相关配置 | apiEncrypt, apiEncryptAlgorithm, rsaPublicKey, rsaPrivateKey, sm2PublicKey, sm2PrivateKey |
 | `platforms` | 多平台配置 | 各小程序 AppId, mapKey 等 |
 
 ### 配置接口定义
@@ -187,32 +187,39 @@ const baseUrl = SystemConfig.api.baseUrl
 interface SecurityConfig {
   /** 接口加密功能开关 */
   apiEncrypt: boolean
+  /** 接口加密算法 - RSA: RSA+AES，SM2: SM2+SM4 国密 */
+  apiEncryptAlgorithm: 'RSA' | 'SM2'
   /** RSA公钥 - 用于加密传输 */
   rsaPublicKey: string
   /** RSA私钥 - 用于解密响应 */
   rsaPrivateKey: string
+  /** SM2公钥 - 用于加密传输 */
+  sm2PublicKey: string
+  /** SM2私钥 - 用于解密响应 */
+  sm2PrivateKey: string
 }
 ```
 
 **安全机制说明:**
 
 1. **接口加密** - 通过 `apiEncrypt` 开关控制是否启用请求/响应加密
-2. **RSA 公钥** - 用于加密请求数据,与后端解密私钥配对
-3. **RSA 私钥** - 用于解密响应数据,与后端加密公钥配对
+2. **加密算法** - `apiEncryptAlgorithm` 决定使用 RSA+AES 还是国密 SM2+SM4,未配置时按 RSA 处理,必须与后端 `api-decrypt.algorithm` 一致
+3. **RSA / SM2 公钥** - 用于加密请求中的对称密钥,与后端解密私钥配对
+4. **RSA / SM2 私钥** - 用于解密响应中的对称密钥,与后端加密公钥配对
 
 **使用示例:**
 
 ```typescript
 import { SystemConfig } from '@/systemConfig'
-import { encrypt, decrypt } from '@/utils/rsa'
+import { encryptApiRequest, decryptApiResponse } from '@/utils/apiCrypto'
 
 // 判断是否启用加密
 if (SystemConfig.security.apiEncrypt) {
-  // 使用公钥加密请求数据
-  const encryptedData = encrypt(requestData, SystemConfig.security.rsaPublicKey)
+  // 按 apiEncryptAlgorithm 自动选择 RSA+AES 或 SM2+SM4
+  const { encryptedKey, body } = encryptApiRequest(JSON.stringify(requestData))
 
-  // 使用私钥解密响应数据
-  const decryptedData = decrypt(responseData, SystemConfig.security.rsaPrivateKey)
+  // 用响应头中的密钥密文解密响应报文，返回 JSON 字符串
+  const decryptedData = JSON.parse(decryptApiResponse(responseKey, responseBody))
 }
 ```
 
@@ -309,8 +316,11 @@ export const SystemConfig: DeepReadonly<SystemConfigType> = deepFreeze({
   },
   security: {
     apiEncrypt: import.meta.env.VITE_APP_API_ENCRYPT === 'true',
+    apiEncryptAlgorithm: import.meta.env.VITE_APP_API_ENCRYPT_ALGORITHM === 'SM2' ? 'SM2' : 'RSA',
     rsaPublicKey: import.meta.env.VITE_APP_RSA_PUBLIC_KEY || '',
     rsaPrivateKey: import.meta.env.VITE_APP_RSA_PRIVATE_KEY || '',
+    sm2PublicKey: import.meta.env.VITE_APP_SM2_PUBLIC_KEY || '',
+    sm2PrivateKey: import.meta.env.VITE_APP_SM2_PRIVATE_KEY || '',
   },
   platforms: {
     wechatMiniAppId: import.meta.env.VITE_WECHAT_MINI_APP_ID || '',
@@ -424,6 +434,15 @@ VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZI...'
 
 # 接口响应解密 RSA 私钥与后端加密公钥对应
 VITE_APP_RSA_PRIVATE_KEY = 'MIIBOwIBAAJB...'
+
+# 接口加密算法 必须与后端 api-decrypt.algorithm 一致(RSA 默认 / SM2 国密)
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
+
+# 接口加密传输 SM2 公钥(Hex 04 开头)与后端 api-decrypt.sm2.private-key 对应
+VITE_APP_SM2_PUBLIC_KEY = '04b545121b1a...'
+
+# 接口响应解密 SM2 私钥(Hex)与后端 api-decrypt.sm2.public-key 对应
+VITE_APP_SM2_PRIVATE_KEY = '261af8bdfd10...'
 
 # ===== 功能开关 =====
 # websocket 开关
@@ -840,29 +859,32 @@ const reportError = (error: Error) => {
 
 ```typescript
 import { SystemConfig } from '@/systemConfig'
-import { rsaEncrypt, rsaDecrypt } from '@/utils/rsa'
+import { decryptApiResponse, encryptApiRequest } from '@/utils/apiCrypto'
+
+const ENCRYPT_HEADER = 'encrypt-key'
 
 /**
  * 请求拦截器 - 加密处理
+ * 按 apiEncryptAlgorithm（RSA+AES / SM2+SM4）生成对称密钥加密报文，密钥密文放请求头
  */
-const encryptRequest = (data: any): any => {
-  if (!SystemConfig.security.apiEncrypt) {
-    return data
-  }
+const encryptRequestData = (data: any, header: Record<string, any>) => {
+  if (!SystemConfig.security?.apiEncrypt || !data) return data
 
-  return rsaEncrypt(JSON.stringify(data), SystemConfig.security.rsaPublicKey)
+  const encrypted = encryptApiRequest(typeof data === 'object' ? JSON.stringify(data) : data)
+  header[ENCRYPT_HEADER] = encrypted.encryptedKey
+  return encrypted.body
 }
 
 /**
  * 响应拦截器 - 解密处理
  */
-const decryptResponse = (data: string): any => {
-  if (!SystemConfig.security.apiEncrypt) {
-    return data
-  }
+const decryptResponseData = (data: any, header: Record<string, any>): any => {
+  if (!SystemConfig.security?.apiEncrypt) return data
 
-  const decrypted = rsaDecrypt(data, SystemConfig.security.rsaPrivateKey)
-  return JSON.parse(decrypted)
+  const encryptKey = header[ENCRYPT_HEADER] || header[ENCRYPT_HEADER.toLowerCase()]
+  if (!encryptKey) return data
+
+  return JSON.parse(decryptApiResponse(encryptKey, data))
 }
 ```
 

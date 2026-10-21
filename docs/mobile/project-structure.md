@@ -114,15 +114,19 @@ Ruoyi-Plus-Uniapp 移动端项目采用标准的 uni-app 项目结构，基于 V
 │   └── [第三方插件]                  // 第三方 uni-app 插件
 │
 ├── 📁 utils/                        // 工具函数
+│   ├── apiCrypto.ts                 // 接口传输加解密（按算法分发）
 │   ├── boolean.ts                   // 布尔值相关工具
 │   ├── cache.ts                     // 缓存相关工具
 │   ├── crypto.ts                    // 加密相关工具
+│   ├── cryptoPolyfill.ts            // crypto.getRandomValues 补丁（小程序/APP）
 │   ├── date.ts                      // 日期相关工具
 │   ├── format.ts                    // 格式化相关工具
 │   ├── function.ts                  // 函数相关工具
 │   ├── platform.ts                  // 平台判断工具
 │   ├── route.ts                     // 路由相关工具
 │   ├── rsa.ts                       // RSA 加密工具
+│   ├── sm.ts                        // 国密 SM2/SM4 加密工具
+│   ├── smCrypto.ts                  // sm-crypto 入口（先装补丁再加载）
 │   ├── string.ts                    // 字符串相关工具
 │   ├── tenant.ts                    // 租户相关工具
 │   ├── to.ts                        // 安全异步执行工具
@@ -162,8 +166,11 @@ export const SystemConfig = {
   },
   security: {                      // 安全配置
     apiEncrypt: boolean,           // 接口加密开关
+    apiEncryptAlgorithm: 'RSA' | 'SM2', // 接口加密算法
     rsaPublicKey: string,          // RSA公钥
-    rsaPrivateKey: string          // RSA私钥
+    rsaPrivateKey: string,         // RSA私钥
+    sm2PublicKey: string,          // SM2公钥
+    sm2PrivateKey: string          // SM2私钥
   },
   platforms: {                     // 第三方平台配置
     wechatMiniAppId: string,       // 微信小程序 appid
@@ -308,15 +315,19 @@ TypeScript 类型定义目录：
 工具函数目录，复用前端的工具函数：
 
 **核心工具**：
+- **apiCrypto.ts**: 接口传输加解密，按 `VITE_APP_API_ENCRYPT_ALGORITHM` 在 RSA+AES / SM2+SM4 间分发
 - **boolean.ts**: 布尔值转换和判断
 - **cache.ts**: 本地存储封装（localStorage、sessionStorage）
-- **crypto.ts**: 加密解密工具（AES、MD5等）
+- **crypto.ts**: 加密解密工具（AES、MD5、记住密码本地加密等）
+- **cryptoPolyfill.ts**: 为无 WebCrypto 的小程序 / APP 补 `crypto.getRandomValues`
 - **date.ts**: 日期格式化和计算
 - **format.ts**: 数据格式化（金额、手机号等）
 - **function.ts**: 函数工具（防抖、节流等）
 - **platform.ts**: 平台判断（H5、小程序、App等）
 - **route.ts**: 路由跳转封装
 - **rsa.ts**: RSA 加密解密
+- **sm.ts**: 国密 SM2/SM4 加密解密（基于 sm-crypto）
+- **smCrypto.ts**: sm-crypto 统一入口，保证随机数补丁先于 sm-crypto 加载
 - **string.ts**: 字符串处理
 - **tenant.ts**: 租户相关工具
 - **to.ts**: 安全异步执行

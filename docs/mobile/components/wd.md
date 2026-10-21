@@ -446,7 +446,7 @@ abort()
 | 参数 | 说明 | 类型 | 默认值 |
 |------|------|------|--------|
 | action | 上传地址 | `string` | - |
-| header | 请求头 | `Record<string, any>` | - |
+| header | 请求头,不传时每次上传时通过 `getAuthHeaders()` 读取当前 token | `Record<string, any>` | - |
 | formData | 表单数据 | `Record<string, any>` | - |
 | name | 文件字段名 | `string` | `'file'` |
 | enableDirectUpload | 是否启用直传 | `boolean` | `false` |

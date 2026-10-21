@@ -76,11 +76,26 @@ VITE_APP_VERSION = '2.11.0'
 # 接口加密功能开关
 VITE_APP_API_ENCRYPT = 'true'
 
+# 下方 RSA / SM2 密钥均为框架默认值 生产必须更换 且三端与后端必须成对更换
+# 生成方式：运行后端单元测试 ApiEncryptKeyGeneratorTest（generateRsaKeys / generateSm2Keys），复制控制台第 ③ 段到这里
+
+# 接口加密算法 必须与后端 api-decrypt.algorithm 一致
+# RSA: RSA+AES(默认)  SM2: SM2+SM4(国密，信创/密评项目使用)
+# 注意：小程序 / APP 没有同步的安全随机数接口，SM2 方案在这两端退化为 Math.random 生成随机数，
+# 对随机数强度有硬性要求的项目请确保全链路 HTTPS
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
+
 # 接口加密传输 RSA 公钥(与后端解密私钥配对)
 VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK9s1Pbnn5W+l1hx3ukHLtevayF5nOFIb140zvIPksw8h7bZWY05zyWdsQ2I51ypiC53KnyfhibPk3AJ2yr+qnkCAwEAAQ=='
 
 # 接口响应解密 RSA 私钥(与后端加密公钥配对)
 VITE_APP_RSA_PRIVATE_KEY = 'MIIBOwIBAAJBAIrZxEhzVAHKJm7BJpXIHWGU3sHJYgRiOOTw3Auj/iNDTL+RExEW2Y0dg/IC71DKxcjvVEA9GdDp0/5nph+4dIMCAwEAAQJAIyPdwyA84H8SnvEPHNUaannMrmqS/d0F3Rr/9Yo5ZR7htKMON9zDgixHOZb+MQmpXapvl8NgQazUsLtya/pX4QIhAMGq7rIFz2OXce1KsQ7nVj+6fAjguW4mDEcgXKUnQn9bAiEAt4o8KELUNEFNuVJs89QMrDiuyo1PQQc9pB5nUP4wz/kCIFJ/StCgsvg8kfY/4+5yUwYwnRd3CuZF5OMDgROFBsmTAiEAgycdq6ttldWgY7A5uNarI5nxlT37Bz3UV2V+cIrjeIkCIQCAJS0PinuXxvX9Sqr+1+n0gMB+nU0frif1icnKWGQzRw=='
+
+# 接口加密传输 SM2 公钥(Hex 04 开头，与后端 api-decrypt.sm2.private-key 配对)
+VITE_APP_SM2_PUBLIC_KEY = '04b545121b1aed3c7c59b25f8da50b1af7080cc0a7438fa095f8ce95ea61afd6b75170ac82241894f604cb4e1b3c3dbb09125c17497805ce0b5c54381baeea5897'
+
+# 接口响应解密 SM2 私钥(Hex，与后端 api-decrypt.sm2.public-key 配对)
+VITE_APP_SM2_PRIVATE_KEY = '261af8bdfd10e14b8d87b04bc4e42c6fc44e3c41380cf4346b4bfa87afa74e92'
 
 # ===== 功能开关 =====
 # WebSocket 功能开关
@@ -134,6 +149,16 @@ VITE_APP_THEME = 'true'
   - **前后端必须保持一致**
 - **注意**: 关闭时后端也必须关闭,否则通信失败
 
+**VITE_APP_API_ENCRYPT_ALGORITHM**
+- **作用**: 接口加密算法
+- **值**: `'RSA'`(默认,RSA+AES) | `'SM2'`(国密 SM2+SM4)
+- **说明**:
+  - 必须与后端 `api-decrypt.algorithm`(docker 部署为 compose 的 `API_ENCRYPT_ALGORITHM`)一致
+  - 切换为 SM2 时,后端与 plus-ui / plus-uniapp / plus-app 三端必须一起修改,任一处不一致都会导致登录失败
+  - 未配置或配置为其他值时按 RSA 处理,兼容旧版 `.env`
+  - 默认 SM2 密钥已与后端默认值配对,开发环境只改开关即可
+- **注意**: 小程序 / APP 没有同步的安全随机数接口,SM2 方案在这两端退化为 `Math.random` 生成随机数,对随机数强度有硬性要求的项目请确保全链路 HTTPS
+
 **VITE_APP_RSA_PUBLIC_KEY**
 - **作用**: RSA 公钥,用于加密传输 AES 密钥
 - **格式**: Base64 编码的公钥字符串
@@ -151,6 +176,18 @@ VITE_APP_THEME = 'true'
   - <Warn/> **不要泄露私钥**
   - 生产环境建议使用 `.env.local` 配置
   - 不提交到公开代码仓库
+- **附加用途**: 与 SM2 私钥一起参与“记住密码”本地加密密钥的派生(SHA-256),更换后已保存的密码需重新输入
+
+**VITE_APP_SM2_PUBLIC_KEY**
+- **作用**: SM2 公钥,算法为 `SM2` 时用于加密传输 SM4 密钥
+- **格式**: Hex 原始格式,`04` + x + y,共 130 位
+- **配对**: 与后端 `api-decrypt.sm2.private-key` 配对使用
+
+**VITE_APP_SM2_PRIVATE_KEY**
+- **作用**: SM2 私钥,算法为 `SM2` 时用于解密响应中的 SM4 密钥
+- **格式**: Hex 原始格式,64 位
+- **配对**: 与后端 `api-decrypt.sm2.public-key` 配对使用
+- **生成方式**: 运行后端单元测试 `ApiEncryptKeyGeneratorTest` 的 `generateSm2Keys`(RSA 为 `generateRsaKeys`),复制控制台第 ③ 段到 `.env`
 
 #### 功能开关
 
@@ -577,8 +614,11 @@ interface ImportMetaEnv {
 
   // 安全配置
   readonly VITE_APP_API_ENCRYPT: 'true' | 'false'
+  readonly VITE_APP_API_ENCRYPT_ALGORITHM: 'RSA' | 'SM2'
   readonly VITE_APP_RSA_PUBLIC_KEY: string
   readonly VITE_APP_RSA_PRIVATE_KEY: string
+  readonly VITE_APP_SM2_PUBLIC_KEY: string
+  readonly VITE_APP_SM2_PRIVATE_KEY: string
 
   // 构建配置
   readonly VITE_DELETE_CONSOLE: boolean
@@ -776,8 +816,9 @@ pnpm dev:h5    # 使用 development
 ### 3. 密钥配置错误
 
 **问题原因:**
-- RSA 密钥对不匹配
+- RSA / SM2 密钥对不匹配
 - 前后端密钥配置颠倒
+- 前端 `VITE_APP_API_ENCRYPT_ALGORITHM` 与后端 `api-decrypt.algorithm` 不一致
 
 **解决方案:**
 
@@ -788,6 +829,10 @@ pnpm dev:h5    # 使用 development
 #
 # 前端: VITE_APP_RSA_PRIVATE_KEY (解密用)
 # 后端: RSA 公钥 (加密用)
+#
+# 算法为 SM2 时:
+# 前端: VITE_APP_SM2_PUBLIC_KEY  ↔ 后端: api-decrypt.sm2.private-key
+# 前端: VITE_APP_SM2_PRIVATE_KEY ↔ 后端: api-decrypt.sm2.public-key
 
 # 确保前后端密钥对应
 ```

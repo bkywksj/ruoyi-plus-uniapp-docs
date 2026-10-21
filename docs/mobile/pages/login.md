@@ -284,45 +284,47 @@ onUnmounted(() => {
 
 ### 保存登录信息
 
+勾选“记住我”后,登录数据写入本地缓存 `loginData`,密码通过 `@/utils/crypto` 的 `encryptLocal` 加密后保存,恢复时用 `decryptLocal` 解密回填:
+
 ```typescript
-interface RememberInfo {
-  username: string
-  password: string
-  rememberMe: boolean
-}
+import { cache } from '@/utils/cache'
+import { decryptLocal, encryptLocal } from '@/utils/crypto'
 
-const STORAGE_KEY = 'login_remember'
-
-/** 保存记住密码信息 */
-const saveRememberInfo = () => {
-  const info: RememberInfo = {
-    username: formData.value.username,
-    password: btoa(formData.value.password), // Base64编码
-    rememberMe: true
-  }
-  uni.setStorageSync(STORAGE_KEY, info)
-}
-
-/** 加载记住的登录信息 */
-const loadRememberInfo = () => {
-  try {
-    const info = uni.getStorageSync(STORAGE_KEY)
-    if (info) {
-      const data = typeof info === 'string' ? JSON.parse(info) : info
-      formData.value.username = data.username || ''
-      formData.value.password = data.password ? atob(data.password) : ''
-      rememberMe.value = data.rememberMe || false
+/** 保存登录数据到本地缓存（密码加密存储） */
+const saveLoginDataToCache = () => {
+  if (loginForm.value.rememberMe) {
+    const loginDataToCache: PasswordLoginBody = {
+      authType: 'password',
+      userName: loginForm.value.userName,
+      password: encryptLocal(loginForm.value.password),
+      rememberMe: true,
     }
-  } catch (error) {
-    console.error('加载记住信息失败:', error)
+    cache.set('loginData', loginDataToCache)
+  } else {
+    cache.remove('loginData')
   }
 }
 
-/** 清除记住的登录信息 */
-const clearRememberInfo = () => {
-  uni.removeStorageSync(STORAGE_KEY)
+/** 从本地缓存恢复登录数据（密码解密读取） */
+const restoreLoginDataFromCache = () => {
+  if (autoLogging.value) return
+
+  const cachedLoginData = cache.get<PasswordLoginBody>('loginData')
+
+  if (cachedLoginData && cachedLoginData.rememberMe) {
+    loginForm.value.userName = cachedLoginData.userName || ''
+    loginForm.value.password = decryptLocal(cachedLoginData.password || '') || cachedLoginData.password || ''
+    loginForm.value.rememberMe = true
+  }
 }
 ```
+
+**本地加密说明:**
+
+- 密钥为 `SHA-256(VITE_APP_RSA_PRIVATE_KEY + VITE_APP_SM2_PRIVATE_KEY)`,得到 256 位 AES 密钥,随项目私钥变化
+- 新密文带 `v2:` 前缀;升级前保存的无前缀旧数据仍按旧密钥(RSA 私钥前 32 位)解开,下次登录自动转存为新格式,避免升级后登录框回填密文导致登录失败
+- 解密失败时 `decryptLocal` 返回空串,回填逻辑退回缓存原值
+- 更换 RSA / SM2 私钥后,已记住的密码无法解开,需重新输入一次
 
 ## 登录方式
 
@@ -928,16 +930,17 @@ export const useUserStore = defineStore('user', () => {
 ### 1. 安全性
 
 ```typescript
-// 密码加密传输(使用RSA或国密SM2)
-import { encrypt } from '@/utils/crypto'
+import { encryptLocal } from '@/utils/crypto'
 
-const encryptedPassword = encrypt(formData.value.password)
+// 密码加密传输：登录接口带 isEncrypt: true，由 useHttp 按 VITE_APP_API_ENCRYPT_ALGORITHM
+// 自动使用 RSA+AES 或国密 SM2+SM4 加密请求体，业务代码无需手动加密
+const [err, res] = await userLogin(loginForm.value)
 
-// 敏感数据不明文存储
+// 敏感数据不明文存储：使用由私钥派生密钥的 AES 加密，而不是 Base64 编码
 const saveRememberInfo = () => {
   uni.setStorageSync('login_remember', {
     username: formData.value.username,
-    password: btoa(formData.value.password), // Base64编码
+    password: encryptLocal(formData.value.password),
     rememberMe: true
   })
 }
@@ -1226,6 +1229,7 @@ import { useUserStore } from '@/stores/user'
 import { imgCode, userLogin, smsCode as sendSms, smsLogin } from '@/api/system/auth/authApi'
 import { getTenantConfig } from '@/api/system/tenant/tenantApi'
 import { isMp, isWechatOfficialH5 } from '@/utils/platform'
+import { decryptLocal, encryptLocal } from '@/utils/crypto'
 
 // 表单实例
 const formRef = ref<FormInstance | null>(null)
@@ -1413,7 +1417,7 @@ const handleLogin = async () => {
 const saveRememberInfo = () => {
   uni.setStorageSync('login_remember', {
     username: formData.value.username,
-    password: btoa(formData.value.password),
+    password: encryptLocal(formData.value.password),
     rememberMe: true
   })
 }
@@ -1425,7 +1429,7 @@ const loadRememberInfo = () => {
     if (info) {
       const data = typeof info === 'string' ? JSON.parse(info) : info
       formData.value.username = data.username || ''
-      formData.value.password = data.password ? atob(data.password) : ''
+      formData.value.password = data.password ? decryptLocal(data.password) : ''
       rememberMe.value = data.rememberMe || false
     }
   } catch (error) {

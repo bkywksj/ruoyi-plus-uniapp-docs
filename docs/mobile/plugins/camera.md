@@ -1167,7 +1167,7 @@ interface FastUploadOptions {
   /** 上传地址 */
   action?: string
 
-  /** 请求头 */
+  /** 请求头，不传时每次上传时再读取认证头（getAuthHeaders），保证登录后拿到最新 token */
   header?: Record<string, any>
 
   /** 表单数据 */

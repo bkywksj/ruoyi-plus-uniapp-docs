@@ -77,10 +77,16 @@ RSA 工具模块与系统配置 SystemConfig 紧密集成，自动读取安全�
 interface SecurityConfig {
   /** 接口加密功能开关 */
   apiEncrypt: boolean
+  /** 接口加密算法 - RSA: RSA+AES，SM2: SM2+SM4 国密 */
+  apiEncryptAlgorithm: 'RSA' | 'SM2'
   /** RSA公钥 - 用于加密传输 */
   rsaPublicKey: string
   /** RSA私钥 - 用于解密响应 */
   rsaPrivateKey: string
+  /** SM2公钥 - 用于加密传输 */
+  sm2PublicKey: string
+  /** SM2私钥 - 用于解密响应 */
+  sm2PrivateKey: string
 }
 
 // rsa.ts 中自动读取默认密钥
@@ -93,9 +99,17 @@ const defaultPrivateKey = SystemConfig.security.rsaPrivateKey
 ```bash
 # .env 文件
 VITE_APP_API_ENCRYPT = 'true'
+# 接口加密算法，RSA 为默认值
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
 VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK9s1Pbnn5W+...'
 VITE_APP_RSA_PRIVATE_KEY = 'MIIBOwIBAAJBAIrZxEhzVAHKJm7BJpXIHWGU3sHJYg...'
 ```
+
+### 在接口加密中的位置
+
+`useHttp` 不直接调用 `rsaEncrypt` / `rsaDecrypt`，而是统一调用 `utils/apiCrypto.ts` 的 `encryptApiRequest` / `decryptApiResponse`。只有 `VITE_APP_API_ENCRYPT_ALGORITHM` 为 `'RSA'`（默认）时，`apiCrypto` 才会使用本模块：请求时用 `rsaEncrypt(encodeBase64(aesKey))` 加密 32 位 AES 密钥放入请求头 `encrypt-key`，响应时用 `rsaDecrypt` 解出 AES 密钥后解密报文。`rsaEncrypt` / `rsaDecrypt` 返回空值时，`apiCrypto` 会分别抛出“RSA加密失败，请检查公钥配置”“RSA解密失败，请检查前后端密钥是否成对”。
+
+切换为 `'SM2'` 后接口加密改走国密 SM2+SM4（`utils/sm.ts`），本模块仍可在业务中单独使用。
 
 ## 基本用法
 

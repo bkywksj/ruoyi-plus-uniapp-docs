@@ -601,6 +601,8 @@ const checkRepeatSubmit = (url: string, data: any): boolean => {
 
 ### 加密流程
 
+以默认的 RSA+AES 为例（`VITE_APP_API_ENCRYPT_ALGORITHM = 'SM2'` 时对应替换为 SM2+SM4，流程相同）：
+
 ```text
 客户端                           服务端
   │                               │
@@ -612,47 +614,42 @@ const checkRepeatSubmit = (url: string, data: any): boolean => {
   │                               │ 5. RSA 私钥解密 AES 密钥
   │                               │ 6. AES 解密请求数据
   │                               │ 7. 处理业务逻辑
-  │                               │ 8. AES 加密响应数据
+  │                               │ 8. 新 AES 密钥加密响应数据
   │<------------------------------|
-  │ 9. AES 解密响应数据            │
+  │ 9. 私钥解出密钥并解密响应数据   │
 ```
 
 ### 加密实现
 
+`useHttp` 不直接依赖 RSA/AES 工具，只调用 `utils/apiCrypto.ts` 的 `encryptApiRequest` / `decryptApiResponse`，由它按 `SystemConfig.security.apiEncryptAlgorithm` 分发：
+
 ```typescript
+import { decryptApiResponse, encryptApiRequest } from '@/utils/apiCrypto'
+
+const ENCRYPT_HEADER = 'encrypt-key'
+
 // 加密请求数据
 const encryptRequestData = (data: any, header: Record<string, any>) => {
   if (!SystemConfig.security?.apiEncrypt || !data) return data
 
-  // 1. 生成随机 AES 密钥
-  const aesKey = generateAesKey()
-
-  // 2. RSA 公钥加密 AES 密钥，放入请求头
-  header['encrypt-key'] = rsaEncrypt(encodeBase64(aesKey))
-
-  // 3. AES 加密请求数据
-  return typeof data === 'object'
-    ? encryptWithAes(JSON.stringify(data), aesKey)
-    : encryptWithAes(data, aesKey)
+  // 按配置的算法（RSA+AES / SM2+SM4）生成对称密钥加密报文，密钥密文放请求头
+  const encrypted = encryptApiRequest(typeof data === 'object' ? JSON.stringify(data) : data)
+  header[ENCRYPT_HEADER] = encrypted.encryptedKey
+  return encrypted.body
 }
 
 // 解密响应数据
 const decryptResponseData = (data: any, header: Record<string, any>): any => {
   if (!SystemConfig.security?.apiEncrypt) return data
 
-  const encryptKey = header['encrypt-key']
+  const encryptKey = header[ENCRYPT_HEADER] || header[ENCRYPT_HEADER.toLowerCase()]
   if (!encryptKey) return data
 
   try {
-    // 1. RSA 私钥解密 AES 密钥
-    const base64Str = rsaDecrypt(encryptKey)
-    const aesKey = decodeBase64(base64Str)
-
-    // 2. AES 解密响应数据
-    const decryptedData = decryptWithAes(data, aesKey)
-    return JSON.parse(decryptedData)
+    return JSON.parse(decryptApiResponse(encryptKey, data))
   } catch (error) {
-    throw new Error('响应数据解密失败')
+    console.error('[响应解密失败]', error)
+    throw new Error(ErrorMsg.DECRYPT_FAILED)
   }
 }
 ```
@@ -961,8 +958,10 @@ console.log('加密启用:', SystemConfig.security?.apiEncrypt)
 // 暂时禁用加密测试
 const [err, token] = await http.noAuth().post('/auth/login', form)
 
-// 检查 RSA 公钥配置
+// 检查加密算法与公钥配置（算法需与后端 api-decrypt.algorithm 一致）
+console.log('加密算法:', SystemConfig.security?.apiEncryptAlgorithm)
 console.log('RSA 公钥:', SystemConfig.security?.rsaPublicKey)
+console.log('SM2 公钥:', SystemConfig.security?.sm2PublicKey)
 ```
 
 ### 6. 租户信息缺失

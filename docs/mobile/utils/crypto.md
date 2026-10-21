@@ -2,13 +2,14 @@
 
 ## 概述
 
-RuoYi-Plus-UniApp 移动端提供了完整的加密解密解决方案,基于 crypto-js 和 jsencrypt 库实现了 AES 对称加密、RSA 非对称加密、哈希计算等功能。该工具集与后端 API 加密系统无缝集成,支持请求/响应自动加密,保障敏感数据传输安全。
+RuoYi-Plus-UniApp 移动端提供了完整的加密解密解决方案,基于 crypto-js、jsencrypt 和 sm-crypto 库实现了 AES 对称加密、RSA 非对称加密、国密 SM2/SM4、哈希计算等功能。该工具集与后端 API 加密系统无缝集成,支持请求/响应自动加密,保障敏感数据传输安全。
 
 ### 核心特性
 
 - **AES 加密** - 高效的对称加密算法,适用于大数据量加密
 - **RSA 加密** - 非对称加密算法,用于密钥交换和数字签名
 - **混合加密** - AES + RSA 混合加密模式,兼顾安全性和性能
+- **国密支持** - 可切换为 SM2 + SM4 国密混合加密,满足信创/密评要求
 - **哈希计算** - 支持 SHA-256、MD5 等哈希算法
 - **API 加密集成** - 与 HTTP 请求模块深度集成,支持自动加解密
 - **环境配置** - 通过环境变量管理密钥,支持多环境配置
@@ -20,6 +21,7 @@ RuoYi-Plus-UniApp 移动端提供了完整的加密解密解决方案,基于 cry
 |------|------|------|
 | crypto-js | 4.2.0 | JavaScript 加密库 |
 | jsencrypt | 3.3.2 | RSA 加密解密库 |
+| sm-crypto | 0.5.7 | 国密 SM2/SM4 加密库 |
 | UniApp | 3.0.0+ | 跨平台框架 |
 | TypeScript | 5.7.2 | 类型支持 |
 
@@ -70,8 +72,12 @@ RuoYi-Plus-UniApp 移动端提供了完整的加密解密解决方案,基于 cry
 ```text
 plus-uniapp/src/
 ├── utils/
-│   ├── crypto.ts          # AES 加密、Base64 编码、哈希计算
-│   └── rsa.ts             # RSA 加密解密、签名验签
+│   ├── crypto.ts          # AES 加密、Base64 编码、哈希计算、本地存储加密
+│   ├── rsa.ts             # RSA 加密解密、签名验签
+│   ├── sm.ts              # 国密 SM2/SM4 加解密
+│   ├── smCrypto.ts        # sm-crypto 入口(先装随机数补丁再加载)
+│   ├── cryptoPolyfill.ts  # 为小程序/APP 补 crypto.getRandomValues
+│   └── apiCrypto.ts       # 接口传输加解密(按算法分发)
 ├── composables/
 │   └── useHttp.ts         # HTTP 请求加密集成
 ├── systemConfig.ts        # 系统配置(密钥管理)
@@ -80,6 +86,8 @@ plus-uniapp/src/
     ├── .env.development   # 开发环境变量
     └── .env.production    # 生产环境变量
 ```
+
+`useHttp` 只依赖 `apiCrypto.ts`,由它根据 `SystemConfig.security.apiEncryptAlgorithm` 选择 `crypto.ts` + `rsa.ts`(RSA+AES)或 `sm.ts`(SM2+SM4)完成接口加解密。
 
 ## AES 加密
 
@@ -258,11 +266,20 @@ RSA 密钥通过环境变量配置:
 # 接口加密功能开关
 VITE_APP_API_ENCRYPT = 'true'
 
+# 接口加密算法(RSA 默认 / SM2 国密),必须与后端 api-decrypt.algorithm 一致
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
+
 # RSA 公钥(用于加密)
 VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKoR8mTr...'
 
 # RSA 私钥(用于解密)
 VITE_APP_RSA_PRIVATE_KEY = 'MIIBOQIBAAJBAKoR8mTr7AGTcYLqm...'
+
+# SM2 公钥(Hex 04 开头,算法为 SM2 时用于加密)
+VITE_APP_SM2_PUBLIC_KEY = '04b545121b1aed3c7c59b25f...'
+
+# SM2 私钥(Hex,算法为 SM2 时用于解密)
+VITE_APP_SM2_PRIVATE_KEY = '261af8bdfd10e14b8d87b04b...'
 ```
 
 在 `systemConfig.ts` 中读取:
@@ -272,8 +289,12 @@ VITE_APP_RSA_PRIVATE_KEY = 'MIIBOQIBAAJBAKoR8mTr7AGTcYLqm...'
 export const SystemConfig = {
   security: {
     apiEncrypt: import.meta.env.VITE_APP_API_ENCRYPT === 'true',
+    /** 接口加密算法 - 未配置时按 RSA 处理，兼容老的 .env */
+    apiEncryptAlgorithm: import.meta.env.VITE_APP_API_ENCRYPT_ALGORITHM === 'SM2' ? 'SM2' : 'RSA',
     rsaPublicKey: import.meta.env.VITE_APP_RSA_PUBLIC_KEY || '',
-    rsaPrivateKey: import.meta.env.VITE_APP_RSA_PRIVATE_KEY || ''
+    rsaPrivateKey: import.meta.env.VITE_APP_RSA_PRIVATE_KEY || '',
+    sm2PublicKey: import.meta.env.VITE_APP_SM2_PUBLIC_KEY || '',
+    sm2PrivateKey: import.meta.env.VITE_APP_SM2_PRIVATE_KEY || ''
   }
 }
 ```
@@ -416,6 +437,127 @@ const customValid = rsaVerify(originalData, signature!, customPublicKey)
 - 验证数据是否被篡改
 - 签名匹配返回 `true`,不匹配返回 `false`
 - 常用于 API 请求签名验证
+
+## 国密 SM2/SM4（sm.ts）
+
+### 基础概念
+
+`sm.ts` 基于 sm-crypto 封装了国密 SM2(非对称)与 SM4(对称)算法。当 `VITE_APP_API_ENCRYPT_ALGORITHM = 'SM2'` 时,接口加密由 RSA+AES 切换为 SM2+SM4,请求头携带 SM2 加密后的 SM4 密钥,报文为 SM4 密文。
+
+与后端 Hutool 的格式约定(两端必须一致,否则必然解密失败):
+
+| 项目 | 约定 |
+|------|------|
+| SM2 密文模式 | C1C3C2(sm-crypto `cipherMode = 1`,Hutool 默认) |
+| SM2 密文 Hex | 后端收发都带 `04` 前缀,sm-crypto 不带,因此加密后补 `04`、解密前去 `04` |
+| SM2 密钥格式 | Hex 原始格式:公钥 `04` + x + y(130 位),私钥 d(64 位) |
+| SM4 | ECB + PKCS#7,密钥为 16 位字母数字字符串(UTF-8 字节即 128 bit),密文 Hex |
+
+### 小程序 / APP 随机数补丁
+
+sm-crypto 0.5.x 在模块加载时就会调用 `crypto.getRandomValues` 初始化随机数池,找不到会直接抛错「当前环境不支持 crypto.getRandomValues!」,导致整个 HTTP 模块加载失败。H5 浏览器自带 `window.crypto`;微信小程序 / APP 逻辑层没有同步的密码学随机数接口(`wx.getRandomValues` 是异步的),只能退回 `Math.random`。
+
+因此移动端通过 `cryptoPolyfill.ts` 补丁 + `smCrypto.ts` 入口保证加载顺序,`sm.ts` 必须从 `@/utils/smCrypto` 引入,不能直接 `import 'sm-crypto'`:
+
+```typescript
+// utils/cryptoPolyfill.ts - 只在缺失时补,不覆盖平台原生实现
+const globalObj = globalThis as any
+
+if (!globalObj.crypto?.getRandomValues) {
+  const getRandomValues = <T extends ArrayBufferView>(array: T): T => {
+    const bytes = new Uint8Array(array.buffer, array.byteOffset, array.byteLength)
+    for (let i = 0; i < bytes.length; i++) {
+      bytes[i] = Math.floor(Math.random() * 256)
+    }
+    return array
+  }
+
+  if (globalObj.crypto) {
+    globalObj.crypto.getRandomValues = getRandomValues
+  }
+  else {
+    globalObj.crypto = { getRandomValues }
+  }
+}
+
+export {}
+```
+
+```typescript
+// utils/smCrypto.ts - 补丁必须先于 sm-crypto 执行
+import './cryptoPolyfill'
+// sm-crypto 是 CommonJS 包，用默认导入再解构：具名导入依赖打包器的 CJS 静态分析，跨平台构建不可靠
+import smCrypto from 'sm-crypto'
+
+export const { sm2, sm4 } = smCrypto
+```
+
+**注意:** 退回 `Math.random` 后随机数强度与 RSA 方案中 jsencrypt 在这些平台上的退化行为相同,对随机数强度有硬性要求的项目请确保全链路 HTTPS,或在小程序端关闭接口加密。
+
+### 生成 SM4 密钥
+
+```typescript
+import { generateSm4Key } from '@/utils/sm'
+
+// 生成 16 位字母数字密钥
+const sm4Key = generateSm4Key()
+console.log(sm4Key.length) // 16
+```
+
+**函数说明:**
+- 通过 `globalThis.crypto.getRandomValues` 逐字节取随机数(小程序里补丁挂在 `globalThis` 上,裸标识符不一定能解析到)
+- 丢弃 `>= 248` 的字节(248 = 62 × 4),避免取模后前几个字符概率偏高
+- 字符集为 `A-Z`、`a-z`、`0-9`
+
+### SM2 公钥加密
+
+```typescript
+import { sm2Encrypt } from '@/utils/sm'
+
+// 使用环境变量中的默认 SM2 公钥
+const encrypted = sm2Encrypt('Hello World')
+
+// 使用自定义公钥
+const encrypted2 = sm2Encrypt('Hello World', '04b545121b1a...')
+```
+
+**函数说明:**
+- 签名为 `sm2Encrypt(txt: string, pubKey?: string): string`
+- 返回带 `04` 前缀的 Hex 密文,后端 Hutool 可直接解密
+- 公钥非法时抛出异常,由调用方统一处理
+
+### SM2 私钥解密
+
+```typescript
+import { sm2Decrypt } from '@/utils/sm'
+
+try {
+  const plain = sm2Decrypt(hexFromServer)
+}
+catch (e) {
+  console.error(e) // SM2解密失败，请检查前后端密钥是否成对
+}
+```
+
+**函数说明:**
+- 签名为 `sm2Decrypt(hex: string, privKey?: string): string`
+- 固定去掉前 2 位 `04` 后再解密:不能按“是否以 04 开头”判断,因为 sm-crypto 自身输出也可能恰好以 04 开头,而后端密文恒带前缀
+- 密钥不匹配时 sm-crypto 返回空串,这里转为抛错“SM2解密失败，请检查前后端密钥是否成对”,避免把空密钥当成功
+
+### SM4 加密 / 解密
+
+```typescript
+import { generateSm4Key, sm4Decrypt, sm4Encrypt } from '@/utils/sm'
+
+const key = generateSm4Key()
+const cipherHex = sm4Encrypt(JSON.stringify({ name: 'test' }), key)
+const plain = sm4Decrypt(cipherHex, key)
+```
+
+**函数说明:**
+- `sm4Encrypt(txt: string, key: string): string` 返回 Hex 密文
+- `sm4Decrypt(hex: string, key: string): string` 返回明文
+- 密钥参数为 16 位字符串,内部逐字符转为 Hex 传给 sm-crypto(微信小程序没有 `TextEncoder`;密钥只含字母数字,逐字符转换与 UTF-8 编码结果一致)
 
 ## Base64 编码
 
@@ -636,7 +778,14 @@ const handleFileUpload = async () => {
 
 ### 混合加密原理
 
-项目采用 AES + RSA 混合加密模式:
+项目默认采用 AES + RSA 混合加密模式,可通过 `VITE_APP_API_ENCRYPT_ALGORITHM = 'SM2'` 切换为 SM4 + SM2,流程完全相同:
+
+| 算法 | 请求头 `encrypt-key` | 报文 |
+|------|------|------|
+| `RSA` | `RSA(Base64(32 位 AES 密钥))` | AES-ECB 的 Base64 密文 |
+| `SM2` | `SM2(16 位 SM4 密钥)`,带 `04` 前缀的 Hex | SM4-ECB 的 Hex 密文 |
+
+算法写死在配置里、不与后端协商,避免被降级为强度更低的组合,前后端配置必须一致。下图以 RSA 为例:
 
 ```text
 请求加密流程:
@@ -671,16 +820,70 @@ const handleFileUpload = async () => {
 ```properties
 # .env 文件配置
 VITE_APP_API_ENCRYPT = 'true'
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
 VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZ...'
 VITE_APP_RSA_PRIVATE_KEY = 'MIIBOQIBAAJBAKoR8...'
+VITE_APP_SM2_PUBLIC_KEY = '04b545121b1a...'
+VITE_APP_SM2_PRIVATE_KEY = '261af8bdfd10...'
+```
+
+### 接口加解密分发(apiCrypto.ts)
+
+```typescript
+// utils/apiCrypto.ts
+import { SystemConfig } from '@/systemConfig'
+import {
+  decodeBase64,
+  decryptWithAes,
+  encodeBase64,
+  encryptWithAes,
+  generateAesKey,
+} from '@/utils/crypto'
+import { rsaDecrypt, rsaEncrypt } from '@/utils/rsa'
+import { generateSm4Key, sm2Decrypt, sm2Encrypt, sm4Decrypt, sm4Encrypt } from '@/utils/sm'
+
+/** 加密后的请求 */
+export interface EncryptedRequest {
+  /** 放入加密请求头的密钥密文 */
+  encryptedKey: string
+  /** 报文密文 */
+  body: string
+}
+
+const isSm2 = (): boolean => SystemConfig.security.apiEncryptAlgorithm === 'SM2'
+
+/** 加密请求报文，公钥未配置或非法时抛出 */
+export const encryptApiRequest = (plainText: string): EncryptedRequest => {
+  if (isSm2()) {
+    const sm4Key = generateSm4Key()
+    return { encryptedKey: sm2Encrypt(sm4Key), body: sm4Encrypt(plainText, sm4Key) }
+  }
+  const aesKey = generateAesKey()
+  const encryptedKey = rsaEncrypt(encodeBase64(aesKey))
+  if (!encryptedKey) {
+    throw new Error('RSA加密失败，请检查公钥配置')
+  }
+  return { encryptedKey, body: encryptWithAes(plainText, aesKey) }
+}
+
+/** 解密响应报文，私钥不匹配或密文损坏时抛出 */
+export const decryptApiResponse = (encryptedKey: string, body: string): string => {
+  if (isSm2()) {
+    return sm4Decrypt(body, sm2Decrypt(encryptedKey))
+  }
+  const base64Str = rsaDecrypt(encryptedKey)
+  if (!base64Str) {
+    throw new Error('RSA解密失败，请检查前后端密钥是否成对')
+  }
+  return decryptWithAes(body, decodeBase64(base64Str))
+}
 ```
 
 ### 请求加密实现
 
 ```typescript
 // useHttp.ts 中的请求加密逻辑
-import { generateAesKey, encryptWithAes, encodeBase64 } from '@/utils/crypto'
-import { rsaEncrypt } from '@/utils/rsa'
+import { decryptApiResponse, encryptApiRequest } from '@/utils/apiCrypto'
 import { SystemConfig } from '@/systemConfig'
 
 const ENCRYPT_HEADER = 'encrypt-key'
@@ -689,59 +892,32 @@ const ENCRYPT_HEADER = 'encrypt-key'
  * 加密请求数据
  */
 const encryptRequestData = (data: any, header: Record<string, any>) => {
-  // 检查是否启用加密
   if (!SystemConfig.security?.apiEncrypt || !data) return data
 
-  // 1. 生成随机 AES 密钥
-  const aesKey = generateAesKey()
-
-  // 2. 使用 AES 加密请求数据
-  const encryptedData = encryptWithAes(JSON.stringify(data), aesKey)
-
-  // 3. 使用 RSA 公钥加密 AES 密钥
-  const encryptedKey = rsaEncrypt(encodeBase64(aesKey))
-
-  // 4. 将加密的 AES 密钥放入请求头
-  header[ENCRYPT_HEADER] = encryptedKey
-
-  return encryptedData
+  // 按配置的算法（RSA+AES / SM2+SM4）生成对称密钥加密报文，密钥密文放请求头
+  const encrypted = encryptApiRequest(typeof data === 'object' ? JSON.stringify(data) : data)
+  header[ENCRYPT_HEADER] = encrypted.encryptedKey
+  return encrypted.body
 }
 ```
 
 ### 响应解密实现
 
 ```typescript
-// useHttp.ts 中的响应解密逻辑
-import { decryptWithAes, decodeBase64 } from '@/utils/crypto'
-import { rsaDecrypt } from '@/utils/rsa'
-
 /**
  * 解密响应数据
  */
 const decryptResponseData = (data: any, header: Record<string, any>): any => {
   if (!SystemConfig.security?.apiEncrypt) return data
 
-  // 1. 从响应头获取加密的 AES 密钥
   const encryptKey = header[ENCRYPT_HEADER] || header[ENCRYPT_HEADER.toLowerCase()]
   if (!encryptKey) return data
 
-  // 2. 使用 RSA 私钥解密 AES 密钥
-  const aesKeyStr = rsaDecrypt(encryptKey)
-  if (!aesKeyStr) {
-    console.error('解密AES密钥失败')
-    return data
-  }
-
-  // 3. 将 Base64 字符串转换为 AES 密钥
-  const aesKey = decodeBase64(aesKeyStr)
-
-  // 4. 使用 AES 密钥解密响应数据
   try {
-    const decryptedStr = decryptWithAes(data, aesKey)
-    return JSON.parse(decryptedStr)
-  } catch (e) {
-    console.error('解密响应数据失败:', e)
-    return data
+    return JSON.parse(decryptApiResponse(encryptKey, data))
+  } catch (error) {
+    console.error('[响应解密失败]', error)
+    throw new Error(ErrorMsg.DECRYPT_FAILED)
   }
 }
 ```
@@ -1185,6 +1361,44 @@ const checkAndUpload = async () => {
 
 ### 本地数据加密存储
 
+框架内置 `encryptLocal` / `decryptLocal`,登录页“记住密码”即用它们加密保存密码:
+
+- **密钥派生**:对 `VITE_APP_RSA_PRIVATE_KEY + VITE_APP_SM2_PRIVATE_KEY` 整体做 SHA-256,得到 256 位 AES 密钥。旧版本截取 RSA 私钥前 32 位,而 Base64 私钥开头基本是固定的格式头,不同项目几乎是同一把密钥,现已改为摘要派生
+- **版本前缀**:新密文带 `v2:` 前缀;不带前缀的视为升级前的旧数据,按旧密钥(RSA 私钥前 32 位)解开,下次登录保存时自动转存为新格式
+- **失败处理**:`decryptLocal` 解密失败返回空字符串
+
+```typescript
+/** 本地存储密文的版本前缀：带前缀的用新密钥，不带的是旧版数据 */
+const LOCAL_CIPHER_V2 = 'v2:'
+
+const getLocalKey = (): CryptoJS.lib.WordArray => {
+  return CryptoJS.SHA256(`${import.meta.env.VITE_APP_RSA_PRIVATE_KEY || ''}${import.meta.env.VITE_APP_SM2_PRIVATE_KEY || ''}`)
+}
+
+const getLegacyLocalKey = (): CryptoJS.lib.WordArray => {
+  return CryptoJS.enc.Utf8.parse((import.meta.env.VITE_APP_RSA_PRIVATE_KEY || '').substring(0, 32))
+}
+
+export const encryptLocal = (plainText: string): string => {
+  return LOCAL_CIPHER_V2 + encryptWithAes(plainText, getLocalKey())
+}
+
+export const decryptLocal = (cipherText: string): string => {
+  try {
+    if (cipherText.startsWith(LOCAL_CIPHER_V2)) {
+      return decryptWithAes(cipherText.substring(LOCAL_CIPHER_V2.length), getLocalKey())
+    }
+    return decryptWithAes(cipherText, getLegacyLocalKey())
+  } catch {
+    return ''
+  }
+}
+```
+
+更换 RSA 或 SM2 私钥后本地密钥随之改变,已保存的密码将无法解开,用户需重新输入一次。
+
+如需加密存储其他业务数据,也可以自行封装:
+
 ```typescript
 import { encryptWithAutoKey, decryptWithParsing, encodeBase64, decodeBase64 } from '@/utils/crypto'
 import CryptoJS from 'crypto-js'
@@ -1323,10 +1537,16 @@ interface RsaKeyConfig {
 interface SecurityConfig {
   /** 接口加密功能开关 */
   apiEncrypt: boolean
+  /** 接口加密算法 - RSA: RSA+AES，SM2: SM2+SM4 国密 */
+  apiEncryptAlgorithm: 'RSA' | 'SM2'
   /** RSA 公钥 - 用于加密传输 */
   rsaPublicKey: string
   /** RSA 私钥 - 用于解密响应 */
   rsaPrivateKey: string
+  /** SM2 公钥 - 用于加密传输 */
+  sm2PublicKey: string
+  /** SM2 私钥 - 用于解密响应 */
+  sm2PrivateKey: string
 }
 
 /**
@@ -1687,6 +1907,7 @@ console.log('安全配置:', SystemConfig.security)
 **问题原因:**
 - 小程序不支持某些 Web API
 - crypto-js 在小程序中的兼容性问题
+- 小程序 / APP 逻辑层没有 `crypto.getRandomValues`,直接引入 sm-crypto 会在加载时抛错「当前环境不支持 crypto.getRandomValues!」
 
 **解决方案:**
 
@@ -1703,6 +1924,9 @@ console.log('安全配置:', SystemConfig.security)
 // 确保依赖正确引入
 import CryptoJS from 'crypto-js'
 // 而不是 import { AES } from 'crypto-js'
+
+// sm-crypto 必须经由 smCrypto 入口引入(先装随机数补丁),不要直接 import 'sm-crypto'
+import { sm2, sm4 } from '@/utils/smCrypto'
 ```
 
 ### 5. 性能优化

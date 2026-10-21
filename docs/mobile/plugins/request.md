@@ -582,28 +582,34 @@ const downloadFile = async (fileId: string, fileName: string) => {
 
 ### 加密原理
 
-请求加密采用 AES + RSA 混合加密方案：
+请求加密采用“对称加密报文 + 非对称加密密钥”的混合加密方案，支持两种算法组合，由 `VITE_APP_API_ENCRYPT_ALGORITHM` 决定（必须与后端 `api-decrypt.algorithm` 一致）：
+
+| 算法 | 对称加密 | 非对称加密 | 报文格式 |
+|------|---------|-----------|---------|
+| `RSA`（默认） | AES（32 位密钥） | RSA | Base64 |
+| `SM2`（国密） | SM4（16 位密钥） | SM2（C1C3C2） | Hex |
 
 1. **客户端请求时**
-   - 生成随机 AES 密钥
-   - 使用 AES 密钥加密请求数据
-   - 使用 RSA 公钥加密 AES 密钥
-   - 将加密后的 AES 密钥放入请求头 `encrypt-key`
+   - 按配置算法生成随机对称密钥
+   - 使用对称密钥加密请求数据
+   - 使用非对称公钥加密对称密钥
+   - 将加密后的密钥放入请求头 `encrypt-key`
    - 发送加密后的请求体
 
 2. **服务端处理时**
-   - 从请求头获取加密的 AES 密钥
-   - 使用 RSA 私钥解密获取 AES 密钥
-   - 使用 AES 密钥解密请求数据
+   - 从请求头获取加密的对称密钥
+   - 使用私钥解密获取对称密钥
+   - 使用对称密钥解密请求数据
    - 处理业务逻辑
 
 3. **服务端响应时**
-   - 使用相同 AES 密钥加密响应数据
-   - 将加密的 AES 密钥放入响应头
+   - 重新生成对称密钥加密响应数据
+   - 用公钥加密新的对称密钥放入响应头
 
 4. **客户端接收时**
-   - 从响应头获取加密的 AES 密钥
-   - 解密并获取响应数据
+   - 从响应头获取加密的对称密钥，用私钥解出后解密响应数据
+
+`useHttp` 中的 `encryptRequestData` / `decryptResponseData` 只调用 `utils/apiCrypto.ts` 的 `encryptApiRequest` / `decryptApiResponse`，由它按算法分发到 RSA+AES 或 SM2+SM4 实现。
 
 ### 启用加密
 
@@ -629,7 +635,7 @@ const secureRequest = async (params: any) => {
 
 **配置说明：**
 
-- 加密功能需要服务端配合，确保服务端已配置 RSA 密钥对
+- 加密功能需要服务端配合，确保服务端已配置对应算法（RSA 或 SM2）的密钥对
 - 加密仅对 POST 和 PUT 请求的请求体生效
 - 需要在 `SystemConfig.security.apiEncrypt` 中启用加密功能
 
@@ -644,8 +650,12 @@ export const SystemConfig = {
   security: {
     // 是否启用接口加密
     apiEncrypt: true,
+    // 接口加密算法：'RSA'（RSA+AES）| 'SM2'（SM2+SM4）
+    apiEncryptAlgorithm: import.meta.env.VITE_APP_API_ENCRYPT_ALGORITHM === 'SM2' ? 'SM2' : 'RSA',
     // RSA 公钥（用于加密 AES 密钥）
-    rsaPublicKey: 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQ...'
+    rsaPublicKey: 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQ...',
+    // SM2 公钥（Hex，用于加密 SM4 密钥）
+    sm2PublicKey: '04b545121b1aed3c7c59b25f...'
   }
 }
 ```
@@ -1395,7 +1405,8 @@ const uploadLargeFile = async (filePath: string) => {
 ### 4. 加密请求失败提示 "响应数据解密失败"
 
 **问题原因：**
-- RSA 公钥配置错误
+- RSA / SM2 密钥配置错误或前后端不成对
+- 前端 `VITE_APP_API_ENCRYPT_ALGORITHM` 与后端 `api-decrypt.algorithm` 不一致
 - 服务端未开启加密或配置不匹配
 - 响应数据格式异常
 

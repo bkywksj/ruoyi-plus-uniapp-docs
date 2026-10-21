@@ -171,6 +171,16 @@ VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK9s1Pbnn5W+...'
 # 如更换需前后端一同更换
 VITE_APP_RSA_PRIVATE_KEY = 'MIIBOwIBAAJBAIrZxEhzVAHKJm7BJpXIHWGU3sHJYg...'
 
+# 接口加密算法：必须与后端 api-decrypt.algorithm 一致
+# RSA: RSA+AES（默认）  SM2: SM2+SM4（国密，信创/密评项目使用）
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
+
+# SM2 公钥（Hex，04 开头）：与后端 api-decrypt.sm2.private-key 配对
+VITE_APP_SM2_PUBLIC_KEY = '04b545121b1aed3c7c59b25f8da50b1af7080cc0a7438fa095f8ce95ea61afd6...'
+
+# SM2 私钥（Hex）：与后端 api-decrypt.sm2.public-key 配对
+VITE_APP_SM2_PRIVATE_KEY = '261af8bdfd10e14b8d87b04bc4e42c6fc44e3c41380cf4346b4bfa87afa74e92'
+
 # ===== 功能开关 =====
 # WebSocket 功能开关
 VITE_APP_WEBSOCKET = 'false'
@@ -1266,6 +1276,36 @@ export function decryptData(data: string): string {
 2. 更换密钥时需前后端同步更新
 3. 生产环境务必使用强密钥
 4. 私钥不要泄露到公开仓库
+
+### 国密 SM2 加密配置
+
+接口加密支持切换为国密 SM2 + SM4，由 `VITE_APP_API_ENCRYPT_ALGORITHM` 控制，`useHttp` 通过 `utils/apiCrypto.ts` 按算法自动分发，业务代码无需改动。
+
+```bash
+# .env 文件
+# 切换为国密：后端 api-decrypt.algorithm（docker 为 compose 的 API_ENCRYPT_ALGORITHM）
+# 与 plus-ui / plus-uniapp / plus-app 三端必须一起改为 SM2，任一处不一致都会导致登录失败
+VITE_APP_API_ENCRYPT_ALGORITHM = 'SM2'
+
+# SM2 公钥（Hex，04 开头，130 位）
+VITE_APP_SM2_PUBLIC_KEY = '04b545121b1aed3c7c59b25f...'
+
+# SM2 私钥（Hex，64 位）
+VITE_APP_SM2_PRIVATE_KEY = '261af8bdfd10e14b8d87b04b...'
+```
+
+**两种算法对比：**
+
+| 算法 | 请求头 `encrypt-key` | 报文格式 |
+|------|------|------|
+| `RSA`（默认） | RSA 加密后的 Base64 AES 密钥（32 位） | AES-ECB 的 Base64 密文 |
+| `SM2` | SM2（C1C3C2）加密后的 16 位 SM4 密钥，带 `04` 前缀的 Hex | SM4-ECB 的 Hex 密文 |
+
+**注意事项：**
+
+1. 默认 RSA / SM2 密钥均为框架默认值，生产必须更换，可运行后端单元测试 `ApiEncryptKeyGeneratorTest`（`generateRsaKeys` / `generateSm2Keys`）生成，复制控制台第 ③ 段到 `.env`
+2. 默认 SM2 密钥已与后端默认值配对，开发环境只改算法开关即可
+3. 小程序 / APP 逻辑层没有同步的 `crypto.getRandomValues`，由 `utils/cryptoPolyfill.ts` 退回 `Math.random` 生成随机数，对随机数强度有硬性要求的项目请确保全链路 HTTPS
 
 ---
 

@@ -272,6 +272,15 @@ VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQAD...'
 # 接口响应解密 RSA 私钥
 VITE_APP_RSA_PRIVATE_KEY = 'MIIBOwIBAAJBAIrZxEhzVAHK...'
 
+# 接口加密算法(RSA 默认 / SM2 国密)，必须与后端 api-decrypt.algorithm 一致
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
+
+# 接口加密传输 SM2 公钥(Hex 04 开头)
+VITE_APP_SM2_PUBLIC_KEY = '04b545121b1aed3c7c59b25f...'
+
+# 接口响应解密 SM2 私钥(Hex)
+VITE_APP_SM2_PRIVATE_KEY = '261af8bdfd10e14b8d87b04b...'
+
 # ===== 功能开关 =====
 # WebSocket 开关
 VITE_APP_WEBSOCKET = 'false'
@@ -280,8 +289,9 @@ VITE_APP_WEBSOCKET = 'false'
 **重要说明:**
 
 1. **应用ID**: 用于区分不同项目的缓存和数据,防止多项目冲突
-2. **RSA 密钥对**: 前后端必须配套使用,更换时需前后端同步
+2. **RSA / SM2 密钥对**: 前后端必须配套使用,更换时需前后端同步
 3. **API 加密**: 关闭加密时后端也必须关闭,否则通信失败
+4. **加密算法**: `VITE_APP_API_ENCRYPT_ALGORITHM` 切换为 `SM2` 时,后端与三端需一起修改
 
 ### 开发环境变量 (.env.development)
 
