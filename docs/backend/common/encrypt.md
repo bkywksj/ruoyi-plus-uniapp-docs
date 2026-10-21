@@ -263,11 +263,19 @@ api-decrypt:
   enabled: true
   # 请求头中携带加密密钥的标识
   header-flag: "encrypt-key"
-  # RSA公钥 (用于加密AES密钥)
+  # 加密算法组合：RSA(RSA+AES，默认) / SM2(SM2+SM4 国密)，必须与前端 VITE_APP_API_ENCRYPT_ALGORITHM 一致
+  algorithm: RSA
+  # RSA公钥 (algorithm=RSA 时加密响应中的AES密钥)
   public-key: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A..."
-  # RSA私钥 (用于解密AES密钥)
+  # RSA私钥 (algorithm=RSA 时解密请求中的AES密钥)
   private-key: "MIIEvgIBADANBgkqhkiG9w0BAQEFAASC..."
+  # SM2密钥 (algorithm=SM2 时生效，Hex 原始格式)
+  sm2:
+    public-key: "04c5f053276fc40c..."
+    private-key: "ceefcceb535f9466..."
 ```
+
+接口加密的 RSA 与 SM2 两套密钥分开配置，切换算法只需改 `algorithm`；所选算法的密钥未配齐时应用启动即失败。
 
 ### 配置属性类
 

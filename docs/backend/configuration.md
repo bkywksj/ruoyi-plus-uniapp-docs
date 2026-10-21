@@ -289,8 +289,12 @@ mybatis-encryptor:
 api-decrypt:
   enabled: true                 # 是否开启接口加密
   headerFlag: encrypt-key       # 加密头标识
-  publicKey: your_public_key    # 公钥
-  privateKey: your_private_key  # 私钥
+  algorithm: RSA                # 加密算法 RSA(RSA+AES，默认) / SM2(SM2+SM4 国密)，须与前端一致
+  publicKey: your_public_key    # RSA 响应加密公钥
+  privateKey: your_private_key  # RSA 请求解密私钥
+  sm2:                          # algorithm=SM2 时使用的国密密钥(Hex 原始格式)
+    publicKey: your_sm2_public_key
+    privateKey: your_sm2_private_key
 ```
 
 ## 环境差异配置

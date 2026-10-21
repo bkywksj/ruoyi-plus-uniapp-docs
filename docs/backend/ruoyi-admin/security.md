@@ -247,13 +247,22 @@ mybatis-encryptor:
 api-decrypt:
   # 是否开启全局接口加密
   enabled: ${API_ENCRYPT_ENABLED:true}
-  # AES加密头标识
+  # 加密头标识（存放加密后的对称密钥）
   headerFlag: encrypt-key
+  # 加密算法 必须与前端 VITE_APP_API_ENCRYPT_ALGORITHM 一致
+  # RSA: RSA+AES(默认)  SM2: SM2+SM4(国密，信创/密评项目使用)
+  algorithm: ${API_ENCRYPT_ALGORITHM:RSA}
   # 响应加密公钥（RSA）
   publicKey: ${API_RESPONSE_PUBLIC_KEY:MFwwDQYJKoZIhvcNAQEBBQAD...}
   # 请求解密私钥（RSA）
   privateKey: ${API_REQUEST_PRIVATE_KEY:MIIBOgIBAAJBAK9s1Pbnn5W+...}
+  # algorithm=SM2 时使用的 SM2 密钥（Hex 原始格式），生产环境必须更换
+  sm2:
+    publicKey: ${API_SM2_RESPONSE_PUBLIC_KEY:04c5f053276fc40c...}
+    privateKey: ${API_SM2_REQUEST_PRIVATE_KEY:ceefcceb535f9466...}
 ```
+
+切换为国密时，后端 `algorithm`（Docker 部署为 compose 中每个后端实例的 `API_ENCRYPT_ALGORITHM`）与 `plus-ui` / `plus-uniapp` / `plus-app` 三端 `VITE_APP_API_ENCRYPT_ALGORITHM` 必须一起改为 `SM2`，任一处不一致都会导致登录失败。框架默认 SM2 密钥已与三端配对，开发环境只改开关即可。
 
 ### 加密流程
 
@@ -280,6 +289,14 @@ api-decrypt:
 | API_REQUEST_PRIVATE_KEY | 请求解密 | 服务端 |
 
 ### 生成新密钥对
+
+**推荐：运行框架自带的密钥生成器**
+
+`ruoyi-common-encrypt` 模块的单元测试 `ApiEncryptKeyGeneratorTest` 可一次生成前后端配对的两对密钥并自检配对：`generateRsaKeys` 生成 RSA 2048 位密钥，`generateSm2Keys` 生成 SM2 国密密钥。控制台按 ① `application.yml`、② docker compose 环境变量、③ 三端前端 `env/.env` 三段输出，按段复制即可。
+
+```bash
+mvn test -pl ruoyi-common/ruoyi-common-encrypt "-DskipTests=false" "-Dprofiles.active=" "-Dtest=ApiEncryptKeyGeneratorTest#generateRsaKeys"
+```
 
 **使用OpenSSL生成RSA密钥对：**
 

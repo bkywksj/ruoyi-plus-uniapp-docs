@@ -130,7 +130,7 @@ captcha:
 
 ### 4.3 数据加密
 - **数据库加密**: 支持字段级加密 (可选)
-- **API接口加密**: RSA 非对称加密
+- **API接口加密**: RSA+AES 混合加密（默认），可通过 `api-decrypt.algorithm` 切换为国密 SM2+SM4
 - **默认算法**: BASE64 编码
 
 ### 4.4 数据库配置 (MyBatis-Plus)
