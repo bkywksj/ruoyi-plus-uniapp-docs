@@ -28,8 +28,8 @@
     "6.x-single": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x-single",
       "gitBranch": "single-6.x",
-      "lastSyncCommit": "ab69e351b399dedd1056c80cb9ff8a568b322a3f",
-      "lastSyncDate": "2026-09-15T22:26:25+08:00"
+      "lastSyncCommit": "123a2cb4edc91f1b72c649094201355a15040142",
+      "lastSyncDate": "2026-10-21T14:56:52+08:00"
     }
   },
   "syncHistory": [
@@ -218,6 +218,15 @@
       "commit": "4dc30fa81512a074a9b5f67d15a9ed2b7981fd21",
       "date": "2026-10-20T23:30:42+08:00",
       "summary": "处理 c543902..4dc30fa 共 36 个提交。其中 27 个与 workflow 9e21e43..a6c9ce3 为同一批业务提交的镜像（国密 SM2+SM4、流程级监听器、改密策略、/dev-orchestrate 等），文档已在 workflow 同步中覆盖，不重复处理。6.x 独有 9 个：集团库方言层 GroupDialect + PostgreSQL/SQL Server/Oracle 支持 + 独立 schema 存储形态 + 启动升级通道 GroupSchemaUpgrader + 平台表固定 master + 建表模板补主键索引 + SQL Server/Oracle 建库脚本修复 + 测试/设计文档。按分支隔离原则只落到 changelog 顶部分支说明（更正「仅框架版本不同」）与新增 7.12 节（标注仅 6.x），不改以主线为准的正文。备注：同一 Oracle sysdate() 缺陷已在 workflow(239fa9e)与 6.x-single(123a2cb)单独修复；SQL Server sys_user 缺陷仅 6.x 存在。",
+      "updatedDocs": [
+        "docs/changelog.md"
+      ]
+    },
+    {
+      "branch": "6.x-single",
+      "commit": "123a2cb4edc91f1b72c649094201355a15040142",
+      "date": "2026-10-21T14:56:52+08:00",
+      "summary": "处理 ab69e35..123a2cb 共 27 个提交，全部与 workflow 同一批业务提交镜像（国密 SM2+SM4、流程级监听器、改密策略、错误日志脱敏、/dev-orchestrate 等，文档已在 workflow 同步中覆盖），无 6.x-single 独有提交，正文无需更新。123a2cb 为 Oracle 工作流脚本 sysdate() 修复（与 workflow 239fa9e 同步），据此修正 changelog 7.12 节：该修复不再是 6.x 独有。",
       "updatedDocs": [
         "docs/changelog.md"
       ]
