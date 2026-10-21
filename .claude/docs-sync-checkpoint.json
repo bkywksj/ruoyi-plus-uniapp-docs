@@ -22,8 +22,8 @@
     "6.x": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x",
       "gitBranch": "6.x",
-      "lastSyncCommit": "c543902f059c5f1a3475e77a471829fbd7921654",
-      "lastSyncDate": "2026-09-15T22:26:25+08:00"
+      "lastSyncCommit": "4dc30fa81512a074a9b5f67d15a9ed2b7981fd21",
+      "lastSyncDate": "2026-10-20T23:30:42+08:00"
     },
     "6.x-single": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x-single",
@@ -211,6 +211,15 @@
         "docs/practices/engineering/claude-code-hooks.md",
         "docs/practices/engineering/claude-code-skills.md",
         "docs/practices/features/security-compliance.md"
+      ]
+    },
+    {
+      "branch": "6.x",
+      "commit": "4dc30fa81512a074a9b5f67d15a9ed2b7981fd21",
+      "date": "2026-10-20T23:30:42+08:00",
+      "summary": "处理 c543902..4dc30fa 共 36 个提交。其中 27 个与 workflow 9e21e43..a6c9ce3 为同一批业务提交的镜像（国密 SM2+SM4、流程级监听器、改密策略、/dev-orchestrate 等），文档已在 workflow 同步中覆盖，不重复处理。6.x 独有 9 个：集团库方言层 GroupDialect + PostgreSQL/SQL Server/Oracle 支持 + 独立 schema 存储形态 + 启动升级通道 GroupSchemaUpgrader + 平台表固定 master + 建表模板补主键索引 + SQL Server/Oracle 建库脚本修复 + 测试/设计文档。按分支隔离原则只落到 changelog 顶部分支说明（更正「仅框架版本不同」）与新增 7.12 节（标注仅 6.x），不改以主线为准的正文。备注：同一 Oracle sysdate() 缺陷已在 workflow(239fa9e)与 6.x-single(123a2cb)单独修复；SQL Server sys_user 缺陷仅 6.x 存在。",
+      "updatedDocs": [
+        "docs/changelog.md"
       ]
     }
   ]
