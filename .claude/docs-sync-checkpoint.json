@@ -16,8 +16,8 @@
     "workflow": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-workflow",
       "gitBranch": "workflow",
-      "lastSyncCommit": "9e21e43400f425c15d36dfcc692a528018a63c5d",
-      "lastSyncDate": "2026-09-15T22:26:25+08:00"
+      "lastSyncCommit": "a6c9ce301a26696e71ea7f33eb0c1d81cf1689a2",
+      "lastSyncDate": "2026-10-20T18:04:02+08:00"
     },
     "6.x": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x",
@@ -168,6 +168,50 @@
       "date": "2026-09-15T22:26:25+08:00",
       "summary": "初始化节点。6.x-single 为 Spring Boot 4.1.0 / JDK 21 / 单租户 / 有工作流分支。实测确认四项特征全部相符：pom 为 SB 4.1.0 + JDK 21（与 6.x 一致）、ruoyi-common 下无 ruoyi-common-tenant、ruoyi-modules 下有 ruoyi-workflow。⚠️ 校验用的是登记的 gitBranch 字段 single-6.x，而非目录名推出的 6.x-single —— 按目录名校验会直接失败，这是本技能明确标注的坑。HEAD 与其余四分支为同一笔业务提交的镜像。至此 5 个分支全部完成初始化。文档正文以主线(3.5.x)为准，本分支后续只需关注 SB4 + 去多租户两类差异化提交，落到 changelog.md 顶部的分支说明表与特性对比处。",
       "updatedDocs": []
+    },
+    {
+      "branch": "workflow",
+      "commit": "a6c9ce301a26696e71ea7f33eb0c1d81cf1689a2",
+      "date": "2026-10-20T18:04:02+08:00",
+      "summary": "处理 9e21e43..a6c9ce3 共 25 个提交。重大特性：接口传输加密支持切换国密 SM2+SM4（后端 IApiCryptor 策略化 + api-decrypt.algorithm/sm2 配置 + ApiEncryptKeyGeneratorTest 密钥生成器；三端 VITE_APP_API_ENCRYPT_ALGORITHM/VITE_APP_SM2_* + sm.ts/apiCrypto.ts + 移动端 cryptoPolyfill），响应加密缓冲区固定 UTF-8，记住密码本地密钥改为私钥 SHA-256 派生（v2: 前缀）。普通更新：流程级监听器配置、移动端用户不触发首次强制改密、错误日志参数脱敏、编辑无账号用户校验分组、头像上传请求头改为上传时取 token、/dev-orchestrate 编排命令及相关技能/钩子/AGENTS.md 说明。跳过：SQL 注释、docker compose 布尔引号、测试文件；AFormTableSelect/外链角标/设计器人员搜索/Codex hook 无对应文档段落（AFormTableSelect 仅记入 changelog）。",
+      "updatedDocs": [
+        "docs/backend/common/encrypt.md",
+        "docs/backend/common/encrypt/api-encryption.md",
+        "docs/backend/configuration.md",
+        "docs/backend/modules/system/core.md",
+        "docs/backend/modules/system/monitor.md",
+        "docs/backend/modules/workflow/definition.md",
+        "docs/backend/ruoyi-admin/module-resolution.md",
+        "docs/backend/ruoyi-admin/security.md",
+        "docs/changelog.md",
+        "docs/frontend/architecture/typescript-config.md",
+        "docs/frontend/composables/use-http.md",
+        "docs/frontend/configuration.md",
+        "docs/frontend/getting-started.md",
+        "docs/frontend/index.md",
+        "docs/frontend/project-structure.md",
+        "docs/frontend/types/type-extensions.md",
+        "docs/frontend/utils/crypto.md",
+        "docs/frontend/utils/rsa.md",
+        "docs/frontend/utils/utils-overview.md",
+        "docs/mobile/build/environment.md",
+        "docs/mobile/build/overview.md",
+        "docs/mobile/components/wd.md",
+        "docs/mobile/composables/use-http.md",
+        "docs/mobile/configuration.md",
+        "docs/mobile/pages/login.md",
+        "docs/mobile/plugins/camera.md",
+        "docs/mobile/plugins/request.md",
+        "docs/mobile/project-structure.md",
+        "docs/mobile/uniapp/app-config.md",
+        "docs/mobile/utils/crypto.md",
+        "docs/mobile/utils/rsa.md",
+        "docs/practices/ai/claude-code.md",
+        "docs/practices/engineering/claude-code-commands.md",
+        "docs/practices/engineering/claude-code-hooks.md",
+        "docs/practices/engineering/claude-code-skills.md",
+        "docs/practices/features/security-compliance.md"
+      ]
     }
   ]
 }
