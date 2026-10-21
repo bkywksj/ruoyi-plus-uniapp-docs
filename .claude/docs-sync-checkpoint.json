@@ -4,8 +4,8 @@
     "master": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp",
       "gitBranch": "master",
-      "lastSyncCommit": "c3422092976a80713d038bf883e48e58a1c46a78",
-      "lastSyncDate": "2026-09-15T22:26:24+08:00"
+      "lastSyncCommit": "7b44b0204d806a6ea816619948387c41826cadc5",
+      "lastSyncDate": "2026-10-21T15:14:57+08:00"
     },
     "single": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-single",
@@ -229,6 +229,21 @@
       "summary": "处理 ab69e35..123a2cb 共 27 个提交，全部与 workflow 同一批业务提交镜像（国密 SM2+SM4、流程级监听器、改密策略、错误日志脱敏、/dev-orchestrate 等，文档已在 workflow 同步中覆盖），无 6.x-single 独有提交，正文无需更新。123a2cb 为 Oracle 工作流脚本 sysdate() 修复（与 workflow 239fa9e 同步），据此修正 changelog 7.12 节：该修复不再是 6.x 独有。",
       "updatedDocs": [
         "docs/changelog.md"
+      ]
+    },
+    {
+      "branch": "master",
+      "commit": "7b44b0204d806a6ea816619948387c41826cadc5",
+      "date": "2026-10-21T15:14:57+08:00",
+      "summary": "处理 c342209..7b44b02 共 26 个提交，24 个与 workflow 9e21e43..a6c9ce3 镜像（文档已覆盖）。新增 2 个（5c3059c / 7b44b02，workflow 对应 6ae694f / 48bafbc）推翻了此前文档对小程序 / APP 加载 sm-crypto 失败的归因：真实原因是 rng.js 调 module.require('crypto') 被 rollup commonjs 拦下抛错致 vendor.js 白屏，cryptoPolyfill 补不上；修复为构建插件 vite/plugins/sm-crypto-rng.ts。据此更正 api-encryption 警告框与 FAQ 7、移动端 crypto/configuration/project-structure/build overview、changelog 7.11、claude-code security-guard 描述。5 个分支均已含该插件。",
+      "updatedDocs": [
+        "docs/backend/common/encrypt/api-encryption.md",
+        "docs/changelog.md",
+        "docs/mobile/build/overview.md",
+        "docs/mobile/configuration.md",
+        "docs/mobile/project-structure.md",
+        "docs/mobile/utils/crypto.md",
+        "docs/practices/ai/claude-code.md"
       ]
     }
   ]
