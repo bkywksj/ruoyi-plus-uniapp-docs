@@ -48,6 +48,7 @@ RuoYi-Plus-UniApp 前端是一个基于 Vue 3 + TypeScript 的现代化企业级
 | WangEditor | 5.1.23 | 富文本编辑器 |
 | CryptoJS | 4.2.0 | 加密算法库 |
 | JSEncrypt | 3.3.2 | RSA 加密库 |
+| sm-crypto | 0.5.7 | 国密 SM2/SM4 加密库 |
 | Fuse.js | 7.0.0 | 模糊搜索库 |
 | file-saver | 2.0.5 | 文件保存工具 |
 | qrcode | 1.5.4 | 二维码生成 |
@@ -158,6 +159,8 @@ src/
 │   ├── string.ts          # 字符串工具
 │   ├── colors.ts          # 颜色工具
 │   ├── rsa.ts             # RSA 加密
+│   ├── sm.ts              # 国密 SM2/SM4 加密
+│   ├── apiCrypto.ts       # 接口传输加解密（按算法分发）
 │   └── to.ts              # Promise 包装
 ├── views/                  # 页面文件
 │   ├── business/          # 业务页面
@@ -717,8 +720,11 @@ export const SystemConfig: SystemConfigType = {
   // 安全配置
   security: {
     apiEncrypt: false,              // 接口加密开关
+    apiEncryptAlgorithm: 'RSA',     // 接口加密算法 'RSA' | 'SM2'
     rsaPublicKey: '',               // RSA 公钥
     rsaPrivateKey: '',              // RSA 私钥
+    sm2PublicKey: '',               // SM2 公钥
+    sm2PrivateKey: '',              // SM2 私钥
   },
 
   // 外部服务地址
@@ -775,8 +781,11 @@ VITE_APP_ENV=development
 VITE_APP_BASE_API=/dev-api
 VITE_APP_BASE_API_PORT=5500
 VITE_APP_API_ENCRYPT=false
+VITE_APP_API_ENCRYPT_ALGORITHM=RSA
 VITE_APP_RSA_PUBLIC_KEY=
 VITE_APP_RSA_PRIVATE_KEY=
+VITE_APP_SM2_PUBLIC_KEY=
+VITE_APP_SM2_PRIVATE_KEY=
 VITE_APP_MONITOR_ADMIN=
 VITE_APP_SNAILJOB_ADMIN=
 VITE_APP_GIT_URL=

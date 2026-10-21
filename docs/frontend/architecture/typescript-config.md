@@ -307,10 +307,16 @@ interface ImportMetaEnv {
   // ========== 安全配置 ==========
   /** 接口加密功能开关 */
   VITE_APP_API_ENCRYPT: string
+  /** 接口加密算法，必须与后端 api-decrypt.algorithm 一致 (RSA: RSA+AES, SM2: SM2+SM4 国密) */
+  VITE_APP_API_ENCRYPT_ALGORITHM: 'RSA' | 'SM2'
   /** 接口加密传输 RSA 公钥 */
   VITE_APP_RSA_PUBLIC_KEY: string
   /** 接口响应解密 RSA 私钥 */
   VITE_APP_RSA_PRIVATE_KEY: string
+  /** 接口加密传输 SM2 公钥 (Hex，04 开头) */
+  VITE_APP_SM2_PUBLIC_KEY: string
+  /** 接口响应解密 SM2 私钥 (Hex) */
+  VITE_APP_SM2_PRIVATE_KEY: string
 
   // ========== 外部服务配置 ==========
   /** 监控系统地址 */
@@ -352,6 +358,7 @@ if (import.meta.env.VITE_APP_ENV === 'development') {
 
 // 安全配置
 const useEncrypt = import.meta.env.VITE_APP_API_ENCRYPT === 'true'
+const algorithm = import.meta.env.VITE_APP_API_ENCRYPT_ALGORITHM  // 'RSA' | 'SM2'
 const publicKey = import.meta.env.VITE_APP_RSA_PUBLIC_KEY
 
 // 服务地址

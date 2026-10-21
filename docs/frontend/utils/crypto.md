@@ -9,6 +9,7 @@
 - **Base64处理**：Base64编码与解码
 - **AES加密/解密**：使用AES密钥加密和解密数据
 - **高级加解密**：自动密钥生成的加密和支持JSON解析的解密
+- **本地存储加密**：`encryptLocal` / `decryptLocal`，用于“记住密码”等本地缓存场景
 - **哈希计算**：计算数据的哈希值，用于唯一标识
 
 ## 依赖说明
@@ -612,6 +613,91 @@ interface User {
 const decryptedUser = decryptWithParsing(result.encryptedData, result.key, true) as User
 console.log(decryptedUser.name)  // 类型安全访问
 ```
+
+## 本地存储加密
+
+登录页“记住密码”使用 `encryptLocal` / `decryptLocal` 将密码加密后再写入本地缓存，读取时解密回填。
+
+### 密钥派生
+
+本地存储密钥由环境变量中的私钥派生：对 `VITE_APP_RSA_PRIVATE_KEY + VITE_APP_SM2_PRIVATE_KEY` 整体做 SHA-256，得到 256 位 AES 密钥。
+
+旧版本直接截取 RSA 私钥前 32 位作为密钥，而 Base64 私钥的开头基本是固定的格式头（2048 位 RSA 尤其明显），不同项目几乎是同一把密钥，本地保存的密码形同明文。改为对整份私钥做摘要后，密钥会随项目私钥真正变化。
+
+```typescript
+/** 本地存储密文的版本前缀：带前缀的用新密钥，不带的是旧版数据 */
+const LOCAL_CIPHER_V2 = 'v2:'
+
+/** 本地存储密钥：对整份私钥做 SHA-256，得到 256 位 AES 密钥 */
+const getLocalKey = (): CryptoJS.lib.WordArray => {
+  return CryptoJS.SHA256(`${import.meta.env.VITE_APP_RSA_PRIVATE_KEY || ''}${import.meta.env.VITE_APP_SM2_PRIVATE_KEY || ''}`)
+}
+
+/** 旧版本地存储密钥（截取 RSA 私钥前 32 位），仅用于解开升级前已保存的数据 */
+const getLegacyLocalKey = (): CryptoJS.lib.WordArray => {
+  return CryptoJS.enc.Utf8.parse((import.meta.env.VITE_APP_RSA_PRIVATE_KEY || '').substring(0, 32))
+}
+```
+
+### encryptLocal
+
+```typescript
+encryptLocal(plainText: string): string
+```
+
+使用派生密钥进行 AES 加密，返回带 `v2:` 版本前缀的密文。
+
+```typescript
+export const encryptLocal = (plainText: string): string => {
+  return LOCAL_CIPHER_V2 + encryptWithAes(plainText, getLocalKey())
+}
+```
+
+### decryptLocal
+
+```typescript
+decryptLocal(cipherText: string): string
+```
+
+解密本地存储的密文，解密失败返回空字符串。带 `v2:` 前缀的按新密钥解密；不带前缀的视为升级前保存的旧数据，按旧密钥解密，下次登录保存时会自动转存为新格式，避免升级后登录框回填密文导致登录失败。
+
+```typescript
+export const decryptLocal = (cipherText: string): string => {
+  try {
+    if (cipherText.startsWith(LOCAL_CIPHER_V2)) {
+      return decryptWithAes(cipherText.substring(LOCAL_CIPHER_V2.length), getLocalKey())
+    }
+    return decryptWithAes(cipherText, getLegacyLocalKey())
+  } catch {
+    return ''
+  }
+}
+```
+
+### 使用示例
+
+```typescript
+import { encryptLocal, decryptLocal } from '@/utils/crypto'
+
+import { localCache } from '@/utils/cache'
+
+// 保存：记住密码时加密存储（views/system/auth/login.vue）
+localCache.setJSON('loginData', {
+  authType: 'password',
+  userName: loginFormData.value.userName,
+  password: encryptLocal(loginFormData.value.password),
+  rememberMe: true
+})
+
+// 读取：解密失败（返回空串）时退回原值
+const cachedLoginData = localCache.getJSON<PasswordLoginBody>('loginData')
+loginFormData.value.password = decryptLocal(cachedLoginData.password || '') || cachedLoginData.password || ''
+```
+
+**注意事项：**
+
+- 更换 RSA 或 SM2 私钥后本地密钥随之改变，之前保存的密文将无法解开，用户需重新输入一次密码
+- 本地加密仅用于避免缓存中出现明文密码，不能替代服务端的安全措施
 
 ## 哈希计算
 

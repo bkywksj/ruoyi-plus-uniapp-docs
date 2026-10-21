@@ -608,10 +608,16 @@ interface ImportMetaEnv {
   VITE_APP_PORT: number
   /** 接口加密开关 */
   VITE_APP_API_ENCRYPT: string
+  /** 接口加密算法 (RSA: RSA+AES, SM2: SM2+SM4 国密) */
+  VITE_APP_API_ENCRYPT_ALGORITHM: 'RSA' | 'SM2'
   /** RSA 公钥 */
   VITE_APP_RSA_PUBLIC_KEY: string
   /** RSA 私钥 */
   VITE_APP_RSA_PRIVATE_KEY: string
+  /** SM2 公钥 (Hex，04 开头) */
+  VITE_APP_SM2_PUBLIC_KEY: string
+  /** SM2 私钥 (Hex) */
+  VITE_APP_SM2_PRIVATE_KEY: string
   /** WebSocket开关 */
   VITE_APP_WEBSOCKET: string
   /** SSE开关 */
@@ -663,8 +669,11 @@ export default defineConfig({
 | | `VITE_APP_BASE_API_PORT` | 后端端口 |
 | | `VITE_APP_CONTEXT_PATH` | 路径前缀 |
 | **加密配置** | `VITE_APP_API_ENCRYPT` | 加密开关 |
+| | `VITE_APP_API_ENCRYPT_ALGORITHM` | 加密算法(`'RSA'` / `'SM2'`) |
 | | `VITE_APP_RSA_PUBLIC_KEY` | RSA公钥 |
 | | `VITE_APP_RSA_PRIVATE_KEY` | RSA私钥 |
+| | `VITE_APP_SM2_PUBLIC_KEY` | SM2公钥 |
+| | `VITE_APP_SM2_PRIVATE_KEY` | SM2私钥 |
 | **功能开关** | `VITE_APP_WEBSOCKET` | WebSocket |
 | | `VITE_APP_SSE` | Server-Sent Events |
 | **外部服务** | `VITE_APP_MONITOR_ADMIN` | 监控系统 |

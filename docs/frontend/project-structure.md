@@ -1051,10 +1051,16 @@ interface ImportMetaEnv {
   readonly VITE_APP_BASE_API_PORT: string
   /** 是否启用 API 加密 */
   readonly VITE_APP_API_ENCRYPT: string
+  /** 接口加密算法 (RSA / SM2) */
+  readonly VITE_APP_API_ENCRYPT_ALGORITHM: 'RSA' | 'SM2'
   /** RSA 公钥 */
   readonly VITE_APP_RSA_PUBLIC_KEY: string
   /** RSA 私钥 */
   readonly VITE_APP_RSA_PRIVATE_KEY: string
+  /** SM2 公钥 */
+  readonly VITE_APP_SM2_PUBLIC_KEY: string
+  /** SM2 私钥 */
+  readonly VITE_APP_SM2_PRIVATE_KEY: string
 }
 
 interface ImportMeta {
@@ -1068,6 +1074,7 @@ interface ImportMeta {
 
 ```text
 📁 utils/
+├── 📄 apiCrypto.ts             # 接口传输加解密(RSA+AES / SM2+SM4 分发)
 ├── 📄 boolean.ts               # 布尔值处理
 ├── 📄 cache.ts                 # 缓存工具
 ├── 📄 class.ts                 # DOM 类操作
@@ -1080,6 +1087,7 @@ interface ImportMeta {
 ├── 📄 object.ts                # 对象处理
 ├── 📄 rsa.ts                   # RSA 加密
 ├── 📄 scroll.ts                # 滚动工具
+├── 📄 sm.ts                    # 国密 SM2/SM4 加密
 ├── 📄 string.ts                # 字符串处理
 ├── 📄 tab.ts                   # 标签页工具
 ├── 📄 themeAnimation.ts        # 主题动画
@@ -1332,6 +1340,15 @@ VITE_APP_RSA_PUBLIC_KEY =
 
 # RSA 私钥(用于解密)
 VITE_APP_RSA_PRIVATE_KEY =
+
+# 接口加密算法(RSA / SM2，需与后端 api-decrypt.algorithm 一致)
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
+
+# SM2 公钥(Hex，用于加密)
+VITE_APP_SM2_PUBLIC_KEY =
+
+# SM2 私钥(Hex，用于解密)
+VITE_APP_SM2_PRIVATE_KEY =
 ```
 
 **开发环境(.env.development):**

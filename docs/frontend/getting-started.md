@@ -12,7 +12,7 @@
 - **原子化 CSS** - UnoCSS 66.5.2 即时原子化引擎
 - **自动导入** - 组件和 API 自动导入，无需手动 import
 - **代码规范** - ESLint + Prettier 统一代码风格
-- **安全加固** - RSA 加密传输 + 接口安全防护
+- **安全加固** - RSA+AES / 国密 SM2+SM4 加密传输 + 接口安全防护
 
 **项目版本信息:**
 
@@ -557,11 +557,21 @@ VITE_ENABLE_FRONTEND = 'false'
 # 接口加密开关（需要与后端配置一致）
 VITE_APP_API_ENCRYPT = 'true'
 
+# 接口加密算法（必须与后端 api-decrypt.algorithm 一致）
+# RSA: RSA+AES（默认）  SM2: SM2+SM4（国密），切换时后端与三端需一起修改
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
+
 # RSA 公钥（用于加密发送给后端的数据）
 VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK9s1Pbnn5W+...'
 
 # RSA 私钥（用于解密后端返回的数据）
 VITE_APP_RSA_PRIVATE_KEY = 'MIIBOwIBAAJBAIrZxEhzVAHKJm7BJpXIHWGU3sHJYgR...'
+
+# SM2 公钥（Hex，04 开头，算法为 SM2 时用于加密发送给后端的数据）
+VITE_APP_SM2_PUBLIC_KEY = '04b545121b1aed3c7c59b25f8da50b1af7080cc0a7438fa095f8ce95ea61afd6...'
+
+# SM2 私钥（Hex，算法为 SM2 时用于解密后端返回的数据）
+VITE_APP_SM2_PRIVATE_KEY = '261af8bdfd10e14b8d87b04bc4e42c6fc44e3c41380cf4346b4bfa87afa74e92'
 
 # ===== 功能开关 =====
 # WebSocket 开关（实时通信）

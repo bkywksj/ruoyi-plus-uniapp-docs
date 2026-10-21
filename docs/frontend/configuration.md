@@ -92,6 +92,15 @@ VITE_ENABLE_FRONTEND = 'false'
 # 如需关闭，后端也必须对应关闭
 VITE_APP_API_ENCRYPT = 'true'
 
+# 下方 RSA / SM2 密钥均为框架默认值，生产必须更换，且三端与后端必须成对更换
+# 生成方式：运行后端单元测试 ApiEncryptKeyGeneratorTest（generateRsaKeys / generateSm2Keys），复制控制台第 ③ 段到这里
+
+# 接口加密算法，必须与后端 api-decrypt.algorithm 一致
+# RSA: RSA+AES（默认）  SM2: SM2+SM4（国密，信创/密评项目使用）
+# 切换为 SM2 时，后端 api-decrypt.algorithm（docker 为 compose 的 API_ENCRYPT_ALGORITHM）
+# 与 plus-ui / plus-uniapp / plus-app 三端必须一起改为 SM2，任一处不一致都会导致登录失败
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
+
 # 接口加密传输 RSA 公钥
 # 与后端解密私钥对应，如更换需前后端一同更换
 VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK9s1Pbnn5W+...'
@@ -99,6 +108,14 @@ VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK9s1Pbnn5W+...'
 # 接口响应解密 RSA 私钥
 # 与后端加密公钥对应，如更换需前后端一同更换
 VITE_APP_RSA_PRIVATE_KEY = 'MIIBOwIBAAJBAIrZxEhzVAHKJm7BJpXIHWGU3sHJYgRi...'
+
+# 接口加密传输 SM2 公钥（Hex，04 开头）
+# 与后端 api-decrypt.sm2.private-key 对应，如更换需前后端一同更换
+VITE_APP_SM2_PUBLIC_KEY = '04b545121b1aed3c7c59b25f8da50b1af7080cc0a7438fa095f8ce95ea61afd6...'
+
+# 接口响应解密 SM2 私钥（Hex）
+# 与后端 api-decrypt.sm2.public-key 对应，如更换需前后端一同更换
+VITE_APP_SM2_PRIVATE_KEY = '261af8bdfd10e14b8d87b04bc4e42c6fc44e3c41380cf4346b4bfa87afa74e92'
 
 # ===== 功能开关 =====
 # WebSocket 功能开关

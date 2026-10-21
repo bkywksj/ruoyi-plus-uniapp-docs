@@ -153,26 +153,48 @@ MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDh/nCDmXaEqxN4
 
 ### 环境变量配置
 
-推荐使用环境变量管理密钥：
+框架通过 `env/.env` 中的环境变量管理密钥（Base64 格式，不带 PEM 头尾）：
 
 ```bash
-# .env.development
-VITE_RSA_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkq..."
-VITE_RSA_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nMIIEvgIBADAN..."
+# 接口加密算法，RSA 为默认值；设为 SM2 时接口加密改走国密 SM2+SM4，rsa.ts 不再参与接口加解密
+VITE_APP_API_ENCRYPT_ALGORITHM = 'RSA'
 
-# .env.production
-# 生产环境密钥应该与开发环境不同
-VITE_RSA_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----\nPRODUCTION_KEY..."
+# 接口加密传输 RSA 公钥，与后端解密私钥对应
+VITE_APP_RSA_PUBLIC_KEY = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAK9s1Pbnn5W+...'
+
+# 接口响应解密 RSA 私钥，与后端加密公钥对应
+VITE_APP_RSA_PRIVATE_KEY = 'MIIBOwIBAAJBAIrZxEhzVAHKJm7BJpXIHWGU3sHJYgRi...'
 ```
 
 ```typescript
 // systemConfig.ts 使用环境变量
 export const SystemConfig = {
   security: {
-    rsaPublicKey: import.meta.env.VITE_RSA_PUBLIC_KEY,
-    rsaPrivateKey: import.meta.env.VITE_RSA_PRIVATE_KEY
+    apiEncrypt: import.meta.env.VITE_APP_API_ENCRYPT === 'true',
+    apiEncryptAlgorithm: import.meta.env.VITE_APP_API_ENCRYPT_ALGORITHM === 'SM2' ? 'SM2' : 'RSA',
+    rsaPublicKey: import.meta.env.VITE_APP_RSA_PUBLIC_KEY || '',
+    rsaPrivateKey: import.meta.env.VITE_APP_RSA_PRIVATE_KEY || '',
+    sm2PublicKey: import.meta.env.VITE_APP_SM2_PUBLIC_KEY || '',
+    sm2PrivateKey: import.meta.env.VITE_APP_SM2_PRIVATE_KEY || ''
   }
 }
+```
+
+### 在接口加密中的位置
+
+`useHttp` 不直接调用 `rsaEncrypt` / `rsaDecrypt`，而是统一调用 `utils/apiCrypto.ts` 的 `encryptApiRequest` / `decryptApiResponse`。仅当 `apiEncryptAlgorithm` 为 `'RSA'` 时，`apiCrypto` 才使用本工具：
+
+- 请求：随机生成 32 位 AES 密钥，`rsaEncrypt(encodeBase64(aesKey))` 的结果放入请求头 `encrypt-key`，报文为 AES-ECB 的 Base64 密文；`rsaEncrypt` 返回空时抛出“RSA加密失败，请检查公钥配置”
+- 响应：`rsaDecrypt` 解出响应头中的 AES 密钥后解密报文；返回空时抛出“RSA解密失败，请检查前后端密钥是否成对”
+
+```typescript
+// utils/apiCrypto.ts（RSA 分支）
+const aesKey = generateAesKey()
+const encryptedKey = rsaEncrypt(encodeBase64(aesKey))
+if (!encryptedKey) {
+  throw new Error('RSA加密失败，请检查公钥配置')
+}
+return { encryptedKey, body: encryptWithAes(plainText, aesKey) }
 ```
 
 ## 核心功能

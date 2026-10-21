@@ -9,7 +9,7 @@
 - **请求拦截器**: 自动处理认证 Token、租户 ID、国际化语言、请求 ID 等
 - **响应拦截器**: 统一处理响应数据、状态码、错误消息
 - **认证管理**: 自动添加 Token，处理 401 未授权情况
-- **数据加密**: 支持 AES 加密请求数据和 RSA 密钥交换
+- **数据加密**: 支持 RSA + AES 与国密 SM2 + SM4 两种混合加密方案，按配置切换
 - **防重复提交**: 阻止 5 秒内重复提交相同数据
 - **国际化支持**: 自动添加 `Content-Language` 请求头
 - **错误处理**: 统一处理网络错误、超时、各类 HTTP 状态码
@@ -380,7 +380,10 @@ if (code === 401) {
 
 ### 数据加密
 
-系统支持 AES + RSA 混合加密：
+系统支持两种混合加密方案，由环境变量 `VITE_APP_API_ENCRYPT_ALGORITHM` 决定（必须与后端 `api-decrypt.algorithm` 一致）：
+
+- `RSA`（默认）：RSA + AES，请求头为 RSA 加密后的 Base64 AES 密钥，报文为 AES-ECB 的 Base64 密文
+- `SM2`：国密 SM2 + SM4，请求头为 SM2 加密后的 16 位 SM4 密钥，报文为 SM4-ECB 的 Hex 密文
 
 ```typescript
 // 启用加密的请求
@@ -390,13 +393,28 @@ const [err, result] = await http.encrypt().post('/api/sensitive', {
 })
 ```
 
+`useHttp` 不再直接依赖 RSA/AES 工具，而是只调用 `utils/apiCrypto.ts` 中的 `encryptApiRequest` / `decryptApiResponse`，由它按算法分发：
+
+```typescript
+// 请求拦截器（仅 POST/PUT 且 isEncrypt 为 'true' 时）
+const encrypted = encryptApiRequest(typeof config.data === 'object' ? JSON.stringify(config.data) : config.data)
+config.headers[encryptHeader] = encrypted.encryptedKey
+config.data = encrypted.body
+
+// 响应拦截器（响应头带 encrypt-key 时）
+const decryptData = decryptApiResponse(keyStr, res.data as any)
+res.data = JSON.parse(decryptData)
+```
+
 加密流程：
-1. 生成随机 AES 密钥
-2. 使用 RSA 公钥加密 AES 密钥
-3. 使用 AES 加密请求数据
-4. 将加密后的 AES 密钥放入请求头 `encrypt-key`
-5. 服务器使用 RSA 私钥解密 AES 密钥
-6. 使用 AES 密钥解密请求数据
+1. 按配置算法生成随机对称密钥（AES 32 位 / SM4 16 位）
+2. 使用非对称公钥（RSA / SM2）加密对称密钥
+3. 使用对称密钥加密请求数据
+4. 将加密后的密钥放入请求头 `encrypt-key`
+5. 服务器使用对应私钥解密对称密钥
+6. 使用对称密钥解密请求数据
+
+算法写死在配置中、不与后端协商，避免被降级为强度更低的组合，因此前后端配置必须保持一致，任一端不一致都会导致登录失败。
 
 ### 防重复提交
 
@@ -1375,6 +1393,6 @@ const [err, result] = await http.timeout(120000).post('/api/upload', formData)
 
 6. **租户隔离**: 请求会自动携带当前租户 ID
 
-7. **加密功能**: 需要后端配合实现 RSA/AES 解密
+7. **加密功能**: 需要后端配合实现 RSA/AES 或 SM2/SM4 解密，且前后端加密算法配置一致
 
 8. **请求 ID**: 每个请求会自动生成唯一的请求 ID，用于日志追踪

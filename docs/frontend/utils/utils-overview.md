@@ -17,6 +17,8 @@ src/utils/
 ├── boolean.ts         # 布尔值处理工具
 ├── crypto.ts          # 加密工具
 ├── rsa.ts             # RSA 加密工具
+├── sm.ts              # 国密 SM2/SM4 加密工具
+├── apiCrypto.ts       # 接口传输加解密(按算法分发)
 ├── cache.ts           # 浏览器缓存工具
 ├── class.ts           # CSS 类名操作工具
 ├── scroll.ts          # 滚动控制工具
@@ -1477,8 +1479,10 @@ import * as dateUtils from '@/utils/date'
 | 函数增强 | function.ts | 18+ | 防抖节流、异步控制、函数式编程 |
 | 数据验证 | validators.ts | 25+ | 类型验证、格式验证、业务验证 |
 | 布尔处理 | boolean.ts | 5+ | 布尔值判断、转换、切换 |
-| 加密安全 | crypto.ts | 10+ | AES 加密、哈希计算 |
+| 加密安全 | crypto.ts | 10+ | AES 加密、哈希计算、本地存储加密 |
 | RSA 加密 | rsa.ts | 5+ | RSA 加解密、数字签名 |
+| 国密加密 | sm.ts | 5 | SM2 加解密、SM4 加解密、SM4 密钥生成 |
+| 接口加密 | apiCrypto.ts | 2 | 按配置算法加密请求、解密响应 |
 | 缓存管理 | cache.ts | 20+ | 浏览器存储封装、过期管理 |
 | DOM 操作 | class.ts | 7+ | CSS 类名操作 |
 | 滚动控制 | scroll.ts | 6+ | 页面滚动、元素可见性 |
