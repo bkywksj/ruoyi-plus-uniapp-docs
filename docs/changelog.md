@@ -917,7 +917,7 @@
 
 ---
 
-## 七、2026年重大更新 (1月-7月)
+## 七、2026年重大更新 (1月-10月)
 
 ### 7.1 Spring Boot 4 双分支上线
 
@@ -1005,9 +1005,10 @@ LangChain4j 完成 **0.35.0 → 1.14.1** 大版本升级，全面支持大模型
 - **通用文件预览**：新增 AFilePreview 通用文件预览组件，支持全屏预览
 - **富文本增强**：AFormEditor 支持 Markdown 粘贴解析
 - **地图选点升级**：AFormMap 搜索框接入 POI 候选下拉，输入即出列表、选中即定位
-- **表格选择增强**：AFormTableSelect 支持图片类型与 `initialLabel` 编辑回显
+- **表格选择增强**：AFormTableSelect 支持图片类型与 `initialLabel` 编辑回显，单选模式支持清空，点击后缀图标也能打开选择弹窗
+- **流程级监听器**：流程定义补齐流程级监听器配置
 - **本地 SVG 图标**：Icon 组件新增本地 SVG sprite 图标源（基于 `vite-plugin-svg-icons`），登录页品牌 logo 切换为真·SVG
-- **记住密码加密**：记住密码功能新增本地存储加密
+- **记住密码加密**：记住密码功能新增本地存储加密，密钥由 RSA / SM2 私钥的 SHA-256 摘要派生（`v2:` 前缀），升级前保存的旧数据自动兼容并转存
 - **双列菜单布局**：新增双列菜单布局模式
 - **交互细节**：AStatsCard 数字滚动动画、404 页面倒计时自动跳转、表格选中行高亮
 - **大数据量性能优化**：菜单管理、部门 / 目录树改用 `el-table-v2` 虚拟滚动 + 搜索防抖，解决展开全部与大数据搜索卡死
@@ -1031,18 +1032,31 @@ LangChain4j 完成 **0.35.0 → 1.14.1** 大版本升级，全面支持大模型
 - **业务模块裁剪**：新增 module-strip 模块裁剪技能（`/strip-modules`），内置微信生态等多个预设，一键裁掉不需要的业务模块
 - **技能体系扩容**：技能与命令持续扩展（新增 e2e-test、writing-plans、log-audit、env-config、project-migration、framework-sync 等）
 - **凭据安全**：git-workflow 远程操作优先走 Sigil 凭据保险库，明文 token 不落地
+- **多会话协同编排**：新增 `/dev-orchestrate` 智码协同编排命令，长任务在智码中优先拆分为多会话并行编排
+
+### 7.11 接口加密支持国密 SM2+SM4
+
+接口传输加密在原有 RSA+AES 之外，新增满足信创 / 密评要求的**国密 SM2+SM4** 算法组合，后端与三端前端各改一个开关即可切换。
+
+- **一键切换**：后端 `api-decrypt.algorithm`（RSA 默认 / SM2）与 `plus-ui` / `plus-uniapp` / `plus-app` 的 `VITE_APP_API_ENCRYPT_ALGORITHM` 保持一致即可，不做运行时协商，杜绝算法降级
+- **策略化重构**：抽出 `IApiCryptor` 策略接口与 `RsaAesApiCryptor` / `Sm2Sm4ApiCryptor` 两个实现，过滤器与请求/响应包装器不再写死算法；前端新增 `sm.ts`（sm-crypto 封装）与 `apiCrypto.ts`（按算法分发）
+- **启动即校验**：切到 SM2 却未配 SM2 密钥时应用启动直接失败；对称密钥改用 `SecureRandom` 生成
+- **密钥生成器**：新增 `ApiEncryptKeyGeneratorTest`，一次生成前后端配对的 RSA 2048 / SM2 密钥，按 `application.yml` / compose / 前端 `.env` 三段输出并自检配对
+- **多端兼容**：移动端新增 `crypto.getRandomValues` 补丁，解决小程序 / APP 加载 sm-crypto 即报错；后端解密前剥除 axios 二次序列化带来的首尾引号
+- **编码修复**：响应加密缓冲区固定 UTF-8，不再依赖 JVM 默认编码，避免 GBK 环境下中文乱码
 
 ---
 
 **2026年更新总结**：
 
-2026 年上半年，框架在**技术栈现代化**、**企业级能力**和**智能化开发**三条主线上全面演进：
+2026 年，框架在**技术栈现代化**、**企业级能力**和**智能化开发**三条主线上全面演进：
 
 - <Icon icon="lucide:rocket" /> **Spring Boot 4**：全量迁移 SB4 + Jackson 3 + Redisson 4，分支矩阵扩展为 5 个变体
 - <Icon icon="lucide:earth" /> **全站国际化**：前端组件、页面、路由、字典全面多语言，开箱即用
 - <Icon icon="lucide:shield" /> **异常可观测**：异步 + 去重的错误日志系统，问题可追溯可治理
 - <Icon icon="lucide:building-2" /> **多租户进阶**：Pool↔Silo 双向迁移、会话级动态切换、集团库幂等迁移
 - <Icon icon="lucide:bot" /> **AI 深度思考**：LangChain4j 1.14.1，五大模型深度思考 + 思考链实时推送
+- <Icon icon="lucide:lock" /> **国密加密**：接口传输加密支持 SM2+SM4，一个开关切换，满足信创 / 密评
 - <Icon icon="lucide:credit-card" /> **支付扩展**：支付宝当面付、微信 V3 公钥模式、配置集群同步
 - <Icon icon="lucide:smartphone" /> **移动端进化**：UniApp X + nvue 原生渲染、WD 新组件、20+ 行业模板
 - <Icon icon="lucide:brain" /> **自主开发**：Claude Code 自主开发流水线 + 经验沉淀 + 模块裁剪
