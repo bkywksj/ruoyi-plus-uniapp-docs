@@ -23,7 +23,7 @@ Ruoyi-Plus-Uniapp 移动端项目采用标准的 uni-app 项目结构，基于 V
 │   └── .env.production              // 生产环境配置
 ├── 📁 node_modules/                 // 依赖包目录
 ├── 📁 src/                          // 源码目录（详见下方）
-├── 📁 vite/                         // Vite 插件目录
+├── 📁 vite/                         // Vite 插件目录（含 sm-crypto-rng.ts 国密加载修补插件）
 ├── 📄 .editorconfig                 // 编辑器配置
 ├── 📄 .eslintrc-auto-import.json    // ESLint 自动导入配置
 ├── 📄 .gitignore                    // Git 忽略文件配置
@@ -118,7 +118,7 @@ Ruoyi-Plus-Uniapp 移动端项目采用标准的 uni-app 项目结构，基于 V
 │   ├── boolean.ts                   // 布尔值相关工具
 │   ├── cache.ts                     // 缓存相关工具
 │   ├── crypto.ts                    // 加密相关工具
-│   ├── cryptoPolyfill.ts            // crypto.getRandomValues 补丁（小程序/APP）
+│   ├── cryptoPolyfill.ts            // globalThis.crypto 兜底（小程序/APP）
 │   ├── date.ts                      // 日期相关工具
 │   ├── format.ts                    // 格式化相关工具
 │   ├── function.ts                  // 函数相关工具
@@ -319,7 +319,7 @@ TypeScript 类型定义目录：
 - **boolean.ts**: 布尔值转换和判断
 - **cache.ts**: 本地存储封装（localStorage、sessionStorage）
 - **crypto.ts**: 加密解密工具（AES、MD5、记住密码本地加密等）
-- **cryptoPolyfill.ts**: 为无 WebCrypto 的小程序 / APP 补 `crypto.getRandomValues`
+- **cryptoPolyfill.ts**: 为无 WebCrypto 的小程序 / APP 补 `globalThis.crypto.getRandomValues` 兜底；开启国密后能否正常加载 sm-crypto，真正依赖的是构建插件 `vite/plugins/sm-crypto-rng.ts`
 - **date.ts**: 日期格式化和计算
 - **format.ts**: 数据格式化（金额、手机号等）
 - **function.ts**: 函数工具（防抖、节流等）

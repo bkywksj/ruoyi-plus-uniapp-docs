@@ -105,6 +105,7 @@ plus-app/
 │       ├── components.ts   # 组件自动注册
 │       ├── uni-pages.ts    # 页面路由配置
 │       ├── unocss.ts       # UnoCSS 配置
+│       ├── sm-crypto-rng.ts # sm-crypto 随机数初始化修补(国密在小程序/APP 可用)
 │       └── static-assets-types.ts # 静态资源类型
 ├── uno.config.ts           # UnoCSS 配置文件
 ├── tsconfig.json           # TypeScript 配置
@@ -401,6 +402,9 @@ export default async ({
 
   // 1. 静态资源类型生成(必须最早运行)
   vitePlugins.push(createStaticAssetsTypes({ enabled: true }))
+
+  // 修补 sm-crypto 随机数初始化，否则开启国密后小程序 / APP 加载 vendor.js 即报错白屏
+  vitePlugins.push(createSmCryptoRng())
 
   // 2. UniApp 核心插件
   vitePlugins.push(createUniPages(mode))

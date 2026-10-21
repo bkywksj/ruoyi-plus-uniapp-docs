@@ -1305,7 +1305,7 @@ VITE_APP_SM2_PRIVATE_KEY = '261af8bdfd10e14b8d87b04b...'
 
 1. 默认 RSA / SM2 密钥均为框架默认值，生产必须更换，可运行后端单元测试 `ApiEncryptKeyGeneratorTest`（`generateRsaKeys` / `generateSm2Keys`）生成，复制控制台第 ③ 段到 `.env`
 2. 默认 SM2 密钥已与后端默认值配对，开发环境只改算法开关即可
-3. 小程序 / APP 逻辑层没有同步的 `crypto.getRandomValues`，由 `utils/cryptoPolyfill.ts` 退回 `Math.random` 生成随机数，对随机数强度有硬性要求的项目请确保全链路 HTTPS
+3. 小程序 / APP 逻辑层没有 `window.crypto`，sm-crypto 加载时会因 `module.require('crypto')` 报错白屏，框架通过构建插件 `vite/plugins/sm-crypto-rng.ts` 修补并退回 `Math.random` 生成随机数；对随机数强度有硬性要求的项目请确保全链路 HTTPS
 
 ---
 

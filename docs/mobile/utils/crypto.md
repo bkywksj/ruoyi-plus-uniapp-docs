@@ -75,8 +75,8 @@ plus-uniapp/src/
 │   ├── crypto.ts          # AES 加密、Base64 编码、哈希计算、本地存储加密
 │   ├── rsa.ts             # RSA 加密解密、签名验签
 │   ├── sm.ts              # 国密 SM2/SM4 加解密
-│   ├── smCrypto.ts        # sm-crypto 入口(先装随机数补丁再加载)
-│   ├── cryptoPolyfill.ts  # 为小程序/APP 补 crypto.getRandomValues
+│   ├── smCrypto.ts        # sm-crypto 入口(先装随机数兜底再加载)
+│   ├── cryptoPolyfill.ts  # globalThis.crypto 兜底(单靠它不够,见构建插件)
 │   └── apiCrypto.ts       # 接口传输加解密(按算法分发)
 ├── composables/
 │   └── useHttp.ts         # HTTP 请求加密集成
@@ -453,11 +453,43 @@ const customValid = rsaVerify(originalData, signature!, customPublicKey)
 | SM2 密钥格式 | Hex 原始格式:公钥 `04` + x + y(130 位),私钥 d(64 位) |
 | SM4 | ECB + PKCS#7,密钥为 16 位字母数字字符串(UTF-8 字节即 128 bit),密文 Hex |
 
-### 小程序 / APP 随机数补丁
+### 小程序 / APP 加载修补
 
-sm-crypto 0.5.x 在模块加载时就会调用 `crypto.getRandomValues` 初始化随机数池,找不到会直接抛错「当前环境不支持 crypto.getRandomValues!」,导致整个 HTTP 模块加载失败。H5 浏览器自带 `window.crypto`;微信小程序 / APP 逻辑层没有同步的密码学随机数接口(`wx.getRandomValues` 是异步的),只能退回 `Math.random`。
+sm-crypto 0.5.x 的 `src/sm2/rng.js` 在模块加载时就初始化随机数池。没有 `window.crypto` 时(微信小程序 / APP 逻辑层),它会先调用 `module.require('crypto')`,而打包后 `@rollup/plugin-commonjs` 注入的 `require` 一调用就抛出 `Could not dynamically require "crypto"`,整个 `vendor.js` 加载失败、小程序白屏。H5 浏览器自带 `window.crypto`,不受影响;微信小程序 / APP 逻辑层没有同步的密码学随机数接口(`wx.getRandomValues` 是异步的),只能退回 `Math.random`。
 
-因此移动端通过 `cryptoPolyfill.ts` 补丁 + `smCrypto.ts` 入口保证加载顺序,`sm.ts` 必须从 `@/utils/smCrypto` 引入,不能直接 `import 'sm-crypto'`:
+**真正保证加载的是构建插件 `vite/plugins/sm-crypto-rng.ts`**,它在 commonjs 插件之前(`enforce: 'pre'`)改写 `rng.js` 两处:
+
+```typescript
+// vite/plugins/sm-crypto-rng.ts(节选)
+const TARGET = /[\\/]sm-crypto[\\/]src[\\/]sm2[\\/]rng\.js$/
+
+export default (): Plugin => ({
+  name: 'sm-crypto-rng',
+  // 必须在 commonjs 插件改写 module / require 之前处理源码
+  enforce: 'pre',
+  transform(code, id) {
+    if (!TARGET.test(id.split('?')[0])) {
+      return null
+    }
+    if (!NODE_REQUIRE.test(code) || !THROW_UNSUPPORTED.test(code)) {
+      // 升级 sm-crypto 后源码对不上时直接让构建失败,避免修补静默失效、到真机才白屏
+      this.error('sm-crypto 的 src/sm2/rng.js 与修补规则不匹配（可能升级了 sm-crypto），请检查 vite/plugins/sm-crypto-rng.ts')
+    }
+    return {
+      code: code
+        // 1. nodeRequire 恒为 null —— 前端产物里不存在 Node 的 crypto 模块
+        .replace(NODE_REQUIRE, 'const nodeRequire = null')
+        // 2. 无 window.crypto 也无 globalThis.crypto 时用 Math.random 填充,而不是抛错
+        .replace(THROW_UNSUPPORTED, 'else { for (t = 0; t < 32; ++t) ua[t] = Math.floor(Math.random() * 256) }'),
+      map: null,
+    }
+  },
+})
+```
+
+插件在 `vite/plugins/index.ts` 中注册:`vitePlugins.push(createSmCryptoRng())`。
+
+`cryptoPolyfill.ts` 补丁与 `smCrypto.ts` 入口仍然保留,作为 `globalThis.crypto` 的兜底,`sm.ts` 继续从 `@/utils/smCrypto` 引入。但**单靠补丁不够**:小程序里 sm-crypto 打在 `vendor.js`,可能早于补丁执行,且执行流在 `module.require('crypto')` 处就已抛错,到不了 `globalThis.crypto` 分支:
 
 ```typescript
 // utils/cryptoPolyfill.ts - 只在缺失时补,不覆盖平台原生实现
@@ -1907,7 +1939,7 @@ console.log('安全配置:', SystemConfig.security)
 **问题原因:**
 - 小程序不支持某些 Web API
 - crypto-js 在小程序中的兼容性问题
-- 小程序 / APP 逻辑层没有 `crypto.getRandomValues`,直接引入 sm-crypto 会在加载时抛错「当前环境不支持 crypto.getRandomValues!」
+- 开启国密后小程序 / APP 报 `Could not dynamically require "crypto"` 白屏:sm-crypto 的 `rng.js` 加载时调用 `module.require('crypto')`,被 rollup commonjs 拦下抛错,需要构建插件 `vite/plugins/sm-crypto-rng.ts` 修补(框架默认已注册)
 
 **解决方案:**
 
@@ -1925,8 +1957,11 @@ console.log('安全配置:', SystemConfig.security)
 import CryptoJS from 'crypto-js'
 // 而不是 import { AES } from 'crypto-js'
 
-// sm-crypto 必须经由 smCrypto 入口引入(先装随机数补丁),不要直接 import 'sm-crypto'
+// sm-crypto 经由 smCrypto 入口引入(先装 globalThis.crypto 兜底),不要直接 import 'sm-crypto'
 import { sm2, sm4 } from '@/utils/smCrypto'
+
+// 白屏的根本修复在构建层:确认 vite/plugins/index.ts 注册了 sm-crypto-rng 插件
+// vitePlugins.push(createSmCryptoRng())
 ```
 
 ### 5. 性能优化

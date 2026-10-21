@@ -907,10 +907,17 @@ export const sm4Decrypt = (hex: string, key: string): string => {
 }
 ```
 
-::: warning 移动端随机数补丁
-sm-crypto 0.5.x 在模块加载时就调用 `crypto.getRandomValues` 初始化随机数池，微信小程序与 APP 逻辑层没有该同步接口，会直接抛出"当前环境不支持 crypto.getRandomValues！"导致整个 HTTP 模块加载失败。因此 `plus-uniapp` / `plus-app` 额外提供 `utils/cryptoPolyfill.ts`（仅在缺失时补一个基于 `Math.random` 的实现，不覆盖平台原生实现）和 `utils/smCrypto.ts`（先导入补丁再加载 sm-crypto），移动端的 `sm.ts` 必须从 `@/utils/smCrypto` 引入 `sm2` / `sm4`，不能直接 `import 'sm-crypto'`。
+::: warning 移动端 sm-crypto 构建修补
+sm-crypto 0.5.x 的 `src/sm2/rng.js` 在模块加载时初始化随机数池：没有 `window.crypto` 时（微信小程序 / APP 逻辑层）会先调用 `module.require('crypto')`。打包后 `@rollup/plugin-commonjs` 注入的 `require` 一调用就抛出 `Could not dynamically require "crypto"`，整个 `vendor.js` 加载失败，页面全部注册不上，表现为**开启国密后小程序白屏**。
 
-H5 端浏览器自带 `window.crypto`，补丁不生效。小程序 / APP 端随机数强度与 RSA 方案的 jsencrypt 退化行为相同，对随机数质量有硬性要求的项目应确保全链路 HTTPS。
+因此 `plus-uniapp` / `plus-app` 在 `vite/plugins/sm-crypto-rng.ts` 提供了一个构建插件（`enforce: 'pre'`，在 commonjs 插件之前处理源码），构建时改写 `rng.js` 两处：
+
+1. `nodeRequire` 恒为 `null`——前端产物里不存在 Node 的 `crypto` 模块
+2. 既没有 `window.crypto` 也没有 `globalThis.crypto` 时，用 `Math.random` 填充随机数池而不是抛错
+
+升级 sm-crypto 后如果 `rng.js` 源码与修补规则对不上，插件会让构建直接失败，避免修补静默失效、到真机才白屏。`utils/cryptoPolyfill.ts` 与 `utils/smCrypto.ts` 仍然保留，作为 `globalThis.crypto` 的兜底，但**单靠它们不够**：小程序里 sm-crypto 打在 `vendor.js` 中，可能早于补丁执行，而且根本走不到 `globalThis.crypto` 分支。
+
+H5 端浏览器自带 `window.crypto`，行为不受影响。小程序 / APP 端随机数强度与 RSA 方案的 jsencrypt 退化行为相同，对随机数质量有硬性要求的项目应确保全链路 HTTPS。
 :::
 
 ### 按算法分发
@@ -1405,24 +1412,28 @@ mvn test -pl ruoyi-common/ruoyi-common-encrypt "-DskipTests=false" "-Dprofiles.a
 
 如果后端启动直接失败并提示 `接口加密算法为 SM2，但未配置 api-decrypt.sm2.public-key / private-key`，说明 SM2 密钥为空，补齐 `sm2` 节点或 `API_SM2_*` 环境变量即可。
 
-### 7. 小程序 / APP 端加载 HTTP 模块报错
+### 7. 开启国密后小程序 / APP 白屏
 
-**问题描述**: 切换 SM2 后，小程序或 APP 启动报"当前环境不支持 crypto.getRandomValues！"。
+**问题描述**: 切换 SM2 后，微信小程序启动即报 `Could not dynamically require "crypto"`，`vendor.js` 加载失败，页面全部注册不上（白屏）。
 
 **问题原因:**
-- sm-crypto 在模块加载时就调用 `crypto.getRandomValues`，小程序与 APP 逻辑层没有该接口
+- sm-crypto 0.5.7 的 `src/sm2/rng.js` 在模块加载时初始化随机数池，没有 `window.crypto` 时会先调用 `module.require('crypto')`
+- 打包后 `@rollup/plugin-commonjs` 给 `module` 注入的 `require` 一调用就抛错，走不到后面的 `globalThis.crypto` 分支
+- `cryptoPolyfill.ts` 补不上：执行流根本到不了它，而且 sm-crypto 在 `vendor.js` 里可能早于补丁执行
 
 **解决方案:**
 
-移动端的 `sm.ts` 必须从 `@/utils/smCrypto` 引入，由它先加载 `cryptoPolyfill.ts` 补丁再加载 sm-crypto。自定义代码中如需使用 SM2 / SM4，同样不能直接 `import 'sm-crypto'`：
+确认移动端 `vite/plugins/index.ts` 注册了 `sm-crypto-rng` 构建插件（框架默认已注册），它会在构建时改写 `rng.js`，去掉 `module.require('crypto')` 并在无 crypto 时用 `Math.random` 兜底：
 
 ```typescript
-// ✅ 正确：先装随机数补丁再加载 sm-crypto
-import { sm2, sm4 } from '@/utils/smCrypto'
+// vite/plugins/index.ts
+import createSmCryptoRng from './sm-crypto-rng'
 
-// ❌ 错误：小程序 / APP 端加载即抛错
-import smCrypto from 'sm-crypto'
+// 修补 sm-crypto 随机数初始化，否则开启国密后小程序 / APP 加载 vendor.js 即报错白屏
+vitePlugins.push(createSmCryptoRng())
 ```
+
+修改后需要重新构建小程序。如果升级了 sm-crypto 导致构建报"sm-crypto 的 src/sm2/rng.js 与修补规则不匹配"，说明新版本源码变了，需要对照新源码调整插件里的匹配规则。
 
 ### 8. 加密响应中文乱码
 

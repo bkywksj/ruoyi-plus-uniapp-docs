@@ -1044,7 +1044,7 @@ LangChain4j 完成 **0.35.0 → 1.14.1** 大版本升级，全面支持大模型
 - **策略化重构**：抽出 `IApiCryptor` 策略接口与 `RsaAesApiCryptor` / `Sm2Sm4ApiCryptor` 两个实现，过滤器与请求/响应包装器不再写死算法；前端新增 `sm.ts`（sm-crypto 封装）与 `apiCrypto.ts`（按算法分发）
 - **启动即校验**：切到 SM2 却未配 SM2 密钥时应用启动直接失败；对称密钥改用 `SecureRandom` 生成
 - **密钥生成器**：新增 `ApiEncryptKeyGeneratorTest`，一次生成前后端配对的 RSA 2048 / SM2 密钥，按 `application.yml` / compose / 前端 `.env` 三段输出并自检配对
-- **多端兼容**：移动端新增 `crypto.getRandomValues` 补丁，解决小程序 / APP 加载 sm-crypto 即报错；后端解密前剥除 axios 二次序列化带来的首尾引号
+- **多端兼容**：移动端新增构建插件 `sm-crypto-rng`，构建时修补 sm-crypto 的随机数初始化，解决开启国密后小程序 / APP 加载 `vendor.js` 报错白屏；后端解密前剥除 axios 二次序列化带来的首尾引号
 - **编码修复**：响应加密缓冲区固定 UTF-8，不再依赖 JVM 默认编码，避免 GBK 环境下中文乱码
 
 ### 7.12 集团库多数据库与存储形态（6.x 分支）

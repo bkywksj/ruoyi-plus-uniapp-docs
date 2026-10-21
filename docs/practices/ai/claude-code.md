@@ -749,7 +749,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 ### security-guard
 
 定位
-- 安全开发规范。包含 Sa-Token 认证授权、数据脱敏、数据加密、接口安全、漏洞防护。新增「3.3.1 接口传输加密算法切换」：RSA+AES（默认）与国密 SM2+SM4 的切换需后端 `api-decrypt.algorithm` 与 plus-ui / plus-uniapp / plus-app 三端 `VITE_APP_API_ENCRYPT_ALGORITHM` 四处一起改；配对密钥统一用 `ApiEncryptKeyGeneratorTest` 生成；并收录两对密钥对应关系、SM2 前后端格式约定（C1C3C2、Hex、`04` 前缀）、代码位置与已踩过的坑（axios 给字符串报文加引号、小程序 / APP 无 WebCrypto、sm-crypto 的 CJS 导入等）。
+- 安全开发规范。包含 Sa-Token 认证授权、数据脱敏、数据加密、接口安全、漏洞防护。新增「3.3.1 接口传输加密算法切换」：RSA+AES（默认）与国密 SM2+SM4 的切换需后端 `api-decrypt.algorithm` 与 plus-ui / plus-uniapp / plus-app 三端 `VITE_APP_API_ENCRYPT_ALGORITHM` 四处一起改；配对密钥统一用 `ApiEncryptKeyGeneratorTest` 生成；并收录两对密钥对应关系、SM2 前后端格式约定（C1C3C2、Hex、`04` 前缀）、代码位置与已踩过的坑（axios 给字符串报文加引号、小程序 / APP 加载 sm-crypto 时 `module.require('crypto')` 被 rollup commonjs 拦下导致白屏——需构建插件 `vite/plugins/sm-crypto-rng.ts` 修补、sm-crypto 的 CJS 导入等）。
 
 触发场景
 - Sa-Token 权限控制配置
