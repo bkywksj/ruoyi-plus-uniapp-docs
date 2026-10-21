@@ -34,7 +34,7 @@
 - 面向国企/事业单位交付，招标文件要求提供等保合规说明
 - 虽不做测评，但希望具备基本的口令治理与审计留痕能力
 
-C端互联网项目通常不需要强制改密，框架对此做了分档处理：移动端口令有效期默认为0（永不过期），不会误伤海量注册用户。
+C端互联网项目通常不需要强制改密，框架对此做了分档处理：移动端口令有效期默认为0（永不过期），且移动端用户不参与首次登录强制改密，不会误伤海量注册用户。
 
 ---
 
@@ -54,7 +54,7 @@ C端互联网项目通常不需要强制改密，框架对此做了分档处理�
 | `system.password.expire-days.app` | 移动端口令有效期（天） | `0` |
 | `system.password.expire-notify-days` | 到期前多少天开始提醒 | `15` |
 | `system.password.history-count` | 禁止重复使用的历史密码条数 | `3` |
-| `system.password.force-change-init` | 是否开启首次登录强制改密 | `1` |
+| `system.password.force-change-init` | 是否开启首次登录强制改密（仅对管理端用户生效） | `1` |
 
 实现类为每个参数都准备了同值的兜底常量。这个兜底不是可有可无的防御性代码：多租户场景下新建租户不会自动拥有这批参数，`getConfigByKey`取不到会返回空串，没有兜底就会在登录链路上抛`NumberFormatException`，导致新租户完全无法登录。
 
@@ -125,7 +125,7 @@ userDao.updatePwdHistory(userId, String.join(HISTORY_SEPARATOR, histories));
 
 | 字段 | 含义 |
 |------|------|
-| `mustChangePwd` | 是否必须改密（从未改过 或 已过期） |
+| `mustChangePwd` | 是否必须改密（管理端用户从未改过 或 已过期） |
 | `pwdExpired` | 是否因过期导致，单独给出便于前端区分文案 |
 | `expireInDays` | 距到期剩余天数，仅在「已进提醒窗口但未过期」时有值 |
 | `expireDays` | 有效期天数，回传仅用于提示文案 |
@@ -133,9 +133,9 @@ userDao.updatePwdHistory(userId, String.join(HISTORY_SEPARATOR, histories));
 判定顺序有两处容易被改错的地方：
 
 ```java
-// 从未改过密码 → 看是否开启首次强制改密
+// 从未改过密码 → 看是否开启首次强制改密（移动端用户不参与）
 if (pwdUpdateDate == null) {
-    status.setMustChangePwd(isForceChangeOnInit());
+    status.setMustChangePwd(!isAppUser(userType) && isForceChangeOnInit());
     return status;
 }
 
@@ -147,19 +147,28 @@ if (expireDays <= 0) {
 
 有效期判空写`<= 0`而非`== 0`：有人把参数填成`-1`表达「不过期」时同样要能兜住。若写`== 0`，`-1`会被当成「有效期-1天」，导致所有人立刻过期、天天被要求改密。
 
-有效期按用户类型分档：
+`pwdUpdateDate`为空时只有管理端用户会被要求首次改密。小程序、公众号、短信登录自动注册的移动端账号本来就没有密码，「初始密码」无从谈起，移动端也没有改密页，拦下来只会让所有业务接口返回602、用户无路可走。移动端账号的密码约束只由`expire-days.app`这一档有效期参数管。
+
+有效期分档与首次改密共用同一个用户类型判断：
 
 ```java
 private int getExpireDaysByUserType(String userType) {
-    if (StringUtils.isNotBlank(userType)
-        && StringUtils.contains(userType, UserType.APP_USER.getUserType())) {
+    if (isAppUser(userType)) {
         return getIntConfig(KEY_EXPIRE_DAYS_APP, DEFAULT_EXPIRE_DAYS_APP);
     }
     return getIntConfig(KEY_EXPIRE_DAYS_PC, DEFAULT_EXPIRE_DAYS_PC);
 }
+
+// 为空或其它类型一律按管理端处理（从严）
+private boolean isAppUser(String userType) {
+    return StringUtils.isNotBlank(userType)
+        && StringUtils.contains(userType, UserType.APP_USER.getUserType());
+}
 ```
 
 分档的现实意义：管理端账号数量可控、权限高，适合严格执行定期更换；C端海量注册用户强制改密不现实，默认给0。
+
+移动端用户带密码注册（`registerAppUser`）时会同时写入`pwd_update_date`。密码是用户自己设的，不存在初始弱口令问题；记下修改时间是为了让`expire-days.app`配了有效期后能正常计时，否则该字段恒为空，有效期永远算不出过期。
 
 ### 强制改密为什么必须在服务端拦
 
@@ -253,7 +262,7 @@ if (code === HttpCode.PASSWORD_CHANGE_REQUIRED) {
 }
 ```
 
-移动端不做改密页是权衡后的结果：C端账号的有效期参数默认为0，本就不会走到这里；会撞上的只有「PC端账号从移动端登录且刚被管理员重置密码」这种少见组合。但这里不能沉默失败——那样用户只会看到功能莫名全挂，比看到说明更糟。
+移动端不做改密页是权衡后的结果：C端账号不参与首次强制改密、有效期参数默认又为0，本就不会走到这里；会撞上的只有「PC端账号从移动端登录且刚被管理员重置密码」这种少见组合。但这里不能沉默失败——那样用户只会看到功能莫名全挂，比看到说明更糟。
 
 ### 数据库字段
 
@@ -264,7 +273,7 @@ pwd_update_date datetime      default null comment '密码最后修改时间',
 pwd_history     varchar(1000) default null comment '历史密码(BCrypt密文,逗号分隔,最新在前)',
 ```
 
-`pwd_update_date`在初始化数据中一律为`null`。这是刻意的：配合`force-change-init=1`，所有初始账号首次登录都会被要求改密，不会留下弱口令。开发环境嫌繁琐可把该参数设为`0`关掉。
+`pwd_update_date`在初始化数据中一律为`null`。这是刻意的：配合`force-change-init=1`，所有初始管理端账号首次登录都会被要求改密，不会留下弱口令。移动端（`app_user`）账号即使该字段为`null`也不会被要求首次改密，存量移动端用户无需补数据。开发环境嫌繁琐可把该参数设为`0`关掉。
 
 ---
 
@@ -625,7 +634,7 @@ cron方式（JAR部署/裸机）：
 - [ ] `sys_config`中7个`system.password.*`参数均存在且取值合理
 - [ ] 多租户环境下，新建租户同样拥有这批参数（或确认兜底默认值可接受）
 - [ ] 用curl带token直接调业务接口，确认被602拦住——这是测评最可能实测的一项
-- [ ] 初始账号的`pwd_update_date`为`null`，首次登录确实被要求改密
+- [ ] 初始管理端账号的`pwd_update_date`为`null`，首次登录确实被要求改密
 - [ ] 尝试把密码改回上一次用过的，确认被拒绝
 - [ ] 尝试用含账号片段的口令，确认被拒绝
 
@@ -670,7 +679,7 @@ cron方式（JAR部署/裸机）：
 
 ### 移动端用户被602拦住但没有改密入口
 
-这是设计上已知的取舍。移动端未实现改密页，会撞上这种情况的只有「PC端账号从移动端登录且刚被管理员重置密码」。此时移动端会提示前往电脑端修改。
+这是设计上已知的取舍。移动端未实现改密页；移动端用户（`app_user`）`pwd_update_date`为空时不参与首次强制改密，小程序、公众号、短信登录自动注册的账号不会被拦。会撞上这种情况的只有`expire-days.app`配了有效期且已过期的移动端账号，或「PC端账号从移动端登录且刚被管理员重置密码」。此时移动端会提示前往电脑端修改。
 
 如果你的项目确实需要移动端改密，需要自行实现改密页并在`useHttp`的602分支里改为跳转。
 

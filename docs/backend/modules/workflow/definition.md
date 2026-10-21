@@ -40,6 +40,12 @@ public class FlowDefinition {
     /** 是否激活（0-挂起，1-激活） */
     private Integer activityStatus;
 
+    /** 流程级监听器类型，多个以英文逗号分隔，与 listenerPath 按下标一一对应 */
+    private String listenerType;
+
+    /** 流程级监听器路径（类路径），多个以 @@ 分隔，与 listenerType 按下标一一对应 */
+    private String listenerPath;
+
     /** 扩展信息（JSON格式） */
     private String ext;
 
@@ -102,6 +108,32 @@ public enum PublishStatus {
 | `formType` | String | 表单类型：custom/dynamic |
 | `formPath` | String | 表单组件路径 |
 | `listenerClass` | String | 自定义监听器类名 |
+
+### 流程级监听器
+
+`flow_definition` 表的 `listener_type` / `listener_path` 用于配置对整条流程生效的监听器（节点级监听器在流程设计器的节点属性里单独配置）。按 Warm-Flow 的约定，多个监听器被压缩成两个字符串存储，按下标一一配对：
+
+| 字段 | 分隔符 | 示例 |
+|------|--------|------|
+| `listenerType` | 英文逗号 `,` | `start,finish` |
+| `listenerPath` | `@@` | `plus.ruoyi.workflow.listener.AListener@@plus.ruoyi.workflow.listener.BListener` |
+
+监听器类型由引擎固定为四种触发时机，不走字典表：
+
+| 值 | 说明 |
+|----|------|
+| `start` | 开始 |
+| `assignment` | 分派 |
+| `finish` | 完成 |
+| `create` | 创建 |
+
+管理端「流程定义」新增/修改弹窗提供「监听器配置」表格，可逐行选择类型、填写监听器类路径并增删行：
+
+- 提交时过滤掉整行留空的记录，再把剩余行分别以 `,` 和 `@@` 拼接写入 `listenerType` / `listenerPath`
+- 只填了类型或只填了路径的行会被拦下并提示「监听器的类型和路径必须同时填写」，避免两个压缩串长度不等导致引擎侧类型与路径错位
+- 编辑时按 `,` 与 `@@` 拆分，再按下标配对还原成可编辑的行
+
+同一弹窗中「设计器模式」（经典模式：自由拖拽连线；仿钉钉模式：类钉钉审批流、上下结构布局）与「是否动态表单」（是：由流程设计器动态渲染表单；否：使用表单路径指定的页面）以卡片式单选展示并附带用途说明。设计器模式决定节点结构，保存后不支持修改，编辑态会禁用并给出提示。
 
 ## API 接口
 
@@ -292,6 +324,8 @@ public enum PublishStatus {
 | category | String | 否 | 流程分类ID |
 | formPath | String | 否 | 表单路径 |
 | formCustom | String | 否 | 是否自定义表单（Y/N） |
+| listenerType | String | 否 | 流程级监听器类型，多个以 `,` 分隔 |
+| listenerPath | String | 否 | 流程级监听器类路径，多个以 `@@` 分隔，与 listenerType 按下标对应 |
 | ext | String | 否 | 扩展信息（JSON） |
 | nodeList | Array | 是 | 节点列表 |
 | skipList | Array | 是 | 流转规则列表 |

@@ -594,6 +594,8 @@ public class R<T> {
 - `PUT /system/user/changeUserStatus` - 修改用户状态
 - `DELETE /system/user/deleteUsers/{userIds}` - 批量删除用户
 
+**账号必填只在新增时校验:** 小程序微信用户注册时没有账号(`user_name` 为 NULL),而 PC 端编辑弹窗不展示账号。因此 `SysUserBo.userName` 的 `@NotBlank` 归入 `AddGroup`:`addUser` 与 Excel 导入新用户时按 `Default + AddGroup` 校验,空账号仍会被拒;`updateUser` 只做默认校验,且仅在账号非空时才检查唯一性(`PlusLambdaQuery.eq` 遇 null 会忽略条件,不加判断会把其他所有用户都判成重复),管理员可以正常修改无账号移动端用户的备注、角色等信息。
+
 **3. 用户数据导入导出**
 - `POST /system/user/exportUsers` - 导出用户列表到Excel
 - `POST /system/user/templateUsers` - 下载用户导入模板

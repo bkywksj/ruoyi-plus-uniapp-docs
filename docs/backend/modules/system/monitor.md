@@ -254,6 +254,16 @@ public R<Void> removeCurrentDevice(@PathVariable String tokenId)
 - 错误日志查询和管理
 - 错误处理状态跟踪
 - 智能去重和统计分析
+- 请求参数敏感字段脱敏
+
+**请求参数脱敏：**
+
+登录、改密等接口抛异常时，错误日志会把完整请求体写进 `sys_error_log.request_params`。为避免凭据明文入库，`SysErrorLogServiceImpl` 在记录前先对请求参数脱敏、再截断到 2000 字符：
+
+- 脱敏字段复用操作日志 `LogAspect.EXCLUDE_PROPERTIES`（`password`、`oldPassword`、`newPassword`、`confirmPassword`），保证两条日志链路口径一致，并补充 `pwd`、`secret`、`clientSecret`、`token`、`accessToken`、`refreshToken`、`privateKey`、`apiKey`
+- 同时覆盖 JSON 请求体（`"password":"xxx"`）与查询串/表单（`password=xxx`）两种形态，字段名不区分大小写
+- 只把值替换为 `******`、保留字段名，排查问题时仍能看出当时传了哪些参数
+- 先脱敏再截断，避免截断位置把敏感值切一半后仍留下可读片段；脱敏过程出错时直接丢弃该参数，宁可少记也不落明文
 
 **核心接口：**
 
