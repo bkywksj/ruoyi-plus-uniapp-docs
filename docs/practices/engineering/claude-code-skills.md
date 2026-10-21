@@ -64,7 +64,7 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
-| **security-guard** | Sa-Token、权限、加密 | 认证授权和数据安全 |
+| **security-guard** | Sa-Token、权限、加密、国密、SM2/SM4、信创、密评 | 认证授权和数据安全；含接口传输加密 RSA+AES 与国密 SM2+SM4 的切换（后端与三端前端四处开关一起改）及配对密钥生成 |
 | **data-permission** | 数据权限、部门隔离 | 行级数据权限控制 |
 | **multi-tenant** | 多租户、TenantEntity | 多租户数据隔离 |
 | **social-login** | OAuth2、微信登录、JustAuth | 第三方社交登录 |
@@ -133,8 +133,8 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 
 | Skill | 触发词 | 说明 |
 |-------|--------|------|
-| **deployment-guide** | 部署、上线、Docker、Nginx、1Panel、生产环境 | 生产环境部署、一键自动化部署脚本、构建 JAR/前端/小程序/APP、密钥轮换 |
-| **env-config** | 环境配置、profile、application.yml、.env、多环境 | 后端 Spring Boot 多 profile、前端/移动端 `.env` 文件、环境变量占位符 |
+| **deployment-guide** | 部署、上线、Docker、Nginx、1Panel、生产环境 | 生产环境部署、一键自动化部署脚本、构建 JAR/前端/小程序/APP、密钥轮换（接口加密密钥 RSA / SM2 统一用 `ApiEncryptKeyGeneratorTest` 生成） |
+| **env-config** | 环境配置、profile、application.yml、.env、多环境 | 后端 Spring Boot 多 profile、前端/移动端 `.env` 文件、环境变量占位符、接口加密开关与算法（`VITE_APP_API_ENCRYPT_ALGORITHM`、SM2 密钥变量） |
 | **delivery-sync** | 交付、交付副本、客户版本、剥离技能、镜像、同步交付 | 把主项目单向镜像同步成不带 git 历史、不带技能体系（`.claude`/`.codex`/`AGENTS.md`/`CLAUDE.md`）、不带内部协作文档的可交付副本。基于 `.deliveryignore` 排除清单与 `.delivery-sync.json` baseline，支持 `--dry-run` 预览、增量同步与多客户预设 |
 | **module-strip** | 模块裁剪、删除模块、不要mall、不要iot、不要pay、不要ai | delivery-sync 的下游补充。在交付目录里语义级裁剪指定业务模块（删目录 + 改 pom.xml），内置商城/IoT/支付/AI/CRM 等预设；只动交付目录，绝不动主项目，裁剪后可跑 `mvn compile` 验证 |
 
@@ -148,7 +148,7 @@ Skills 是 Claude Code 的预置知识模块，通过触发词按需激活。相
 | **writing-plans** | 写计划、制定计划、实施计划、拆解任务、计划层、把方案落地、可执行计划 | SDLC 链路的「计划层」，补齐 brainstorm（方案）与 dev-loop（执行）之间的断层。把方案翻译成可被人或 `/dev-loop` 直接执行的细颗粒计划（每条带文件路径、勾选步骤、验证命令、规范提交），颗粒度反比于框架自动生成程度（CRUD 只编排不写码、非 CRUD 才写骨架），产物落 `docs/tasks/active/` 复用 task-tracker 台账 |
 | **i18n-development** | 国际化、多语言、i18n | 全栈国际化方案 |
 | **project-navigator** | 项目结构、文件在哪 | 项目导航和定位 |
-| **git-workflow** | Git、提交、分支 | Git 工作流规范。远程认证操作（push/clone/推送后核对）优先走 Sigil 凭据保险库（明文不外泄、不落 `.git/config`）；本会话检测到 `mcp__sigil__git_push` 才启用，没装 Sigil 则照常 `git push`、流程无感回退；本地操作（add/commit/diff/branch）一律用 git CLI 不接管 |
+| **git-workflow** | Git、提交、分支 | Git 工作流规范。远程认证操作（推送/克隆/拉取/建仓/推送后核对）优先走 Sigil 凭据保险库（明文不外泄、不落 `.git/config`），统一使用三平台通用的 `git_push` / `git_clone` / `workspace_fetch` / `git_commits_list` / `git_repo_create`（强制私有）等工具，`username` 无需传；本会话检测到 `mcp__sigil__git_push` 才启用，没装 Sigil 则照常用原生 git、流程无感回退，装了但报错则停下不回退；本地操作（add/commit/diff/branch）一律用 git CLI 不接管 |
 | **task-tracker** | 任务跟踪、记录进度 | 开发任务持久化跟踪 |
 | **add-skill** | 添加技能、创建技能 | 扩展技能系统 |
 | **project-init** | 新项目、初始化项目、independent deployment | 基于框架模板创建独立业务项目，含标识符替换、Git 仓库创建、数据库初始化。补全非 MySQL 数据库（PostgreSQL/Oracle/SQL Server）的驱动启用指引：解开 `ruoyi-common-mybatis/pom.xml` 对应 JDBC 驱动与 anyline 适配器注释、替换 `application-dev.yml` 的 master/slave 数据源、按库类型导入对应 SQL 脚本 |

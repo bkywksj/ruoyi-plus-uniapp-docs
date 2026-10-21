@@ -8,7 +8,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - [x] 核心特性已完成，包含技能规模、命令入口与钩子机制
 - [x] 上下文工程已完成，说明 `CLAUDE.md` 与 `AGENTS.md` 协同方式
 - [x] 技能系统已完成，包含 61 个技能的场景与示例
-- [x] 命令系统已完成，按 19 个使用入口拆解
+- [x] 命令系统已完成，按 20 个使用入口拆解
 - [x] 钩子系统已完成，覆盖三类 JS 钩子的触发与输出
 - [x] 最佳实践已完成，强调规范优先与流程闭环
 - [x] 实战案例已完成，覆盖新功能、文档同步、工作流同步
@@ -17,7 +17,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 
 ## 核心特性
 - 技能体系：`.claude/skills` 目录现有 61 个技能目录，覆盖架构、后端、前端、移动端、APP原生、AI、协作、计划、测试验收、工程规范、部署运维、交付、中间件集成与物联网
-- 命令体系：`.claude/commands` 提供 18 个命令文件，`/init-docs` 内含两种模式，合计 19 个使用入口（不含 local 相关的上游同步命令，这些命令仅在源码项目中使用）
+- 命令体系：`.claude/commands` 提供 19 个命令文件，`/init-docs` 内含两种模式，合计 20 个使用入口（不含 local 相关的上游同步命令，这些命令仅在源码项目中使用）
 - 钩子体系：`.claude/hooks` 提供 3 个 JavaScript 钩子，分别负责技能强制评估、工具安全拦截与结束收尾
 - 配置入口：`.claude/settings.json` 统一绑定 `UserPromptSubmit`、`PreToolUse`（5s超时）、`Stop`（10s超时）三类触发点
 - 规则底座：`CLAUDE.md` 与 `AGENTS.md` 约束语言、架构、流程、命令与文档生成边界
@@ -34,7 +34,8 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 再次强调本项目不是 ruoyi-vue-plus，禁止引用其架构和包名风格
 - 给出强制技能评估流程说明，要求评估、逐个激活、再实现
 - 规定文档生成边界，文档必须输出到 `docs/` 目录
-- 给出标准代码模板示例，明确 Entity、BO、VO、Controller、DAO 的正确写法
+- 不再内嵌标准代码模板，改为指向 `crud-development` 技能（已含 Entity、BO、VO、Controller、DAO 的完整模板）；组件注册与自动配置规范迁入 `architecture-design` 技能。这样整份文件精简到约 28KB，避免 Codex 默认只注入前 32 KiB（`project_doc_max_bytes`）导致后半部分禁令被截断
+- 禁止事项、Bash 禁止项、API 路径规范改为表格并前移，重复的原则 / 检查清单合并为「写代码前强制流程」
 - 列出快捷命令入口与参考代码路径，便于快速进入正确流程
 - 约定多会话并发自动避让协议，避免多窗口同改一仓库时互相覆盖
 
@@ -42,6 +43,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 用户可能同时开多个 Codex / Claude Code 会话操作同一仓库。本会话须自动感知并避让其他会话的工作，默认静默执行、不打扰用户。设计原则：宁可绕路，绝不覆盖；宁可静默放弃，绝不擅自 stash / reset / checkout。
 
 - **L1 启动时探测**（首次响应前仅一次）：执行 `git status -s` 与 `git branch --show-current`，把「未提交文件清单」与「当前分支」记入会话上下文复用、不向用户复述；清单非空且与本次任务无关则视为「他者占用区」，本会话不修改、不 stash、不 checkout、不 reset 这些文件。
+  - **编排子会话例外**：首条输入带 `[ORCH:<总控会话id>]` 标记（由 `/dev-orchestrate` 在智码里派出）时，与本任务相关的未提交改动视为同一编排的上游产出（己方），L2 不打断用户；与本任务无关的仍按他者占用区处理。
 - **L2 修改文件前**（按需触发，单文件粒度）：执行 `git log -1 --format="%ar|%s" <file>` 判定——距今 ≥ 15 分钟自由修改；不足 15 分钟且文件不在 L1 未提交清单也可自由修改；不足 15 分钟且在清单内但可绕开则静默换路径绕开；不足 15 分钟且在清单内又必须改同文件时，才唯一一次打扰用户确认。
 - **L3 提交前**（强校验必做）：`git commit` 前执行 `git diff --cached --name-only` 对照本会话自维护的改动清单，越界文件静默 `git restore --staged <file>`，逐个 `git add <具体文件>`、禁止 `git add -A`/`git add .`，commit message 末尾可附 `[scope: <模块>]` 标识本次会话范围。
 - **跨会话操作禁令**（不询问、直接禁止）：`git stash`/`stash pop`、`git reset --hard`、`git checkout <file>`（丢弃改动）、`git checkout <branch>`（除非用户明确指示）、`git add -A`/`git add .`、`git clean -fd`、kill 端口或进程、删除非本会话的 `docs/tasks/active/` 任务文档。
@@ -585,10 +587,12 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 当需要进行 Git 版本控制操作时自动使用此 Skill。
 
 远程操作优先用 Sigil（检测到才启用，没装则无感回退）
-- 需要远程认证的操作（`push` / `clone` / 推送后远端核对）本会话检测到 Sigil 就优先走它：凭据由保险库注入、明文不外泄、不落 `.git/config`。
-- 判断方式：本会话能 `ToolSearch` 到 `mcp__sigil__git_push` 视为可用；查不到即没装，直接走原生 `git push`，不报错、不提示、不卡流程，对无 Sigil 环境零影响。
+- 凡是要连远程、要认证的操作（推送 / 克隆 / 拉取 / 建仓 / 远端核对）本会话检测到 Sigil 就一律走它：凭据由保险库注入、明文不外泄、不落 `.git/config`。
+- 判断方式：本会话能 `ToolSearch` 到 `mcp__sigil__git_push` 视为可用；查不到即没装，直接走原生 git，不报错、不提示、不卡流程，对无 Sigil 环境零影响。「装了但连不上」不等于「没装」，报错 / 断连 / 金库锁定都按失败处置停下。
+- 工具对照（三平台通用，平台由 `credential_name` 的凭据类型自动推断，不再使用 `gitee_*` / `gitcode_*` 前缀工具）：推送分支 / tag 用 `git_push`，强推（重写历史后）传 `force=true` 由 Sigil 自动做 force-with-lease；克隆用 `git_clone`；fetch / pull 先 `workspace_register` 再 `workspace_fetch` / `workspace_pull`；查远端分支 / 提交 / 文件用 `git_branches_list` / `git_commits_list` / `git_file_get`；建仓用 `git_repo_create`（强制私有）。
+- 凭据名以 `list_credentials` 实时查询为准；`username` 不用传，Sigil 按远程 host 自动带出；返回的 `structured.pushed` 为 `false` 表示远端本来就是最新、没有真正推送。
 - 只接管「远程认证操作」，本地操作（`status`/`diff`/`add`/`commit`/`log`/`branch`/`merge`/`reset`）一律用 git CLI，提交流程完全不变。
-- 失败处置：Sigil 可用但推送报错（vault locked / 凭据缺失 / 能力未启用）则停下报出错误前缀提示用户处理，绝不因失败自动改用明文 token URL；仅当 Sigil 完全不存在时才回退普通 `git push`。
+- 失败处置：Sigil 可用但报错（vault locked / 凭据缺失 / 能力未启用 / 断连）则停下报出错误前缀提示用户处理，先照错误末尾的「↳ 恢复」指引操作；绝不改走原生 `git push`、绝不手拼明文 token URL、不用 `git credential fill` 取 token、不读 token 文件；仅当 Sigil 完全不存在时才照常用原生 git。
 
 触发场景
 - 提交代码
@@ -745,13 +749,14 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 ### security-guard
 
 定位
-- 安全开发规范。包含 Sa-Token 认证授权、数据脱敏、数据加密、接口安全、漏洞防护。
+- 安全开发规范。包含 Sa-Token 认证授权、数据脱敏、数据加密、接口安全、漏洞防护。新增「3.3.1 接口传输加密算法切换」：RSA+AES（默认）与国密 SM2+SM4 的切换需后端 `api-decrypt.algorithm` 与 plus-ui / plus-uniapp / plus-app 三端 `VITE_APP_API_ENCRYPT_ALGORITHM` 四处一起改；配对密钥统一用 `ApiEncryptKeyGeneratorTest` 生成；并收录两对密钥对应关系、SM2 前后端格式约定（C1C3C2、Hex、`04` 前缀）、代码位置与已踩过的坑（axios 给字符串报文加引号、小程序 / APP 无 WebCrypto、sm-crypto 的 CJS 导入等）。
 
 触发场景
 - Sa-Token 权限控制配置
 - 登录认证、Token 管理
 - 数据脱敏处理（@Sensitive）
 - 数据加密处理（@EncryptField、@ApiEncrypt）
+- 接口传输加密切换国密（RSA+AES ↔ SM2+SM4）、生成前后端配对密钥
 - 接口限流（@RateLimiter）
 - 防重复提交（@RepeatSubmit）
 - XSS/SQL注入防护
@@ -770,6 +775,13 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - `加密解密`
 - `@EncryptField`
 - `@ApiEncrypt`
+- `国密`
+- `SM2`
+- `SM4`
+- `信创`
+- `密评`
+- `接口加密算法`
+- `ApiEncryptKeyGeneratorTest`
 - `限流`
 - `@RateLimiter`
 - `防重复`
@@ -1747,7 +1759,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 触发场景
 - 将后端 JAR 或 Docker 镜像部署到生产服务器
 - 构建 PC 管理端、H5、小程序、APP 发布包
-- 轮换生产环境 JWT / RSA / AES 密钥
+- 轮换生产环境 JWT / RSA / SM2 / AES 密钥：接口加密密钥（RSA 或国密 SM2）统一用 `ApiEncryptKeyGeneratorTest` 生成（RSA 出 2048 位，替换原 openssl 512 位做法），控制台按 `application.yml`、docker compose `environment`、三端 `env/.env` 三段输出；算法开关前后端须一致，切到 SM2 却没配 SM2 密钥后端启动即失败
 - 生成 Docker Compose 本地配置
 - 配置 Nginx 反向代理和负载均衡
 
@@ -1782,6 +1794,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 修改前端 `.env.development` / `.env.production`
 - 修改移动端（plus-uniapp / plus-app）`.env`
 - 切换开发/生产环境的 API 地址、端口、密钥
+- 配置接口加密：`VITE_APP_API_ENCRYPT` 与后端 `api-decrypt.enabled` 一致，`VITE_APP_API_ENCRYPT_ALGORITHM`（`RSA` / `SM2`）与后端 `api-decrypt.algorithm` 一致，国密时另配 `VITE_APP_SM2_PUBLIC_KEY` / `VITE_APP_SM2_PRIVATE_KEY`
 - 处理 `${ENV_VAR:default}` 占位符
 
 触发词
@@ -1916,6 +1929,10 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 操作：解开 `ruoyi-common/ruoyi-common-mybatis/pom.xml` 中对应数据库的 JDBC 驱动与 anyline 适配器注释（驱动 + anyline 必须同步启用，缺一启动建表会报错）→ 把 `application-dev.yml` 的 master/slave `driverClassName` 与 `url` 替换为对应数据库（PostgreSQL 默认 5432、Oracle 1521、SQL Server 1433）→ 从 `script/sql/postgres`、`script/sql/oracle`、`script/sql/sqlserver` 导入对应库类型的 SQL 脚本。
 - 修改 pom.xml 与 yml 后须保持 UTF-8 无 BOM，避免触发「非法字符: '﻿'」。
 
+建仓与推送走 Sigil（检测到才启用）
+- 远程仓库创建改走 Sigil 的 `git_repo_create`（强制私有），不再读 token 文件或从系统凭据管理器取 token；模板的 fetch / pull 与首次推送同样给出 Sigil 写法，没装 Sigil 时照常用原生 git。
+- 起飞指令二选一：在智码 AICoder 里推荐 `/dev-orchestrate`，其他环境或台账很小时用 `/loop /dev-loop`。
+
 触发场景
 - 用户说"我要开发一个新项目"或"创建一个新项目"
 - 基于 ruoyi-plus-uniapp 框架初始化新的业务系统
@@ -1942,6 +1959,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 
 定位
 - 当需要从框架原仓库（ruoyi-plus-uniapp）同步更新到基于框架创建的子项目时自动使用此 Skill。支持多分支（master/single/workflow）、逐提交分析、选择性合并、标识符自动替换。
+- upstream 为远程 https 地址且本会话有 Sigil 时，fetch 改用 `workspace_fetch(remote="upstream")`（未登记先 `workspace_register`），Sigil 报错则停下提示用户、不回退原生 `git fetch`；upstream 为本地路径时直接原生 `git fetch`。
 
 触发场景
 - 从 ruoyi-plus-uniapp 框架同步最新代码到子项目
@@ -2460,6 +2478,12 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - `加密解密`
 - `@EncryptField`
 - `@ApiEncrypt`
+- `国密`
+- `SM2`
+- `SM4`
+- `信创`
+- `密评`
+- `接口加密算法`
 - `限流`
 - `@RateLimiter`
 - `防重复`
@@ -3054,6 +3078,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 登录认证、Token 管理
 - 数据脱敏处理（@Sensitive）
 - 数据加密处理（@EncryptField、@ApiEncrypt）
+- 接口传输加密切换国密（RSA+AES ↔ SM2+SM4）、生成前后端配对密钥
 - 接口限流（@RateLimiter）
 - 防重复提交（@RepeatSubmit）
 - XSS/SQL注入防护
@@ -3223,7 +3248,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 
 ## 命令系统
 ### 命令入口总览
-命令文件位于 `.claude/commands/`，当前共 18 个命令文件（不含 local 相关的上游同步命令）。以下按 19 个使用入口展开。
+命令文件位于 `.claude/commands/`，当前共 19 个命令文件（不含 local 相关的上游同步命令）。以下按 20 个使用入口展开。
 
 | 使用入口 | 定位 | 关键输入 | 主要输出 |
 | --- | --- | --- | --- |
@@ -3238,8 +3263,9 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 | `/add-todo` | 快速添加待办 | 任务描述 | 待办清单与状态联动 |
 | `/update-status` | 增量更新状态 | 无 | 三文档联动更新报告 |
 | `/sync` | 文档全量同步 | 无 | 三文档一致性同步 |
-| `/kickoff` | 一句话起新项目的前门编排 | 一句话项目想法 | 需求门 → 原型门 → project-init 孵化 → 起飞 `/dev-loop` |
+| `/kickoff` | 一句话起新项目的前门编排 | 一句话项目想法 | 需求门 → 原型门 → project-init 孵化 → 起飞 `/dev-orchestrate` 或 `/loop /dev-loop` |
 | `/dev-loop` | 自主循环开发的一轮标准作业 | 无 / 圈定范围（模块或里程碑） | 配合 `/loop` 自主连续开发，编排既有技能直到任务台账做完 |
+| `/dev-orchestrate` | 智码协同编排版自主开发 | 无 / 圈定范围 / `--review=risk\|each\|final\|none` | 总控派子会话逐条跑 `/dev-loop <编号>` + 异构验收，直到任务台账做完 |
 | `/loop-gen` | 现生成量身定做的 `/loop` 提示词 | 一句话意图 | 填好真相源/每轮动作/验证门/停止条件的可起飞提示词 |
 | `/deploy` | 一键自动化部署 | 部署目标（服务器/Docker） | 构建与部署执行报告 |
 | `/framework-sync` | 框架同步 | 目标分支 / 提交范围 | 从 ruoyi-plus-uniapp 框架原仓库合并更新到子项目 |
@@ -3411,7 +3437,8 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 阶段一 需求孵化：`WebSearch` / 工作站 research 联网调研 + 头脑风暴，扩成结构化需求写入 `docs/需求文档.md`，<Icon icon="lucide:traffic-cone" />人工门确认（不碰代码/坐标）
 - 阶段二 原型生成：调 AI 工作站 ui-studio 产出 `docs/prototypes/<业务>/*.html`（带组件映射表注释），禁止模型自己手搓 HTML，<Icon icon="lucide:traffic-cone" />人工门确认
 - 阶段三 创建新项目：执行 `project-init` 孵化，到这一步才改 Maven 坐标/标识符/端口/DB 库名/前端标识，建私有仓库、建库导数据（Java 包名 `plus.ruoyi` 全程不动）
-- 阶段四 起飞：到新项目新开会话粘 `/loop /dev-loop`，自拆任务台账后自主循环
+- 阶段四 起飞（二选一）：在智码 AICoder 里且台账较大时用 `/dev-orchestrate` 多会话编排；其他环境或台账很小时到新项目新开会话粘 `/loop /dev-loop`。两种方式的每一轮作业相同，都是自拆任务台账后自主循环
+- 前三段不走编排：每段都有人工门要用户亲自点头，交给多会话自动跑会绕过把关
 输出
 - 需求文档、原型、孵化出的新项目与起飞指令；每个人工门必须真的停下等用户
 
@@ -3425,8 +3452,30 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 有需求无台账 → 第 0 轮激活 `writing-plans` 自举拆计划；台账已存在 → 每轮只选第一个未勾任务，按类型复用对应能力（CRUD 走 `/dev`、原型转码走 `html-to-code`、前端照 `ui-pc`/`ui-mobile`）
 - 验证门全绿（后端 `mvn -pl <模块> -am compile`、前端 `pnpm -C plus-ui build`、移动端 `pnpm -C plus-uniapp build:h5`，UI 任务额外过截图保真闭环，复用 e2e-test-pc/e2e-test-mobile）
 - 过两段 review（功能正确性 + `/check` 规范）后逐个 `git add` 最小提交（规范 message），更新 `docs/tasks/active/`，里程碑调 `/update-status` 汇总三文档
+- 被编排调用时（参数含 `[ORCH:<总控会话id>]`）：剥掉标记后按编号匹配，只做这一条、不续期；与本任务相关的未提交改动视为同一编排的上游产出，不按多会话协议打断用户；第一段功能审由总控另派的验收方做，本会话只跑 `/check`；必须规范提交；需要 dev server 时用智码的 `resolve_and_start_task` 托管启动；结尾输出一行 `ORCH-RESULT task=<编号> status=<done|failed|blocked> commit=<短sha或none> note=<一句话>` 供总控读取
 输出
 - 每轮一个最小可提交单元 + 本轮小结（完成项 / 进度 / 下一个）；全部 `[x]` 后跑 `/update-status` 并停止循环
+
+### /dev-orchestrate
+定位
+- 智码 AICoder 里的协同编排版自主开发，长任务时替代 `/loop /dev-loop`：本会话只当「总控」（调度 + 裁决 + 记账），每个任务派一个新鲜的实现子会话跑 `/dev-loop <编号>` 单步，再按验收方式另开异构验收子会话（默认 Codex）独立审提交。子会话跑完由智码自动唤醒总控，零轮询；撞额度由智码自动换档案续跑。本命令只是调度器，一轮怎么做全部照 `/dev-loop`
+- 选型：在智码里且台账 ≥ 5 条、或含 UI 还原 / 复杂后端逻辑 → `/dev-orchestrate`；台账 < 5 条或基本是标准 CRUD → `/loop /dev-loop`（省 token）；不在智码里只能用 `/loop /dev-loop`
+输入
+- 不带参数 = 按台账顺序全量推进；`mall` / `M2` 等范围参数 = 只推进匹配的未勾任务（规则同 `/dev-loop`）；`--review=risk|each|final|none` 指定验收方式，默认 `risk`
+流程
+- 前置检测：`AICODER_SESSION_ID` 非空或编排工具可用（记下总控自己的会话 id）、台账有未勾任务且台账文件已提交、记录已有未提交文件作为他者占用区、`.gitignore` 含 `.agent-pipeline/`，并提醒用户锁定 / 置顶总控会话；任一不满足则提示改用 `/loop /dev-loop`
+- 选任务：取最靠前、依赖已完成的第一个未勾任务并记基线；预计超过 60 分钟、改 15 个及以上文件的先派子会话拆分
+- 派实现方：`start_agent_session` 起 `claude-code` 子会话，prompt 为 `/dev-loop <编号> [ORCH:<总控id>]`，返回 `watching=true` 即已登记等待，然后立刻停下不轮询
+- 被 `[AGENT-EVENT]` 唤醒后按状态分流（idle / stalled / rate-limited / dead 等），优先从回执摘录取 `ORCH-RESULT`，并用 `git log <基线>..HEAD` 核实有新提交、台账已勾
+- 验收：`risk` 方式下改表结构 / 接口约定 / 权限租户鉴权 / 前后端同改 / 外部服务 / 大改的任务逐条验收，其余记进 `pendingReview` 攒 3–5 条合并验收；`each` 逐条、`final` 最后整体验收一次、`none` 不派验收。验收任务书和结论一律写在 `.agent-pipeline/` 文件里，通用检查清单只写一次（`review-checklist.md`）；Codex 不可用立即回落 `claude-code`
+- 裁决：结论每条标「阻断 / 非阻断」，只有阻断项才 `REJECT`，驳回后追加 `fix(scope)` 提交并复审；非阻断项记进 `leftovers`，里程碑或收尾时合并处理
+- 收尾：里程碑处合并处理遗留项并派子会话跑 `/update-status`；全部 `[x]` 后按验收方式做一次整体验收再汇总
+- 熔断：同一任务驳回 2 次、连续 3 个任务无实质进展、或出现需人工决策项时停下报告；除此之外不停下来问人，也不为推送停下来问
+- 状态恢复：调度信息存 `.agent-pipeline/state.json`（已 gitignore），上下文压缩后读它 + `get_session_status` 恢复；进度真相源仍是台账
+输出
+- 每个任务一行结果（通过 / 驳回次数 / 进度 / 下一条）；收尾汇报各任务驳回次数、熔断记录与未推送的提交
+红线
+- 改代码的子会话同一时刻只能有 1 个；实现与验收必须另开会话；总控不写业务代码、不跑构建、不起 dev server；不 `git push`
 
 ### /loop-gen
 定位
@@ -3437,8 +3486,9 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 归类意图到一种循环范式（建功能 / 还原 UI / 修 bug / 补测试 / 重构 / 迁移 / 清理 / 文档）
 - 摸项目真相源、验证命令与技术栈，缺关键信息只问 1-2 个（每轮粒度、完成判据、范围）
 - 套通用骨架填实占位（真相源 / 每轮动作 / 验证门 / 停止条件），UI 类意图自动加原型保真截图闭环
+- 在智码 AICoder 里时额外追加一份「智码编排版」：把骨架折算成智码「协同编排」弹窗的变量（任务目标、验收标准、实现模型默认 `claude-code`、验收模型默认 `codex`、最大驳回轮次 2），清单 ≥ 5 项或需要异构验收时推荐编排版；若意图就是按任务台账建功能，直接推荐 `/dev-orchestrate`
 输出
-- 一整段以第一行 `/loop` 开头的提示词，用户整段粘贴即起飞（本命令只生成提示词，不替用户起飞）
+- 一整段以第一行 `/loop` 开头的提示词，用户整段粘贴即起飞（本命令只生成提示词，不替用户起飞）；在智码里另附编排弹窗变量
 
 ### /sync-delivery
 定位
@@ -3493,9 +3543,11 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 机制
 - 从 stdin 读取用户输入，识别恢复会话并跳过评估
 - 对以 `/` 开头的命令输入跳过评估，避免干扰命令执行
+- 对智码编排的唤醒通知（以 `[AGENT-EVENT]` 开头）与 Claude Code 后台任务结束通知（以 `<task-notification>` 开头）跳过评估；长回执被包进 `<pasted_content>` 外壳时先剥壳再判断，只认开头，正文里引用通知原文的普通提问照常评估
 - 注入强制技能评估指令，要求逐个调用 Skill 工具
 要点
-- 明确列出可用技能清单，包含 task-tracker 与 workflow-engine
+- 明确列出可用技能清单，包含 task-tracker 与 workflow-engine；另登记 `dev-orchestrate`，说「协同编排 / 多会话编排 / 用编排模式跑台账」等即可自动激活（触发词刻意不用单独的「编排」，避免被唤醒通知正文误触发）
+- security-guard 的触发词补充了国密、SM2、SM4、信创、密评、接口加密算法
 - 规定评估、激活、实现三步流程，禁止并行调用
 输出
 - 通过 stdout 输出强制评估文本，进入下一步执行
