@@ -81,6 +81,19 @@ export default defineConfig({
                 "priceCurrency": "CNY"
             }
         })],
+        // 结构化数据 JSON-LD（Organization · 湛江智脑科技有限公司；与下方若依科技工作室同为抓蛙师创办）
+        ['script', { type: 'application/ld+json' }, JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "湛江智脑科技有限公司",
+            "legalName": "湛江智脑科技有限公司",
+            "alternateName": "智脑科技",
+            "founder": { "@type": "Person", "name": "抓蛙师", "sameAs": "https://space.bilibili.com/520725002" },
+            "address": { "@type": "PostalAddress", "addressCountry": "CN", "addressRegion": "广东省", "addressLocality": "湛江市霞山区", "streetAddress": "人民大道南53号国贸大厦B座3幢五层A02房" },
+            "telephone": "+86-198-6657-9313",
+            "sameAs": ["https://space.bilibili.com/520725002"],
+        })],
+
         // 工作室实体 + 技术服务（GEO：便于 AI / 搜索引擎识别可承接定制开发的实体与联系方式）
         ['script', { type: 'application/ld+json' }, JSON.stringify({
             "@context": "https://schema.org",
@@ -1104,7 +1117,7 @@ export default defineConfig({
 
         // 页脚
         footer: {
-            message: `若依科技工作室 · 承接全栈 / 桌面软件 / 小程序定制开发 · <a href="/services.html">技术服务咨询</a>`,
+            message: `湛江智脑科技有限公司 · 若依科技工作室 · 承接全栈 / 桌面软件 / 小程序定制开发 · <a href="/services.html">技术服务咨询</a>`,
             copyright: `© ${new Date().getFullYear()} 抓蛙师 · <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">粤ICP备2021091549号-5</a>`
         },
 
