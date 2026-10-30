@@ -4,7 +4,9 @@
 //   - 正文：把正文切成短句，旧站有、新站没有的句子数 = 0（多出来的只提示，如新站的「上一页」文案）
 //   - 代码块：数量相等，且逐块内容哈希相等（代码一个字符都不能变）
 //   - 标题：文字序列相等；锚点 id 序列相等（旧书签、站内 #链接 都靠它）
-//   - 图片数、表格行数相等
+//   - 图片地址（多重集）相等、表格行数相等
+//   - title / description / canonical 逐字相等（搜索结果里显示的就是它们）
+//   - 旧站正文里的链接，新站一个不少（多出来的只提示）；JSON-LD 段数不少于旧站
 import { readFileSync } from 'node:fs';
 
 const [basePath, newPath] = process.argv.slice(2);
@@ -65,6 +67,15 @@ for (const page of Object.keys(next).sort()) {
   const codeMismatch = codeCountOk ? o.codes.filter((c, i) => c.hash !== n.codes[i].hash).length : Math.abs(o.codes.length - n.codes.length);
   const headOk = JSON.stringify(o.headings) === JSON.stringify(n.headings);
   const anchorDiff = missing(o.anchors ?? [], n.anchors ?? []);
+  // 图片地址：两站对中文文件名的编码不同（/软著.png vs /%E8%BD%AF%E8%91%97.png），解码后再比
+  const src = (imgs) => imgs.map((i) => { try { return decodeURI(i.src); } catch { return i.src; } });
+  const imgLost = missing(src(o.images), src(n.images));
+  const imgExtra = missing(src(n.images), src(o.images));
+  // 链接解码后再比：新站把中文锚点 / 路径编码成 %E5…，浏览器视为同一地址
+  const dec = (l) => { try { return decodeURI(l); } catch { return l; } };
+  const linkLost = missing((o.links ?? []).map(dec), (n.links ?? []).map(dec));
+  const metaDiff = ['title', 'description', 'canonical'].filter((k) => (o[k] ?? '') !== (n[k] ?? ''));
+  const jsonLdOk = (n.jsonLd ?? 0) >= (o.jsonLd ?? 0);
   const r = {
     page,
     lost: lostText.length,
@@ -73,12 +84,18 @@ for (const page of Object.keys(next).sort()) {
     codeMismatch,
     headings: headOk ? 'ok' : `${n.headings.length}/${o.headings.length}`,
     anchors: anchorDiff.length,
-    images: `${n.images.length}/${o.images.length}`,
+    images: imgLost.length + imgExtra.length ? `${n.images.length}/${o.images.length}（缺 ${imgLost.length} 多 ${imgExtra.length}）` : `${n.images.length}/${o.images.length}`,
+    links: linkLost.length ? `缺 ${linkLost.length}` : 'ok',
+    meta: metaDiff.length ? metaDiff.join(',') : 'ok',
+    jsonLd: `${n.jsonLd ?? 0}/${o.jsonLd ?? 0}`,
     rows: `${n.tableRows}/${o.tableRows}`,
   };
   const textOk = r.lost === 0 || acceptedDiff(page, o.text, n.text);
   if (r.lost > 0 && textOk) r.lost = `0（已核对：${known[page].reason.slice(0, 12)}…）`;
-  const pass = textOk && codeCountOk && codeMismatch === 0 && headOk && r.anchors === 0 && n.images.length === o.images.length && n.tableRows === o.tableRows;
+  const pass =
+    textOk && codeCountOk && codeMismatch === 0 && headOk && r.anchors === 0 &&
+    imgLost.length === 0 && imgExtra.length === 0 && n.tableRows === o.tableRows &&
+    linkLost.length === 0 && metaDiff.length === 0 && jsonLdOk;
   if (!pass) failed++;
   rows.push({ ...r, pass });
   if (details && !pass) {
@@ -86,6 +103,10 @@ for (const page of Object.keys(next).sort()) {
     if (lostText.length) console.log('  丢失句子：', lostText.slice(0, 8));
     if (extraText.length) console.log('  多出句子：', extraText.slice(0, 5));
     if (!headOk) console.log('  标题 旧：', missing(o.headings, n.headings).slice(0, 5), '\n  标题 新：', missing(n.headings, o.headings).slice(0, 5));
+    if (imgLost.length || imgExtra.length) console.log('  图片 缺：', imgLost.slice(0, 5), ' 多：', imgExtra.slice(0, 5));
+    if (linkLost.length) console.log('  缺链接：', linkLost.slice(0, 8), '\n  新站链接：', (n.links ?? []).slice(0, 8));
+    for (const k of metaDiff) console.log(`  ${k} 旧：${o[k]}\n  ${k} 新：${n[k]}`);
+    if (!jsonLdOk) console.log(`  JSON-LD 段数 旧 ${o.jsonLd} 新 ${n.jsonLd}`);
     if (anchorDiff.length) console.log('  缺锚点：', anchorDiff.slice(0, 8), '\n  新站多出：', missing(n.anchors ?? [], o.anchors ?? []).slice(0, 8));
     if (codeMismatch) {
       const bad = o.codes.map((c, i) => [i, c, n.codes[i]]).filter(([, c, d]) => !d || c.hash !== d.hash).slice(0, 5);
