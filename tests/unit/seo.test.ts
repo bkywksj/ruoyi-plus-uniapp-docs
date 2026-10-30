@@ -14,12 +14,22 @@ import {
 import { site } from '@/site.config';
 
 describe('buildTitle', () => {
-  it('首页不重复拼站名', () => {
+  const mutable = site as { titleSuffix?: string };
+  const original = mutable.titleSuffix;
+  afterEach(() => {
+    mutable.titleSuffix = original;
+  });
+  it('没配 titleSuffix：后缀是站名，首页不重复拼', () => {
+    mutable.titleSuffix = undefined;
     expect(buildTitle()).toBe(site.name);
     expect(buildTitle(site.name)).toBe(site.name);
-  });
-  it('普通页拼接站名后缀', () => {
     expect(buildTitle('关于')).toBe(`关于 | ${site.name}`);
+  });
+  it('配了 titleSuffix：每页都用它当后缀，首页就是后缀本身（保住旧站已收录的标题）', () => {
+    mutable.titleSuffix = '旧站完整标题 — 副标题';
+    expect(buildTitle()).toBe('旧站完整标题 — 副标题');
+    expect(buildTitle(site.name)).toBe('旧站完整标题 — 副标题');
+    expect(buildTitle('关于')).toBe('关于 | 旧站完整标题 — 副标题');
   });
 });
 

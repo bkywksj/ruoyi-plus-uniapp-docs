@@ -11,6 +11,7 @@ import { absoluteUrl, type JsonLd } from '@/lib/seo';
 import { docPath, prevNextOf, sectionOf, sidebarOf } from '@/lib/docs';
 import { site } from '@/site.config';
 import { siteJsonLd } from '@/lib/site-jsonld';
+import titleQualifiers from '@/data/title-qualifiers.json';
 import '@/styles/vp-compat.css';
 import '@/styles/docs-ruoyi.css';
 
@@ -30,6 +31,10 @@ const sidebar = section ? sidebarOf(section) : [];
 const { prev, next } = prevNextOf(id);
 const showPreview = iframe && url;
 const current = docPath(id);
+// 旧站 16 组页面 <title> 完全相同（如 4 页都叫「快速开始」）：只在 <title> 里加区分名，正文 h1 与结构化数据标题不变
+// （区分名由 scripts/migrate/title-qualifiers.mjs 生成，用户 2026-10-30 定）
+const qualifier = (titleQualifiers as Record<string, string>)[id];
+const pageTitle = qualifier ? `${title} · ${qualifier}` : title;
 const techArticle: JsonLd = {
   '@context': 'https://schema.org',
   '@type': 'TechArticle',
@@ -47,7 +52,7 @@ const techArticle: JsonLd = {
 const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/docs/${id}.md`;
 ---
 
-<BaseLayout title={title} description={description} type="article" jsonLd={[...siteJsonLd, techArticle]}>
+<BaseLayout title={pageTitle} description={description} type="article" jsonLd={[...siteJsonLd, techArticle]}>
   <div class:list={['mx-auto w-full max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8', site.codeLineNumbers && 'code-line-numbers']}>
     <div
       class:list={[

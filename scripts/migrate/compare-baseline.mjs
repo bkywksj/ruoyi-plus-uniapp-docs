@@ -15,6 +15,14 @@ const base = JSON.parse(readFileSync(basePath, 'utf8')).pages;
 const next = JSON.parse(readFileSync(newPath, 'utf8')).pages;
 // 已核对接受的差异：新站只多出 extra 这些文字（去掉后与旧站逐字相等）才算通过，见 known-diffs.json
 const known = JSON.parse(readFileSync(new URL('./known-diffs.json', import.meta.url), 'utf8')).pages;
+// 已决定的标题变化：旧站重复的 <title> 在页名后加「 · 区分名」（src/data/title-qualifiers.json，页面 id → 区分名）。
+// 只接受恰好是这一处插入的变化，别的标题差异照样判不通过
+const qualifiers = JSON.parse(readFileSync(new URL('../../src/data/title-qualifiers.json', import.meta.url), 'utf8'));
+const qualifiedTitle = (page, oldTitle) => {
+  const q = qualifiers[page.replace(/\.html$/, '')];
+  return q ? oldTitle.replace(/ \| /, ` · ${q} | `) : null;
+};
+let titleAccepted = 0;
 const squashAll = (t) => t.replace(/\s+/g, '');
 /**
  * 新站正文去掉允许多出的文字后，是否与旧站逐字相等。
@@ -74,7 +82,8 @@ for (const page of Object.keys(next).sort()) {
   // 链接解码后再比：新站把中文锚点 / 路径编码成 %E5…，浏览器视为同一地址
   const dec = (l) => { try { return decodeURI(l); } catch { return l; } };
   const linkLost = missing((o.links ?? []).map(dec), (n.links ?? []).map(dec));
-  const metaDiff = ['title', 'description', 'canonical'].filter((k) => (o[k] ?? '') !== (n[k] ?? ''));
+  const titleOk = (o.title ?? '') === (n.title ?? '') || (qualifiedTitle(page, o.title ?? '') === n.title && ++titleAccepted > 0);
+  const metaDiff = [...(titleOk ? [] : ['title']), ...['description', 'canonical'].filter((k) => (o[k] ?? '') !== (n[k] ?? ''))];
   const jsonLdOk = (n.jsonLd ?? 0) >= (o.jsonLd ?? 0);
   const r = {
     page,
@@ -115,5 +124,6 @@ for (const page of Object.keys(next).sort()) {
   }
 }
 console.table(rows.map(({ pass, ...r }) => ({ ...r, 结果: pass ? '✅' : '❌' })));
+if (titleAccepted) console.log(`已接受的标题变化（重复标题加区分名）：${titleAccepted} 页`);
 console.log(`比对 ${rows.length} 页：通过 ${rows.length - failed}，不通过 ${failed}`);
 process.exit(failed ? 1 : 0);
