@@ -34,12 +34,18 @@ for (const file of files.filter((f) => f.endsWith('.html'))) {
   if (onlyPages && !onlyPages.has(rel)) continue;
   const html = readFileSync(file, 'utf8');
   if (!/<html[\s>]/i.test(html)) continue; // 站长验证文件等非页面
-  const root = parse(html, { comment: false });
+  // blockTextElements 不含 pre：node-html-parser 默认把 <pre> 内部当原始文本，取到的是带高亮 style 的 HTML 而不是代码，
+  // 两站高亮配色写法不同（--shiki-light 与 color:），会让每个代码块都「不一致」
+  const root = parse(html, { comment: false, blockTextElements: { script: true, noscript: true, style: true } });
   const box = root.querySelector('.vp-doc') ?? root.querySelector('[data-pagefind-body]') ?? root.querySelector('main');
   if (!box) continue;
   // 去掉两站各自的装饰：标题锚点、复制按钮、语言标签、行号列、手机预览面板
   for (const sel of ['.header-anchor', 'button.copy', 'span.lang', '.line-numbers-wrapper', '[data-migrate-ignore]', 'script', 'style']) {
     for (const el of box.querySelectorAll(sel)) el.remove();
+  }
+  // 任务列表：旧站把 [x] 当文字，新站（GFM）渲染成复选框。两边统一成文字再比，含义相同不算差异
+  for (const box2 of box.querySelectorAll('input[type="checkbox"]')) {
+    box2.replaceWith(box2.hasAttribute('checked') ? '[x] ' : '[ ] ');
   }
   const codes = box.querySelectorAll('pre').map((pre) => {
     const code = pre.querySelector('code') ?? pre;
@@ -50,6 +56,8 @@ for (const file of files.filter((f) => f.endsWith('.html'))) {
   });
   for (const pre of box.querySelectorAll('pre')) pre.remove();
   const headings = box.querySelectorAll('h1,h2,h3,h4').map((h) => `${h.tagName.toLowerCase()} ${normText(decode(h.textContent))}`);
+  // 标题锚点 id：旧站书签与站内 #锚点 链接靠它，迁移后必须逐个相同
+  const anchors = box.querySelectorAll('h1,h2,h3,h4,h5,h6').map((h) => h.getAttribute('id') ?? '').filter(Boolean);
   const text = normText(decode(box.textContent));
   const images = box.querySelectorAll('img').map((i) => ({ alt: i.getAttribute('alt') ?? '', src: i.getAttribute('src') ?? '' }));
   const links = box.querySelectorAll('a[href]').map((a) => (a.getAttribute('href') ?? '').replace(/^https?:\/\/ruoyi\.plus/, ''));
@@ -59,6 +67,7 @@ for (const file of files.filter((f) => f.endsWith('.html'))) {
     description: head?.querySelector('meta[name="description"]')?.getAttribute('content') ?? '',
     canonical: head?.querySelector('link[rel="canonical"]')?.getAttribute('href') ?? '',
     headings,
+    anchors,
     textLength: text.length,
     textHash: sha(text),
     text,
