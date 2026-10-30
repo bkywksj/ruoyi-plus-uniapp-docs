@@ -1,6 +1,6 @@
 ---
 name: vitepress-migration
-description: 把 VitePress 文档站迁到本框架：盘点、保住旧网址（urlFormat 'file' 或跳转）、容器语法与侧栏转换、Vue 组件改写、本地搜索换 Pagefind、逐页验收。触发词：VitePress、迁移、迁站、vitepress 改 astro、文档站迁移、换框架、.vitepress、::: tip、cleanUrls
+description: 把 VitePress 文档站迁到本框架：盘点、保住旧网址（urlFormat file / preserve 或跳转）、大站正文保持 .md、容器语法与侧栏转换、Vue 组件改写、本地搜索换 Pagefind、逐页验收。触发词：VitePress、迁移、迁站、vitepress 改 astro、文档站迁移、换框架、.vitepress、::: tip、cleanUrls
 ---
 
 # VitePress → Astro 迁移（next-ai-astro）
@@ -70,8 +70,10 @@ VitePress 默认**不开** `cleanUrls`，产物是 `guide/install.html`，canoni
 | 方案 | 做法 | 适用 |
 |---|---|---|
 | **A. 保留旧网址（推荐）** | `site.config.ts`：`urlFormat: 'file'`。astro.config 的 `build.format` / `trailingSlash`、`pagePath()`、canonical、sitemap 全跟着变 | 旧站已有收录与外链；不用写任何跳转 |
+| **A′. 保留旧网址 + 目录首页** | `urlFormat: 'preserve'`：叶子页 `/a/b.html`、目录首页 `/backend/`（产物 `backend/index.html`），与 VitePress 产物一模一样 | 旧站有 `backend/index.md` 这类目录首页（sitemap 里有以 `/` 结尾的地址）时**必须**用它：`file` 会把它折成 `/backend.html`，旧址 404 |
 | B. 换成目录网址 | 每个旧网址一条跳转：`redirects: { '/guide/install.html': '/guide/install/' }` | 新站，或旧站几乎没流量 |
 
+- preserve：`pagePath('/backend/')` 或 `pagePath('/backend/index')` 是目录首页，其余补 `.html`；sitemap 按产物里有没有 `<路径>/index.html` 判断目录首页
 - 方案 A：**站内链接一律用 `pagePath('/guide/install')` 生成**，不手写 `.html` 或结尾斜杠；MDX 正文里的链接直接写 `.html`
 - 方案 A 已由框架处理、不用再管的两件事（试点时实测踩到后修进了框架）：首页 canonical 不会变成 `/index.html`（`canonicalPath`），
   sitemap 会带 `.html`（astro.config 的 serialize）；`check:seo` 也会核对 sitemap 每条都是某页的 canonical
@@ -84,6 +86,22 @@ VitePress 默认**不开** `cleanUrls`，产物是 `guide/install.html`，canoni
   路由改成 `src/pages/[group]/[...slug].astro`、`guidePath(id)` 改成 `pagePath('/' + id)`，分组 `GUIDE_SECTIONS` 照旧站侧栏
 
 ## 第 3 步：搬内容
+
+### 先选路线：小站转 MDX，大站正文保持 .md
+
+| 路线 | 做法 | 适用 |
+|---|---|---|
+| **转 MDX**（下面的转换表） | 每页改成 `.mdx`，容器换组件、标签自闭合、注释改写 | 几十页以内、正文里花括号 / 尖括号少（storyloom-docs 21 页） |
+| **保持 .md + 兼容模式** | `site.markdownCompat: 'vitepress'`：正文一个字不改，构建期由 `src/lib/markdown/vp-compat.mjs` 还原 `::: ` 容器、`<Ok/>` 等状态标记（映射在 `src/data/vp-marks.json`）、`<Icon icon>`（离线图标 `src/data/vp-icons.json`，缺图标构建失败）、`.md` 链接、VitePress 锚点规则；`site.codeLineNumbers` 对应旧站 `markdown.lineNumbers` | 上百页、正文里大量 `List<String>`、`{ }`、`{{ }}`（ruoyi-plus-uniapp 511 页：MDX 会成片报错） |
+
+保持 .md 路线的要点（试点实录）：
+- 兼容模式换成 unified 管线（Astro 7 默认的 Sätteri 不跑 remark 插件）；两种模式都关了智能标点，否则正文 `'none'` 被改成弯引号
+- 构建时打印的 `[vp-compat] 正文里有未处理的组件 <X>` 要逐个过：要么在 `vp-marks.json` 加映射，要么该页走 MDX / 重做
+- 🔴 **改了插件先 `pnpm cache:clear` 再构建**：内容层按正文缓存渲染结果，插件改了不会重新渲染，逐页比对与测试会假绿（试点反证时实测：摘掉插件仍全绿）
+- 旧站 Vue 会把正文里的 `{{ x }}` 当插值吞掉，新站按源文件原样显示——逐页比对里这类差异登记为「旧站问题，接受」
+- 右侧 H5 演示（PreviewFrame 一类组件）→ 指南 frontmatter `preview` + `site.mobilePreview`（guides-docs 技能）；多层侧栏 → `src/data/guide-sidebar.json`
+
+### 转 MDX 路线的转换表
 
 写成一次性转换脚本（项目的 `scripts/migrate/`，可重跑——旧站切换前又改了内容时再跑一遍），按下表逐条转换，
 **转换后再 grep 一遍第 1 步的模式，并用第 6 步的验收脚本查渲染结果，计数应为 0**。
@@ -168,6 +186,7 @@ E2E_PORT=4339 pnpm test:e2e                                     # 4329 常被别
 
 | 现象 | 原因 | 处理 |
 |---|---|---|
+| 改了兼容插件，页面没变、测试全绿 | 内容层缓存了渲染结果 | `pnpm cache:clear` 后重建 |
 | 页面里出现字面的 `::: tip` | 容器语法没转换 | 第 3 步转换表 + 验收脚本残留计数 |
 | `Expected a closing tag for <br>` | MDX 要求空元素自闭合 | 转换脚本统一 `<br />` |
 | 组件位置空白、没有报错 | 纯 `.md` 里写了组件标签 | 文件改 `.mdx` 并 import（独立页）或在路由 `components` 注入（集合） |

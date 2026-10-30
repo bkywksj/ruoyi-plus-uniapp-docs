@@ -1,42 +1,9 @@
 // 内容集合定义 —— 站点的「数据库表」
-// 三类集合对应内容站的三种典型数据：
-//   guides：    使用指南（MDX，正文里嵌 Steps / Callout / Screenshot 等文档组件；分组与排序见 src/lib/guides.ts）
+//   docs：旧 VitePress 站迁来的 511 篇文档（.md，侧栏见 src/data/sidebar.json）。框架的 guides 集合已改造为它（.framework-sync.json）
 // 改 schema 后跑一次 `pnpm astro sync` 刷新类型。
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
-import { GUIDE_SECTIONS } from './lib/guide-sections';
-
-const guides = defineCollection({
-  loader: glob({ pattern: '**/*.mdx', base: './src/content/guides' }),
-  schema: z.object({
-    title: z.string(),
-    /** 必填：meta description + 指南首页卡片摘要 */
-    description: z.string(),
-    /** 侧栏分组；可选值与顺序在 src/lib/guide-sections.ts */
-    section: z.enum(GUIDE_SECTIONS),
-    /** 组内顺序，越小越靠前 */
-    order: z.number().int(),
-    /** 「约 3 分钟」这类读者可感知的用时 */
-    duration: z.string().optional(),
-    /** 说明对应的最低产品版本，如 1.2.0；文档描述某个软件 / 接口版本时填 */
-    version: z
-      .string()
-      .regex(/^\d+\.\d+\.\d+$/, '版本号写成 1.2.0 这样的三段数字')
-      .optional(),
-    /** 需要提前准备的东西，如「一个 API Key」 */
-    prepare: z.string().optional(),
-    /**
-     * 本篇常见问题：页尾渲染成可展开的问答，同时输出 FAQPage 结构化数据。
-     * 只写页面上真会显示的内容（不可见内容标 FAQ 属于违规），答案用纯文本
-     */
-    faq: z.array(z.object({ q: z.string().min(1), a: z.string().min(1) })).default([]),
-    updated: z.coerce.date(),
-    /** false：H1 下不渲染 description 导语（从别的站迁来的篇目，描述常取自正文首段，再渲染一遍就重复了） */
-    lead: z.boolean().default(true),
-    draft: z.boolean().default(false),
-  }),
-});
 
 /**
  * 旧 VitePress 站迁来的文档（backend / frontend / mobile / practices 四个分区，正文保持 .md）。
@@ -63,4 +30,4 @@ const docs = defineCollection({
   }),
 });
 
-export const collections = { guides, docs };
+export const collections = { docs };

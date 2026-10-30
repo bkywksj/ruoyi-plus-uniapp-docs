@@ -6,8 +6,20 @@
 
 export type AnalyticsProvider = 'none' | 'umami' | 'baidu';
 
-/** 网址形态：directory = /guide/a/（框架默认）；file = /guide/a.html（保住 VitePress 等旧站已被收录的 .html 网址） */
-export type UrlFormat = 'directory' | 'file';
+/**
+ * 网址形态：
+ * - directory = /guide/a/（框架默认）
+ * - file      = /guide/a.html；目录首页也折成 /guide.html（保住旧站已收录的 .html 网址，旧站没有目录首页时用）
+ * - preserve  = 叶子页 /guide/a.html、目录首页 /guide/（产物 guide/index.html）——与 VitePress cleanUrls: false 的产物一模一样，
+ *               旧站有 /backend/ 这类目录首页时必须用它，否则目录首页 404
+ */
+export type UrlFormat = 'directory' | 'file' | 'preserve';
+
+/**
+ * Markdown 兼容模式：none = Astro 默认处理器（Sätteri，快）；vitepress = 换成 unified 管线并装 VitePress 写法兼容插件
+ * （::: 容器、<Ok/> 状态标记、<Icon>、.md 链接、VitePress 锚点规则，见 src/lib/markdown/vp-compat.mjs）。迁移 VitePress 站时开
+ */
+export type MarkdownCompat = 'none' | 'vitepress';
 
 export interface NavItem {
   label: string;
@@ -44,7 +56,16 @@ export const site = {
    * 网址形态。astro.config 的 build.format / trailingSlash、lib/seo.ts 的 pagePath() 都读它，站内链接用 pagePath() 生成。
    * 🔴 上线后不要再改：改了等于全站换网址，旧链接与搜索收录全部失效（迁移旧站时按旧网址选，见 vitepress-migration 技能）
    */
-  urlFormat: 'file' as UrlFormat,
+  urlFormat: 'preserve' as UrlFormat,
+  /** Markdown 兼容模式：本站正文是 VitePress 迁来的 511 篇 .md，开 vitepress（两种模式都关智能标点） */
+  markdownCompat: 'vitepress' as MarkdownCompat,
+  /** 文档正文代码块显示行号（旧站 markdown.lineNumbers: true）；行号用 CSS 画，不进复制内容 */
+  codeLineNumbers: true,
+  /**
+   * 文档页右侧的手机实时预览（旧站 PreviewFrame：frontmatter iframe + url 的 84 页）：
+   * origin = H5 演示站；qr = 扫码预览的二维码（旧站同一张 public/uni.png）
+   */
+  mobilePreview: { origin: 'https://uni.ruoyi.plus', qr: '/uni.png' },
   /** <html lang> 与 og:locale */
   locale: 'zh-CN',
   /** 品牌主色：注入为 CSS 变量 --brand，Tailwind 里用 bg-brand / text-brand */

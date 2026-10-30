@@ -1,0 +1,75 @@
+/* RuoYi 文档站在框架 vp-compat.css 之上的项目样式：只由 DocsLayout 引入。
+   框架那份管通用的 VitePress 写法外观；这里放本站专属的——正文自带 h1、优先级圆点、行号宽度（千行级代码块）、双主题代码高亮、宽表格 */
+
+/* 一级标题：迁移正文自带 # 标题（布局不另渲染 h1） */
+.vp-doc h1 {
+  font-size: 2rem;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.vp-doc h4 {
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
+
+/* ::: 容器：文档正文字号偏大，容器里收一点；标题行留出图标位 */
+.vp-doc .vp-callout {
+  font-size: 0.95rem;
+}
+.vp-doc .vp-callout-title {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* 优先级圆点 <DotRed/> 等（旧站 marks.ts 的 dot()：lucide:circle 实心 + 颜色），色值照旧站 */
+.vp-doc .idot {
+  width: 0.85em;
+  height: 0.85em;
+  vertical-align: -0.1em;
+}
+.vp-doc .idot :where(path, circle) {
+  fill: currentColor;
+  stroke: currentColor;
+}
+.vp-doc .idot-red {
+  color: #e5484d;
+}
+.vp-doc .idot-yellow {
+  color: #f5a623;
+}
+.vp-doc .idot-green {
+  color: #30a46c;
+}
+.vp-doc .idot-orange {
+  color: #f76808;
+}
+.vp-doc .idot-blue {
+  color: #3b82f6;
+}
+.vp-doc .idot-purple {
+  color: #8e4ec6;
+}
+
+/* 代码行号：本站代码块常有上千行，四位行号要放得下（框架默认 2.25rem 只够三位） */
+.vp-doc pre.astro-code {
+  padding-left: 0;
+}
+.code-line-numbers .vp-doc pre.astro-code > code > .line::before {
+  width: 2.75rem;
+  padding-right: 0.75rem;
+}
+
+/* 双主题高亮：shiki 输出 --shiki-dark 变量，深色模式切过去（astro.config 的 shikiConfig.themes 与旧站同一对主题） */
+:root.dark .vp-doc .astro-code,
+:root.dark .vp-doc .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+/* 宽表格横向滚动，不撑破版心 */
+.vp-doc table {
+  display: block;
+  overflow-x: auto;
+}

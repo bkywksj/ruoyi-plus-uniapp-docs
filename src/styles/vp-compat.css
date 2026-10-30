@@ -1,126 +1,85 @@
-/* 迁移文档的样式补丁：VitePress 写法在 Astro 里的外观（容器、状态标记、代码行号、双主题代码高亮、宽表格）
-   只由 DocsLayout 引入，不影响站点其余页面；颜色走语义令牌，状态标记色值照旧站 style.css */
+/* 文档正文的 VitePress 兼容外观：::: 容器、状态标记、代码行号、等宽连字。只作用于文档正文容器（.prose-content / .vp-doc），不影响站点其余页面。
+   颜色走语义令牌；状态标记的绿 / 红 / 琥珀照 VitePress 默认主题，深色模式各自提亮 */
 
-/* 一级标题：迁移正文自带 # 标题（布局不另渲染 h1） */
-.vp-doc h1 {
-  font-size: 2rem;
-  line-height: 1.25;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-.vp-doc h4 {
-  margin-top: 1.5rem;
-  font-weight: 600;
-}
-
-/* ::: tip / warning / danger / info / details（转换脚本输出的 HTML 块） */
-.vp-doc .vp-callout {
+/* ::: tip / info / warning / danger / details（remarkVpContainers 输出） */
+:where(.prose-content, .vp-doc) .vp-callout {
   border-left: 4px solid var(--brand);
   background: var(--color-brand-soft);
   border-radius: 0.5rem;
   padding: 0.75rem 1rem;
-  font-size: 0.95rem;
 }
-.vp-doc .vp-callout > * + * {
+:where(.prose-content, .vp-doc) .vp-callout > * + * {
   margin-top: 0.6em;
 }
-.vp-doc .vp-callout-title {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
+:where(.prose-content, .vp-doc) .vp-callout-title {
   font-weight: 600;
 }
-.vp-doc .vp-callout-warning {
+:where(.prose-content, .vp-doc) .vp-callout-warning {
   border-color: var(--accent);
   background: var(--color-accent-soft);
 }
-.vp-doc .vp-callout-danger {
+:where(.prose-content, .vp-doc) .vp-callout-danger {
   border-color: var(--danger);
   background: var(--color-danger-soft);
 }
-.vp-doc .vp-callout-info {
+:where(.prose-content, .vp-doc) .vp-callout-info {
   border-color: var(--line-strong, var(--line));
   background: var(--surface);
 }
-.vp-doc details.vp-callout-details > summary {
+:where(.prose-content, .vp-doc) details.vp-callout-details > summary {
   cursor: pointer;
   font-weight: 600;
 }
 
-/* 状态标记与行内图标（vp-compat.mjs 生成的内联 SVG），色值照旧站 */
-.vp-doc svg.iconify {
+/* 状态标记与行内图标（remarkVpMarks 生成的内联 SVG） */
+:where(.prose-content, .vp-doc) svg.iconify {
   display: inline-block;
   vertical-align: -0.14em;
 }
-.vp-doc .imark {
+:where(.prose-content, .vp-doc) .imark {
   width: 1.1em;
   height: 1.1em;
 }
-.vp-doc .imark-ok {
+:where(.prose-content, .vp-doc) .imark-ok {
   color: #18794e;
 }
-.vp-doc .imark-no {
+:where(.prose-content, .vp-doc) .imark-no {
   color: #b8272c;
 }
-.vp-doc .imark-warn {
+:where(.prose-content, .vp-doc) .imark-warn {
   color: #915930;
 }
-.vp-doc .imark-ask {
+:where(.prose-content, .vp-doc) .imark-ask {
   color: var(--brand);
 }
-.vp-doc .idot {
-  width: 0.85em;
-  height: 0.85em;
-  vertical-align: -0.1em;
+:root.dark :where(.prose-content, .vp-doc) .imark-ok {
+  color: #3dd68c;
 }
-.vp-doc .idot :where(path, circle) {
-  fill: currentColor;
-  stroke: currentColor;
+:root.dark :where(.prose-content, .vp-doc) .imark-no {
+  color: #f66f81;
 }
-.vp-doc .idot-red { color: #e5484d; }
-.vp-doc .idot-yellow { color: #f5a623; }
-.vp-doc .idot-green { color: #30a46c; }
-.vp-doc .idot-orange { color: #f76808; }
-.vp-doc .idot-blue { color: #3b82f6; }
-.vp-doc .idot-purple { color: #8e4ec6; }
-:root.dark .vp-doc .imark-ok { color: #3dd68c; }
-:root.dark .vp-doc .imark-no { color: #f66f81; }
-:root.dark .vp-doc .imark-warn { color: #f9b44e; }
+:root.dark :where(.prose-content, .vp-doc) .imark-warn {
+  color: #f9b44e;
+}
 
-/* 代码块：行号（旧站 markdown.lineNumbers: true）用 CSS 计数器画，不进复制内容、不进迁移比对 */
-.vp-doc pre.astro-code {
-  padding-left: 0;
-}
 /* 关掉等宽字体的连字：--> 会被画成长箭头、!= 画成 ≠，读者照抄时以为是别的字符（字符本身没变） */
-.vp-doc pre,
-.vp-doc code {
+:where(.prose-content, .vp-doc) :where(pre, code) {
   font-variant-ligatures: none;
 }
-.vp-doc pre.astro-code > code {
+
+/* 代码行号（site.codeLineNumbers）：CSS 计数器画，不进复制内容、不进迁移比对 */
+.code-line-numbers pre.astro-code > code {
   counter-reset: line;
   display: grid;
 }
-.vp-doc pre.astro-code > code > .line::before {
+.code-line-numbers pre.astro-code > code > .line::before {
   counter-increment: line;
   content: counter(line);
   display: inline-block;
-  width: 2.75rem;
+  width: 2.25rem;
   margin-right: 1rem;
-  padding-right: 0.75rem;
   text-align: right;
   color: var(--muted);
   opacity: 0.6;
   user-select: none;
-}
-/* 双主题高亮：shiki 输出 --shiki-dark 变量，深色模式切过去 */
-:root.dark .vp-doc .astro-code,
-:root.dark .vp-doc .astro-code span {
-  color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
-}
-
-/* 宽表格横向滚动，不撑破版心 */
-.vp-doc table {
-  display: block;
-  overflow-x: auto;
 }

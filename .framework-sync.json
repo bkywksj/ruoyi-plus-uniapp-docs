@@ -17,8 +17,18 @@
     "works",
     "faq"
   ],
-  "transformedModules": {},
-  "lastSync": null,
-  "lastCommit": "e13010c6dc074352aa5ccbf7b1a052178d939675",
-  "syncs": []
+  "transformedModules": {
+    "guides": "改造为 docs 集合（旧 VitePress 站 511 篇 .md）：src/content/docs + src/lib/docs.ts + DocsLayout + [...slug] / [...dir]/index 路由；保留并沿用框架的 lib/sidebar.ts、SidebarTree、PhonePreview、SearchDialog 与 components/docs 通用组件；删掉示例指南、/guide/ 页面、GuideLayout、lib/guides.ts、guide-sections、GuideSidebar / PrevNext / GuideMeta / GuideToc 与对应测试"
+  },
+  "lastSync": "2026-10-30T22:26:31+08:00",
+  "lastCommit": "5c95ac5",
+  "syncs": [
+    {
+      "date": "2026-10-30T22:26:31+08:00",
+      "from": "e13010c",
+      "to": "5c95ac5",
+      "merged": "28 个文件取框架版；astro.config / site.config / content.config / package.json 合并；vp-marks 并入 Dot* 六色圆点；vp-icons 保留项目 117 个（框架 6 个全含）",
+      "skipped": "guides 示例内容与 guides 专用代码（已改造为 docs，见 transformedModules）；::: 容器仍由 convert.mjs 按行预转换（框架 remarkVpContainers 在闭合 ::: 紧跟列表、标题带 <Icon/> 时失败，见迁移台账）"
+    }
+  ]
 }

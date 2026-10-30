@@ -44,6 +44,17 @@ describe('pagePath', () => {
     expect(pagePath('/faq.html')).toBe('/faq.html');
   });
 
+  it('preserve：叶子页 .html，以 / 或 /index 结尾的是目录首页 /a/（与 VitePress 产物一致）', () => {
+    site.urlFormat = 'preserve';
+    expect(pagePath('/backend/common/pay')).toBe('/backend/common/pay.html');
+    expect(pagePath('/backend/common/pay.html')).toBe('/backend/common/pay.html');
+    expect(pagePath('/backend/')).toBe('/backend/');
+    expect(pagePath('/backend/index')).toBe('/backend/');
+    expect(pagePath('/backend/index.html')).toBe('/backend/');
+    expect(pagePath('/backend')).toBe('/backend.html');
+    expect(pagePath('/')).toBe('/');
+  });
+
   it('首页两种形态都是 /', () => {
     site.urlFormat = 'file';
     expect(pagePath('/')).toBe('/');

@@ -83,7 +83,7 @@ Codex 没有 `/loop` 自动续期：自主连续开发用 `autonomous-dev` 技�
 | `code-patterns` | 规范/禁止/命名/写法/代码风格/首行注释/提交规范/Git提交/导入顺序/不允许 |
 | `astro-routing` | 路由/页面/动态路由/getStaticPaths/分页/paginate/重定向/trailingSlash/404/端点/生成txt或xml/URL结构 |
 | `content-collections` | 内容集合/content.config/schema/zod/字段/getCollection/getEntry/reference/新增内容类型/Markdown文章/frontmatter/metrics |
-| `guides-docs` | 使用指南/文档站/教程/帮助中心/guides/MDX/侧栏目录/本页内容/上一篇下一篇/步骤条/提示框/截图标注/站内搜索/Ctrl K |
+| `guides-docs` | 使用指南/文档站/教程/帮助中心/guides/MDX/侧栏目录/多层侧栏/本页内容/上一篇下一篇/手机预览/步骤条/提示框/站内搜索/Ctrl K |
 | `data-sync` | 数据同步/下载页/版本数据/安装包/更新日志/versions.json/拉取接口/抓数据/外部API/B站/bilibili/GitHub API/RSS/定时更新数据/scripts/sync/数据源/防风控 |
 | `islands-interaction` | 交互/React组件/island/client:load/client:visible/筛选/状态/水合/hydration/nanostores/useState/URL同步 |
 | `ui-components` | 组件/按钮/卡片/布局/样式/Tailwind/响应式/移动端适配/断点/Container/Section/Badge |

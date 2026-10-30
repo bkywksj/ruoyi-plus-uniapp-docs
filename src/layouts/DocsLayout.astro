@@ -4,13 +4,14 @@
 // 结构化数据照旧站：每页 TechArticle（字段与旧站 transformPageData 一致），不再加 BreadcrumbList 以外的东西
 import type { MarkdownHeading } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import DocsSidebar from '@/components/docs/DocsSidebar.astro';
+import SidebarTree from '@/components/docs/SidebarTree.astro';
 import DocsToc from '@/components/docs/DocsToc.astro';
 import PhonePreview from '@/components/docs/PhonePreview.astro';
 import { absoluteUrl, type JsonLd } from '@/lib/seo';
 import { docPath, prevNextOf, sectionOf, sidebarOf } from '@/lib/docs';
 import { site } from '@/site.config';
 import '@/styles/vp-compat.css';
+import '@/styles/docs-ruoyi.css';
 
 interface Props {
   id: string;
@@ -27,6 +28,7 @@ const section = sectionOf(id);
 const sidebar = section ? sidebarOf(section) : [];
 const { prev, next } = prevNextOf(id);
 const showPreview = iframe && url;
+const current = docPath(id);
 const techArticle: JsonLd = {
   '@context': 'https://schema.org',
   '@type': 'TechArticle',
@@ -45,7 +47,7 @@ const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/d
 ---
 
 <BaseLayout title={title} description={description} type="article" jsonLd={[techArticle]}>
-  <div class="mx-auto w-full max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8">
+  <div class:list={['mx-auto w-full max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8', site.codeLineNumbers && 'code-line-numbers']}>
     <div
       class:list={[
         'grid gap-10 lg:grid-cols-[16rem_minmax(0,1fr)]',
@@ -56,7 +58,7 @@ const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/d
         sidebar.length > 0 && (
           <aside class="hidden lg:block">
             <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 pb-6 text-sm">
-              <DocsSidebar items={sidebar} currentId={id} />
+              <SidebarTree items={sidebar} current={current} />
             </div>
           </aside>
         )
@@ -68,7 +70,7 @@ const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/d
             <details class="mb-6 rounded-lg border border-line text-sm lg:hidden">
               <summary class="cursor-pointer px-4 py-2.5 font-medium">菜单</summary>
               <div class="border-t border-line px-2 py-4">
-                <DocsSidebar items={sidebar} currentId={id} />
+                <SidebarTree items={sidebar} current={current} />
               </div>
             </details>
           )
@@ -79,16 +81,16 @@ const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/d
         {
           (prev || next) && (
             <nav aria-label="上一篇与下一篇" class="not-prose mt-12 grid gap-4 border-t border-line pt-6 text-sm sm:grid-cols-2">
-              {prev?.id ? (
-                <a href={docPath(prev.id)} rel="prev" class="rounded-lg border border-line p-4 transition-colors hover:border-brand">
+              {prev?.href ? (
+                <a href={prev.href} rel="prev" class="rounded-lg border border-line p-4 transition-colors hover:border-brand">
                   <span class="text-xs text-muted">上一页</span>
                   <span class="mt-1 block font-medium text-brand-ink">{prev.text}</span>
                 </a>
               ) : (
                 <span />
               )}
-              {next?.id && (
-                <a href={docPath(next.id)} rel="next" class="rounded-lg border border-line p-4 text-right transition-colors hover:border-brand">
+              {next?.href && (
+                <a href={next.href} rel="next" class="rounded-lg border border-line p-4 text-right transition-colors hover:border-brand">
                   <span class="text-xs text-muted">下一页</span>
                   <span class="mt-1 block font-medium text-brand-ink">{next.text}</span>
                 </a>

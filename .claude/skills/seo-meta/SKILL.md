@@ -32,6 +32,7 @@ props（`SEOProps`）：`title`、`description`、`image`、`type`（website / a
 - `<title>`：`buildTitle(title)` → `页面标题 | 站名`（首页只有站名）
 - `meta description`：`truncate(description ?? site.description, 160)`（按字符截断，中文不乱码）
 - `canonical`：`absoluteUrl(Astro.url.pathname)` —— **逐页**，基于 `site.url`，自动补结尾斜杠
+- 网址形态 `site.urlFormat`：`directory`（`/a/`，默认）/ `file`（`/a.html`）/ `preserve`（叶子页 `/a.html`、目录首页 `/a/`，VitePress 迁移用）；站内链接一律 `pagePath()` 生成，sitemap、canonical 跟着变，`check:seo` 核对 sitemap 每条都是某页的 canonical
 - `og:*` / `twitter:*`：标题、描述、`og:url` = canonical、`og:image` 绝对地址、`og:locale`（`zh_CN`）
 - `robots noindex, follow`（传 `noindex` 时）
 - 每个 JSON-LD 对象一个 `<script type="application/ld+json">`，内容经 `serializeJsonLd()`

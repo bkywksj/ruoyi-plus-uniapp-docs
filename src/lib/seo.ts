@@ -9,14 +9,20 @@ export function buildTitle(title?: string): string {
 }
 
 /**
- * 站内页面地址：按 site.urlFormat 输出 /a/b/（directory）或 /a/b.html（file）。
+ * 站内页面地址：按 site.urlFormat 输出 /a/b/（directory）、/a/b.html（file），preserve 下目录首页 /a/、其余 /a/b.html。
  * 页面链接一律经它生成，不手写结尾斜杠或 .html —— 换网址形态时只改配置一处。
- * @param path 不带格式的页面路径，如 /guide/quick-start；传入已带 / 或 .html 的也会先归一
+ * @param path 不带格式的页面路径，如 /guide/quick-start；传入已带 / 或 .html 的也会先归一。
+ *   preserve 形态靠写法区分目录首页：以 / 或 /index 结尾的是目录首页（/backend/、/backend/index），其余是叶子页
  * @returns 首页恒为 /
  */
 export function pagePath(path: string): string {
-  const clean = path.replace(/\.html$/, '').replace(/\/+$/, '');
+  const dirIndex = /(\/|\/index(\.html)?)$/.test(path);
+  const clean = path
+    .replace(/\.html$/, '')
+    .replace(/\/index$/, '')
+    .replace(/\/+$/, '');
   if (clean === '') return '/';
+  if (site.urlFormat === 'preserve') return dirIndex ? `${clean}/` : `${clean}.html`;
   return site.urlFormat === 'file' ? `${clean}.html` : `${clean}/`;
 }
 

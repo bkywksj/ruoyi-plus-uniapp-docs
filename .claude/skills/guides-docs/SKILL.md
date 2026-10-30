@@ -1,6 +1,6 @@
 ---
 name: guides-docs
-description: 使用指南模块：guides 集合（MDX）、三栏布局、上下篇、Steps / Callout / Screenshot 等文档组件、Pagefind 站内搜索。触发词：使用指南、文档站、教程、帮助中心、guides、MDX、侧栏目录、本页内容、上一篇下一篇、步骤条、提示框、截图标注、站内搜索、Ctrl K
+description: 使用指南模块：guides 集合（MDX）、三栏布局、多层侧栏、上下篇、手机实时预览、文档组件、Pagefind 站内搜索。触发词：使用指南、文档站、教程、帮助中心、guides、MDX、侧栏目录、多层侧栏、本页内容、上一篇下一篇、手机预览、步骤条、提示框、站内搜索、Ctrl K
 ---
 
 # 使用指南模块（guides-docs）
@@ -43,6 +43,7 @@ lead: false                     # 可选（默认 true）：false 时 H1 下不�
 faq:                            # 可选：页尾可展开问答 + FAQPage 结构化数据
   - q: 问题
     a: 纯文本答案（只写页面上真会显示的内容）
+preview: /pages/grid            # 可选：右侧显示手机实时预览（站内路径拼到 site.mobilePreview.origin，或完整 https 地址），有它时不显示「本页内容」
 draft: false                    # 可选：true 时不出页面、不进侧栏
 ---
 ```
@@ -83,6 +84,38 @@ draft: false                    # 可选：true 时不出页面、不进侧栏
 - `SearchDialog` 的脚本必须是 `is:inline`（构建后才有的 `/pagefind/pagefind.js` 只能运行时 `import()`，经 Vite 打包会被套上预加载包装而报错），每页只放一个（在页头里）
 - 开发模式没有索引，弹窗会提示先 `pnpm build && pnpm preview`
 
+## 多层侧栏（src/data/guide-sidebar.json）
+
+默认是空数组：侧栏按 `section` 一层分组（上面的排序规则）。旧站侧栏有「分组 → 子分组 → 页面」多层时写这个文件，**写了就完全按它排**：
+
+```json
+[
+  { "text": "快速开始", "items": [{ "id": "quick-start" }, { "id": "install", "text": "安装（自定义标题）" }] },
+  {
+    "text": "组件库",
+    "collapsed": true,
+    "items": [{ "text": "表单组件", "collapsed": true, "items": [{ "id": "form/input" }] }]
+  },
+  { "text": "GitHub", "href": "https://github.com/x", "external": true }
+]
+```
+
+- `id` = 指南 id（省略 `text` 时用该篇 title）；`href` 放非指南链接；层数不限
+- `collapsed`：不写 = 固定展开（顶层画成小标题）；`false` = 可折叠默认展开；`true` = 默认收起。**当前篇所在的分组总会展开**
+- 上一篇 / 下一篇按侧栏顺序跨分组连续；**不在侧栏里的篇目没有上下篇**（与 VitePress 一致）；指南首页按侧栏顶层分组
+- 写了不存在（或 draft）的 id 直接构建失败
+- 渲染是通用组件 `SidebarTree.astro` + `lib/sidebar.ts`（按已解析的网址工作），别的集合（如迁移来的文档集合）也能直接用
+
+## 手机实时预览（preview）
+
+组件文档右侧放 H5 演示：frontmatter 写 `preview`，宽屏右栏换成 `PhonePreview`（iframe + 新窗口 + 收起，零 JS），窄屏不显示。
+`site.mobilePreview.origin` 填预览站地址（留空 = 预览本站页面），`qr` 填二维码静态图（留空不显示「扫码预览」）。示例见 `mobile-preview.mdx`。
+
+## 迁移来的 VitePress 写法
+
+`site.markdownCompat: 'vitepress'` 时 `.md` 正文里的 `::: tip`、`<Ok/>`、`<Icon icon>`、`.md` 链接、VitePress 锚点规则在构建期还原，
+`site.codeLineNumbers: true` 显示代码行号。细节与大站迁移路线见 vitepress-migration 技能。
+
 ## 验证
 
 ```bash
@@ -97,4 +130,5 @@ E2E_PORT=4339 pnpm test:e2e    # tests/e2e/guides.spec.ts：侧栏高亮、步�
 | 构建告警 `MODULE_LEVEL_DIRECTIVE … use astro:head-inject` | Astro 为每篇 MDX 生成的内容代理模块自带这条指令，打包器提示语义可能丢失 | `astro.config.ts` 的 `onwarn` 已按「代码 + 这条指令」精确放过，别整类关掉 |
 | `<Steps>` 里的标题没编号 | 标签和内容之间没空行，MDX 把整段当成 JSX 文本 | 开闭标签各自独占一行，前后空一行 |
 | 线上搜索提示索引未生成 | `build` 里没有 `pagefind --site dist` | 见 site-search 技能接入步骤 1 |
+| 改了 remark / rehype 插件，页面没变、测试照样全绿 | 内容层按正文缓存渲染结果，插件变了不会重新渲染 | 先 `pnpm cache:clear` 再构建；反证插件时尤其要清，否则改坏了也是绿的（试点实录） |
 | 窄屏 e2e 找不到当前篇高亮 | 侧栏渲染两份（宽屏左栏 + 窄屏 details），`.first()` 拿到的是隐藏那份 | 按视口取对应容器里的那份 |

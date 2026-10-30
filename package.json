@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@astrojs/markdown-satteri": "0.4.2",
     "@playwright/test": "^1.63.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.3.0",

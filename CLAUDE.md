@@ -31,7 +31,7 @@
 | **作品 / 条目** | 列表 + 详情 + 分类形态的主体内容（视频、项目、产品…） | 集合 `works`，数据 `src/data/works.json` |
 | **分类** | 手工维护的分类体系，每个分类有独立落地页 | 集合 `categories`，`/works/category/<id>/` |
 | **文章** | Markdown 长文，GEO 的主要承载体 | 集合 `posts`，`src/content/posts/*.md` |
-| **指南** | 使用指南 / 帮助中心：MDX 正文 + 三栏布局 + 站内搜索，分组顺序固定（guides-docs 技能） | 集合 `guides`，`src/content/guides/*.mdx`，分组 `src/lib/guide-sections.ts` |
+| **指南** | 使用指南 / 帮助中心：MDX 正文 + 三栏布局 + 站内搜索，一层分组或多层侧栏，可带手机实时预览（guides-docs 技能） | 集合 `guides`，`src/content/guides/*.mdx`，分组 `src/lib/guide-sections.ts`，多层侧栏 `src/data/guide-sidebar.json` |
 | **island** | 需要在浏览器里运行的 React 组件，用 `client:*` 指令水合 | `src/components/islands/` |
 | **数据源** | 构建前从外部接口拉数据写入集合 JSON 的模块 | `scripts/sync/sources/*.mjs` |
 | **站点配置** | 站名、域名、品牌色、导航等全站唯一真相源 | `src/site.config.ts` |
@@ -329,6 +329,7 @@ deploy/nginx/               # 容器内 nginx 配置
 | UI 任务额外 | 截图闭环（见 `e2e-test` 技能） | 与原型逐条比对 7 项 |
 
 一键：`pnpm verify`（build + check:seo + test）。改了技能 / 命令 / hooks 再加 `pnpm agents:sync && pnpm check:skills`。
+🔴 改了 remark / rehype 插件（`src/lib/markdown/`）先 `pnpm cache:clear` 再构建：内容层按正文缓存渲染结果，插件变了不会重新渲染，测试会假绿。
 
 ---
 

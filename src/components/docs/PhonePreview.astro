@@ -1,30 +1,40 @@
 ---
-// 移动端组件页右侧的手机实时预览（旧站 PreviewFrame.vue）：iframe 载入 H5 演示页 + 扫码预览 + 新窗口打开 + 收起
-// 零 JS：收起 / 展开用 <details>，二维码用嵌套 <details>；二维码是旧站同一张静态图 /uni.png
-// data-migrate-ignore：迁移比对只看正文，预览面板的按钮文字不算内容差异
+// 手机实时预览面板（VitePress 文档站常见的「组件文档右侧放 H5 演示」）：iframe 载入预览页 + 扫码预览 + 新窗口打开 + 收起
+// 零 JS：收起 / 展开用 <details>，二维码用嵌套 <details>；二维码是静态图（site.mobilePreview.qr，没配就不显示「扫码预览」）
+// data-pagefind-ignore：预览面板的按钮文字不进站内搜索；data-migrate-ignore：迁移逐页比对只看正文
+import { site } from '@/site.config';
+
 interface Props {
+  /** 预览页地址：已经过 previewUrl() 解析的绝对地址或站内路径 */
   url: string;
 }
 
 const { url } = Astro.props;
+const qr = site.mobilePreview.qr;
 ---
 
-<details open class="group not-prose" data-migrate-ignore data-pagefind-ignore>
+<details open class="group not-prose" data-phone-preview data-migrate-ignore data-pagefind-ignore>
   <summary
-    class="flex h-12 cursor-pointer list-none items-center justify-between rounded-t-lg border border-line bg-elevated px-4 text-sm font-semibold [&::-webkit-details-marker]:hidden group-[:not([open])]:rounded-b-lg"
+    class="flex h-12 cursor-pointer list-none items-center justify-between rounded-t-lg border border-line bg-elevated px-4 text-sm font-semibold group-[:not([open])]:rounded-b-lg [&::-webkit-details-marker]:hidden"
   >
     移动端预览
     <span class="text-xs font-normal text-muted group-open:hidden">展开</span>
     <span class="hidden text-xs font-normal text-muted group-open:inline">收起</span>
   </summary>
   <div class="flex items-center justify-end gap-3 border-x border-line bg-elevated px-4 pb-2 text-xs">
-    <details class="relative">
-      <summary class="cursor-pointer list-none text-muted hover:text-brand-ink [&::-webkit-details-marker]:hidden">扫码预览</summary>
-      <div class="absolute right-0 z-20 mt-2 w-56 rounded-lg border border-line bg-elevated p-3 text-center shadow-[var(--shadow-card)]">
-        <img src="/uni.png" alt="移动端演示二维码" width="200" height="200" class="mx-auto size-[200px] object-contain" loading="lazy" />
-        <p class="mt-2 break-all text-muted">{url}</p>
-      </div>
-    </details>
+    {
+      qr && (
+        <details class="relative">
+          <summary class="cursor-pointer list-none text-muted hover:text-brand-ink [&::-webkit-details-marker]:hidden">
+            扫码预览
+          </summary>
+          <div class="absolute right-0 z-20 mt-2 w-56 rounded-lg border border-line bg-elevated p-3 text-center shadow-[var(--shadow-card)]">
+            <img src={qr} alt="手机扫码打开预览" width="200" height="200" class="mx-auto size-[200px] object-contain" loading="lazy" />
+            <p class="mt-2 break-all text-muted">{url}</p>
+          </div>
+        </details>
+      )
+    }
     <a href={url} target="_blank" rel="noopener" class="text-muted hover:text-brand-ink">新窗口打开</a>
   </div>
   <div class="h-[720px] overflow-hidden rounded-b-lg border border-t-0 border-line">

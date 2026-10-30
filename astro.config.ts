@@ -1,53 +1,62 @@
 // Astro 配置：站点级的值一律来自 src/site.config.ts，这里只放构建行为
-import { readdirSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import { unified } from '@astrojs/markdown-remark';
+import { satteri } from '@astrojs/markdown-satteri';
 import tailwindcss from '@tailwindcss/vite';
 import { site } from './src/site.config';
-import { unified } from '@astrojs/markdown-remark';
-import { remarkVpCompat, rehypeVpHeadingIds } from './src/lib/markdown/vp-compat.mjs';
+import {
+  rehypeVpHeadingIds,
+  remarkVpContainers,
+  remarkVpLinks,
+  remarkVpMarks,
+} from './src/lib/markdown/vp-compat.mjs';
+import vpMarks from './src/data/vp-marks.json';
+import vpIcons from './src/data/vp-icons.json';
+import { remarkVueComponents } from './src/lib/markdown/vue-components.mjs';
 
-// 目录首页的网址集合（/backend、/backend/modules/workflow、/guide…）：sitemap 按它决定补 / 还是补 .html。
-// 来源：迁移文档里的 **/index.md 与 src/pages 下的 **/index.astro（不含站点首页）
-const DIR_INDEXES = new Set(
-  [
-    ...readdirSync('src/content/docs', { recursive: true }).map(String).filter((f) => /(^|[\\/])index\.md$/.test(f)),
-    ...readdirSync('src/pages', { recursive: true }).map(String).filter((f) => /[\\/]index\.astro$/.test(f) && !f.includes('[')),
-  ].map((f) => `/${f.replace(/\\/g, '/').replace(/\/?index\.(md|astro)$/, '')}`),
-);
-
-// 正文里没被兼容插件处理的大写组件标签：构建时逐个打印（同一标签同一文件只报一次），迁移验收时人工过目
-const reported = new Set<string>();
-const onUnknown = (tag: string, file?: string) => {
-  const key = `${tag}@${file}`;
-  if (reported.has(key)) return;
-  reported.add(key);
+// 迁移正文里没被兼容插件处理的大写组件标签：构建时逐个打印（同一标签同一文件只报一次），迁移验收时人工过目
+const reportedUnknown = new Set<string>();
+const onUnknownComponent = (tag: string, file?: string) => {
+  if (reportedUnknown.has(`${tag}@${file}`)) return;
+  reportedUnknown.add(`${tag}@${file}`);
   console.warn(`[vp-compat] 正文里有未处理的组件 <${tag}>：${file}`);
 };
 
+// Markdown 处理器：两种模式都关智能标点（技术文档里的 'none'、"x" 被改成弯引号，读者照抄就错了）。
+// vitepress 模式换成 unified：Astro 7 默认的 Sätteri 不跑 remark / rehype 插件。
+// 🔴 改了 remark / rehype 插件后先 pnpm cache:clear 再构建：内容层按正文缓存渲染结果，插件变了不会重新渲染，测试会假绿
+const markdownProcessor =
+  site.markdownCompat === 'vitepress'
+    ? unified({
+        smartypants: false,
+        remarkPlugins: [
+          remarkVpContainers,
+          // 项目插件：营销页的 AProductCard / APricingCard / ImagePreview → 静态 HTML（要在 remarkVpMarks 之前，否则被当成未处理组件）
+          [remarkVueComponents, { icons: vpIcons }],
+          [remarkVpMarks, { marks: vpMarks, icons: vpIcons, onUnknown: onUnknownComponent }],
+          // .md / 无扩展名链接补 .html 只对 .html 网址形态有意义；directory 形态下补了反而成死链
+          ...(site.urlFormat === 'directory' ? [] : [remarkVpLinks]),
+        ],
+        rehypePlugins: [rehypeVpHeadingIds],
+      })
+    : satteri({ features: { smartPunctuation: false } });
+
 export default defineConfig({
-  // 迁移文档（.md）还原 VitePress 写法：状态标记 / 图标 / .md 链接 / 锚点规则，见 src/lib/markdown/vp-compat.mjs
-  // Astro 7 默认的 Sätteri 管线不跑 remark / rehype 插件，显式用 unified()（@astrojs/markdown-remark）
   markdown: {
-    processor: unified({
-      // 关掉 SmartyPants：它把正文里的 'none'、"代码即文档" 改成弯引号，技术文档里的字面值就变了（旧站 markdown-it 不改）
-      smartypants: false,
-      remarkPlugins: [[remarkVpCompat, { onUnknown }]],
-      rehypePlugins: [rehypeVpHeadingIds],
-    }),
-    // 与旧站同一对主题；深色由 vp-compat.css 按 :root.dark 切到 --shiki-dark
+    processor: markdownProcessor,
+    // 与旧站同一对主题；深色由 src/styles/docs-ruoyi.css 按 :root.dark 切到 --shiki-dark
     shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } },
   },
   site: site.url,
   // 网址形态由 site.urlFormat 决定：canonical、sitemap、站内链接三者必须一致，否则搜索引擎会当成两个 URL。
-  // directory → /a/ + 结尾斜杠；file → /a.html（迁移旧站时保住已收录的 .html 网址）
-  // 本项目（VitePress 迁移）的 file 形态用 Astro 的 'preserve'：普通页 a/b.html，分区首页 backend/index.html（网址 /backend/）——
-  // 与 VitePress 产物一模一样。'file' 会把 backend/index 折成 backend.html，旧站 /backend/ 就 404 了。
-  // preserve 下首页类网址带斜杠、其余带 .html，trailingSlash 只能 ignore
-  trailingSlash: site.urlFormat === 'file' ? 'ignore' : 'always',
-  build: { format: site.urlFormat === 'file' ? 'preserve' : site.urlFormat },
+  // directory → /a/ + 结尾斜杠；file → /a.html（迁移旧站时保住已收录的 .html 网址）；
+  // preserve → 叶子页 a.html、目录首页 a/index.html（网址 /a/），与 VitePress 产物一致。preserve 下两种结尾并存，trailingSlash 只能 ignore
+  trailingSlash: ({ directory: 'always', file: 'never', preserve: 'ignore' } as const)[site.urlFormat],
+  build: { format: site.urlFormat },
   // Astro 7 默认 'jsx' 会删掉行内元素之间的空格（中英混排时英文单词会粘在一起），显式恢复 HTML 感知压缩
   compressHTML: true,
   integrations: [
@@ -56,13 +65,15 @@ export default defineConfig({
     mdx(),
     sitemap({
       filter: (page) => !page.includes('/404'),
-      // file 网址形态：@astrojs/sitemap 输出的是不带 .html 的 /a，与页面 canonical（/a.html）对不上，补齐。
-      // 首页与已带扩展名的地址不动；check:seo 会核对 sitemap 每条都是某一页的 canonical
-      // preserve 输出下目录首页（backend/index.html）的网址是 /backend/，不能补 .html（旧站 sitemap 就是 /backend/）
+      // file / preserve 网址形态：@astrojs/sitemap 输出的是不带 .html 的 /a，与页面 canonical（/a.html）对不上，补齐。
+      // preserve 下目录首页（产物 a/index.html）的网址是 /a/，不能补成 /a.html —— 按产物里有没有 a/index.html 判断
+      // （serialize 在 astro:build:done 之后跑，dist 已写完）。首页与已带扩展名的地址不动；check:seo 核对 sitemap 每条都是某一页的 canonical
       serialize: (item) => {
         const path = new URL(item.url).pathname;
-        if (site.urlFormat !== 'file' || /(\/|\.[a-z0-9]+)$/i.test(path)) return item;
-        return { ...item, url: DIR_INDEXES.has(path) ? `${item.url}/` : `${item.url}.html` };
+        if (site.urlFormat === 'directory' || /(\/|\.[a-z0-9]+)$/i.test(path)) return item;
+        if (site.urlFormat === 'preserve' && existsSync(`dist${decodeURIComponent(path)}/index.html`))
+          return { ...item, url: `${item.url}/` };
+        return { ...item, url: `${item.url}.html` };
       },
     }),
   ],

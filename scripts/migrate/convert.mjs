@@ -3,7 +3,9 @@
 // 正文保持 .md、尽量一个字不改，只做两件事：
 //   1. frontmatter 补 title / description —— 直接取基线构建产物里旧站渲染出的值（h1 与 meta description），与旧站逐字相同
 //   2. `::: tip 标题` 容器 → HTML 块（Markdown 内容照常解析）；只在代码块外处理，列表里缩进的代码块也算代码块
-// 其余旧站写法（状态标记、图标、.md 链接、锚点规则）交给构建期插件 src/lib/markdown/vp-compat.mjs，源文件不动。
+// 其余旧站写法（状态标记、图标、.md 链接、锚点规则）交给框架构建期插件（site.markdownCompat: 'vitepress'），源文件不动。
+// ::: 容器在这里按行预转换（与 markdown-it 同规则）而不交给框架 remarkVpContainers：后者按段落认标记，
+// 闭合 ::: 紧跟列表时会被并进列表项、标题里带 <Icon/> 时标题会被拆散（全量构建实测 6 页失败）。预转换后正文里不再有 :::，框架插件自然不动，不会转两遍。
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 

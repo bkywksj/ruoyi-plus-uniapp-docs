@@ -1,0 +1,42 @@
+{
+  "Ok": {
+    "icon": "lucide:circle-check",
+    "class": "imark imark-ok"
+  },
+  "No": {
+    "icon": "lucide:circle-x",
+    "class": "imark imark-no"
+  },
+  "Warn": {
+    "icon": "lucide:triangle-alert",
+    "class": "imark imark-warn"
+  },
+  "Ask": {
+    "icon": "lucide:circle-help",
+    "class": "imark imark-ask"
+  },
+  "DotRed": {
+    "icon": "lucide:circle",
+    "class": "idot idot-red"
+  },
+  "DotYellow": {
+    "icon": "lucide:circle",
+    "class": "idot idot-yellow"
+  },
+  "DotGreen": {
+    "icon": "lucide:circle",
+    "class": "idot idot-green"
+  },
+  "DotOrange": {
+    "icon": "lucide:circle",
+    "class": "idot idot-orange"
+  },
+  "DotBlue": {
+    "icon": "lucide:circle",
+    "class": "idot idot-blue"
+  },
+  "DotPurple": {
+    "icon": "lucide:circle",
+    "class": "idot idot-purple"
+  }
+}

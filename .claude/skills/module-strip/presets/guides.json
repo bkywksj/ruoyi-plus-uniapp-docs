@@ -1,6 +1,6 @@
 {
   "name": "使用指南模块",
-  "description": "使用指南：guides 集合（MDX）与分组 / 排序封装、/guide/ 首页与详情页、三栏布局、src/components/docs/ 文档组件、页头搜索入口与 Pagefind 站内搜索、llms.txt 指南段、导航入口",
+  "description": "使用指南：guides 集合（MDX）与分组 / 排序封装、/guide/ 首页与详情页、三栏布局、多层侧栏（lib/sidebar.ts + guide-sidebar.json）、手机实时预览、src/components/docs/ 文档组件、页头搜索入口与 Pagefind 站内搜索、llms.txt 指南段、导航入口",
   "delete_dirs": [
     "src/content/guides",
     "src/pages/guide",
@@ -11,6 +11,9 @@
     "src/lib/guides.ts",
     "src/lib/guide-sections.ts",
     "tests/unit/guides.test.ts",
+    "tests/unit/sidebar.test.ts",
+    "src/lib/sidebar.ts",
+    "src/data/guide-sidebar.json",
     "tests/e2e/guides.spec.ts"
   ],
   "edits": [
