@@ -4,8 +4,10 @@ import aiCrawlers from '@/data/ai-crawlers.json';
 
 /** 标题模板：页面标题 + 站名；首页直接用站名，避免「站名 | 站名」 */
 export function buildTitle(title?: string): string {
-  if (!title || title === site.name) return site.name;
-  return `${title} | ${site.name}`;
+  // 标题后缀默认是站名；迁移旧站时可用 site.titleSuffix 保住旧站已被收录的完整标题（站名本身仍用于页头 / 页脚 / og:site_name）
+  const suffix = (site as { titleSuffix?: string }).titleSuffix || site.name;
+  if (!title || title === site.name || title === suffix) return suffix;
+  return `${title} | ${suffix}`;
 }
 
 /**

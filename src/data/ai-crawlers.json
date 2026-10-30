@@ -16,5 +16,9 @@
   { "name": "Baiduspider", "purpose": "search", "allow": true },
   { "name": "Sogou web spider", "purpose": "search", "allow": true },
   { "name": "360Spider", "purpose": "search", "allow": true },
-  { "name": "YisouSpider", "purpose": "search", "allow": true }
+  { "name": "YisouSpider", "purpose": "search", "allow": true },
+  { "name": "Claude-Web", "purpose": "user", "allow": true },
+  { "name": "anthropic-ai", "purpose": "training", "allow": true },
+  { "name": "cohere-ai", "purpose": "training", "allow": true },
+  { "name": "ByteDance-Bot", "purpose": "search", "allow": true }
 ]

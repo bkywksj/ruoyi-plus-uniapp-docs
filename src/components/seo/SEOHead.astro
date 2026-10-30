@@ -43,6 +43,7 @@ const ogLocale = site.locale.replace('-', '_');
 
 <title>{fullTitle}</title>
 <meta name="description" content={metaDescription} />
+{site.keywords && site.keywords.length > 0 && <meta name="keywords" content={site.keywords.join(',')} />}
 <link rel="canonical" href={canonical} />
 {noindex && <meta name="robots" content="noindex, follow" />}
 
