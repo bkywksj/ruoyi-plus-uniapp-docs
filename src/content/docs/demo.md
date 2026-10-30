@@ -1,0 +1,153 @@
+---
+title: "项目演示"
+description: "体验 ruoyi-plus-uniapp 全栈开发框架的演示功能"
+iframe: true
+url: https://uni.ruoyi.plus
+aside: false
+---
+
+# 项目演示
+
+体验 ruoyi-plus-uniapp 全栈开发框架的演示功能
+
+## 在线演示
+
+| 平台               | 地址                                                                  | 账密                    | 说明                       |
+|------------------|---------------------------------------------------------------------|-----------------------|--------------------------|
+| <Icon icon="lucide:laptop" /> **超管后台管理**    | [立即体验](https://ui.ruoyi.plus/login?redirect=/index?tenantId=000000) | superadmin / admin123 | Vue3 + Element Plus 管理后台 |
+| <Icon icon="lucide:smartphone" /> **移动端H5基础框架** | [立即体验](http://uni.ruoyi.plus/h5)                                    | superadmin / admin123 | UniApp 跨平台应用             |
+| <Icon icon="lucide:smartphone" /> **移动端H5组件演示** | [立即体验](http://uni.ruoyi.plus/demo)                                  | superadmin / admin123 | UniApp 跨平台应用             |
+
+## 授权定价
+
+选择适合您的版本，开启高效开发之旅（三个版本代码完全一样，仅授权主体和开发人员数量差异，企业版须有营业执照方可购买）
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin: 40px 0;">
+
+<APricingCard
+plan="个人版"
+:price="2588"
+:original-price="3088"
+saving-text="节省 ¥500"
+description="适合个人开发者"
+:features="[
+'完整源码交付',
+'持续更新服务',
+'自主开发权限',
+'商业使用授权',
+'客户源码交付权',
+'技术支持服务',
+'专属答疑群邀请'
+]"
+button-text="立即购买"
+footer-text="适合个人开发者和小型项目"
+/>
+
+<APricingCard
+plan="企业标准版"
+:price="3288"
+:original-price="4088"
+saving-text="节省 ¥800"
+description="开发团队 < 10人"
+:features="[
+'完整源码交付',
+'持续更新服务',
+'自主开发权限',
+'商业使用授权',
+'客户源码交付权',
+'技术支持服务',
+'专属答疑群邀请(可邀1人)'
+]"
+recommended
+button-text="立即购买"
+footer-text="中小企业的理想选择"
+/>
+
+<APricingCard
+plan="企业高级版"
+:price="5888"
+:original-price="7088"
+saving-text="节省 ¥1200"
+description="开发团队 10~30人"
+:features="[
+'完整源码交付',
+'持续更新服务',
+'自主开发权限',
+'商业使用授权',
+'客户源码交付权',
+'技术支持服务',
+'专属答疑群邀请(可邀2人)'
+]"
+button-text="立即购买"
+footer-text="大型企业的最佳选择"
+/>
+
+</div>
+
+
+<div class="vp-callout vp-callout-tip"><p class="vp-callout-title">购买说明</p>
+
+
+- <Icon icon="lucide:briefcase" /> **企业授权**：支持商业项目使用，可交付客户源码
+- <Icon icon="lucide:refresh-cw" /> **持续更新**：享受框架功能迭代和Bug修复
+- <Icon icon="lucide:shield" /> **技术支持**：提供专业的技术支持服务
+- <Icon icon="lucide:users" /> **额外邀人**：额外邀人进答疑群 488/人
+- <Warn/> **使用限制**：仅禁止框架二次销售和扩散传播
+
+</div>
+
+
+## 技术支持
+
+
+<div class="vp-callout vp-callout-warning"><p class="vp-callout-title">联系方式</p>
+
+
+- **作者微信/QQ：** 770492966
+- **项目文档：** https://ruoyi.plus
+
+</div>
+
+
+### 扫码关注
+
+<div style="display: flex; gap: 30px; margin: 20px 0; flex-wrap: wrap; align-items: flex-start;">
+  <div style="text-align: center;">
+    <ImagePreview src="/gzh.png" :width="240" :height="320" object-fit="contain" />
+    <p style="margin-top: 10px;"><strong>微信公众号</strong></p>
+    <p style="margin-top: 5px; color: #666;">获取最新技术资讯</p>
+  </div>
+  <div style="text-align: center;">
+    <ImagePreview src="/wx.jpg" :width="240" :height="320" object-fit="contain" />
+    <p style="margin-top: 10px;"><strong>微信联系</strong></p>
+    <p style="margin-top: 5px; color: #666;">一对一技术咨询</p>
+  </div>
+  <div style="text-align: center;">
+    <ImagePreview src="/wxq.jpg" :width="240" :height="320" object-fit="contain" />
+    <p style="margin-top: 10px;"><strong>技术交流群</strong></p>
+    <p style="margin-top: 5px; color: #666;">与开发者交流讨论</p>
+  </div>
+  <div style="text-align: center;">
+    <ImagePreview src="/软著.png" :width="240" :height="320" object-fit="contain" />
+    <p style="margin-top: 10px;"><strong>软件著作权</strong></p>
+    <p style="margin-top: 5px; color: #666;">国家版权局认证</p>
+  </div>
+</div>
+
+## 功能截图
+
+<ImagePreview src="/demo/01-login.webp,/demo/02-forgot-password.webp,/demo/03-dashboard.webp,/demo/04-layout-setting.webp,/demo/04a-goods-list.webp,/demo/05-goods-add.webp,/demo/06-account-bind.webp,/demo/07-goods-detail.webp,/demo/09-material-library.webp,/demo/10-ad-config.webp,/demo/11-platform-config.webp,/demo/12-order.webp,/demo/13-payment-config.webp,/demo/16-user.webp,/demo/17-role.webp,/demo/18-menu.webp,/demo/19-dept.webp,/demo/20-post.webp,/demo/21-dict.webp,/demo/22-dict-edit.webp,/demo/23-config.webp,/demo/24-notice.webp,/demo/25-richtext.webp,/demo/26-notice-push.webp,/demo/27-oper-log.webp,/demo/28-login-log.webp,/demo/29-oss.webp,/demo/29a-field-permission.webp,/demo/30-tenant.webp,/demo/31-tenant-package.webp,/demo/32-online-user.webp,/demo/33-cache.webp,/demo/34-admin-monitor.webp,/demo/35-snailjob.webp,/demo/36-gen.webp,/demo/37-gen-edit.webp,/demo/38-gen-template.webp,/demo/39-workflow-leave.webp,/demo/40-ai-assistant.webp,/demo/41-page-designer.webp,/demo/42-datav-components.webp,/demo/43-datav-fullscreen.webp" width="100%" height="100%" style="margin-top: 20px" />
+
+
+
+---
+
+
+<div class="vp-callout vp-callout-warning"><p class="vp-callout-title">软件著作权声明</p>
+
+本框架受《中华人民共和国著作权法》保护，已获得国家版权局软件著作权登记证书。未经授权不得使用，授权后可用于商业项目开发，但严禁对框架本身进行二次销售或扩散传播。
+
+</div>
+
+
+<small>© 2025 ruoyi-plus-uniapp | 框架商用授权，详情咨询</small>
