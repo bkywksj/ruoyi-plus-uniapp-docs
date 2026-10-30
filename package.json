@@ -22,7 +22,8 @@
     "verify": "pnpm build && pnpm check:seo && pnpm test",
     "agents:sync": "node scripts/sync-agents-skills.mjs",
     "check:skills": "node scripts/validate-skills.mjs",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "cache:clear": "node -e \"for (const d of ['.astro','node_modules/.astro']) require('fs').rmSync(d, { recursive: true, force: true })\""
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.5",
