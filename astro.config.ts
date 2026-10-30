@@ -1,4 +1,5 @@
 // Astro 配置：站点级的值一律来自 src/site.config.ts，这里只放构建行为
+import { readdirSync } from 'node:fs';
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
@@ -7,6 +8,15 @@ import tailwindcss from '@tailwindcss/vite';
 import { site } from './src/site.config';
 import { unified } from '@astrojs/markdown-remark';
 import { remarkVpCompat, rehypeVpHeadingIds } from './src/lib/markdown/vp-compat.mjs';
+
+// 目录首页的网址集合（/backend、/backend/modules/workflow、/guide…）：sitemap 按它决定补 / 还是补 .html。
+// 来源：迁移文档里的 **/index.md 与 src/pages 下的 **/index.astro（不含站点首页）
+const DIR_INDEXES = new Set(
+  [
+    ...readdirSync('src/content/docs', { recursive: true }).map(String).filter((f) => /(^|[\\/])index\.md$/.test(f)),
+    ...readdirSync('src/pages', { recursive: true }).map(String).filter((f) => /[\\/]index\.astro$/.test(f) && !f.includes('[')),
+  ].map((f) => `/${f.replace(/\\/g, '/').replace(/\/?index\.(md|astro)$/, '')}`),
+);
 
 // 正文里没被兼容插件处理的大写组件标签：构建时逐个打印（同一标签同一文件只报一次），迁移验收时人工过目
 const reported = new Set<string>();
@@ -48,10 +58,12 @@ export default defineConfig({
       filter: (page) => !page.includes('/404'),
       // file 网址形态：@astrojs/sitemap 输出的是不带 .html 的 /a，与页面 canonical（/a.html）对不上，补齐。
       // 首页与已带扩展名的地址不动；check:seo 会核对 sitemap 每条都是某一页的 canonical
-      serialize: (item) =>
-        site.urlFormat === 'file' && !/(\/|\.[a-z0-9]+)$/i.test(new URL(item.url).pathname)
-          ? { ...item, url: `${item.url}.html` }
-          : item,
+      // preserve 输出下目录首页（backend/index.html）的网址是 /backend/，不能补 .html（旧站 sitemap 就是 /backend/）
+      serialize: (item) => {
+        const path = new URL(item.url).pathname;
+        if (site.urlFormat !== 'file' || /(\/|\.[a-z0-9]+)$/i.test(path)) return item;
+        return { ...item, url: DIR_INDEXES.has(path) ? `${item.url}/` : `${item.url}.html` };
+      },
     }),
   ],
   image: {
