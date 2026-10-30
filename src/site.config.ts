@@ -39,6 +39,8 @@ export interface SocialLink {
 export const site = {
   /** 站点全名：出现在 <title> 后缀、og:site_name、JSON-LD WebSite.name */
   name: 'RuoYi-Plus-UniApp 全栈开发文档',
+  /** <title> 后缀（buildTitle 用）：旧站 VitePress 的 title，每页都是「页名 | 这一串」，首页就是这一串；搜索结果里已收录的就是它 */
+  titleSuffix: 'RuoYi-Plus-UniApp 全栈开发文档 — Spring Boot 3 + Vue 3 企业级框架',
   /** 短名：页头 Logo 文字、移动端空间不够时使用 */
   shortName: 'RuoYi-Plus',
   /** 一句话定位（首页 H1 下方 + 默认 meta description），写成「X 是 Y」的定义句对 GEO 更友好 */
@@ -87,10 +89,16 @@ export const site = {
    * 数据源里的封面是外链（如 B 站 i0.hdslb.com）时加进来，构建时会下载转成 WebP 自托管，顺带绕开防盗链。
    */
   imageDomains: [] as string[],
+  /** 站点关键词：输出到每页 <meta name="keywords">（旧站 config.ts head 原值；Google 不看，百度仍参考）。空数组不输出 */
+  keywords: [
+    'RuoYi', 'RuoYi-Plus', 'UniApp', 'Spring Boot 3', 'Vue 3', '企业级框架', '快速开发', '全栈开发', '后台管理系统',
+    '多租户', 'SaaS', '代码生成器', 'MyBatis Plus', 'Element Plus', '微信小程序',
+  ] as string[],
   analytics: {
-    provider: 'none' as AnalyticsProvider,
+    // 旧站每页都加载百度统计 hm.js（config.ts head），迁移后照旧
+    provider: 'baidu' as AnalyticsProvider,
     /** umami: website-id；baidu: hm.js 后面那串 id */
-    id: '',
+    id: 'c5543d0699fa3d232a032fd56c45b460',
     /** umami 自托管脚本地址，provider=umami 时必填 */
     src: '',
   },

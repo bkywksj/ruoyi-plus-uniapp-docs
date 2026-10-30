@@ -16,8 +16,8 @@ if (!docs || !manifestPath) {
 }
 const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
 const OUT = 'src/content/docs';
-// 首页与营销页（layout: home、带 Vue 卡片组件的）走第 5 步重做，不进文档集合
-const SKIP = new Set(['index.md']);
+// 首页 index.md 也进文档集合：正文照旧；hero / features 留在 frontmatter，由 src/pages/index.astro 渲染（第 5 步只换视觉，不换数据来源）
+const SKIP = new Set([]);
 
 const list = listPath
   ? readFileSync(listPath, 'utf8').split(/\r?\n/).filter(Boolean)
@@ -77,7 +77,9 @@ for (const rel of list) {
   const src = readFileSync(join(docs, rel), 'utf8').replace(/\r\n/g, '\n');
   const fm = src.match(/^---\n([\s\S]*?)\n---\n?/);
   const body = fm ? src.slice(fm[0].length) : src;
-  const h1 = page.headings.find((h) => h.startsWith('h1 '))?.slice(3) ?? '';
+  // 页面标题取旧站 <title> 的页名部分（去掉站点后缀）：旧站 frontmatter 写了 title 时 <title> 用它而不是正文 h1（技术服务页）；首页 <title> 只有后缀，页名为空
+  const SUFFIX = 'RuoYi-Plus-UniApp 全栈开发文档 — Spring Boot 3 + Vue 3 企业级框架';
+  const h1 = page.title === SUFFIX ? '' : page.title.endsWith(` | ${SUFFIX}`) ? page.title.slice(0, -` | ${SUFFIX}`.length) : page.title;
   const [converted, n] = convertContainers(body);
   containers += n;
   const keep = fm ? fm[1].split('\n').filter((l) => !/^(title|description):/.test(l)) : [];

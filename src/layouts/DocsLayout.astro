@@ -10,6 +10,7 @@ import PhonePreview from '@/components/docs/PhonePreview.astro';
 import { absoluteUrl, type JsonLd } from '@/lib/seo';
 import { docPath, prevNextOf, sectionOf, sidebarOf } from '@/lib/docs';
 import { site } from '@/site.config';
+import { siteJsonLd } from '@/lib/site-jsonld';
 import '@/styles/vp-compat.css';
 import '@/styles/docs-ruoyi.css';
 
@@ -46,7 +47,7 @@ const techArticle: JsonLd = {
 const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/docs/${id}.md`;
 ---
 
-<BaseLayout title={title} description={description} type="article" jsonLd={[techArticle]}>
+<BaseLayout title={title} description={description} type="article" jsonLd={[...siteJsonLd, techArticle]}>
   <div class:list={['mx-auto w-full max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8', site.codeLineNumbers && 'code-line-numbers']}>
     <div
       class:list={[

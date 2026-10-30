@@ -3,12 +3,14 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
 import Button from '@/components/ui/Button.astro';
+import { siteJsonLd } from '@/lib/site-jsonld';
 ---
 
 <BaseLayout
   title="页面不存在"
   description="你访问的页面不存在或已被移动，可以回到首页重新查找需要的内容。"
   noindex
+  jsonLd={siteJsonLd}
 >
   <Container size="narrow" class="flex flex-col items-center py-28 text-center">
     <p class="text-sm font-medium text-brand-ink">404</p>
