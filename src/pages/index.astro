@@ -1,45 +1,83 @@
 ---
-// 首页：定义句 Hero → 精选作品 → 分类入口 → 最新文章 → 常见问题
-// 首页统计数字全部来自真实数据（集合计数），不写死任何营销数字
-import { ArrowRight } from '@lucide/astro';
+// 首页：数据全部来自迁来的 src/content/docs/index.md —— hero 与功能卡取 frontmatter（旧站 VitePress home 布局渲染的那两块），
+// 下面接正文（为什么选择 / 授权定价 / 产品矩阵 / 企业信赖 / 技术服务 / 技术支持），与文档页同一条 Markdown 管线。
+// 第 2–4 步只保证内容与旧站一一对应；视觉在第 5 步按原型重做，数据来源不变
+import { getEntry, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import Container from '@/components/ui/Container.astro';
-import Section from '@/components/ui/Section.astro';
-import Button from '@/components/ui/Button.astro';
+import { fixLink } from '@/lib/markdown/vp-compat.mjs';
+import { siteJsonLd } from '@/lib/site-jsonld';
 import { site } from '@/site.config';
-import { websiteJsonLd } from '@/lib/seo';
+import '@/styles/vp-compat.css';
+import '@/styles/docs-ruoyi.css';
 
-const stats: { label: string; value: number }[] = [];
+const entry = await getEntry('docs', 'index');
+if (!entry) throw new Error('缺少 src/content/docs/index.md（首页数据）：先跑 scripts/migrate/convert.mjs');
+const { Content } = await render(entry);
+const { hero, features = [] } = entry.data;
+// 旧站 VitePress 链接写法（/backend/getting-started、/comparison）→ 本站网址（补 .html；目录与站外链接不动）
+const href = (link: string) => fixLink(link);
+const external = (link: string) => /^https?:/.test(link);
 ---
 
-<BaseLayout
-  description={site.description}
-  jsonLd={[websiteJsonLd()]}
->
-  <section class="relative overflow-hidden border-b border-line">
-    <div
-      class="pointer-events-none absolute -top-40 right-[-10%] size-[520px] rounded-full bg-brand/15 blur-3xl"
-      aria-hidden="true"
-    ></div>
-    <Container class="relative py-20 sm:py-28">
-      <p class="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-elevated px-3 py-1 text-xs text-muted">
-        <span class="size-1.5 rounded-full bg-brand" aria-hidden="true"></span>
-        持续更新中
-      </p>
-      <h1 class="max-w-3xl text-4xl leading-tight font-semibold tracking-tight text-pretty sm:text-5xl">
-        {site.name}
-      </h1>
-      <p class="mt-5 max-w-2xl text-lg leading-8 text-muted">{site.tagline}</p>
-      <div class="mt-8 flex flex-wrap gap-3">
-      </div>
-      <dl class="mt-14 grid max-w-md grid-cols-3 gap-6">
-        {stats.map((stat) => (
+<BaseLayout description={entry.data.description} jsonLd={siteJsonLd}>
+  {
+    hero && (
+      <section class="border-b border-line">
+        <Container class="grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-[minmax(0,1fr)_16rem]">
           <div>
-            <dt class="text-sm text-muted">{stat.label}</dt>
-            <dd class="mt-1 text-3xl font-semibold tabular-nums">{stat.value}</dd>
+            <h1 class="text-4xl leading-tight font-bold tracking-tight sm:text-5xl">
+              <span class="text-brand">{hero.name}</span>
+              {hero.text && <span class="mt-2 block">{hero.text}</span>}
+            </h1>
+            {hero.tagline && <p class="mt-5 max-w-2xl text-lg text-muted">{hero.tagline}</p>}
+            <div class="mt-8 flex flex-wrap gap-3">
+              {hero.actions.map((a) => (
+                <a
+                  href={href(a.link)}
+                  target={external(a.link) ? '_blank' : undefined}
+                  rel={external(a.link) ? 'noopener' : undefined}
+                  class:list={[
+                    'inline-flex h-10 items-center rounded-full px-5 text-sm font-semibold transition-colors',
+                    a.theme === 'brand' ? 'bg-brand text-white hover:opacity-90' : 'border border-line bg-elevated hover:border-brand',
+                  ]}
+                >
+                  {a.text}
+                </a>
+              ))}
+            </div>
           </div>
-        ))}
-      </dl>
-    </Container>
-  </section>
+          {hero.image && <img src={hero.image.src} alt={hero.image.alt ?? site.shortName} width="256" height="256" class="mx-auto hidden size-64 object-contain lg:block" />}
+        </Container>
+      </section>
+    )
+  }
+
+  {
+    features.length > 0 && (
+      <section class="border-b border-line bg-surface py-12">
+        <Container class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f) => {
+            const Tag = f.link ? 'a' : 'div';
+            return (
+              <Tag
+                href={f.link ? href(f.link) : undefined}
+                class="block rounded-[var(--radius-card)] border border-line bg-elevated p-5 transition-colors hover:border-brand"
+              >
+                {f.icon && <span class="mb-3 inline-flex size-10 items-center justify-center rounded-lg bg-brand-soft text-brand-ink [&_svg]:size-5" set:html={f.icon} />}
+                <p class="font-semibold">{f.title}</p>
+                <p class="mt-2 text-sm leading-6 text-muted">{f.details}</p>
+              </Tag>
+            );
+          })}
+        </Container>
+      </section>
+    )
+  }
+
+  <Container class="py-12">
+    <article class="prose-content vp-doc mx-auto max-w-5xl" data-pagefind-body>
+      <Content />
+    </article>
+  </Container>
 </BaseLayout>

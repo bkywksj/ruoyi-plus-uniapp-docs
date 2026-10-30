@@ -27,6 +27,22 @@ const docs = defineCollection({
     url: z.url({ protocol: /^https$/ }).optional(),
     /** false：不显示右侧「页面导航」（旧站 aside: false） */
     aside: z.boolean().default(true),
+    /** 首页（index.md）专用：VitePress home 布局的 hero 与功能卡，src/pages/index.astro 渲染；其余页没有 */
+    layout: z.string().optional(),
+    hero: z
+      .object({
+        name: z.string(),
+        text: z.string().optional(),
+        tagline: z.string().optional(),
+        image: z.object({ src: z.string(), alt: z.string().optional() }).optional(),
+        actions: z.array(z.object({ theme: z.string().optional(), text: z.string(), link: z.string() })).default([]),
+      })
+      .optional(),
+    features: z
+      .array(z.object({ icon: z.string().optional(), title: z.string(), details: z.string(), link: z.string().optional() }))
+      .optional(),
+    /** 旧站 frontmatter 里有、但旧主题从未渲染的字段：保留数据，不显示（与旧站一致） */
+    highlights: z.array(z.object({ title: z.string(), details: z.string() })).optional(),
   }),
 });
 

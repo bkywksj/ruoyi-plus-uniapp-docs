@@ -50,9 +50,9 @@ export function productCard(p, icons) {
     )
     .join('');
   const highlights = (p.highlights ?? []).map((h) => `<li>${esc(h)}</li>`).join('');
-  return `<div class="vc-product vc-theme-${esc(p.theme ?? 'blue')}"><div class="vc-product-main"><div class="vc-product-head">${logo}<div><p class="vc-product-name">${esc(p.name)}${
-    p.badge ? ` <span class="vc-badge">${esc(p.badge)}</span>` : ''
-  }</p>${p.slogan ? `<p class="vc-product-slogan">${esc(p.slogan)}</p>` : ''}</div></div>${
+  return `<div class="vc-product vc-theme-${esc(p.theme ?? 'blue')}"><div class="vc-product-main"><div class="vc-product-head">${logo}<div><div class="vc-product-title"><h3 class="vc-product-name">${esc(p.name)}</h3>${
+    p.badge ? `<span class="vc-badge">${esc(p.badge)}</span>` : ''
+  }</div>${p.slogan ? `<p class="vc-product-slogan">${esc(p.slogan)}</p>` : ''}</div></div>${
     p.description ? `<p class="vc-product-desc">${esc(p.description)}</p>` : ''
   }<div class="vc-actions">${actions}</div></div><ul class="vc-product-highlights">${highlights}</ul></div>`;
 }
@@ -65,11 +65,11 @@ export function pricingCard(p, icons) {
   const price = typeof p.price === 'number' ? `<span class="vc-currency">¥</span><span class="vc-price-value">${p.price}</span>` : `<span class="vc-price-value">${esc(p.price ?? '')}</span>`;
   return `<div class="vc-pricing${p.recommended ? ' is-recommended' : ''}">${
     p.recommended ? `<p class="vc-recommended">${iconSvg(icons, 'lucide:star', 'vc-star')} 推荐</p>` : ''
-  }<p class="vc-plan">${esc(p.plan)}</p>${p.description ? `<p class="vc-plan-desc">${esc(p.description)}</p>` : ''}<div class="vc-price">${price}</div>${
+  }<h3 class="vc-plan">${esc(p.plan)}</h3>${p.description ? `<p class="vc-plan-desc">${esc(p.description)}</p>` : ''}<div class="vc-price">${price}</div>${
     p.originalPrice ? `<p class="vc-original">原价 ¥${esc(p.originalPrice)}</p>` : ''
   }${p.savingText ? `<p class="vc-saving">${esc(p.savingText)}</p>` : ''}<ul class="vc-features">${features}</ul><details class="vc-contact"><summary class="vc-btn${
     p.recommended ? ' vc-btn-primary' : ''
-  }">${esc(p.buttonText ?? '立即咨询')}</summary><p>微信同QQ：<strong>770492966</strong></p><p>请添加好友咨询</p></details>${
+  }">${esc(p.buttonText ?? '立即咨询')}</summary><div data-migrate-ignore><p>微信同QQ：<strong>770492966</strong></p><p>请添加好友咨询</p></div></details>${
     p.footerText ? `<p class="vc-footer">${esc(p.footerText)}</p>` : ''
   }</div>`;
 }
@@ -91,6 +91,30 @@ export function imagePreview(p) {
 }
 
 const RENDER = { AProductCard: productCard, APricingCard: pricingCard, ImagePreview: imagePreview };
+
+/**
+ * Markdown 相对链接按 VitePress 规则补 .html（./changelog → ./changelog.html）。
+ * 框架 remarkVpLinks（fixLink）只处理 / 开头的站内链接，相对链接会落成 /changelog 这种旧站没有的网址；本插件先跑，补完后框架那步不再改它。
+ * 站外、根路径、纯锚点、已有扩展名、以 / 结尾的不动
+ * @param url 链接
+ */
+export function fixRelativeLink(url) {
+  if (!url || /^(https?:|mailto:|tel:|#|\/)/.test(url)) return url;
+  const [path, rest = ''] = url.split(/(?=[#?])/);
+  if (!path || path.endsWith('/') || /\.[a-z0-9]+$/i.test(path)) return url;
+  return `${path}.html${rest}`;
+}
+
+/**
+ * 正文原始 HTML 里的站内 <a href>（如首页 <a href="./changelog">）按 VitePress 规则补 .html：
+ * 相对或根路径、没有扩展名、不以 / 结尾的才补；锚点 / 查询串保留。Markdown 链接由框架 remarkVpLinks 处理，这里只管 html 节点
+ * @param html html 节点文本
+ */
+export function fixRawLinks(html) {
+  return html.replace(/(<a\b[^>]*?\bhref=")(\.{0,2}\/[^"#?]*?)([#?][^"]*)?"/g, (whole, pre, path, rest = '') =>
+    path.endsWith('/') || /\.[a-z0-9]+$/i.test(path) ? whole : `${pre}${path}.html${rest}"`,
+  );
+}
 const TAG = /<(AProductCard|APricingCard|ImagePreview)\b([\s\S]*?)\/>/g;
 
 /**
@@ -115,6 +139,8 @@ export function remarkVueComponents(opts = {}) {
     };
     lift(tree);
     const walk = (node) => {
+      if (node.type === 'html') node.value = fixRawLinks(node.value);
+      if (node.type === 'link' || node.type === 'definition') node.url = fixRelativeLink(node.url);
       if (node.type === 'html' && TAG.test(node.value)) {
         TAG.lastIndex = 0;
         node.value = node.value.replace(TAG, (whole, name) => {

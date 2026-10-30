@@ -7,7 +7,8 @@ import DocsLayout from '@/layouts/DocsLayout.astro';
 
 export const getStaticPaths = (async () => {
   // 分区首页（backend/index 等）由 [section]/index.astro 出，这里跳过：动态参数带 index 会被 Astro 归一成 /backend/ 而匹配失败
-  const docs = (await getCollection('docs')).filter((doc) => !doc.id.endsWith('/index'));
+  // 站点首页 index 由 src/pages/index.astro 出（hero + 功能卡 + 正文）
+  const docs = (await getCollection('docs')).filter((doc) => doc.id !== 'index' && !doc.id.endsWith('/index'));
   return docs.map((doc) => ({ params: { slug: doc.id }, props: { doc } }));
 }) satisfies GetStaticPaths;
 
