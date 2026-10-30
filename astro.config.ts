@@ -5,13 +5,39 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { site } from './src/site.config';
+import { unified } from '@astrojs/markdown-remark';
+import { remarkVpCompat, rehypeVpHeadingIds } from './src/lib/markdown/vp-compat.mjs';
+
+// 正文里没被兼容插件处理的大写组件标签：构建时逐个打印（同一标签同一文件只报一次），迁移验收时人工过目
+const reported = new Set<string>();
+const onUnknown = (tag: string, file?: string) => {
+  const key = `${tag}@${file}`;
+  if (reported.has(key)) return;
+  reported.add(key);
+  console.warn(`[vp-compat] 正文里有未处理的组件 <${tag}>：${file}`);
+};
 
 export default defineConfig({
+  // 迁移文档（.md）还原 VitePress 写法：状态标记 / 图标 / .md 链接 / 锚点规则，见 src/lib/markdown/vp-compat.mjs
+  // Astro 7 默认的 Sätteri 管线不跑 remark / rehype 插件，显式用 unified()（@astrojs/markdown-remark）
+  markdown: {
+    processor: unified({
+      // 关掉 SmartyPants：它把正文里的 'none'、"代码即文档" 改成弯引号，技术文档里的字面值就变了（旧站 markdown-it 不改）
+      smartypants: false,
+      remarkPlugins: [[remarkVpCompat, { onUnknown }]],
+      rehypePlugins: [rehypeVpHeadingIds],
+    }),
+    // 与旧站同一对主题；深色由 vp-compat.css 按 :root.dark 切到 --shiki-dark
+    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } },
+  },
   site: site.url,
   // 网址形态由 site.urlFormat 决定：canonical、sitemap、站内链接三者必须一致，否则搜索引擎会当成两个 URL。
   // directory → /a/ + 结尾斜杠；file → /a.html（迁移旧站时保住已收录的 .html 网址）
-  trailingSlash: site.urlFormat === 'file' ? 'never' : 'always',
-  build: { format: site.urlFormat },
+  // 本项目（VitePress 迁移）的 file 形态用 Astro 的 'preserve'：普通页 a/b.html，分区首页 backend/index.html（网址 /backend/）——
+  // 与 VitePress 产物一模一样。'file' 会把 backend/index 折成 backend.html，旧站 /backend/ 就 404 了。
+  // preserve 下首页类网址带斜杠、其余带 .html，trailingSlash 只能 ignore
+  trailingSlash: site.urlFormat === 'file' ? 'ignore' : 'always',
+  build: { format: site.urlFormat === 'file' ? 'preserve' : site.urlFormat },
   // Astro 7 默认 'jsx' 会删掉行内元素之间的空格（中英混排时英文单词会粘在一起），显式恢复 HTML 感知压缩
   compressHTML: true,
   integrations: [

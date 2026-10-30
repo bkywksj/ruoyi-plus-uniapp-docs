@@ -1,0 +1,29 @@
+---
+// 四个分区首页（backend / frontend / mobile / practices 的 index.md）：build.format = 'preserve' 下输出 backend/index.html，网址 /backend/
+// 与旧站同址同 canonical；正文与普通文档页同一套布局
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '@/layouts/DocsLayout.astro';
+
+export const getStaticPaths = (async () => {
+  const docs = (await getCollection('docs')).filter((doc) => /^[^/]+\/index$/.test(doc.id));
+  return docs.map((doc) => ({ params: { section: doc.id.split('/')[0] }, props: { doc } }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { doc } = Astro.props as Props;
+const { Content, headings } = await render(doc);
+---
+
+<DocsLayout
+  id={doc.id}
+  title={doc.data.title}
+  description={doc.data.description}
+  headings={headings}
+  iframe={doc.data.iframe}
+  url={doc.data.url}
+  aside={doc.data.aside}
+>
+  <Content />
+</DocsLayout>

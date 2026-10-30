@@ -1,0 +1,30 @@
+---
+// 迁移文档的统一路由：docs 集合每页一个网址，id 即路径（backend/common/pay → /backend/common/pay.html，backend/index → /backend/）
+// [...slug] 而不是分区各一个目录路由：四个分区共用同一套布局，旧站网址形态由 id 原样决定
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { getCollection, render } from 'astro:content';
+import DocsLayout from '@/layouts/DocsLayout.astro';
+
+export const getStaticPaths = (async () => {
+  // 分区首页（backend/index 等）由 [section]/index.astro 出，这里跳过：动态参数带 index 会被 Astro 归一成 /backend/ 而匹配失败
+  const docs = (await getCollection('docs')).filter((doc) => !doc.id.endsWith('/index'));
+  return docs.map((doc) => ({ params: { slug: doc.id }, props: { doc } }));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { doc } = Astro.props as Props;
+const { Content, headings } = await render(doc);
+---
+
+<DocsLayout
+  id={doc.id}
+  title={doc.data.title}
+  description={doc.data.description}
+  headings={headings}
+  iframe={doc.data.iframe}
+  url={doc.data.url}
+  aside={doc.data.aside}
+>
+  <Content />
+</DocsLayout>

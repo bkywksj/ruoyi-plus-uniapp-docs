@@ -38,4 +38,29 @@ const guides = defineCollection({
   }),
 });
 
-export const collections = { guides };
+/**
+ * 旧 VitePress 站迁来的文档（backend / frontend / mobile / practices 四个分区，正文保持 .md）。
+ * id 就是相对路径去掉 .md（backend/common/pay、backend/index），网址照旧站：/backend/common/pay.html、/backend/。
+ * 侧栏不在 frontmatter 里，而在 src/data/sidebar.json（从旧站构建产物读出的分组层级与顺序）。
+ */
+const docs = defineCollection({
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/docs',
+    // 默认 id 会把 backend/index 折成 backend，网址就对不上旧站的 /backend/index.html 了
+    generateId: ({ entry }) => entry.replace(/\.md$/, ''),
+  }),
+  schema: z.object({
+    /** 页面标题：取旧站渲染出的 h1（转换脚本写入），正文里的 # 标题保留不删 */
+    title: z.string(),
+    /** 取旧站渲染出的 meta description（frontmatter 手写或首段提取的结果），与旧站逐字相同 */
+    description: z.string(),
+    /** 移动端组件页：右侧显示手机实时预览（url 是 H5 演示地址） */
+    iframe: z.boolean().default(false),
+    url: z.url({ protocol: /^https$/ }).optional(),
+    /** false：不显示右侧「页面导航」（旧站 aside: false） */
+    aside: z.boolean().default(true),
+  }),
+});
+
+export const collections = { guides, docs };
