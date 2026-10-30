@@ -22,9 +22,25 @@
   - 结果：**34/34 通过**（代码块 1,465 个逐块相等、标题与锚点全等、表格行 1,154 全等；2 页已核对差异）
   - 全量压测（真实 510 页，不入库）：**冷构建 185 s / 峰值 6.3 GB，热构建 35–46 s**；511 页比对 507 通过，剩 4 页是第 5 步重做的首页与营销页
   - 提交: 1cafff2 脚本、7eeb6e9 渲染、0d0f6f6 试点内容、e5d0bfe 嵌套目录首页、be02c0a sitemap、74b7986 e2e
-- [ ] T3 第 2 步：补框架（见「框架缺口」，回流 next-ai-astro）
-- [ ] T4 第 3 步：全量转换 510 页（`node scripts/migrate/convert.mjs .migrate/baseline-src/docs .migrate/baseline-manifest.json`），裁掉框架示例模块 guides / about
-- [ ] T5 第 4 步：全量逐页比对清零（compare-baseline.mjs 退出码 0）+ check:seo 全绿 + 旧网址 / sitemap 全集核对
+- [x] T3 第 2 步：补框架（框架 next-ai-astro e13010c..5c95ac5 已推送：preserve 网址、多层侧栏、VitePress 兼容插件、手机预览、cache:clear）
+  - 读写: 写入
+  - 提交: 887b932 chore(framework-sync)（同步进本项目；guides 登记为 transformedModules，改造为 docs 集合）
+- [x] T4 第 3 步：全量转换 511 页（`node scripts/migrate/convert.mjs .migrate/baseline-src/docs .migrate/baseline-manifest.json`），框架示例 guides / about 去掉
+  - 读写: 写入
+  - 基线源核对：.migrate/baseline-src/docs 与旧仓库 HEAD a6da208 的 docs/ 592 个文件统一换行后逐个一致
+  - 机械转换计数：frontmatter 补 title / description 511 页（title 取旧站 <title> 的页名部分）；`:::` 容器按行预转换 37 个，转换后正文 `:::` 计数 0
+  - 提交: ea5ab98 全量内容、de7e7e4 framework（titleSuffix / keywords / 爬虫名单）、a1405af 全站 SEO 对齐、0ceb2ac 首页与营销页、2a97d6b 重复标题区分名
+- [x] T5 第 4 步：全量逐页比对清零（compare-baseline.mjs 退出码 0）+ check:seo 全绿 + 旧网址 / sitemap 全集核对
+  - 读写: 写入
+  - 读数（2026-10-30 23:05）：逐页 **511/511 通过**（9 页 Vue 吞字差异 + 35 页重复标题区分名为已接受，见 known-diffs.json / title-qualifiers.json）；
+    全站 compare-site 全部通过（网址 511/511、旧 sitemap 511 条全在、/sitemap.xml 可用、静态文件 68 个全在、站长验证文件 4 个逐字节相同、
+    JSON-LD 四种全站类型 512/512 页 + TechArticle 510/510、robots 旧站 21 个 User-agent 全保留）
+  - 总量：代码块 19,979 = 19,979、表格行 16,920 = 16,920、图片 68 = 68、标题 27,446 = 27,446、锚点 27,426 = 27,426；正文链接旧 215 全在（新 267，多出的是图片外链包裹等）
+  - pnpm verify：astro check 0 错误 0 警告、512 页、check:seo 通过（583 条警告均为标题超 60 字 / 图片无宽高，旧站同样如此）、vitest 128 条全过
+  - e2e（E2E_PORT=4339）：14 通过、2 跳过
+  - 构建：冷构建（先 cache:clear）217 s、峰值 5.1 GB；热构建约 77 s、4.1 GB（旧站 759 s、22.4 GB）
+  - 反证：同时删 redis.md 一行正文、改 pay.md 一个代码字符、挪走 BingSiteAuth.xml、删爬虫 ByteDance-Bot → 逐页 509/511 + 全站 3 项 ❌，退出码均 1；恢复后转绿
+  - 提交: 43a1d6c 比对脚本补判定 + compare-site.mjs
 - [ ] T6 第 5 步：首页与营销页重做（index / comparison / demo / products / changelog / video / services），工作站出原型给用户选风格
 - [ ] T7 第 6 步：工具链迁移（.claude 13 技能 + 6 命令、docs-sync 检查点、PROJECT_PROGRESS、build-llms / build-icons / indexnow / emoji-to-icon 等脚本），旧 CLAUDE.md 写作规范并入
 - [ ] T8 第 7 步：验收与切换（合并历史覆盖旧仓库 → Gitee + GitHub → `edgeone pages deploy`，上线前用户确认）→ 线上 511 网址逐条核对
@@ -73,9 +89,24 @@
 - 16 组页面标题重复（如 5 页都叫「快速开始」），旧站同样如此：是否在标题里带上分区，待用户决定（会改变搜索结果里的标题）
 
 ## 当前进度 / 下一步
+2026-10-30 23:10 第 2–4 步完成：511 页全量迁移，逐页与全站比对全部通过，verify / e2e 全绿。
+下一步：用户确认 66 个孤立页中 A 类 26 页进侧栏（单独提交）→ 第 5 步首页与营销页视觉（工作站出原型）→ 第 6 步工具链迁移 → 第 7 步切换（上线前用户确认）。
+
 2026-10-30 17:45 第 0、1 步完成，结论：可以继续全量迁移。下一步第 2 步（补框架）需用户确认；工作区是试点 34 页。
 
 ## 卡点 / 决策
+- 决策（2026-10-30，用户）：重复标题只在 <title> 加区分名（scripts/migrate/title-qualifiers.mjs → src/data/title-qualifiers.json），h1 与结构化数据不动
+- 决策：66 个孤立页本轮照旧不进侧栏（网址都可访问），等用户确认 A 类 26 页后单独一个提交
+- 决策：llms.txt 暂用旧站入库的静态文件（与旧站逐字节相同），build-llms.mjs 生成逻辑在第 6 步移植
+- 决策：营销页 Vue 组件（AProductCard / APricingCard / ImagePreview）由项目插件 src/lib/markdown/vue-components.mjs 转静态 HTML；
+  套餐按钮的「复制微信号 + 弹窗」改成可展开的同一段联系方式（data-migrate-ignore）
+- 框架缺口（本轮未改框架，待回流 next-ai-astro）：
+  · remarkVpContainers 按段落认 `:::`：闭合标记紧跟列表时被并进列表项、标题里带 <Icon/> 时被拆散（全量 6 页失败）→ 本项目仍用 convert.mjs 按行预转换；框架应改成按行预处理
+  · remarkVpLinks / fixLink 只补 / 开头的链接：Markdown 相对链接（./changelog）与正文原始 HTML 的 <a href> 不补 .html → 本项目在 vue-components.mjs 补
+  · buildTitle 没有标题后缀配置、SEOHead 不输出 keywords、ai-crawlers 缺 Claude-Web / anthropic-ai / cohere-ai / ByteDance-Bot → 本项目 de7e7e4 已补（feat(framework)，可回流）
+  · 迁移站需要 /sitemap.xml 别名（旧站登记地址）→ 本项目 src/pages/sitemap.xml.ts（storyloom 同样做法）
+  · markdownCompat 的 unified 管线没有给项目插件留挂点，只能改 astro.config 的插件数组
+  · guides 裁剪预设会删掉 lib/sidebar.ts 与 components/docs（多层侧栏、手机预览、搜索都在里面）：用自建 docs 集合的迁移站只能登记 transformedModules，不能裁剪
 - 决策：mermaid 保持代码块（与线上一致）；改成渲染图属于新增能力，单独问用户
 - 决策：任务列表 [x] 新站渲染成复选框（旧站是文字），比对时统一成文字，视为显示改进
 - 注意：改 vp-compat.mjs 后先 `pnpm cache:clear` 再构建（反证时实测：不清缓存，摘掉插件后 e2e 仍绿）
