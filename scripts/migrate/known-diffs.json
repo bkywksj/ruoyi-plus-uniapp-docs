@@ -2,12 +2,60 @@
   "说明": "已人工核对、接受的正文差异。只允许「新站比旧站多出 extra 这段文字」：去掉它后两边正文必须逐字相等，否则照样判不通过。旧站正文里的 {{ }} / {name} 被 Vue 当模板语法吃掉了，新站按 Markdown 源原样显示，属于修复",
   "pages": {
     "frontend/i18n/i18n-practices.html": {
-      "extra": ["{{}}"],
+      "extra": [
+        "{{}}"
+      ],
       "reason": "源文件「使用 `{{ }}` 插值会自动转义 HTML」，旧站被 Vue 求值成空，显示为「使用  插值」"
     },
     "mobile/wd/navigation/tabbar.html": {
-      "extra": ["{name}"],
+      "extra": [
+        "{name}"
+      ],
       "reason": "源文件表格「icon-{name} 自定义图标插槽」，旧站 {name} 被 Vue 吃掉，只剩「icon-」"
+    },
+    "backend/common/openapi.html": {
+      "extra": [
+        "{id}",
+        "{ids}"
+      ],
+      "reason": "接口表「/reset/{id}」「/updateStatus/{ids}」，旧站只剩「/reset/」「/updateStatus/」"
+    },
+    "mobile/layouts/tabbar.html": {
+      "extra": [
+        "{name|index}"
+      ],
+      "reason": "插槽表「icon-{name|index}」，旧站只剩「icon-」"
+    },
+    "mobile/wd/display/table.html": {
+      "extra": [
+        "{prop}"
+      ],
+      "reason": "插槽表「column-{prop}」，旧站只剩「column-」"
+    },
+    "mobile/wd/form/checkbox-group.html": {
+      "extra": [
+        "{index}"
+      ],
+      "reason": "插槽表「option-{index}」，旧站只剩「option-」"
+    },
+    "mobile/wd/form/radio-group.html": {
+      "extra": [
+        "{index}"
+      ],
+      "reason": "插槽表「option-{index}」，旧站只剩「option-」"
+    },
+    "mobile/wd/navigation/sidebar.html": {
+      "extra": [
+        "{index}",
+        "{index}"
+      ],
+      "reason": "插槽表「item-${index}」「icon-${index}」，旧站只剩「item-$」「icon-$」"
+    },
+    "mobile/wd/navigation/tabs.html": {
+      "extra": [
+        "{index}"
+      ],
+      "reason": "插槽表「item-${index}」，旧站只剩「item-$」"
     }
   }
 }

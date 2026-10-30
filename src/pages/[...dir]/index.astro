@@ -1,13 +1,14 @@
 ---
-// 四个分区首页（backend / frontend / mobile / practices 的 index.md）：build.format = 'preserve' 下输出 backend/index.html，网址 /backend/
-// 与旧站同址同 canonical；正文与普通文档页同一套布局
+// 目录首页（任意层级的 index.md：backend/index、backend/modules/workflow/index、mobile/pages/index…）：
+// build.format = 'preserve' 下输出 <目录>/index.html，网址 /<目录>/，与旧站同址同 canonical；正文与普通文档页同一套布局。
+// 用 [...dir] 而不是 [section]：只认一层的话，嵌套目录的首页会整页丢失（全量比对抓出 2 页）
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { getCollection, render } from 'astro:content';
 import DocsLayout from '@/layouts/DocsLayout.astro';
 
 export const getStaticPaths = (async () => {
-  const docs = (await getCollection('docs')).filter((doc) => /^[^/]+\/index$/.test(doc.id));
-  return docs.map((doc) => ({ params: { section: doc.id.split('/')[0] }, props: { doc } }));
+  const docs = (await getCollection('docs')).filter((doc) => doc.id.endsWith('/index'));
+  return docs.map((doc) => ({ params: { dir: doc.id.slice(0, -'/index'.length) }, props: { doc } }));
 }) satisfies GetStaticPaths;
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
