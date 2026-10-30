@@ -1,0 +1,40 @@
+# {{PROJECT_NAME}} 部署说明
+
+<!-- 交付说明：由 delivery-sync 首次执行时生成到 delivery/DEPLOY.md，同步时覆盖到交付目录根。
+     按实际部署环境改写；不要写服务器 IP、账号、密钥等敏感信息。 -->
+
+站点是纯静态文件，任选一种方式部署。
+
+## 方式一：Docker（推荐）
+
+```bash
+docker compose up -d --build
+# 在服务器本机验证：curl -I http://127.0.0.1:8080/
+```
+
+🔴 `docker-compose.yml` 里容器端口只绑 `127.0.0.1:8080`，**外网直接访问 `http://服务器地址:8080` 是连不上的**，这是有意的：
+对外必须经前置反向代理（OpenResty / nginx / Caddy 等），由它监听 80 / 443、终结 HTTPS，再转发到 `127.0.0.1:8080`。
+同一台服务器部署多个站点时，把 `docker-compose.yml` 的 `image` / `container_name` 改成各自的名字，宿主端口也错开。
+
+镜像分两阶段：Node 构建静态文件 → nginx 托管。nginx 配置在 `deploy/nginx/`，已包含安全响应头与静态资源长缓存。
+
+HTTPS 证书与 `Strict-Transport-Security` 响应头都加在前置反向代理这一层（容器内 nginx 只跑 HTTP）。
+
+## 方式二：任意静态托管
+
+```bash
+pnpm install
+pnpm build
+# 把 dist/ 目录上传到静态托管服务（对象存储 + CDN、Cloudflare Pages 等）
+```
+
+托管服务需要：
+- 目录请求自动映射到 `index.html`（如 `/works/` → `/works/index.html`）
+- 404 时返回 `/404.html`
+- `/_astro/` 下的文件可设置一年强缓存，HTML 不缓存
+
+## 上线前检查
+
+- [ ] `src/site.config.ts` 的 `url` 已改成正式域名（canonical、sitemap 都依赖它）
+- [ ] `pnpm build && pnpm check:seo` 全部通过
+- [ ] 国内服务器已完成 ICP 备案，备案号填入 `site.config.ts` 的 `icp`

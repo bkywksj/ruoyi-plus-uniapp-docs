@@ -1,0 +1,13 @@
+# 本地验证镜像 / 单机部署：docker compose up -d --build，然后访问 http://localhost:8080
+# 🔴 孵化出的项目要把 image / container_name 改成项目标识（project-init 负责），否则同机部署多个站会撞名
+services:
+  web:
+    build: .
+    image: ruoyi-plus-uniapp-docs:latest
+    container_name: ruoyi-plus-uniapp-docs
+    ports:
+      # 只绑本机回环：放在 OpenResty 等反向代理后面时，外部不能绕过 HTTPS 直连容器
+      - '127.0.0.1:8080:80'
+    restart: unless-stopped
+    # 纯静态托管，内存占用很小；与其他服务同机时限制上限，避免挤占
+    mem_limit: 128m

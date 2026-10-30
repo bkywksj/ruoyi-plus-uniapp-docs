@@ -1,0 +1,22 @@
+---
+// 页面内容容器：全站唯一的水平留白与最大宽度来源（间距契约：页面 px 值只在这里定义）
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  /** narrow = 文章阅读宽度；default = 列表/首页宽度 */
+  size?: 'narrow' | 'default';
+}
+
+const { size = 'default', class: className, ...rest } = Astro.props;
+---
+
+<div
+  class:list={[
+    'mx-auto w-full px-4 sm:px-6 lg:px-8',
+    size === 'narrow' ? 'max-w-3xl' : 'max-w-6xl',
+    className,
+  ]}
+  {...rest}
+>
+  <slot />
+</div>

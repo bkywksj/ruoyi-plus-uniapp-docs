@@ -1,0 +1,32 @@
+---
+// 页面分区：统一的区块标题层级与上下间距；右上角 action 插槽放「查看全部」一类链接
+import Container from './Container.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** 小号引导词，显示在标题上方 */
+  eyebrow?: string;
+  id?: string;
+  class?: string;
+}
+
+const { title, description, eyebrow, id, class: className } = Astro.props;
+const headingId = id ? `${id}-title` : undefined;
+---
+
+<section id={id} aria-labelledby={headingId} class:list={['py-12 sm:py-16', className]}>
+  <Container>
+    <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+      <div class="max-w-2xl space-y-2">
+        {eyebrow && <p class="text-sm font-medium text-brand-ink">{eyebrow}</p>}
+        <h2 id={headingId} class="text-2xl font-semibold tracking-tight sm:text-3xl">
+          {title}
+        </h2>
+        {description && <p class="leading-7 text-muted">{description}</p>}
+      </div>
+      <slot name="action" />
+    </div>
+    <slot />
+  </Container>
+</section>

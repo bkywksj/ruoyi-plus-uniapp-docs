@@ -1,0 +1,40 @@
+---
+title: 常见问题排查
+description: 构建失败、线上搜索没结果、e2e 测到别的站——按报错原文找原因和处理办法。
+section: 遇到问题
+order: 1
+duration: 约 3 分钟
+updated: 2026-10-30
+---
+
+每一节先给报错原文，再说原因和怎么办。按 <Kbd>Ctrl</Kbd> + <Kbd>F</Kbd> 搜报错里的关键词最快。
+
+## 线上搜索提示「搜索索引未生成」
+
+**原因**：Pagefind 索引没有在 `pnpm build` 里生成。托管平台只跑 `pnpm build`，放在别的脚本里的索引步骤不会执行。
+
+**怎么办**：确认 `package.json` 的 `build` 末尾有 `pagefind --site dist`。`pnpm check:seo` 也会拦住这种情况。
+
+<Callout type="tip">
+  本地验证：`pnpm build` 之后看 `dist/pagefind/` 是否存在。
+</Callout>
+
+## e2e 报「上跑的不是本项目刚构建的站」
+
+**原因**：所有派生站共用 preview 端口 4329，别的项目的预览服务占着这个端口。
+
+**怎么办**：换一个端口跑，例如 `E2E_PORT=4339 pnpm test:e2e`；或者先停掉占用端口的服务。
+
+<Callout type="danger" title="不要按名字结束进程">
+  `taskkill /IM node.exe` 会连同编辑器和别的项目一起结束。只停自己起的端口：`npx kill-port 4339`。
+</Callout>
+
+## 构建报 frontmatter 校验失败
+
+**原因**：指南的 frontmatter 和 `src/content.config.ts` 里的 guides 规则对不上，最常见的是 `section` 写了不存在的分组。
+
+**怎么办**：分组只能用 `src/lib/guide-sections.ts` 里列出的值；要加新分组，先改那个文件。
+
+<Result title="排查完">
+  `pnpm verify` 全部通过，本地 `pnpm preview` 能搜到指南正文。
+</Result>

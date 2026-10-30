@@ -1,0 +1,13 @@
+dist/
+.astro/
+node_modules/
+pnpm-lock.yaml
+.claude/
+.agents/
+.codex/
+docs/
+
+# 文档由人工排版（中英混排、表格对齐），不交给 Prettier
+*.md
+# 生成物
+.agents/

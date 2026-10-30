@@ -1,0 +1,56 @@
+# 交付排除清单（gitignore 语法）：由 delivery-sync 首次执行时从模板生成，本文件不提交
+# 脚本只从「HEAD 里已跟踪的文件」中挑选交付内容，未跟踪 / 被 .gitignore 忽略的文件本来就不会进交付副本；
+# 这里排除的是「已提交、但不该给客户」的内容。
+# 标了「强制」的条目即使从本文件删掉，脚本也会强制排除（FORCED 清单，不能用 ! 放行）。
+# 注意：以 / 开头的规则只匹配项目根；不带 / 的规则匹配任意层级（如 docs/ 会连 src/content/docs/ 一起排除）。
+
+# === 技能体系与版本控制（强制）===
+.git/
+.github/
+.claude/
+.codex/
+.agents/
+AGENTS.md
+CLAUDE.md
+
+# === 技能体系配套脚本（交付副本里没有 .claude/，这两个脚本无用）===
+/scripts/sync-agents-skills.mjs
+/scripts/validate-skills.mjs
+
+# === 内部状态文件（强制）===
+.framework-sync.json
+.delivery-sync.json
+.deliveryignore
+
+# === 内部协作文档（需求 / 原型 / 任务台账 / 测试报告 / 编排任务书）===
+/docs/
+/delivery/
+.agent-pipeline/
+
+# === 密钥与本地配置（.env 与 .env.* 强制排除，只放行模板）===
+.env
+.env.*
+!.env.example
+*-local.*
+
+# === 依赖、构建产物与缓存（交付方自行 pnpm install / pnpm build）===
+node_modules/
+/dist/
+/.astro/
+/.cache/
+/logs/
+/output/
+
+# === 测试产物 ===
+/test-results/
+/playwright-report/
+/coverage/
+
+# === IDE / 系统文件 ===
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+nul

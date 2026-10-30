@@ -1,0 +1,46 @@
+---
+// 按钮：传 href 渲染 <a>，否则渲染 <button>
+// primary 用 bg-brand-strong + 白字（两种主题下对比度都 ≥ 4.5:1），不要改回 bg-brand
+import type { HTMLAttributes } from 'astro/types';
+
+type Variant = 'primary' | 'secondary' | 'ghost';
+type Size = 'md' | 'lg';
+
+// 同时接受 <a> 与 <button> 的属性：aria-label、disabled、data-* 等要能透传到实际渲染的元素上
+type Props = Omit<HTMLAttributes<'a'>, 'class' | 'type'> &
+  Omit<HTMLAttributes<'button'>, 'class' | 'type'> & {
+    href?: string;
+    variant?: Variant;
+    size?: Size;
+    class?: string;
+    type?: 'button' | 'submit';
+  };
+
+const { href, variant = 'primary', size = 'md', class: className, type = 'button', ...rest } = Astro.props;
+
+const variants: Record<Variant, string> = {
+  primary: 'bg-brand-strong text-white shadow-sm hover:brightness-110',
+  secondary: 'border border-line bg-elevated text-ink hover:bg-surface',
+  ghost: 'text-muted hover:bg-surface hover:text-ink',
+};
+const sizes: Record<Size, string> = {
+  md: 'h-10 px-4 text-sm',
+  lg: 'h-12 px-6 text-base',
+};
+const classes = [
+  'inline-flex items-center justify-center gap-2 rounded-xl font-medium transition active:scale-[0.98]',
+  variants[variant],
+  sizes[size],
+  className,
+];
+---
+
+{href ? (
+  <a href={href} class:list={classes} {...rest}>
+    <slot />
+  </a>
+) : (
+  <button type={type} class:list={classes} {...rest}>
+    <slot />
+  </button>
+)}

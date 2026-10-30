@@ -1,0 +1,40 @@
+# {{PROJECT_NAME}}
+
+<!-- 交付说明：由 delivery-sync 首次执行时生成到 delivery/README.md，同步时覆盖到交付目录根。
+     请按实际项目改写下面的占位内容；不要写内部协作信息（任务台账、技能体系、内部域名等）。 -->
+
+{{PROJECT_NAME}} 是基于 Astro 构建的静态内容站点。
+
+## 环境要求
+
+| 工具 | 版本 |
+|------|------|
+| Node.js | 22.12 及以上 |
+| pnpm | 10 及以上（`corepack enable` 后自动使用 package.json 指定的版本） |
+
+## 本地运行
+
+```bash
+pnpm install
+pnpm dev          # 开发服务器，默认 http://localhost:4321
+```
+
+## 构建
+
+```bash
+pnpm build        # 类型检查 + 生成静态文件到 dist/
+pnpm check:seo    # 构建后校验每页 SEO 字段
+```
+
+## 目录说明
+
+| 目录 | 内容 |
+|------|------|
+| `src/site.config.ts` | 站点名、域名、品牌色、导航等全站配置 |
+| `src/content.config.ts` | 内容集合（数据结构）定义 |
+| `src/data/` | 集合数据（JSON） |
+| `src/pages/` | 页面，文件即路由 |
+| `scripts/sync/` | 构建前的数据同步脚本 |
+| `deploy/` | nginx 配置 |
+
+部署方式见 `DEPLOY.md`。

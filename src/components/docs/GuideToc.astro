@@ -1,0 +1,27 @@
+---
+// 右侧「本页内容」：取 render() 返回的二级标题（就是 <Steps> 里的每一步 + 其后的小节），纯链接、零 JS
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const items = Astro.props.headings.filter((h) => h.depth === 2);
+---
+
+{
+  items.length > 0 && (
+    <nav aria-label="本页内容" class="text-xs">
+      <p class="font-semibold tracking-wider text-muted">本页内容</p>
+      <ul class="mt-3 space-y-2 border-l border-line">
+        {items.map((h) => (
+          <li>
+            <a href={`#${h.slug}`} class="-ml-px block border-l border-transparent pl-3 text-muted hover:border-brand hover:text-brand-ink">
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

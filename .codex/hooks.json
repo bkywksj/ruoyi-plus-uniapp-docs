@@ -1,0 +1,54 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .codex/hooks/session-start.cjs",
+            "statusMessage": "加载历史经验摘要",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .codex/hooks/skill-forced-eval.cjs",
+            "statusMessage": "强制技能评估",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "^(Bash|shell|apply_patch|Edit|Write)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .codex/hooks/pre-tool-use.cjs",
+            "statusMessage": "命令安全检查",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node .codex/hooks/stop.cjs",
+            "statusMessage": "清理与提示",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  }
+}

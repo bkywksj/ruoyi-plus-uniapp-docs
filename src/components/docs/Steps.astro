@@ -1,0 +1,46 @@
+---
+// 分步时间轴：包住一段 Markdown，里面每个「## 二级标题」就是一步，编号与竖线由 CSS 计数器画出，零 JS。
+// 不让写作者传编号 / id：标题本身就是锚点（Astro 自动生成 slug），右侧「本页内容」也直接取渲染出的标题列表。
+// MDX 写法：<Steps> 与内容之间要空一行，否则里面的 Markdown 不会被解析。
+---
+
+<div class="guide-steps">
+  <slot />
+</div>
+
+<style>
+  .guide-steps {
+    counter-reset: guide-step;
+    margin-block: 2rem;
+    margin-inline-start: 1rem;
+    padding-inline-start: 2rem;
+    border-inline-start: 2px solid var(--color-line);
+  }
+  .guide-steps :global(> h2) {
+    counter-increment: guide-step;
+    position: relative;
+    margin-top: 2.5rem;
+    scroll-margin-top: 5rem;
+  }
+  .guide-steps :global(> h2:first-child) {
+    margin-top: 0;
+  }
+  .guide-steps :global(> h2)::before {
+    content: counter(guide-step);
+    position: absolute;
+    inset-inline-start: calc(-3rem - 1px);
+    top: 0;
+    display: flex;
+    width: 2rem;
+    height: 2rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    /* 实心品牌圆 + 画布色外圈：外圈压住竖线，编号像串在线上 */
+    background-color: var(--color-brand-strong);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    box-shadow: 0 0 0 4px var(--color-canvas);
+  }
+</style>

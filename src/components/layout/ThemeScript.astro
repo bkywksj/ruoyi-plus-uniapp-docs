@@ -1,0 +1,16 @@
+---
+// 首屏前同步设置暗色模式，避免「先白后黑」闪烁（FOUC）。
+// 必须 is:inline 且放在 <head> 里、样式之前；不能改成 bundled script（那会延迟到 DOM 解析后才执行）。
+// 优先级：用户手动选择（localStorage.theme）> 系统偏好。
+---
+
+<script is:inline>
+  (function () {
+    var stored = null;
+    try {
+      stored = localStorage.getItem('theme');
+    } catch (e) {}
+    var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.classList.toggle('dark', dark);
+  })();
+</script>

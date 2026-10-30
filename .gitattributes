@@ -1,0 +1,16 @@
+# 换行统一 LF（.editorconfig 同样约定）；在 Windows 上 clone 也不会被转成 CRLF
+* text=auto eol=lf
+
+# Windows 批处理必须保留 CRLF，否则 cmd 解析多行脚本会出错
+*.bat text eol=crlf
+
+# 二进制
+*.png binary
+*.jpg binary
+*.webp binary
+*.avif binary
+*.ico binary
+
+# 框架自己的任务台账不随孵化导出（git archive 跳过）：新项目从空台账开始，不会带着框架的开发记录
+# （storyloom-docs 试点孵化时实录：回流-aibid-docs.md 被导进了新项目）
+docs/tasks/active/*.md export-ignore

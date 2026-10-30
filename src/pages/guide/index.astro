@@ -1,0 +1,71 @@
+---
+// 指南首页：大搜索框 + 按分组列出全部篇目（摘要 + 用时）。篇目、分组、用时全部取 guides 集合，不写死
+import { ArrowRight, Clock } from '@lucide/astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Breadcrumbs from '@/components/ui/Breadcrumbs.astro';
+import SearchButton from '@/components/docs/SearchButton.astro';
+import { breadcrumbJsonLd, pagePath, type Crumb } from '@/lib/seo';
+import { getGuides, groupBySection, guidePath } from '@/lib/guides';
+import { site } from '@/site.config';
+
+const guides = await getGuides();
+const groups = groupBySection(guides);
+const first = guides[0];
+
+const title = '使用指南';
+const description = `${site.name}使用指南：从上手到排查问题，按顺序读或直接搜索，共 ${guides.length} 篇。`;
+const crumbs: Crumb[] = [
+  { name: '首页', path: '/' },
+  { name: title, path: pagePath('/guide') },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={[breadcrumbJsonLd(crumbs)]}>
+  <Container class="py-10 sm:py-14">
+    <Breadcrumbs crumbs={crumbs} />
+    <header class="mt-6 mb-10 max-w-2xl space-y-4">
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">{title}</h1>
+      <p class="leading-7 text-muted">{description}</p>
+      <SearchButton size="lg" placeholder="搜索指南、步骤、报错…" />
+      {first && (
+        <a
+          href={guidePath(first.id)}
+          class="inline-flex items-center gap-1.5 text-sm font-medium text-brand-ink hover:underline"
+        >
+          从「{first.data.title}」开始读
+          <ArrowRight class="size-4" aria-hidden="true" />
+        </a>
+      )}
+    </header>
+
+    <div class="space-y-12">
+      {groups.map(({ section, items }) => (
+        <section aria-labelledby={`section-${section}`}>
+          <h2 id={`section-${section}`} class="text-xl font-semibold tracking-tight">
+            {section}
+          </h2>
+          <ul class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map((g) => (
+              <li>
+                <a
+                  href={guidePath(g.id)}
+                  class="group flex h-full flex-col rounded-[var(--radius-card)] border border-line bg-elevated p-5 shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-card-hover)]"
+                >
+                  <span class="font-semibold group-hover:text-brand-ink">{g.data.title}</span>
+                  <span class="mt-2 flex-1 text-sm leading-6 text-muted">{g.data.description}</span>
+                  {g.data.duration && (
+                    <span class="mt-3 inline-flex items-center gap-1.5 text-xs text-muted">
+                      <Clock class="size-3.5" aria-hidden="true" />
+                      {g.data.duration}
+                    </span>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </Container>
+</BaseLayout>

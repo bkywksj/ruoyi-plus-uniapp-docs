@@ -1,0 +1,120 @@
+---
+// 站内全文搜索：Pagefind 构建期索引（pnpm build 末尾生成），原生 <dialog> + 小段脚本，不引 Pagefind 自带 UI。
+// 任意 [data-search-open] 元素或 Ctrl/⌘ + K 打开。结果分两级：篇目 + 篇内标题（某一步 / 某一节），点开直接定位。
+// 只索引带 data-pagefind-body 的区域（指南正文），页头页脚与侧栏不进索引；全站策略见 site-search 技能。
+// 开发模式（astro dev）没有索引：提示先 build 再 preview，不报错。
+---
+
+<dialog
+  id="site-search"
+  class="mx-auto mt-[10vh] w-[min(42rem,92vw)] rounded-xl bg-elevated p-0 text-ink shadow-2xl backdrop:bg-black/40"
+  aria-label="站内搜索"
+>
+  <div class="flex items-center gap-3 border-b border-line px-4">
+    <svg class="size-5 shrink-0 text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"
+      ><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg
+    >
+    <input
+      id="site-search-input"
+      type="search"
+      autocomplete="off"
+      placeholder="搜索指南、步骤、报错…"
+      aria-label="搜索关键词"
+      class="w-full bg-transparent py-4 text-[15px] outline-hidden placeholder:text-muted"
+    />
+    <kbd class="rounded border border-line bg-surface px-1.5 py-0.5 text-xs text-muted">Esc</kbd>
+  </div>
+  <div id="site-search-results" class="max-h-[60vh] overflow-y-auto p-2 text-sm" aria-live="polite"></div>
+</dialog>
+
+<!--
+  is:inline：这段脚本原样输出，不经 Vite 打包。Pagefind 索引是构建后才生成的，只能运行时 import()；
+  经 Vite 处理的脚本里，动态 import 会被套上预加载包装，而内联到页面的脚本里那个 __VITE_PRELOAD__ 占位符
+  没人替换，一执行就抛错、搜索永远显示「索引未生成」。同一页只放一个 SearchDialog（放在页头里）。
+-->
+<script is:inline>
+  (() => {
+    const dialog = document.getElementById('site-search');
+    const input = document.getElementById('site-search-input');
+    const box = document.getElementById('site-search-results');
+    if (!dialog || !input || !box) return;
+    /** @type {any} undefined = 未加载；null = 加载失败（开发模式没有索引） */
+    let pagefind;
+
+    async function load() {
+      if (pagefind !== undefined) return pagefind;
+      try {
+        pagefind = await import('/pagefind/pagefind.js');
+        await pagefind.init();
+      } catch {
+        pagefind = null;
+      }
+      return pagefind;
+    }
+
+    function hint(text) {
+      const p = document.createElement('p');
+      p.className = 'px-3 py-6 text-center text-muted';
+      p.textContent = text;
+      box.replaceChildren(p);
+    }
+
+    // excerpt 是 Pagefind 对本站正文生成的片段，只含 <mark> 高亮；标题等纯文本一律走 textContent
+    function row(href, title, excerpt, sub) {
+      const a = document.createElement('a');
+      a.href = href;
+      a.className = 'block rounded-lg px-3 py-2.5 hover:bg-surface focus:bg-surface focus:outline-hidden' + (sub ? ' ml-6' : '');
+      const t = document.createElement('p');
+      t.className = sub ? 'text-ink' : 'font-medium text-ink';
+      t.textContent = title;
+      const e = document.createElement('p');
+      e.className = 'mt-0.5 text-xs text-muted [&_mark]:rounded-sm [&_mark]:bg-accent-soft [&_mark]:text-ink';
+      e.innerHTML = excerpt;
+      a.append(t, e);
+      return a;
+    }
+
+    async function run(q) {
+      const pf = await load();
+      if (!pf) return hint('搜索索引未生成：先运行 pnpm build，再用 pnpm preview 打开。');
+      if (!q.trim()) return box.replaceChildren();
+      const res = await pf.debouncedSearch(q);
+      if (!res) return; // 被更新的输入取消
+      const data = await Promise.all(res.results.slice(0, 8).map((r) => r.data()));
+      if (data.length === 0) return hint('没有找到相关内容，换个说法试试。');
+      box.replaceChildren(
+        ...data.flatMap((d) => [
+          row(d.url, (d.meta && d.meta.title) || d.url, d.excerpt, false),
+          ...(d.sub_results || [])
+            .filter((s) => s.url !== d.url)
+            .slice(0, 3)
+            .map((s) => row(s.url, s.title, s.excerpt, true)),
+        ]),
+      );
+    }
+
+    function open() {
+      dialog.showModal();
+      input.select();
+      void load();
+    }
+
+    document.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('[data-search-open]')) open();
+    });
+    document.addEventListener('keydown', (event) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        open();
+      }
+    });
+    input.addEventListener('input', () => void run(input.value));
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    // 点了结果里的站内链接：关掉弹窗（同页锚点不会触发导航）
+    box.addEventListener('click', (event) => {
+      if (event.target instanceof Element && event.target.closest('a')) dialog.close();
+    });
+  })();
+</script>

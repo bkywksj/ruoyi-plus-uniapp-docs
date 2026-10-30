@@ -1,0 +1,7 @@
+# next-ai-astro 项目级 Codex 配置
+# 仅在 .codex/ 被标记为 trusted 时生效（首次启动 Codex 会询问）。
+# 用户级配置位于 ~/.codex/config.toml，本文件以叠加方式补充项目级所需特性。
+
+[features]
+# 启用 hooks 系统：加载 .codex/hooks.json 中的事件处理器
+hooks = true

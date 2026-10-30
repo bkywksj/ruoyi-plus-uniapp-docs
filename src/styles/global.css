@@ -1,0 +1,187 @@
+/* 全局样式：Tailwind v4 入口 + 设计令牌（design tokens）
+ * 规则：组件里只用语义色（bg-canvas / text-ink / text-muted / border-line / bg-brand），
+ * 不直接写 gray-500 这类原始色——换主题、换品牌色时只改这里和 site.config.ts。
+ */
+@import 'tailwindcss';
+
+/* 暗色模式由 <html class="dark"> 控制（见 ThemeScript.astro），而不是只跟随系统 */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  /* 品牌色兜底值；真实值由 BaseLayout 从 site.config.ts 注入到 <html style="--brand:..."> */
+  --brand: #ff5d2e;
+  --canvas: #ffffff;
+  --surface: #f6f6f7;
+  --elevated: #ffffff;
+  --ink: #111114;
+  --muted: #5d5e66;
+  --line: #e6e6ea;
+  /* 品牌色做「文字色」时的可读版本：纯 #FF5D2E 在白底上对比度只有约 3:1，达不到 WCAG AA 的 4.5:1 */
+  --brand-ink: color-mix(in oklab, var(--brand) 78%, black);
+  /* 状态色：提醒 / 危险 / 完成。只给提示框、结果框这类「语气」用，不拿来做品牌装饰；
+   * 派生站换品牌色时一般不用动，与品牌色撞色（如品牌本身是橙）时改 --accent */
+  --accent: #d97706;
+  --danger: #dc2626;
+  --success: #16a34a;
+  color-scheme: light;
+}
+
+.dark {
+  --canvas: #0b0b0d;
+  --surface: #141417;
+  --elevated: #1b1b1f;
+  --ink: #f2f2f4;
+  --muted: #a3a3ad;
+  --line: #27272d;
+  /* 深色背景上原色本身就够亮 */
+  --brand-ink: var(--brand);
+  --accent: #f59e0b;
+  --danger: #f87171;
+  --success: #4ade80;
+  color-scheme: dark;
+}
+
+/* inline：生成的工具类直接引用 var()，这样暗色切换和品牌色注入都能实时生效
+ * 用法约定：
+ *   bg-brand / bg-brand-soft  → 装饰性色块（不承载文字）
+ *   bg-brand-strong + 白字    → 主按钮（两种主题下对比度都 ≥ 4.5:1）
+ *   text-brand-ink            → 链接、强调文字
+ *   accent / danger / success → 提醒 / 危险 / 完成的语气色：-soft 做底，-ink 做文字与图标
+ */
+@theme inline {
+  --color-brand: var(--brand);
+  --color-brand-soft: color-mix(in oklab, var(--brand) 12%, transparent);
+  --color-brand-strong: color-mix(in oklab, var(--brand) 78%, black);
+  --color-brand-ink: var(--brand-ink);
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-elevated: var(--elevated);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-soft: color-mix(in oklab, var(--accent) 12%, transparent);
+  --color-accent-ink: color-mix(in oklab, var(--accent) 70%, var(--ink));
+  --color-danger: var(--danger);
+  --color-danger-soft: color-mix(in oklab, var(--danger) 10%, transparent);
+  --color-danger-ink: color-mix(in oklab, var(--danger) 75%, var(--ink));
+  --color-success: var(--success);
+  --color-success-soft: color-mix(in oklab, var(--success) 10%, transparent);
+  --color-success-ink: color-mix(in oklab, var(--success) 70%, var(--ink));
+}
+
+@theme {
+  /* 中文优先用系统字体：中文 webfont 动辄几 MB，对 LCP 伤害远大于收益 */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Noto Sans CJK SC', 'Source Han Sans SC', sans-serif;
+  --font-mono: ui-monospace, 'JetBrains Mono', 'Cascadia Code', Consolas, 'Courier New', monospace;
+  --radius-card: 1rem;
+  --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -12px rgb(0 0 0 / 0.12);
+  --shadow-card-hover: 0 2px 4px rgb(0 0 0 / 0.05), 0 18px 40px -16px rgb(0 0 0 / 0.22);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-canvas text-ink font-sans antialiased;
+    min-height: 100dvh;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--brand) 25%, transparent);
+  }
+}
+
+/* 跨文档视图过渡（零 JS）：支持的浏览器里页面切换自带淡入淡出，
+ * 卡片封面与详情页封面共享 view-transition-name 时会做形变动画；不支持的浏览器正常跳转。 */
+@view-transition {
+  navigation: auto;
+}
+
+/* 列表卡片：只有悬停/聚焦（= 即将被点击）的那张拿到名字，详情页封面用同名完成形变 */
+.vt-card:is(:hover, :focus-within) .vt-cover {
+  view-transition-name: var(--vt-name);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+  animation-timing-function: var(--ease-out-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* 文章正文排版：不引入 typography 插件，只覆盖内容站真正用到的元素 */
+@layer components {
+  .prose-content {
+    @apply text-ink leading-8;
+    font-size: 1.0625rem;
+  }
+  .prose-content > * + * {
+    margin-top: 1.25em;
+  }
+  .prose-content h2 {
+    @apply mt-12 text-2xl font-semibold tracking-tight;
+  }
+  .prose-content h3 {
+    @apply mt-8 text-xl font-semibold;
+  }
+  .prose-content a {
+    @apply text-brand-ink underline decoration-brand/40 underline-offset-4 hover:decoration-brand;
+  }
+  .prose-content ul {
+    @apply list-disc pl-6;
+  }
+  .prose-content ol {
+    @apply list-decimal pl-6;
+  }
+  .prose-content li + li {
+    margin-top: 0.4em;
+  }
+  .prose-content blockquote {
+    @apply border-l-4 border-brand/60 bg-surface py-2 pl-4 text-muted;
+  }
+  .prose-content code:not(pre code) {
+    @apply rounded bg-surface px-1.5 py-0.5 font-mono text-[0.9em];
+  }
+  .prose-content pre {
+    @apply overflow-x-auto rounded-xl border border-line p-4 text-sm leading-6;
+  }
+  .prose-content table {
+    @apply w-full border-collapse text-sm;
+  }
+  .prose-content th,
+  .prose-content td {
+    @apply border border-line px-3 py-2 text-left;
+  }
+  .prose-content th {
+    @apply bg-surface font-semibold;
+  }
+  .prose-content img {
+    @apply rounded-xl;
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "framework": "next-ai-astro",
+  "upstream": {
+    "url": "https://gitee.com/bkywksj/next-ai-astro.git",
+    "branch": "master",
+    "initCommit": "e13010c6dc074352aa5ccbf7b1a052178d939675",
+    "initDate": "2026-10-30T17:11:03+08:00"
+  },
+  "site": {
+    "name": "RuoYi-Plus-UniApp 全栈开发文档",
+    "url": "https://ruoyi.plus",
+    "brandColor": "#0B6EF0"
+  },
+  "strippedModules": [
+    "examples",
+    "posts",
+    "works",
+    "faq"
+  ],
+  "transformedModules": {},
+  "lastSync": null,
+  "lastCommit": "e13010c6dc074352aa5ccbf7b1a052178d939675",
+  "syncs": []
+}

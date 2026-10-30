@@ -1,0 +1,103 @@
+---
+// 页头：吸顶 + 毛玻璃；移动端菜单用 <details>，零 JS
+import { Menu } from '@lucide/astro';
+import { site } from '@/site.config';
+import Container from '@/components/ui/Container.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import SearchButton from '@/components/docs/SearchButton.astro';
+import SearchDialog from '@/components/docs/SearchDialog.astro';
+
+const current = Astro.url.pathname;
+// file 网址形态下 href 带 .html，按 match 前缀（或去掉 .html 的 href）判断，才能让一组页面共用一个导航项
+const isActive = (item: { href: string; match?: string }) => {
+  if (item.href === '/') return current === '/' || current === '/index.html';
+  return current.startsWith(item.match ?? item.href.replace(/\.html$/, ''));
+};
+// Tailwind 只认完整类名，断点要写成两组字面量，不能拼字符串
+const lg = site.navBreakpoint === 'lg';
+---
+
+<header class="sticky top-0 z-40 border-b border-line/70 bg-canvas/80 backdrop-blur-md supports-[backdrop-filter]:bg-canvas/65">
+  <Container class="flex h-16 items-center justify-between gap-6">
+    <a href="/" class="flex items-center gap-2.5 font-semibold tracking-tight">
+      {
+        site.logo ? (
+          <img src={site.logo} alt="" width="32" height="32" class="size-8 rounded-full" />
+        ) : (
+          <span class="size-2.5 rounded-full bg-brand" aria-hidden="true" />
+        )
+      }
+      <span>{site.shortName}</span>
+    </a>
+
+    <nav aria-label="主导航" class:list={['hidden', lg ? 'lg:block' : 'md:block']}>
+      <ul class="flex items-center gap-1">
+        {site.nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isActive(item) ? 'page' : undefined}
+              class:list={[
+                'rounded-lg px-3 py-2 text-sm transition-colors',
+                isActive(item) ? 'font-medium text-ink' : 'text-muted hover:text-ink',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-1">
+      <SearchButton class="mr-1 hidden w-44 lg:flex" />
+      <ThemeToggle />
+      <details class:list={['group relative', lg ? 'lg:hidden' : 'md:hidden']} data-mobile-menu>
+        <summary
+          class="inline-flex size-10 cursor-pointer list-none items-center justify-center rounded-lg text-muted hover:bg-surface hover:text-ink [&::-webkit-details-marker]:hidden"
+          aria-label="打开菜单"
+        >
+          <Menu class="size-5" aria-hidden="true" />
+        </summary>
+        <nav
+          aria-label="移动端导航"
+          class="absolute top-11 right-0 w-44 rounded-xl border border-line bg-elevated p-1.5 shadow-[var(--shadow-card-hover)]"
+        >
+          {site.nav.map((item) => (
+            <a
+              href={item.href}
+              aria-current={isActive(item) ? 'page' : undefined}
+              class:list={[
+                'block rounded-lg px-3 py-2 text-sm',
+                isActive(item)
+                  ? 'bg-surface font-medium text-ink'
+                  : 'text-muted hover:bg-surface hover:text-ink',
+              ]}
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </details>
+    </div>
+  </Container>
+</header>
+<SearchDialog />
+
+<script>
+  // 移动端菜单用 <details> 实现开合（无 JS 也能用）；这里只补「点外部 / 按 Esc / 点菜单项后自动收起」
+  const menus = document.querySelectorAll<HTMLDetailsElement>('[data-mobile-menu]');
+  const closeAll = () => menus.forEach((menu) => menu.removeAttribute('open'));
+
+  document.addEventListener('click', (event) => {
+    menus.forEach((menu) => {
+      if (menu.open && !menu.contains(event.target as Node)) menu.removeAttribute('open');
+    });
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeAll();
+  });
+  menus.forEach((menu) =>
+    menu.querySelectorAll('nav a').forEach((link) => link.addEventListener('click', closeAll)),
+  );
+</script>

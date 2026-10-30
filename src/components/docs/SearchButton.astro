@@ -1,0 +1,28 @@
+---
+// 打开站内搜索的按钮（外观像输入框）；真正的弹窗在 SearchDialog，页头里放一次
+import { Search } from '@lucide/astro';
+
+interface Props {
+  /** md = 侧栏 / 页头；lg = 指南首页的大搜索框 */
+  size?: 'md' | 'lg';
+  /** lg 尺寸的占位文案，写几个本站常被搜的词 */
+  placeholder?: string;
+  class?: string;
+}
+
+const { size = 'md', placeholder = '搜索文档', class: className } = Astro.props;
+---
+
+<button
+  type="button"
+  data-search-open
+  class:list={[
+    'flex w-full items-center gap-2 rounded-lg border border-line bg-elevated text-left text-muted transition-colors hover:border-brand',
+    size === 'lg' ? 'px-4 py-3 text-[15px] shadow-[var(--shadow-card)]' : 'px-3 py-2 text-sm',
+    className,
+  ]}
+>
+  <Search class={size === 'lg' ? 'size-5' : 'size-4'} aria-hidden="true" />
+  <span class="flex-1 truncate">{size === 'lg' ? placeholder : '搜索文档'}</span>
+  <kbd class="rounded border border-line bg-surface px-1.5 py-0.5 font-mono text-xs">Ctrl K</kbd>
+</button>

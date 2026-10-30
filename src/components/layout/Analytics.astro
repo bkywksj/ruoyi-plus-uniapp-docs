@@ -1,0 +1,21 @@
+---
+// 访问统计：只在生产构建输出，本地 dev 不上报（避免污染数据）
+// provider 在 site.config.ts 的 analytics 里切换；接入细节与合规说明见 analytics 技能
+import { site } from '@/site.config';
+
+const { provider, id, src } = site.analytics;
+const enabled = import.meta.env.PROD && provider !== 'none' && id !== '';
+const baiduSnippet = `var _hmt=_hmt||[];(function(){var hm=document.createElement("script");hm.src="https://hm.baidu.com/hm.js?${id}";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(hm,s);})();`;
+---
+
+{
+  /*
+   * data-exclude-search：Umami 默认会拦截 history.replaceState，URL 一变就记一次浏览。
+   * 作品筛选会把 ?q=&c= 写进 URL，不排除查询参数的话每敲一个字就多一条浏览记录，
+   * 还会把搜索词原文发给统计端。排除后同一路径不会重复上报。
+   */
+  enabled && provider === 'umami' && src && (
+    <script is:inline defer src={src} data-website-id={id} data-exclude-search="true"></script>
+  )
+}
+{enabled && provider === 'baidu' && <script is:inline set:html={baiduSnippet} />}

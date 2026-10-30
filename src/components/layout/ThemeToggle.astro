@@ -1,0 +1,35 @@
+---
+// 主题切换按钮：普通 <script>（会被打包、去重，每页只执行一次），不需要 React island
+import { Moon, Sun } from '@lucide/astro';
+---
+
+<button
+  type="button"
+  data-theme-toggle
+  class="inline-flex size-10 items-center justify-center rounded-lg text-muted transition-colors hover:bg-surface hover:text-ink"
+  aria-label="切换深色模式"
+  title="切换深色模式"
+>
+  <Sun class="size-[18px] dark:hidden" aria-hidden="true" />
+  <Moon class="hidden size-[18px] dark:block" aria-hidden="true" />
+</button>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+  const sync = () => {
+    const dark = document.documentElement.classList.contains('dark');
+    buttons.forEach((button) => button.setAttribute('aria-pressed', String(dark)));
+  };
+  buttons.forEach((button) =>
+    button.addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark');
+      try {
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+      } catch {
+        // 隐私模式下 localStorage 可能不可用：只影响「记住选择」，切换本身仍然生效
+      }
+      sync();
+    }),
+  );
+  sync();
+</script>

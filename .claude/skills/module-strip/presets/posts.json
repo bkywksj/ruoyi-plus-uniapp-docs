@@ -1,0 +1,196 @@
+{
+  "name": "文章模块",
+  "description": "Markdown 文章：posts 集合与查询封装（src/lib/posts.ts）、/posts/ 列表与详情页、首页「最新文章」区块与统计、llms.txt 文章段、导航入口",
+  "delete_dirs": [
+    "src/content/posts",
+    "src/pages/posts"
+  ],
+  "delete_files": [
+    "src/lib/posts.ts"
+  ],
+  "edits": [
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_block",
+      "start": "const posts = defineCollection({",
+      "end": "});",
+      "blank_after": true,
+      "why": "删除 posts 集合定义"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_list_item",
+      "anchor": "export const collections =",
+      "item": "posts"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "replace_regex",
+      "pattern": "export const collections = \\{\\s+\\};",
+      "replace": "export const collections = {};",
+      "optional": true,
+      "why": "集合全部裁掉后收拢空对象"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_lines",
+      "contains": [
+        "//   posts："
+      ],
+      "optional": true
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "replace_regex",
+      "pattern": "import \\{ file, glob \\} from 'astro/loaders';\\n(?![\\s\\S]*\\bglob\\()",
+      "replace": "import { file } from 'astro/loaders';\n",
+      "optional": true,
+      "why": "文件里再没有 glob( 调用时才去掉 glob 导入（负向前瞻）：guides 集合也用 glob，guides 还在就不动"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "replace_regex",
+      "pattern": "import \\{ glob \\} from 'astro/loaders';\\n(?![\\s\\S]*\\bglob\\()",
+      "replace": "",
+      "optional": true,
+      "why": "works 已先被裁掉、且 guides 也不在时整行去掉"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_lines",
+      "contains": [
+        "from '@/lib/posts';",
+        "import { formatDate, isoDate } from '@/lib/format';",
+        "const latestPosts = ",
+        "{ label: '文章', value: posts.length },"
+      ]
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_block",
+      "start": "<Button href=\"/posts/\"",
+      "end": "</Button>",
+      "why": "删除 Hero 的「阅读文章」按钮（单行或 Prettier 拆成的多行都适用）"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "posts"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "getPosts()"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "first_of",
+      "options": [
+        {
+          "op": "remove_block",
+          "start": "{latestPosts.length > 0 && (",
+          "end": "</Section>",
+          "wrap_after": [
+            ")}"
+          ],
+          "blank_after": true
+        },
+        {
+          "op": "remove_block",
+          "start": "latestPosts.length > 0 && (",
+          "end": "</Section>",
+          "wrap_before": [
+            "{"
+          ],
+          "wrap_after": [
+            ")",
+            "}"
+          ],
+          "blank_after": true
+        }
+      ],
+      "why": "删除首页「最新文章」区块（含外层 { … }；兼容 Prettier 前后两种排版）"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "replace_regex",
+      "pattern": "\\n *const \\[\\] = await Promise\\.all\\(\\[\\s*\\]\\);\\n",
+      "replace": "\n",
+      "optional": true,
+      "why": "所有集合查询都被裁掉后，删除留下的空 Promise.all"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "replace_regex",
+      "pattern": "const stats = \\[\\s*\\];",
+      "replace": "const stats: { label: string; value: number }[] = [];",
+      "optional": true,
+      "why": "统计项全被裁掉后，空数组需要显式类型，否则 strict 模式报隐式 any[]"
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_lines",
+      "contains": [
+        "from '@/lib/posts';"
+      ]
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "posts"
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "getPosts()"
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "first_of",
+      "options": [
+        {
+          "op": "remove_block",
+          "start": "'## 文章',",
+          "end": "postPath(post.id)",
+          "wrap_after": [
+            "),",
+            "'',"
+          ]
+        },
+        {
+          "op": "remove_block",
+          "start": "'## 文章',",
+          "end": "postPath(post.id)",
+          "wrap_after": [
+            "'',"
+          ]
+        }
+      ],
+      "why": "删除 llms.txt 的文章段（posts.map 被拆成多行或写在一行都适用）"
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "replace_regex",
+      "pattern": "\\n *const \\[\\] = await Promise\\.all\\(\\[\\s*\\]\\);\\n",
+      "replace": "\n",
+      "optional": true
+    },
+    {
+      "file": "src/site.config.ts",
+      "op": "remove_lines",
+      "contains": [
+        "{ label: '文章', href: '/posts/' },"
+      ]
+    }
+  ],
+  "manual_actions": [
+    "首页 Hero 只剩一个按钮，检查按钮区与统计区的布局是否还合适",
+    "src/pages/index.astro 顶部注释里的「最新文章」字样顺手删掉",
+    "CLAUDE.md「参考代码位置」表中的 Markdown 文章参考（src/pages/posts/[...id].astro、src/lib/posts.ts）已不存在：不改原表，在 .claude/PROJECT.md 写「## 参考代码位置（覆盖 CLAUDE.md）」表（删掉文章行、其余照抄），pnpm check:skills 会点名残留"
+  ],
+  "depends_on": []
+}

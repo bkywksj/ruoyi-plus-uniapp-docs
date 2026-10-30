@@ -1,0 +1,87 @@
+{
+  "framework": {
+    "name": "next-ai-astro",
+    "description": "框架核心 vs 示例 vs 项目配置的边界。/check、/progress、/update-status、framework-sync、module-strip 都读这份清单。",
+    "core": {
+      "description": "框架核心：业务开发只新增、不修改；确需修改时单独一个提交、scope 写 framework（按性质用 feat/fix(framework): …，与 CLAUDE.md 一致），便于 /framework-sync 合并上游",
+      "paths": [
+        "src/layouts/BaseLayout.astro",
+        "src/components/seo/",
+        "src/components/layout/",
+        "src/components/ui/",
+        "src/lib/seo.ts",
+        "src/lib/search.ts",
+        "src/lib/format.ts",
+        "src/lib/images.ts",
+        "src/styles/global.css",
+        "src/pages/robots.txt.ts",
+        "src/data/ai-crawlers.json",
+        "src/env.d.ts",
+        "scripts/check-seo.mjs",
+        "scripts/render-og.mjs",
+        "scripts/sync/run.mjs",
+        "scripts/sync/context.mjs",
+        "scripts/validate-skills.mjs",
+        "scripts/sync-agents-skills.mjs",
+        "deploy/",
+        "Dockerfile",
+        ".claude/hooks/",
+        ".claude/skills/",
+        ".claude/commands/",
+        ".claude/templates/",
+        ".claude/agents/",
+        ".codex/",
+        ".agents/"
+      ]
+    },
+    "examples": {
+      "description": "示例内容：孵化后按需替换或经 module-strip 裁剪，不计入业务进度",
+      "paths": [
+        "src/data/works.json",
+        "src/data/categories.json",
+        "src/data/faq.json",
+        "src/content/posts/getting-started.md",
+        "src/content/posts/seo-geo-checklist.md",
+        "public/examples/",
+        "design/og/og-default.html",
+        "scripts/sync/sources/example.mjs",
+        "src/content/guides/quick-start.mdx",
+        "src/content/guides/troubleshooting.mdx"
+      ]
+    },
+    "projectConfig": {
+      "description": "项目配置：孵化时修改，之后随业务演进（llms.txt.ts 每新增一个集合都要追加分区，所以归这里而不是框架核心）",
+      "paths": [
+        "src/site.config.ts",
+        "src/content.config.ts",
+        "src/pages/llms.txt.ts",
+        "astro.config.ts",
+        "package.json",
+        "public/favicon.svg",
+        "public/og-default.png"
+      ]
+    }
+  },
+  "business": {
+    "description": "业务代码位置（进度统计只看这些路径上的 feat/fix 提交）",
+    "paths": [
+      "src/pages/",
+      "src/components/",
+      "src/lib/",
+      "src/data/",
+      "src/content/",
+      "scripts/sync/sources/",
+      "public/"
+    ]
+  },
+  "progress": {
+    "description": "进度统计口径（与 CLAUDE.md「协作约定」一致）：只数 countCommitTypes 里的类型，且 scope 不在 excludeScopes 里",
+    "countCommitTypes": ["feat", "fix"],
+    "excludeScopes": ["framework", "strip", "data", "deps"]
+  },
+  "modeDetection": {
+    "description": "exp-sediment 等判断当前仓库身份的规则：先看 .framework-sync.json（有 = 孵化出的子项目），再看 package.json name（= next-ai-astro 且无同步配置 = 框架仓库本身）；.claude/exp.config.json 只作本机缓存，不入库",
+    "subprojectMarker": ".framework-sync.json",
+    "frameworkPackageName": "next-ai-astro"
+  }
+}

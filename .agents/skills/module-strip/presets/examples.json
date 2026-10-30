@@ -1,0 +1,31 @@
+{
+  "name": "示例数据与封面",
+  "description": "保留作品/文章模块本身，只清掉框架自带的示例内容：示例作品与分类数据、两篇示例文章、示例封面图",
+  "delete_dirs": ["public/examples"],
+  "delete_files": ["src/content/posts/getting-started.md", "src/content/posts/seo-geo-checklist.md"],
+  "edits": [
+    {
+      "file": "src/data/works.json",
+      "op": "write_json",
+      "value": [],
+      "only_if_contains": "sample-01",
+      "optional": true,
+      "why": "清空示例作品（内容已不是框架示例时不覆盖）"
+    },
+    {
+      "file": "src/data/categories.json",
+      "op": "write_json",
+      "value": [],
+      "only_if_contains": "getting-started",
+      "optional": true,
+      "why": "清空示例分类（内容已不是框架示例时不覆盖）"
+    }
+  ],
+  "manual_actions": [
+    "数据清空后首页「精选作品」「按分类浏览」为空：运行 pnpm sync 接入真实数据源，或手工填写 src/data/*.json 后再上线",
+    "src/data/faq.json 是框架示例问答：改成本站真实问答，或执行 faq 预设整体移除",
+    "public/og-default.png 与 public/favicon.svg 是框架品牌图，换成本站的（尺寸与格式要求见 icon-management、image-optimization）",
+    "src/site.config.ts 的站名 / 描述 / 域名若仍是示例值，先由 project-init 改掉"
+  ],
+  "depends_on": []
+}

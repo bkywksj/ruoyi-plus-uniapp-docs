@@ -1,0 +1,20 @@
+[
+  { "name": "OAI-SearchBot", "purpose": "search", "allow": true },
+  { "name": "ChatGPT-User", "purpose": "user", "allow": true },
+  { "name": "GPTBot", "purpose": "training", "allow": true },
+  { "name": "Claude-SearchBot", "purpose": "search", "allow": true },
+  { "name": "Claude-User", "purpose": "user", "allow": true },
+  { "name": "ClaudeBot", "purpose": "training", "allow": true },
+  { "name": "PerplexityBot", "purpose": "search", "allow": true },
+  { "name": "Perplexity-User", "purpose": "user", "allow": true },
+  { "name": "Google-Extended", "purpose": "training", "allow": true },
+  { "name": "Applebot-Extended", "purpose": "training", "allow": true },
+  { "name": "Meta-ExternalAgent", "purpose": "training", "allow": true },
+  { "name": "Bytespider", "purpose": "training", "allow": true },
+  { "name": "Googlebot", "purpose": "search", "allow": true },
+  { "name": "Bingbot", "purpose": "search", "allow": true },
+  { "name": "Baiduspider", "purpose": "search", "allow": true },
+  { "name": "Sogou web spider", "purpose": "search", "allow": true },
+  { "name": "360Spider", "purpose": "search", "allow": true },
+  { "name": "YisouSpider", "purpose": "search", "allow": true }
+]

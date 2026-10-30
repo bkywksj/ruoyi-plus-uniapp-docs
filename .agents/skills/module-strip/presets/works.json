@@ -1,0 +1,305 @@
+{
+  "name": "作品模块",
+  "description": "作品目录整条链路：works / categories 集合与数据、列表页 + 筛选 island、详情页、分类落地页、首页精选与分类区块、llms.txt 分类与作品段、示例封面、E2E 冒烟用例",
+  "delete_dirs": [
+    "src/pages/works",
+    "src/components/works",
+    "public/examples"
+  ],
+  "delete_files": [
+    "src/components/islands/WorksExplorer.tsx",
+    "src/lib/works.ts",
+    "src/data/works.json",
+    "src/data/categories.json",
+    "tests/e2e/works.spec.ts",
+    "tests/unit/works-schema.test.ts"
+  ],
+  "edits": [
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_block",
+      "start": "const categories = defineCollection({",
+      "end": "});",
+      "blank_after": true
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_block",
+      "start": "const works = defineCollection({",
+      "end": "});",
+      "blank_after": true
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_list_item",
+      "anchor": "export const collections =",
+      "item": "categories"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_list_item",
+      "anchor": "export const collections =",
+      "item": "works"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "replace_regex",
+      "pattern": "export const collections = \\{\\s+\\};",
+      "replace": "export const collections = {};",
+      "optional": true,
+      "why": "集合全部裁掉后收拢空对象"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "replace",
+      "find": "import { defineCollection, reference } from 'astro:content';",
+      "replace": "import { defineCollection } from 'astro:content';"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "replace",
+      "find": "import { file, glob } from 'astro/loaders';",
+      "replace": "import { glob } from 'astro/loaders';",
+      "optional": true
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_lines",
+      "contains": [
+        "import { file } from 'astro/loaders';"
+      ],
+      "optional": true,
+      "why": "posts 已先被裁掉时 file 也不再使用"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_lines",
+      "contains": [
+        "//   categories：",
+        "//   works："
+      ],
+      "optional": true
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_lines",
+      "contains": [
+        "import { WorkCard } from '@/components/works/WorkCard';",
+        "from '@/lib/works';",
+        "const featuredSource = ",
+        "const counts = countByCategory(works);",
+        "{ label: '作品', value: works.length },",
+        "{ label: '分类', value: categories.length },"
+      ]
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_block",
+      "start": "const featured = await toCardList(",
+      "end": ");",
+      "why": "删除精选作品的数据准备（一行写完或被 Prettier 拆成多行都适用）"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_block",
+      "start": "<Button href=\"/works/\" size=\"lg\">",
+      "end": "</Button>",
+      "why": "删除 Hero 的「浏览全部作品」按钮"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "works"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "categories"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "getWorks()"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "getCategories()"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_lines",
+      "contains": [
+        "/* 数据为空时"
+      ],
+      "optional": true,
+      "why": "精选区块条件表达式里的说明注释，先删掉才能让下一条的包裹行核对直接对上外层 {"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "first_of",
+      "options": [
+        {
+          "op": "remove_block",
+          "start": "{featured.length > 0 && (",
+          "end": "</Section>",
+          "wrap_after": [
+            ")}"
+          ],
+          "blank_after": true
+        },
+        {
+          "op": "remove_block",
+          "start": "featured.length > 0 && (",
+          "end": "</Section>",
+          "wrap_before": [
+            "{"
+          ],
+          "wrap_after": [
+            ")",
+            "}"
+          ],
+          "blank_after": true
+        }
+      ],
+      "why": "删除首页「精选作品」区块（含外层 { … }；兼容 Prettier 前后两种排版）"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "first_of",
+      "options": [
+        {
+          "op": "remove_block",
+          "start": "{categories.length > 0 && (",
+          "end": "</Section>",
+          "wrap_after": [
+            ")}"
+          ],
+          "blank_after": true
+        },
+        {
+          "op": "remove_block",
+          "start": "categories.length > 0 && (",
+          "end": "</Section>",
+          "wrap_before": [
+            "{"
+          ],
+          "wrap_after": [
+            ")",
+            "}"
+          ],
+          "blank_after": true
+        }
+      ],
+      "why": "删除首页「按分类浏览」区块（含外层 { … }；兼容 Prettier 前后两种排版）"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "replace_regex",
+      "pattern": "\\n *const \\[\\] = await Promise\\.all\\(\\[\\s*\\]\\);\\n",
+      "replace": "\n",
+      "optional": true,
+      "why": "所有集合查询都被裁掉后，删除留下的空 Promise.all"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "replace_regex",
+      "pattern": "const stats = \\[\\s*\\];",
+      "replace": "const stats: { label: string; value: number }[] = [];",
+      "optional": true,
+      "why": "统计项全被裁掉后，空数组需要显式类型，否则 strict 模式报隐式 any[]"
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_lines",
+      "contains": [
+        "from '@/lib/works';",
+        "const counts = countByCategory(works);"
+      ]
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "works"
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "categories"
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "getWorks()"
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_list_item",
+      "anchor": "= await Promise.all([",
+      "item": "getCategories()"
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_block",
+      "start": "/** 作品太多时只列最新的 N 条",
+      "end": "const MAX_WORKS",
+      "blank_after": true
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_block",
+      "start": "'## 分类',",
+      "end": ".map((work) =>",
+      "wrap_after": [
+        "'',"
+      ],
+      "why": "删除 llms.txt 的分类段与作品段（works.slice(...).map(...) 写在一行或被拆成多行都适用）"
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "replace_regex",
+      "pattern": "\\n *const \\[\\] = await Promise\\.all\\(\\[\\s*\\]\\);\\n",
+      "replace": "\n",
+      "optional": true
+    },
+    {
+      "file": "src/site.config.ts",
+      "op": "remove_lines",
+      "contains": [
+        "{ label: '作品', href: '/works/' },"
+      ]
+    },
+    {
+      "file": "src/pages/404.astro",
+      "op": "remove_block",
+      "start": "<Button href=\"/works/\" variant=\"secondary\">",
+      "end": "</Button>",
+      "why": "删除 404 页的「浏览作品」按钮（单行或多行写法都适用）"
+    },
+    {
+      "file": "src/pages/404.astro",
+      "op": "replace",
+      "find": "可以回到首页，或者去作品列表按分类和关键词重新查找。",
+      "replace": "可以回到首页重新查找需要的内容。",
+      "optional": true
+    }
+  ],
+  "manual_actions": [
+    "首页 Hero 的统计与按钮需按新站点内容重写（作品/分类统计已删除）",
+    "tests/e2e/works.spec.ts 已删除（作品列表筛选 / 详情页用例）；通用的 tests/e2e/smoke.spec.ts 保留，按新站点的列表 / 详情页补写 <模块>.spec.ts（waitForHydration 在 tests/e2e/helpers.ts）",
+    "tests/unit/works-schema.test.ts 已删除（它只测 works.url 的协议白名单）：新集合里有渲染进 <a href> 的外链字段时，按同样写法补一份 <集合>-schema.test.ts（z.url({ protocol: /^https?$/ }) 的正反例）",
+    "scripts/sync/sources/example.mjs 的 output 仍指向已删除的 src/data/works.json：保留作写法参考，或一并删除",
+    "src/data/faq.json 的示例问答里提到 works.json，改成本站真实问答（或执行 faq 预设）",
+    "若全站已没有 island：可在 astro.config.ts 去掉 react() 并移除 @astrojs/react / react / react-dom / lucide-react 依赖（不去也不影响性能，没有 island 的页面不会加载 React）",
+    "src/lib/images.ts（resolveCover）已无调用方，保留供新业务复用",
+    "CLAUDE.md「参考代码位置」表（以及 AGENTS.md、.claude/agents/code-reviewer.md 的同类表）里的作品相关参考文件已不存在：不改原表，在 .claude/PROJECT.md 写「## 参考代码位置（覆盖 CLAUDE.md）」表，换成新站点的对应页面，pnpm check:skills 会点名残留"
+  ],
+  "depends_on": []
+}

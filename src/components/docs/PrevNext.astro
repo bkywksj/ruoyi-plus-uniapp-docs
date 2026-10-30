@@ -1,0 +1,33 @@
+---
+// 上一篇 / 下一篇：按全站顺序（lib/guides 的 prevNext），读完一篇直接点进下一篇
+import type { Guide } from '@/lib/guides';
+import { guidePath } from '@/lib/guides';
+
+interface Props {
+  prev?: Guide;
+  next?: Guide;
+}
+
+const { prev, next } = Astro.props;
+---
+
+{
+  (prev || next) && (
+    <nav aria-label="上一篇与下一篇" class="not-prose mt-12 grid gap-4 border-t border-line pt-6 text-sm sm:grid-cols-2">
+      {prev ? (
+        <a href={guidePath(prev.id)} rel="prev" class="rounded-lg border border-line p-4 transition-colors hover:border-brand">
+          <span class="text-xs text-muted">上一篇</span>
+          <span class="mt-1 block font-medium text-brand-ink">← {prev.data.title}</span>
+        </a>
+      ) : (
+        <span />
+      )}
+      {next && (
+        <a href={guidePath(next.id)} rel="next" class="rounded-lg border border-line p-4 text-right transition-colors hover:border-brand">
+          <span class="text-xs text-muted">下一篇</span>
+          <span class="mt-1 block font-medium text-brand-ink">{next.data.title} →</span>
+        </a>
+      )}
+    </nav>
+  )
+}

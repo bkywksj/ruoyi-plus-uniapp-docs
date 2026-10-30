@@ -1,0 +1,64 @@
+---
+// 页脚：站点简介 + 站内导航 + 社交链接 + 备案号（site.icp 为空则不显示）
+import { site } from '@/site.config';
+import Container from '@/components/ui/Container.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-16 border-t border-line">
+  <Container class="flex flex-col gap-8 py-12 md:flex-row md:justify-between">
+    <div class="max-w-md space-y-3">
+      <p class="flex items-center gap-2.5 font-semibold">
+        {
+          // 与页头同一个标志：页头用了标志图而页脚还是圆点，品牌在同一页里出现两种样子
+          site.logo ? (
+            <img src={site.logo} alt="" width="28" height="28" class="size-7 rounded-full" />
+          ) : (
+            <span class="size-2.5 rounded-full bg-brand" aria-hidden="true" />
+          )
+        }
+        {site.name}
+      </p>
+      <p class="text-sm leading-6 text-muted">{site.description}</p>
+    </div>
+    <div class="flex gap-16 text-sm">
+      <nav aria-label="页脚导航">
+        <p class="mb-3 font-medium">站内</p>
+        <ul class="space-y-2">
+          {site.nav.map((item) => (
+            <li>
+              <a href={item.href} class="text-muted hover:text-ink">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      {site.social.length > 0 && (
+        <div>
+          <p class="mb-3 font-medium">关注</p>
+          <ul class="space-y-2">
+            {site.social.map((item) => (
+              <li>
+                <a href={item.href} class="text-muted hover:text-ink" rel="noopener me" target="_blank">
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  </Container>
+  <Container class="flex flex-col gap-2 border-t border-line py-6 text-xs text-muted sm:flex-row sm:justify-between">
+    <p>
+      © {year} {site.author.name}
+    </p>
+    {site.icp && (
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" class="hover:text-ink">
+        {site.icp}
+      </a>
+    )}
+  </Container>
+</footer>

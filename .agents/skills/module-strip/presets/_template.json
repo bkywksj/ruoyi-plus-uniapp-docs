@@ -1,0 +1,32 @@
+{
+  "_doc_说明": "复制本文件并改名为 <模块名>.json 即成为新预设；以 _ 开头的文件不会出现在可用预设列表里。",
+  "_doc_路径": "所有路径都相对目标项目根目录，用正斜杠，目录不带结尾斜杠。",
+  "_doc_edits": "每条改动先在内存里预检，任一非 optional 改动的锚点找不到，整个模块跳过（不会半截裁剪）。",
+  "_doc_op_remove_lines": "{ contains: [字面量...] }：删除包含任一字面量的整行，每个字面量至少命中 1 行",
+  "_doc_op_replace": "{ find, replace }：字面量替换，find 必须恰好出现 1 次",
+  "_doc_op_replace_regex": "{ pattern, flags?, replace }：正则替换，至少命中 1 处",
+  "_doc_op_remove_block": "{ start, end, wrap_before?, wrap_after?, blank_before?, blank_after? }：从含 start 的行删到其后第一个含 end 的行（含）。wrap_* 是必须逐行核对的包裹行（trim 后全等，如 JSX 的 { 与 ) }），对不上整个模块放弃；blank_* 只在相邻行确实为空时顺带删除",
+  "_doc_op_remove_list_item": "{ anchor, item }：在含 anchor 的那一行里把 item 从逗号列表中删掉，如 { a, b } / [a, b]",
+  "_doc_op_write_json": "{ value, only_if_contains? }：整个文件替换为 JSON；only_if_contains 是守卫，内容不含该字符串时不覆盖",
+  "_doc_op_first_of": "{ options: [改动, …] }：依次尝试候选改动（每个候选自带 op 与参数，不写 file），第一个命中的生效；用于同一段代码有多种排版的情况，如 Prettier 前是 `{` 独占一行 + `xxx.length > 0 && (`，Prettier 后并成 `{xxx.length > 0 && (` 且结尾是 `)}`",
+  "_doc_optional": "optional: true 的改动找不到锚点时静默跳过，用于「另一个模块先裁过，这行已经不在了」的情况",
+  "_doc_排版": "锚点要能扛住格式化：多行 JSX / 函数调用优先用 remove_block（start 与 end 在同一行时也成立），别用只删首行的 remove_lines；写完在 Prettier 前后各跑一次 --preview",
+
+  "name": "示例模块（中文名，用于报告）",
+  "description": "一句话说明这个预设删什么",
+  "delete_dirs": ["src/pages/xxx", "src/components/xxx"],
+  "delete_files": ["src/lib/xxx.ts", "src/data/xxx.json"],
+  "edits": [
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_block",
+      "start": "const xxx = defineCollection({",
+      "end": "});",
+      "blank_after": true
+    },
+    { "file": "src/content.config.ts", "op": "remove_list_item", "anchor": "export const collections =", "item": "xxx" },
+    { "file": "src/site.config.ts", "op": "remove_lines", "contains": ["{ label: 'XXX', href: '/xxx/' },"] }
+  ],
+  "manual_actions": ["脚本处理不了、需要人工确认的事，会列在报告末尾"],
+  "depends_on": []
+}

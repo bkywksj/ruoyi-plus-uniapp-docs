@@ -1,0 +1,124 @@
+{
+  "name": "使用指南模块",
+  "description": "使用指南：guides 集合（MDX）与分组 / 排序封装、/guide/ 首页与详情页、三栏布局、src/components/docs/ 文档组件、页头搜索入口与 Pagefind 站内搜索、llms.txt 指南段、导航入口",
+  "delete_dirs": [
+    "src/content/guides",
+    "src/pages/guide",
+    "src/components/docs"
+  ],
+  "delete_files": [
+    "src/layouts/GuideLayout.astro",
+    "src/lib/guides.ts",
+    "src/lib/guide-sections.ts",
+    "tests/unit/guides.test.ts",
+    "tests/e2e/guides.spec.ts"
+  ],
+  "edits": [
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_block",
+      "start": "const guides = defineCollection({",
+      "end": "});",
+      "blank_after": true,
+      "why": "删除 guides 集合定义（schema 内部的 z.object({ … }) 嵌套行以「  })」结尾，不会提前截断）"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_list_item",
+      "anchor": "export const collections =",
+      "item": "guides"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "replace_regex",
+      "pattern": "export const collections = \\{\\s+\\};",
+      "replace": "export const collections = {};",
+      "optional": true,
+      "why": "集合全部裁掉后收拢空对象"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_lines",
+      "contains": ["//   guides：", "import { GUIDE_SECTIONS } from './lib/guide-sections';"]
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "replace_regex",
+      "pattern": "import \\{ file, glob \\} from 'astro/loaders';\\n(?![\\s\\S]*\\bglob\\()",
+      "replace": "import { file } from 'astro/loaders';\n",
+      "optional": true,
+      "why": "posts 也已裁掉、文件里再没有 glob( 调用时才去掉 glob 导入（负向前瞻），posts 还在就不动"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "replace_regex",
+      "pattern": "import \\{ glob \\} from 'astro/loaders';\\n(?![\\s\\S]*\\bglob\\()",
+      "replace": "",
+      "optional": true,
+      "why": "works 与 posts 都已裁掉时整行去掉"
+    },
+    {
+      "file": "astro.config.ts",
+      "op": "remove_lines",
+      "contains": [
+        "import mdx from '@astrojs/mdx';",
+        "// 使用指南（guides 集合）用 MDX",
+        "    mdx(),"
+      ]
+    },
+    {
+      "file": "astro.config.ts",
+      "op": "replace_regex",
+      "pattern": "\\n    build: \\{\\n      rolldownOptions: \\{[\\s\\S]*?astro:head-inject[\\s\\S]*?\\n      \\},\\n    \\},",
+      "replace": "",
+      "why": "去掉只为 MDX 内容代理模块告警而设的 onwarn 过滤"
+    },
+    {
+      "file": "src/components/layout/SiteHeader.astro",
+      "op": "remove_lines",
+      "contains": [
+        "import SearchButton from '@/components/docs/SearchButton.astro';",
+        "import SearchDialog from '@/components/docs/SearchDialog.astro';",
+        "<SearchButton class=",
+        "<SearchDialog />"
+      ]
+    },
+    {
+      "file": "src/site.config.ts",
+      "op": "remove_lines",
+      "contains": ["{ label: '指南', href: '/guide/' },"]
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "remove_lines",
+      "contains": ["from '@/lib/guides';", "const guides = await getGuides();"]
+    },
+    {
+      "file": "src/pages/llms.txt.ts",
+      "op": "first_of",
+      "options": [
+        { "op": "remove_block", "start": "'## 使用指南',", "end": "guidePath(guide.id)", "wrap_after": ["),", "'',"] },
+        { "op": "remove_block", "start": "'## 使用指南',", "end": "guidePath(guide.id)", "wrap_after": ["'',"] }
+      ],
+      "why": "删除 llms.txt 的指南段（guides.map 被拆成多行或写在一行都适用）"
+    },
+    {
+      "file": "package.json",
+      "op": "replace",
+      "find": "\"build\": \"astro check && astro build && pagefind --site dist\",",
+      "replace": "\"build\": \"astro check && astro build\","
+    },
+    {
+      "file": "package.json",
+      "op": "replace",
+      "find": "\"build:fast\": \"astro build && pagefind --site dist\",",
+      "replace": "\"build:fast\": \"astro build\","
+    }
+  ],
+  "manual_actions": [
+    "依赖没有自动卸载：确认没有别处再用 MDX / Pagefind 后执行 pnpm remove @astrojs/mdx pagefind",
+    "global.css 里 accent / danger / success 三组语气令牌是通用的，保留；确定全站都不用再删",
+    "CLAUDE.md「参考代码位置」表中的使用指南参考（src/pages/guide/[...id].astro、src/lib/guides.ts）已不存在：不改原表，在 .claude/PROJECT.md 写「## 参考代码位置（覆盖 CLAUDE.md）」表，pnpm check:skills 会点名残留"
+  ],
+  "depends_on": []
+}

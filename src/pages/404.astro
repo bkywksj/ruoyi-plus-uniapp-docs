@@ -1,0 +1,21 @@
+---
+// 404 页：noindex，不参与收录类 SEO 校验；nginx 的 error_page 指向这里构建出的 404.html
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Container from '@/components/ui/Container.astro';
+import Button from '@/components/ui/Button.astro';
+---
+
+<BaseLayout
+  title="页面不存在"
+  description="你访问的页面不存在或已被移动，可以回到首页重新查找需要的内容。"
+  noindex
+>
+  <Container size="narrow" class="flex flex-col items-center py-28 text-center">
+    <p class="text-sm font-medium text-brand-ink">404</p>
+    <h1 class="mt-3 text-3xl font-semibold tracking-tight">页面不存在</h1>
+    <p class="mt-4 text-muted">链接可能已失效，或者内容已经移动到别处。</p>
+    <div class="mt-8 flex gap-3">
+      <Button href="/">回到首页</Button>
+    </div>
+  </Container>
+</BaseLayout>

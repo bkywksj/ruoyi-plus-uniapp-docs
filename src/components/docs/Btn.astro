@@ -1,0 +1,17 @@
+---
+// 正文里提到的界面按钮：<Btn>取消</Btn>、<Btn primary>保存</Btn>。
+// 仿按钮的样子，让读者一眼认出要点的是哪个；文字须与产品界面逐字一致。
+interface Props {
+  /** 主按钮（品牌底白字） */
+  primary?: boolean;
+}
+
+const { primary = false } = Astro.props;
+---
+
+<span
+  class:list={[
+    'inline-flex items-center rounded-md px-2 py-0.5 align-baseline text-[0.9em] whitespace-nowrap',
+    primary ? 'bg-brand-strong text-white' : 'bg-elevated text-ink ring-1 ring-line',
+  ]}><slot /></span
+>

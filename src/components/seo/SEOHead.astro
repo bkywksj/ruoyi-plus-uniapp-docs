@@ -1,0 +1,66 @@
+---
+// SEO 头部：每个页面经 BaseLayout 调用一次，且只能调用一次
+// 🔴 静默失败高发区（构建成功、字段写了、值全错）：canonical 全站指向首页、og:url 出现两个、
+//    所有页共用同一条 description。scripts/check-seo.mjs 会在构建后逐页校验这几项。
+import { site } from '@/site.config';
+import { absoluteUrl, canonicalPath, buildTitle, serializeJsonLd, truncate, type JsonLd } from '@/lib/seo';
+
+export interface SEOProps {
+  /** 页面标题（不含站名，模板自动拼 " | 站名"） */
+  title?: string;
+  /** 页面描述：每页必须不同，建议 70~160 字 */
+  description?: string;
+  /** 分享图，站内路径或绝对地址；默认 site.ogImage */
+  image?: string;
+  type?: 'website' | 'article';
+  /** 不希望被收录的页面（如 404、筛选结果页） */
+  noindex?: boolean;
+  /** 结构化数据，数组里每项输出一个 <script type="application/ld+json"> */
+  jsonLd?: JsonLd[];
+  publishedTime?: Date;
+  modifiedTime?: Date;
+}
+
+const {
+  title,
+  description,
+  image,
+  type = 'website',
+  noindex = false,
+  jsonLd = [],
+  publishedTime,
+  modifiedTime,
+} = Astro.props as SEOProps;
+
+const fullTitle = buildTitle(title);
+const metaDescription = truncate(description ?? site.description, 160);
+// 逐页 canonical：用当前页路径，不要写死成 site.url（那会把所有页都指向首页）
+// canonicalPath：file 网址形态下首页的 pathname 是 /index.html，要归一成 /
+const canonical = absoluteUrl(canonicalPath(Astro.url.pathname));
+const ogImage = absoluteUrl(image ?? site.ogImage);
+const ogLocale = site.locale.replace('-', '_');
+---
+
+<title>{fullTitle}</title>
+<meta name="description" content={metaDescription} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content={ogLocale} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={metaDescription} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+{publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+{modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={metaDescription} />
+<meta name="twitter:image" content={ogImage} />
+
+{jsonLd.map((data) => (
+  <script type="application/ld+json" set:html={serializeJsonLd(data)} />
+))}

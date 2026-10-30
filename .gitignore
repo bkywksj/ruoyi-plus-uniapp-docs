@@ -1,0 +1,45 @@
+# 构建产物
+dist/
+.astro/
+
+# 依赖
+node_modules/
+
+# 数据同步缓存（可随时重建）
+.cache/
+
+# 测试产物
+test-results/
+playwright-report/
+coverage/
+
+# 环境变量（.env.example 提交，真实值不提交）
+.env
+.env.*
+!.env.example
+
+# 智码多会话编排的运行状态与验收任务书（/dev-orchestrate 生成，一次性）
+.agent-pipeline/
+
+# 本地文件（不提交）
+*-local.*
+logs/
+output/
+
+# 编辑器 / 系统
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+nul
+
+# 交付副本本地状态（不提交）
+.delivery-sync.json
+.deliveryignore
+
+# exp-sediment 的本机缓存（仓库身份由 .framework-sync.json / package.json 判定，缓存不入库，避免孵化时被带进子项目）
+.claude/exp.config.json
+
+# 迁移工作目录：旧站源码快照、基线构建产物、压测副本（体积大、可重建，不入库）
+.migrate/

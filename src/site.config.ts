@@ -1,0 +1,97 @@
+// 站点全局配置 —— 单一真相源
+// project-init 孵化新项目时只改这一个文件；canonical / sitemap / robots / llms.txt / 品牌色全部从这里取，
+// 所以不要在页面或组件里再硬编码域名、站名、主色。
+// 🔴 本文件被 astro.config.ts 引用，而 Astro 不会把 .env 加载进配置文件的执行环境：
+//    这里不要读 import.meta.env，需要按环境切换的值见 env-config 技能（loadEnv / 系统环境变量）。
+
+export type AnalyticsProvider = 'none' | 'umami' | 'baidu';
+
+/** 网址形态：directory = /guide/a/（框架默认）；file = /guide/a.html（保住 VitePress 等旧站已被收录的 .html 网址） */
+export type UrlFormat = 'directory' | 'file';
+
+export interface NavItem {
+  label: string;
+  href: string;
+  /**
+   * 高亮前缀：一组页面共用一个导航项时填（如「功能」指向 /features/writing.html，match 写 /features/，整组都高亮）。
+   * 省略时按 href 本身判断
+   */
+  match?: string;
+}
+
+export interface SocialLink {
+  label: string;
+  href: string;
+}
+
+export const site = {
+  /** 站点全名：出现在 <title> 后缀、og:site_name、JSON-LD WebSite.name */
+  name: 'RuoYi-Plus-UniApp 全栈开发文档',
+  /** 短名：页头 Logo 文字、移动端空间不够时使用 */
+  shortName: 'RuoYi-Plus',
+  /** 一句话定位（首页 H1 下方 + 默认 meta description），写成「X 是 Y」的定义句对 GEO 更友好 */
+  tagline:
+    'RuoYi-Plus-UniApp 是基于 Spring Boot 3 + Vue 3 + UniApp 的企业级全栈快速开发框架，文档涵盖后端架构、前端组件、移动端开发、AI 集成、多租户与支付。',
+  /** 默认 meta description：页面没传 description 时兜底，建议 70~160 字 */
+  description:
+    'RuoYi-Plus-UniApp 全栈开发文档 — 基于 Spring Boot 3 + Vue 3 + UniApp 的企业级快速开发框架，涵盖后端架构、前端组件、移动端开发、AI 集成、多租户、支付等完整指南。',
+  /**
+   * 生产域名（不带结尾斜杠）。canonical、og:url、sitemap、robots、llms.txt 的绝对地址都基于它。
+   * 🔴 上线前必须改成真实域名，否则所有 canonical 都会指向 example.com。
+   */
+  url: 'https://ruoyi.plus',
+  /**
+   * 网址形态。astro.config 的 build.format / trailingSlash、lib/seo.ts 的 pagePath() 都读它，站内链接用 pagePath() 生成。
+   * 🔴 上线后不要再改：改了等于全站换网址，旧链接与搜索收录全部失效（迁移旧站时按旧网址选，见 vitepress-migration 技能）
+   */
+  urlFormat: 'file' as UrlFormat,
+  /** <html lang> 与 og:locale */
+  locale: 'zh-CN',
+  /** 品牌主色：注入为 CSS 变量 --brand，Tailwind 里用 bg-brand / text-brand */
+  brandColor: '#0B6EF0',
+  author: {
+    name: '若依科技工作室',
+    url: 'https://ruoyi.plus',
+  },
+  /** 页头标志图（放 public/ 下，正方形）；留空则用品牌色圆点。标志自带底色的直接用，不要再套背景 */
+  logo: '/logo.png',
+  /** 导航横排的断点：导航项多（6 个以上）时改 'lg'，否则平板宽度下会挤出页头 */
+  navBreakpoint: 'lg' as 'md' | 'lg',
+  /** 站点图标（放 public/ 下）：svg / png / ico 都行，BaseLayout 按扩展名输出 type */
+  favicon: '/favicon.svg',
+  /** 默认分享图（放 public/ 下），1200×630 */
+  ogImage: '/og-default.png',
+  /**
+   * 允许构建期下载并优化的远程图片域名（astro:assets image.domains）。
+   * 数据源里的封面是外链（如 B 站 i0.hdslb.com）时加进来，构建时会下载转成 WebP 自托管，顺带绕开防盗链。
+   */
+  imageDomains: [] as string[],
+  analytics: {
+    provider: 'none' as AnalyticsProvider,
+    /** umami: website-id；baidu: hm.js 后面那串 id */
+    id: '',
+    /** umami 自托管脚本地址，provider=umami 时必填 */
+    src: '',
+  },
+  // 照旧站顶部导航十项；四个文档分区的入口是各自的 index 页，旧网址 /backend/ 与 /backend/index.html 都要能打开
+  nav: [
+    { label: '后端', href: '/backend/index.html', match: '/backend/' },
+    { label: '前端', href: '/frontend/index.html', match: '/frontend/' },
+    { label: '移动端', href: '/mobile/index.html', match: '/mobile/' },
+    { label: '最佳实践', href: '/practices/index.html', match: '/practices/' },
+    { label: '特性', href: '/changelog.html' },
+    { label: '框架对比', href: '/comparison.html' },
+    { label: '视频', href: '/video.html' },
+    { label: '演示', href: '/demo.html' },
+    { label: '产品矩阵', href: '/products.html' },
+    { label: '技术服务', href: '/services.html' },
+  ] as NavItem[],
+  social: [
+    // 照旧站 socialLinks：只有文档仓库的 GitHub
+    { label: 'GitHub', href: 'https://github.com/bkywksj/ruoyi-plus-uniapp-docs' },
+  ] as SocialLink[],
+  /** 备案号（国内服务器必填，显示在页脚；为空则不显示） */
+  icp: '粤ICP备2021091549号-5',
+};
+
+export type SiteConfig = typeof site;

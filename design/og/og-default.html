@@ -1,0 +1,84 @@
+<!doctype html>
+<!-- 默认分享图源文件（1200×630）：改完运行 pnpm og 重新生成 public/og-default.png
+     画而不截图：分享卡片常被缩到 300px 宽，真实页面截图里的导航和正文会糊成一片；
+     这里只放站名、一句话和几个要点，缩小后仍能读。孵化后把文字和颜色换成本站的（颜色与 site.config.ts 的品牌色一致）。 -->
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      :root {
+        --brand: #ff5d2e;
+        --ink: #111114;
+        --muted: #5b5b66;
+        --canvas: #ffffff;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 36px;
+        padding: 0 96px;
+        background:
+          radial-gradient(
+            circle at 88% 12%,
+            color-mix(in oklab, var(--brand) 22%, transparent),
+            transparent 46%
+          ),
+          var(--canvas);
+        color: var(--ink);
+        font-family: 'Microsoft YaHei', 'PingFang SC', 'Noto Sans CJK SC', system-ui, sans-serif;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-size: 34px;
+        font-weight: 700;
+      }
+      .mark {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+        background: var(--brand);
+      }
+      h1 {
+        max-width: 960px;
+        font-size: 64px;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+      }
+      ul {
+        display: flex;
+        gap: 18px;
+        padding: 0;
+        list-style: none;
+      }
+      li {
+        padding: 10px 22px;
+        border: 2px solid color-mix(in oklab, var(--brand) 35%, transparent);
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 26px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="brand"><span class="mark"></span>next-ai-astro 示例站</div>
+    <h1>对搜索引擎与 AI 都友好的 Astro 内容站</h1>
+    <ul>
+      <li>默认零 JS</li>
+      <li>SEO / GEO 字段齐全</li>
+      <li>数据驱动</li>
+    </ul>
+  </body>
+</html>

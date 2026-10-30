@@ -1,0 +1,26 @@
+---
+// 小标签：brand = 品牌强调（分类名等），neutral = 普通标签
+interface Props {
+  tone?: 'brand' | 'neutral';
+  href?: string;
+  class?: string;
+}
+
+const { tone = 'neutral', href, class: className } = Astro.props;
+const classes = [
+  'inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium transition-colors',
+  tone === 'brand' ? 'bg-brand-soft text-brand-ink' : 'bg-surface text-muted',
+  href && (tone === 'brand' ? 'hover:bg-brand/20' : 'hover:text-ink'),
+  className,
+];
+---
+
+{href ? (
+  <a href={href} class:list={classes}>
+    <slot />
+  </a>
+) : (
+  <span class:list={classes}>
+    <slot />
+  </span>
+)}

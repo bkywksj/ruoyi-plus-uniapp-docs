@@ -1,0 +1,52 @@
+{
+  "name": "首页常见问题",
+  "description": "首页 FAQ 区块、src/data/faq.json 与首页的 FAQPage 结构化数据（lib/seo.ts 的 faqJsonLd 保留，供其他页面复用）",
+  "delete_dirs": [],
+  "delete_files": ["src/data/faq.json"],
+  "edits": [
+    {
+      "file": "src/pages/index.astro",
+      "op": "remove_lines",
+      "contains": ["import faq from '@/data/faq.json';", "const faqItems = faq as FaqItem[];"]
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "replace",
+      "find": "import { faqJsonLd, websiteJsonLd, type FaqItem } from '@/lib/seo';",
+      "replace": "import { websiteJsonLd } from '@/lib/seo';"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "replace",
+      "find": "jsonLd={faqItems.length > 0 ? [websiteJsonLd(), faqJsonLd(faqItems)] : [websiteJsonLd()]}",
+      "replace": "jsonLd={[websiteJsonLd()]}",
+      "why": "首页结构化数据去掉 FAQPage"
+    },
+    {
+      "file": "src/pages/index.astro",
+      "op": "first_of",
+      "options": [
+        {
+          "op": "remove_block",
+          "start": "{faqItems.length > 0 && (",
+          "end": "</Section>",
+          "wrap_after": [")}"],
+          "blank_before": true
+        },
+        {
+          "op": "remove_block",
+          "start": "faqItems.length > 0 && (",
+          "end": "</Section>",
+          "wrap_before": ["{"],
+          "wrap_after": [")", "}"],
+          "blank_before": true
+        }
+      ],
+      "why": "删除首页 FAQ 区块（含外层 { … }；兼容 Prettier 前后两种排版）"
+    }
+  ],
+  "manual_actions": [
+    "首页不再输出 FAQPage 结构化数据；要在其他页面放问答，用 src/lib/seo.ts 的 faqJsonLd()，且只标注页面上真实可见的问答"
+  ],
+  "depends_on": []
+}

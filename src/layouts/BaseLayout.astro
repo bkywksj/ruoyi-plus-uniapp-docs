@@ -1,0 +1,46 @@
+---
+// 全站唯一的 HTML 骨架：所有页面都必须经过它，保证 SEO 头、主题脚本、统计、页头页脚一致
+import '@/styles/global.css';
+import { site } from '@/site.config';
+import SEOHead, { type SEOProps } from '@/components/seo/SEOHead.astro';
+import ThemeScript from '@/components/layout/ThemeScript.astro';
+import SiteHeader from '@/components/layout/SiteHeader.astro';
+import SiteFooter from '@/components/layout/SiteFooter.astro';
+import Analytics from '@/components/layout/Analytics.astro';
+
+type Props = SEOProps;
+
+const seo = Astro.props;
+// 按扩展名给 type：浏览器靠它决定要不要下载，写错（png 标成 svg+xml）部分浏览器不显示图标
+const faviconType = { svg: 'image/svg+xml', png: 'image/png', ico: 'image/x-icon' }[site.favicon.split('.').pop() ?? ''] ?? 'image/png';
+---
+
+<!doctype html>
+<html lang={site.locale} style={`--brand: ${site.brandColor}`}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <ThemeScript />
+    <SEOHead {...seo} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0b0d" media="(prefers-color-scheme: dark)" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" href={site.favicon} type={faviconType} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <Analytics />
+    <slot name="head" />
+  </head>
+  <body class="flex flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-elevated focus:px-4 focus:py-2 focus:shadow-lg"
+    >
+      跳到正文
+    </a>
+    <SiteHeader />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <SiteFooter />
+  </body>
+</html>

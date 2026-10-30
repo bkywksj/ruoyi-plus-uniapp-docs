@@ -1,0 +1,35 @@
+---
+// 可见面包屑。结构化数据由页面用同一个 crumbs 数组调用 breadcrumbJsonLd() 生成，两者必须一致
+import { ChevronRight } from '@lucide/astro';
+import type { Crumb } from '@/lib/seo';
+
+interface Props {
+  crumbs: Crumb[];
+}
+
+const { crumbs } = Astro.props;
+---
+
+<nav aria-label="面包屑" class="text-sm text-muted">
+  <ol class="flex flex-wrap items-center gap-1.5">
+    {crumbs.map((crumb, index) => {
+      const last = index === crumbs.length - 1;
+      return (
+        <li class="flex items-center gap-1.5">
+          {last ? (
+            <span aria-current="page" class="line-clamp-1 text-ink">
+              {crumb.name}
+            </span>
+          ) : (
+            <>
+              <a href={crumb.path} class="hover:text-ink">
+                {crumb.name}
+              </a>
+              <ChevronRight class="size-3.5 opacity-60" aria-hidden="true" />
+            </>
+          )}
+        </li>
+      );
+    })}
+  </ol>
+</nav>
