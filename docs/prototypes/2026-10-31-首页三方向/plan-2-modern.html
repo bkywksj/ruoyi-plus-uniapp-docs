@@ -1,0 +1,370 @@
+<!doctype html>
+<!-- RuoYi-Plus 首页原型：方案 2 · 开发者工具风。内容取自旧站首页（index.md），三个方案内容一致只比视觉；单文件，Tailwind CDN + lucide 图标 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>RuoYi-Plus 首页原型 · 方案 2 · 开发者工具风</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  :root { --brand: #0B6EF0; --brand-2: #0C8AF2; --brand-3: #04AEF6; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: 'JetBrains Mono', 'Cascadia Code', Consolas, monospace; }
+  .grad { background-image: linear-gradient(135deg, var(--brand-3), var(--brand)); }
+  .grad-text { background-image: linear-gradient(135deg, var(--brand-3), var(--brand)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  /* 亮点选项卡：单选 + :has，零 JS；只显示选中那一组 */
+  .hl-root .hl-panel { display: none; }
+  .hl-root:has(#hl-0:checked) .hl-panel[data-i="0"] { display: grid; }
+  .hl-root:has(#hl-1:checked) .hl-panel[data-i="1"] { display: grid; }
+  .hl-root:has(#hl-2:checked) .hl-panel[data-i="2"] { display: grid; }
+  .hl-root:has(#hl-3:checked) .hl-panel[data-i="3"] { display: grid; }
+  .hl-root:has(#hl-4:checked) .hl-panel[data-i="4"] { display: grid; }
+  .hl-opt:has(input:focus-visible) { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .hl-opt:has(input:checked){color:#fff;background:#18181b}
+</style>
+</head>
+<body class="bg-white text-zinc-900">
+<header class="sticky top-0 z-20 border-b border-white/10 bg-[#0B1020]/95 text-zinc-300 backdrop-blur">
+  <div class="mx-auto flex h-14 max-w-[1200px] items-center gap-6 px-6">
+    <a href="#" class="flex items-center gap-2.5 font-semibold text-white"><img src="../../../public/logo.png" alt="" class="size-7 object-contain" />RuoYi-Plus<span class="mono rounded border border-white/15 px-1.5 text-[11px] text-zinc-400">docs</span></a>
+    <nav class="hidden flex-1 items-center gap-5 text-sm xl:flex"><a href="#" class="hover:text-white">后端</a><a href="#" class="hover:text-white">前端</a><a href="#" class="hover:text-white">移动端</a><a href="#" class="hover:text-white">最佳实践</a><a href="#" class="hover:text-white">特性</a><a href="#" class="hover:text-white">框架对比</a><a href="#" class="hover:text-white">视频</a><a href="#" class="hover:text-white">演示</a><a href="#" class="hover:text-white">产品矩阵</a><a href="#" class="hover:text-white">技术服务</a></nav>
+    <div class="ml-auto flex items-center gap-3"><span class="mono hidden sm:flex h-8 items-center gap-2 rounded-md border border-white/15 bg-white/5 px-3 text-xs text-zinc-400"><i data-lucide="search" class="size-3.5"></i>搜索文档 <kbd class="ml-6 text-[10px]">⌘K</kbd></span></div>
+  </div>
+</header>
+
+<section class="bg-[#0B1020] text-white">
+  <div class="mx-auto grid max-w-[1200px] gap-10 px-6 pt-16 pb-20 lg:grid-cols-[1.15fr_1fr] lg:items-center">
+    <div>
+      <p class="mono text-xs text-[#04AEF6]">$ ruoyi-plus-uniapp --version · Spring Boot 3/4 · Vue 3 · UniApp</p>
+      <h1 class="mt-5 text-4xl leading-tight font-bold tracking-tight sm:text-5xl">ruoyi-plus-uniapp<br /><span class="text-zinc-400">全栈开发文档</span></h1>
+      <p class="mt-5 max-w-[42ch] text-lg leading-8 text-zinc-300">框架即文档 提供最优雅的开发体验。四层架构、代码生成器、61 个 Claude Code 技能——拿来就能写业务。</p>
+      <div class="mt-8 flex flex-wrap gap-2">
+        <a href="#" class="inline-flex h-10 items-center gap-2 rounded-md bg-[#0B6EF0] px-4 text-sm font-semibold text-white hover:bg-[#0A5ED0]">开始使用</a>
+        <a href="#" class="inline-flex h-10 items-center gap-2 rounded-md bg-[#0B6EF0] px-4 text-sm font-semibold text-white hover:bg-[#0A5ED0]">AI 开发体验</a>
+        <a href="#" class="inline-flex h-10 items-center rounded-md border border-white/20 px-4 text-sm font-medium text-zinc-200 hover:bg-white/10">与上游框架对比</a>
+        <a href="#" class="inline-flex h-10 items-center rounded-md border border-white/20 px-4 text-sm font-medium text-zinc-200 hover:bg-white/10">介绍视频</a>
+        <a href="#" class="inline-flex h-10 items-center rounded-md border border-white/20 px-4 text-sm font-medium text-zinc-200 hover:bg-white/10">演示</a>
+      </div>
+    </div>
+    <div class="min-w-0 space-y-4"><!-- min-w-0：长代码行不能把网格列撑开，否则左栏被挤窄、按钮折行 -->
+      <div class="overflow-hidden rounded-lg border border-white/10 bg-[#0F1629] shadow-2xl">
+        <div class="mono flex items-center gap-2 border-b border-white/10 px-4 py-2 text-xs text-zinc-400"><span class="size-2.5 rounded-full bg-[#FF5F57]"></span><span class="size-2.5 rounded-full bg-[#FEBC2E]"></span><span class="size-2.5 rounded-full bg-[#28C840]"></span><span class="ml-2">SysUserDao.java</span></div>
+        <pre class="mono overflow-x-auto p-4 text-[13px] leading-6 text-zinc-200"><span class="text-zinc-500">// DAO 层统一构建查询，Service 只写业务</span>
+<span class="text-[#7AB8FF]">public</span> PageResult&lt;SysUserVo&gt; <span class="text-[#F2C46D]">page</span>(SysUserBo bo, PageQuery pq) {
+    <span class="text-[#7AB8FF]">return</span> PlusLambdaQuery.of(SysUser.<span class="text-[#7AB8FF]">class</span>)
+        .like(SysUser::getUserName, bo.getUserName())
+        .eq(SysUser::getStatus, bo.getStatus())
+        .between(SysUser::getCreateTime,
+                 bo.getBeginTime(), bo.getEndTime())
+        .page(pq, SysUserVo.<span class="text-[#7AB8FF]">class</span>);
+}</pre>
+      </div>
+      <div class="mono rounded-lg border border-white/10 bg-black/40 p-4 text-[13px] leading-6 text-zinc-300">
+        <p><span class="text-[#28C840]">➜</span> 代码生成器  <span class="text-zinc-500">选表 sys_order → 生成</span></p>
+        <p class="text-zinc-400">  ✓ Controller / Service / DAO / Mapper</p>
+        <p class="text-zinc-400">  ✓ Vue 页面 + TS 类型 + 菜单 SQL</p>
+        <p><span class="text-[#28C840]">➜</span> <span class="text-white">建表即可用</span><span class="ml-1 inline-block h-4 w-2 translate-y-0.5 bg-zinc-300"></span></p>
+      </div>
+    </div>
+  </div>
+  <dl class="mono mx-auto grid max-w-[1200px] grid-cols-2 border-t border-white/10 md:grid-cols-4">
+    <div class="border-white/10 px-6 py-6 [&:not(:first-child)]:md:border-l"><dt class="text-2xl font-bold text-white">200万+</dt><dd class="mt-1 text-xs text-zinc-500">行代码</dd></div><div class="border-white/10 px-6 py-6 [&:not(:first-child)]:md:border-l"><dt class="text-2xl font-bold text-white">3800+</dt><dd class="mt-1 text-xs text-zinc-500">次提交</dd></div><div class="border-white/10 px-6 py-6 [&:not(:first-child)]:md:border-l"><dt class="text-2xl font-bold text-white">511</dt><dd class="mt-1 text-xs text-zinc-500">篇文档</dd></div><div class="border-white/10 px-6 py-6 [&:not(:first-child)]:md:border-l"><dt class="text-2xl font-bold text-white">61</dt><dd class="mt-1 text-xs text-zinc-500">个 Claude Code 技能</dd></div>
+  </dl>
+</section>
+
+<section class="py-16" aria-labelledby="feat">
+  <div class="mx-auto max-w-[1200px] px-6">
+    <p class="mono text-xs font-semibold text-[#0B6EF0]">// 能做什么</p>
+    <h2 id="feat" class="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">13 项能力，点进去都是完整文档</h2>
+    <div class="mt-8 grid overflow-hidden rounded-lg border border-zinc-200 sm:grid-cols-2 lg:grid-cols-3">
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="bot" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">Claude Code 深度集成 <span class="mono ml-1 rounded bg-[#0B6EF0] px-1.5 text-[10px] text-white align-middle">NEW</span></p><p class="mt-1 text-sm leading-6 text-zinc-600">首个 AI 原生全栈框架！61 个专业技能、19 个智能命令、3 个自动化钩子，让 AI 真正理解你的代码架构。自动遵循项目规范，智能生成符合标准的代码，开发效率提升 10 倍</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="rocket" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">后端重大重构</p><p class="mt-1 text-sm leading-6 text-zinc-600">四层架构（Controller-Service-DAO-Mapper）设计，DAO层统一查询构建，MyBatis Plus增强查询，多租户系统，权限控制，智能代码生成，主子表，支付集成，小程序/公众号集成</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="laptop" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">前端全面升级</p><p class="mt-1 text-sm leading-6 text-zinc-600">Vue3 + Vite6 + TypeScript + Pinia + Element Plus + UnoCSS，组合式函数重构，丰富组件，前端直传，工具库完善，国际化增强</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="smartphone" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">移动端最佳实践</p><p class="mt-1 text-sm leading-6 text-zinc-600">UniApp + Wd UI重构组件库，跨平台适配，组件示例完善齐全，优雅开发体验，支持微信小程序、H5、App全端覆盖</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="brain-circuit" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">AI 能力集成 <span class="mono ml-1 rounded bg-[#0B6EF0] px-1.5 text-[10px] text-white align-middle">NEW</span></p><p class="mt-1 text-sm leading-6 text-zinc-600">LangChain4j 企业级集成，支持 OpenAI、Claude、DeepSeek、通义千问，流式聊天，RAG 检索增强，WebSocket 实时对话</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="radio-tower" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">物联网通信 <span class="mono ml-1 rounded bg-[#0B6EF0] px-1.5 text-[10px] text-white align-middle">NEW</span></p><p class="mt-1 text-sm leading-6 text-zinc-600">MQTT 客户端集成 (mica-mqtt)，RocketMQ 消息队列，支持设备管理、实时数据采集、异步解耦、削峰填谷</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="palette" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">多媒体处理 <span class="mono ml-1 rounded bg-[#0B6EF0] px-1.5 text-[10px] text-white align-middle">NEW</span></p><p class="mt-1 text-sm leading-6 text-zinc-600">海报生成引擎，GIF 动图合成，火山引擎 TTS 语音合成，多音色支持，流式音频生成</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="layout-template" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">页面设计器 <span class="mono ml-1 rounded bg-[#0B6EF0] px-1.5 text-[10px] text-white align-middle">NEW</span></p><p class="mt-1 text-sm leading-6 text-zinc-600">可视化拖拽设计，30+组件库，AI智能生成，实时预览，一键生成Vue代码，支持页面/弹窗/抽屉三种模式</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="zap" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">最佳实践</p><p class="mt-1 text-sm leading-6 text-zinc-600">开发规范指南，容器化集群部署，性能优化策略，监控告警体系，代码风格统一，架构扩展预留</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="sparkles" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">框架特性</p><p class="mt-1 text-sm leading-6 text-zinc-600">全面重构亮点，Spring Boot 4 五分支矩阵，全站国际化，AI 深度思考，多租户 Pool↔Silo 迁移，2026 年最新特性</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="shield-check" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">等保二级合规 <span class="mono ml-1 rounded bg-[#0B6EF0] px-1.5 text-[10px] text-white align-middle">NEW</span></p><p class="mt-1 text-sm leading-6 text-zinc-600">密码策略服务端强制、审计日志归档防删除、数据库备份恢复脚本，覆盖身份鉴别 8.1.4.1 a、安全审计 8.1.4.3 c、数据备份恢复 8.1.4.7 a 三项测评要求</p></div>
+      </a>
+      <a href="#" class="group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="git-compare" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">与上游框架对比</p><p class="mt-1 text-sm leading-6 text-zinc-600">相对 RuoYi-Vue-Plus 5.x / 6.x 的逐维度差异：四层架构、字段级权限、移动端全栈、支付与 AI 集成、模块清单与依赖版本，逐项标注增量能力</p></div>
+      </a>
+      <a href="#" class="lg:col-span-3 group flex gap-3 border-zinc-200 bg-white p-5 transition hover:bg-zinc-50 [border-width:0_1px_1px_0]">
+        <span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="clapperboard" class="size-4"></i></span>
+        <div><p class="font-semibold text-zinc-900">视频教程</p><p class="mt-1 text-sm leading-6 text-zinc-600">快速入门指南，开发实战教程，部署运维讲解，最佳实践分享，核心技术原理</p></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-zinc-50" aria-labelledby="hl">
+  <div class="mx-auto max-w-[1200px] px-6">
+    <p class="mono text-xs font-semibold text-[#0B6EF0]">// 重构亮点</p>
+    <h2 id="hl" class="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">从里到外重构，不是换皮</h2>
+    <div class="mt-6">
+  <div class="hl-root">
+    <fieldset class="mono inline-flex flex-wrap gap-1 rounded-md border border-zinc-200 bg-white p-1 text-xs">
+      <legend class="sr-only">亮点分组</legend>
+      <label class="hl-opt cursor-pointer rounded px-3 py-1.5 text-zinc-600"><input type="radio" name="hl" id="hl-0" class="sr-only" checked />重构亮点</label>
+      <label class="hl-opt cursor-pointer rounded px-3 py-1.5 text-zinc-600"><input type="radio" name="hl" id="hl-1" class="sr-only"  />开发体验</label>
+      <label class="hl-opt cursor-pointer rounded px-3 py-1.5 text-zinc-600"><input type="radio" name="hl" id="hl-2" class="sr-only"  />企业级能力</label>
+      <label class="hl-opt cursor-pointer rounded px-3 py-1.5 text-zinc-600"><input type="radio" name="hl" id="hl-3" class="sr-only"  />2025年最新集成</label>
+      <label class="hl-opt cursor-pointer rounded px-3 py-1.5 text-zinc-600"><input type="radio" name="hl" id="hl-4" class="sr-only"  />Claude Code 原生支持</label>
+    </fieldset>
+    <div class="hl-panel mt-5 gap-px overflow-hidden rounded-lg border border-zinc-200 bg-zinc-200 sm:grid-cols-2 lg:grid-cols-3" data-i="0">
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">四层架构</p><p class="mt-1 text-sm leading-6 text-zinc-600">Controller-Service-DAO-Mapper清晰分层，职责明确</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">DAO层设计</p><p class="mt-1 text-sm leading-6 text-zinc-600">统一在DAO层构建查询条件，Service层专注业务逻辑</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">代码即文档</p><p class="mt-1 text-sm leading-6 text-zinc-600">看代码即是看文档，完善的注释和命名规范</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">统一命名</p><p class="mt-1 text-sm leading-6 text-zinc-600">接口路径、方法名、变量名语义化，快速定位</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">增强查询</p><p class="mt-1 text-sm leading-6 text-zinc-600">PlusLambdaQuery、PlusQuery简化MyBatis Plus查询</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">权限完善</p><p class="mt-1 text-sm leading-6 text-zinc-600">模块:表:操作三级权限标识符，精确控制</p></div>
+    </div>
+    <div class="hl-panel mt-5 gap-px overflow-hidden rounded-lg border border-zinc-200 bg-zinc-200 sm:grid-cols-2 lg:grid-cols-3" data-i="1">
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">智能生成</p><p class="mt-1 text-sm leading-6 text-zinc-600">代码生成器自动生成四层架构CRUD代码，包含DAO层查询构建</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">工具丰富</p><p class="mt-1 text-sm leading-6 text-zinc-600">全部文件重构，命名优化，注释完善，工具类、组合函数完善</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">类型安全</p><p class="mt-1 text-sm leading-6 text-zinc-600">前后端类型声明统一，TypeScript全覆盖</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">国际化</p><p class="mt-1 text-sm leading-6 text-zinc-600">后端返回国际化消息，前端智能翻译</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">组件化</p><p class="mt-1 text-sm leading-6 text-zinc-600">表单组件、业务组件、移动端组件库重构</p></div>
+    </div>
+    <div class="hl-panel mt-5 gap-px overflow-hidden rounded-lg border border-zinc-200 bg-zinc-200 sm:grid-cols-2 lg:grid-cols-3" data-i="2">
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">多租户</p><p class="mt-1 text-sm leading-6 text-zinc-600">完整的租户数据隔离，支持SaaS模式</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">模块化架构</p><p class="mt-1 text-sm leading-6 text-zinc-600">分层设计，支持灵活扩展</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">监控体系</p><p class="mt-1 text-sm leading-6 text-zinc-600">Spring Boot Admin + SnailJob任务调度</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">安全防护</p><p class="mt-1 text-sm leading-6 text-zinc-600">权限认证、数据脱敏、防重提交、限流</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">等保二级合规</p><p class="mt-1 text-sm leading-6 text-zinc-600">密码策略、审计日志归档防删除、备份恢复脚本与演练记录</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">支付集成</p><p class="mt-1 text-sm leading-6 text-zinc-600">wxjava + 支付宝SDK，支持微信v2/v3智能切换、公钥模式等</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">小程序、公众号集成</p><p class="mt-1 text-sm leading-6 text-zinc-600">已接入多平台小程序，公众号等，开箱即用</p></div>
+    </div>
+    <div class="hl-panel mt-5 gap-px overflow-hidden rounded-lg border border-zinc-200 bg-zinc-200 sm:grid-cols-2 lg:grid-cols-3" data-i="3">
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">AI能力</p><p class="mt-1 text-sm leading-6 text-zinc-600">LangChain4j 集成 OpenAI/Claude/DeepSeek/通义千问，流式聊天、RAG检索增强</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">物联网通信</p><p class="mt-1 text-sm leading-6 text-zinc-600">MQTT 客户端 (mica-mqtt)，支持设备管理、实时数据采集</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">消息队列</p><p class="mt-1 text-sm leading-6 text-zinc-600">RocketMQ 集成，异步解耦、削峰填谷、最终一致性</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">多媒体处理</p><p class="mt-1 text-sm leading-6 text-zinc-600">海报生成引擎、GIF合成、火山引擎TTS语音合成</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">页面设计器</p><p class="mt-1 text-sm leading-6 text-zinc-600">可视化拖拽设计、30+组件、AI智能生成、一键代码导出</p></div>
+    </div>
+    <div class="hl-panel mt-5 gap-px overflow-hidden rounded-lg border border-zinc-200 bg-zinc-200 sm:grid-cols-2 lg:grid-cols-3" data-i="4">
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">61 个专业技能</p><p class="mt-1 text-sm leading-6 text-zinc-600">覆盖后端CRUD、前端组件、移动端开发、数据库设计等全栈场景</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">19 个智能命令</p><p class="mt-1 text-sm leading-6 text-zinc-600">/dev开发、/crud生成、/check检查、/exp经验沉淀、/progress进度追踪</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">3 个自动化钩子</p><p class="mt-1 text-sm leading-6 text-zinc-600">技能强制评估、工具调用拦截、会话结束处理</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">完整上下文工程</p><p class="mt-1 text-sm leading-6 text-zinc-600">CLAUDE.md + AGENTS.md 双配置，AI深度理解项目架构</p></div>
+      <div class="bg-white p-4"><p class="mono text-sm font-semibold text-zinc-900">规范自动遵循</p><p class="mt-1 text-sm leading-6 text-zinc-600">四层架构、命名规范、代码风格100%自动化执行</p></div>
+    </div>
+  </div></div>
+  </div>
+</section>
+
+<section class="py-16 bg-white" aria-labelledby="why">
+  <div class="mx-auto max-w-[1200px] px-6">
+    <p class="mono text-xs font-semibold text-[#0B6EF0]">为什么选择</p>
+    <h2 id="why" class="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">为什么选择 ruoyi-plus-uniapp？</h2>
+    <div class="mt-10 grid gap-6 lg:grid-cols-3">
+      <div class="rounded-lg border border-zinc-200 bg-white p-5 lg:col-span-2">
+        <p class="mono text-sm font-semibold text-zinc-900">重构成果</p>
+        <ul class="mt-4 space-y-3"><li class="flex gap-3"><span class="mt-1 text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span><p class="text-[15px] leading-7 text-zinc-700"><b class="text-zinc-900">告别样板代码</b> — DAO 层封装通用 CRUD 与链式条件构建，单表增删改查无需手写 Wrapper 拼装和 Mapper XML</p></li><li class="flex gap-3"><span class="mt-1 text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span><p class="text-[15px] leading-7 text-zinc-700"><b class="text-zinc-900">四层架构解耦</b> — Controller-Service-DAO-Mapper 分层，数据访问与业务逻辑彻底分离，Service 不再直接操作 Mapper</p></li><li class="flex gap-3"><span class="mt-1 text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span><p class="text-[15px] leading-7 text-zinc-700"><b class="text-zinc-900">新模块分钟级交付</b> — 代码生成器一键产出后端四层、Vue 页面、TS 类型与菜单 SQL，配合完善工具库，建表即可用</p></li><li class="flex gap-3"><span class="mt-1 text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span><p class="text-[15px] leading-7 text-zinc-700"><b class="text-zinc-900">统一开发规范</b> — 前后端移动端命名规范统一、类型声明一致、接口风格拉齐</p></li><li class="flex gap-3"><span class="mt-1 text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span><p class="text-[15px] leading-7 text-zinc-700"><b class="text-zinc-900">完善的文档</b> — 框架即文档理念，代码自说明</p></li></ul>
+      </div>
+      <div class="rounded-lg border border-zinc-200 bg-white p-5">
+        <p class="mono text-sm font-semibold text-zinc-900">适用场景</p>
+        <ul class="mt-4 space-y-3"><li><p class="font-semibold text-zinc-900">企业管理系统</p><p class="text-sm leading-6 text-zinc-500">完整的权限体系和多租户支持</p></li><li><p class="font-semibold text-zinc-900">SaaS平台</p><p class="text-sm leading-6 text-zinc-500">租户隔离、支付集成、监控告警</p></li><li><p class="font-semibold text-zinc-900">移动应用</p><p class="text-sm leading-6 text-zinc-500">小程序、H5、App全端覆盖</p></li><li><p class="font-semibold text-zinc-900">快速原型</p><p class="text-sm leading-6 text-zinc-500">代码生成器快速搭建业务模块</p></li></ul>
+      </div>
+    </div>
+    <div class="mt-6 grid gap-6 lg:grid-cols-3">
+      <div class="rounded-lg border border-zinc-200 bg-white p-5 lg:col-span-2">
+        <p class="mono text-sm font-semibold text-zinc-900">项目规模 · 站在巨人的肩膀上</p>
+        <img src="../../../public/images/commit.jpg" alt="RuoYi-Plus-UniApp 项目提交记录" class="mt-4 w-full rounded-xl border border-zinc-200" loading="lazy" />
+        <p class="mt-4 text-sm leading-7 text-zinc-500">本框架基于 RuoYi-Vue-Plus 开源项目进行全面重构，在继承其成熟稳定特性的基础上，进行了大量的优化和创新。通过统一命名规范、优化架构设计、完善文档体系，打造出更加简洁高效、开发友好的全栈解决方案。</p>
+      </div>
+      <div class="rounded-lg border border-zinc-200 bg-white p-5">
+        <p class="mono text-sm font-semibold text-zinc-900">演进历程</p>
+        <ol class="mt-4 space-y-4"><li class="flex gap-3"><span class="mono grid size-6 shrink-0 place-items-center rounded bg-zinc-900 text-white text-xs">1</span><div><p class="font-semibold text-zinc-900">地毯式重构</p><p class="text-sm leading-6 text-zinc-500">基于ruoyi-vue-plus全面重构，统一命名规范，注重代码质量</p></div></li><li class="flex gap-3"><span class="mono grid size-6 shrink-0 place-items-center rounded bg-zinc-900 text-white text-xs">2</span><div><p class="font-semibold text-zinc-900">功能完善</p><p class="text-sm leading-6 text-zinc-500">多租户、支付集成、微信小程序、监控告警等企业级功能</p></div></li><li class="flex gap-3"><span class="mono grid size-6 shrink-0 place-items-center rounded bg-zinc-900 text-white text-xs">3</span><div><p class="font-semibold text-zinc-900">架构优化</p><p class="text-sm leading-6 text-zinc-500">模块化设计、性能优化、开发体验提升</p></div></li></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-zinc-50" aria-labelledby="price">
+  <div class="mx-auto max-w-[1200px] px-6">
+    <p class="mono text-xs font-semibold text-[#0B6EF0]">授权定价</p>
+    <h2 id="price" class="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">选择适合您的版本</h2>
+    <p class="mt-3 max-w-[72ch] text-zinc-500">开启高效开发之旅（三个版本代码完全一样，仅授权主体和开发人员数量差异，企业版须有营业执照方可购买）</p>
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      <div class="rounded-lg border border-zinc-200 bg-white p-6 flex flex-col">
+        <div class="flex items-center justify-between"><p class="text-lg font-bold text-zinc-900">个人版</p></div>
+        <p class="mt-1 text-sm text-zinc-500">适合个人开发者</p>
+        <p class="mt-6 flex items-baseline gap-2"><span class="text-4xl font-bold tracking-tight text-zinc-900">¥2,588</span><span class="text-sm line-through text-zinc-500">¥3,088</span></p>
+        <p class="mt-1 text-sm font-semibold text-[#0B6EF0]">节省 ¥500</p>
+        <ul class="mt-6 space-y-2.5 text-sm"><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>完整源码交付</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>持续更新服务</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>自主开发权限</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>商业使用授权</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>客户源码交付权</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>技术支持服务</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>专属答疑群邀请</li></ul>
+        <a href="#" class="mt-8 inline-flex h-10 items-center gap-2 rounded-md border border-zinc-300 bg-white px-4 text-sm font-medium text-zinc-800 hover:border-zinc-900 w-full justify-center">立即购买</a>
+        <p class="mt-3 text-center text-xs text-zinc-500">适合个人开发者和小型项目</p>
+      </div>
+      <div class="rounded-lg border border-zinc-900 bg-white p-6 flex flex-col ring-1 ring-zinc-900">
+        <div class="flex items-center justify-between"><p class="text-lg font-bold text-zinc-900">企业标准版</p><span class="mono rounded bg-zinc-900 px-2 py-0.5 text-[11px] text-white">推荐</span></div>
+        <p class="mt-1 text-sm text-zinc-500">开发团队 &lt; 10人</p>
+        <p class="mt-6 flex items-baseline gap-2"><span class="text-4xl font-bold tracking-tight text-zinc-900">¥3,288</span><span class="text-sm line-through text-zinc-500">¥4,088</span></p>
+        <p class="mt-1 text-sm font-semibold text-[#0B6EF0]">节省 ¥800</p>
+        <ul class="mt-6 space-y-2.5 text-sm"><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>完整源码交付</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>持续更新服务</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>自主开发权限</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>商业使用授权</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>客户源码交付权</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>技术支持服务</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>专属答疑群邀请(可邀1人)</li></ul>
+        <a href="#" class="mt-8 inline-flex h-10 items-center gap-2 rounded-md bg-[#0B6EF0] px-4 text-sm font-semibold text-white hover:bg-[#0A5ED0] w-full justify-center">立即购买</a>
+        <p class="mt-3 text-center text-xs text-zinc-500">中小企业的理想选择</p>
+      </div>
+      <div class="rounded-lg border border-zinc-200 bg-white p-6 flex flex-col">
+        <div class="flex items-center justify-between"><p class="text-lg font-bold text-zinc-900">企业高级版</p></div>
+        <p class="mt-1 text-sm text-zinc-500">开发团队 10~30人</p>
+        <p class="mt-6 flex items-baseline gap-2"><span class="text-4xl font-bold tracking-tight text-zinc-900">¥5,888</span><span class="text-sm line-through text-zinc-500">¥7,088</span></p>
+        <p class="mt-1 text-sm font-semibold text-[#0B6EF0]">节省 ¥1200</p>
+        <ul class="mt-6 space-y-2.5 text-sm"><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>完整源码交付</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>持续更新服务</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>自主开发权限</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>商业使用授权</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>客户源码交付权</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>技术支持服务</li><li class="flex gap-2 text-zinc-700"><span class="text-[#0B6EF0]"><i data-lucide="check" class="size-4"></i></span>专属答疑群邀请(可邀2人)</li></ul>
+        <a href="#" class="mt-8 inline-flex h-10 items-center gap-2 rounded-md border border-zinc-300 bg-white px-4 text-sm font-medium text-zinc-800 hover:border-zinc-900 w-full justify-center">立即购买</a>
+        <p class="mt-3 text-center text-xs text-zinc-500">大型企业的最佳选择</p>
+      </div>
+    </div>
+    <div class="mt-8 rounded-lg border border-zinc-200 bg-white p-5">
+      <p class="font-semibold text-zinc-900">购买说明</p>
+      <ul class="mt-3 grid gap-2 sm:grid-cols-2 text-sm text-zinc-700"><li><b class="text-zinc-900">企业授权</b>：支持商业项目使用，可交付客户源码</li><li><b class="text-zinc-900">持续更新</b>：享受框架功能迭代和Bug修复</li><li><b class="text-zinc-900">技术支持</b>：提供专业的技术支持服务</li><li><b class="text-zinc-900">额外邀人</b>：额外邀人进答疑群 488/人</li><li><b class="text-zinc-900">使用限制</b>：仅禁止框架二次销售和扩散传播</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-white" aria-labelledby="trust">
+  <div class="mx-auto max-w-[1200px] px-6">
+    <p class="mono text-xs font-semibold text-[#0B6EF0]">企业信赖</p>
+    <h2 id="trust" class="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">103+ 家企业选择它作为技术底座</h2>
+    <p class="mt-3 max-w-[72ch] text-zinc-500">以下企业已选择 ruoyi-plus-uniapp 作为技术底座，覆盖医疗、教育、金融、农业、物联网、电商等多个行业</p>
+    <ul class="mt-8 flex flex-wrap gap-2"><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">广东移动</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">湛江移动公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">中运交投（深圳）投资集团有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">淮沪煤电有限公司田集发电厂</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">山重建机有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">西双版纳再回楼民宿有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">江门市得实计算机外部设备有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">北京国泰大华科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">华创旗晟（华东）科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">山东仰泰新能源有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">美幻（上海）电子商务有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">北京渐健医疗科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">幸智健康科技服务（深圳）有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">黑龙江医创智联科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">南京畅百则物联网科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">苏州德孚信息科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">青岛海川信息技术有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">深圳市宏丰软件技术有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">武汉浙科友通软件有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">武汉智深源科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">武汉邦拓信息科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">武汉盛锦汇科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">武汉市十庆智能科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">贵州中科易联科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">北京惟舍之旅科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">北京启天和科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">河北优狐教育科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">山东容微数字科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">山东军创科技服务有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">山东简单派科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">山东亚新塑料包装有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">合肥昊微信息科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">合肥识渊智能科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">合肥伊福徕信息技术有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">重庆禹霖韬略网络科技有限责任公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">杭州锲意达科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">嘉兴想天信息科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">金华市智维工艺品有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">厦门识相科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">广州课官科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">广西南宁木鱼电子科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">南宁星铁科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">深圳市铠硕达科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">深圳市尚古堂食品发展有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">深圳市简易网络科技</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">九紫离火（福州）科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">盐城零一软件科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">天津粮道农业科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">郑州市五阳软件开发有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">河南新好信息科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">河南校园终端有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">安阳泽康网络科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">临汾市名典新语文化科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">兰州宏知汇点信息技术有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">内蒙古敖然科技有限责任公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">云南有块田农业科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">云南原信科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">四川森唯科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">燚朗科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">兰山区星河手机电脑店</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">北京女娲补天科技信息技术有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">东莞市码载网络科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">奇妙科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">绵阳能创科技有限责任公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">湖北锦恒网络科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">上海约格信息技术有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">重庆金芯科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">武汉顺为起点软件技术咨询有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">易必佩（温州）技术有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">广州享元数字科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">陕西嘉澜电子科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">安升重工有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">陕西智信物联信息科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">浙江甬讯通信息科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">贵州先知科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">广西致浩信息技术有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">重庆康脉信息科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">宁波国际物流发展股份有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">物产中大（浙江）数字贸易科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">山东图钉软件有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">皓酌工程咨询服务（上海）有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">娄底华菱云创数智科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">深圳市够威体育科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">武汉珞珈新图科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">南京云巍互联网络科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">杭州循元智能科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">道明光学股份有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">山东东八区信息科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">步阳集团有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">宜昌市西陵区星露软件开发工作室</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">云南大通汇电子科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">福州飞邮无人机有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">合肥和科信息科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">云南农垦集团有限责任公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">天津市岳华科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">北京赛柏蓝健康科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">河北地质大学</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">广州瑞博医疗设备有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">贝恩医疗设备（广州）有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">青岛创捷中云科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">贵州绿数智能科技有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">东莞市泓成汽车服务有限公司</li><li class="mono rounded border border-zinc-200 bg-white px-2 py-0.5 text-xs text-zinc-600">武汉以清软件工作室</li></ul>
+    <p class="mt-6 text-sm text-zinc-500">持续更新中... 共 <b class="text-zinc-900">100+</b> 家企业选择信赖</p>
+  </div>
+</section>
+
+<section class="py-16 bg-zinc-50" aria-labelledby="matrix">
+  <div class="mx-auto max-w-[1200px] px-6">
+    <p class="mono text-xs font-semibold text-[#0B6EF0]">产品矩阵</p>
+    <h2 id="matrix" class="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">同一位作者的其他产品</h2>
+    <p class="mt-3 text-zinc-500">抓蛙师出品，覆盖全栈开发、AI 效率工具、桌面应用三大场景</p>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <a href="https://ai-workstation.ruoyi.plus/" class="rounded-lg border border-zinc-200 bg-white p-5 block hover:-translate-y-0.5 transition">
+        <img src="../../../public/products/ai-workstation.svg" alt="AI 全能工作站" class="size-11 object-contain" loading="lazy" />
+        <p class="mt-3 font-semibold text-zinc-900">AI 全能工作站</p>
+        <p class="mt-1 text-sm font-medium text-[#0B6EF0]">一句话搞定一切 · 63个模块 · 1301 AI技能</p>
+        <p class="mt-2 text-xs leading-5 text-zinc-500">八大领域全覆盖 | 智能路由 | 42集视频教程</p>
+      </a>
+      <a href="https://aicoder.ruoyi.plus/" class="rounded-lg border border-zinc-200 bg-white p-5 block hover:-translate-y-0.5 transition">
+        <img src="../../../public/products/aicoder.png" alt="智码 AiCoder" class="size-11 object-contain" loading="lazy" />
+        <p class="mt-3 font-semibold text-zinc-900">智码 AiCoder</p>
+        <p class="mt-1 text-sm font-medium text-[#0B6EF0]">给 Claude Code、Codex、Gemini CLI 一个统一的家</p>
+        <p class="mt-2 text-xs leading-5 text-zinc-500">多标签会话 | Token费用追踪 | 零额外开销</p>
+      </a>
+      <a href="https://tauri.ruoyi.plus/" class="rounded-lg border border-zinc-200 bg-white p-5 block hover:-translate-y-0.5 transition">
+        <img src="../../../public/products/tauri-desktop.svg" alt="灵动桌面框架" class="size-11 object-contain" loading="lazy" />
+        <p class="mt-3 font-semibold text-zinc-900">灵动桌面框架</p>
+        <p class="mt-1 text-sm font-medium text-[#0B6EF0]">React 19 + Rust + TypeScript · AI驱动跨平台</p>
+        <p class="mt-2 text-xs leading-5 text-zinc-500">Tauri 2.x | 33个AI技能 | 三引擎协同</p>
+      </a>
+      <a href="https://sigil.ruoyi.plus" class="rounded-lg border border-zinc-200 bg-white p-5 block hover:-translate-y-0.5 transition">
+        <img src="../../../public/products/sigil.svg" alt="Sigil" class="size-11 object-contain" loading="lazy" />
+        <p class="mt-3 font-semibold text-zinc-900">Sigil</p>
+        <p class="mt-1 text-sm font-medium text-[#0B6EF0]">AI 凭据金库 · 让 AI 拿不到你的密钥</p>
+        <p class="mt-2 text-xs leading-5 text-zinc-500">AES-256 加密 | MCP 代理 | 审计 + 范围控制</p>
+      </a>
+      <a href="https://reeve.ruoyi.plus" class="rounded-lg border border-zinc-200 bg-white p-5 block hover:-translate-y-0.5 transition">
+        <img src="../../../public/products/reeve.png" alt="Reeve" class="size-11 object-contain" loading="lazy" />
+        <p class="mt-3 font-semibold text-zinc-900">Reeve</p>
+        <p class="mt-1 text-sm font-medium text-[#0B6EF0]">服务器庄园总管 · 你持钥 AI 借道</p>
+        <p class="mt-2 text-xs leading-5 text-zinc-500">SSH 管理 | MCP 受控接入 | 四重关卡 + 审计</p>
+      </a>
+      <a href="https://agileshot.ruoyi.plus" class="rounded-lg border border-zinc-200 bg-white p-5 block hover:-translate-y-0.5 transition">
+        <img src="../../../public/products/agileshot.png" alt="AgileShot" class="size-11 object-contain" loading="lazy" />
+        <p class="mt-3 font-semibold text-zinc-900">AgileShot</p>
+        <p class="mt-1 text-sm font-medium text-[#0B6EF0]">AI 时代的桌面截图与标注工具</p>
+        <p class="mt-2 text-xs leading-5 text-zinc-500">11 种标注 | AI OCR/翻译 | MCP 扩展</p>
+      </a>
+      <a href="https://kb.ruoyi.plus/" class="rounded-lg border border-zinc-200 bg-white p-5 block hover:-translate-y-0.5 transition">
+        <img src="../../../public/products/knowledge-base.png" alt="本地知识库" class="size-11 object-contain" loading="lazy" />
+        <p class="mt-3 font-semibold text-zinc-900">本地知识库</p>
+        <p class="mt-1 text-sm font-medium text-[#0B6EF0]">全文搜索 · 双链 · 知识图谱 · MCP</p>
+        <p class="mt-2 text-xs leading-5 text-zinc-500">12 工具 MCP | 双链图谱 | 多端同步</p>
+      </a>
+      <a href="https://officia.ruoyi.plus" class="rounded-lg border border-zinc-200 bg-white p-5 block hover:-translate-y-0.5 transition">
+        <img src="../../../public/products/officia.svg" alt="Officia" class="size-11 object-contain" loading="lazy" />
+        <p class="mt-3 font-semibold text-zinc-900">Officia</p>
+        <p class="mt-1 text-sm font-medium text-[#0B6EF0]">零依赖 Java 办公套件 · 无损转 PDF · Aspose 平替</p>
+        <p class="mt-2 text-xs leading-5 text-zinc-500">Word/Excel/PPT 无损转 PDF | PDF 加密 | OCR | 仅需 JDK</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="py-16 bg-white" aria-labelledby="svc">
+  <div class="mx-auto max-w-[1200px] px-6 grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-start">
+    <div>
+      <p class="mono text-xs font-semibold text-[#0B6EF0]">技术服务</p>
+      <h2 id="svc" class="mt-2 text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl">框架的作者团队，<br class="hidden sm:inline" />也承接定制开发</h2>
+      <p class="mt-4 text-[15px] leading-7 text-zinc-700">湛江智脑科技有限公司(广东省湛江市霞山区人民大道南53号国贸大厦B座3幢五层A02房)与 若依科技工作室(广东省湛江市麻章区湖光镇)均由 抓蛙师 创办,既是 ruoyi-plus-uniapp 全栈框架的作者团队,也对外承接定制化项目开发,提供完整源码交付,可签订源码交付合同。</p>
+      <ul class="mt-6 grid gap-3 sm:grid-cols-2"><li class="flex gap-3"><span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="globe" class="size-4"></i></span><div><p class="font-semibold text-zinc-900">后台管理系统 / 全栈开发</p><p class="text-sm leading-6 text-zinc-500">企业管理后台、SaaS 平台、商城、物联网平台</p></div></li><li class="flex gap-3"><span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="monitor" class="size-4"></i></span><div><p class="font-semibold text-zinc-900">桌面软件开发</p><p class="text-sm leading-6 text-zinc-500">跨平台桌面应用(Tauri),覆盖 Windows / macOS / Linux</p></div></li><li class="flex gap-3"><span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="smartphone" class="size-4"></i></span><div><p class="font-semibold text-zinc-900">小程序 / 公众号</p><p class="text-sm leading-6 text-zinc-500">微信小程序、公众号、H5、App 全端覆盖</p></div></li><li class="flex gap-3"><span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="bot" class="size-4"></i></span><div><p class="font-semibold text-zinc-900">大模型与 Agent 工程</p><p class="text-sm leading-6 text-zinc-500">RAG 检索增强、工具调用、多智能体编排、知识库工程化</p></div></li><li class="flex gap-3"><span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="brain" class="size-4"></i></span><div><p class="font-semibold text-zinc-900">项目 AI 技能体系定制</p><p class="text-sm leading-6 text-zinc-500">为你的项目打造 Claude Code 技能 / 命令 / 钩子,让 AI 懂你的代码、守你的规范</p></div></li><li class="flex gap-3"><span class="grid size-8 shrink-0 place-items-center rounded-md border border-zinc-200 text-zinc-800"><i data-lucide="factory" class="size-4"></i></span><div><p class="font-semibold text-zinc-900">行业方案</p><p class="text-sm leading-6 text-zinc-500">教育、政务、医疗、金融、农业、电商等</p></div></li></ul>
+    </div>
+    <div class="rounded-lg border border-zinc-200 bg-white p-5">
+      <p class="flex items-center gap-2 font-semibold text-zinc-900"><i data-lucide="phone" class="size-4"></i>项目咨询</p>
+      <dl class="mt-4 grid grid-cols-[5rem_1fr] gap-y-2 text-sm text-zinc-700"><dt class="text-zinc-500">电话</dt><dd>198 6657 9313</dd><dt class="text-zinc-500">微信 / QQ</dt><dd>770492966</dd><dt class="text-zinc-500">B 站</dt><dd><a href="https://space.bilibili.com/520725002" class="text-[#0B6EF0]">@抓蛙师</a></dd><dt class="text-zinc-500">官网文档</dt><dd>https://ruoyi.plus</dd></dl>
+      <div class="mt-6 grid grid-cols-2 gap-4"><figure class="text-center"><img src="../../../public/gzh.png" alt="微信公众号" class="mx-auto aspect-[3/4] w-full rounded-lg border border-zinc-200 object-contain bg-white" loading="lazy" /><figcaption class="mt-2 text-xs"><b class="text-zinc-900">微信公众号</b><br /><span class="text-zinc-500">获取最新技术资讯</span></figcaption></figure><figure class="text-center"><img src="../../../public/wx.jpg" alt="微信联系" class="mx-auto aspect-[3/4] w-full rounded-lg border border-zinc-200 object-contain bg-white" loading="lazy" /><figcaption class="mt-2 text-xs"><b class="text-zinc-900">微信联系</b><br /><span class="text-zinc-500">一对一技术咨询</span></figcaption></figure><figure class="text-center"><img src="../../../public/wxq.jpg" alt="技术交流群" class="mx-auto aspect-[3/4] w-full rounded-lg border border-zinc-200 object-contain bg-white" loading="lazy" /><figcaption class="mt-2 text-xs"><b class="text-zinc-900">技术交流群</b><br /><span class="text-zinc-500">与开发者交流讨论</span></figcaption></figure><figure class="text-center"><img src="../../../public/软著.png" alt="软件著作权" class="mx-auto aspect-[3/4] w-full rounded-lg border border-zinc-200 object-contain bg-white" loading="lazy" /><figcaption class="mt-2 text-xs"><b class="text-zinc-900">软件著作权</b></figcaption></figure></div>
+    </div>
+  </div>
+</section>
+
+<section class="bg-[#0B1020] py-14 text-white">
+  <div class="mx-auto flex max-w-[1200px] flex-col items-start justify-between gap-6 px-6 md:flex-row md:items-center">
+    <div><p class="mono text-xs text-[#04AEF6]">$ git clone &amp;&amp; pnpm dev</p><h2 class="mt-2 text-2xl font-bold tracking-tight">五分钟跑起来，先看看再决定</h2></div>
+    <div class="flex gap-2.5"><a href="#" class="inline-flex h-10 items-center gap-2 rounded-md bg-[#0B6EF0] px-4 text-sm font-semibold text-white hover:bg-[#0A5ED0]">快速启动 <i data-lucide="arrow-right" class="size-4"></i></a><a href="#" class="inline-flex h-10 items-center rounded-md border border-white/20 px-4 text-sm text-zinc-200 hover:bg-white/10">在线演示</a></div>
+  </div>
+</section>
+
+<footer class="bg-white border-t border-zinc-200">
+  <div class="mx-auto max-w-[1200px] px-6 py-12 grid gap-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+    <div>
+      <p class="flex items-center gap-2.5 font-semibold text-zinc-900"><img src="../../../public/logo.png" alt="" class="size-8 object-contain" />RuoYi-Plus-UniApp</p>
+      <p class="mt-3 text-sm leading-6 text-zinc-500">框架即文档 提供最优雅的开发体验。Spring Boot + Vue3 + UniApp 全栈框架，200万+ 行代码、3800+ 次提交。</p>
+    </div>
+    <nav><p class="text-sm font-semibold text-zinc-900">文档</p><ul class="mt-3 space-y-2 text-sm text-zinc-500"><li><a href="#" class="hover:text-zinc-900">后端</a></li><li><a href="#" class="hover:text-zinc-900">前端</a></li><li><a href="#" class="hover:text-zinc-900">移动端</a></li><li><a href="#" class="hover:text-zinc-900">最佳实践</a></li></ul></nav>
+    <nav><p class="text-sm font-semibold text-zinc-900">了解</p><ul class="mt-3 space-y-2 text-sm text-zinc-500"><li><a href="#" class="hover:text-zinc-900">特性</a></li><li><a href="#" class="hover:text-zinc-900">框架对比</a></li><li><a href="#" class="hover:text-zinc-900">视频</a></li><li><a href="#" class="hover:text-zinc-900">演示</a></li></ul></nav>
+    <nav><p class="text-sm font-semibold text-zinc-900">更多</p><ul class="mt-3 space-y-2 text-sm text-zinc-500"><li><a href="#" class="hover:text-zinc-900">授权定价</a></li><li><a href="#" class="hover:text-zinc-900">产品矩阵</a></li><li><a href="#" class="hover:text-zinc-900">技术服务</a></li></ul></nav>
+  </div>
+  <div class="mx-auto max-w-[1200px] px-6 py-6 border-t border-zinc-200 flex flex-col gap-2 sm:flex-row sm:justify-between text-xs text-zinc-500">
+    <p>湛江智脑科技有限公司 · 若依科技工作室 · 项目咨询 198 6657 9313 / 微信 QQ 770492966</p>
+    <p>© 2026 抓蛙师 · <a href="https://beian.miit.gov.cn/" class="hover:text-zinc-900">粤ICP备2021091549号-5</a></p>
+  </div>
+</footer>
+<script>lucide.createIcons();</script>
+</body>
+</html>
