@@ -41,7 +41,24 @@
   - 构建：冷构建（先 cache:clear）217 s、峰值 5.1 GB；热构建约 77 s、4.1 GB（旧站 759 s、22.4 GB）
   - 反证：同时删 redis.md 一行正文、改 pay.md 一个代码字符、挪走 BingSiteAuth.xml、删爬虫 ByteDance-Bot → 逐页 509/511 + 全站 3 项 ❌，退出码均 1；恢复后转绿
   - 提交: 43a1d6c 比对脚本补判定 + compare-site.mjs
+- [x] T5b 孤立页 A 类 26 页补进侧栏（用户 2026-10-31 同意「按建议」）
+  - 依据：C:/Users/yecha/AppData/Local/Temp/aibid-wm/ry-orphans-report.md（66 页逐页对照框架代码：A 26 / B 29 / C 10 / ? 1）
+  - 放置：后端「主应用(ruoyi-admin)」+6（overview 组首）、「扩展模块」+1；移动端 WD「表单组件」+3（计数 25 → 28）、「组件开发」+1、
+    「业务组合函数」+1（plugins/camera）、新建「Vite 插件」分组 13 页（概览 + 自动化 / 自研插件 / 开发辅助 / UniApp 插件，放在「打包发布」前）；
+    最佳实践「工程化 › Claude Code」+1（practices/ai/claude-code 组首「总览」）。B / C / ? 类不进侧栏，网址照常可访问
+  - 读数：侧栏 438 → 464 条；cache:clear 后全新构建 verify 全绿（512 页、128 单测）；逐页 511/511、全站比对全部通过
+  - 提交: 7526af3 feat(docs)
 - [ ] T6 第 5 步：首页与营销页重做（index / comparison / demo / products / changelog / video / services），工作站出原型给用户选风格
+  - 2026-10-31 原型完成，待用户选方向：docs/prototypes/2026-10-31-首页三方向/（index.html 入口 + 决策对比表；plan-1 同家族 / plan-2 开发者工具风 / plan-3 企业级框架风）
+  - 三方案内容一致，全部取自旧站首页（13 功能卡、5 组亮点、定价 3 档、103 家企业、产品矩阵 8 款、技术服务、4 张二维码），只比视觉；均无方格线
+  - 提交: 2118761 docs(prototype)
+- [ ] T6c 迁移后内容修正（与迁移分开提交，便于回溯；正文改动不计入「一字不改」的迁移比对）
+  - A 类小修：backend/ruoyi-admin/startup 的 jar 名 ryplus_uni_workflow.jar 是 workflow 变体（主版本是 ruoyi-admin.jar）；
+    mobile/vite-plugins/overview 缺新加的 sm-crypto-rng 插件（createSmCryptoRng）；practices/ai/claude-code 删「写作进度跟踪」草稿段与 2 个已不存在的技能（banana-image、workflow-engine）；
+    mobile/plugins/camera 实为 useUpload（标题与归类待改）
+  - C 类 10 页（与代码不符，仍可被搜到）：backend/core/base-mapper、backend/core/exception-handler、backend/modules/generator/advanced-config、
+    backend/architecture/overview、mobile/plugins/{analytics,map,permission,push}、mobile/utils/{device,file}——重写 / 加 noindex / 删除，待用户决定
+  - B 类 29 页（已被侧栏页取代）：保持现状，网址可访问
 - [ ] T7 第 6 步：工具链迁移（.claude 13 技能 + 6 命令、docs-sync 检查点、PROJECT_PROGRESS、build-llms / build-icons / indexnow / emoji-to-icon 等脚本），旧 CLAUDE.md 写作规范并入
 - [ ] T8 第 7 步：验收与切换（合并历史覆盖旧仓库 → Gitee + GitHub → `edgeone pages deploy`，上线前用户确认）→ 线上 511 网址逐条核对
 
@@ -89,6 +106,9 @@
 - 16 组页面标题重复（如 5 页都叫「快速开始」），旧站同样如此：是否在标题里带上分区，待用户决定（会改变搜索结果里的标题）
 
 ## 当前进度 / 下一步
+2026-10-31 22:55 孤立页 A 类 26 页已进侧栏（7526af3，比对仍 511/511）；首页三方向原型完成（2118761）。
+下一步：用户从三个方案里选方向 → 第 5 步落地首页与营销页 → T6c 内容修正（C 类处置待用户定）→ 第 6 步工具链迁移 → 第 7 步切换（上线前用户确认）。
+
 2026-10-30 23:10 第 2–4 步完成：511 页全量迁移，逐页与全站比对全部通过，verify / e2e 全绿。
 下一步：用户确认 66 个孤立页中 A 类 26 页进侧栏（单独提交）→ 第 5 步首页与营销页视觉（工作站出原型）→ 第 6 步工具链迁移 → 第 7 步切换（上线前用户确认）。
 
@@ -97,6 +117,8 @@
 ## 卡点 / 决策
 - 决策（2026-10-30，用户）：重复标题只在 <title> 加区分名（scripts/migrate/title-qualifiers.mjs → src/data/title-qualifiers.json），h1 与结构化数据不动
 - 决策：66 个孤立页本轮照旧不进侧栏（网址都可访问），等用户确认 A 类 26 页后单独一个提交
+  → 2026-10-31 用户同意按建议：A 类 26 页进侧栏（7526af3），B / C 类不进，内容修正放到迁移之后（T6c）
+- 旧站侧栏本来就有 mobile/styles/theme 同时挂在「WD UI 组件库」与「样式系统」下，保留原样（补侧栏脚本只拦新增的重复）
 - 决策：llms.txt 暂用旧站入库的静态文件（与旧站逐字节相同），build-llms.mjs 生成逻辑在第 6 步移植
 - 决策：营销页 Vue 组件（AProductCard / APricingCard / ImagePreview）由项目插件 src/lib/markdown/vue-components.mjs 转静态 HTML；
   套餐按钮的「复制微信号 + 弹窗」改成可展开的同一段联系方式（data-migrate-ignore）
