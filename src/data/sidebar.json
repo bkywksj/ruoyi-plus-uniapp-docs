@@ -26,8 +26,32 @@
       "collapsed": true,
       "items": [
         {
+          "text": "ruoyi-admin 模块概览",
+          "id": "backend/ruoyi-admin/overview"
+        },
+        {
           "text": "模块解析",
           "id": "backend/ruoyi-admin/module-resolution"
+        },
+        {
+          "text": "应用配置",
+          "id": "backend/ruoyi-admin/configuration"
+        },
+        {
+          "text": "启动与部署",
+          "id": "backend/ruoyi-admin/startup"
+        },
+        {
+          "text": "安全配置",
+          "id": "backend/ruoyi-admin/security"
+        },
+        {
+          "text": "日志配置",
+          "id": "backend/ruoyi-admin/logging"
+        },
+        {
+          "text": "国际化配置",
+          "id": "backend/ruoyi-admin/i18n"
         }
       ]
     },
@@ -423,6 +447,10 @@
         {
           "text": "任务服务 (snailjob-server)",
           "id": "backend/extend/snailjob-server"
+        },
+        {
+          "text": "扩展开发指南",
+          "id": "backend/extend/extension-development"
         }
       ]
     }
@@ -1311,7 +1339,7 @@
           ]
         },
         {
-          "text": "表单组件 (25个)",
+          "text": "表单组件 (28个)",
           "collapsed": false,
           "items": [
             {
@@ -1339,8 +1367,16 @@
               "id": "mobile/wd/form/checkbox"
             },
             {
+              "text": "CheckboxGroup 复选框组",
+              "id": "mobile/wd/form/checkbox-group"
+            },
+            {
               "text": "Radio 单选框",
               "id": "mobile/wd/form/radio"
+            },
+            {
+              "text": "RadioGroup 单选框组",
+              "id": "mobile/wd/form/radio-group"
             },
             {
               "text": "Switch 开关",
@@ -1393,6 +1429,10 @@
             {
               "text": "Form 表单",
               "id": "mobile/wd/form/form"
+            },
+            {
+              "text": "FormItem 表单项",
+              "id": "mobile/wd/form/form-item"
             },
             {
               "text": "Signature 签名",
@@ -1635,6 +1675,10 @@
             {
               "text": "useWebSocket 实时通信",
               "id": "mobile/composables/use-websocket"
+            },
+            {
+              "text": "相机插件",
+              "id": "mobile/plugins/camera"
             }
           ]
         },
@@ -1861,6 +1905,10 @@
       "collapsed": true,
       "items": [
         {
+          "text": "业务组件",
+          "id": "mobile/components/business"
+        },
+        {
           "text": "自定义组件开发",
           "id": "mobile/components/custom-development"
         },
@@ -1935,6 +1983,88 @@
       ]
     },
     {
+      "text": "Vite 插件",
+      "collapsed": true,
+      "items": [
+        {
+          "text": "Vite 插件概览",
+          "id": "mobile/vite-plugins/overview"
+        },
+        {
+          "text": "自动化",
+          "collapsed": true,
+          "items": [
+            {
+              "text": "API 自动导入插件",
+              "id": "mobile/vite-plugins/auto/auto-import"
+            },
+            {
+              "text": "组件自动导入插件",
+              "id": "mobile/vite-plugins/auto/components"
+            },
+            {
+              "text": "分包优化插件",
+              "id": "mobile/vite-plugins/auto/bundle-optimizer"
+            }
+          ]
+        },
+        {
+          "text": "自研插件",
+          "collapsed": true,
+          "items": [
+            {
+              "text": "OpenAPI 代码生成插件",
+              "id": "mobile/vite-plugins/custom/openapi"
+            },
+            {
+              "text": "静态资源类型生成插件",
+              "id": "mobile/vite-plugins/custom/static-assets-types"
+            },
+            {
+              "text": "原生资源复制插件",
+              "id": "mobile/vite-plugins/custom/copy-native-res"
+            }
+          ]
+        },
+        {
+          "text": "开发辅助",
+          "collapsed": true,
+          "items": [
+            {
+              "text": "配置热重启插件",
+              "id": "mobile/vite-plugins/dev/vite-restart"
+            }
+          ]
+        },
+        {
+          "text": "UniApp 插件",
+          "collapsed": true,
+          "items": [
+            {
+              "text": "核心构建插件",
+              "id": "mobile/vite-plugins/uni/vite-plugin-uni"
+            },
+            {
+              "text": "uni-pages 页面路由插件",
+              "id": "mobile/vite-plugins/uni/uni-pages"
+            },
+            {
+              "text": "页面布局插件",
+              "id": "mobile/vite-plugins/uni/uni-layouts"
+            },
+            {
+              "text": "配置类型插件",
+              "id": "mobile/vite-plugins/uni/uni-manifest"
+            },
+            {
+              "text": "平台编译插件",
+              "id": "mobile/vite-plugins/uni/uni-platform"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "text": "打包发布",
       "collapsed": true,
       "items": [
@@ -1965,6 +2095,10 @@
           "text": "Claude Code",
           "collapsed": false,
           "items": [
+            {
+              "text": "总览",
+              "id": "practices/ai/claude-code"
+            },
             {
               "text": "Skills 技能系统",
               "id": "practices/engineering/claude-code-skills"
