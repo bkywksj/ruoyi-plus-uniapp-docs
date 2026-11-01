@@ -1,7 +1,7 @@
 /* 营销页（LandingLayout 与首页）的方案 C 版式。结构来自 ry-layout.mjs：
-     .lp-hero（h1 + 导语）→ 深色首屏；.lp-chips → 章节条；.lp-sec[data-sec=h2 的 id] > h2 + .lp-items > .lp-item（h3 一节）
+     .lp-hero（h1 + 导语）→ 浅色光晕首屏；.lp-chips → 章节条；.lp-sec[data-sec=h2 的 id] > h2 + .lp-items > .lp-item（h3 一节）
    正文文字一个不改，这里只排版。md 里的行内 style（旧站写的 grid / flex）需要覆盖时用 !important，并写明原因。
-   深色带横向铺满靠 ::before 左右各伸 100vmax，外层 .lp 用 overflow-x: clip 兜住，不出横向滚动条 */
+   首屏与光晕段的底横向铺满靠 ::before 左右各伸 100vmax，外层 .lp 用 overflow-x: clip 兜住，不出横向滚动条 */
 
 .lp {
   overflow-x: clip;
@@ -21,13 +21,13 @@
   max-width: none;
 }
 
-/* ---------- 深色首屏 ---------- */
+/* ---------- 首屏（浅底 + 青蓝光晕，与 .ry-aurora 同款） ---------- */
 .lp-hero {
   position: relative;
   isolation: isolate;
   margin: 0;
   padding: 4.5rem 0 3.5rem;
-  color: #fff;
+  color: var(--ink);
 }
 .lp-hero::before,
 .lp-hero::after {
@@ -35,21 +35,25 @@
   position: absolute;
   inset: 0 -100vmax;
   z-index: -1;
-  background: var(--ry-night);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
 }
 /* 光晕只铺在版心范围内，否则径向渐变的圆心会跑到屏幕外 */
 .lp-hero::after {
   inset: 0 -12rem;
   background:
-    radial-gradient(55% 70% at 85% 0%, rgb(91 124 255 / 0.3), transparent 70%),
-    radial-gradient(40% 60% at 0% 100%, rgb(91 124 255 / 0.12), transparent 70%);
+    radial-gradient(40% 60% at 12% 0%, rgb(4 174 246 / 0.16), transparent 70%),
+    radial-gradient(50% 70% at 88% 0%, rgb(11 110 240 / 0.18), transparent 70%);
 }
 .lp-hero-in > * + * {
   margin-top: 1rem;
 }
 .lp .lp-hero h1 {
   margin-top: 0.75rem;
-  color: #fff;
+  width: fit-content;
+  background-image: linear-gradient(90deg, var(--ry-cyan), var(--brand) 55%, var(--ink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   font-size: clamp(2.4rem, 1.4rem + 3.6vw, 4rem);
   line-height: 1.06;
   font-weight: 900;
@@ -60,20 +64,20 @@
   margin-top: 1.25rem;
   font-size: 16px;
   line-height: 2;
-  color: rgb(255 255 255 / 0.62);
+  color: var(--muted);
 }
 .lp .lp-hero strong {
-  color: #fff;
+  color: var(--ink);
 }
 .lp .lp-hero a {
-  color: #aab8ff;
+  color: var(--brand-ink);
 }
 .lp-kicker {
   font-family: var(--font-mono);
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #8ea2ff;
+  color: var(--brand-ink);
 }
 .lp-extra {
   margin-top: 2rem !important;
@@ -88,22 +92,24 @@
   align-items: center;
   height: 44px;
   padding: 0 20px;
-  border-radius: 12px;
-  border: 1px solid rgb(255 255 255 / 0.16);
+  border-radius: 999px;
+  background: var(--elevated);
+  border: 1px solid var(--line);
   font-size: 14px;
   font-weight: 600;
-  color: rgb(255 255 255 / 0.88);
+  color: color-mix(in oklab, var(--ink) 82%, transparent);
   text-decoration: none;
   transition: background 0.2s;
 }
 .lp .lp-btn:hover {
-  background: rgb(255 255 255 / 0.07);
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
 }
 .lp .lp-btn-primary {
   border-color: transparent;
   background: var(--color-brand-strong);
+  background-image: linear-gradient(180deg, color-mix(in oklab, var(--brand) 78%, white), var(--brand));
   color: #fff;
-  box-shadow: 0 12px 30px -10px rgb(91 124 255 / 0.8);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 8px 20px -8px rgb(11 110 240 / 0.7);
 }
 .lp .lp-btn-primary:hover {
   background: var(--brand);
@@ -113,14 +119,14 @@
   grid-auto-flow: column;
   gap: 1px;
   overflow: hidden;
-  border: 1px solid var(--ry-night-line);
+  border: 1px solid var(--line);
   border-radius: 16px;
-  background: var(--ry-night-line);
+  background: var(--line);
 }
 .lp-stats p {
   margin: 0;
   padding: 14px 22px;
-  background: var(--ry-night-2);
+  background: var(--elevated);
 }
 .lp-stats b {
   display: block;
@@ -130,7 +136,7 @@
 }
 .lp-stats span {
   font-size: 12px;
-  color: rgb(255 255 255 / 0.45);
+  color: var(--muted);
 }
 /* 产品图标带（产品矩阵首屏） */
 .lp-belt {
@@ -150,10 +156,10 @@
   align-items: center;
   gap: 8px;
   padding: 14px 6px;
-  border: 1px solid rgb(255 255 255 / 0.07);
+  border: 1px solid var(--line);
   border-radius: 16px;
-  background: rgb(255 255 255 / 0.03);
-  color: rgb(255 255 255 / 0.68);
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
+  color: var(--muted);
   font-size: 12px;
   line-height: 1.3;
   text-align: center;
@@ -161,8 +167,8 @@
   transition: border-color 0.2s, background 0.2s;
 }
 .lp .lp-belt a:hover {
-  border-color: rgb(255 255 255 / 0.2);
-  background: rgb(255 255 255 / 0.06);
+  border-color: color-mix(in oklab, var(--ink) 20%, transparent);
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
 }
 .lp .lp-belt img {
   width: 48px;
@@ -276,19 +282,19 @@
   }
 }
 
-/* 深色整宽段（技术服务「联系方式」等）：与首屏同底 */
+/* 整宽光晕段（技术服务「联系方式」等）：与首屏同底 */
 .lp .lp-night {
   position: relative;
   isolation: isolate;
   padding: 4.5rem 0;
-  color: #fff;
+  color: var(--ink);
 }
 .lp .lp-night::before {
   content: '';
   position: absolute;
   inset: 0 -100vmax;
   z-index: -1;
-  background: var(--ry-night);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
 }
 
 /* ================= 产品矩阵 ================= */
@@ -448,20 +454,20 @@
   border-radius: 999px;
   background: var(--vc) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><path d='M20 6 9 17l-5-5'/></svg>") center / 10px no-repeat;
 }
-/* md 自带 <style> 的页脚说明：改成深色圆角块 */
+/* md 自带 <style> 的页脚说明：改成浅色光晕圆角块 */
 .lp .products-footer {
   margin-top: 1rem;
   padding: 2.5rem 2rem !important;
   border-radius: 28px;
-  background: var(--ry-night);
-  color: rgb(255 255 255 / 0.7) !important;
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  color: color-mix(in oklab, var(--ink) 82%, transparent) !important;
   font-size: 15px !important;
 }
 .lp .products-footer strong {
-  color: #fff;
+  color: var(--ink);
 }
 .lp .products-footer a {
-  color: #aab8ff !important;
+  color: var(--brand-ink) !important;
 }
 
 /* ================= 技术服务 ================= */
@@ -476,7 +482,7 @@
   margin-bottom: 4px;
   font-size: 15.5px;
 }
-/* 可承接的服务：6 张卡，第一张宽卡；「项目 AI 技能体系定制」深色卡（方案 C 的主角） */
+/* 可承接的服务：6 张卡，第一张宽卡；「项目 AI 技能体系定制」光晕卡（方案 C 的主角） */
 @media (min-width: 768px) {
   .lp-services [data-sec='可承接的服务'] .lp-items {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -507,9 +513,8 @@
 }
 .lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) {
   border-color: transparent;
-  background: var(--ry-night)
-    radial-gradient(50% 80% at 90% 0%, rgb(91 124 255 / 0.35), transparent 70%);
-  color: #fff;
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  color: var(--ink);
 }
 /* 放到最后一行通栏（1 宽 + 2 ｜ 3 + 4 + 6 ｜ 5 通栏），否则两张宽卡凑不满三列会空一格 */
 .lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) {
@@ -517,36 +522,36 @@
   grid-column: 1 / -1;
 }
 .lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) > h3 {
-  color: #fff;
+  color: var(--ink);
 }
 .lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) > p {
-  color: rgb(255 255 255 / 0.65);
+  color: var(--muted);
 }
 .lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) strong {
-  color: #fff;
+  color: var(--ink);
 }
 /* 常见咨询：问题加粗做标题 */
 .lp-services [data-sec='常见咨询'] > ul > li strong:first-child {
   display: block;
   margin-bottom: 4px;
 }
-/* 联系方式：整段深色，表格每行一张玻璃卡（表头只给读屏） */
+/* 联系方式：整段光晕底，表格每行一张白卡（表头只给读屏） */
 .lp-services [data-sec='联系方式'] {
   position: relative;
   isolation: isolate;
   margin-top: 6rem;
   padding: 4.5rem 0;
-  color: #fff;
+  color: var(--ink);
 }
 .lp-services [data-sec='联系方式']::before {
   content: '';
   position: absolute;
   inset: 0 -100vmax;
   z-index: -1;
-  background: var(--ry-night);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
 }
 .lp-services [data-sec='联系方式'] > h2 {
-  color: #fff;
+  color: var(--ink);
 }
 .lp-services [data-sec='联系方式'] .tbl {
   border: 0;
@@ -577,9 +582,9 @@
 .lp-services [data-sec='联系方式'] tr {
   display: block;
   padding: 18px 20px;
-  border: 1px solid var(--ry-night-line);
+  border: 1px solid var(--line);
   border-radius: 18px;
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.02));
+  background: var(--elevated);
 }
 .lp-services [data-sec='联系方式'] tbody tr:hover td {
   background: none;
@@ -588,29 +593,29 @@
   display: block;
   padding: 0;
   border: 0;
-  color: rgb(255 255 255 / 0.8);
+  color: color-mix(in oklab, var(--ink) 82%, transparent);
 }
 .lp-services [data-sec='联系方式'] td:first-child {
   font-size: 12px;
-  color: rgb(255 255 255 / 0.45);
+  color: var(--muted);
 }
 .lp-services [data-sec='联系方式'] td + td {
   margin-top: 8px;
   font-size: 15px;
 }
 .lp-services [data-sec='联系方式'] td strong {
-  color: #fff;
+  color: var(--ink);
   font-size: 22px;
   font-weight: 800;
 }
 .lp-services [data-sec='联系方式'] a {
-  color: #aab8ff;
+  color: var(--brand-ink);
 }
 .lp-services [data-sec='联系方式'] blockquote {
   margin-top: 2rem;
-  border-color: var(--ry-night-line);
-  background: rgb(255 255 255 / 0.03);
-  color: rgb(255 255 255 / 0.65);
+  border-color: var(--line);
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
+  color: var(--muted);
 }
 
 /* ================= 项目演示 ================= */
@@ -673,7 +678,7 @@
 .lp-demo [data-sec='在线演示'] tr::before {
   content: '';
   aspect-ratio: 16 / 10;
-  background: var(--ry-night) center top / cover no-repeat;
+  background: var(--surface) center top / cover no-repeat;
 }
 .lp-demo [data-sec='在线演示'] tr:nth-child(1)::before {
   background-image: url('/demo/03-dashboard.webp');
@@ -742,8 +747,8 @@
 }
 .vc-pricing.is-recommended {
   border-color: transparent;
-  background: var(--ry-night) radial-gradient(70% 60% at 85% 0%, rgb(91 124 255 / 0.35), transparent 70%);
-  color: #fff;
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  color: var(--ink);
   box-shadow: 0 40px 80px -30px rgb(11 13 20 / 0.7);
 }
 .vp-doc .vc-recommended {
@@ -767,7 +772,7 @@
   font-weight: 800;
 }
 .is-recommended .vc-plan {
-  color: #fff;
+  color: var(--ink);
 }
 .vp-doc .vc-plan-desc {
   margin-top: 4px;
@@ -775,7 +780,7 @@
   color: var(--muted);
 }
 .is-recommended .vc-plan-desc {
-  color: rgb(255 255 255 / 0.5);
+  color: var(--muted);
 }
 .vp-doc .vc-price {
   margin-top: 1.25rem;
@@ -800,7 +805,7 @@
   text-decoration: line-through;
 }
 .is-recommended .vc-original {
-  color: rgb(255 255 255 / 0.4);
+  color: var(--muted);
 }
 .vp-doc .vc-saving {
   margin-top: 8px;
@@ -813,8 +818,8 @@
   font-weight: 600;
 }
 .is-recommended .vc-saving {
-  background: rgb(255 255 255 / 0.1);
-  color: #c3ceff;
+  background: var(--color-brand-soft);
+  color: var(--brand-ink);
 }
 .vp-doc .vc-features {
   margin-top: 1.25rem;
@@ -835,7 +840,7 @@
   color: var(--brand);
 }
 .is-recommended .vc-check {
-  color: #8ea2ff;
+  color: var(--brand-ink);
 }
 .vc-contact {
   margin-top: auto;
@@ -866,7 +871,7 @@
   text-align: center;
 }
 .is-recommended .vc-contact > div {
-  background: rgb(255 255 255 / 0.08);
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
 }
 .vp-doc .vc-footer {
   margin-top: 12px;
@@ -875,7 +880,7 @@
   color: var(--muted);
 }
 .is-recommended .vc-footer {
-  color: rgb(255 255 255 / 0.45);
+  color: var(--muted);
 }
 /* 购买说明：五条一行排开 */
 .lp [data-sec='授权定价'] .vp-callout ul {
@@ -954,7 +959,7 @@
 }
 
 /* ================= 视频教程 ================= */
-/* 三门课：第一门（Claude Code 四集）深色四卡，OA 实战一张主推卡，基础课程 28 集双列清单 */
+/* 三门课：第一门（Claude Code 四集）光晕四卡，OA 实战一张主推卡，基础课程 28 集双列清单 */
 .lp-video .vp-doc > h3 {
   margin-top: 4rem;
   font-size: clamp(1.4rem, 1.1rem + 0.9vw, 1.8rem);
@@ -1011,37 +1016,37 @@
   min-height: 11rem;
   padding: 64px 22px 22px;
   border-color: transparent;
-  background: var(--ry-night) radial-gradient(70% 60% at 30% 0%, rgb(91 124 255 / 0.32), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
 }
 .lp-video .vp-doc > h3:first-of-type + ol > li::before {
   left: 22px;
   top: 18px;
   font-size: 34px;
   font-weight: 800;
-  color: rgb(255 255 255 / 0.16);
+  color: var(--muted);
 }
 .lp-video .vp-doc > h3:first-of-type + ol > li a {
-  color: #fff;
+  color: var(--ink);
 }
 .lp-video .vp-doc > h3:first-of-type + ol > li a:hover {
-  color: #c3ceff;
+  color: var(--brand-ink);
 }
 .lp-video .vp-doc > h3:nth-of-type(2) + p {
   padding: 1.75rem 2rem;
   border-radius: 24px;
-  background: var(--ry-night) radial-gradient(60% 90% at 20% 20%, rgb(91 124 255 / 0.4), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
   font-size: 18px;
   line-height: 1.6;
 }
 .lp-video .vp-doc > h3:nth-of-type(2) + p a {
-  color: #fff;
+  color: var(--ink);
   text-decoration: none;
 }
 .lp-video .vp-doc > h3:nth-of-type(2) + p a::after {
   content: '  去 B 站观看 ↗';
   font-size: 14px;
   font-weight: 600;
-  color: #aab8ff;
+  color: var(--brand-ink);
 }
 
 /* ================= 新特性 / 框架对比（长页） ================= */
@@ -1217,33 +1222,33 @@
   font-size: 13.5px;
   color: color-mix(in oklab, var(--ink) 75%, var(--canvas));
 }
-/* 技术服务：整段深色（与技术服务页同一语气） */
+/* 技术服务：整段光晕底（与技术服务页同一语气） */
 .lp-index [data-sec='技术服务-·-承接定制开发'] {
   position: relative;
   isolation: isolate;
   margin-top: 6rem;
   padding: 4.5rem 0;
-  color: rgb(255 255 255 / 0.7);
+  color: color-mix(in oklab, var(--ink) 82%, transparent);
 }
 .lp-index [data-sec='技术服务-·-承接定制开发']::before {
   content: '';
   position: absolute;
   inset: 0 -100vmax;
   z-index: -1;
-  background: var(--ry-night) radial-gradient(40% 70% at 80% 0%, rgb(91 124 255 / 0.3), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
 }
 .lp-index [data-sec='技术服务-·-承接定制开发'] > h2,
 .lp-index [data-sec='技术服务-·-承接定制开发'] strong {
-  color: #fff;
+  color: var(--ink);
 }
 .lp-index [data-sec='技术服务-·-承接定制开发'] > p {
   max-width: 56rem;
-  color: rgb(255 255 255 / 0.62);
+  color: var(--muted);
 }
 .lp-index [data-sec='技术服务-·-承接定制开发'] > ul > li {
-  border-color: var(--ry-night-line);
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.02));
-  color: rgb(255 255 255 / 0.65);
+  border-color: var(--line);
+  background: var(--elevated);
+  color: var(--muted);
 }
 @media (min-width: 1024px) {
   .lp-index [data-sec='技术服务-·-承接定制开发'] > ul {
@@ -1251,23 +1256,23 @@
   }
 }
 .lp-index [data-sec='技术服务-·-承接定制开发'] blockquote {
-  border-color: var(--ry-night-line);
-  background: rgb(255 255 255 / 0.03);
-  color: rgb(255 255 255 / 0.7);
+  border-color: var(--line);
+  background: color-mix(in oklab, var(--ink) 4%, transparent);
+  color: color-mix(in oklab, var(--ink) 82%, transparent);
 }
 .lp-index [data-sec='技术服务-·-承接定制开发'] a {
-  color: #aab8ff;
+  color: var(--brand-ink);
 }
 
-/* 深色段里的章节编号换成深底配色；表格卡片与标题拉开距离 */
+/* 光晕段里的表格卡片与标题拉开距离 */
 .lp-services [data-sec='联系方式'] > h2::before,
 .lp-index [data-sec='技术服务-·-承接定制开发'] > h2::before {
-  color: #8ea2ff;
+  color: var(--brand-ink);
 }
 .lp-services [data-sec='联系方式'] .tbl {
   margin-top: 1.75rem;
 }
-/* 技术服务页以深色「联系方式」收尾：去掉版心底部留白，直接接深色页脚 */
+/* 技术服务页以光晕底「联系方式」收尾：去掉版心底部留白，直接接页脚 */
 .lp-services .lp-grid {
   padding-bottom: 0;
 }
@@ -1277,4 +1282,12 @@
 .lp-changelog .lp-chips span,
 .lp-comparison .lp-chips span {
   display: none;
+}
+
+/* 首屏按钮的字色：「.lp .lp-hero a」把首屏链接设成品牌蓝，优先级比按钮类高，蓝底按钮会变成蓝字蓝底，这里按按钮档位改回来 */
+.lp .lp-hero a.lp-btn {
+  color: var(--ink);
+}
+.lp .lp-hero a.lp-btn-primary {
+  color: #fff;
 }

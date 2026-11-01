@@ -1,44 +1,46 @@
-/* RuoYi 站方案 C「AI 原生」主题：由本站各布局（DocsLayout / LandingLayout / 首页 / 404）引入，覆盖框架令牌，不改框架 global.css。
-   视觉规则：页头、页脚、首屏常驻深色（#07080D），正文浅灰底 + 白卡片；品牌蓝 #5B7CFF（site.brandColor 注入 --brand）；
+/* RuoYi 站主题（浅色，取第二轮原型方案 B「三端同屏」的配色）：由本站各布局（DocsLayout / LandingLayout / 首页 / 404）引入，
+   覆盖框架令牌，不改框架 global.css。视觉规则：页头白色毛玻璃、首屏浅底 + 青蓝光晕（.ry-aurora）、正文浅灰底 + 白卡片、页脚白色；
+   品牌蓝 #0B6EF0（旧站同色，site.brandColor 注入 --brand），点缀青 #04AEF6；代码窗两种主题下都是深色。
+   颜色一律走语义令牌（ink / muted / line / elevated），深色模式下同一套类自动翻转，不写死白字黑底。
    中文不引 webfont（框架禁令），大数字用系统字体加粗，代码用系统等宽字体 */
 
 :root:not(.dark) {
-  --canvas: #f6f7fb;
-  --surface: #eef0f6;
+  --canvas: #f6f8fb;
+  --surface: #eef2f8;
   --elevated: #ffffff;
-  --ink: #0b0d14;
-  --muted: #5b6172;
-  --line: rgb(11 13 20 / 0.08);
-  /* 品牌色做文字：#5B7CFF 在白底上约 3.4:1，压到 #3D5BEA 一档（约 5.3:1）才过 AA */
-  --brand-ink: #3d5bea;
+  --ink: #0a1222;
+  --muted: #5a6478;
+  --line: rgb(10 18 34 / 0.08);
+  /* 品牌色做文字：#0B6EF0 在白底上约 4.6:1，再压一档到 #0A5CD6（约 6:1），小字也稳过 AA */
+  --brand-ink: #0a5cd6;
 }
 
 :root {
-  /* 深色区块（页头 / 首屏 / 页脚 / 代码窗）的底色与描边，两种主题下都不变 */
-  --ry-night: #07080d;
-  --ry-night-2: #0b0d16;
-  --ry-night-line: rgb(255 255 255 / 0.08);
-  --ry-code-bg: #0b0d14;
+  /* 点缀青：首屏光晕、标题渐变的起点 */
+  --ry-cyan: #04aef6;
+  --ry-code-bg: #0b1220;
 }
 
-/* 深色区块的公共底：径向品牌光晕 + 极淡噪点（不用方格线） */
-.ry-night {
-  background-color: var(--ry-night);
+/* 首屏 / 重点区块的底：浅底 + 青蓝径向光晕（不用方格线）。深色模式下底色跟着 canvas 走，光晕照旧 */
+.ry-aurora {
+  background-color: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
   background-image:
-    radial-gradient(50% 60% at 78% 0%, rgb(91 124 255 / 0.26), transparent 70%),
-    radial-gradient(40% 50% at 8% 100%, rgb(91 124 255 / 0.1), transparent 70%);
-  color: #fff;
+    radial-gradient(40% 55% at 18% 0%, rgb(4 174 246 / 0.18), transparent 70%),
+    radial-gradient(45% 60% at 86% 0%, rgb(11 110 240 / 0.2), transparent 70%),
+    radial-gradient(60% 45% at 50% 100%, rgb(11 110 240 / 0.08), transparent 70%);
+  color: var(--ink);
 }
 
-/* 小标签行（等宽、加字距、品牌浅蓝）——深色区块用 */
-.ry-kicker {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #8ea2ff;
+/* 标题渐变：青 → 品牌蓝 → 墨色（首页「全栈开发文档」、首屏大标题用） */
+.ry-grad-text {
+  background-image: linear-gradient(90deg, var(--ry-cyan), var(--brand) 55%, var(--ink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
-/* 浅色区块用的同款标签 */
+
+/* 小标签行（等宽、加字距、品牌蓝） */
+.ry-kicker,
 .ry-kicker-l {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -52,21 +54,31 @@
   background: var(--elevated);
   border: 1px solid var(--line);
   border-radius: 22px;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 1px 2px rgb(11 13 20 / 0.04), 0 16px 36px -20px rgb(11 13 20 / 0.2);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 1px 2px rgb(10 18 34 / 0.04), 0 18px 40px -22px rgb(10 18 34 / 0.22);
 }
 .ry-lift {
   transition: transform 0.35s var(--ease-out-soft), box-shadow 0.35s var(--ease-out-soft);
 }
 .ry-lift:hover {
   transform: translateY(-3px);
-  box-shadow: 0 2px 4px rgb(11 13 20 / 0.05), 0 26px 50px -24px rgb(11 13 20 / 0.3);
+  box-shadow: 0 2px 4px rgb(10 18 34 / 0.05), 0 26px 50px -24px rgb(10 18 34 / 0.3);
 }
-/* 深色区块里的玻璃面板 */
+/* 首屏里的毛玻璃面板（叠在光晕上） */
 .ry-pane {
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.02));
-  border: 1px solid var(--ry-night-line);
+  background: color-mix(in oklab, var(--elevated) 78%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--line);
   border-radius: 18px;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 24px 60px -30px rgb(0 0 0 / 0.8);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 1px 2px rgb(10 18 34 / 0.04), 0 18px 40px -22px rgb(10 18 34 / 0.22);
+}
+/* 主按钮：品牌蓝渐变胶囊（方案 B 的「开始使用」） */
+.ry-btn-primary {
+  background-image: linear-gradient(180deg, color-mix(in oklab, var(--brand) 78%, white), var(--brand));
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 8px 20px -8px rgb(11 110 240 / 0.7);
+}
+.ry-btn-primary:hover {
+  filter: brightness(1.05);
 }
 
 /* 代码窗：两种主题下都是深色（取 shiki 的 github-dark 那一套变量），等宽字体关连字 */

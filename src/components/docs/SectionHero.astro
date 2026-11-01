@@ -1,5 +1,5 @@
 ---
-// 栏目首页（/backend/ /frontend/ /mobile/ /practices/）正文上方的深色首屏 + 分组卡片（方案 C）。
+// 栏目首页（/backend/ /frontend/ /mobile/ /practices/）正文上方的浅色光晕首屏 + 分组卡片。
 // 数据全部来自侧栏（sidebar.json）与 docs 集合：分组名 / 每组篇数 / 每组第一篇的网址、各栏目页数，不写死任何文案以外的数字。
 // 不在正文盒里（data-pagefind-body 之外）：不进站内搜索、不参与迁移逐页比对，栏目首页自己的正文照旧显示在下方
 import { getCollection } from 'astro:content';
@@ -30,19 +30,19 @@ const startPage = first?.pages.find((p) => p.href !== docPath(`${section}/index`
 const labels: Record<DocSection, string> = { backend: 'Spring Boot', frontend: 'Vue 3', mobile: 'UniApp', practices: 'Practices' };
 ---
 
-<section class="ry-night overflow-hidden" data-pagefind-ignore>
+<section class="ry-aurora overflow-hidden" data-pagefind-ignore>
   <div class="mx-auto w-full max-w-[90rem] px-4 pt-14 pb-10 sm:px-6 lg:px-8 lg:pt-16">
     <p class="ry-kicker">docs / {section} · {pageCount(section)} 页</p>
     <p class="mt-4 text-[44px] leading-[1.05] font-black tracking-tight sm:text-[60px]">
-      {SECTION_LABELS[section]}<span class="ml-3 align-middle font-mono text-[16px] font-normal tracking-normal text-white/40">{labels[section]}</span>
+      <span class="ry-grad-text">{SECTION_LABELS[section]}</span><span class="ml-3 align-middle font-mono text-[16px] font-normal tracking-normal text-muted">{labels[section]}</span>
     </p>
-    {intro && <p class="mt-5 max-w-2xl text-[15.5px] leading-8 text-white/60">{intro}</p>}
+    {intro && <p class="mt-5 max-w-2xl text-[15.5px] leading-8 text-muted">{intro}</p>}
     <div class="mt-8 flex flex-wrap items-center gap-3">
       {
         startPage && (
           <a
             href={startPage.href}
-            class="inline-flex h-11 items-center gap-2 rounded-xl bg-brand-strong px-5 text-[14px] font-semibold text-white shadow-[0_12px_30px_-10px_rgba(91,124,255,.8)] transition-opacity hover:opacity-90"
+            class="inline-flex h-11 items-center gap-2 ry-btn-primary rounded-full px-5 text-[14px] font-semibold"
           >
             {startPage.text} →
           </a>
@@ -54,16 +54,16 @@ const labels: Record<DocSection, string> = { backend: 'Spring Boot', frontend: '
             href={`${site.mobilePreview.origin}/h5`}
             target="_blank"
             rel="noopener"
-            class="inline-flex h-11 items-center rounded-xl border border-white/15 px-5 text-[14px] font-semibold text-white/85 transition-colors hover:bg-white/[.06]"
+            class="inline-flex h-11 items-center rounded-full border border-line bg-elevated px-5 text-[14px] font-semibold text-ink transition-colors hover:border-ink/20"
           >
             在线体验 H5 ↗
           </a>
         )
       }
-      <span class="text-[13px] text-white/40">{groups.length} 个分组 · 侧栏 {groups.reduce((n, g) => n + g.pages.length, 0)} 篇</span>
+      <span class="text-[13px] text-muted">{groups.length} 个分组 · 侧栏 {groups.reduce((n, g) => n + g.pages.length, 0)} 篇</span>
     </div>
   </div>
-  <div class="border-t border-white/[.06]">
+  <div class="border-t border-line">
     <nav aria-label="切换栏目" class="mx-auto flex w-full max-w-[90rem] gap-1 overflow-x-auto px-4 py-3 text-[13.5px] sm:px-6 lg:px-8">
       {
         DOC_SECTIONS.map((s) => (
@@ -72,11 +72,11 @@ const labels: Record<DocSection, string> = { backend: 'Spring Boot', frontend: '
             aria-current={s === section ? 'page' : undefined}
             class:list={[
               'flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2 transition-colors',
-              s === section ? 'bg-white font-semibold text-[#07080D]' : 'text-white/55 hover:bg-white/[.05] hover:text-white',
+              s === section ? 'bg-ink font-semibold text-canvas' : 'text-muted hover:bg-ink/[.05] hover:text-ink',
             ]}
           >
             {SECTION_LABELS[s]}
-            <span class:list={['font-mono text-[11px]', s === section ? 'text-black/40' : 'text-white/30']}>{pageCount(s)}</span>
+            <span class:list={['font-mono text-[11px]', s === section ? 'text-canvas/60' : 'text-muted/70']}>{pageCount(s)}</span>
           </a>
         ))
       }

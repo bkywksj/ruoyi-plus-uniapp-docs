@@ -7,34 +7,34 @@ interface Props {
   size?: 'md' | 'lg';
   /** lg 尺寸的占位文案，写几个本站常被搜的词 */
   placeholder?: string;
-  /** dark = 放在常驻深色的页头 / 首屏上（浅色令牌在深底上对比度不够） */
-  tone?: 'light' | 'dark';
+  /** pill = 页头 / 首屏里的胶囊款（毛玻璃底、宽度由调用方给）；light = 侧栏 / 页面里占满父容器的输入框款 */
+  tone?: 'light' | 'pill';
   class?: string;
 }
 
 const { size = 'md', placeholder = '搜索文档', tone = 'light', class: className } = Astro.props;
-const dark = tone === 'dark';
+const pill = tone === 'pill';
 ---
 
 <button
   type="button"
   data-search-open
   class:list={[
-    // 浅色款沿用占满父容器；深色款放在页头这类横排里，宽度由调用方给（w-full 会和调用方的 w-44 打架，把旁边的按钮挤出去）
-    'flex items-center gap-2 rounded-lg border text-left transition-colors',
-    dark
-      ? 'border-white/10 bg-white/[.04] text-white/50 hover:border-white/20 hover:text-white/80'
-      : 'w-full border-line bg-elevated text-muted hover:border-brand',
-    size === 'lg' ? 'px-4 py-3 text-[15px] shadow-[var(--shadow-card)]' : dark ? 'px-3 py-1.5 text-[13px]' : 'px-3 py-2 text-sm',
+    // 输入框款占满父容器；胶囊款放在页头这类横排里，宽度由调用方给（w-full 会和调用方的 w-44 打架，把旁边的按钮挤出去）
+    'flex items-center gap-2 border text-left transition-colors',
+    pill
+      ? 'rounded-full border-line bg-elevated/70 text-muted shadow-[inset_0_1px_0_rgba(255,255,255,.8)] hover:border-ink/20 hover:text-ink'
+      : 'w-full rounded-lg border-line bg-elevated text-muted hover:border-brand',
+    size === 'lg' ? 'px-4 py-3 text-[15px] shadow-[var(--shadow-card)]' : pill ? 'px-3 py-1.5 text-[13px]' : 'px-3 py-2 text-sm',
     className,
   ]}
 >
-  <Search class={size === 'lg' ? 'size-5' : dark ? 'size-3.5' : 'size-4'} aria-hidden="true" />
+  <Search class={size === 'lg' ? 'size-5' : pill ? 'size-3.5' : 'size-4'} aria-hidden="true" />
   <span class="flex-1 truncate">{size === 'lg' ? placeholder : '搜索文档'}</span>
   <kbd
     class:list={[
       'rounded border px-1.5 py-0.5 font-mono',
-      dark ? 'border-white/10 text-[10px] text-white/40' : 'border-line bg-surface text-xs',
+      pill ? 'border-line text-[10px] text-muted' : 'border-line bg-surface text-xs',
     ]}>Ctrl K</kbd
   >
 </button>

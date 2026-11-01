@@ -1,7 +1,7 @@
 ---
-// 迁移文档的页面布局（方案 C）：深色面包屑带 / 左多层侧栏 / 正文 / 右「页面导航」或手机实时预览，外壳是 BaseLayout。
+// 迁移文档的页面布局（浅色主题）：浅色光晕面包屑带 / 左多层侧栏 / 正文 / 右「页面导航」或手机实时预览，外壳是 BaseLayout。
 // 版心比框架 Container 宽（文档代码块多，正文需要宽度），只在这个布局里放宽，不改框架核心组件。
-// 栏目首页（backend/index 等）在正文上方多一块深色首屏 + 分组卡片（SectionHero，不进正文盒、不参与迁移比对）。
+// 栏目首页（backend/index 等）在正文上方多一块浅色光晕首屏 + 分组卡片（SectionHero，不进正文盒、不参与迁移比对）。
 // 结构化数据照旧站：每页 TechArticle（字段与旧站 transformPageData 一致），不再加 BreadcrumbList 以外的东西
 import type { MarkdownHeading } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -68,22 +68,22 @@ const stale = (outdated.pages as Record<string, { missing: string; see: { text: 
       <SectionHero section={section} />
     ) : (
       section && (
-        <nav aria-label="所在位置" class="ry-night border-b border-white/[.06]">
+        <nav aria-label="所在位置" class="ry-aurora border-b border-line">
           <ol class="mx-auto flex h-12 w-full max-w-[90rem] items-center gap-2 overflow-x-auto px-4 text-[13px] whitespace-nowrap sm:px-6 lg:px-8">
-            <li class="font-mono text-white/35">docs /</li>
+            <li class="font-mono text-muted/70">docs /</li>
             <li>
-              <a href={docPath(`${section}/index`)} class="text-white/60 hover:text-white">
+              <a href={docPath(`${section}/index`)} class="text-muted hover:text-ink">
                 {SECTION_LABELS[section]}
               </a>
             </li>
             {trail.map((t) => (
-              <li class="flex items-center gap-2 text-white/60">
-                <span class="text-white/25" aria-hidden="true">›</span>
+              <li class="flex items-center gap-2 text-muted">
+                <span class="text-muted/50" aria-hidden="true">›</span>
                 {t}
               </li>
             ))}
-            <li class="flex items-center gap-2 text-white" aria-current="page">
-              <span class="text-white/25" aria-hidden="true">›</span>
+            <li class="flex items-center gap-2 font-medium text-ink" aria-current="page">
+              <span class="text-muted/50" aria-hidden="true">›</span>
               {title}
             </li>
           </ol>

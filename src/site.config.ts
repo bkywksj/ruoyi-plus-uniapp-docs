@@ -71,7 +71,7 @@ export const site = {
   /** <html lang> 与 og:locale */
   locale: 'zh-CN',
   /** 品牌主色：注入为 CSS 变量 --brand，Tailwind 里用 bg-brand / text-brand */
-  brandColor: '#5B7CFF',
+  brandColor: '#0B6EF0',
   author: {
     name: '若依科技工作室',
     url: 'https://ruoyi.plus',

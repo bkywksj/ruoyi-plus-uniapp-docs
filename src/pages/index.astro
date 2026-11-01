@@ -1,5 +1,5 @@
 ---
-// 首页（方案 C「AI 原生」）：数据全部来自迁来的 src/content/docs/index.md ——
+// 首页（浅色主题，配色取第二轮原型方案 B）：数据全部来自迁来的 src/content/docs/index.md ——
 //   首屏（hero：名称 / 副标题 / 标语 / 五个按钮）、能力卡（features 13 张）、重构亮点（highlights 5 组，旧主题从未渲染，这里首次显示）取 frontmatter；
 //   正文（为什么选择 / 立即开始 / 授权定价 / 产品矩阵 / 企业信赖 / 技术服务 / 技术支持）照旧走 Markdown 管线，按 h2 分段后由 landing.css 排版。
 // 正文盒（data-pagefind-body）里的文字与旧站逐字相同（迁移比对照旧）；首屏、流水线、能力卡、亮点在正文盒之外，不参与比对。
@@ -55,21 +55,21 @@ const pipeline = [
 
 <BaseLayout description={entry.data.description} jsonLd={siteJsonLd}>
   <!-- 首屏：左名称 + 标语 + 按钮 + 三个数字，右四格分镜 -->
-  <section class="ry-night relative overflow-hidden" data-pagefind-ignore>
+  <section class="ry-aurora relative overflow-hidden" data-pagefind-ignore>
     <div class="mx-auto grid w-full max-w-[78rem] gap-14 px-4 pt-16 pb-20 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pt-24">
       <div>
         {
           badge && (
-            <p class="inline-flex items-center gap-2 rounded-md border border-brand/30 bg-brand/10 px-2.5 py-1 font-mono text-[12px] text-[#aab8ff]">
+            <p class="inline-flex items-center gap-2 rounded-full border border-line bg-elevated/80 px-3 py-1 text-[12.5px] text-ink/80 shadow-[0_1px_2px_rgba(10,18,34,.05)]">
               {badge}
             </p>
           )
         }
         <h1 class="mt-7 text-[44px] leading-[1.02] font-black tracking-[-0.045em] sm:text-[68px] lg:text-[78px]">
-          <span class="block text-[0.56em] font-semibold tracking-[-0.04em] text-white/90">{hero.name}</span>
-          {hero.text && <span class="bg-gradient-to-r from-white via-white to-[#8fa3ff] bg-clip-text text-transparent">{hero.text}</span>}
+          <span class="block text-[0.56em] font-semibold tracking-[-0.04em] text-ink">{hero.name}</span>
+          {hero.text && <span class="ry-grad-text">{hero.text}</span>}
         </h1>
-        {hero.tagline && <p class="mt-6 max-w-lg text-[18px] leading-8 text-white/60">{hero.tagline}</p>}
+        {hero.tagline && <p class="mt-6 max-w-lg text-[18px] leading-8 text-muted">{hero.tagline}</p>}
         <div class="mt-9 flex flex-wrap gap-2.5">
           {
             hero.actions.map((a, i) => (
@@ -78,12 +78,12 @@ const pipeline = [
                 target={external(a.link) ? '_blank' : undefined}
                 rel={external(a.link) ? 'noopener' : undefined}
                 class:list={[
-                  'inline-flex h-11 items-center gap-1.5 rounded-lg px-5 text-[14px] font-semibold transition-colors',
+                  'inline-flex h-11 items-center gap-1.5 rounded-full px-5 text-[14px] font-semibold transition-colors',
                   i === 0
-                    ? 'bg-white text-[#07080D] hover:bg-white/90'
+                    ? 'ry-btn-primary'
                     : a.theme === 'brand'
-                      ? 'bg-brand-strong text-white shadow-[0_12px_30px_-10px_rgba(91,124,255,.8)] hover:bg-brand'
-                      : 'border border-white/[.14] font-medium text-white/75 hover:bg-white/[.05]',
+                      ? 'bg-ink text-canvas hover:bg-ink/90'
+                      : 'border border-line bg-elevated font-medium text-ink hover:border-ink/20',
                 ]}
               >
                 {a.text}
@@ -94,11 +94,11 @@ const pipeline = [
         </div>
         {
           stats.length > 0 && (
-            <dl class="mt-14 flex gap-10 border-t border-white/[.08] pt-8">
+            <dl class="mt-14 flex gap-10 border-t border-line pt-8">
               {stats.map((s) => (
                 <div class="flex flex-col-reverse">
-                  <dt class="mt-2 font-mono text-[12px] text-white/45">{s.label}</dt>
-                  <dd class="text-[48px] leading-none font-extrabold tracking-[-0.05em] sm:text-[60px]">{s.n}</dd>
+                  <dt class="mt-2 font-mono text-[12px] text-muted">{s.label}</dt>
+                  <dd class="text-[48px] leading-none font-extrabold tracking-[-0.05em] text-ink sm:text-[60px]">{s.n}</dd>
                 </div>
               ))}
             </dl>
@@ -108,28 +108,28 @@ const pipeline = [
       <ol class="ry-story space-y-5" aria-label="一句话需求到页面出现（示意）">
         <li class="ry-step">
           <span class="ry-dot">1</span>
-          <p class="font-mono text-[11px] tracking-[.14em] text-white/40">一句话需求</p>
+          <p class="font-mono text-[11px] tracking-[.14em] text-muted">一句话需求</p>
           <div class="ry-pane mt-2 p-4 text-[14.5px]">「做一个社区团购：PC 后台 + 小程序端」<span class="ry-caret" aria-hidden="true"></span></div>
         </li>
         <li class="ry-step">
           <span class="ry-dot">2</span>
-          <p class="font-mono text-[11px] tracking-[.14em] text-white/40">Claude Code 调用技能</p>
-          <div class="ry-pane mt-2 p-4 font-mono text-[12.5px] leading-[1.9] text-white/75">
-            <p><span class="text-[#8fa3ff]">›</span> /crud mall_goods <span class="text-white/35">按四层规范生成</span></p>
-            <p><span class="text-emerald-400">✓</span> skill <span class="text-white">crud-development</span> <span class="text-white/35">Controller → Service → DAO → Mapper</span></p>
-            <p><span class="text-emerald-400">✓</span> skill <span class="text-white">ui-pc</span> <span class="text-white/35">Element Plus 页面</span></p>
+          <p class="font-mono text-[11px] tracking-[.14em] text-muted">Claude Code 调用技能</p>
+          <div class="ry-pane mt-2 p-4 font-mono text-[12.5px] leading-[1.9] text-ink/80">
+            <p><span class="text-brand-ink">›</span> /crud mall_goods <span class="text-muted">按四层规范生成</span></p>
+            <p><span class="text-success">✓</span> skill <span class="font-semibold text-ink">crud-development</span> <span class="text-muted">Controller → Service → DAO → Mapper</span></p>
+            <p><span class="text-success">✓</span> skill <span class="font-semibold text-ink">ui-pc</span> <span class="text-muted">Element Plus 页面</span></p>
           </div>
         </li>
         <li class="ry-step">
           <span class="ry-dot">3</span>
-          <p class="font-mono text-[11px] tracking-[.14em] text-white/40">生成前后端代码</p>
-          <div class="ry-pane mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 p-4 font-mono text-[12px] text-white/70">
+          <p class="font-mono text-[11px] tracking-[.14em] text-muted">生成前后端代码</p>
+          <div class="ry-pane mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 p-4 font-mono text-[12px] text-ink/75">
             <p>MallGoodsController.java</p><p>MallGoodsServiceImpl.java</p><p>MallGoodsDao.java</p><p>MallGoodsMapper.java</p><p>goods/index.vue</p><p>api/mall/goods.ts</p>
           </div>
         </li>
         <li class="ry-step">
           <span class="ry-dot">4</span>
-          <p class="font-mono text-[11px] tracking-[.14em] text-white/40">页面出现</p>
+          <p class="font-mono text-[11px] tracking-[.14em] text-muted">页面出现</p>
           <div class="ry-pane mt-2 overflow-hidden p-1.5">
             <img src="/demo/04a-goods-list.webp" alt="生成后的商品列表页" width="1280" height="640" loading="eager" class="aspect-[2/1] w-full rounded-xl object-cover object-top" />
           </div>
@@ -139,22 +139,22 @@ const pipeline = [
   </section>
 
   <!-- 流水线：comparison.md「全流程交付流水线」的八个阶段 + 两道人工门 -->
-  <section class="ry-night border-t border-white/[.06]" data-pagefind-ignore>
+  <section class="border-y border-line bg-elevated" data-pagefind-ignore>
     <div class="mx-auto w-full max-w-[78rem] px-4 py-20 sm:px-6">
       <div class="flex flex-wrap items-end justify-between gap-6">
         <p class="text-[34px] leading-[1.15] font-black tracking-[-0.03em] sm:text-[44px]">
-          从一句话需求到线上服务，<br /><span class="text-white/40">AI 自转，人只把两道关</span>
+          从一句话需求到线上服务，<br /><span class="text-muted">AI 自转，人只把两道关</span>
         </p>
-        <a href="/comparison.html#全流程交付流水线" class="font-mono text-[13px] text-[#aab8ff] hover:text-white">查看完整流水线 ↗</a>
+        <a href="/comparison.html#全流程交付流水线" class="font-mono text-[13px] text-brand-ink hover:text-ink">查看完整流水线 ↗</a>
       </div>
       <ol class="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {
           pipeline.map((p) => (
-            <li class="ry-pane p-5">
-              <p class="font-mono text-[11px] text-white/35">{p.n}</p>
+            <li class="ry-card ry-lift !rounded-2xl p-5">
+              <p class="font-mono text-[11px] text-brand-ink">{p.n}</p>
               <p class="mt-2 text-[15px] font-bold">{p.t}</p>
-              <p class="mt-1.5 text-[13px] leading-6 text-white/55">{p.d}</p>
-              {p.gate && <p class="mt-3 rounded-md bg-amber-400/10 px-2 py-1 text-[11.5px] text-amber-200">{p.gate}</p>}
+              <p class="mt-1.5 text-[13px] leading-6 text-muted">{p.d}</p>
+              {p.gate && <p class="mt-3 rounded-md bg-accent-soft px-2 py-1 text-[11.5px] text-accent-ink">{p.gate}</p>}
             </li>
           ))
         }
@@ -169,14 +169,14 @@ const pipeline = [
     <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {
         lead && (
-          <a href={lead.link ? href(lead.link) : undefined} class="ry-night ry-lift relative flex flex-col overflow-hidden rounded-[24px] p-7 sm:col-span-2 lg:row-span-2">
-            {lead.icon && <span class="inline-grid size-11 place-items-center rounded-xl bg-white/10 text-white [&_svg]:size-6" set:html={lead.icon} />}
+          <a href={lead.link ? href(lead.link) : undefined} class="ry-card ry-aurora ry-lift relative flex flex-col overflow-hidden !rounded-[24px] p-7 sm:col-span-2 lg:row-span-2">
+            {lead.icon && <span class="inline-grid size-11 place-items-center rounded-xl bg-brand-soft text-brand-ink [&_svg]:size-6" set:html={lead.icon} />}
             <span class="mt-6 flex items-center gap-2 text-[24px] font-black">
               {lead.name}
-              {lead.isNew && <span class="rounded-full bg-brand-strong px-2 py-0.5 text-[11px] font-semibold">NEW</span>}
+              {lead.isNew && <span class="rounded-full bg-brand-strong px-2 py-0.5 text-[11px] font-semibold text-white">NEW</span>}
             </span>
-            <span class="mt-3 text-[15px] leading-7 text-white/65">{lead.details}</span>
-            <span class="mt-auto pt-8 text-[13px] font-semibold text-[#aab8ff]">了解 AI 开发体验 →</span>
+            <span class="mt-3 text-[15px] leading-7 text-muted">{lead.details}</span>
+            <span class="mt-auto pt-8 text-[13px] font-semibold text-brand-ink">了解 AI 开发体验 →</span>
           </a>
         )
       }
@@ -264,11 +264,11 @@ const pipeline = [
     height: 27px;
     border-radius: 999px;
     border: 1px solid rgb(91 124 255 / 0.55);
-    background: #0f1220;
+    background: var(--elevated);
     font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 700;
-    color: #aab8ff;
+    color: var(--brand-ink);
     box-shadow: 0 0 0 4px rgb(91 124 255 / 0.08);
   }
   .ry-caret::after {
