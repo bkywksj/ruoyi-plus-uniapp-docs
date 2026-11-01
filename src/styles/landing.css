@@ -929,7 +929,6 @@
   height: auto !important;
   aspect-ratio: 3 / 4;
   border-radius: 12px;
-  background: var(--surface);
 }
 /* 交流群码下的兜底提示（微信群码 7 天过期） */
 .vc-qr-note {
