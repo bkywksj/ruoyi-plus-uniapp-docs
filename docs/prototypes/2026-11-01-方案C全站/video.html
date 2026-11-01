@@ -1,0 +1,103 @@
+<!doctype html>
+<!-- 方案 C 全站原型 · 视频教程（video.md 原文：Claude Code 课程 4 集 / OA 实战 1 套 / 基础课程 28 集，共 33 个链接） -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>视频教程 · 方案 C 全站原型</title>
+<link href="https://fonts.loli.net/css2?family=Unbounded:wght@400;600;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body data-nav="video">
+
+<section class="ink glow noise overflow-hidden">
+  <div class="mx-auto grid max-w-[1240px] items-end gap-10 px-6 pt-20 pb-16 lg:grid-cols-[1fr_auto]">
+    <div class="rv"><p class="kicker">视频教程 · B 站 @抓蛙师</p>
+      <h1 class="mt-4 text-[44px] sm:text-[60px] font-black leading-[1.05] tracking-tight">看着做一遍</h1>
+      <p class="mt-5 max-w-xl text-[16px] leading-8 text-white/60">从 Claude Code 工程化，到企业 OA 实战，再到框架每个模块的设计思路。</p></div>
+    <div class="rv flex gap-px overflow-hidden rounded-2xl border border-white/[.08] bg-white/[.08]" style="animation-delay:.1s">
+      <div class="bg-[#0B0D16] px-6 py-4"><p class="disp text-[28px] font-semibold">33</p><p class="text-[12px] text-white/45">个视频</p></div>
+      <div class="bg-[#0B0D16] px-6 py-4"><p class="disp text-[28px] font-semibold">3</p><p class="text-[12px] text-white/45">套课程</p></div>
+    </div>
+  </div>
+  <!-- 主推：OA 实战 -->
+  <div class="mx-auto max-w-[1240px] px-6 pb-20">
+    <a href="https://www.bilibili.com/video/BV1AJacz3EXG" class="pane lift group grid overflow-hidden lg:grid-cols-[1.1fr_.9fr]">
+      <div class="relative min-h-[240px] overflow-hidden" style="background:radial-gradient(80% 90% at 30% 20%,rgba(91,124,255,.45),transparent 70%),#0d1020">
+        <img src="../../../public/demo/03-dashboard.webp" alt="" class="absolute inset-0 h-full w-full object-cover object-top opacity-35 mix-blend-luminosity transition group-hover:opacity-50" />
+        <span class="absolute inset-0 grid place-items-center"><span class="grid size-16 place-items-center rounded-full bg-white text-[#07080D] shadow-[0_0_0_10px_rgba(255,255,255,.12)] transition group-hover:scale-105"><i data-lucide="play" class="size-6 translate-x-0.5 fill-current"></i></span></span>
+      </div>
+      <div class="p-8"><span class="chip"><i data-lucide="star" class="size-3 text-amber-300"></i>简单入门实战课程 · OA 系统开发课程</span>
+        <h2 class="mt-5 text-[22px] font-black leading-snug">【RuoYi-Plus-UniApp实战】企业OA办公系统开发教程 - Vue3全栈开发完整指南（配合claude实战）</h2>
+        <span class="mt-6 inline-flex items-center gap-1.5 text-[14px] font-semibold text-[#8EA2FF]">去 B 站观看<i data-lucide="arrow-up-right" class="size-4"></i></span></div>
+    </a>
+  </div>
+</section>
+
+<main class="mx-auto max-w-[1240px] px-6 py-20">
+  <div class="flex items-end justify-between"><div><p class="kicker-l">课程一 · 4 集</p><h2 class="mt-2 text-[28px] font-black tracking-tight">Claude Code AI开发课程</h2></div></div>
+  <div id="cc" class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"></div>
+
+  <div class="mt-20 flex flex-wrap items-end justify-between gap-4"><div><p class="kicker-l">课程二 · 28 集</p><h2 class="mt-2 text-[28px] font-black tracking-tight">ruoyi-plus-uniapp基础课程</h2></div>
+    <label class="flex items-center gap-2 rounded-xl border border-black/[.08] bg-white px-3 py-2 text-[13px] text-black/40"><i data-lucide="search" class="size-4"></i><input id="q" placeholder="筛选：支付 / 组件 / AI …" class="w-48 bg-transparent outline-none text-[#0B0D14]" /></label></div>
+  <ol id="basic" class="mt-8 grid gap-2.5 lg:grid-cols-2"></ol>
+</main>
+
+<script>
+const cc = [
+  ['AI编程时代来临 - 为什么你需要Claude Code', 'https://www.bilibili.com/video/BV1DDySBqE2h'],
+  ['你的 AI 可能白用了！为什么你的 Claude Code 总是"失忆"？90% 的人不知道的项目管理致命错误！！！', 'https://www.bilibili.com/video/BV1Y6CTBnEUD'],
+  ['Claude Code Skills 实战教程 - 打造专属AI编程知识库', 'https://www.bilibili.com/video/BV1WmSKBEEtt/'],
+  ['25% → 90%！别让 Skills 吃灰：Hooks + Commands + Agents 协同激活 AI 全部能力：Claude Code 工程化实践', 'https://www.bilibili.com/video/BV1rnBKB2EME/'],
+];
+const basic = [
+  ['开箱即用！Ruoyi-Plus-Uniapp重磅更新，前后端一体化开发新体验-Ruoyi-Plus-Uniapp新特性全解析', 'BV1YrtMzvEaT'],
+  ['快速启动！Ruoyi-Plus-Uniapp运行初体验', 'BV1iTYizFEE7'],
+  ['技术选型分析-Ruoyi/Ruoyi Vue/Ruoyi-Vue-Plus/plus-ui/vben/soybean/unibest/wot-ui优缺点简析', 'BV1r3YyzbEWu'],
+  ['ruoyi-plus-uniapp后端、前端、移动端项目结构解析', 'BV1yKY2z6EQa'],
+  ['告别配置地狱！Spring Boot现代化部署全攻略：配置+容器+远程调试一站式解决', 'BV1M1YxzWEVb'],
+  ['新增single非租户分支 增强websocket多租户隔离 移动端富文本组件 移动端示例代码模板项目', 'BV11sebzbEp6'],
+  ['MyBatis-Plus终极优化：BaseService + 分页封装 + 智能查询构造器', 'BV1TUeez7EXJ'],
+  ['MyBatis-Plus终极优化2：泛型安全解析 + 业务层解耦 - 泛型参数解析从硬编码索引到Netty级优化方案与查询构造下沉到mapper层', 'BV1mNeRzTEEF'],
+  ['企业级对象存储解决方案！多租户隔离+配置热更新+智能直传+素材管理，服务器压力减少50%', 'BV1kJeozvEQT'],
+  ['接口开发必备技能！SpringDoc自动生成文档，Apifox高效测试，前端调试实战', 'BV1zCeyzhEyK'],
+  ['RuoYi-Vue-Plus登录优化：移除客户端管理，让认证更简洁高效', 'BV1bieDz8Eej'],
+  ['【Spring Boot实战】企业级微信小程序登录系统！支持租户隔离+动态配置+多平台扩展', 'BV1iKe9zmEUB'],
+  ['移动端国际化+文件上传物理隔离和目录隔离+Forest HTTP客户端（内置完善示例地图API）简化前端动态路由为弹窗 优化字典数据维护', 'BV1fTaozdE9b'],
+  ['【全栈框架】5个月打磨！AI时代下的企业级开发神器，效率提升3倍成本降低70%｜ruoyi-plus-uniapp完整介绍', 'BV1V3nAzNE2V'],
+  ['【ruoyi-plus-uniapp】支付模块使用教程 微信支付智能切换v2 v3', 'BV14WJQz4E2x'],
+  ['别再乱写AutoConfiguration了！Spring Boot自动装配的正确姿势 | 附完整规范', 'BV1bGxXzLEpZ'],
+  ['三层架构已过时？手把手教你重构成四层架构，代码质量直接起飞', 'BV1RaxqzjEBF'],
+  ['【ruoyi-plus-uniapp】强大的echarts图表组件库便捷的图表使用方式实现统计展示', 'BV1z6szzREPR'],
+  ['【ruoyi-plus-uniapp】二十来种丰富的卡片组件，一键复制使用', 'BV1bAskzmEQ5'],
+  ['【ruoyi-plus-uniapp】强大的AModal弹窗抽屉组件，简化配置可控制全局弹窗/抽屉显示效果，代替el-dialog/el-drawer', 'BV1YosrzQEjb'],
+  ['【ruoyi-plus-uniapp】简洁好的ADetail弹窗详情组件，简化配置可实现数据查看功能，与编辑实现查看功能进行解耦', 'BV1ANsmzQEmn'],
+  ['【ruoyi-plus-uniapp】好用的AResizablePanels可拖拽收起面板组件', 'BV185sUzeEjj'],
+  ['【ruoyi-plus-uniapp】全面支持Iconfont和Iconify数十万计图标库的Icon组件使用教程', 'BV1Z7smzkEw9'],
+  ['基于WangEditor的AFormEditor富文本组件-支持粘贴图片自动上传odd支持私有库自动序列化存储', 'BV1iKsDzmEFc'],
+  ['【ruoyi-plus-uniapp】serialmap序列化模块增强-通用字段映射 私有库签名映射 国际化映射 昵称头像部门等映射', 'BV1PSsSz8ED6'],
+  ['【ruoyi-plus-uniapp】langchain4j智能AI模块实现AI助手Websocket流式会话助手功能', 'BV112sSzhEmt'],
+  ['【ruoyi-plus-uniapp】Ai组件/组合函数实现润色扩写优化、模拟数据生成、审核、翻译功能', 'BV1kVyCBBEH5'],
+  ['Vue3+TS实现页面设计器全流程：拖拽交互、状态管理、代码生成、AI集成', 'BV191SjB8ES1'],
+];
+document.getElementById('cc').innerHTML = cc.map(([t, h], i) => `
+  <a href="${h}" class="ink lift group relative flex min-h-[220px] flex-col overflow-hidden rounded-[22px] p-6" style="background-image:radial-gradient(70% 60% at ${20 + i * 22}% 0%,rgba(91,124,255,.32),transparent 70%)">
+    <span class="disp text-[40px] font-semibold leading-none text-white/15">0${i + 1}</span>
+    <p class="mt-4 text-[15px] font-bold leading-7">${t}</p>
+    <span class="mt-auto pt-5 inline-flex items-center gap-2 text-[13px] text-white/55 group-hover:text-white"><span class="grid size-7 place-items-center rounded-full bg-white/10"><i data-lucide="play" class="size-3 fill-current"></i></span>观看</span></a>`).join('');
+const draw = (q = '') => {
+  document.getElementById('basic').innerHTML = basic.map(([t, bv], i) => [t, bv, i]).filter(([t]) => !q || t.toLowerCase().includes(q.toLowerCase())).map(([t, bv, i]) => `
+    <li><a href="https://www.bilibili.com/video/${bv}/" class="lcard lift group flex items-center gap-4 !rounded-2xl px-5 py-4">
+      <span class="mono w-7 shrink-0 text-[13px] font-bold text-[#5B7CFF]">${String(i + 1).padStart(2, '0')}</span>
+      <span class="min-w-0 flex-1 text-[14px] font-semibold leading-6 text-[#0B0D14]">${t}</span>
+      <span class="grid size-8 shrink-0 place-items-center rounded-full bg-[#F1F4FF] text-[#3D5BEA] transition group-hover:bg-[#5B7CFF] group-hover:text-white"><i data-lucide="play" class="size-3.5 fill-current"></i></span></a></li>`).join('') || '<li class="text-black/40 text-[14px]">没有匹配的视频</li>';
+  lucide.createIcons();
+};
+draw();
+document.getElementById('q').addEventListener('input', (e) => draw(e.target.value));
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

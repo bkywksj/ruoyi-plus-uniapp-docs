@@ -1,0 +1,97 @@
+<!doctype html>
+<!-- 方案 C 全站原型 · 产品矩阵（products.md 原文 8 个产品，标语 / 简介 / 5 条亮点 / 徽标 / 按钮一项不少） -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>产品矩阵 · 方案 C 全站原型</title>
+<link href="https://fonts.loli.net/css2?family=Unbounded:wght@400;600;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body data-nav="products">
+
+<section class="ink glow noise overflow-hidden">
+  <div class="mx-auto max-w-[1240px] px-6 pt-20 pb-16 text-center">
+    <p class="kicker rv">抓蛙师出品 · 8 款产品</p>
+    <h1 class="rv mt-4 text-[44px] sm:text-[64px] font-black leading-[1.05] tracking-tight">产品矩阵</h1>
+    <p class="rv mx-auto mt-5 max-w-2xl text-[16px] leading-8 text-white/60">覆盖智能编程、凭据安全、服务器运维、知识管理、桌面框架、全栈开发等场景，助力开发者高效构建产品</p>
+    <!-- 8 个图标排成一条「产品带」，点击跳到对应卡片 -->
+    <div id="belt" class="rv mx-auto mt-12 grid max-w-4xl grid-cols-4 gap-3 sm:grid-cols-8" style="animation-delay:.1s"></div>
+  </div>
+</section>
+
+<main class="mx-auto max-w-[1240px] px-6 py-20">
+  <div id="list" class="grid gap-6"></div>
+  <div class="mt-16 rounded-[28px] ink glow-soft px-8 py-10 text-center">
+    <p class="text-[15px] text-white/70">以上产品均由 <strong class="text-white">抓蛙师</strong> 独立开发维护，如有合作意向或技术咨询，欢迎联系</p>
+    <p class="mt-3 text-[15px] text-white/70">微信/QQ：<strong class="mono text-white">770492966</strong> <span class="mx-2 text-white/25">|</span> 官网：<a href="https://ruoyi.plus" class="text-[#8EA2FF] hover:text-white">ruoyi.plus</a></p>
+  </div>
+</main>
+
+<script>
+const P = '../../../public/products/';
+const TH = { blue: ['#5B7CFF', '#EEF2FF'], purple: ['#8B5CF6', '#F3EEFF'], green: ['#10B981', '#E9FBF4'], orange: ['#F97316', '#FFF2E8'] };
+const items = [
+  { icon: 'bot', logo: 'ai-workstation.svg', name: 'AI 全能工作站', slogan: '一句话搞定一切 · 63个专业模块 · 1301 AI技能', theme: 'blue', badge: '42集教程',
+    desc: '覆盖内容创作、办公效率、多媒体处理、商业财务、设计策略、数据分析、运营协作、效率工具八大领域。用自然语言描述需求，两级智能路由自动识别意图，跨工具协作完成复杂任务。',
+    hl: ['九大领域63个模块：封面设计、视频制作、PPT/Excel/Word、图片处理、音频合成等', '智能路由系统：自然语言交互，自动匹配最佳工具完成任务', '多模型协同：Claude + Codex + Gemini 三引擎协作、交叉审查', '技能工厂：内置引擎持续生成新技能，工作站能力不断增长', '邀请好友注册，试用天数 +1，持续体验'],
+    act: [['访问官网', 'https://ai-workstation.ruoyi.plus/'], ['视频教程', 'https://www.bilibili.com/video/BV17cXNBkEEV'], ['MCP 试用', 'https://ai-workstation-mcp.agilefr.com/']] },
+  { icon: 'zap', logo: 'aicoder.png', name: '智码 AiCoder', slogan: '给 Claude Code、Codex、Gemini CLI 一个统一的家', theme: 'purple', badge: '30天免费',
+    desc: '内置真实PTY伪终端，CLI原生运行，不拦截、不修改、不转发任何API请求，零额外开销。像浏览器一样管理AI对话，按项目分组、收藏标记、颜色区分。',
+    hl: ['多标签会话管理：按项目分组、收藏标记、颜色区分、模糊搜索', '多账号完全隔离：独立登录凭据、API Key、会话记录和数据库', 'Token费用实时追踪：输入/输出/缓存分别统计，趋势图、180天热力图', '代码片段一键复用：常用Prompt存为片段，支持模板变量', 'MCP Server可视化管理：自动检测AI工具、一键切换'],
+    act: [['访问官网', 'https://aicoder.ruoyi.plus/']] },
+  { icon: 'monitor', logo: 'tauri-desktop.svg', name: '灵动桌面框架', slogan: 'React 19 + Rust + TypeScript · AI驱动 · 轻量安全 · 高性能跨平台', theme: 'green',
+    desc: '基于Tauri 2.x的企业级桌面应用开发框架，内置33个AI专业技能，Claude + Codex + Gemini三引擎协同。双进程架构，WebView前端与Rust后端通过IPC高效通信。',
+    hl: ['双进程架构：WebView前端 + Rust后端，IPC高效通信', 'AI驱动开发：内置33个AI专业技能，三引擎协同', '现代技术栈：React 19 + TypeScript 5.8 + Ant Design 6 + TailwindCSS 4', '安全权限控制：Capabilities权限声明机制，细粒度API访问控制', '多平台打包：Windows (NSIS/MSI)、macOS (DMG)、Linux (DEB/AppImage)'],
+    act: [['访问官网', 'https://tauri.ruoyi.plus/']] },
+  { icon: 'lock-keyhole', logo: 'sigil.svg', name: 'Sigil', slogan: 'AI 凭据金库 · MCP 协议代理 —— AI 用得到、看不到明文', theme: 'green',
+    desc: '基于 Tauri 2 的开发者凭据保险库。系统密钥环 + AES-256-GCM + SQLCipher 整库加密，AI 通过 MCP 协议调用能力，凭据只在本地使用、结果脱敏返回，永不进入 AI 上下文。',
+    hl: ['加密金库：系统密钥环 + AES-256-GCM + SQLCipher 整库加密，密钥永不离手', 'MCP 标准协议：Claude Code / Cursor / Cline / Zed 等客户端原生接入', '内置能力 + 可扩展：Git push、Gitee/GitHub/GitCode 仓库操作、HTTP API 代理、数据库查询，UI 配置无需编程', '审计日志 + 范围控制：每次凭据访问留痕可追溯，每个凭据限定可用能力', '本地优先：所有数据全在本机 SQLite，AI 拿不到任何明文凭据'],
+    act: [['访问官网', 'https://sigil.ruoyi.plus']] },
+  { icon: 'shield', logo: 'reeve.png', name: 'Reeve', slogan: '服务器庄园总管 · SSH 管理 + 受控 AI 接入（MCP）', theme: 'blue',
+    desc: '基于 Tauri 2 的 SSH 服务器管理 + 受控 AI 接入桌面工具。你持钥、AI 借道：AI 通过 MCP 操作服务器，只看到服务器别名，拿不到账号密码私钥；四重关卡 + 全量审计，MCP 仅监听 127.0.0.1。',
+    hl: ['一流 SSH 客户端：多标签终端 · 服务器清单 · SFTP · 命令片段，可替代 Xshell / Termius / FinalShell', 'AI 安全跳板：Claude Code / Codex / claude.ai 通过 MCP 操作服务器，只见别名不见凭据', '四重安全关卡：全局开关 → 每服务器分级策略 → 危险命令黑名单 → 全量审计', '凭据零泄露：AES-256-GCM + 系统钥匙串，MCP 仅监听 127.0.0.1 绝不公网', '越用越懂你：以项目目录沉淀经验库 / Runbook / 可配置技能'],
+    act: [['访问官网', 'https://reeve.ruoyi.plus']] },
+  { icon: 'camera', logo: 'agileshot.png', name: 'AgileShot', slogan: 'AI 时代的桌面截图与标注工具', theme: 'orange', badge: '11 种标注',
+    desc: '基于 Qt 6 + C++20 自研 Agile-Qt 框架的桌面截图标注工具。整合截图捕获、11 种标注、AI 智能（OCR/翻译）、钉图贴图、录屏 GIF、MCP Server 扩展，一体化。',
+    hl: ['11 种标注工具开箱即用：矩形/椭圆/箭头/文字/马赛克/模糊/计数/高亮/图章，撤销重做完整', 'AI 智能标注：一键 OCR、翻译、代码解释，截图即问 AI', 'MCP Server：让 Claude Desktop / Cursor 直接在屏幕上工作（9 个 MCP 工具）', '钉图 / 贴图：鼠标穿透、多张同存、独立缩放', '录屏 + GIF + 取色器 + 历史全文搜索（SQLite 本地存储）'],
+    act: [['访问官网', 'https://agileshot.ruoyi.plus'], ['视频介绍', 'https://www.bilibili.com/video/BV1uQ7k6nEvq']] },
+  { icon: 'library', logo: 'knowledge-base.png', name: '本地知识库', slogan: '全文搜索 · 双向链接 · 知识图谱 · 内置 MCP Server', theme: 'purple',
+    desc: '基于 Tauri 2 的本地优先知识库。Markdown 笔记 + 双向链接 + 知识图谱，PDF/Word/图片/视频全格式，内置 MCP Server 让 AI 直接读写知识库，所有数据全在本机 SQLite。',
+    hl: ['全文搜索 · 双向链接 · 知识图谱：知识自由编织、可视化追溯', '全格式支持：PDF 标注、Word 导入、图片/视频/音频附件', '内置 MCP Server（12 工具）：一键接入 Claude Desktop / Cursor / Cherry Studio', 'AI 对话：笔记内一键召唤 AI 结合上下文回答', '多端同步 · 数据自主：WebDAV / 坚果云 / NAS，全在本机 SQLite'],
+    act: [['访问官网', 'https://kb.ruoyi.plus/'], ['视频讲解', 'https://www.bilibili.com/video/BV1xvosBREbr']] },
+  { icon: 'file-text', logo: 'officia.svg', name: 'Officia', slogan: '纯自研零依赖 Java 办公套件 —— Word/Excel/PPT 无损转 PDF · Aspose 的国产平替', theme: 'orange', badge: '已上 Maven Central',
+    desc: 'Word/Excel/PPT 无损转 PDF，版式、字体、分页、图表逐一还原、所见即所得；模板填充与邮件合并、PDF 读写加密、PDF 转 Word、OCR 扫描件识别、图像处理、条码二维码、邮件归档。从 OOXML 解析到 PDF 渲染全链路自研，运行时只依赖 JDK 标准库，无第三方传递依赖、无授权风险，可商用可闭源分发。',
+    hl: ['无损转 PDF：Word / Excel / PPT 一行代码出 PDF（OfficiaWords.toPdf(docx)），排版、字体、分页、图片、表格逐一还原，无需安装 Office / LibreOffice', '中文不踩坑：TrueType 度量 + keep-GID 子集 + CID/Identity-H 嵌入，PDF 里中文正确显示、可复制可搜索，字体子集体积小', '八大能力一次引入：Words / Cells / Slides / Pdf / Email / Imaging / BarCode / OCR，一个 officia-all 坐标全都有，byte[] 进 byte[] 出', '运行时零第三方依赖：只用 JDK 标准库，mvn dependency:tree 机器可证，不与宿主项目产生任何版本冲突', '洁净室自研 + 离线授权：只依据 PDF 32000 / ECMA-376 等官方规范实现；授权文件放进 classpath 即生效，不联网、不锁机器'],
+    act: [['访问官网', 'https://officia.ruoyi.plus'], ['在线试用', 'https://demo.officia.ruoyi.plus'], ['视频演示', 'https://www.bilibili.com/video/BV1QGuS6SEVp']] },
+];
+document.getElementById('belt').innerHTML = items.map((p, i) => `
+  <a href="#p${i}" class="group flex flex-col items-center gap-2 rounded-2xl border border-white/[.07] bg-white/[.03] px-2 py-4 transition hover:border-white/20 hover:bg-white/[.06]">
+    <span class="grid size-12 place-items-center rounded-xl bg-white p-2 shadow-[0_10px_24px_-10px_rgba(0,0,0,.8)] transition group-hover:-translate-y-0.5"><img src="${P + p.logo}" alt="" class="max-h-full max-w-full object-contain" /></span>
+    <span class="text-[12px] leading-tight text-white/65">${p.name}</span></a>`).join('');
+document.getElementById('list').innerHTML = items.map((p, i) => {
+  const [c, bg] = TH[p.theme];
+  return `
+  <article id="p${i}" class="lcard grid overflow-hidden lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] scroll-mt-24">
+    <div class="relative p-8 sm:p-10">
+      <div class="flex items-start gap-4">
+        <span class="grid size-16 shrink-0 place-items-center rounded-2xl border border-black/[.06] bg-white p-2.5 shadow-[0_12px_28px_-14px_rgba(11,13,20,.35)]"><img src="${P + p.logo}" alt="" class="max-h-full max-w-full object-contain" /></span>
+        <div class="min-w-0"><p class="mono text-[11px] tracking-[.14em]" style="color:${c}">0${i + 1} / 08</p>
+          <h2 class="mt-1 flex flex-wrap items-center gap-2 text-[26px] font-black tracking-tight">${p.name}${p.badge ? `<span class="rounded-full px-2.5 py-0.5 text-[12px] font-semibold" style="background:${bg};color:${c}">${p.badge}</span>` : ''}</h2></div>
+      </div>
+      <p class="mt-5 text-[16px] font-semibold leading-7 text-[#0B0D14]">${p.slogan}</p>
+      <p class="mt-3 text-[14.5px] leading-7 text-black/55">${p.desc}</p>
+      <div class="mt-7 flex flex-wrap gap-2.5">${p.act.map(([t, h], j) => `<a href="${h}" class="inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-[13.5px] font-semibold transition ${j === 0 ? 'bg-[#0B0D14] text-white hover:bg-black' : 'border border-black/[.1] text-[#0B0D14] hover:border-black/25'}">${t}<i data-lucide="${j === 0 ? 'arrow-up-right' : t.includes('视频') ? 'play' : 'external-link'}" class="size-3.5"></i></a>`).join('')}</div>
+    </div>
+    <div class="border-t border-black/[.06] p-8 sm:p-10 lg:border-l lg:border-t-0" style="background:linear-gradient(160deg,${bg},#fff 70%)">
+      <p class="flex items-center gap-2 text-[12px] font-semibold tracking-wider text-black/40"><i data-lucide="${p.icon}" class="size-4" style="color:${c}"></i>核心亮点</p>
+      <ul class="mt-4 grid gap-3">${p.hl.map((h) => { const k = h.indexOf('：'); return `<li class="flex gap-3 text-[14px] leading-6"><span class="mt-1 grid size-4 shrink-0 place-items-center rounded-full" style="background:${c}"><i data-lucide="check" class="size-2.5 text-white"></i></span><span class="text-black/65">${k > 0 ? `<strong class="text-[#0B0D14]">${h.slice(0, k)}</strong>：${h.slice(k + 1)}` : h}</span></li>`; }).join('')}</ul>
+    </div>
+  </article>`;
+}).join('');
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

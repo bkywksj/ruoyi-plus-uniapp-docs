@@ -1,0 +1,143 @@
+<!doctype html>
+<!-- 方案 C 全站原型 · 项目演示（demo.md 原文：在线演示 3 个 / 授权定价 3 档 + 购买说明 5 条 / 技术支持 / 扫码关注 4 张 / 功能截图 42 张 / 软著声明） -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>项目演示 · 方案 C 全站原型</title>
+<link href="https://fonts.loli.net/css2?family=Unbounded:wght@400;600;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body data-nav="demo">
+<!-- 首屏 + 三个在线演示入口：演示地址就是首屏主角 -->
+<section class="ink glow noise overflow-hidden">
+  <div class="mx-auto max-w-[1240px] px-6 pt-20 pb-20">
+    <p class="kicker rv">项目演示</p>
+    <h1 class="rv mt-4 text-[44px] sm:text-[60px] font-black leading-[1.05] tracking-tight">先上手，再决定</h1>
+    <p class="rv mt-5 max-w-xl text-[16px] leading-8 text-white/60">体验 ruoyi-plus-uniapp 全栈开发框架的演示功能</p>
+    <div class="mt-12 grid gap-4 lg:grid-cols-3">
+      <a href="https://ui.ruoyi.plus/login?redirect=/index?tenantId=000000" class="pane lift group overflow-hidden lg:col-span-1">
+        <div class="win-bar border-b border-white/[.06]"><i class="d bg-[#FF5F57]"></i><i class="d bg-[#FEBC2E]"></i><i class="d bg-[#28C840]"></i><span class="mono ml-2 truncate text-[11px] text-white/35">ui.ruoyi.plus/login</span></div>
+        <div class="relative" style="aspect-ratio:16/10"><img src="../../../public/demo/03-dashboard.webp" alt="" class="absolute inset-0 h-full w-full object-cover object-top opacity-90 transition group-hover:opacity-100" /></div>
+        <div class="p-5"><p class="flex items-center gap-2 font-bold"><i data-lucide="laptop" class="size-4 text-[#8EA2FF]"></i>超管后台管理</p><p class="mt-1 text-[13px] text-white/45">Vue3 + Element Plus 管理后台</p>
+          <div class="mt-4 flex items-center justify-between"><span class="mono rounded-lg bg-white/[.06] px-2.5 py-1 text-[12px] text-white/70">superadmin / admin123</span><span class="inline-flex items-center gap-1 text-[13px] font-semibold text-[#8EA2FF]">立即体验<i data-lucide="arrow-up-right" class="size-4"></i></span></div></div>
+      </a>
+      <a href="http://uni.ruoyi.plus/h5" class="pane lift group flex gap-5 p-5">
+        <div class="phone w-[118px] shrink-0 !p-[5px] !rounded-[26px]"><div class="phone-in !rounded-[21px]" style="aspect-ratio:9/19"><img src="assets/m-home.png" alt="" class="absolute inset-0 top-[18px] h-[calc(100%-18px)] w-full object-cover" /></div></div>
+        <div class="flex flex-col"><p class="flex items-center gap-2 font-bold"><i data-lucide="smartphone" class="size-4 text-[#8EA2FF]"></i>移动端H5基础框架</p><p class="mt-1 text-[13px] text-white/45">UniApp 跨平台应用</p><span class="mono mt-4 w-fit rounded-lg bg-white/[.06] px-2.5 py-1 text-[12px] text-white/70">superadmin / admin123</span><span class="mt-auto inline-flex items-center gap-1 text-[13px] font-semibold text-[#8EA2FF]">立即体验<i data-lucide="arrow-up-right" class="size-4"></i></span></div>
+      </a>
+      <a href="http://uni.ruoyi.plus/demo" class="pane lift group flex gap-5 p-5">
+        <div class="phone w-[118px] shrink-0 !p-[5px] !rounded-[26px]"><div class="phone-in !rounded-[21px]" style="aspect-ratio:9/19"><img src="assets/m-grid.png" alt="" class="absolute inset-0 top-[18px] h-[calc(100%-18px)] w-full object-cover" /></div></div>
+        <div class="flex flex-col"><p class="flex items-center gap-2 font-bold"><i data-lucide="smartphone" class="size-4 text-[#8EA2FF]"></i>移动端H5组件演示</p><p class="mt-1 text-[13px] text-white/45">UniApp 跨平台应用</p><span class="mono mt-4 w-fit rounded-lg bg-white/[.06] px-2.5 py-1 text-[12px] text-white/70">superadmin / admin123</span><span class="mt-auto inline-flex items-center gap-1 text-[13px] font-semibold text-[#8EA2FF]">立即体验<i data-lucide="arrow-up-right" class="size-4"></i></span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- 授权定价 -->
+<section id="price" class="mx-auto max-w-[1240px] px-6 py-24 scroll-mt-16">
+  <div class="text-center"><p class="kicker-l">授权定价</p><h2 class="mt-3 text-[34px] font-black tracking-tight">三个版本，代码完全一样</h2>
+    <p class="mx-auto mt-4 max-w-2xl text-[15px] leading-7 text-black/55">选择适合您的版本，开启高效开发之旅（三个版本代码完全一样，仅授权主体和开发人员数量差异，企业版须有营业执照方可购买）</p></div>
+  <div id="plans" class="mt-12 grid items-stretch gap-5 lg:grid-cols-3"></div>
+  <div class="mt-8 lcard grid gap-4 p-6 sm:grid-cols-2 lg:grid-cols-5">
+    <p class="sm:col-span-2 lg:col-span-5 flex items-center gap-2 font-bold"><i data-lucide="lightbulb" class="size-4 text-[#5B7CFF]"></i>购买说明</p>
+    <div class="flex gap-3"><i data-lucide="briefcase" class="mt-0.5 size-4 shrink-0 text-black/40"></i><p class="text-[13.5px] leading-6"><strong>企业授权</strong><span class="block text-black/50">支持商业项目使用，可交付客户源码</span></p></div>
+    <div class="flex gap-3"><i data-lucide="refresh-cw" class="mt-0.5 size-4 shrink-0 text-black/40"></i><p class="text-[13.5px] leading-6"><strong>持续更新</strong><span class="block text-black/50">享受框架功能迭代和Bug修复</span></p></div>
+    <div class="flex gap-3"><i data-lucide="shield" class="mt-0.5 size-4 shrink-0 text-black/40"></i><p class="text-[13.5px] leading-6"><strong>技术支持</strong><span class="block text-black/50">提供专业的技术支持服务</span></p></div>
+    <div class="flex gap-3"><i data-lucide="users" class="mt-0.5 size-4 shrink-0 text-black/40"></i><p class="text-[13.5px] leading-6"><strong>额外邀人</strong><span class="block text-black/50">额外邀人进答疑群 488/人</span></p></div>
+    <div class="flex gap-3"><i data-lucide="triangle-alert" class="mt-0.5 size-4 shrink-0 text-amber-500"></i><p class="text-[13.5px] leading-6"><strong>使用限制</strong><span class="block text-black/50">仅禁止框架二次销售和扩散传播</span></p></div>
+  </div>
+</section>
+
+<!-- 技术支持 + 扫码关注 -->
+<section class="border-y border-black/[.06] bg-white py-24">
+  <div class="mx-auto grid max-w-[1240px] gap-12 px-6 lg:grid-cols-[.8fr_1.2fr]">
+    <div><p class="kicker-l">技术支持</p><h2 class="mt-3 text-[30px] font-black tracking-tight">联系方式</h2>
+      <div class="mt-8 grid gap-3">
+        <div class="lcard flex items-center gap-4 p-5"><span class="grid size-10 place-items-center rounded-xl bg-[#0B0D14] text-white"><i data-lucide="message-circle" class="size-5"></i></span><div><p class="text-[12px] text-black/40">作者微信/QQ</p><p class="disp text-[20px] font-semibold">770492966</p></div></div>
+        <div class="lcard flex items-center gap-4 p-5"><span class="grid size-10 place-items-center rounded-xl bg-[#0B0D14] text-white"><i data-lucide="book-open" class="size-5"></i></span><div><p class="text-[12px] text-black/40">项目文档</p><a href="https://ruoyi.plus" class="mono text-[16px] font-semibold text-[#3D5BEA]">https://ruoyi.plus</a></div></div>
+      </div></div>
+    <div><p class="kicker-l">扫码关注</p>
+      <div class="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <figure class="lcard lift p-3 text-center"><div class="rounded-xl bg-[#F6F7FB] p-2" style="aspect-ratio:3/4"><img src="../../../public/gzh.png" alt="微信公众号" class="h-full w-full object-contain" /></div><figcaption class="mt-3 text-[14px] font-bold">微信公众号</figcaption><p class="text-[12px] text-black/45">获取最新技术资讯</p></figure>
+        <figure class="lcard lift p-3 text-center"><div class="rounded-xl bg-[#F6F7FB] p-2" style="aspect-ratio:3/4"><img src="../../../public/wx.jpg" alt="微信联系" class="h-full w-full object-contain" /></div><figcaption class="mt-3 text-[14px] font-bold">微信联系</figcaption><p class="text-[12px] text-black/45">一对一技术咨询</p></figure>
+        <figure class="lcard lift p-3 text-center"><div class="rounded-xl bg-[#F6F7FB] p-2" style="aspect-ratio:3/4"><img src="../../../public/wxq.jpg" alt="技术交流群" class="h-full w-full object-contain" /></div><figcaption class="mt-3 text-[14px] font-bold">技术交流群</figcaption><p class="text-[12px] text-black/45">与开发者交流讨论</p></figure>
+        <figure class="lcard lift p-3 text-center"><div class="rounded-xl bg-[#F6F7FB] p-2" style="aspect-ratio:3/4"><img src="../../../public/软著.png" alt="软件著作权" class="h-full w-full object-contain" /></div><figcaption class="mt-3 text-[14px] font-bold">软件著作权</figcaption><p class="text-[12px] text-black/45">国家版权局认证</p></figure>
+      </div></div>
+  </div>
+</section>
+
+<!-- 功能截图 42 张：按模块分组筛选 + 点开大图 -->
+<section class="mx-auto max-w-[1240px] px-6 py-24">
+  <div class="flex flex-wrap items-end justify-between gap-4"><div><p class="kicker-l">功能截图</p><h2 class="mt-3 text-[30px] font-black tracking-tight">42 张真实界面</h2></div>
+    <div id="tabs" class="flex flex-wrap gap-1.5 text-[13px]"></div></div>
+  <div id="gal" class="mt-8 columns-1 gap-4 sm:columns-2 lg:columns-3"></div>
+  <div class="mt-12 callout warn"><span class="ic"><i data-lucide="triangle-alert" class="size-4"></i></span><span class="t">软件著作权声明</span><div class="b">本框架受《中华人民共和国著作权法》保护，已获得国家版权局软件著作权登记证书。未经授权不得使用，授权后可用于商业项目开发，但严禁对框架本身进行二次销售或扩散传播。</div></div>
+  <p class="mt-6 text-center text-[12px] text-black/40">© 2025 ruoyi-plus-uniapp | 框架商用授权，详情咨询</p>
+</section>
+
+<!-- 大图查看 -->
+<div id="lb" class="fixed inset-0 z-[80] hidden bg-[#07080D]/90 backdrop-blur-sm">
+  <button data-x class="absolute right-5 top-5 grid size-10 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" aria-label="关闭"><i data-lucide="x" class="size-5"></i></button>
+  <button data-prev class="absolute left-5 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" aria-label="上一张"><i data-lucide="chevron-left" class="size-5"></i></button>
+  <button data-next class="absolute right-5 top-1/2 grid size-11 -translate-y-1/2 place-items-center rounded-full bg-white/10 text-white hover:bg-white/20" aria-label="下一张"><i data-lucide="chevron-right" class="size-5"></i></button>
+  <figure class="mx-auto flex h-full max-w-6xl flex-col items-center justify-center px-20"><img id="lb-img" alt="" class="max-h-[80vh] rounded-xl shadow-2xl" /><figcaption id="lb-cap" class="mt-4 text-[14px] text-white/70"></figcaption></figure>
+</div>
+
+<script>
+const plans = [
+  ['个人版', 2588, 3088, '节省 ¥500', '适合个人开发者', '专属答疑群邀请', '适合个人开发者和小型项目', false],
+  ['企业标准版', 3288, 4088, '节省 ¥800', '开发团队 < 10人', '专属答疑群邀请(可邀1人)', '中小企业的理想选择', true],
+  ['企业高级版', 5888, 7088, '节省 ¥1200', '开发团队 10~30人', '专属答疑群邀请(可邀2人)', '大型企业的最佳选择', false],
+];
+const base = ['完整源码交付', '持续更新服务', '自主开发权限', '商业使用授权', '客户源码交付权', '技术支持服务'];
+document.getElementById('plans').innerHTML = plans.map(([n, p, o, s, d, last, foot, rec]) => `
+  <div class="${rec ? 'ink glow relative overflow-hidden rounded-[26px] p-7 shadow-[0_40px_80px_-30px_rgba(11,13,20,.7)] lg:-my-3' : 'lcard p-7'} flex flex-col">
+    ${rec ? '<span class="absolute right-6 top-6 rounded-full bg-[#5B7CFF] px-3 py-1 text-[12px] font-semibold">推荐</span>' : ''}
+    <p class="text-[16px] font-bold">${n}</p><p class="mt-1 text-[13px] ${rec ? 'text-white/50' : 'text-black/45'}">${d}</p>
+    <p class="mt-6 flex items-baseline gap-2"><span class="text-[18px] font-semibold">¥</span><span class="disp text-[48px] font-semibold leading-none">${p}</span><span class="text-[14px] line-through ${rec ? 'text-white/35' : 'text-black/35'}">¥${o}</span></p>
+    <span class="mt-3 w-fit rounded-full px-2.5 py-0.5 text-[12px] font-semibold ${rec ? 'bg-white/10 text-[#aab8ff]' : 'bg-[#F1F4FF] text-[#3D5BEA]'}">${s}</span>
+    <ul class="mt-6 grid gap-2.5 text-[14px]">${[...base, last].map((f) => `<li class="flex items-center gap-2.5"><i data-lucide="check" class="size-4 ${rec ? 'text-[#8EA2FF]' : 'text-[#5B7CFF]'}"></i>${f}</li>`).join('')}</ul>
+    <a href="#" class="mt-8 block rounded-xl py-3 text-center text-[14px] font-semibold ${rec ? 'bg-[#5B7CFF] hover:bg-[#6d8aff]' : 'bg-[#0B0D14] text-white hover:bg-black'}">立即购买</a>
+    <p class="mt-3 text-center text-[12px] ${rec ? 'text-white/40' : 'text-black/40'}">${foot}</p>
+  </div>`).join('');
+
+// 42 张截图：文件名与 demo.md 一致，说明文字按文件名意思给出，分组只用于筛选
+const shots = [
+  ['01-login', '登录', '基础'], ['02-forgot-password', '找回密码', '基础'], ['03-dashboard', '工作台', '基础'], ['04-layout-setting', '布局设置', '基础'],
+  ['04a-goods-list', '商品列表', '商城'], ['05-goods-add', '新增商品', '商城'], ['06-account-bind', '账号绑定', '商城'], ['07-goods-detail', '商品详情', '商城'], ['09-material-library', '素材库', '商城'],
+  ['10-ad-config', '广告配置', '商城'], ['11-platform-config', '平台配置', '商城'], ['12-order', '订单', '商城'], ['13-payment-config', '支付配置', '商城'],
+  ['16-user', '用户管理', '系统'], ['17-role', '角色管理', '系统'], ['18-menu', '菜单管理', '系统'], ['19-dept', '部门管理', '系统'], ['20-post', '岗位管理', '系统'],
+  ['21-dict', '字典管理', '系统'], ['22-dict-edit', '字典编辑', '系统'], ['23-config', '参数配置', '系统'], ['24-notice', '通知公告', '系统'], ['25-richtext', '富文本', '系统'], ['26-notice-push', '公告推送', '系统'],
+  ['27-oper-log', '操作日志', '监控'], ['28-login-log', '登录日志', '监控'], ['29-oss', '文件存储', '系统'], ['29a-field-permission', '字段权限', '系统'],
+  ['30-tenant', '租户管理', '租户'], ['31-tenant-package', '租户套餐', '租户'], ['32-online-user', '在线用户', '监控'], ['33-cache', '缓存监控', '监控'], ['34-admin-monitor', '服务监控', '监控'], ['35-snailjob', '定时任务', '监控'],
+  ['36-gen', '代码生成', '开发'], ['37-gen-edit', '生成配置', '开发'], ['38-gen-template', '生成模板', '开发'], ['39-workflow-leave', '工作流 · 请假', '开发'],
+  ['40-ai-assistant', 'AI 助手', 'AI 与可视化'], ['41-page-designer', '页面设计器', 'AI 与可视化'], ['42-datav-components', '大屏组件', 'AI 与可视化'], ['43-datav-fullscreen', '数据大屏', 'AI 与可视化'],
+];
+const cats = ['全部', ...new Set(shots.map((s) => s[2]))];
+let cur = '全部', view = shots;
+const draw = () => {
+  document.getElementById('tabs').innerHTML = cats.map((c) => `<button data-c="${c}" class="rounded-full px-3 py-1.5 ${c === cur ? 'bg-[#0B0D14] text-white' : 'border border-black/[.08] bg-white text-black/55 hover:border-black/20'}">${c} <span class="mono text-[11px] opacity-60">${c === '全部' ? shots.length : shots.filter((s) => s[2] === c).length}</span></button>`).join('');
+  view = cur === '全部' ? shots : shots.filter((s) => s[2] === cur);
+  document.getElementById('gal').innerHTML = view.map(([f, t, c], i) => `
+    <button data-i="${i}" class="lcard lift group mb-4 block w-full overflow-hidden !rounded-2xl text-left break-inside-avoid">
+      <img src="../../../public/demo/${f}.webp" alt="${t}" loading="lazy" class="w-full" />
+      <span class="flex items-center justify-between px-4 py-3 text-[13.5px]"><span class="font-semibold">${t}</span><span class="mono text-[11px] text-black/35">${c}</span></span></button>`).join('');
+  lucide.createIcons();
+};
+draw();
+const LB = document.getElementById('lb'); let at = 0;
+const show = (i) => { at = (i + view.length) % view.length; document.getElementById('lb-img').src = `../../../public/demo/${view[at][0]}.webp`; document.getElementById('lb-cap').textContent = `${view[at][1]} · ${at + 1} / ${view.length}`; LB.classList.remove('hidden'); };
+document.addEventListener('click', (e) => {
+  const c = e.target.closest('[data-c]'); if (c) { cur = c.dataset.c; draw(); }
+  const g = e.target.closest('#gal [data-i]'); if (g) show(+g.dataset.i);
+  if (e.target.closest('[data-x]') || e.target === LB) LB.classList.add('hidden');
+  if (e.target.closest('[data-prev]')) show(at - 1);
+  if (e.target.closest('[data-next]')) show(at + 1);
+});
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

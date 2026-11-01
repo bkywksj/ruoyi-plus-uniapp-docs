@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- 方案 C 全站原型入口：10 个页面一览，每页说明它对应新站哪类网址、内容取自哪个 md -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>方案 C 全站原型 · 入口</title>
+<link href="https://fonts.loli.net/css2?family=Unbounded:wght@400;600;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body class="ink glow min-h-screen">
+<main class="mx-auto max-w-[1100px] px-6 py-20">
+  <p class="kicker">ruoyi-plus-uniapp-docs · 2026-11-01</p>
+  <h1 class="mt-4 text-[44px] font-black tracking-tight">方案 C 全站原型</h1>
+  <p class="mt-4 max-w-2xl text-[15.5px] leading-8 text-white/55">深色首屏讲「AI 原生」，往下切浅色读内容。10 个页面共用一套页头、页脚、搜索（按 Ctrl K 试试）。短页内容照原文一项不少；长页（文档、新特性、对比）只排版式，落地时照原文全量渲染。</p>
+  <div id="g" class="mt-12 grid gap-3 sm:grid-cols-2"></div>
+</main>
+<script>
+const pages = [
+  ['home.html', '首页', '/', 'index.md · 首屏 61/19/3 + 四格分镜 + 13 项功能 + 定价 + 103 家企业 + 产品矩阵 + 技术服务', 'house'],
+  ['doc.html', '文档阅读页', '500 个文档页', 'mobile/getting-started.md · 多层侧栏 / 表格 / 带行号代码 / 四种提示容器 / 本页目录 / 手机实时预览 / 上下篇', 'file-text'],
+  ['dir.html', '栏目首页', '/backend/ /frontend/ /mobile/ /practices/', 'mobile/index.md + 侧栏 14 个分组', 'folder-tree'],
+  ['changelog.html', '特性', '/changelog.html', 'changelog.md · 5 个分支矩阵 + 章节轨 + 时间线', 'history'],
+  ['comparison.html', '框架对比', '/comparison.html', 'comparison.md · 能力总览 17 行全量 + 15 章目录 + 选型建议全量', 'git-compare'],
+  ['video.html', '视频', '/video.html', 'video.md · 33 个视频全量，基础课程可筛选', 'play-circle'],
+  ['demo.html', '演示 · 授权定价', '/demo.html', 'demo.md · 3 个在线演示 / 3 档定价 / 购买说明 / 4 个二维码 / 42 张截图（可筛选、点开大图）', 'presentation'],
+  ['products.html', '产品矩阵', '/products.html', 'products.md · 8 个产品全量', 'layout-grid'],
+  ['services.html', '技术服务', '/services.html', 'services.md · 关于我们 / 6 项服务 / 5 个理由 / 6 问 / 联系方式全量', 'handshake'],
+  ['404.html', '页面不存在', '404', '终端风格 + 搜索 + 四栏目直达', 'circle-off'],
+];
+document.getElementById('g').innerHTML = pages.map(([h, t, u, d, ic], i) => `
+  <a href="${h}" class="pane lift group flex gap-4 p-5">
+    <span class="grid size-11 shrink-0 place-items-center rounded-xl ${i === 0 ? 'bg-[#5B7CFF]' : 'bg-white/[.07]'}"><i data-lucide="${ic}" class="size-5"></i></span>
+    <span class="min-w-0"><span class="flex items-center gap-2"><span class="font-bold">${t}</span><span class="mono truncate text-[11px] text-white/35">${u}</span></span>
+    <span class="mt-1.5 block text-[13px] leading-6 text-white/50">${d}</span></span>
+    <i data-lucide="arrow-up-right" class="ml-auto size-4 shrink-0 text-white/30 transition group-hover:text-white"></i></a>`).join('');
+lucide.createIcons();
+</script>
+</body>
+</html>

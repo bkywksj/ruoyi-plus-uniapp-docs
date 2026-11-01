@@ -1,0 +1,123 @@
+<!doctype html>
+<!-- 方案 C 全站原型 · 与上游框架对比（comparison.md，588 行、16 章）。排了：首屏 + 能力总览 17 行全量 + 章节目录 + 第一章样例 + 选型建议全量；其余章节落地时照原文 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>与上游框架对比 · 方案 C 全站原型</title>
+<link href="https://fonts.loli.net/css2?family=Unbounded:wght@400;600;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body data-nav="comparison">
+
+<section class="ink glow noise overflow-hidden">
+  <div class="mx-auto max-w-[1240px] px-6 pt-20 pb-14">
+    <p class="kicker rv">框架对比 · 上游 5.x（revision 5.6.1）/ 6.x（revision 5.5.3）</p>
+    <h1 class="rv mt-4 max-w-4xl text-[40px] sm:text-[56px] font-black leading-[1.1] tracking-tight">在同一个底座上，<br /><span class="bg-gradient-to-r from-[#8EA2FF] to-white bg-clip-text text-transparent">我们多做了什么</span></h1>
+    <p class="rv mt-6 max-w-3xl text-[15.5px] leading-8 text-white/60">RuoYi-Plus-UniApp 基于 <a href="https://plus-doc.dromara.org/" class="text-[#aab8ff] underline decoration-white/20 underline-offset-4">Dromara RuoYi-Vue-Plus</a> 深度重构。上游成熟的技术底座——Sa-Token 认证、Redisson 缓存、MyBatis-Plus ORM、SnailJob 任务调度、数据脱敏、接口加密、多数据源、Docker 编排——全部继承并持续跟进。本页聚焦一件事：<strong class="text-white">在这个底座之上，我们做了哪些增量</strong>。</p>
+  </div>
+  <!-- 能力总览矩阵：本框架一列用品牌色底；手机上整块横向滑动 -->
+  <div class="mx-auto max-w-[1240px] px-6 pb-16">
+    <div class="-mx-6 overflow-x-auto px-6"><div class="min-w-[640px]">
+    <div class="grid grid-cols-[1.2fr_1.5fr_.9fr_.9fr] gap-px overflow-hidden rounded-t-2xl border border-white/[.08] bg-white/[.08] text-[13px]">
+      <div class="bg-[#0B0D16] px-5 py-4 text-white/40">维度</div>
+      <div class="bg-[#5B7CFF] px-5 py-4"><p class="font-bold">RuoYi-Plus-UniApp</p><p class="text-[11px] text-white/70">闭源授权</p></div>
+      <div class="bg-[#0B0D16] px-5 py-4 text-center"><p class="font-bold">上游 5.x</p><p class="text-[11px] text-white/40">MIT</p></div>
+      <div class="bg-[#0B0D16] px-5 py-4 text-center"><p class="font-bold">上游 6.x</p><p class="text-[11px] text-white/40">MIT</p></div>
+    </div>
+    <div id="matrix" class="overflow-hidden rounded-b-2xl border border-t-0 border-white/[.08]"></div>
+    </div></div>
+    <p class="mt-3 text-[12px] text-white/35">行内「无」用浅色横线表示；加粗为本框架的增量能力</p>
+  </div>
+</section>
+
+<div class="mx-auto grid max-w-[1240px] gap-10 px-6 py-16 lg:grid-cols-[230px_minmax(0,1fr)]">
+  <aside class="hidden lg:block"><nav class="sticky top-24"><p class="kicker-l">十五个维度</p>
+    <ol id="chap" class="mt-4 grid gap-0.5 text-[13.5px]"></ol></nav></aside>
+  <main class="min-w-0">
+    <!-- 第一章样例：大数字对比条 + 原文表格 -->
+    <section id="s1" class="scroll-mt-24">
+      <div class="flex items-baseline gap-4"><span class="disp text-[52px] font-semibold leading-none text-[#5B7CFF]/20">01</span><h2 class="text-[28px] font-black tracking-tight">AI 技能体系</h2></div>
+      <div class="mt-8 grid gap-4 sm:grid-cols-3">
+        <div class="ink glow relative overflow-hidden rounded-[22px] p-6"><p class="text-[12px] text-white/45">专业技能（SKILL.md）</p><p class="disp mt-2 text-[46px] font-semibold leading-none">61</p><p class="mt-3 text-[12px] text-white/40">上游 5.x 无 · 6.x 无</p></div>
+        <div class="lcard p-6"><p class="text-[12px] text-black/45">智能命令</p><p class="disp mt-2 text-[46px] font-semibold leading-none">19</p><p class="mt-3 text-[12px] text-black/40">上游 5.x 无 · 6.x 无</p></div>
+        <div class="lcard p-6"><p class="text-[12px] text-black/45">技能内容总量</p><p class="disp mt-2 text-[34px] font-semibold leading-none">45,181<span class="text-[16px]"> 行</span></p><p class="mt-3 text-[12px] text-black/40">6.x 约 5 篇参考文档</p></div>
+      </div>
+      <h3 class="mt-10 text-[18px] font-bold">规模与时间线</h3>
+      <div class="tbl"><table><thead><tr><th>项</th><th class="!text-center bg-[#F1F4FF]">RuoYi-Plus-UniApp</th><th class="!text-center">上游 5.x</th><th class="!text-center">上游 6.x</th></tr></thead><tbody class="[&_td:not(:first-child)]:text-center">
+        <tr><td><strong>专业技能（SKILL.md）</strong></td><td class="bg-[#F8F9FF] font-bold">61</td><td class="text-black/30">无</td><td class="text-black/30">无</td></tr>
+        <tr><td><strong>智能命令</strong></td><td class="bg-[#F8F9FF] font-bold">19</td><td class="text-black/30">无</td><td class="text-black/30">无</td></tr>
+        <tr><td><strong>自动化钩子</strong></td><td class="bg-[#F8F9FF] font-bold">3</td><td class="text-black/30">无</td><td class="text-black/30">无</td></tr>
+        <tr><td>子代理（subagent）</td><td class="bg-[#F8F9FF]">2</td><td class="text-black/30">无</td><td>6</td></tr>
+        <tr><td>Codex 镜像</td><td class="bg-[#F8F9FF] font-bold">全量同步</td><td class="text-black/30">无</td><td>1 个技能包</td></tr>
+        <tr><td>技能内容总量</td><td class="bg-[#F8F9FF] font-bold">45,181 行</td><td class="text-black/30">—</td><td>约 5 篇参考文档</td></tr>
+        <tr><td><strong>上线时间</strong></td><td class="bg-[#F8F9FF] font-bold">2025-09</td><td class="text-black/40">至今未提供</td><td>2026-03</td></tr></tbody></table></div>
+      <p class="mt-6 text-[13px] text-black/40">（其余小节：61 个技能的覆盖面、三层执行保障、全流程交付流水线、双 AI 平台 —— 照原文渲染）</p>
+    </section>
+
+    <!-- 选型建议：三张卡并排，最后一条「三方共同具备」作底 -->
+    <section id="s15" class="mt-20 scroll-mt-24">
+      <div class="flex items-baseline gap-4"><span class="disp text-[52px] font-semibold leading-none text-[#5B7CFF]/20">15</span><h2 class="text-[28px] font-black tracking-tight">选型建议</h2></div>
+      <div class="mt-8 grid gap-4 lg:grid-cols-3">
+        <div class="lcard p-6"><p class="font-black">适合选上游 5.x</p><ul class="mt-4 grid gap-2.5 text-[14px] leading-6 text-black/60">
+          <li class="flex gap-2.5"><i data-lucide="dot" class="size-5 shrink-0 text-black/30"></i>需要 MIT 协议，完全开源可商用，不接受授权费用</li><li class="flex gap-2.5"><i data-lucide="dot" class="size-5 shrink-0 text-black/30"></i>只做 PC 管理端，无移动端需求</li><li class="flex gap-2.5"><i data-lucide="dot" class="size-5 shrink-0 text-black/30"></i>不需要支付、微信生态、AI 能力</li><li class="flex gap-2.5"><i data-lucide="dot" class="size-5 shrink-0 text-black/30"></i>希望依托 Dromara 社区生态</li></ul></div>
+        <div class="lcard p-6"><p class="font-black">适合选上游 6.x</p><ul class="mt-4 grid gap-2.5 text-[14px] leading-6 text-black/60">
+          <li class="flex gap-2.5"><i data-lucide="dot" class="size-5 shrink-0 text-black/30"></i>希望尽早使用 Spring Boot 4 + JDK 21</li><li class="flex gap-2.5"><i data-lucide="dot" class="size-5 shrink-0 text-black/30"></i><span><strong class="text-[#0B0D14]">不需要多租户</strong>（硬前提）</span></li><li class="flex gap-2.5"><i data-lucide="dot" class="size-5 shrink-0 text-black/30"></i>需要子查询 / 联表的 Java 侧链式构建</li><li class="flex gap-2.5"><i data-lucide="dot" class="size-5 shrink-0 text-black/30"></i>需要 React 前端代码生成</li><li class="flex gap-2.5"><i data-lucide="dot" class="size-5 shrink-0 text-black/30"></i>接受前端在独立仓库维护</li></ul></div>
+        <div class="ink glow relative overflow-hidden rounded-[22px] p-6"><p class="flex items-center gap-2 font-black">适合选 RuoYi-Plus-UniApp<span class="rounded-full bg-[#5B7CFF] px-2 py-0.5 text-[11px] font-semibold">本框架</span></p><ul class="mt-4 grid gap-2.5 text-[14px] leading-6 text-white/70">
+          <li class="flex gap-2.5"><i data-lucide="check" class="mt-0.5 size-4 shrink-0 text-[#8EA2FF]"></i><span>需要 <strong class="text-white">PC 管理端 + 移动端全栈</strong>一套交付（小程序 / H5 / APP / 鸿蒙）</span></li>
+          <li class="flex gap-2.5"><i data-lucide="check" class="mt-0.5 size-4 shrink-0 text-[#8EA2FF]"></i><span>需要<strong class="text-white">开箱即用的支付能力</strong>与微信小程序、公众号深度集成</span></li>
+          <li class="flex gap-2.5"><i data-lucide="check" class="mt-0.5 size-4 shrink-0 text-[#8EA2FF]"></i><span>需要<strong class="text-white">列级字段权限</strong>，按角色控制同一记录的字段可见可改</span></li>
+          <li class="flex gap-2.5"><i data-lucide="check" class="mt-0.5 size-4 shrink-0 text-[#8EA2FF]"></i><span>需要<strong class="text-white">等保二级</strong>合规支撑</span></li>
+          <li class="flex gap-2.5"><i data-lucide="check" class="mt-0.5 size-4 shrink-0 text-[#8EA2FF]"></i><span>需要<strong class="text-white">自建可控的 AI 能力</strong>，而非绑定第三方闭源组件</span></li>
+          <li class="flex gap-2.5"><i data-lucide="check" class="mt-0.5 size-4 shrink-0 text-[#8EA2FF]"></i><span>希望 <strong class="text-white">AI 辅助开发开箱即用</strong>，让 AI 直接产出符合框架规范的代码</span></li>
+          <li class="flex gap-2.5"><i data-lucide="check" class="mt-0.5 size-4 shrink-0 text-[#8EA2FF]"></i><span>需要 <strong class="text-white">Spring Boot 4 与多租户兼得</strong></span></li>
+          <li class="flex gap-2.5"><i data-lucide="check" class="mt-0.5 size-4 shrink-0 text-[#8EA2FF]"></i>能接受闭源授权模式</li></ul></div>
+      </div>
+      <div class="mt-4 rounded-[22px] border border-black/[.07] bg-white p-6">
+        <p class="font-black">三方共同具备</p>
+        <div class="mt-4 flex flex-wrap gap-2 text-[13px]" id="common"></div>
+        <p class="mt-4 text-[13.5px] text-black/50">这些能力源自上游多年积累，选择任何一方都能获得。</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+// 能力总览 17 行：与 comparison.md 原表逐格一致；b=本框架是否加粗（增量）
+const rows = [
+  ['AI 技能体系', '61 技能 + 19 命令 + 3 钩子', '无', '6 个子代理', 1],
+  ['移动端', '4 个工程 + 101 组件 + 18 平台', '无', '无', 1],
+  ['后端分层', '四层 Controller→Service→DAO→Mapper', '三层', '三层', 1],
+  ['列级字段权限', '四档 × 三主体 × 四出口', '无', '无', 1],
+  ['支付能力', '微信 / 支付宝 / 银联 / 余额', '无', '无', 1],
+  ['微信生态', '小程序 + 公众号', '无', '无', 1],
+  ['AI 大模型', 'LangChain4j 自建（30 类）', '无', '第三方组件', 1],
+  ['等保二级', '密码策略 / 日志归档 / 备份恢复', '无', '无', 1],
+  ['多租户', '支持（3.5.x 与 4.x 双线均有）', '支持', '不支持', 1],
+  ['基础设施模块', '36 个', '24 个', '24 个', 0],
+  ['业务模块', 'system / workflow / generator / job / business / mall', '+ demo', '+ demo / ai', 0],
+  ['管理端前端', '仓内 plus-ui，13.2 万行', '仓内，2.8 万行', '独立仓库', 0],
+  ['代码生成器', '19 模板，含 DAO 层与主子表', '16 模板', '20 模板，含 React', 0],
+  ['行级数据权限', '支持', '支持', '支持', 0],
+  ['数据库支持', 'MySQL / Oracle / PostgreSQL / SQL Server', '同左', '同左', 0],
+  ['运行时', 'Java 21 + Spring Boot 3.5.16', 'Java 17 + 3.5.14', 'Java 21 + 4.1.0', 0],
+  ['开源协议', '闭源授权', 'MIT', 'MIT', 0],
+];
+const cell = (v) => v === '无' ? '<span class="inline-block h-px w-5 bg-white/20 align-middle"></span>' : v;
+document.getElementById('matrix').innerHTML = rows.map(([d, a, b, c, hi], i) => `
+  <div class="grid grid-cols-[1.2fr_1.5fr_.9fr_.9fr] gap-px bg-white/[.06] text-[13.5px]">
+    <div class="bg-[#090A12] px-5 py-3.5 ${hi ? 'font-semibold text-white' : 'text-white/60'}">${d}</div>
+    <div class="bg-[#5B7CFF]/[.12] px-5 py-3.5 ${hi ? 'font-bold text-white' : 'text-white/80'}">${a}</div>
+    <div class="bg-[#090A12] px-5 py-3.5 text-center text-white/50">${cell(b)}</div>
+    <div class="bg-[#090A12] px-5 py-3.5 text-center text-white/50">${cell(c)}</div>
+  </div>`).join('');
+const chap = ['AI 技能体系', '移动端全栈', '后端四层架构', '查询构建', '权限体系', '开箱即用的业务能力', '基础设施模块', '安全与等保合规', '多租户与分支矩阵', '代码生成器', '管理端前端', '响应封装', '数据库与运维', '运行时与依赖', '选型建议'];
+document.getElementById('chap').innerHTML = chap.map((t, i) => `<li><a href="#s${i + 1}" class="flex items-center gap-3 rounded-lg px-3 py-1.5 ${i === 0 ? 'bg-[#0B0D14] text-white' : 'text-black/60 hover:bg-black/[.04]'}"><span class="mono w-5 text-[11px] ${i === 0 ? 'text-[#8EA2FF]' : 'text-black/30'}">${String(i + 1).padStart(2, '0')}</span>${t}</a></li>`).join('');
+document.getElementById('common').innerHTML = ['Sa-Token 认证与权限注解', 'JustAuth 三方登录', 'Redisson 缓存与分布式锁', 'MyBatis-Plus ORM 与多数据源', 'SnailJob 分布式任务调度', '数据脱敏与加解密', '接口传输加密', '行级数据权限', 'Excel 导入导出', 'SpringDoc 接口文档', '国际化', 'Docker 部署', '四种关系数据库支持', 'Warm-Flow 工作流']
+  .map((t) => `<span class="rounded-lg border border-black/[.07] bg-[#F8F9FC] px-3 py-1.5 text-black/65">${t}</span>`).join('');
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

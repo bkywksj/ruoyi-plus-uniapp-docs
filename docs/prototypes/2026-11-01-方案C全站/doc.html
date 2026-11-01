@@ -1,0 +1,162 @@
+<!doctype html>
+<!-- 方案 C 全站原型 · 文档阅读页（511 页里的 500 页都长这样）。样例取 mobile/getting-started 原文前半段 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>文档阅读页 · 方案 C 全站原型</title>
+<link href="https://fonts.loli.net/css2?family=Unbounded:wght@400;600;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body data-nav="mobile">
+
+<!-- 栏目条：深色页头下延一条细带，标明所在栏目，与首页深色首屏呼应 -->
+<div class="ink glow-soft border-b border-white/[.06]">
+  <div class="mx-auto flex h-12 max-w-[1440px] items-center gap-3 px-5 lg:px-8 text-[13px]">
+    <span class="mono text-white/35">docs /</span>
+    <a href="dir.html" class="text-white/60 hover:text-white">移动端</a><i data-lucide="chevron-right" class="size-3.5 text-white/25"></i>
+    <span class="text-white/60">快速开始</span><i data-lucide="chevron-right" class="size-3.5 text-white/25"></i>
+    <span class="text-white">快速启动</span>
+    <span class="ml-auto hidden md:flex items-center gap-2"><span class="chip"><i data-lucide="git-branch" class="size-3"></i>master · 3.5.x</span><span class="chip"><i data-lucide="sparkles" class="size-3 text-[#8EA2FF]"></i>对应技能 uniapp-platform</span></span>
+  </div>
+</div>
+
+<div class="mx-auto grid max-w-[1440px] gap-8 px-5 lg:px-8 lg:grid-cols-[260px_minmax(0,1fr)] 2xl:grid-cols-[260px_minmax(0,1fr)_300px]">
+
+  <!-- 左：多层侧栏 -->
+  <aside class="hidden lg:block">
+    <nav class="sb scroll-thin sticky top-16 max-h-[calc(100vh-64px)] overflow-y-auto py-6 pr-2">
+      <label class="mb-4 flex items-center gap-2 rounded-xl border border-black/[.08] bg-white px-3 py-2 text-[13px] text-black/40"><i data-lucide="filter" class="size-3.5"></i>筛选本栏目 215 页</label>
+      <details class="grp" open><summary>快速开始<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary>
+        <div class="mt-1 grid gap-0.5"><a href="dir.html">项目简介</a><a href="doc.html" class="on">快速启动</a><a href="#">项目结构</a><a href="#">配置文件</a><a href="#">开发规范</a></div></details>
+      <details class="grp mt-1"><summary>UniApp基础<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary><div class="mt-1 grid gap-0.5"><a href="#">UniApp概览</a><a href="#">项目配置 (manifest.json)</a></div></details>
+      <details class="grp mt-1" open><summary>WD UI 组件库 <span class="mono ml-auto mr-2 rounded bg-black/[.05] px-1.5 text-[10px] font-medium text-black/45">78</span><i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary>
+        <div class="mt-1 grid gap-0.5"><a href="#">组件库概览</a><a href="#">主题定制</a><a href="#">快速开始</a>
+          <details class="grp" open><summary class="!font-semibold !text-[13px] !text-black/70">基础组件 (6个)<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary>
+            <div class="sub grid gap-0.5"><a href="#">Button 按钮</a><a href="#">Icon 图标</a><a href="#">Cell 单元格</a><a href="#">…</a></div></details>
+          <a href="#" class="!font-semibold">布局组件 (5个)</a><a href="#" class="!font-semibold">导航组件 (10个)</a></div></details>
+      <details class="grp mt-1"><summary>组合式函数 (composables)<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+      <details class="grp mt-1"><summary>工具库 (utils)<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+      <details class="grp mt-1"><summary>页面开发 (pages)<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+      <details class="grp mt-1"><summary>布局系统 (layouts)<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+      <details class="grp mt-1"><summary>状态管理 (stores)<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+      <details class="grp mt-1"><summary>样式系统 (styles)<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+      <details class="grp mt-1"><summary>组件开发<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+      <details class="grp mt-1"><summary>平台适配<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+      <details class="grp mt-1"><summary>性能优化<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+      <details class="grp mt-1"><summary>Vite 插件<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+      <details class="grp mt-1"><summary>打包发布<i data-lucide="chevron-down" class="chev size-3.5 text-black/30 transition"></i></summary></details>
+    </nav>
+  </aside>
+
+  <!-- 中：正文 -->
+  <main class="min-w-0 py-10">
+    <article class="prose mx-auto max-w-[780px]">
+      <div class="not-prose mb-5 flex flex-wrap items-center gap-2 text-[12px]">
+        <span class="chip-l"><i data-lucide="clock" class="size-3"></i>约 12 分钟</span>
+        <span class="chip-l"><i data-lucide="calendar" class="size-3"></i>更新于 2026-10-28</span>
+        <span class="ml-auto flex gap-1.5">
+          <button class="chip-l hover:border-black/20"><i data-lucide="copy" class="size-3"></i>复制为 Markdown</button>
+          <button class="chip-l hover:border-black/20"><i data-lucide="bot" class="size-3"></i>用 AI 问这一页</button>
+        </span>
+      </div>
+      <h1>移动端快速启动</h1>
+      <p class="!text-[17px] !leading-8 text-[#4b5263]">本章节将指导你快速启动 RuoYi-Plus-UniApp 移动端项目，支持 H5、微信小程序、支付宝小程序、App 等多端开发。项目基于 UniApp 3.0 + Vue 3.4 + TypeScript 5.7 + Vite 6.3 构建，采用组合式 API 和 Pinia 状态管理。</p>
+
+      <h2 id="env" data-n="01">环境要求</h2>
+      <h3 id="must">必需环境</h3>
+      <p>在开始开发之前，请确保你的开发环境满足以下要求：</p>
+      <div class="tbl"><table><thead><tr><th>环境</th><th>版本要求</th><th>说明</th></tr></thead><tbody>
+        <tr><td><strong>Node.js</strong></td><td><code>&gt;= 18.0.0</code></td><td>推荐使用 LTS 版本</td></tr>
+        <tr><td><strong>pnpm</strong></td><td><code>&gt;= 7.30.0</code></td><td>包管理器(项目强制使用)</td></tr>
+        <tr><td><strong>Git</strong></td><td><code>&gt;= 2.30</code></td><td>版本控制工具</td></tr></tbody></table></div>
+      <p><strong>版本检查命令：</strong></p>
+      <div class="code">
+        <div class="code-h"><span class="tab on">bash</span><button><i data-lucide="copy" class="size-3.5"></i>复制</button></div>
+<pre><span class="l"><span class="c"># 检查 Node.js 版本</span></span><span class="l"><span class="f">node</span> -v</span><span class="l"><span class="c"># 输出应为 v18.x.x 或更高</span></span><span class="l"></span><span class="l"><span class="c"># 检查 pnpm 版本</span></span><span class="l"><span class="f">pnpm</span> -v</span><span class="l"><span class="c"># 输出应为 7.30.0 或更高</span></span><span class="l"></span><span class="l"><span class="c"># 检查 Git 版本</span></span><span class="l"><span class="f">git</span> --version</span></pre>
+      </div>
+
+      <h3 id="tools">平台开发工具</h3>
+      <p>根据目标平台安装对应的开发工具：</p>
+      <div class="tbl"><table><thead><tr><th>平台</th><th>开发工具</th><th>下载地址</th><th>必需性</th></tr></thead><tbody>
+        <tr><td><strong>H5</strong></td><td>现代浏览器</td><td>-</td><td><span class="rounded-md bg-[#0B0D14] px-1.5 py-0.5 text-[12px] text-white">必需</span></td></tr>
+        <tr><td><strong>微信小程序</strong></td><td>微信开发者工具</td><td><a href="#">下载</a></td><td><span class="rounded-md bg-black/[.05] px-1.5 py-0.5 text-[12px]">按需</span></td></tr>
+        <tr><td><strong>支付宝小程序</strong></td><td>支付宝开发者工具</td><td><a href="#">下载</a></td><td><span class="rounded-md bg-black/[.05] px-1.5 py-0.5 text-[12px]">按需</span></td></tr>
+        <tr><td><strong>百度小程序</strong></td><td>百度开发者工具</td><td><a href="#">下载</a></td><td><span class="rounded-md bg-black/[.05] px-1.5 py-0.5 text-[12px]">按需</span></td></tr>
+        <tr><td><strong>抖音小程序</strong></td><td>抖音开发者工具</td><td><a href="#">下载</a></td><td><span class="rounded-md bg-black/[.05] px-1.5 py-0.5 text-[12px]">按需</span></td></tr>
+        <tr><td><strong>QQ小程序</strong></td><td>QQ开发者工具</td><td><a href="#">下载</a></td><td><span class="rounded-md bg-black/[.05] px-1.5 py-0.5 text-[12px]">按需</span></td></tr>
+        <tr><td><strong>App开发</strong></td><td>HBuilderX</td><td><a href="#">下载</a></td><td><span class="rounded-md bg-black/[.05] px-1.5 py-0.5 text-[12px]">按需</span></td></tr></tbody></table></div>
+
+      <!-- 以下四种容器是旧站 ::: tip / warning / danger / details 的新样子（样例文字为示意） -->
+      <div class="callout tip"><span class="ic"><i data-lucide="lightbulb" class="size-4"></i></span><span class="t">提示</span><div class="b">项目强制使用 pnpm，用 npm / yarn 安装会被 <code>preinstall</code> 钩子拦下。</div></div>
+      <div class="callout warn"><span class="ic"><i data-lucide="triangle-alert" class="size-4"></i></span><span class="t">注意</span><div class="b">微信小程序真机调试前，需要在开发者工具里勾选「不校验合法域名」。</div></div>
+      <div class="callout danger"><span class="ic"><i data-lucide="octagon-x" class="size-4"></i></span><span class="t">危险</span><div class="b">不要把 <code>.env.production</code> 里的密钥提交到仓库。</div></div>
+      <details class="lcard !rounded-2xl my-4 overflow-hidden"><summary class="flex items-center gap-2 px-5 py-3.5 font-semibold text-[#0B0D14]"><i data-lucide="chevron-down" class="chev size-4 text-[#5B7CFF] transition"></i>展开：各平台开发者工具的常见安装问题</summary><div class="border-t border-black/[.06] px-5 py-3 text-[14.5px]">折叠块（::: details）默认收起，点开后显示完整内容。</div></details>
+
+      <h3 id="rec">推荐开发工具</h3>
+      <div class="tbl"><table><thead><tr><th>工具</th><th>用途</th><th>推荐扩展</th></tr></thead><tbody>
+        <tr><td><strong>VS Code</strong></td><td>代码编辑器</td><td>Volar、ESLint、UnoCSS、uni-helper</td></tr>
+        <tr><td><strong>WebStorm/IDEA</strong></td><td>IDE</td><td>Vue.js 插件、UniApp 插件</td></tr>
+        <tr><td><strong>nvm/nvm-windows</strong></td><td>Node 版本管理</td><td>-</td></tr></tbody></table></div>
+
+      <hr />
+      <h2 id="stack" data-n="02">技术栈概览</h2>
+      <p>项目采用现代化的技术栈，确保开发效率和运行性能：</p>
+      <h3 id="core">核心框架</h3>
+      <div class="tbl"><table><thead><tr><th>技术</th><th>版本</th><th>说明</th></tr></thead><tbody>
+        <tr><td><strong>UniApp</strong></td><td class="mono text-[13px]">3.0.0-4060620250520001</td><td>跨平台应用框架</td></tr>
+        <tr><td><strong>Vue</strong></td><td class="mono text-[13px]">3.4.21</td><td>渐进式 JavaScript 框架</td></tr>
+        <tr><td><strong>TypeScript</strong></td><td class="mono text-[13px]">5.7.2</td><td>类型安全的 JavaScript 超集</td></tr>
+        <tr><td><strong>Vite</strong></td><td class="mono text-[13px]">6.3.5</td><td>下一代前端构建工具</td></tr>
+        <tr><td><strong>Pinia</strong></td><td class="mono text-[13px]">2.0.36</td><td>Vue 状态管理库</td></tr></tbody></table></div>
+      <h3 id="ui">UI 与样式</h3>
+      <div class="tbl"><table><thead><tr><th>技术</th><th>版本</th><th>说明</th></tr></thead><tbody>
+        <tr><td><strong>WD UI</strong></td><td>自维护版本</td><td>基于 Wot Design Uni 的组件库</td></tr>
+        <tr><td><strong>UnoCSS</strong></td><td class="mono text-[13px]">65.4.2</td><td>原子化 CSS 引擎</td></tr>
+        <tr><td><strong>SCSS</strong></td><td class="mono text-[13px]">1.77.8</td><td>CSS 预处理器</td></tr></tbody></table></div>
+      <p class="text-black/40 text-[13px]">（原型只排到这里，正文其余部分照原文渲染）</p>
+
+      <!-- 页尾：本页反馈 + 编辑 + 上下篇 -->
+      <div class="not-prose mt-14 flex flex-wrap items-center gap-3 rounded-2xl border border-black/[.07] bg-white px-5 py-4 text-[13.5px]">
+        <span class="font-semibold text-[#0B0D14]">这页对您有帮助吗？</span>
+        <button class="chip-l hover:border-black/20"><i data-lucide="thumbs-up" class="size-3.5"></i>有帮助</button>
+        <button class="chip-l hover:border-black/20"><i data-lucide="thumbs-down" class="size-3.5"></i>没解决</button>
+        <a href="#" class="ml-auto flex items-center gap-1.5 text-black/50 hover:text-[#0B0D14]"><i data-lucide="pencil" class="size-3.5"></i>在 GitHub 上编辑此页</a>
+      </div>
+      <div class="not-prose mt-4 grid gap-3 sm:grid-cols-2">
+        <a href="dir.html" class="lcard lift group px-5 py-4"><span class="text-[12px] text-black/40">上一篇</span><span class="mt-1 flex items-center gap-2 font-semibold text-[#0B0D14]"><i data-lucide="arrow-left" class="size-4 text-[#5B7CFF] transition group-hover:-translate-x-0.5"></i>项目简介</span></a>
+        <a href="#" class="lcard lift group px-5 py-4 text-right"><span class="text-[12px] text-black/40">下一篇</span><span class="mt-1 flex items-center justify-end gap-2 font-semibold text-[#0B0D14]">项目结构<i data-lucide="arrow-right" class="size-4 text-[#5B7CFF] transition group-hover:translate-x-0.5"></i></span></a>
+      </div>
+    </article>
+  </main>
+
+  <!-- 右：本页目录 + 手机实时预览（只在移动端栏目出现） -->
+  <aside class="hidden 2xl:block">
+    <div class="sticky top-16 py-10">
+      <p class="kicker-l">本页目录</p>
+      <nav class="toc mt-3 border-l border-black/[.08]">
+        <a href="#env" class="on">环境要求</a><a href="#must" class="lv3">必需环境</a><a href="#tools" class="lv3">平台开发工具</a><a href="#rec" class="lv3">推荐开发工具</a>
+        <a href="#stack">技术栈概览</a><a href="#core" class="lv3">核心框架</a><a href="#ui" class="lv3">UI 与样式</a><a href="#" class="lv3">开发工具链</a><a href="#" class="lv3">安全与加密</a>
+        <a href="#">快速开始</a><a href="#">常见问题</a>
+      </nav>
+      <details open class="mt-8 rounded-[22px] ink glow p-4">
+        <summary class="flex items-center gap-2 text-[13px] font-semibold"><span class="size-2 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(52,211,153,.18)]"></span>实时预览 · H5<i data-lucide="chevron-down" class="chev ml-auto size-3.5 text-white/40 transition"></i></summary>
+        <div class="phone mx-auto mt-4 w-[210px]"><div class="phone-in" style="aspect-ratio:9/19"><img src="assets/m-home.png" alt="移动端首页" class="absolute inset-0 top-[30px] h-[calc(100%-30px)] w-full object-cover" /></div></div>
+        <div class="mt-4 grid grid-cols-2 gap-2 text-[12px]">
+          <a href="#" class="flex items-center justify-center gap-1.5 rounded-lg bg-white/[.07] py-2 text-white/75 hover:bg-white/[.12]"><i data-lucide="external-link" class="size-3.5"></i>新窗口</a>
+          <details class="relative"><summary class="flex items-center justify-center gap-1.5 rounded-lg bg-white/[.07] py-2 text-white/75 hover:bg-white/[.12]"><i data-lucide="qr-code" class="size-3.5"></i>扫码</summary>
+            <div class="absolute bottom-11 right-0 w-36 rounded-xl bg-white p-2 shadow-xl"><img src="../../../public/uni.png" alt="扫码预览" class="w-full" /></div></details>
+        </div>
+      </details>
+    </div>
+  </aside>
+</div>
+
+<!-- 手机宽度下：底部浮出「目录」按钮，代替右栏 -->
+<button class="2xl:hidden fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-[#0B0D14] px-4 py-2.5 text-[13px] font-semibold text-white shadow-[0_14px_30px_-10px_rgba(11,13,20,.6)]"><i data-lucide="list" class="size-4"></i>本页目录</button>
+
+<script src="shared.js"></script>
+</body>
+</html>

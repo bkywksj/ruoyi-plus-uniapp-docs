@@ -1,0 +1,98 @@
+<!doctype html>
+<!-- 方案 C 全站原型 · 栏目首页（backend / frontend / mobile / practices 的 index）。样例取 mobile/index 与 mobile 侧栏的 14 个分组 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>栏目首页 · 方案 C 全站原型</title>
+<link href="https://fonts.loli.net/css2?family=Unbounded:wght@400;600;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body data-nav="mobile">
+
+<!-- 栏目首屏：深色，左文案右手机，下方切换四个栏目 -->
+<section class="ink glow noise overflow-hidden">
+  <div class="mx-auto grid max-w-[1240px] items-center gap-12 px-6 pt-16 pb-14 lg:grid-cols-[1.15fr_.85fr]">
+    <div class="rv">
+      <p class="kicker">docs / mobile · 215 页</p>
+      <h1 class="mt-4 text-[44px] sm:text-[60px] font-black leading-[1.05] tracking-tight">移动端<span class="disp ml-3 align-middle text-[18px] font-normal text-white/40">UniApp</span></h1>
+      <p class="mt-5 max-w-xl text-[16px] leading-8 text-white/60">基于 UniApp + Vue 3 + TypeScript 的企业级跨平台移动应用开发框架。深度整合 unibest 最佳实践，自研维护 WD UI 组件库（78 个组件），开箱即用。</p>
+      <div class="mt-8 grid max-w-lg grid-cols-4 gap-px overflow-hidden rounded-2xl border border-white/[.08] bg-white/[.08]">
+        <div class="bg-[#0B0D16] px-4 py-4"><p class="disp text-[26px] font-semibold">78</p><p class="mt-1 text-[12px] text-white/45">WD UI 组件</p></div>
+        <div class="bg-[#0B0D16] px-4 py-4"><p class="disp text-[26px] font-semibold">18</p><p class="mt-1 text-[12px] text-white/45">发布平台</p></div>
+        <div class="bg-[#0B0D16] px-4 py-4"><p class="disp text-[26px] font-semibold">4</p><p class="mt-1 text-[12px] text-white/45">工程</p></div>
+        <div class="bg-[#0B0D16] px-4 py-4"><p class="disp text-[26px] font-semibold">14</p><p class="mt-1 text-[12px] text-white/45">文档分组</p></div>
+      </div>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="doc.html" class="inline-flex items-center gap-2 rounded-xl bg-[#5B7CFF] px-5 py-3 text-[14px] font-semibold shadow-[0_12px_30px_-10px_rgba(91,124,255,.8)] hover:bg-[#6d8aff]">快速启动<i data-lucide="arrow-right" class="size-4"></i></a>
+        <a href="https://uni.ruoyi.plus/h5" class="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-[14px] font-semibold text-white/85 hover:bg-white/[.06]"><i data-lucide="smartphone" class="size-4"></i>在线体验 H5</a>
+      </div>
+    </div>
+    <div class="relative hidden lg:flex justify-center gap-5 rv" style="animation-delay:.12s">
+      <div class="phone w-[200px] translate-y-8 opacity-80"><div class="phone-in" style="aspect-ratio:9/19"><img src="assets/m-login.png" alt="" class="absolute inset-0 top-[30px] h-[calc(100%-30px)] w-full object-cover" /></div></div>
+      <div class="phone w-[220px]"><div class="phone-in" style="aspect-ratio:9/19"><img src="assets/m-home.png" alt="" class="absolute inset-0 top-[30px] h-[calc(100%-30px)] w-full object-cover" /></div></div>
+    </div>
+  </div>
+  <!-- 栏目切换：四个栏目同一处切，当前栏目实心 -->
+  <div class="border-t border-white/[.06]">
+    <div class="mx-auto flex max-w-[1240px] gap-1 overflow-x-auto px-6 py-3 text-[13.5px]">
+      <a href="#" class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-white/55 hover:bg-white/[.05] hover:text-white"><i data-lucide="server" class="size-4"></i>后端 <span class="mono text-[11px] text-white/30">100</span></a>
+      <a href="#" class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-white/55 hover:bg-white/[.05] hover:text-white"><i data-lucide="monitor" class="size-4"></i>前端 <span class="mono text-[11px] text-white/30">142</span></a>
+      <a href="#" class="flex items-center gap-2 rounded-lg bg-white px-3.5 py-2 font-semibold text-[#07080D]"><i data-lucide="smartphone" class="size-4"></i>移动端 <span class="mono text-[11px] text-black/40">215</span></a>
+      <a href="#" class="flex items-center gap-2 rounded-lg px-3.5 py-2 text-white/55 hover:bg-white/[.05] hover:text-white"><i data-lucide="compass" class="size-4"></i>最佳实践 <span class="mono text-[11px] text-white/30">47</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- 分组导航：侧栏 14 个分组摊成卡片，首次进栏目一眼看全 -->
+<section class="mx-auto max-w-[1240px] px-6 py-16">
+  <div class="flex items-end justify-between gap-6"><div><p class="kicker-l">本栏目</p><h2 class="mt-2 text-[28px] font-black tracking-tight">从哪里开始</h2></div><button data-search class="hidden sm:flex items-center gap-2 rounded-xl border border-black/[.08] bg-white px-4 py-2.5 text-[13px] text-black/45 hover:border-black/20"><i data-lucide="search" class="size-4"></i>在移动端文档里搜索<kbd class="mono rounded border border-black/10 px-1.5 text-[10px]">Ctrl K</kbd></button></div>
+  <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <a href="doc.html" class="ring lift relative rounded-[22px] p-5 sm:col-span-2 lg:row-span-2 flex flex-col">
+      <span class="grid size-10 place-items-center rounded-xl bg-[#5B7CFF] text-white"><i data-lucide="rocket" class="size-5"></i></span>
+      <p class="mt-5 text-[20px] font-black">快速开始</p><p class="mt-2 text-[14px] leading-7 text-black/55">环境要求、启动项目、目录结构、配置文件与开发规范，第一次接触移动端从这里读起。</p>
+      <ul class="mt-5 grid gap-1.5 text-[14px] text-[#0B0D14]"><li class="flex items-center gap-2"><span class="mono text-[11px] text-[#3D5BEA]">01</span>项目简介</li><li class="flex items-center gap-2"><span class="mono text-[11px] text-[#3D5BEA]">02</span>快速启动</li><li class="flex items-center gap-2"><span class="mono text-[11px] text-[#3D5BEA]">03</span>项目结构</li><li class="flex items-center gap-2"><span class="mono text-[11px] text-[#3D5BEA]">04</span>配置文件</li><li class="flex items-center gap-2"><span class="mono text-[11px] text-[#3D5BEA]">05</span>开发规范</li></ul>
+      <span class="mt-auto pt-6 inline-flex items-center gap-1.5 text-[13px] font-semibold text-[#3D5BEA]">开始阅读<i data-lucide="arrow-right" class="size-4"></i></span>
+    </a>
+    <a href="#" class="lcard lift rounded-[22px] p-5 sm:col-span-2"><div class="flex items-center gap-3"><span class="grid size-9 place-items-center rounded-xl bg-[#0B0D14] text-white"><i data-lucide="blocks" class="size-4"></i></span><p class="font-bold">WD UI 组件库</p><span class="mono ml-auto rounded-md bg-[#F1F4FF] px-2 py-0.5 text-[11px] text-[#3D5BEA]">78 组件</span></div><p class="mt-3 text-[13.5px] leading-6 text-black/55">组件库概览 · 主题定制 · 基础 6 · 布局 5 · 导航 10 · 表单 · 展示 · 反馈</p></a>
+    <a href="#" class="lcard lift rounded-[22px] p-5"><i data-lucide="layers" class="size-5 text-[#5B7CFF]"></i><p class="mt-3 font-bold">UniApp基础</p><p class="mt-1 text-[12.5px] text-black/45">8 篇 · manifest / pages.json / 生命周期</p></a>
+    <a href="#" class="lcard lift rounded-[22px] p-5"><i data-lucide="function-square" class="size-5 text-[#5B7CFF]"></i><p class="mt-3 font-bold">组合式函数</p><p class="mt-1 text-[12.5px] text-black/45">5 组 · 核心 / 业务 / 界面</p></a>
+  </div>
+  <div class="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+    <a href="#" class="lcard lift rounded-2xl px-4 py-3.5"><p class="text-[14px] font-semibold">工具库 (utils)</p><p class="mt-0.5 text-[12px] text-black/40">5 组</p></a>
+    <a href="#" class="lcard lift rounded-2xl px-4 py-3.5"><p class="text-[14px] font-semibold">页面开发 (pages)</p><p class="mt-0.5 text-[12px] text-black/40">3 篇</p></a>
+    <a href="#" class="lcard lift rounded-2xl px-4 py-3.5"><p class="text-[14px] font-semibold">布局系统 (layouts)</p><p class="mt-0.5 text-[12px] text-black/40">5 篇</p></a>
+    <a href="#" class="lcard lift rounded-2xl px-4 py-3.5"><p class="text-[14px] font-semibold">状态管理 (stores)</p><p class="mt-0.5 text-[12px] text-black/40">5 篇</p></a>
+    <a href="#" class="lcard lift rounded-2xl px-4 py-3.5"><p class="text-[14px] font-semibold">样式系统 (styles)</p><p class="mt-0.5 text-[12px] text-black/40">9 篇</p></a>
+    <a href="#" class="lcard lift rounded-2xl px-4 py-3.5"><p class="text-[14px] font-semibold">组件开发</p><p class="mt-0.5 text-[12px] text-black/40">6 篇</p></a>
+    <a href="#" class="lcard lift rounded-2xl px-4 py-3.5"><p class="text-[14px] font-semibold">平台适配</p><p class="mt-0.5 text-[12px] text-black/40">4 篇</p></a>
+    <a href="#" class="lcard lift rounded-2xl px-4 py-3.5"><p class="text-[14px] font-semibold">性能优化</p><p class="mt-0.5 text-[12px] text-black/40">6 篇</p></a>
+    <a href="#" class="lcard lift rounded-2xl px-4 py-3.5"><p class="text-[14px] font-semibold">Vite 插件</p><p class="mt-0.5 text-[12px] text-black/40">5 组</p></a>
+    <a href="#" class="lcard lift rounded-2xl px-4 py-3.5"><p class="text-[14px] font-semibold">打包发布</p><p class="mt-0.5 text-[12px] text-black/40">4 篇</p></a>
+  </div>
+</section>
+
+<!-- 栏目首页自己的正文（index.md 原文），照文档页排版 -->
+<section class="border-t border-black/[.06] bg-white">
+  <div class="mx-auto grid max-w-[1240px] gap-10 px-6 py-16 lg:grid-cols-[minmax(0,1fr)_240px]">
+    <article class="prose max-w-[780px]">
+      <p class="kicker-l !mb-2">项目简介</p>
+      <h1 class="!text-[30px]">移动端项目简介</h1>
+      <h2 id="o" data-n="01">项目概述</h2>
+      <h3>项目定位</h3>
+      <p>RuoYi-Plus-UniApp 移动端定位为<strong>企业级多端统一开发框架</strong>，具有以下核心定位：</p>
+      <ul><li><strong>全栈协同</strong> - 与 RuoYi-Plus 后端、plus-ui 前端形成完整的全栈技术体系</li><li><strong>多端统一</strong> - 一套代码同时运行在小程序、H5、App 等多个平台</li><li><strong>开箱即用</strong> - 内置认证授权、字典管理、主题系统等通用业务功能</li><li><strong>组件丰富</strong> - 自研 WD UI 组件库提供 78 个高质量移动端组件</li></ul>
+      <h3>环境要求</h3>
+      <div class="tbl"><table><thead><tr><th>环境</th><th>最低版本</th></tr></thead><tbody><tr><td>Node.js</td><td><code>≥ 20.0.0</code></td></tr><tr><td>pnpm</td><td><code>≥ 7.30.0</code></td></tr></tbody></table></div>
+      <h2 id="s" data-n="02">技术栈</h2>
+      <p class="text-black/40 text-[13px]">（原型只排到这里，其余照原文渲染）</p>
+    </article>
+    <aside class="hidden lg:block"><div class="sticky top-24"><p class="kicker-l">本页目录</p><nav class="toc mt-3 border-l border-black/[.08]"><a href="#o" class="on">项目概述</a><a href="#" class="lv3">项目定位</a><a href="#" class="lv3">环境要求</a><a href="#s">技术栈</a><a href="#">核心特性</a><a href="#">目录结构</a></nav></div></aside>
+  </div>
+</section>
+
+<script src="shared.js"></script>
+</body>
+</html>

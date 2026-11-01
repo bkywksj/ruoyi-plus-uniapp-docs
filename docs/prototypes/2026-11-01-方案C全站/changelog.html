@@ -1,0 +1,114 @@
+<!doctype html>
+<!-- 方案 C 全站原型 · 新特性（changelog.md，1100 行）。只排版式：首屏分支矩阵 + 左侧章节轨 + 时间线；正文落地时照原文全量渲染 -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>新特性 · 方案 C 全站原型</title>
+<link href="https://fonts.loli.net/css2?family=Unbounded:wght@400;600;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body data-nav="changelog">
+
+<section class="ink glow noise overflow-hidden">
+  <div class="mx-auto max-w-[1240px] px-6 pt-20 pb-16">
+    <div class="grid gap-10 lg:grid-cols-[1fr_1.15fr] items-end">
+      <div class="rv"><p class="kicker">特性 · 2024.08 → 2026.10</p>
+        <h1 class="mt-4 text-[42px] sm:text-[58px] font-black leading-[1.05] tracking-tight">Ruoyi-Plus-Uniapp<br />新特性</h1>
+        <a href="https://www.bilibili.com/video/BV1YrtMzvEaT/" class="mt-6 inline-flex items-center gap-2 rounded-xl border border-white/15 px-4 py-2.5 text-[14px] font-semibold text-white/85 hover:bg-white/[.06]"><i data-lucide="tv" class="size-4"></i>新特性全面解析（视频）</a>
+        <div class="mt-8 grid grid-cols-3 gap-3 text-[13px]">
+          <div class="pane p-4"><p class="font-bold">代码即文档</p><p class="mt-1 text-[12px] leading-5 text-white/45">规范化命名和完善注释实现代码自解释</p></div>
+          <div class="pane p-4"><p class="font-bold">全栈统一</p><p class="mt-1 text-[12px] leading-5 text-white/45">命名规范、类型定义、接口管理一致</p></div>
+          <div class="pane p-4"><p class="font-bold">开发友好</p><p class="mt-1 text-[12px] leading-5 text-white/45">注重开发体验和可维护性</p></div>
+        </div>
+      </div>
+      <!-- 分支说明：5 个分支做成矩阵卡 -->
+      <div class="pane overflow-hidden rv" style="animation-delay:.1s">
+        <div class="flex items-center justify-between border-b border-white/[.07] px-5 py-3"><p class="text-[13px] font-semibold">分支说明</p><p class="text-[12px] text-white/40">5 个分支变体 · 租户模型 × 技术栈</p></div>
+        <table class="w-full text-[13px]"><thead class="text-white/40"><tr><th class="px-5 py-2.5 text-left font-medium">分支</th><th class="px-2 text-center font-medium">Spring Boot</th><th class="px-2 text-center font-medium">JDK</th><th class="px-2 text-center font-medium">多租户</th><th class="px-2 text-center font-medium">工作流</th><th class="px-5 text-left font-medium">说明</th></tr></thead>
+          <tbody class="[&_td]:border-t [&_td]:border-white/[.05]">
+            <tr><td class="mono px-5 py-2.5 font-bold text-[#aab8ff]">master</td><td class="mono text-center">3.5.x</td><td class="mono text-center">21</td><td class="text-center"><i data-lucide="check" class="inline size-4 text-emerald-400"></i></td><td class="text-center text-white/25">—</td><td class="px-5 text-white/55">默认分支，多租户</td></tr>
+            <tr><td class="mono px-5 py-2.5 font-bold">single</td><td class="mono text-center">3.5.x</td><td class="mono text-center">21</td><td class="text-center text-white/25">—</td><td class="text-center text-white/25">—</td><td class="px-5 text-white/55">移除所有多租户逻辑（单租户版）</td></tr>
+            <tr><td class="mono px-5 py-2.5 font-bold">workflow</td><td class="mono text-center">3.5.x</td><td class="mono text-center">21</td><td class="text-center"><i data-lucide="check" class="inline size-4 text-emerald-400"></i></td><td class="text-center"><i data-lucide="check" class="inline size-4 text-emerald-400"></i></td><td class="px-5 text-white/55">多租户 + warm-flow 工作流</td></tr>
+            <tr><td class="mono px-5 py-2.5 font-bold">6.x</td><td class="mono text-center text-[#aab8ff]">4.1.0</td><td class="mono text-center">21</td><td class="text-center"><i data-lucide="check" class="inline size-4 text-emerald-400"></i></td><td class="text-center"><i data-lucide="check" class="inline size-4 text-emerald-400"></i></td><td class="px-5 text-white/55">Spring Boot 4 全功能版（对标 workflow）</td></tr>
+            <tr><td class="mono px-5 py-2.5 font-bold">6.x-single</td><td class="mono text-center text-[#aab8ff]">4.1.0</td><td class="mono text-center">21</td><td class="text-center text-white/25">—</td><td class="text-center"><i data-lucide="check" class="inline size-4 text-emerald-400"></i></td><td class="px-5 text-white/55">Spring Boot 4 单租户 + 工作流版</td></tr>
+          </tbody></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="mx-auto grid max-w-[1240px] gap-10 px-6 py-16 lg:grid-cols-[230px_minmax(0,1fr)]">
+  <!-- 左：章节轨，最新的在上 -->
+  <aside class="hidden lg:block"><nav class="sticky top-24">
+    <p class="kicker-l">章节</p>
+    <ol class="mt-4 grid gap-1 text-[13.5px]">
+      <li><a href="#c7" class="flex items-center gap-3 rounded-xl bg-[#0B0D14] px-3 py-2.5 text-white"><span class="mono text-[11px] text-[#8EA2FF]">2026</span>七、2026年重大更新<span class="mono ml-auto text-[11px] text-white/40">12</span></a></li>
+      <li><a href="#c6" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-black/60 hover:bg-black/[.04]"><span class="mono text-[11px] text-black/35">2025</span>六、2025年最新集成<span class="mono ml-auto text-[11px] text-black/30">8</span></a></li>
+      <li><a href="#c5" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-black/60 hover:bg-black/[.04]"><span class="mono text-[11px] text-black/35">2024</span>五、架构重构与AI集成<span class="mono ml-auto text-[11px] text-black/30">7</span></a></li>
+      <li><a href="#c4" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-black/60 hover:bg-black/[.04]"><span class="mono text-[11px] text-black/35">2024</span>四、全栈版本更新<span class="mono ml-auto text-[11px] text-black/30">9</span></a></li>
+      <li class="mt-3 px-3 text-[11px] font-semibold tracking-wider text-black/35">重构基线</li>
+      <li><a href="#c1" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-black/60 hover:bg-black/[.04]"><i data-lucide="server" class="size-3.5 text-black/35"></i>一、后端重构优化<span class="mono ml-auto text-[11px] text-black/30">11</span></a></li>
+      <li><a href="#c2" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-black/60 hover:bg-black/[.04]"><i data-lucide="monitor" class="size-3.5 text-black/35"></i>二、前端重构优化<span class="mono ml-auto text-[11px] text-black/30">9</span></a></li>
+      <li><a href="#c3" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-black/60 hover:bg-black/[.04]"><i data-lucide="smartphone" class="size-3.5 text-black/35"></i>三、移动端重构优化<span class="mono ml-auto text-[11px] text-black/30">5</span></a></li>
+    </ol>
+  </nav></aside>
+
+  <main class="min-w-0">
+    <div class="callout info !mt-0"><span class="ic"><i data-lucide="git-branch" class="size-4"></i></span><span class="t">Spring Boot 4 分支（6.x / 6.x-single）</span><div class="b">技术栈升级至 Spring Boot 4.1.0（JDK 21），其余业务代码、四层架构与开发规范同 3.5.x 主线完全一致。<strong>本文档正文默认以 3.5.x 主线（master）为准</strong>。6.x 分支先行特性：集团库 / 独立库租户支持 PostgreSQL、SQL Server、Oracle 与「独立 schema」存储形态（详见 7.12）。</div></div>
+
+    <section id="c7" class="mt-12 scroll-mt-24">
+      <div class="flex items-baseline gap-4"><span class="disp text-[56px] font-semibold leading-none text-[#5B7CFF]/20">07</span><div><p class="kicker-l">2026 年 1 月 — 10 月</p><h2 class="mt-1 text-[28px] font-black tracking-tight">2026年重大更新</h2></div></div>
+      <!-- 时间线：每个小节一张卡，点开看细项 -->
+      <ol class="relative mt-8 grid gap-4 before:absolute before:left-[15px] before:top-2 before:bottom-2 before:w-px before:bg-gradient-to-b before:from-[#5B7CFF]/60 before:to-[#5B7CFF]/0">
+        <li class="relative pl-12"><span class="absolute left-0 top-5 grid size-[31px] place-items-center rounded-full bg-[#5B7CFF] text-white shadow-[0_0_0_5px_rgba(91,124,255,.15)]"><i data-lucide="rocket" class="size-4"></i></span>
+          <details open class="ring rounded-[22px]"><summary class="flex items-center gap-3 px-6 py-5"><span class="mono text-[12px] font-bold text-[#3D5BEA]">7.1</span><span class="text-[17px] font-black">Spring Boot 4 双分支上线</span><span class="ml-auto rounded-full bg-[#0B0D14] px-2.5 py-0.5 text-[11px] font-semibold text-white">最重磅</span><i data-lucide="chevron-down" class="chev size-4 text-black/35 transition"></i></summary>
+            <div class="prose !text-[14.5px] border-t border-black/[.06] px-6 pb-6">
+              <p>2026 年最重磅的升级：框架完成 <strong>Spring Boot 4</strong> 全量迁移，并新增 <code>6.x</code> 与 <code>6.x-single</code> 两个分支，分支矩阵扩展为 <strong>5 个变体</strong>，业务代码、四层架构与开发规范保持完全一致。</p>
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div><p class="!mt-2 font-bold text-[#0B0D14]">技术栈基线升级</p><ul><li><strong>Spring Boot 4.1.0</strong>：核心框架升级到 Spring Boot 4 基线，JDK 21</li><li><strong>Jackson 3 迁移</strong>：json / redis / sensitive / serialMap 全量迁移</li><li><strong>Redisson 4</strong>：分布式缓存组件同步升级</li><li><strong>Starter 适配</strong>：Sa-Token、MyBatis-Plus、Dynamic-Datasource</li><li><strong>AutoConfiguration 重定位</strong>：33 个通用模块零改动通过</li></ul></div>
+                <div><p class="!mt-2 font-bold text-[#0B0D14]">容器与安全回归</p><ul><li><strong>Web 容器切换</strong>：<code>server.undertow</code> → <code>server.jetty</code></li><li><strong>不安全 HTTP 方法禁用</strong>：补回禁用 TRACE/TRACK</li><li><strong>全项目编译收官</strong>：主代码 + 测试代码 test-compile 全绿</li></ul></div>
+              </div>
+            </div></details></li>
+      </ol>
+      <ol id="rest" class="mt-4 grid gap-3 pl-12 sm:grid-cols-2"></ol>
+    </section>
+
+    <!-- 更早的章节：默认收成一行一卡，点开再看 -->
+    <section class="mt-16 grid gap-3">
+      <p class="kicker-l">更早的更新</p>
+      <a id="c6" href="#" class="lcard lift flex items-center gap-5 px-6 py-5"><span class="disp text-[30px] font-semibold text-black/10">06</span><div><p class="font-black text-[17px]">2025年最新集成 <span class="font-normal text-black/40 text-[13px]">11月-12月</span></p><p class="mt-1 text-[13px] text-black/50">物联网通信 · AI 能力全面增强 · 页面设计器 · 多媒体处理 · 客户端工具包 · Claude Code 智能开发体验 · 开发体验 · 配置管理</p></div><i data-lucide="chevron-down" class="ml-auto size-5 text-black/30"></i></a>
+      <a id="c5" href="#" class="lcard lift flex items-center gap-5 px-6 py-5"><span class="disp text-[30px] font-semibold text-black/10">05</span><div><p class="font-black text-[17px]">架构重构与AI集成 <span class="font-normal text-black/40 text-[13px]">2024年10月</span></p><p class="mt-1 text-[13px] text-black/50">四层架构重构 · LangChain4j AI集成 · 开发规范文档 · 测试体系 · 代码生成器 · 前端组件系统 · 依赖升级</p></div><i data-lucide="chevron-down" class="ml-auto size-5 text-black/30"></i></a>
+      <a id="c4" href="#" class="lcard lift flex items-center gap-5 px-6 py-5"><span class="disp text-[30px] font-semibold text-black/10">04</span><div><p class="font-black text-[17px]">全栈版本更新 <span class="font-normal text-black/40 text-[13px]">2024年8.4-9.22</span></p><p class="mt-1 text-[13px] text-black/50">后端核心升级 · 支付系统重大升级 · WD UI 组件库 · 前端界面 · 代码生成器 · 媒体库 · 数据库 · 国际化 · 部署运维</p></div><i data-lucide="chevron-down" class="ml-auto size-5 text-black/30"></i></a>
+      <div class="grid gap-3 md:grid-cols-3">
+        <a id="c1" href="#" class="lcard lift p-5"><i data-lucide="server" class="size-5 text-[#5B7CFF]"></i><p class="mt-3 font-black">一、后端重构优化</p><p class="mt-1 text-[12.5px] leading-5 text-black/50">四层架构 · 查询增强 · 租户 · 权限 · OSS · WebSocket · 序列化 · 国际化 · 支付 · Docker</p></a>
+        <a id="c2" href="#" class="lcard lift p-5"><i data-lucide="monitor" class="size-5 text-[#5B7CFF]"></i><p class="mt-3 font-black">二、前端重构优化</p><p class="mt-1 text-[12.5px] leading-5 text-black/50">目录与命名 · Composables · 样式系统 · 表单表格 · 权限指令 · 媒体库 · Iconify · 性能</p></a>
+        <a id="c3" href="#" class="lcard lift p-5"><i data-lucide="smartphone" class="size-5 text-[#5B7CFF]"></i><p class="mt-3 font-black">三、移动端重构优化</p><p class="mt-1 text-[12.5px] leading-5 text-black/50">UniApp 框架改造 · 网络请求与认证 · 组合函数 · WotUI 组件重构 · 多平台支持</p></a>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const rest = [
+  ['7.2', '全站国际化 (i18n)', '2026 年 1 月完成前端全站国际化改造，实现真正的多语言开箱即用', 'languages'],
+  ['7.3', '异常监控与错误日志系统', '新增完整的后端异常自动监控能力，问题可追溯、可治理', 'bug'],
+  ['7.4', '多租户能力增强', '数据源级排除表、会话级动态切换，避免串租户', 'building'],
+  ['7.5', 'AI 深度思考升级', 'LangChain4j 0.35.0 → 1.14.1，全面支持大模型深度思考（Thinking）', 'brain'],
+  ['7.6', '支付能力扩展', '支付宝当面付、条码支付撤销兜底 + 支付成功幂等处理', 'credit-card'],
+  ['7.7', '移动端全面进化', 'plus-app 迁移到 UniApp X，缓存工具重构并适配 UTS', 'smartphone'],
+  ['7.8', '前端组件与体验升级', '', 'layout-template'],
+  ['7.9', '后端架构与功能优化', '', 'server'],
+  ['7.10', '智能开发体系扩展', '', 'sparkles'],
+  ['7.11', '接口加密支持国密 SM2+SM4', '', 'lock'],
+  ['7.12', '集团库多数据库与存储形态', '6.x 分支', 'database'],
+];
+document.getElementById('rest').innerHTML = rest.map(([n, t, d, ic]) => `
+  <li><a href="#" class="lcard lift flex h-full gap-4 !rounded-2xl p-5"><span class="grid size-9 shrink-0 place-items-center rounded-xl bg-[#F1F4FF] text-[#3D5BEA]"><i data-lucide="${ic}" class="size-4"></i></span>
+    <span class="min-w-0"><span class="mono text-[11px] font-bold text-[#3D5BEA]">${n}</span><span class="mt-0.5 block font-bold leading-6">${t}</span>${d ? `<span class="mt-1 block text-[13px] leading-5 text-black/50">${d}</span>` : ''}</span></a></li>`).join('');
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

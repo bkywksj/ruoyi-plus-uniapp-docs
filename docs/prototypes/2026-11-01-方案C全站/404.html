@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- 方案 C 全站原型 · 404：终端风格报错 + 搜索入口 + 四个栏目直达（旧链接多来自 VitePress 时代，给足出路） -->
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>页面不存在 · 方案 C 全站原型</title>
+<link href="https://fonts.loli.net/css2?family=Unbounded:wght@400;600;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<link rel="stylesheet" href="shared.css" />
+</head>
+<body>
+<section class="ink glow noise min-h-[calc(100vh-64px)] overflow-hidden">
+  <div class="mx-auto grid max-w-[1100px] items-center gap-14 px-6 py-24 lg:grid-cols-[1fr_1fr]">
+    <div class="rv">
+      <p class="disp text-[120px] sm:text-[160px] font-semibold leading-none tracking-tight bg-gradient-to-b from-white to-white/10 bg-clip-text text-transparent">404</p>
+      <h1 class="mt-4 text-[30px] font-black">页面不存在</h1>
+      <p class="mt-3 text-[15.5px] leading-7 text-white/55">链接可能已失效，或者内容已经移动到别处。</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="home.html" class="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-[14px] font-semibold text-[#07080D] hover:bg-white/90"><i data-lucide="home" class="size-4"></i>回到首页</a>
+        <button data-search class="inline-flex items-center gap-2 rounded-xl border border-white/15 px-5 py-3 text-[14px] font-semibold text-white/85 hover:bg-white/[.06]"><i data-lucide="search" class="size-4"></i>搜索文档<kbd class="mono rounded border border-white/15 px-1.5 text-[10px] text-white/45">Ctrl K</kbd></button>
+      </div>
+    </div>
+    <div class="pane overflow-hidden rv" style="animation-delay:.1s">
+      <div class="win-bar border-b border-white/[.06]"><i class="d bg-[#FF5F57]"></i><i class="d bg-[#FEBC2E]"></i><i class="d bg-[#28C840]"></i><span class="mono ml-2 text-[11px] text-white/35">claude — ruoyi-plus-uniapp</span></div>
+      <div class="mono p-5 text-[13px] leading-7">
+        <p><span class="text-[#8EA2FF]">&gt;</span> 打开 <span class="text-white">/backend/old-page.html</span></p>
+        <p class="text-white/45">● 查找文档 …</p>
+        <p class="text-[#FF8A8A]">✕ 没有找到这一页</p>
+        <p class="mt-3 text-white/45">您可能要找：</p>
+        <a href="dir.html" class="flex items-center gap-3 rounded-lg px-2 -mx-2 hover:bg-white/[.05]"><span class="text-[#8EA2FF]">→</span>后端<span class="text-white/30">100 页</span></a>
+        <a href="dir.html" class="flex items-center gap-3 rounded-lg px-2 -mx-2 hover:bg-white/[.05]"><span class="text-[#8EA2FF]">→</span>前端<span class="text-white/30">142 页</span></a>
+        <a href="dir.html" class="flex items-center gap-3 rounded-lg px-2 -mx-2 hover:bg-white/[.05]"><span class="text-[#8EA2FF]">→</span>移动端<span class="text-white/30">215 页</span></a>
+        <a href="dir.html" class="flex items-center gap-3 rounded-lg px-2 -mx-2 hover:bg-white/[.05]"><span class="text-[#8EA2FF]">→</span>最佳实践<span class="text-white/30">47 页</span></a>
+        <p class="mt-3 caret text-white/70"><span class="text-[#8EA2FF]">&gt;</span> </p>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="shared.js"></script>
+</body>
+</html>
