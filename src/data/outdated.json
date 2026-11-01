@@ -1,0 +1,51 @@
+{
+  "说明": "内容与当前代码不符的旧页（2026-10-31 孤立页核对的 C 类，逐页 git grep 查实核心 API 不存在）。网址保留（旧链接与搜索结果不变 404），DocsLayout 在正文上方显示提示条并输出 noindex，sitemap 排除（astro.config）。正文 md 不动；页面重写后从这里删掉即恢复收录。missing = 核对时查不到的类 / 函数，see = 以哪些页为准",
+  "pages": {
+    "backend/architecture/overview": {
+      "missing": "Nacos 微服务部署、Spring Security 主框架（实际只有 ruoyi-monitor-admin 引入）、IDataExportService、SaTokenConfig",
+      "see": [
+        { "text": "项目结构", "href": "/backend/project-structure.html" },
+        { "text": "系统架构设计", "href": "/practices/architecture/system.html" }
+      ]
+    },
+    "backend/core/base-mapper": {
+      "missing": "BaseMapperPlus（Mapper 直接继承 MyBatis-Plus BaseMapper）、JsonTypeHandler、StringListTypeHandler、EncryptTypeHandler、CreateAndUpdateMetaObjectHandler、TransactionHelper",
+      "see": [{ "text": "MyBatisPlus增强 (mybatis)", "href": "/backend/common/mybatis.html" }]
+    },
+    "backend/core/exception-handler": {
+      "missing": "LeveledServiceException、RateLimitException、RemoteServiceException、CircuitBreakerException、DemoModeException、AsyncExceptionHandler、ExceptionAlertService、ExceptionPersistenceService",
+      "see": [{ "text": "异常处理", "href": "/backend/common/core/exception.html" }]
+    },
+    "backend/modules/generator/advanced-config": {
+      "missing": "header.vm、GeneratorProperties、application-generator.yml、CodeGenerationSecurityInterceptor、DataSourceManagerService、PrometheusConfig、PerformanceProperties、SensitiveDataProtectionConfig",
+      "see": [
+        { "text": "代码生成器模块概览", "href": "/backend/modules/generator.html" },
+        { "text": "代码生成器 · 快速开始", "href": "/backend/modules/generator/quick-start.html" }
+      ]
+    },
+    "mobile/plugins/analytics": {
+      "missing": "useAnalytics、useMetrics、useABTest、analyticsPlugin、UserPathTracker、SessionManager、ABTestManager、useUserPath",
+      "see": [{ "text": "组合式函数概览", "href": "/mobile/composables/overview.html" }]
+    },
+    "mobile/plugins/map": {
+      "missing": "useMap / useMap.ts，以及高德 / 腾讯 / 百度多服务商封装",
+      "see": [{ "text": "组合式函数概览", "href": "/mobile/composables/overview.html" }]
+    },
+    "mobile/plugins/permission": {
+      "missing": "usePermission / usePermission.ts",
+      "see": [{ "text": "组合式函数概览", "href": "/mobile/composables/overview.html" }]
+    },
+    "mobile/plugins/push": {
+      "missing": "usePush、pushTag.ts，以及个推 / 极光 / 厂商通道统一封装",
+      "see": [{ "text": "组合式函数概览", "href": "/mobile/composables/overview.html" }]
+    },
+    "mobile/utils/device": {
+      "missing": "@/utils/device 文件、rpxToPx、pxToRpx、useDevice、updateDeviceInfo（isApp / isMpWeixin 等平台判断在 utils/platform.ts）",
+      "see": [{ "text": "platform 平台检测", "href": "/mobile/utils/platform.html" }]
+    },
+    "mobile/utils/file": {
+      "missing": "@/composables/useUpload（实际在 @/wd/components/composables/useUpload）、getFileType、getFileExtension、validateFile",
+      "see": [{ "text": "useUpload 媒体选择与上传", "href": "/mobile/plugins/camera.html" }]
+    }
+  }
+}

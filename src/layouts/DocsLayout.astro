@@ -14,6 +14,7 @@ import { SECTION_LABELS, docPath, prevNextOf, sectionOf, sidebarOf, sidebarTrail
 import { site } from '@/site.config';
 import { siteJsonLd } from '@/lib/site-jsonld';
 import titleQualifiers from '@/data/title-qualifiers.json';
+import outdated from '@/data/outdated.json';
 import '@/styles/vp-compat.css';
 import '@/styles/ry-theme.css';
 import '@/styles/docs-ruoyi.css';
@@ -57,9 +58,11 @@ const techArticle: JsonLd = {
 };
 // 旧站「在 GitHub 上编辑此页面」：pattern https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/docs/:path
 const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/docs/${id}.md`;
+// 内容与当前代码不符的旧页：网址保留，正文上方提示「以哪页为准」，并且不让搜索引擎收录（sitemap 同样排除，见 astro.config）
+const stale = (outdated.pages as Record<string, { missing: string; see: { text: string; href: string }[] }>)[id];
 ---
 
-<BaseLayout title={pageTitle} description={description} type="article" jsonLd={[...siteJsonLd, techArticle]}>
+<BaseLayout title={pageTitle} description={description} type="article" noindex={!!stale} jsonLd={[...siteJsonLd, techArticle]}>
   {
     isSectionHome ? (
       <SectionHero section={section} />
@@ -114,6 +117,30 @@ const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/d
                 <SidebarTree items={sidebar} current={current} />
               </div>
             </details>
+          )
+        }
+        {
+          stale && (
+            <aside
+              role="note"
+              class="mx-auto mb-8 max-w-[50rem] rounded-2xl border border-accent/30 bg-accent-soft px-5 py-4 text-[14.5px] leading-7"
+              data-pagefind-ignore
+            >
+              <p class="font-bold text-ink">本页内容早于当前代码，部分写法已不存在</p>
+              <p class="mt-1 text-muted">核对时代码里查不到：{stale.missing}。</p>
+              <p class="mt-1 text-muted">
+                请以
+                {stale.see.map((l, i) => (
+                  <>
+                    {i > 0 && '、'}
+                    <a href={l.href} class="font-semibold text-brand-ink underline underline-offset-4">
+                      {l.text}
+                    </a>
+                  </>
+                ))}
+                为准。
+              </p>
+            </aside>
           )
         }
         <article class:list={['prose-content vp-doc mx-auto max-w-[50rem]', !selfNumbered && 'h2-num']} data-pagefind-body>

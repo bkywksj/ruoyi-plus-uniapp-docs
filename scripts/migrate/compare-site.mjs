@@ -3,6 +3,7 @@
 // 判定（任一不满足退出码 1）：
 //   - 网址：旧站每一页在新站都有对应页面（页面清单键相同）
 //   - sitemap：旧站 sitemap.xml 的每条网址都在新站 sitemap 里；新站 /sitemap.xml 仍可用（站长平台登记的地址）
+//     例外：src/data/outdated.json 登记的过期页（页面带 noindex）有意移出，单独列出；页面本身仍须存在
 //   - public：旧站产物里的静态文件（图片、验证文件、llms.txt …）新站一个不少，且站长验证文件逐字节相同
 //   - JSON-LD：旧站出现过的每种 @type，新站页数不少于旧站
 //   - robots：旧站显式放行的每个 User-agent，新站都放行；Sitemap 声明仍在
@@ -33,8 +34,15 @@ const oldLocs = locs(readFileSync(join(baseDist, 'sitemap.xml'), 'utf8'));
 const newLocs = new Set(
   ['sitemap-0.xml', 'sitemap-1.xml'].filter((f) => existsSync(join(newDist, f))).flatMap((f) => locs(readFileSync(join(newDist, f), 'utf8'))),
 );
-const lostLocs = oldLocs.filter((l) => !newLocs.has(l));
-lostLocs.length ? bad(`旧 sitemap 有 ${lostLocs.length} 条新站没有：${lostLocs.slice(0, 5).join(', ')}`) : ok(`sitemap 旧站 ${oldLocs.length} 条全在新站（新站 ${newLocs.size} 条）`);
+// 过期页：网址形如 https://ruoyi.plus/<id>.html
+const outdated = JSON.parse(readFileSync(new URL('../../src/data/outdated.json', import.meta.url), 'utf8')).pages;
+const isOutdated = (l) => new URL(l).pathname.replace(/\.html$/, '').slice(1) in outdated;
+const removed = oldLocs.filter((l) => !newLocs.has(l) && isOutdated(l));
+const lostLocs = oldLocs.filter((l) => !newLocs.has(l) && !isOutdated(l));
+lostLocs.length ? bad(`旧 sitemap 有 ${lostLocs.length} 条新站没有：${lostLocs.slice(0, 5).join(', ')}`) : ok(`sitemap 旧站 ${oldLocs.length - removed.length} 条全在新站（另有 ${removed.length} 条过期页有意移出；新站 ${newLocs.size} 条）`);
+if (removed.length) console.log(`   有意移出 ${removed.length} 条（内容过期页，noindex，见 outdated.json）：${removed.map((l) => new URL(l).pathname).join(', ')}`);
+const strayOutdated = Object.keys(outdated).filter((id) => !next.pages[`${id}.html`]);
+if (strayOutdated.length) bad(`outdated.json 登记的页面在新站不存在：${strayOutdated.join(', ')}`);
 const extraLocs = [...newLocs].filter((l) => !oldLocs.includes(l));
 if (extraLocs.length) console.log(`   新站多出 ${extraLocs.length} 条：${extraLocs.slice(0, 5).join(', ')}`);
 existsSync(join(newDist, 'sitemap.xml')) ? ok('/sitemap.xml 仍可用') : bad('新站没有 /sitemap.xml（站长平台登记的地址会 404）');
