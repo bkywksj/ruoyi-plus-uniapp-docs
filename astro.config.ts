@@ -38,7 +38,14 @@ const markdownProcessor =
         remarkPlugins: [
           remarkVpContainers,
           // 项目插件：营销页的 AProductCard / APricingCard / ImagePreview → 静态 HTML（要在 remarkVpMarks 之前，否则被当成未处理组件）
-          [remarkVueComponents, { icons: vpIcons }],
+          [
+            remarkVueComponents,
+            {
+              icons: vpIcons,
+              groupQr: site.contact?.groupQr,
+              groupNote: site.contact ? `二维码过期请加作者微信 ${site.contact.wechat} 拉你进群` : undefined,
+            },
+          ],
           [remarkVpMarks, { marks: vpMarks, icons: vpIcons, onUnknown: onUnknownComponent }],
           // .md / 无扩展名链接补 .html 只对 .html 网址形态有意义；directory 形态下补了反而成死链
           ...(site.urlFormat === 'directory' ? [] : [remarkVpLinks]),

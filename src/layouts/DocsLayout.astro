@@ -10,6 +10,7 @@ import DocsToc from '@/components/docs/DocsToc.astro';
 import PhonePreview from '@/components/docs/PhonePreview.astro';
 import SectionHero from '@/components/docs/SectionHero.astro';
 import ImageViewer from '@/components/docs/ImageViewer.astro';
+import ContactDialog from '@/components/docs/ContactDialog.astro';
 import { absoluteUrl, type JsonLd } from '@/lib/seo';
 import { SECTION_LABELS, docPath, prevNextOf, sectionOf, sidebarOf, sidebarTrailOf } from '@/lib/docs';
 import { site } from '@/site.config';
@@ -200,6 +201,7 @@ const stale = (outdated.pages as Record<string, { missing: string; see: { text: 
     </div>
   </div>
   <ImageViewer />
+  <ContactDialog />
 </BaseLayout>
 
 <script>

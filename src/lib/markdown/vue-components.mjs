@@ -76,8 +76,12 @@ export function pricingCard(p, icons) {
   }</div>`;
 }
 
-/** 旧站 ImagePreview：src 逗号分隔多张。旧组件首屏只露第一张、其余在点击预览里；这里全部输出（图片一张不丢），多张排成可横向滚动的图廊 */
-export function imagePreview(p) {
+/**
+ * 旧站 ImagePreview：src 逗号分隔多张。旧组件首屏只露第一张、其余在点击预览里；这里全部输出（图片一张不丢），多张排成可横向滚动的图廊。
+ * opts.groupQr 命中时在图下追加 opts.groupNote：微信群码 7 天就过期，换图前访客扫到的是失效码，得告诉他另一条路。
+ * 提示带 data-migrate-ignore（旧站没有这句，迁移比对不计）
+ */
+export function imagePreview(p, _icons, opts = {}) {
   const urls = String(p.src ?? '')
     .split(',')
     .map((s) => s.trim())
@@ -87,8 +91,12 @@ export function imagePreview(p) {
     .filter(Boolean)
     .join(';');
   const img = (u) => `<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt="" loading="lazy"${style ? ` style="${style}"` : ''} /></a>`;
+  const note =
+    opts.groupQr && opts.groupNote && urls.length === 1 && urls[0] === opts.groupQr
+      ? `<span class="vc-qr-note" data-migrate-ignore data-pagefind-ignore>${esc(opts.groupNote)}</span>`
+      : '';
   return urls.length === 1
-    ? `<span class="vc-image">${img(urls[0])}</span>`
+    ? `<span class="vc-image">${img(urls[0])}${note}</span>`
     : `<div class="vc-gallery">${urls.map((u) => `<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt="" loading="lazy" /></a>`).join('')}</div>`;
 }
 
@@ -121,7 +129,8 @@ const TAG = /<(AProductCard|APricingCard|ImagePreview)\b([\s\S]*?)\/>/g;
 
 /**
  * remark 插件：html 节点里的三种组件替换成静态 HTML。要放在 remarkVpMarks 之前（它会把剩下的大写组件当未处理报出来）
- * @param {{ icons: Record<string, { body: string, width?: number, height?: number }> }} opts
+ * @param {{ icons: Record<string, { body: string, width?: number, height?: number }>, groupQr?: string, groupNote?: string }} opts
+ *   groupQr / groupNote：交流群二维码地址与图下的兜底提示（见 imagePreview）
  */
 export function remarkVueComponents(opts = {}) {
   const icons = opts.icons ?? {};
@@ -147,7 +156,7 @@ export function remarkVueComponents(opts = {}) {
         TAG.lastIndex = 0;
         node.value = node.value.replace(TAG, (whole, name) => {
           try {
-            return RENDER[name](parseAttrs(whole), icons);
+            return RENDER[name](parseAttrs(whole), icons, opts);
           } catch (e) {
             throw new Error(`${name}（${file.path ?? ''}）：${e.message}`);
           }

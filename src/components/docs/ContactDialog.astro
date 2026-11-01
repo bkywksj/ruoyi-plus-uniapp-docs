@@ -1,0 +1,274 @@
+---
+// 联系弹窗：作者微信码 + 一键复制微信号 + 可拨号的电话 + 交流群码（附过期兜底）。两个入口共用这一个弹窗：
+// - fab：右下角「咨询」悬浮按钮，只在首页与营销页放（文档页读者在查资料，悬浮按钮会挡正文，页脚「联系」栏是它们的入口）
+// - 定价卡「立即购买」：拦截 .vc-contact 的展开，改成弹窗并写明购买须知（定价卡在营销页与两篇前端文档里都有，所以文档页也挂本组件、只是不带 fab）
+// 弹窗在第一次打开时才创建：静态 HTML 里只有一段 JSON 数据和悬浮按钮，不放图片，不影响迁移比对与 Pagefind 索引。
+// 没有 JS 时定价卡退回 <details> 展开微信号；悬浮按钮不可用（它本身就是 JS 才有意义的入口，页脚仍有完整联系方式）。
+// 电脑上居中弹出，手机上从底部弹出（拇指够得着，电话一点即拨）
+import { site } from '@/site.config';
+
+interface Props {
+  /** 是否显示右下角「咨询」悬浮按钮 */
+  fab?: boolean;
+}
+const { fab = false } = Astro.props;
+const c = site.contact;
+---
+
+{
+  c && (
+    <>
+      <script is:inline type="application/json" id="ry-contact-data" set:html={JSON.stringify(c)} />
+      {fab && (
+        <button type="button" class="ry-fab" data-contact-open data-migrate-ignore data-pagefind-ignore aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" />
+          </svg>
+          咨询
+        </button>
+      )}
+    </>
+  )
+}
+
+<script>
+  type Contact = { wechat: string; phone: string; tel: string; wechatQr: string; groupQr: string };
+  const BUY_NOTE = '三个版本代码完全一样，企业版需提供营业执照。';
+
+  const dataEl = document.getElementById('ry-contact-data');
+  const contact: Contact | null = dataEl ? JSON.parse(dataEl.textContent ?? 'null') : null;
+  let dialog: HTMLDialogElement | null = null;
+
+  const esc = (s: string) => s.replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[ch] ?? ch);
+
+  /** 第一次打开时建弹窗 */
+  const build = (c: Contact) => {
+    const d = document.createElement('dialog');
+    d.className = 'ry-contact';
+    d.setAttribute('aria-labelledby', 'ry-contact-title');
+    d.innerHTML = `
+      <div class="ry-contact-head">
+        <div>
+          <p class="ry-contact-kicker" data-k></p>
+          <h2 id="ry-contact-title" data-title></h2>
+        </div>
+        <button type="button" class="ry-contact-x" data-close aria-label="关闭">×</button>
+      </div>
+      <p class="ry-contact-buy" data-buy hidden></p>
+      <div class="ry-contact-qrs">
+        <figure><img src="${esc(c.wechatQr)}" alt="作者微信二维码" width="132" height="132" /><figcaption>扫码加作者微信</figcaption></figure>
+        <figure><img src="${esc(c.groupQr)}" alt="交流群二维码" width="132" height="132" /><figcaption>扫码进交流群</figcaption></figure>
+      </div>
+      <p class="ry-contact-note">群二维码过期请加作者微信 ${esc(c.wechat)} 拉你进群</p>
+      <ul class="ry-contact-rows">
+        <li><span>微信 / QQ</span><strong>${esc(c.wechat)}</strong><button type="button" class="ry-contact-act" data-copy>复制</button></li>
+        <li><span>电话</span><strong>${esc(c.phone)}</strong><a class="ry-contact-act" href="tel:${esc(c.tel)}">拨打</a></li>
+      </ul>`;
+    d.addEventListener('click', (e) => {
+      const t = e.target as HTMLElement;
+      // 点在弹窗外的遮罩上（事件目标是 dialog 本身）或关闭按钮 → 关
+      if (t === d || t.closest('[data-close]')) d.close();
+      const copy = t.closest<HTMLButtonElement>('[data-copy]');
+      if (copy) {
+        void navigator.clipboard?.writeText(c.wechat).then(
+          () => {
+            copy.textContent = '已复制';
+            setTimeout(() => (copy.textContent = '复制'), 1600);
+          },
+          () => (copy.textContent = '请手动复制'),
+        );
+      }
+    });
+    document.body.append(d);
+    return d;
+  };
+
+  /**
+   * 打开弹窗
+   * @param mode ask = 悬浮按钮咨询；buy = 定价卡购买（多一段购买须知）
+   * @param plan 购买的版本名（定价卡标题）
+   */
+  const open = (mode: 'ask' | 'buy', plan = '') => {
+    if (!contact) return;
+    dialog ??= build(contact);
+    const q = (s: string) => dialog!.querySelector<HTMLElement>(s)!;
+    q('[data-k]').textContent = mode === 'buy' ? '购买授权' : '联系作者';
+    q('[data-title]').textContent = mode === 'buy' ? (plan ? `购买${plan}` : '购买授权') : '有问题直接问';
+    const buy = q('[data-buy]');
+    buy.hidden = mode !== 'buy';
+    buy.textContent = `加作者微信说明要购买的版本即可。${BUY_NOTE}`;
+    if (!dialog.open) dialog.showModal();
+  };
+
+  if (contact) {
+    document.querySelectorAll('[data-contact-open]').forEach((b) => b.addEventListener('click', () => open('ask')));
+    // 定价卡「立即购买」：拦截 <details> 展开，改成弹窗
+    document.addEventListener('click', (e) => {
+      const summary = (e.target as HTMLElement).closest('.vc-contact > summary');
+      if (!summary) return;
+      e.preventDefault();
+      const plan = summary.closest('.vc-pricing')?.querySelector('.vc-plan')?.textContent?.trim() ?? '';
+      open('buy', plan);
+    });
+  }
+</script>
+
+<style is:global>
+  .ry-fab {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 30;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 46px;
+    padding: 0 18px;
+    border-radius: 999px;
+    font-size: 14.5px;
+    font-weight: 700;
+    color: #fff;
+    background-image: linear-gradient(180deg, color-mix(in oklab, var(--brand) 78%, white), var(--brand));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 12px 28px -10px rgb(11 110 240 / 0.75);
+    transition: transform 0.2s, filter 0.2s;
+  }
+  .ry-fab:hover {
+    filter: brightness(1.05);
+    transform: translateY(-2px);
+  }
+  /* 页面滚到底时悬浮按钮会压住页脚最后一行（版权 / 备案号），给页脚底部让出按钮的高度 */
+  body:has(.ry-fab) [data-site-footer] {
+    padding-bottom: 66px;
+  }
+  @media print {
+    .ry-fab {
+      display: none;
+    }
+  }
+
+  .ry-contact {
+    width: min(26rem, calc(100vw - 2rem));
+    max-height: calc(100vh - 2rem);
+    margin: auto;
+    padding: 22px 22px 20px;
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    background: var(--elevated);
+    color: var(--ink);
+    box-shadow: 0 30px 80px -30px rgb(10 18 34 / 0.45);
+  }
+  .ry-contact::backdrop {
+    background: rgb(10 18 34 / 0.42);
+    backdrop-filter: blur(4px);
+  }
+  /* 手机：底部弹出 */
+  @media (max-width: 639px) {
+    .ry-contact {
+      width: 100%;
+      max-width: 100%;
+      margin: auto 0 0;
+      border-radius: 24px 24px 0 0;
+      padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    }
+  }
+  .ry-contact-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .ry-contact-kicker {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--brand-ink);
+  }
+  .ry-contact h2 {
+    margin-top: 2px;
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .ry-contact-x {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    font-size: 20px;
+    line-height: 1;
+    color: var(--muted);
+  }
+  .ry-contact-x:hover {
+    background: color-mix(in oklab, var(--ink) 6%, transparent);
+    color: var(--ink);
+  }
+  .ry-contact-buy {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    line-height: 1.7;
+    background: color-mix(in oklab, var(--brand) 8%, transparent);
+  }
+  .ry-contact-qrs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .ry-contact-qrs figure {
+    margin: 0;
+    text-align: center;
+  }
+  .ry-contact-qrs img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: #fff;
+  }
+  .ry-contact-qrs figcaption {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .ry-contact-note {
+    margin-top: 10px;
+    font-size: 12px;
+    text-align: center;
+    color: var(--muted);
+  }
+  .ry-contact-rows {
+    margin-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .ry-contact-rows li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 14px;
+  }
+  .ry-contact-rows span {
+    width: 4.5rem;
+    color: var(--muted);
+  }
+  .ry-contact-rows strong {
+    flex: 1;
+    font-family: var(--font-mono, ui-monospace, monospace);
+  }
+  .ry-contact-act {
+    padding: 4px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 12.5px;
+    color: var(--ink);
+  }
+  .ry-contact-act:hover {
+    border-color: var(--brand);
+    color: var(--brand-ink);
+  }
+</style>

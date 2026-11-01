@@ -7,6 +7,7 @@
 import { getEntry, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import ImageViewer from '@/components/docs/ImageViewer.astro';
+import ContactDialog from '@/components/docs/ContactDialog.astro';
 import { fixLink } from '@/lib/markdown/vp-compat.mjs';
 import { siteJsonLd } from '@/lib/site-jsonld';
 import { site } from '@/site.config';
@@ -236,6 +237,7 @@ const pipeline = [
     </div>
   </div>
   <ImageViewer />
+  <ContactDialog fab />
 </BaseLayout>
 
 <style>

@@ -923,6 +923,14 @@
   border-radius: 12px;
   background: var(--surface);
 }
+/* 交流群码下的兜底提示（微信群码 7 天过期） */
+.vc-qr-note {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--brand-ink);
+}
 /* 功能截图：42 张瀑布流 */
 .lp .vc-gallery {
   columns: 1;
