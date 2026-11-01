@@ -108,7 +108,18 @@
       保留作者规矩「正文不放文档间跳转链接」
     · 数据：.claude/docs-sync-checkpoint.json、docs/PROJECT_PROGRESS.md 搬入；.claude/PROJECT.md 加「本站专属流程」
     · 没迁的：旧钩子 3 个（新框架钩子已覆盖且更全）；emoji-to-icon / scan-unmapped / verify-icons（一次性批量转换工具，已完成使命；校验由 build-icons 失败即报代替）
-- [ ] T8 第 7 步：验收与切换（合并历史覆盖旧仓库 → Gitee + GitHub → `edgeone pages deploy`，上线前用户确认）→ 线上 511 网址逐条核对
+- [x] T8 第 7 步：验收与切换（合并历史覆盖旧仓库 → Gitee + GitHub → `edgeone pages deploy`，上线前用户确认）→ 线上 511 网址逐条核对
+  - 读数（2026-11-01，用户「开始上线吧」）：
+    · 远端核对：Gitee / GitHub master 均为 a6da208（与本地旧仓库一致，无外来提交）
+    · 合并：新仓库 `git fetch ../ruoyi-plus-uniapp-docs` → `merge -s ours --allow-unrelated-histories` 得 a022a56（树与新站 HEAD 相同，父 = 新站 31fd9dd + 旧站 a6da208）；
+      推送为快进 a6da208..a022a56，未强推；两远端 git_commits_list 均为 a022a56，共 556 个提交（旧 514 + 新 41 + 合并 1）
+    · 新仓库加 remote：origin = Gitee、github = GitHub（与旧仓库同名）；旧目录 ../ruoyi-plus-uniapp-docs 未动，此后以本目录为主线
+    · 上线前复核：verify 0 错误 / check:seo / vitest 128/128、逐页 511/511、全站比对通过、锚点 47 失效 0
+    · `pnpm run deploy` 成功（EdgeOne 项目 pages-rquhy5gcnjf8）
+    · 线上核对：旧站清单 511 页 ∪ sitemap 共 518 个网址，非 200 为 0；首页为新站（有悬浮咨询按钮、无 VitePress 痕迹）；
+      sitemap-index / llms.txt / robots / pagefind / preview.html / wxq.jpg 均 200；线上站内搜索「多租户」8 条
+    · IndexNow `--all` 推送 501 条，HTTP 200
+    · 待办：交流群码 11 月 8 日过期，到期前换图并重新部署
 
 ## 试点页面（34）
 - backend/common/pay.md、practices/ai/claude-code.md（最长）
