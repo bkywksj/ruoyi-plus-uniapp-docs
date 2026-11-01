@@ -6,7 +6,7 @@
 
 | 源码路径模式 | 文档目录 | 说明 |
 |-------------|---------|------|
-| `ruoyi-admin/**` | `src/content/docs/backend/guide/` | 后端启动入口、配置 |
+| `ruoyi-admin/**` | `src/content/docs/backend/ruoyi-admin/` | 后端启动入口、配置 |
 | `ruoyi-common/ruoyi-common-core/**` | `src/content/docs/backend/core/` | 核心工具类 |
 | `ruoyi-common/ruoyi-common-doc/**` | `src/content/docs/backend/core/` | 接口文档配置 |
 | `ruoyi-common/ruoyi-common-encrypt/**` | `src/content/docs/backend/core/` | 数据加密 |
@@ -43,7 +43,7 @@
 | `ruoyi-modules/ruoyi-mall/**` | `src/content/docs/backend/modules/` | 商城模块 |
 | `ruoyi-extend/ruoyi-monitor-admin/**` | `src/content/docs/backend/extend/` | 监控管理 |
 | `ruoyi-extend/ruoyi-snailjob-server/**` | `src/content/docs/backend/extend/` | 任务调度 |
-| `pom.xml` | `src/content/docs/backend/guide/` | Maven依赖版本变更 |
+| `pom.xml` | `src/content/docs/backend/getting-started.md`、`backend/project-structure.md` | Maven依赖版本变更 |
 | `*/pom.xml` | 对应模块文档 | 子模块依赖变更 |
 
 ### 前端模块 (frontend)
@@ -60,8 +60,8 @@
 | `plus-ui/src/layouts/**` | `src/content/docs/frontend/` | 布局组件 |
 | `plus-ui/src/api/**` | `src/content/docs/frontend/` | API接口层 |
 | `plus-ui/src/plugins/**` | `src/content/docs/frontend/` | 插件配置 |
-| `plus-ui/package.json` | `src/content/docs/frontend/guide/` | 前端依赖变更 |
-| `plus-ui/vite.config.*` | `src/content/docs/frontend/guide/` | 构建配置 |
+| `plus-ui/package.json` | `src/content/docs/frontend/getting-started.md`、`frontend/project-structure.md` | 前端依赖变更 |
+| `plus-ui/vite.config.*` | `src/content/docs/frontend/configuration.md` | 构建配置 |
 
 ### 移动端模块 (mobile)
 

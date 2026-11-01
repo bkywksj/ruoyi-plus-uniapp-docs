@@ -179,6 +179,9 @@ git -C <目标分支 path> diff-tree --no-commit-id -r --name-only <commit-hash>
    b. 阅读当前文档内容
    c. 更新文档中受影响的部分（不重写整个文档，只更新变更部分）
    d. 遵守 docs/文档写作规范.md 中的所有文档编写规范
+   e. 🔴 改动了**已有页面**的正文：在 `scripts/migrate/known-diffs.json` 的 `edited` 里登记（键是网址形态的页面路径，如 `backend/ruoyi-admin/startup.html`，值 `{ "reason": "一句话说明改了什么、依据哪个提交" }`）。
+      不登记，上线前的逐页比对（compare-baseline，对照旧站基线）会把这页判成「内容丢失」，edgeone-deploy 第三步不过就上不了线
+   f. **新建页面**：不用登记 edited，但要按 sidebar-manager 加进 `src/data/sidebar.json`，否则侧栏里找不到
 3. 如果有重大特性变更：
    a. 更新 `src/content/docs/changelog.md` 特性页（如果适用）
    b. 更新 `src/content/docs/index.md` 首页（如果适用）
@@ -223,6 +226,8 @@ dry-run 在第六步输出分析报告后即结束，不输出本节内容。
 1. `src/content/docs/xxx/xxx.md` - 更新了 XXX 部分
 2. ...
 ```
+
+文档改完只是本地提交，**不自动上线**。报告末尾问用户要不要上线；要上线走 edgeone-deploy（本机验证 → 用户确认 → 推送 → `pnpm run deploy`）。
 
 ## 注意事项
 
