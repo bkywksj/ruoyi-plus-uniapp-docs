@@ -120,6 +120,12 @@
       sitemap-index / llms.txt / robots / pagefind / preview.html / wxq.jpg 均 200；线上站内搜索「多租户」8 条
     · IndexNow `--all` 推送 501 条，HTTP 200
     · 待办：交流群码 11 月 8 日过期，到期前换图并重新部署
+    · 收尾（同日，用户要求）：旧目录已删除，本目录由 ruoyi-plus-uniapp-docs-astro 改名为 ruoyi-plus-uniapp-docs（本台账里出现的
+      `../ruoyi-plus-uniapp-docs` 均指已删除的旧目录）。删除前核对：旧目录 git 外只有空 .env、.idea、锁文件；
+      唯一的 stash（2026-05-18 pre-phase1-baseline）已转存为本仓库本地引用 refs/old-site/stash-pre-phase1-baseline。
+      改名后 pnpm 的 node_modules 链接是绝对路径会失效，需 `CI=true pnpm install --frozen-lockfile --prefer-offline` 重建
+    · EdgeOne 自动构建：项目连着 Git 仓库，推送会触发云端构建；云端构建在生成 511 个静态页时被杀（exit 137，内存不足），
+      失败的构建不会替换线上版本。本站以本机构建 + `pnpm run deploy` 为准，应在控制台关掉自动部署
 
 ## 试点页面（34）
 - backend/common/pay.md、practices/ai/claude-code.md（最长）
