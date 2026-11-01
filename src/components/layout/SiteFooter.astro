@@ -1,16 +1,18 @@
 ---
 // 页脚：白底细分隔线（方案 B 浅色，语义令牌，深色模式自动翻转），站点简介 + 链接分组 + 说明行 + 版权与备案号
 // 分组取 site.footerGroups；没配时退回一栏「站内」列出全部 nav。说明行、署名、备案号为空则不显示
+// site.contact 有值时多一栏「联系」：每一页都找得到作者（文档页不放悬浮按钮，页脚是它们唯一的联系入口）
 import { site } from '@/site.config';
 
 const year = new Date().getFullYear();
 const groups = site.footerGroups.length > 0 ? site.footerGroups : [{ title: '站内', items: site.nav }];
 const external = (href: string) => /^https?:/.test(href);
-// 简介之外的栏数（链接分组 + 「关注」），md 起按它等分
-const cols = groups.length + (site.social.length > 0 ? 1 : 0);
+const contact = site.contact;
+// 简介之外的栏数（链接分组 + 「关注」+「联系」），md 起按它等分
+const cols = groups.length + (site.social.length > 0 ? 1 : 0) + (contact ? 1 : 0);
 ---
 
-<footer class="border-t border-line bg-elevated text-ink">
+<footer data-site-footer class="border-t border-line bg-elevated text-ink">
   <div
     class="mx-auto grid w-full max-w-[90rem] grid-cols-2 gap-10 px-4 py-14 sm:px-6 md:grid-cols-[minmax(0,1.6fr)_repeat(var(--cols),minmax(0,1fr))] lg:px-8"
     style={`--cols: ${cols}`}
@@ -62,6 +64,41 @@ const cols = groups.length + (site.social.length > 0 ? 1 : 0);
               </li>
             ))}
           </ul>
+        </div>
+      )
+    }
+    {
+      contact && (
+        <div>
+          <p class="text-sm font-semibold">联系</p>
+          <ul class="mt-3 space-y-2 text-sm text-muted">
+            <li>
+              微信 / QQ <span class="font-mono text-ink select-all">{contact.wechat}</span>
+            </li>
+            <li>
+              电话{' '}
+              <a href={`tel:${contact.tel}`} class="font-mono text-ink transition-colors hover:text-brand-ink">
+                {contact.phone}
+              </a>
+            </li>
+          </ul>
+          <a
+            href={contact.wechatQr}
+            target="_blank"
+            rel="noopener"
+            class="group relative mt-3 inline-flex items-center gap-2.5 text-xs text-muted hover:text-ink"
+            aria-label="作者微信二维码（打开大图）"
+          >
+            <img
+              src={contact.wechatQr}
+              alt="作者微信二维码"
+              width="64"
+              height="64"
+              loading="lazy"
+              class="size-16 rounded-lg border border-line bg-white object-contain p-1 transition-transform duration-300 group-hover:scale-[2.4] group-focus-visible:scale-[2.4] origin-bottom-left md:origin-bottom-right"
+            />
+            扫码加作者微信
+          </a>
         </div>
       )
     }

@@ -159,6 +159,17 @@ export const site = {
   } as { text: string; link?: NavItem } | null,
   /** 版权行署名（旧站 footer.copyright「© 年份 抓蛙师」）；为空时用 author.name */
   copyrightName: '抓蛙师',
+  /**
+   * 联系方式：页脚「联系」一栏、首页与营销页右下角「咨询」悬浮按钮、定价卡「立即购买」弹窗、群二维码下的兜底提示都从这里取。
+   * wechatQr 是作者个人微信（长期有效）；groupQr 是交流群，微信群码 7 天过期，所以群码处一律附「过期请加作者微信」
+   */
+  contact: {
+    wechat: '770492966',
+    phone: '198 6657 9313',
+    tel: '19866579313',
+    wechatQr: '/wx.jpg',
+    groupQr: '/wxq.jpg',
+  } as { wechat: string; phone: string; tel: string; wechatQr: string; groupQr: string } | null,
 };
 
 export type SiteConfig = typeof site;
