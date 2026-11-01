@@ -6,6 +6,7 @@
 // 用法（上线之后跑，推的是线上地址）：
 //   pnpm indexnow           推送最近一次提交里变更的文档（日常发布用这个）
 //   pnpm indexnow --all     全量推送 dist/sitemap-0.xml 里的所有地址（首次接入时用一次，先 pnpm build）
+//   pnpm indexnow --since <提交>  推送 <提交>..HEAD 之间变更的文档（一次上线含多个提交时用，<提交> 填上次上线时的 HEAD）
 //   pnpm indexnow --dry     只打印将要推送的地址，不真正发请求
 //
 // 为什么默认只推变更页而非全量：协议方明确不鼓励反复提交未改动的地址，每次全推会被当成噪声，反而稀释了「这几页真的更新了」的信号。
@@ -27,6 +28,13 @@ const outdated = JSON.parse(readFileSync(resolve(ROOT, 'src/data/outdated.json')
 const args = process.argv.slice(2);
 const isAll = args.includes('--all');
 const isDry = args.includes('--dry');
+/** --since <提交>：取该提交之后（不含）到 HEAD 的全部变更；不传则只看最近一次提交 */
+const sinceIdx = args.indexOf('--since');
+const since = sinceIdx >= 0 ? args[sinceIdx + 1] : undefined;
+if (sinceIdx >= 0 && (!since || since.startsWith('--'))) {
+  console.error('× --since 后面要跟一个提交（如 pnpm indexnow --since 4637ce6）');
+  process.exit(1);
+}
 
 /** 文档相对路径（backend/index.md）→ 站点地址，口径与 sitemap、canonical 一致（lib/docs.ts 的 docPath） */
 const toUrl = (rel) => {
@@ -34,12 +42,15 @@ const toUrl = (rel) => {
   return `${SITE}/${rel.replace(/\.md$/, '.html').replace(/\/index\.html$/, '/')}`;
 };
 
-/** 从最近一次提交里取出变更的文档地址 */
+/** 从最近一次提交（或 --since 指定的区间）里取出变更的文档地址 */
 const changedFromGit = () => {
   let out;
   try {
     // --diff-filter=d 排除删除的文件：已经不存在的页面推过去只会得到 404
-    out = execFileSync('git', ['show', '--name-only', '--pretty=format:', '--diff-filter=d', 'HEAD', '--', DOCS_REL], {
+    const gitArgs = since
+      ? ['diff', '--name-only', '--diff-filter=d', `${since}..HEAD`, '--', DOCS_REL]
+      : ['show', '--name-only', '--pretty=format:', '--diff-filter=d', 'HEAD', '--', DOCS_REL];
+    out = execFileSync('git', gitArgs, {
       cwd: ROOT,
       encoding: 'utf8',
     });
