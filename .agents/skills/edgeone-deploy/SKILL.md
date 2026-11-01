@@ -1,25 +1,35 @@
 ---
 name: edgeone-deploy
-description: 本站上线：核对群二维码 → 提交 → 本机构建与全量验证 → 用户确认后 Sigil 推送 Gitee + GitHub（推送即触发 EdgeOne 云端构建上线）→ 核对云端构建与线上 → IndexNow（不走 Docker / Reeve）。触发词：开始部署、部署文档站、发布文档站、上线文档站、EdgeOne
+description: 本站上线：核对群二维码 → 提交 → 本机构建与全量验证 → 用户确认 → Sigil 推送 Gitee + GitHub → pnpm run deploy 上传 dist → 线上核对 → IndexNow（不走 Docker / Reeve，不用 EdgeOne 云端构建）。触发词：开始部署、部署文档站、发布文档站、上线文档站、EdgeOne
 argument-hint: "[--skip-qr] 跳过二维码检查"
 allowed-tools: Bash, Read, Glob, Grep, Edit, Write, Agent, AskUserQuestion
 ---
 
 # 文档站上线技能（腾讯云 EdgeOne Pages）
 
-本站部署方式（2026-11-01 起）：**推送到 Git 仓库即自动部署**。EdgeOne Pages 项目（`pages-rquhy5gcnjf8`）连着仓库，推送后在云端按根目录 `edgeone.json` 构建：
-`pnpm install --frozen-lockfile` → `MALLOC_ARENA_MAX=2 NODE_OPTIONS=--max-old-space-size=2048 pnpm run build:fast` → 发布 `dist/`。
+本站部署方式：**本机构建 + CLI 上传**。`pnpm run deploy` = `edgeone pages deploy -n ruoyi-plus-uniapp-doc dist`，把本机构建好的 `dist/` 直接传到 EdgeOne Pages 项目 `pages-rquhy5gcnjf8`，上传完立即生效。
+🔴 不能写 `pnpm deploy`：那是 pnpm 内置的工作区部署命令，会绕过项目脚本。
 
-- 为什么这样写：云端构建机是 4 核 6 GB，本站构建峰值约 4~5 GB，原命令被杀（exit 137，2026-11-01 两次实录）。实测堆只占 1.3~1.6 GB，另有约 2 GB 是 Vite 8 打包器 rolldown（Rust、多线程）的原生内存，限堆管不到；`MALLOC_ARENA_MAX=2` 限制 Linux glibc 的分配池个数，压多线程原生内存的膨胀。`build:fast` 不含 `astro check`，类型检查改在本机推送前跑（第三步 `pnpm verify`）
-- `edgeone.json` 的三个字段覆盖控制台「构建部署配置」；改构建命令改这个文件，不去控制台改
-- 云端构建失败**不会**替换线上版本；失败时用备用路线：本机 `pnpm run deploy`（= `edgeone pages deploy -n ruoyi-plus-uniapp-doc dist`，CLI 直接上传本机构建好的 `dist/`）。🔴 不能写 `pnpm deploy`，那是 pnpm 内置的工作区部署命令，会绕过项目脚本
+对用户来说是「推送即上线」：推送都由 AI 经 Sigil 完成，推送后紧接着上传，两步在同一轮做完。
 
-严格按步骤执行，任何一步失败就停下报告。
+## 🔴 为什么不用 EdgeOne 云端构建（2026-11-01 三次实测，别再试）
+
+云端构建机是 4 核 6 GB，本站构建会被杀（exit 137）：
+
+| 次 | 构建命令 | 结果 |
+|---|---|---|
+| 1 | `pnpm run build`（含 astro check） | 生成静态页时被杀 |
+| 2 | `NODE_OPTIONS=--max-old-space-size=3584 pnpm run build:fast` | 被杀（155 s） |
+| 3 | `MALLOC_ARENA_MAX=2 NODE_OPTIONS=--max-old-space-size=2048 pnpm run build:fast` | 打包阶段 `Building static entrypoints` 就被杀（147 s） |
+
+本机实测：构建进程私有内存峰值约 5 GB，其中堆只有 1.3~1.6 GB、external 约 0.7 GB，其余约 2 GB 是 Vite 8 打包器 rolldown（Rust、多线程）的原生内存——限堆管不到，Linux 上还会更大。
+所以仓库里**不放 `edgeone.json`**，EdgeOne 控制台的 Git 自动部署应保持关闭（开着的话每次推送都会收到一封构建失败通知，但失败的构建不会替换线上版本）。
+页面规模或构建方式大改之后想重新评估，先在本机用 `process.memoryUsage()` 量峰值，别直接拿推送去试。
 
 ## 🔴 红线
 
-- **推送 = 立即上线**：第四步推送之前必须问用户「确认上线吗」，拿到明确同意才执行；本轮之前的同意不算数
-- **验证在推送前**：云端只构建、不跑任何检查，第三步不过就不推送
+- **上传 = 立即上线**：第四步之前必须问用户「确认上线吗」，拿到明确同意才执行；本轮之前的同意不算数
+- **验证不过不上线**：第三步任何一项不过，不推送、不上传
 - **推送只走 Sigil**（`git_push`，Gitee 用 `gitee`、GitHub 用 `github1` 等凭据），不跑本地 `git push`
 - **逐个 `git add <文件>`**，不用 `git add -A` / `git add .`
 
@@ -48,7 +58,7 @@ git log --oneline -5
 ### 第三步：本机构建与全量验证
 
 ```bash
-pnpm verify                                   # 构建（含 astro check、离线图标、llms.txt）+ check:seo + 单元测试
+pnpm verify                                   # 构建（含 astro check、离线图标、llms.txt、pagefind）+ check:seo + 单元测试
 node scripts/check-anchors.mjs                # 站内锚点
 node scripts/migrate/manifest.mjs dist .migrate/new-manifest.json
 node scripts/migrate/compare-baseline.mjs .migrate/baseline-manifest.json .migrate/new-manifest.json
@@ -57,25 +67,30 @@ node scripts/migrate/compare-site.mjs .migrate/baseline-manifest.json .migrate/n
 
 - 改过 `src/lib/markdown/` 插件或 `src/data/vp-icons.json`：先 `pnpm cache:clear`
 - 比对脚本依赖 `.migrate/` 下的旧站基线（不入库）；本机没有基线时跳过两条比对，并在报告里注明
+- 🔴 上传的就是这一步产出的 `dist/`：验证之后不要再单独跑 `astro build`（它不跑 pagefind，传上去站内搜索会坏）
 
-### 第四步：推送（= 上线，先问用户）
+### 第四步：推送并上传（先问用户）
 
-AskUserQuestion：「验证全部通过，确认推送并上线到 ruoyi.plus 吗？推送后 EdgeOne 自动构建，约 5 分钟后对外生效。」用户同意后用 `mcp__sigil__git_push`：
-1. Gitee：`remote=origin`，`credential_name=gitee`
-2. GitHub：`remote=github`，`credential_name=github1`（配额或权限问题按全局规则换账号）
+AskUserQuestion：「验证全部通过，确认推送并上线到 ruoyi.plus 吗？上传后立即对外生效。」用户同意后：
 
-推送后用 `git_commits_list` 核对远端最新提交 = 本地 `git rev-parse HEAD`。一个远程失败不影响另一个，但要报告。
+1. `mcp__sigil__git_push`：Gitee（`remote=origin`，`credential_name=gitee`）、GitHub（`remote=github`，`credential_name=github1`；配额或权限问题按全局规则换账号）。
+   推送后用 `git_commits_list` 核对远端最新提交 = 本地 `git rev-parse HEAD`。一个远程失败不影响另一个，但要报告
+2. 上传：
 
-### 第五步：核对云端构建
+```bash
+pnpm run deploy         # 超时给 5 分钟；失败输出错误，不重试第二次以上
+```
 
-等约 5 分钟，检查线上是否已是本次构建：抓 `https://ruoyi.plus/` 与本次改动所在页，比对本机 `dist/` 里对应文件的特征内容（如改动的文案、`/_astro/` 资源文件名）。
-构建结果以 EdgeOne 控制台（项目 `pages-rquhy5gcnjf8` 的部署记录）为准，CLI 查不到时请用户看一眼。
-云端构建失败：线上仍是上一版；报告失败原因（用户贴日志），需要立即上线时走备用路线 `pnpm run deploy`（超时给 5 分钟，失败不重试第二次以上）。
+### 第五步：线上核对
+
+- 线上首页引用的 `/_astro/*.css` 与本机 `dist/index.html` 一致（= 已是本次构建；CDN 一般秒级生效）
+- 本次改动所在页抓下来，确认改动内容在
+- 改动面大时（侧栏、网址、插件）：旧站清单 511 页 + sitemap 全部网址逐条请求，非 200 应为 0
 
 ### 第六步：通知搜索引擎
 
 ```bash
-pnpm indexnow           # 推送最近一次提交里变更的文档页；首次切换新站用 pnpm indexnow --all
+pnpm indexnow           # 推送最近一次提交里变更的文档页；全站大改用 pnpm indexnow --all
 ```
 
 推送失败不影响上线结果，只提示。
@@ -95,7 +110,8 @@ pnpm indexnow           # 推送最近一次提交里变更的文档页；首次
 | 提交 | ✅ <hash> / 无改动 |
 | 构建与验证 | ✅ verify / 锚点 / 逐页比对 / 全站比对 |
 | Gitee / GitHub | ✅ 远端 = 本地 <hash> |
-| EdgeOne 云端构建 | ✅ 线上已是本次构建 / ⚠️ 失败，已走 CLI 上传 |
+| EdgeOne 上传 | ✅ |
+| 线上核对 | ✅ 已是本次构建 |
 | IndexNow | ✅ N 条 / ⚠️ 失败（不影响上线） |
 | 线上抽查 | ✅ |
 ```

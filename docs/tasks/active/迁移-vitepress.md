@@ -126,6 +126,10 @@
       改名后 pnpm 的 node_modules 链接是绝对路径会失效，需 `CI=true pnpm install --frozen-lockfile --prefer-offline` 重建
     · EdgeOne 自动构建：项目连着 Git 仓库，推送会触发云端构建；云端构建在生成 511 个静态页时被杀（exit 137，内存不足），
       失败的构建不会替换线上版本。本站以本机构建 + `pnpm run deploy` 为准，应在控制台关掉自动部署
+    · 云端构建再试两次（用户选 A 方案）：限堆 3.5 GB → 被杀（155 s）；`MALLOC_ARENA_MAX=2` + 限堆 2 GB → 打包阶段就被杀（147 s）。
+      本机实测构建进程私有内存峰值约 5 GB，堆仅 1.3~1.6 GB、external 约 0.7 GB，其余约 2 GB 是 rolldown 原生内存，限堆管不到。
+      结论（用户选 C）：删除 edgeone.json，保持本机构建 + CLI 上传；edgeone-deploy 技能与 PROJECT.md 已改回该流程并写明原因。
+      卡片等高 / 去灰底两处修正经 `pnpm run deploy` 上线，线上 518 个网址非 200 为 0
 
 ## 试点页面（34）
 - backend/common/pay.md、practices/ai/claude-code.md（最长）
