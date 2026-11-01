@@ -1,0 +1,87 @@
+---
+// 营销页布局（方案 C）：products / services / demo / video / changelog / comparison 六页，正文仍是迁来的 .md（一个字不改）。
+// 版式分工：开头 h1 + 导语由 rehypeLandingHero 包进 <header class="lp-hero">，这里的样式把它铺成整宽深色首屏；
+// 正文各段按页挂 lp-<id> 类，由 landing.css 排版（卡片、网格、时间线）。长页（changelog / comparison）的章节条也由插件按 h2 生成（landing.json 的 chapters）；
+// 首屏深色带用 box-shadow 横向铺满，所以不再放左侧栏（会被盖住）；演示页的手机实时预览放右栏、叠在首屏上（同为深色卡片）。
+// SEO 与结构化数据和文档页一致（TechArticle + 全站四种），title / description / canonical 与旧站逐字相同
+import type { MarkdownHeading } from 'astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PhonePreview from '@/components/docs/PhonePreview.astro';
+import { absoluteUrl, type JsonLd } from '@/lib/seo';
+import { docPath } from '@/lib/docs';
+import { site } from '@/site.config';
+import { siteJsonLd } from '@/lib/site-jsonld';
+import titleQualifiers from '@/data/title-qualifiers.json';
+import '@/styles/vp-compat.css';
+import '@/styles/ry-theme.css';
+import '@/styles/docs-ruoyi.css';
+import '@/styles/landing.css';
+
+interface Props {
+  id: string;
+  title: string;
+  description: string;
+  headings: MarkdownHeading[];
+  iframe?: boolean;
+  url?: string;
+  /** 与 DocsLayout 同一组属性（路由统一传），营销页不显示右侧页面导航，用不到 */
+  aside?: boolean;
+}
+
+const { id, title, description, iframe = false, url } = Astro.props;
+const showPreview = iframe && url;
+const qualifier = (titleQualifiers as Record<string, string>)[id];
+const pageTitle = qualifier ? `${title} · ${qualifier}` : title;
+const techArticle: JsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline: title,
+  ...(description ? { description } : {}),
+  url: absoluteUrl(docPath(id)),
+  inLanguage: 'zh-CN',
+  isPartOf: { '@type': 'WebSite', name: site.name, url: site.url },
+  author: { '@type': 'Person', name: '抓蛙师' },
+  publisher: { '@type': 'Organization', name: site.author.name, url: site.url },
+  proficiencyLevel: 'Beginner',
+  about: ['RuoYi-Plus-UniApp', 'Spring Boot 3', 'Vue 3', 'UniApp'],
+};
+---
+
+<BaseLayout title={pageTitle} description={description} type="article" jsonLd={[...siteJsonLd, techArticle]}>
+  <div class:list={['lp', `lp-${id}`, showPreview && 'lp-with-preview', site.codeLineNumbers && 'code-line-numbers']}>
+    <div class="lp-grid">
+      <article class="prose-content vp-doc" data-pagefind-body>
+        <slot />
+      </article>
+      {
+        showPreview && (
+          <aside class="lp-preview">
+            <div>
+              <PhonePreview url={url} height={560} />
+            </div>
+          </aside>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  // 代码窗「复制」按钮（与 DocsLayout 同一段；营销页代码块很少，单独留一份免得为它拆公共模块）
+  for (const pre of document.querySelectorAll<HTMLPreElement>('.vp-doc pre.astro-code')) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'ry-copy';
+    button.textContent = '复制';
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? pre.innerText);
+        button.textContent = '已复制';
+      } catch {
+        button.textContent = '复制失败';
+      }
+      setTimeout(() => (button.textContent = '复制'), 1600);
+    });
+    pre.append(button);
+  }
+</script>

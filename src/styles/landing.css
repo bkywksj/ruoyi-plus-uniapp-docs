@@ -1,0 +1,1280 @@
+/* 营销页（LandingLayout 与首页）的方案 C 版式。结构来自 ry-layout.mjs：
+     .lp-hero（h1 + 导语）→ 深色首屏；.lp-chips → 章节条；.lp-sec[data-sec=h2 的 id] > h2 + .lp-items > .lp-item（h3 一节）
+   正文文字一个不改，这里只排版。md 里的行内 style（旧站写的 grid / flex）需要覆盖时用 !important，并写明原因。
+   深色带横向铺满靠 ::before 左右各伸 100vmax，外层 .lp 用 overflow-x: clip 兜住，不出横向滚动条 */
+
+.lp {
+  overflow-x: clip;
+}
+.lp-grid {
+  position: relative;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 0 1rem 5rem;
+}
+@media (min-width: 640px) {
+  .lp-grid {
+    padding-inline: 1.5rem;
+  }
+}
+.lp .vp-doc {
+  max-width: none;
+}
+
+/* ---------- 深色首屏 ---------- */
+.lp-hero {
+  position: relative;
+  isolation: isolate;
+  margin: 0;
+  padding: 4.5rem 0 3.5rem;
+  color: #fff;
+}
+.lp-hero::before,
+.lp-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0 -100vmax;
+  z-index: -1;
+  background: var(--ry-night);
+}
+/* 光晕只铺在版心范围内，否则径向渐变的圆心会跑到屏幕外 */
+.lp-hero::after {
+  inset: 0 -12rem;
+  background:
+    radial-gradient(55% 70% at 85% 0%, rgb(91 124 255 / 0.3), transparent 70%),
+    radial-gradient(40% 60% at 0% 100%, rgb(91 124 255 / 0.12), transparent 70%);
+}
+.lp-hero-in > * + * {
+  margin-top: 1rem;
+}
+.lp .lp-hero h1 {
+  margin-top: 0.75rem;
+  color: #fff;
+  font-size: clamp(2.4rem, 1.4rem + 3.6vw, 4rem);
+  line-height: 1.06;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+.lp .lp-hero h1 + p {
+  max-width: 46rem;
+  margin-top: 1.25rem;
+  font-size: 16px;
+  line-height: 2;
+  color: rgb(255 255 255 / 0.62);
+}
+.lp .lp-hero strong {
+  color: #fff;
+}
+.lp .lp-hero a {
+  color: #aab8ff;
+}
+.lp-kicker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8ea2ff;
+}
+.lp-extra {
+  margin-top: 2rem !important;
+}
+.lp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.lp .lp-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 12px;
+  border: 1px solid rgb(255 255 255 / 0.16);
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(255 255 255 / 0.88);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.lp .lp-btn:hover {
+  background: rgb(255 255 255 / 0.07);
+}
+.lp .lp-btn-primary {
+  border-color: transparent;
+  background: var(--color-brand-strong);
+  color: #fff;
+  box-shadow: 0 12px 30px -10px rgb(91 124 255 / 0.8);
+}
+.lp .lp-btn-primary:hover {
+  background: var(--brand);
+}
+.lp-stats {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--ry-night-line);
+  border-radius: 16px;
+  background: var(--ry-night-line);
+}
+.lp-stats p {
+  margin: 0;
+  padding: 14px 22px;
+  background: var(--ry-night-2);
+}
+.lp-stats b {
+  display: block;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+.lp-stats span {
+  font-size: 12px;
+  color: rgb(255 255 255 / 0.45);
+}
+/* 产品图标带（产品矩阵首屏） */
+.lp-belt {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 56rem;
+}
+@media (min-width: 768px) {
+  .lp-belt {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+}
+.lp .lp-belt a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 6px;
+  border: 1px solid rgb(255 255 255 / 0.07);
+  border-radius: 16px;
+  background: rgb(255 255 255 / 0.03);
+  color: rgb(255 255 255 / 0.68);
+  font-size: 12px;
+  line-height: 1.3;
+  text-align: center;
+  text-decoration: none;
+  transition: border-color 0.2s, background 0.2s;
+}
+.lp .lp-belt a:hover {
+  border-color: rgb(255 255 255 / 0.2);
+  background: rgb(255 255 255 / 0.06);
+}
+.lp .lp-belt img {
+  width: 48px;
+  height: 48px;
+  padding: 8px;
+  border-radius: 12px;
+  background: #fff;
+  object-fit: contain;
+}
+
+/* ---------- 章节条（长页）：吸顶、横向滚动 ---------- */
+.lp-chips {
+  position: sticky;
+  top: 64px;
+  z-index: 20;
+  margin: 0 -1rem !important;
+  padding: 10px 1rem;
+  background: color-mix(in oklab, var(--canvas) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.lp-chips > div {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.lp .lp-chips a {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--elevated);
+  color: var(--muted);
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.lp .lp-chips a:hover {
+  color: var(--ink);
+  border-color: color-mix(in oklab, var(--ink) 25%, transparent);
+}
+.lp-chips span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--brand-ink);
+}
+
+/* ---------- 正文分段：大标题 + 编号标签 ---------- */
+.lp .vp-doc {
+  counter-reset: lp-sec;
+}
+.lp .lp-sec {
+  margin-top: 5rem;
+  scroll-margin-top: 7rem;
+}
+.lp .lp-sec > h2 {
+  margin-top: 0;
+  font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.1rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  scroll-margin-top: 8rem;
+}
+.lp .lp-sec > h2::before {
+  counter-increment: lp-sec;
+  content: counter(lp-sec, decimal-leading-zero);
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  color: var(--brand-ink);
+}
+.lp .lp-sec > h2 + p {
+  max-width: 48rem;
+  color: var(--muted);
+}
+.lp .lp-items {
+  display: grid;
+  /* 列最小宽度归零：卡片里的宽表格不再把网格撑出版心（表格自己在 .tbl 里横滑） */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  margin-top: 1.75rem;
+}
+.lp .lp-item > h3 {
+  margin-top: 0;
+}
+/* 列表做成卡片：营销页里的无序列表大多是「要点」，每条一张小卡 */
+.lp .lp-cards,
+.lp .lp-sec > ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.lp .lp-sec > ul > li {
+  margin: 0;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--elevated);
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.03);
+}
+@media (min-width: 768px) {
+  .lp .lp-sec > ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 深色整宽段（技术服务「联系方式」等）：与首屏同底 */
+.lp .lp-night {
+  position: relative;
+  isolation: isolate;
+  padding: 4.5rem 0;
+  color: #fff;
+}
+.lp .lp-night::before {
+  content: '';
+  position: absolute;
+  inset: 0 -100vmax;
+  z-index: -1;
+  background: var(--ry-night);
+}
+
+/* ================= 产品矩阵 ================= */
+/* md 自带 <style> 把 .products-grid 设成纵向 flex，这里沿用，只调间距 */
+.lp-products .products-grid {
+  gap: 20px !important;
+  margin: 3.5rem 0 !important;
+}
+.lp-products hr {
+  display: none;
+}
+.vc-product {
+  display: grid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--elevated);
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.04), 0 16px 36px -22px rgb(11 13 20 / 0.22);
+  scroll-margin-top: 6rem;
+  --vc: #5b7cff;
+  --vc-soft: #eef2ff;
+}
+@media (min-width: 1024px) {
+  .vc-product {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  }
+}
+.vc-theme-purple {
+  --vc: #8b5cf6;
+  --vc-soft: #f3eeff;
+}
+.vc-theme-green {
+  --vc: #10b981;
+  --vc-soft: #e9fbf4;
+}
+.vc-theme-orange {
+  --vc: #f97316;
+  --vc-soft: #fff2e8;
+}
+:root.dark .vc-product {
+  --vc-soft: color-mix(in oklab, var(--vc) 14%, var(--elevated));
+}
+.vc-product-main {
+  padding: 2rem 2.25rem;
+}
+.vc-product-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+.vc-product-logo {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: #fff;
+  object-fit: contain;
+  box-shadow: 0 12px 28px -14px rgb(11 13 20 / 0.35);
+}
+.vc-product-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.vp-doc .vc-product-name {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
+}
+.vc-badge {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--vc-soft);
+  color: var(--vc);
+  font-size: 12px;
+  font-weight: 600;
+}
+.vp-doc .vc-product-slogan {
+  margin-top: 6px;
+  font-size: 15.5px;
+  font-weight: 600;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.vp-doc .vc-product-desc {
+  margin-top: 14px;
+  font-size: 14.5px;
+  line-height: 1.85;
+  color: var(--muted);
+}
+.vc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1.5rem;
+}
+.vp-doc .vc-btn {
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.vp-doc .vc-btn:hover {
+  border-color: color-mix(in oklab, var(--ink) 25%, transparent);
+}
+.vp-doc .vc-btn-primary {
+  border-color: transparent;
+  background: var(--ink);
+  color: var(--canvas);
+}
+.vp-doc .vc-btn-primary:hover {
+  background: color-mix(in oklab, var(--ink) 85%, var(--brand));
+}
+.vp-doc .vc-product-highlights {
+  margin: 0;
+  padding: 2rem 2.25rem;
+  list-style: none;
+  border-top: 1px solid var(--line);
+  background: linear-gradient(160deg, var(--vc-soft), var(--elevated) 70%);
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+@media (min-width: 1024px) {
+  .vp-doc .vc-product-highlights {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+}
+.vp-doc .vc-product-highlights li {
+  position: relative;
+  margin: 0;
+  padding-left: 28px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.vp-doc .vc-product-highlights li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--vc) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'><path d='M20 6 9 17l-5-5'/></svg>") center / 10px no-repeat;
+}
+/* md 自带 <style> 的页脚说明：改成深色圆角块 */
+.lp .products-footer {
+  margin-top: 1rem;
+  padding: 2.5rem 2rem !important;
+  border-radius: 28px;
+  background: var(--ry-night);
+  color: rgb(255 255 255 / 0.7) !important;
+  font-size: 15px !important;
+}
+.lp .products-footer strong {
+  color: #fff;
+}
+.lp .products-footer a {
+  color: #aab8ff !important;
+}
+
+/* ================= 技术服务 ================= */
+/* 关于我们：三条要点排成三张卡 */
+@media (min-width: 768px) {
+  .lp-services [data-sec='关于我们'] > ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.lp-services [data-sec='关于我们'] > ul > li strong {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 15.5px;
+}
+/* 可承接的服务：6 张卡，第一张宽卡；「项目 AI 技能体系定制」深色卡（方案 C 的主角） */
+@media (min-width: 768px) {
+  .lp-services [data-sec='可承接的服务'] .lp-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1024px) {
+  .lp-services [data-sec='可承接的服务'] .lp-items {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .lp-services [data-sec='可承接的服务'] .lp-item:first-child {
+    grid-column: span 2;
+  }
+}
+.lp-services [data-sec='可承接的服务'] .lp-item {
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--elevated);
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.04), 0 16px 36px -22px rgb(11 13 20 / 0.2);
+}
+.lp-services [data-sec='可承接的服务'] .lp-item > h3 {
+  font-size: 18px;
+}
+.lp-services [data-sec='可承接的服务'] .lp-item > p {
+  margin-top: 0.6rem;
+  font-size: 14.5px;
+  color: var(--muted);
+}
+.lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) {
+  border-color: transparent;
+  background: var(--ry-night)
+    radial-gradient(50% 80% at 90% 0%, rgb(91 124 255 / 0.35), transparent 70%);
+  color: #fff;
+}
+/* 放到最后一行通栏（1 宽 + 2 ｜ 3 + 4 + 6 ｜ 5 通栏），否则两张宽卡凑不满三列会空一格 */
+.lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) {
+  order: 1;
+  grid-column: 1 / -1;
+}
+.lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) > h3 {
+  color: #fff;
+}
+.lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) > p {
+  color: rgb(255 255 255 / 0.65);
+}
+.lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) strong {
+  color: #fff;
+}
+/* 常见咨询：问题加粗做标题 */
+.lp-services [data-sec='常见咨询'] > ul > li strong:first-child {
+  display: block;
+  margin-bottom: 4px;
+}
+/* 联系方式：整段深色，表格每行一张玻璃卡（表头只给读屏） */
+.lp-services [data-sec='联系方式'] {
+  position: relative;
+  isolation: isolate;
+  margin-top: 6rem;
+  padding: 4.5rem 0;
+  color: #fff;
+}
+.lp-services [data-sec='联系方式']::before {
+  content: '';
+  position: absolute;
+  inset: 0 -100vmax;
+  z-index: -1;
+  background: var(--ry-night);
+}
+.lp-services [data-sec='联系方式'] > h2 {
+  color: #fff;
+}
+.lp-services [data-sec='联系方式'] .tbl {
+  border: 0;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+}
+.lp-services [data-sec='联系方式'] table,
+.lp-services [data-sec='联系方式'] tbody {
+  display: block;
+}
+.lp-services [data-sec='联系方式'] thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.lp-services [data-sec='联系方式'] tbody {
+  display: grid;
+  gap: 12px;
+}
+@media (min-width: 768px) {
+  .lp-services [data-sec='联系方式'] tbody {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.lp-services [data-sec='联系方式'] tr {
+  display: block;
+  padding: 18px 20px;
+  border: 1px solid var(--ry-night-line);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.02));
+}
+.lp-services [data-sec='联系方式'] tbody tr:hover td {
+  background: none;
+}
+.lp-services [data-sec='联系方式'] td {
+  display: block;
+  padding: 0;
+  border: 0;
+  color: rgb(255 255 255 / 0.8);
+}
+.lp-services [data-sec='联系方式'] td:first-child {
+  font-size: 12px;
+  color: rgb(255 255 255 / 0.45);
+}
+.lp-services [data-sec='联系方式'] td + td {
+  margin-top: 8px;
+  font-size: 15px;
+}
+.lp-services [data-sec='联系方式'] td strong {
+  color: #fff;
+  font-size: 22px;
+  font-weight: 800;
+}
+.lp-services [data-sec='联系方式'] a {
+  color: #aab8ff;
+}
+.lp-services [data-sec='联系方式'] blockquote {
+  margin-top: 2rem;
+  border-color: var(--ry-night-line);
+  background: rgb(255 255 255 / 0.03);
+  color: rgb(255 255 255 / 0.65);
+}
+
+/* ================= 项目演示 ================= */
+/* 手机实时预览（旧站 demo 页就有）：大屏叠在首屏右侧，首屏加高给它留位置 */
+.lp-preview {
+  display: none;
+}
+@media (min-width: 1280px) {
+  .lp-with-preview .lp-preview {
+    display: block;
+    position: absolute;
+    top: 3rem;
+    right: 1.5rem;
+    z-index: 2;
+    width: 22.5rem;
+  }
+  .lp-with-preview .lp-hero {
+    min-height: 47rem;
+  }
+  .lp-with-preview .lp-hero-in {
+    padding-right: 25rem;
+  }
+}
+/* 在线演示：表格三行 → 三张卡（表头只给读屏），每张卡顶部配一张真实界面作底图（装饰，不进正文） */
+.lp-demo [data-sec='在线演示'] .tbl {
+  border: 0;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+}
+.lp-demo [data-sec='在线演示'] table,
+.lp-demo [data-sec='在线演示'] tbody {
+  display: block;
+}
+.lp-demo [data-sec='在线演示'] thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.lp-demo [data-sec='在线演示'] tbody {
+  display: grid;
+  gap: 16px;
+}
+@media (min-width: 768px) {
+  .lp-demo [data-sec='在线演示'] tbody {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.lp-demo [data-sec='在线演示'] tr {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--elevated);
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.04), 0 16px 36px -22px rgb(11 13 20 / 0.2);
+}
+.lp-demo [data-sec='在线演示'] tr::before {
+  content: '';
+  aspect-ratio: 16 / 10;
+  background: var(--ry-night) center top / cover no-repeat;
+}
+.lp-demo [data-sec='在线演示'] tr:nth-child(1)::before {
+  background-image: url('/demo/03-dashboard.webp');
+}
+.lp-demo [data-sec='在线演示'] tr:nth-child(2)::before {
+  background-image: url('/demo/40-ai-assistant.webp');
+}
+.lp-demo [data-sec='在线演示'] tr:nth-child(3)::before {
+  background-image: url('/demo/41-page-designer.webp');
+}
+.lp-demo [data-sec='在线演示'] tbody tr:hover td {
+  background: none;
+}
+.lp-demo [data-sec='在线演示'] td {
+  display: block;
+  padding: 0 20px;
+  border: 0;
+}
+/* 列：1 平台 / 2 地址 / 3 账密 / 4 说明 → 卡片里按 名称、说明、账密、入口 排 */
+.lp-demo [data-sec='在线演示'] tr::before {
+  order: -1;
+}
+.lp-demo [data-sec='在线演示'] td:nth-child(1) {
+  order: 0;
+  padding-top: 18px;
+  font-size: 16px;
+}
+.lp-demo [data-sec='在线演示'] td:nth-child(4) {
+  order: 1;
+  padding-top: 2px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.lp-demo [data-sec='在线演示'] td:nth-child(3) {
+  order: 2;
+  width: fit-content;
+  margin: 12px 20px 0;
+  padding: 3px 10px;
+  border-radius: 8px;
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+}
+.lp-demo [data-sec='在线演示'] td:nth-child(2) {
+  order: 3;
+  padding-top: 14px;
+  padding-bottom: 20px;
+  font-weight: 600;
+}
+/* 授权定价：md 里写的是 3 列行内 grid（窄屏会挤），改成自适应 */
+.lp [data-sec='授权定价'] > div[style*='grid'] {
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)) !important;
+  align-items: stretch;
+  gap: 18px !important;
+  max-width: none !important;
+}
+.vc-pricing {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: var(--elevated);
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.04), 0 16px 36px -22px rgb(11 13 20 / 0.2);
+}
+.vc-pricing.is-recommended {
+  border-color: transparent;
+  background: var(--ry-night) radial-gradient(70% 60% at 85% 0%, rgb(91 124 255 / 0.35), transparent 70%);
+  color: #fff;
+  box-shadow: 0 40px 80px -30px rgb(11 13 20 / 0.7);
+}
+.vp-doc .vc-recommended {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  margin: 0;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: var(--color-brand-strong);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+.vp-doc .vc-recommended svg {
+  display: none;
+}
+.vp-doc .vc-plan {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 800;
+}
+.is-recommended .vc-plan {
+  color: #fff;
+}
+.vp-doc .vc-plan-desc {
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.is-recommended .vc-plan-desc {
+  color: rgb(255 255 255 / 0.5);
+}
+.vp-doc .vc-price {
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+}
+.vc-currency {
+  font-size: 18px;
+  font-weight: 700;
+}
+.vc-price-value {
+  font-size: 48px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.vp-doc .vc-original {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  text-decoration: line-through;
+}
+.is-recommended .vc-original {
+  color: rgb(255 255 255 / 0.4);
+}
+.vp-doc .vc-saving {
+  margin-top: 8px;
+  width: fit-content;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--color-brand-soft);
+  color: var(--brand-ink);
+  font-size: 12px;
+  font-weight: 600;
+}
+.is-recommended .vc-saving {
+  background: rgb(255 255 255 / 0.1);
+  color: #c3ceff;
+}
+.vp-doc .vc-features {
+  margin-top: 1.25rem;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  font-size: 14px;
+}
+.vp-doc .vc-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+.vc-check {
+  flex: none;
+  color: var(--brand);
+}
+.is-recommended .vc-check {
+  color: #8ea2ff;
+}
+.vc-contact {
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+.vp-doc .vc-contact > summary {
+  justify-content: center;
+  width: 100%;
+  height: 46px;
+  list-style: none;
+  border-color: transparent;
+  background: var(--ink);
+  color: var(--canvas);
+}
+.vp-doc .vc-contact > summary::-webkit-details-marker {
+  display: none;
+}
+.vp-doc .is-recommended .vc-contact > summary {
+  background: var(--color-brand-strong);
+  color: #fff;
+}
+.vc-contact > div {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 13.5px;
+  text-align: center;
+}
+.is-recommended .vc-contact > div {
+  background: rgb(255 255 255 / 0.08);
+}
+.vp-doc .vc-footer {
+  margin-top: 12px;
+  font-size: 12px;
+  text-align: center;
+  color: var(--muted);
+}
+.is-recommended .vc-footer {
+  color: rgb(255 255 255 / 0.45);
+}
+/* 购买说明：五条一行排开 */
+.lp [data-sec='授权定价'] .vp-callout ul {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 10px 18px;
+}
+@media (min-width: 900px) {
+  .lp [data-sec='授权定价'] .vp-callout ul {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+.lp [data-sec='授权定价'] .vp-callout li {
+  margin: 0;
+  font-size: 13.5px;
+}
+/* 扫码关注：md 里是行内 flex（240×320 固定宽），改成四列卡片 */
+.lp div[style*='flex'][style*='wrap']:has(.vc-image) {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px !important;
+}
+@media (min-width: 900px) {
+  .lp div[style*='flex'][style*='wrap']:has(.vc-image) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.lp div[style*='flex'][style*='wrap']:has(.vc-image) > div {
+  padding: 12px 12px 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--elevated);
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.04), 0 16px 36px -22px rgb(11 13 20 / 0.2);
+}
+.lp div[style*='flex'][style*='wrap']:has(.vc-image) .vc-image img {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  background: var(--surface);
+}
+/* 功能截图：42 张瀑布流 */
+.lp .vc-gallery {
+  columns: 1;
+  column-gap: 14px;
+}
+@media (min-width: 640px) {
+  .lp .vc-gallery {
+    columns: 2;
+  }
+}
+@media (min-width: 1024px) {
+  .lp .vc-gallery {
+    columns: 3;
+  }
+}
+.lp .vc-gallery a {
+  display: block;
+  margin-bottom: 14px;
+  break-inside: avoid;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--elevated);
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.04), 0 16px 36px -22px rgb(11 13 20 / 0.2);
+  transition: transform 0.35s var(--ease-out-soft);
+}
+.lp .vc-gallery a:hover {
+  transform: translateY(-3px);
+}
+.lp .vc-gallery img {
+  display: block;
+  width: 100%;
+  border-radius: 0;
+}
+
+/* ================= 视频教程 ================= */
+/* 三门课：第一门（Claude Code 四集）深色四卡，OA 实战一张主推卡，基础课程 28 集双列清单 */
+.lp-video .vp-doc > h3 {
+  margin-top: 4rem;
+  font-size: clamp(1.4rem, 1.1rem + 0.9vw, 1.8rem);
+  font-weight: 900;
+}
+.lp-video .vp-doc > ol {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  counter-reset: lp-v;
+}
+.lp-video .vp-doc > ol > li {
+  counter-increment: lp-v;
+  position: relative;
+  margin: 0;
+  padding: 16px 20px 16px 56px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--elevated);
+  font-size: 14px;
+  line-height: 1.6;
+  transition: transform 0.3s var(--ease-out-soft);
+}
+.lp-video .vp-doc > ol > li:hover {
+  transform: translateY(-2px);
+}
+.lp-video .vp-doc > ol > li::before {
+  content: counter(lp-v, decimal-leading-zero);
+  position: absolute;
+  left: 20px;
+  top: 17px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--brand-ink);
+}
+.lp-video .vp-doc > ol > li a {
+  color: var(--ink);
+  text-decoration: none;
+}
+.lp-video .vp-doc > ol > li a:hover {
+  color: var(--brand-ink);
+}
+@media (min-width: 1024px) {
+  .lp-video .vp-doc > ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .lp-video .vp-doc > h3:first-of-type + ol {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+.lp-video .vp-doc > h3:first-of-type + ol > li {
+  min-height: 11rem;
+  padding: 64px 22px 22px;
+  border-color: transparent;
+  background: var(--ry-night) radial-gradient(70% 60% at 30% 0%, rgb(91 124 255 / 0.32), transparent 70%);
+}
+.lp-video .vp-doc > h3:first-of-type + ol > li::before {
+  left: 22px;
+  top: 18px;
+  font-size: 34px;
+  font-weight: 800;
+  color: rgb(255 255 255 / 0.16);
+}
+.lp-video .vp-doc > h3:first-of-type + ol > li a {
+  color: #fff;
+}
+.lp-video .vp-doc > h3:first-of-type + ol > li a:hover {
+  color: #c3ceff;
+}
+.lp-video .vp-doc > h3:nth-of-type(2) + p {
+  padding: 1.75rem 2rem;
+  border-radius: 24px;
+  background: var(--ry-night) radial-gradient(60% 90% at 20% 20%, rgb(91 124 255 / 0.4), transparent 70%);
+  font-size: 18px;
+  line-height: 1.6;
+}
+.lp-video .vp-doc > h3:nth-of-type(2) + p a {
+  color: #fff;
+  text-decoration: none;
+}
+.lp-video .vp-doc > h3:nth-of-type(2) + p a::after {
+  content: '  去 B 站观看 ↗';
+  font-size: 14px;
+  font-weight: 600;
+  color: #aab8ff;
+}
+
+/* ================= 新特性 / 框架对比（长页） ================= */
+.lp-changelog .vp-doc,
+.lp-comparison .vp-doc {
+  max-width: 60rem;
+  margin-inline: auto;
+}
+.lp-changelog .lp-hero,
+.lp-comparison .lp-hero {
+  max-width: none;
+}
+.lp-changelog .lp-sec,
+.lp-comparison .lp-sec {
+  margin-top: 4.5rem;
+}
+/* 新特性：每个小节一张白卡，左侧一条时间线 */
+.lp-changelog .lp-items {
+  position: relative;
+  padding-left: 28px;
+}
+.lp-changelog .lp-items::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 60%, transparent), transparent);
+}
+.lp-changelog .lp-item {
+  position: relative;
+  padding: 1.25rem 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--elevated);
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.03);
+}
+.lp-changelog .lp-item::before {
+  content: '';
+  position: absolute;
+  left: -27px;
+  top: 1.55rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: var(--elevated);
+  border: 3px solid var(--brand);
+}
+.lp-changelog .lp-item > h3 {
+  font-size: 17px;
+}
+/* 框架对比：能力总览表的「本框架」一列加底色 */
+.lp-comparison [data-sec='能力总览'] td:nth-child(2),
+.lp-comparison [data-sec='能力总览'] th:nth-child(2) {
+  background: color-mix(in oklab, var(--brand) 8%, var(--elevated));
+}
+.lp-comparison [data-sec='能力总览'] th:nth-child(2) {
+  color: var(--brand-ink);
+}
+
+/* ================= 首页正文（index.md 的正文部分，h2 分段） ================= */
+.lp-index .lp-grid {
+  padding-top: 1rem;
+}
+.lp-index .lp-sec:first-child {
+  margin-top: 4rem;
+}
+/* 为什么选择：四小节两列卡片（重构成果 / 项目规模 / 演进历程 / 适用场景） */
+@media (min-width: 900px) {
+  .lp-index [data-sec='为什么选择-ruoyi-plus-uniapp'] .lp-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.lp-index [data-sec='为什么选择-ruoyi-plus-uniapp'] .lp-item {
+  padding: 1.5rem 1.6rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--elevated);
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.04), 0 16px 36px -22px rgb(11 13 20 / 0.2);
+}
+.lp-index [data-sec='为什么选择-ruoyi-plus-uniapp'] .lp-item ul {
+  padding-left: 1.1rem;
+}
+.lp-index [data-sec='为什么选择-ruoyi-plus-uniapp'] .lp-item li {
+  font-size: 14.5px;
+}
+.lp-index [data-sec='为什么选择-ruoyi-plus-uniapp'] .lp-item div[style*='center'] {
+  margin: 12px 0 !important;
+}
+.lp-index [data-sec='为什么选择-ruoyi-plus-uniapp'] .lp-item img {
+  width: 100% !important;
+  height: auto !important;
+  border: 1px solid var(--line);
+}
+/* 立即开始：六个入口排成卡片 */
+.lp-index .custom-block {
+  display: grid;
+  gap: 12px;
+  margin-top: 1.5rem;
+  padding: 0 !important;
+}
+@media (min-width: 768px) {
+  .lp-index .custom-block {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.lp-index .custom-block > p {
+  margin: 0;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--elevated);
+  font-size: 14px;
+  color: var(--muted);
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.04);
+  transition: transform 0.3s var(--ease-out-soft), box-shadow 0.3s;
+}
+.lp-index .custom-block > p:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px -24px rgb(11 13 20 / 0.35);
+}
+.lp-index .custom-block > p > a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+.lp-index .custom-block > p > a svg {
+  color: var(--brand-ink);
+}
+/* 产品矩阵：三张预览卡（md 里是行内 grid，保留，只做卡片外观） */
+.lp-index .product-preview-card {
+  display: block;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: var(--elevated);
+  text-decoration: none !important;
+  box-shadow: 0 1px 2px rgb(11 13 20 / 0.04), 0 16px 36px -22px rgb(11 13 20 / 0.2);
+  transition: transform 0.35s var(--ease-out-soft);
+}
+.lp-index .product-preview-card:hover {
+  transform: translateY(-3px);
+}
+.lp-index .product-preview-card h4 {
+  color: var(--ink) !important;
+}
+.lp-index .product-preview-card img {
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  box-sizing: content-box;
+}
+/* 企业信赖：企业名做成标签云 */
+.lp-index .company-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1.5rem;
+}
+.lp-index .company-tag {
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--elevated);
+  font-size: 13.5px;
+  color: color-mix(in oklab, var(--ink) 75%, var(--canvas));
+}
+/* 技术服务：整段深色（与技术服务页同一语气） */
+.lp-index [data-sec='技术服务-·-承接定制开发'] {
+  position: relative;
+  isolation: isolate;
+  margin-top: 6rem;
+  padding: 4.5rem 0;
+  color: rgb(255 255 255 / 0.7);
+}
+.lp-index [data-sec='技术服务-·-承接定制开发']::before {
+  content: '';
+  position: absolute;
+  inset: 0 -100vmax;
+  z-index: -1;
+  background: var(--ry-night) radial-gradient(40% 70% at 80% 0%, rgb(91 124 255 / 0.3), transparent 70%);
+}
+.lp-index [data-sec='技术服务-·-承接定制开发'] > h2,
+.lp-index [data-sec='技术服务-·-承接定制开发'] strong {
+  color: #fff;
+}
+.lp-index [data-sec='技术服务-·-承接定制开发'] > p {
+  max-width: 56rem;
+  color: rgb(255 255 255 / 0.62);
+}
+.lp-index [data-sec='技术服务-·-承接定制开发'] > ul > li {
+  border-color: var(--ry-night-line);
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.02));
+  color: rgb(255 255 255 / 0.65);
+}
+@media (min-width: 1024px) {
+  .lp-index [data-sec='技术服务-·-承接定制开发'] > ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.lp-index [data-sec='技术服务-·-承接定制开发'] blockquote {
+  border-color: var(--ry-night-line);
+  background: rgb(255 255 255 / 0.03);
+  color: rgb(255 255 255 / 0.7);
+}
+.lp-index [data-sec='技术服务-·-承接定制开发'] a {
+  color: #aab8ff;
+}
+
+/* 深色段里的章节编号换成深底配色；表格卡片与标题拉开距离 */
+.lp-services [data-sec='联系方式'] > h2::before,
+.lp-index [data-sec='技术服务-·-承接定制开发'] > h2::before {
+  color: #8ea2ff;
+}
+.lp-services [data-sec='联系方式'] .tbl {
+  margin-top: 1.75rem;
+}
+/* 技术服务页以深色「联系方式」收尾：去掉版心底部留白，直接接深色页脚 */
+.lp-services .lp-grid {
+  padding-bottom: 0;
+}
+/* 新特性 / 框架对比的 h2 自带「一、」「二、」：不再叠自动编号（章节条里的编号同理） */
+.lp-changelog .lp-sec > h2::before,
+.lp-comparison .lp-sec > h2::before,
+.lp-changelog .lp-chips span,
+.lp-comparison .lp-chips span {
+  display: none;
+}

@@ -50,7 +50,9 @@ export function productCard(p, icons) {
     )
     .join('');
   const highlights = (p.highlights ?? []).map((h) => `<li>${esc(h)}</li>`).join('');
-  return `<div class="vc-product vc-theme-${esc(p.theme ?? 'blue')}"><div class="vc-product-main"><div class="vc-product-head">${logo}<div><div class="vc-product-title"><h3 class="vc-product-name">${esc(p.name)}</h3>${
+  // 锚点取 logo 文件名（/products/aicoder.png → product-aicoder）：产品矩阵首屏的图标带按它跳转，名字含空格中文不适合做 id
+  const anchor = p.logo ? ` id="product-${esc(String(p.logo).split('/').pop().replace(/\.\w+$/, ''))}"` : '';
+  return `<div${anchor} class="vc-product vc-theme-${esc(p.theme ?? 'blue')}"><div class="vc-product-main"><div class="vc-product-head">${logo}<div><div class="vc-product-title"><h3 class="vc-product-name">${esc(p.name)}</h3>${
     p.badge ? `<span class="vc-badge">${esc(p.badge)}</span>` : ''
   }</div>${p.slogan ? `<p class="vc-product-slogan">${esc(p.slogan)}</p>` : ''}</div></div>${
     p.description ? `<p class="vc-product-desc">${esc(p.description)}</p>` : ''

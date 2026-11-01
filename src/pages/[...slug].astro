@@ -1,12 +1,15 @@
 ---
 // 迁移文档的统一路由：docs 集合每页一个网址，id 即路径（backend/common/pay → /backend/common/pay.html，backend/index → /backend/）
 // [...slug] 而不是分区各一个目录路由：四个分区共用同一套布局，旧站网址形态由 id 原样决定
+// 营销页（landing.json 里登记的 products / services / demo / video / changelog / comparison）换 LandingLayout，网址与正文不变
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { getCollection, render } from 'astro:content';
 import DocsLayout from '@/layouts/DocsLayout.astro';
+import LandingLayout from '@/layouts/LandingLayout.astro';
+import landing from '@/data/landing.json';
 
 export const getStaticPaths = (async () => {
-  // 分区首页（backend/index 等）由 [section]/index.astro 出，这里跳过：动态参数带 index 会被 Astro 归一成 /backend/ 而匹配失败
+  // 分区首页（backend/index 等）由 [...dir]/index.astro 出，这里跳过：动态参数带 index 会被 Astro 归一成 /backend/ 而匹配失败
   // 站点首页 index 由 src/pages/index.astro 出（hero + 功能卡 + 正文）
   const docs = (await getCollection('docs')).filter((doc) => doc.id !== 'index' && !doc.id.endsWith('/index'));
   return docs.map((doc) => ({ params: { slug: doc.id }, props: { doc } }));
@@ -16,9 +19,10 @@ type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { doc } = Astro.props as Props;
 const { Content, headings } = await render(doc);
+const Layout = doc.id in landing.pages ? LandingLayout : DocsLayout;
 ---
 
-<DocsLayout
+<Layout
   id={doc.id}
   title={doc.data.title}
   description={doc.data.description}
@@ -28,4 +32,4 @@ const { Content, headings } = await render(doc);
   aside={doc.data.aside}
 >
   <Content />
-</DocsLayout>
+</Layout>

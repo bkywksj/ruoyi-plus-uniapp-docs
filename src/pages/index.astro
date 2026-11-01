@@ -1,83 +1,319 @@
 ---
-// 首页：数据全部来自迁来的 src/content/docs/index.md —— hero 与功能卡取 frontmatter（旧站 VitePress home 布局渲染的那两块），
-// 下面接正文（为什么选择 / 授权定价 / 产品矩阵 / 企业信赖 / 技术服务 / 技术支持），与文档页同一条 Markdown 管线。
-// 第 2–4 步只保证内容与旧站一一对应；视觉在第 5 步按原型重做，数据来源不变
+// 首页（方案 C「AI 原生」）：数据全部来自迁来的 src/content/docs/index.md ——
+//   首屏（hero：名称 / 副标题 / 标语 / 五个按钮）、能力卡（features 13 张）、重构亮点（highlights 5 组，旧主题从未渲染，这里首次显示）取 frontmatter；
+//   正文（为什么选择 / 立即开始 / 授权定价 / 产品矩阵 / 企业信赖 / 技术服务 / 技术支持）照旧走 Markdown 管线，按 h2 分段后由 landing.css 排版。
+// 正文盒（data-pagefind-body）里的文字与旧站逐字相同（迁移比对照旧）；首屏、流水线、能力卡、亮点在正文盒之外，不参与比对。
+// 首屏右侧四格分镜是「一句话需求 → 调技能 → 生成代码 → 页面出现」的示意（社区团购为举例），流水线八个阶段与两道人工门取自 comparison.md「全流程交付流水线」
 import { getEntry, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import Container from '@/components/ui/Container.astro';
 import { fixLink } from '@/lib/markdown/vp-compat.mjs';
 import { siteJsonLd } from '@/lib/site-jsonld';
 import { site } from '@/site.config';
 import '@/styles/vp-compat.css';
+import '@/styles/ry-theme.css';
 import '@/styles/docs-ruoyi.css';
+import '@/styles/landing.css';
 
 const entry = await getEntry('docs', 'index');
 if (!entry) throw new Error('缺少 src/content/docs/index.md（首页数据）：先跑 scripts/migrate/convert.mjs');
 const { Content } = await render(entry);
-const { hero, features = [] } = entry.data;
+const { hero, features = [], highlights = [] } = entry.data;
+if (!hero) throw new Error('index.md 缺少 hero（首屏数据）');
 // 旧站 VitePress 链接写法（/backend/getting-started、/comparison）→ 本站网址（补 .html；目录与站外链接不动）
 const href = (link: string) => fixLink(link);
 const external = (link: string) => /^https?:/.test(link);
+
+// 能力卡：标题里的「(NEW)」拆成角标
+const cards = features.map((f) => ({ ...f, isNew: /\(NEW\)\s*$/.test(f.title), name: f.title.replace(/\s*\(NEW\)\s*$/, '') }));
+const [lead, ...restCards] = cards;
+// 首屏三个大数字：取第一张能力卡（Claude Code 深度集成）的原话「61 个专业技能、19 个智能命令、3 个自动化钩子」
+const stats = [...(lead?.details.matchAll(/(\d+)\s*个([^\d、，。！]+)/g) ?? [])].slice(0, 3).map((m) => ({ n: m[1], label: m[2].trim() }));
+const badge = lead?.details.split(/[！!]/)[0] ?? '';
+
+// 亮点：每组 details 是「**标题** - 说明」一行一条
+const groups = highlights.map((h, i) => ({
+  id: `hl-${i}`,
+  title: h.title,
+  items: h.details
+    .split('\n')
+    .map((line) => line.trim().match(/^\*\*(.+?)\*\*\s*[-–—]\s*(.+)$/))
+    .filter((m): m is RegExpMatchArray => !!m)
+    .map((m) => ({ k: m[1], v: m[2] })),
+}));
+
+const pipeline = [
+  { n: '01', t: '需求孵化', d: '需求文档与建表施工图' },
+  { n: '02', t: '原型设计', d: '高保真 HTML 原型', gate: '人工门 ① 需求文档确认后才进原型' },
+  { n: '03', t: '建表编码', d: '自主循环：写测试、跑报错、读日志、修复', gate: '人工门 ② 原型视觉确认后才写业务代码' },
+  { n: '04', t: 'E2E 验收', d: '端到端自动化验收' },
+  { n: '05', t: '部署上线', d: '不可逆环节：先演练再执行' },
+  { n: '06', t: '官网与文档站', d: '官网与文档站建设' },
+  { n: '07', t: '交付客户', d: '交付客户' },
+  { n: '08', t: '经验沉淀', d: '踩过的坑沉淀回技能库，下个项目复用' },
+];
 ---
 
 <BaseLayout description={entry.data.description} jsonLd={siteJsonLd}>
-  {
-    hero && (
-      <section class="border-b border-line">
-        <Container class="grid items-center gap-10 py-16 sm:py-20 lg:grid-cols-[minmax(0,1fr)_16rem]">
-          <div>
-            <h1 class="text-4xl leading-tight font-bold tracking-tight sm:text-5xl">
-              <span class="text-brand">{hero.name}</span>
-              {hero.text && <span class="mt-2 block">{hero.text}</span>}
-            </h1>
-            {hero.tagline && <p class="mt-5 max-w-2xl text-lg text-muted">{hero.tagline}</p>}
-            <div class="mt-8 flex flex-wrap gap-3">
-              {hero.actions.map((a) => (
-                <a
-                  href={href(a.link)}
-                  target={external(a.link) ? '_blank' : undefined}
-                  rel={external(a.link) ? 'noopener' : undefined}
-                  class:list={[
-                    'inline-flex h-10 items-center rounded-full px-5 text-sm font-semibold transition-colors',
-                    a.theme === 'brand' ? 'bg-brand text-white hover:opacity-90' : 'border border-line bg-elevated hover:border-brand',
-                  ]}
-                >
-                  {a.text}
-                </a>
-              ))}
-            </div>
-          </div>
-          {hero.image && <img src={hero.image.src} alt={hero.image.alt ?? site.shortName} width="256" height="256" class="mx-auto hidden size-64 object-contain lg:block" />}
-        </Container>
-      </section>
-    )
-  }
-
-  {
-    features.length > 0 && (
-      <section class="border-b border-line bg-surface py-12">
-        <Container class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f) => {
-            const Tag = f.link ? 'a' : 'div';
-            return (
-              <Tag
-                href={f.link ? href(f.link) : undefined}
-                class="block rounded-[var(--radius-card)] border border-line bg-elevated p-5 transition-colors hover:border-brand"
+  <!-- 首屏：左名称 + 标语 + 按钮 + 三个数字，右四格分镜 -->
+  <section class="ry-night relative overflow-hidden" data-pagefind-ignore>
+    <div class="mx-auto grid w-full max-w-[78rem] gap-14 px-4 pt-16 pb-20 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pt-24">
+      <div>
+        {
+          badge && (
+            <p class="inline-flex items-center gap-2 rounded-md border border-brand/30 bg-brand/10 px-2.5 py-1 font-mono text-[12px] text-[#aab8ff]">
+              {badge}
+            </p>
+          )
+        }
+        <h1 class="mt-7 text-[44px] leading-[1.02] font-black tracking-[-0.045em] sm:text-[68px] lg:text-[78px]">
+          <span class="block text-[0.56em] font-semibold tracking-[-0.04em] text-white/90">{hero.name}</span>
+          {hero.text && <span class="bg-gradient-to-r from-white via-white to-[#8fa3ff] bg-clip-text text-transparent">{hero.text}</span>}
+        </h1>
+        {hero.tagline && <p class="mt-6 max-w-lg text-[18px] leading-8 text-white/60">{hero.tagline}</p>}
+        <div class="mt-9 flex flex-wrap gap-2.5">
+          {
+            hero.actions.map((a, i) => (
+              <a
+                href={href(a.link)}
+                target={external(a.link) ? '_blank' : undefined}
+                rel={external(a.link) ? 'noopener' : undefined}
+                class:list={[
+                  'inline-flex h-11 items-center gap-1.5 rounded-lg px-5 text-[14px] font-semibold transition-colors',
+                  i === 0
+                    ? 'bg-white text-[#07080D] hover:bg-white/90'
+                    : a.theme === 'brand'
+                      ? 'bg-brand-strong text-white shadow-[0_12px_30px_-10px_rgba(91,124,255,.8)] hover:bg-brand'
+                      : 'border border-white/[.14] font-medium text-white/75 hover:bg-white/[.05]',
+                ]}
               >
-                {f.icon && <span class="mb-3 inline-flex size-10 items-center justify-center rounded-lg bg-brand-soft text-brand-ink [&_svg]:size-5" set:html={f.icon} />}
-                <p class="font-semibold">{f.title}</p>
-                <p class="mt-2 text-sm leading-6 text-muted">{f.details}</p>
-              </Tag>
-            );
-          })}
-        </Container>
+                {a.text}
+                {i === 0 && <span aria-hidden="true">→</span>}
+              </a>
+            ))
+          }
+        </div>
+        {
+          stats.length > 0 && (
+            <dl class="mt-14 flex gap-10 border-t border-white/[.08] pt-8">
+              {stats.map((s) => (
+                <div class="flex flex-col-reverse">
+                  <dt class="mt-2 font-mono text-[12px] text-white/45">{s.label}</dt>
+                  <dd class="text-[48px] leading-none font-extrabold tracking-[-0.05em] sm:text-[60px]">{s.n}</dd>
+                </div>
+              ))}
+            </dl>
+          )
+        }
+      </div>
+      <ol class="ry-story space-y-5" aria-label="一句话需求到页面出现（示意）">
+        <li class="ry-step">
+          <span class="ry-dot">1</span>
+          <p class="font-mono text-[11px] tracking-[.14em] text-white/40">一句话需求</p>
+          <div class="ry-pane mt-2 p-4 text-[14.5px]">「做一个社区团购：PC 后台 + 小程序端」<span class="ry-caret" aria-hidden="true"></span></div>
+        </li>
+        <li class="ry-step">
+          <span class="ry-dot">2</span>
+          <p class="font-mono text-[11px] tracking-[.14em] text-white/40">Claude Code 调用技能</p>
+          <div class="ry-pane mt-2 p-4 font-mono text-[12.5px] leading-[1.9] text-white/75">
+            <p><span class="text-[#8fa3ff]">›</span> /crud mall_goods <span class="text-white/35">按四层规范生成</span></p>
+            <p><span class="text-emerald-400">✓</span> skill <span class="text-white">crud-development</span> <span class="text-white/35">Controller → Service → DAO → Mapper</span></p>
+            <p><span class="text-emerald-400">✓</span> skill <span class="text-white">ui-pc</span> <span class="text-white/35">Element Plus 页面</span></p>
+          </div>
+        </li>
+        <li class="ry-step">
+          <span class="ry-dot">3</span>
+          <p class="font-mono text-[11px] tracking-[.14em] text-white/40">生成前后端代码</p>
+          <div class="ry-pane mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 p-4 font-mono text-[12px] text-white/70">
+            <p>MallGoodsController.java</p><p>MallGoodsServiceImpl.java</p><p>MallGoodsDao.java</p><p>MallGoodsMapper.java</p><p>goods/index.vue</p><p>api/mall/goods.ts</p>
+          </div>
+        </li>
+        <li class="ry-step">
+          <span class="ry-dot">4</span>
+          <p class="font-mono text-[11px] tracking-[.14em] text-white/40">页面出现</p>
+          <div class="ry-pane mt-2 overflow-hidden p-1.5">
+            <img src="/demo/04a-goods-list.webp" alt="生成后的商品列表页" width="1280" height="640" loading="eager" class="aspect-[2/1] w-full rounded-xl object-cover object-top" />
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 流水线：comparison.md「全流程交付流水线」的八个阶段 + 两道人工门 -->
+  <section class="ry-night border-t border-white/[.06]" data-pagefind-ignore>
+    <div class="mx-auto w-full max-w-[78rem] px-4 py-20 sm:px-6">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <p class="text-[34px] leading-[1.15] font-black tracking-[-0.03em] sm:text-[44px]">
+          从一句话需求到线上服务，<br /><span class="text-white/40">AI 自转，人只把两道关</span>
+        </p>
+        <a href="/comparison.html#全流程交付流水线" class="font-mono text-[13px] text-[#aab8ff] hover:text-white">查看完整流水线 ↗</a>
+      </div>
+      <ol class="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          pipeline.map((p) => (
+            <li class="ry-pane p-5">
+              <p class="font-mono text-[11px] text-white/35">{p.n}</p>
+              <p class="mt-2 text-[15px] font-bold">{p.t}</p>
+              <p class="mt-1.5 text-[13px] leading-6 text-white/55">{p.d}</p>
+              {p.gate && <p class="mt-3 rounded-md bg-amber-400/10 px-2 py-1 text-[11.5px] text-amber-200">{p.gate}</p>}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- 能力卡：frontmatter features 13 张，第一张（Claude Code）深色大卡 -->
+  <section class="mx-auto w-full max-w-[78rem] px-4 py-24 sm:px-6" data-pagefind-ignore>
+    <p class="ry-kicker-l">能力全景 · {cards.length} 项</p>
+    <p class="mt-3 text-[34px] leading-[1.1] font-black tracking-[-0.03em] sm:text-[48px]">后端、前端、移动端，<br />一套框架全覆盖</p>
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        lead && (
+          <a href={lead.link ? href(lead.link) : undefined} class="ry-night ry-lift relative flex flex-col overflow-hidden rounded-[24px] p-7 sm:col-span-2 lg:row-span-2">
+            {lead.icon && <span class="inline-grid size-11 place-items-center rounded-xl bg-white/10 text-white [&_svg]:size-6" set:html={lead.icon} />}
+            <span class="mt-6 flex items-center gap-2 text-[24px] font-black">
+              {lead.name}
+              {lead.isNew && <span class="rounded-full bg-brand-strong px-2 py-0.5 text-[11px] font-semibold">NEW</span>}
+            </span>
+            <span class="mt-3 text-[15px] leading-7 text-white/65">{lead.details}</span>
+            <span class="mt-auto pt-8 text-[13px] font-semibold text-[#aab8ff]">了解 AI 开发体验 →</span>
+          </a>
+        )
+      }
+      {
+        restCards.map((f) => {
+          const Tag = f.link ? 'a' : 'div';
+          return (
+            <Tag href={f.link ? href(f.link) : undefined} class:list={['ry-card block p-5', f.link && 'ry-lift']}>
+              <span class="flex items-center justify-between">
+                {f.icon && <span class="inline-grid size-10 place-items-center rounded-xl bg-brand-soft text-brand-ink [&_svg]:size-5" set:html={f.icon} />}
+                {f.isNew && <span class="rounded-full bg-brand-soft px-2 py-0.5 font-mono text-[10.5px] font-semibold text-brand-ink">NEW</span>}
+              </span>
+              <span class="mt-4 block font-bold">{f.name}</span>
+              <span class="mt-1.5 block text-[13.5px] leading-6 text-muted">{f.details}</span>
+            </Tag>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  {
+    groups.length > 0 && (
+      <section class="border-y border-line bg-elevated" data-pagefind-ignore>
+        <div class="ry-tabs mx-auto w-full max-w-[78rem] px-4 py-24 sm:px-6">
+          <p class="ry-kicker-l">重构亮点</p>
+          <p class="mt-3 text-[34px] leading-[1.1] font-black tracking-[-0.03em] sm:text-[48px]">不只是换了个皮，是从里到外重构</p>
+          <div class="mt-10 flex flex-wrap gap-2" role="tablist">
+            {groups.map((g, i) => (
+              <label class="ry-tab">
+                <input type="radio" name="ry-hl" value={g.id} checked={i === 0} class="sr-only" />
+                {g.title}
+              </label>
+            ))}
+          </div>
+          {groups.map((g) => (
+            <ul class="ry-tab-panel mt-8 gap-3 sm:grid-cols-2 lg:grid-cols-3" data-panel={g.id}>
+              {g.items.map((it) => (
+                <li class="ry-card !rounded-2xl p-5">
+                  <span class="block font-bold">{it.k}</span>
+                  <span class="mt-1.5 block text-[13.5px] leading-6 text-muted">{it.v}</span>
+                </li>
+              ))}
+            </ul>
+          ))}
+        </div>
       </section>
     )
   }
 
-  <Container class="py-12">
-    <article class="prose-content vp-doc mx-auto max-w-5xl" data-pagefind-body>
-      <Content />
-    </article>
-  </Container>
+  <div class:list={['lp lp-index', site.codeLineNumbers && 'code-line-numbers']}>
+    <div class="lp-grid">
+      <article class="prose-content vp-doc" data-pagefind-body>
+        <Content />
+      </article>
+    </div>
+  </div>
 </BaseLayout>
+
+<style>
+  /* 分镜：竖线串起四步 */
+  .ry-step {
+    position: relative;
+    padding-left: 44px;
+  }
+  .ry-step::before {
+    content: '';
+    position: absolute;
+    left: 13px;
+    top: 30px;
+    bottom: -22px;
+    width: 1px;
+    background: linear-gradient(180deg, rgb(91 124 255 / 0.6), rgb(91 124 255 / 0.05));
+  }
+  .ry-step:last-child::before {
+    display: none;
+  }
+  .ry-dot {
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 27px;
+    height: 27px;
+    border-radius: 999px;
+    border: 1px solid rgb(91 124 255 / 0.55);
+    background: #0f1220;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: #aab8ff;
+    box-shadow: 0 0 0 4px rgb(91 124 255 / 0.08);
+  }
+  .ry-caret::after {
+    content: '▍';
+    margin-left: 2px;
+    color: var(--brand);
+    animation: ry-blink 1.1s steps(1) infinite;
+  }
+  @keyframes ry-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  /* 亮点页签：零 JS，单选框 + :has() 切换 */
+  .ry-tab {
+    display: inline-flex;
+    align-items: center;
+    height: 38px;
+    padding: 0 16px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--canvas);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .ry-tab:has(input:checked) {
+    border-color: transparent;
+    background: var(--ink);
+    color: var(--canvas);
+    box-shadow: 0 8px 18px -8px rgb(11 13 20 / 0.5);
+  }
+  .ry-tab:has(input:focus-visible) {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+  .ry-tab-panel {
+    display: none;
+  }
+  .ry-tabs:has(input[value='hl-0']:checked) [data-panel='hl-0'],
+  .ry-tabs:has(input[value='hl-1']:checked) [data-panel='hl-1'],
+  .ry-tabs:has(input[value='hl-2']:checked) [data-panel='hl-2'],
+  .ry-tabs:has(input[value='hl-3']:checked) [data-panel='hl-3'],
+  .ry-tabs:has(input[value='hl-4']:checked) [data-panel='hl-4'],
+  .ry-tabs:has(input[value='hl-5']:checked) [data-panel='hl-5'] {
+    display: grid;
+  }
+</style>
