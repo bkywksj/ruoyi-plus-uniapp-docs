@@ -8,9 +8,9 @@ allowed-tools: Bash, Read, Glob, Grep, Edit, Write, Agent, AskUserQuestion
 # 文档站上线技能（腾讯云 EdgeOne Pages）
 
 本站部署方式（2026-11-01 起）：**推送到 Git 仓库即自动部署**。EdgeOne Pages 项目（`pages-rquhy5gcnjf8`）连着仓库，推送后在云端按根目录 `edgeone.json` 构建：
-`pnpm install --frozen-lockfile` → `NODE_OPTIONS=--max-old-space-size=3584 pnpm run build:fast` → 发布 `dist/`。
+`pnpm install --frozen-lockfile` → `MALLOC_ARENA_MAX=2 NODE_OPTIONS=--max-old-space-size=2048 pnpm run build:fast` → 发布 `dist/`。
 
-- 为什么是 `build:fast`（不含 `astro check`）+ 限堆：云端构建机是 4 核 6 GB，本站构建峰值约 4.6~5 GB，带上类型检查会被杀（exit 137，2026-11-01 实录）。类型检查改在本机推送前跑（第三步 `pnpm verify`）
+- 为什么这样写：云端构建机是 4 核 6 GB，本站构建峰值约 4~5 GB，原命令被杀（exit 137，2026-11-01 两次实录）。实测堆只占 1.3~1.6 GB，另有约 2 GB 是 Vite 8 打包器 rolldown（Rust、多线程）的原生内存，限堆管不到；`MALLOC_ARENA_MAX=2` 限制 Linux glibc 的分配池个数，压多线程原生内存的膨胀。`build:fast` 不含 `astro check`，类型检查改在本机推送前跑（第三步 `pnpm verify`）
 - `edgeone.json` 的三个字段覆盖控制台「构建部署配置」；改构建命令改这个文件，不去控制台改
 - 云端构建失败**不会**替换线上版本；失败时用备用路线：本机 `pnpm run deploy`（= `edgeone pages deploy -n ruoyi-plus-uniapp-doc dist`，CLI 直接上传本机构建好的 `dist/`）。🔴 不能写 `pnpm deploy`，那是 pnpm 内置的工作区部署命令，会绕过项目脚本
 
