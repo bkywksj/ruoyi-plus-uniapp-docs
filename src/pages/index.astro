@@ -6,6 +6,7 @@
 // 首屏右侧四格分镜是「一句话需求 → 调技能 → 生成代码 → 页面出现」的示意（社区团购为举例），流水线八个阶段与两道人工门取自 comparison.md「全流程交付流水线」
 import { getEntry, render } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+import ImageViewer from '@/components/docs/ImageViewer.astro';
 import { fixLink } from '@/lib/markdown/vp-compat.mjs';
 import { siteJsonLd } from '@/lib/site-jsonld';
 import { site } from '@/site.config';
@@ -234,6 +235,7 @@ const pipeline = [
       </article>
     </div>
   </div>
+  <ImageViewer />
 </BaseLayout>
 
 <style>

@@ -7,6 +7,7 @@
 import type { MarkdownHeading } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import PhonePreview from '@/components/docs/PhonePreview.astro';
+import ImageViewer from '@/components/docs/ImageViewer.astro';
 import { absoluteUrl, type JsonLd } from '@/lib/seo';
 import { docPath } from '@/lib/docs';
 import { site } from '@/site.config';
@@ -64,6 +65,7 @@ const techArticle: JsonLd = {
       }
     </div>
   </div>
+  <ImageViewer />
 </BaseLayout>
 
 <script>

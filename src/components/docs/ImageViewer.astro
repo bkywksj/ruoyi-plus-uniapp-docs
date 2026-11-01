@@ -1,0 +1,320 @@
+---
+// 正文图片的站内看图层：点截图在当前页弹出大图，不再跳到图片地址（用户：「查看大图的时候能否实现预览…而不是打开一个新页面」）。
+// 对应旧站 ImagePreview 组件的预览：上一张 / 下一张（同一页的图组成一组）、序号与说明、缩放（按钮 / 滚轮 / 双击）、放大后拖动、
+// 打开原图、键盘 ← → Esc + -、手机左右滑。
+// 触发范围：正文盒（.vp-doc）里「链接指向图片文件、里面包着 <img>」的链接（旧站 ImagePreview 迁移后的写法），以及正文里直接插的大图；
+// 产品 logo、图标这类小图（渲染宽度 < 160px）不弹。没有 JS 时链接照旧在新页面打开图片，作为兜底。
+// 浮层在第一次打开时才创建：静态 HTML 里不放空 <img>（会被当成真实图片计入布局偏移检查），也不影响迁移比对（只看静态 HTML）。
+// 在用到正文的布局（DocsLayout / LandingLayout / 首页）里各放一次
+---
+
+<script>
+  const IMG_RE = /\.(png|jpe?g|webp|gif|svg|avif)(\?.*)?$/i;
+  const MIN_WIDTH = 160;
+
+  type Item = { src: string; alt: string };
+  let items: Item[] = [];
+  let index = 0;
+  let scale = 1;
+  let x = 0;
+  let y = 0;
+  let root: HTMLDivElement | null = null;
+  let img: HTMLImageElement | null = null;
+  let counter: HTMLElement | null = null;
+  let caption: HTMLElement | null = null;
+  let original: HTMLAnchorElement | null = null;
+  let lastFocus: Element | null = null;
+
+  /** 一个元素能不能当触发点：返回大图地址与说明；不能返回 null */
+  const sourceOf = (el: Element): Item | null => {
+    const a = el.closest('a');
+    const pic = el instanceof HTMLImageElement ? el : a?.querySelector('img');
+    if (!pic || pic.getBoundingClientRect().width < MIN_WIDTH) return null;
+    if (a) {
+      const href = a.getAttribute('href') ?? '';
+      return IMG_RE.test(href) ? { src: a.href, alt: pic.alt } : null;
+    }
+    return { src: pic.currentSrc || pic.src, alt: pic.alt };
+  };
+
+  /** 同一篇正文里所有可放大的图，按页面顺序 */
+  const collect = (article: Element): { el: Element; item: Item }[] =>
+    [...article.querySelectorAll('img')]
+      .map((pic) => ({ el: pic as Element, item: sourceOf(pic) }))
+      .filter((x): x is { el: Element; item: Item } => !!x.item);
+
+  const apply = () => {
+    if (!img) return;
+    img.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+    img.style.cursor = scale > 1 ? 'grab' : 'zoom-in';
+  };
+  const zoom = (next: number) => {
+    scale = Math.min(6, Math.max(1, next));
+    if (scale === 1) x = y = 0;
+    apply();
+  };
+
+  const show = (i: number) => {
+    if (!img || !counter || !caption || !original) return;
+    index = (i + items.length) % items.length;
+    const it = items[index];
+    scale = 1;
+    x = y = 0;
+    img.src = it.src;
+    img.alt = it.alt;
+    apply();
+    counter.textContent = items.length > 1 ? `${index + 1} / ${items.length}` : '';
+    caption.textContent = it.alt;
+    original.href = it.src;
+    // 预取前后两张，切换时不闪白
+    for (const d of [1, -1]) {
+      const n = items[(index + d + items.length) % items.length];
+      if (n) new Image().src = n.src;
+    }
+    root?.querySelectorAll<HTMLElement>('[data-nav]').forEach((b) => (b.hidden = items.length < 2));
+  };
+
+  const close = () => {
+    root?.setAttribute('hidden', '');
+    document.documentElement.style.overflow = '';
+    (lastFocus as HTMLElement | null)?.focus?.();
+  };
+
+  const build = () => {
+    root = document.createElement('div');
+    root.className = 'ry-viewer';
+    root.setAttribute('role', 'dialog');
+    root.setAttribute('aria-modal', 'true');
+    root.setAttribute('aria-label', '查看大图');
+    root.setAttribute('hidden', '');
+    root.innerHTML = `
+      <div class="ry-viewer-stage" data-stage><img class="ry-viewer-img" alt="" draggable="false" data-img /></div>
+      <div class="ry-viewer-bar ry-viewer-top">
+        <span class="ry-viewer-count" data-count></span>
+        <span class="ry-viewer-caption" data-caption></span>
+        <button type="button" class="ry-viewer-btn" data-close aria-label="关闭（Esc）">✕</button>
+      </div>
+      <button type="button" class="ry-viewer-btn ry-viewer-prev" data-nav="-1" aria-label="上一张（←）">‹</button>
+      <button type="button" class="ry-viewer-btn ry-viewer-next" data-nav="1" aria-label="下一张（→）">›</button>
+      <div class="ry-viewer-bar ry-viewer-tools">
+        <button type="button" class="ry-viewer-btn" data-zoom="-1" aria-label="缩小（-）">－</button>
+        <button type="button" class="ry-viewer-btn" data-zoom="0" aria-label="原始比例">1:1</button>
+        <button type="button" class="ry-viewer-btn" data-zoom="1" aria-label="放大（+）">＋</button>
+        <a class="ry-viewer-btn ry-viewer-link" data-original target="_blank" rel="noopener">打开原图 ↗</a>
+      </div>`;
+    document.body.append(root);
+    img = root.querySelector('[data-img]');
+    counter = root.querySelector('[data-count]');
+    caption = root.querySelector('[data-caption]');
+    original = root.querySelector('[data-original]');
+    const stage = root.querySelector<HTMLElement>('[data-stage]')!;
+
+    root.querySelector('[data-close]')!.addEventListener('click', close);
+    root.querySelectorAll<HTMLElement>('[data-nav]').forEach((b) => b.addEventListener('click', () => show(index + Number(b.dataset.nav))));
+    root.querySelectorAll<HTMLElement>('[data-zoom]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const d = Number(b.dataset.zoom);
+        zoom(d === 0 ? 1 : scale * (d > 0 ? 1.5 : 1 / 1.5));
+      }),
+    );
+    // 点图外的空白处关闭；点图本身切换放大
+    stage.addEventListener('click', (e) => {
+      if (e.target === stage) close();
+    });
+    img!.addEventListener('dblclick', () => zoom(scale > 1 ? 1 : 2.5));
+    stage.addEventListener(
+      'wheel',
+      (e) => {
+        e.preventDefault();
+        zoom(scale * (e.deltaY < 0 ? 1.15 : 1 / 1.15));
+      },
+      { passive: false },
+    );
+    // 放大后拖动；没放大时左右滑切换（手机）
+    let sx = 0;
+    let sy = 0;
+    let ox = 0;
+    let oy = 0;
+    let dragging = false;
+    img!.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      sx = e.clientX;
+      sy = e.clientY;
+      ox = x;
+      oy = y;
+      img!.setPointerCapture(e.pointerId);
+    });
+    img!.addEventListener('pointermove', (e) => {
+      if (!dragging || scale === 1) return;
+      x = ox + e.clientX - sx;
+      y = oy + e.clientY - sy;
+      apply();
+    });
+    img!.addEventListener('pointerup', (e) => {
+      if (!dragging) return;
+      dragging = false;
+      const dx = e.clientX - sx;
+      if (scale === 1 && Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(e.clientY - sy)) show(index + (dx < 0 ? 1 : -1));
+    });
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if (!root || root.hasAttribute('hidden')) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowRight') show(index + 1);
+    else if (e.key === 'ArrowLeft') show(index - 1);
+    else if (e.key === '+' || e.key === '=') zoom(scale * 1.5);
+    else if (e.key === '-') zoom(scale / 1.5);
+    else return;
+    e.preventDefault();
+  });
+
+  document.addEventListener('click', (e) => {
+    // 带修饰键（Ctrl / ⌘ / Shift / 中键）照浏览器原意在新标签打开
+    if (e.defaultPrevented || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey) return;
+    const target = e.target as Element | null;
+    const article = target?.closest('.vp-doc');
+    if (!target || !article || !target.closest('img')) return;
+    const hit = sourceOf(target);
+    if (!hit) return;
+    e.preventDefault();
+    if (!root) build();
+    const all = collect(article);
+    items = all.map((x) => x.item);
+    const start = all.findIndex((x) => x.el === target.closest('img'));
+    lastFocus = document.activeElement;
+    root!.removeAttribute('hidden');
+    document.documentElement.style.overflow = 'hidden';
+    show(Math.max(0, start));
+    root!.querySelector<HTMLElement>('[data-close]')?.focus();
+  });
+</script>
+
+<style is:global>
+  /* 正文里可放大的图给放大镜指针（判断规则与脚本一致：图片链接里的图、正文直接插的图） */
+  .vp-doc a[href$='.png'] img,
+  .vp-doc a[href$='.jpg'] img,
+  .vp-doc a[href$='.jpeg'] img,
+  .vp-doc a[href$='.webp'] img,
+  .vp-doc a[href$='.gif'] img,
+  .vp-doc p > img {
+    cursor: zoom-in;
+  }
+  .ry-viewer {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgb(8 12 22 / 0.92);
+    backdrop-filter: blur(6px);
+    color: #fff;
+  }
+  .ry-viewer[hidden] {
+    display: none;
+  }
+  .ry-viewer-stage {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    padding: 64px 72px;
+    overflow: hidden;
+  }
+  /* 最大尺寸直接按窗口算（网格单元里的百分比高度不可靠），给上方说明栏与下方工具栏各留出位置 */
+  .ry-viewer-img {
+    max-width: calc(100vw - 144px);
+    max-height: calc(100vh - 136px);
+    border-radius: 10px;
+    box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.7);
+    transition: transform 0.18s ease-out;
+    user-select: none;
+    touch-action: none;
+  }
+  .ry-viewer-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+  .ry-viewer-top {
+    top: 0;
+    background: linear-gradient(rgb(0 0 0 / 0.45), transparent);
+  }
+  .ry-viewer-tools {
+    bottom: 0;
+    justify-content: center;
+    background: linear-gradient(transparent, rgb(0 0 0 / 0.45));
+  }
+  .ry-viewer-count {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: rgb(255 255 255 / 0.7);
+  }
+  .ry-viewer-caption {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+    color: rgb(255 255 255 / 0.85);
+  }
+  .ry-viewer-btn {
+    display: inline-grid;
+    place-items: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.1);
+    color: #fff;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  /* 只有一张图时隐藏左右箭头：按钮自带 display，会压过 hidden 属性 */
+  .ry-viewer-btn[hidden] {
+    display: none;
+  }
+  .ry-viewer-btn:hover {
+    background: rgb(255 255 255 / 0.2);
+  }
+  .ry-viewer-btn:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+  .ry-viewer-link {
+    font-size: 13px;
+  }
+  .ry-viewer-prev,
+  .ry-viewer-next {
+    position: absolute;
+    top: 50%;
+    width: 48px;
+    height: 48px;
+    margin-top: -24px;
+    font-size: 28px;
+    line-height: 1;
+  }
+  .ry-viewer-prev {
+    left: 14px;
+  }
+  .ry-viewer-next {
+    right: 14px;
+  }
+  @media (max-width: 640px) {
+    .ry-viewer-stage {
+      padding: 56px 8px 72px;
+    }
+    .ry-viewer-img {
+      max-width: calc(100vw - 16px);
+      max-height: calc(100vh - 140px);
+    }
+    .ry-viewer-prev,
+    .ry-viewer-next {
+      display: none;
+    }
+  }
+</style>
