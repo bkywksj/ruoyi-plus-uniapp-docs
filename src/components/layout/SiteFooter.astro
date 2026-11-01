@@ -1,5 +1,5 @@
 ---
-// 页脚：常驻深色（与页头、深色首屏同一套底色），站点简介 + 链接分组 + 说明行 + 版权与备案号
+// 页脚：白底细分隔线（方案 B 浅色，语义令牌，深色模式自动翻转），站点简介 + 链接分组 + 说明行 + 版权与备案号
 // 分组取 site.footerGroups；没配时退回一栏「站内」列出全部 nav。说明行、署名、备案号为空则不显示
 import { site } from '@/site.config';
 
@@ -10,7 +10,7 @@ const external = (href: string) => /^https?:/.test(href);
 const cols = groups.length + (site.social.length > 0 ? 1 : 0);
 ---
 
-<footer class="border-t border-white/[.06] bg-[#07080D] text-white">
+<footer class="border-t border-line bg-elevated text-ink">
   <div
     class="mx-auto grid w-full max-w-[90rem] grid-cols-2 gap-10 px-4 py-14 sm:px-6 md:grid-cols-[minmax(0,1.6fr)_repeat(var(--cols),minmax(0,1fr))] lg:px-8"
     style={`--cols: ${cols}`}
@@ -26,18 +26,18 @@ const cols = groups.length + (site.social.length > 0 ? 1 : 0);
         }
         {site.name}
       </p>
-      <p class="mt-3 text-sm leading-6 text-white/45">{site.description}</p>
+      <p class="mt-3 text-sm leading-6 text-muted">{site.description}</p>
     </div>
     {
       groups.map((g) => (
         <nav aria-label={`页脚 · ${g.title}`}>
           <p class="text-sm font-semibold">{g.title}</p>
-          <ul class="mt-3 space-y-2 text-sm text-white/45">
+          <ul class="mt-3 space-y-2 text-sm text-muted">
             {g.items.map((item) => (
               <li>
                 <a
                   href={item.href}
-                  class="transition-colors hover:text-white"
+                  class="transition-colors hover:text-ink"
                   target={external(item.href) ? '_blank' : undefined}
                   rel={external(item.href) ? 'noopener' : undefined}
                 >
@@ -53,10 +53,10 @@ const cols = groups.length + (site.social.length > 0 ? 1 : 0);
       site.social.length > 0 && (
         <div>
           <p class="text-sm font-semibold">关注</p>
-          <ul class="mt-3 space-y-2 text-sm text-white/45">
+          <ul class="mt-3 space-y-2 text-sm text-muted">
             {site.social.map((item) => (
               <li>
-                <a href={item.href} class="transition-colors hover:text-white" rel="noopener me" target="_blank">
+                <a href={item.href} class="transition-colors hover:text-ink" rel="noopener me" target="_blank">
                   {item.label}
                 </a>
               </li>
@@ -67,14 +67,14 @@ const cols = groups.length + (site.social.length > 0 ? 1 : 0);
     }
   </div>
   <div
-    class="mx-auto flex w-full max-w-[90rem] flex-col gap-2 border-t border-white/[.06] px-4 py-6 text-xs text-white/45 sm:px-6 lg:flex-row lg:justify-between lg:px-8"
+    class="mx-auto flex w-full max-w-[90rem] flex-col gap-2 border-t border-line px-4 py-6 text-xs text-muted sm:px-6 lg:flex-row lg:justify-between lg:px-8"
   >
     {
       site.footerNote && (
         <p>
           {site.footerNote.text}
           {site.footerNote.link && (
-            <a href={site.footerNote.link.href} class="text-white/70 underline-offset-4 hover:text-white hover:underline">
+            <a href={site.footerNote.link.href} class="text-ink/80 underline-offset-4 hover:text-ink hover:underline">
               {site.footerNote.link.label}
             </a>
           )}
@@ -87,7 +87,7 @@ const cols = groups.length + (site.social.length > 0 ? 1 : 0);
         site.icp && (
           <>
             {' · '}
-            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" class="transition-colors hover:text-white">
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" class="transition-colors hover:text-ink">
               {site.icp}
             </a>
           </>
