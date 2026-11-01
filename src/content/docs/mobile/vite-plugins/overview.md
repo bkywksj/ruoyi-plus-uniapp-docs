@@ -229,6 +229,7 @@ description: "本项目使用 Vite 作为构建工具，集成了丰富的 Vite 
 | `openapi` | 从 OpenAPI 文档自动生成 API 接口代码 | `openapi/index.ts` |
 | `static-assets-types` | 扫描静态资源目录生成 TypeScript 类型 | `static-assets-types.ts` |
 | `copyNativeRes` | App 平台原生资源复制 | `copyNativeRes.ts` |
+| `sm-crypto-rng` | 修补 sm-crypto 随机数初始化，开启国密后小程序 / APP 加载 vendor.js 不再白屏 | `sm-crypto-rng.ts` |
 
 ### 样式和开发工具插件
 
@@ -297,6 +298,7 @@ import createOptimization from './optimization'
 import createViteRestart from './vite-restart'
 import createStaticAssetsTypes from './static-assets-types'
 import createOpenApiPlugin from './openapi'
+import createSmCryptoRng from './sm-crypto-rng'
 // 无配置或简单配置的插件直接导入
 import Uni from '@dcloudio/vite-plugin-uni'
 import UniLayouts from '@uni-helper/vite-plugin-uni-layouts'
@@ -342,6 +344,9 @@ export default async ({
       },
     }),
   )
+
+  // 修补 sm-crypto 随机数初始化，否则开启国密后小程序 / APP 加载 vendor.js 即报错白屏
+  vitePlugins.push(createSmCryptoRng())
 
   // 3. UniApp 相关插件
   vitePlugins.push(createUniPages(mode))

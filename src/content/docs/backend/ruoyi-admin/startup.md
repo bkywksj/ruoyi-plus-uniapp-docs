@@ -151,19 +151,19 @@ mvn clean package -DskipTests
 mvn clean package -Pprod -DskipTests
 ```
 
-构建完成后，JAR包位于 `ruoyi-admin/target/ryplus_uni_workflow.jar`
+构建完成后，JAR包位于 `ruoyi-admin/target/ryplus_uni.jar`（主版本 master；workflow 分支的包名与数据库名是 `ryplus_uni_workflow`）
 
 ### 直接启动
 
 ```bash
 # 前台启动
-java -jar ryplus_uni_workflow.jar
+java -jar ryplus_uni.jar
 
 # 后台启动（Linux）
-nohup java -jar ryplus_uni_workflow.jar > /dev/null 2>&1 &
+nohup java -jar ryplus_uni.jar > /dev/null 2>&1 &
 
 # 后台启动（指定日志文件）
-nohup java -jar ryplus_uni_workflow.jar > app.log 2>&1 &
+nohup java -jar ryplus_uni.jar > app.log 2>&1 &
 ```
 
 ### Systemd服务（推荐）
@@ -180,7 +180,7 @@ Type=simple
 User=ruoyi
 Group=ruoyi
 WorkingDirectory=/opt/ruoyi
-ExecStart=/usr/bin/java -Xms2g -Xmx4g -jar /opt/ruoyi/ryplus_uni_workflow.jar --spring.profiles.active=prod
+ExecStart=/usr/bin/java -Xms2g -Xmx4g -jar /opt/ruoyi/ryplus_uni.jar --spring.profiles.active=prod
 ExecStop=/bin/kill -SIGTERM $MAINPID
 Restart=on-failure
 RestartSec=10
@@ -258,9 +258,9 @@ mvn clean package -Pprod -DskipTests
 
 ### 部署到Tomcat
 
-1. 将 `ryplus_uni_workflow.war` 复制到 `$TOMCAT_HOME/webapps/`
+1. 将 `ryplus_uni.war` 复制到 `$TOMCAT_HOME/webapps/`
 2. 启动 Tomcat
-3. 访问 `http://localhost:8080/ryplus_uni_workflow`
+3. 访问 `http://localhost:8080/ryplus_uni`
 
 ## Docker部署
 
@@ -279,7 +279,7 @@ RUN apk add --no-cache tzdata \
     && echo "Asia/Shanghai" > /etc/timezone
 
 # 复制JAR包
-COPY target/ryplus_uni_workflow.jar app.jar
+COPY target/ryplus_uni.jar app.jar
 
 # 创建上传目录
 RUN mkdir -p /ruoyi/server/upload
@@ -325,7 +325,7 @@ services:
       - SPRING_PROFILES_ACTIVE=prod
       - DB_HOST=mysql
       - DB_PORT=3306
-      - DB_NAME=ryplus_uni_workflow
+      - DB_NAME=ryplus_uni
       - DB_USERNAME=root
       - DB_PASSWORD=root123456
       - REDIS_HOST=redis
@@ -346,7 +346,7 @@ services:
     container_name: ruoyi-mysql
     environment:
       - MYSQL_ROOT_PASSWORD=root123456
-      - MYSQL_DATABASE=ryplus_uni_workflow
+      - MYSQL_DATABASE=ryplus_uni
     volumes:
       - mysql-data:/var/lib/mysql
       - ./sql:/docker-entrypoint-initdb.d
@@ -412,7 +412,7 @@ docker-compose up -d --build
 |--------|------|--------|-----------|
 | DB_HOST | 数据库主机 | 127.0.0.1 | 是 |
 | DB_PORT | 数据库端口 | 3306 | 否 |
-| DB_NAME | 数据库名 | ryplus_uni_workflow | 是 |
+| DB_NAME | 数据库名 | ryplus_uni | 是 |
 | DB_USERNAME | 数据库用户名 | root | 是 |
 | DB_PASSWORD | 数据库密码 | root | 是 |
 | DB_MAX_POOL_SIZE | 最大连接数 | 20(dev)/50(prod) | 否 |

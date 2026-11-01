@@ -7,18 +7,6 @@ description: "Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是�
 ## 介绍
 Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开发、文档与协作的工程化体系。它通过 `CLAUDE.md` 与 `AGENTS.md` 双配置沉淀语言规范、架构约束与技能激活流程，并结合 `.claude/skills`、`.claude/commands`、`.claude/hooks` 形成可执行的工作流。开发者给出目标后，Claude Code 先做技能评估，再按命令流程执行扫描、设计、生成和同步，确保产出严格贴合 `plus.ruoyi` 架构与四层分层设计。本文档基于 workflow 项目真实文件整理，系统化说明技能体系、命令体系、钩子机制与实战方法，帮助团队在复杂业务下保持一致性与可追溯性。
 
-## 写作进度跟踪
-- [x] 介绍内容已完成，覆盖双配置与三大机制的整体定位
-- [x] 核心特性已完成，包含技能规模、命令入口与钩子机制
-- [x] 上下文工程已完成，说明 `CLAUDE.md` 与 `AGENTS.md` 协同方式
-- [x] 技能系统已完成，包含 61 个技能的场景与示例
-- [x] 命令系统已完成，按 20 个使用入口拆解
-- [x] 钩子系统已完成，覆盖三类 JS 钩子的触发与输出
-- [x] 最佳实践已完成，强调规范优先与流程闭环
-- [x] 实战案例已完成，覆盖新功能、文档同步、工作流同步
-- [x] 行数目标已完成，全文行数不少于 1000 行
-- [x] 续写提示已保留，如需扩展可追加更多技能场景或案例
-
 ## 核心特性
 - 技能体系：`.claude/skills` 目录现有 61 个技能目录，覆盖架构、后端、前端、移动端、APP原生、AI、协作、计划、测试验收、工程规范、部署运维、交付、中间件集成与物联网
 - 命令体系：`.claude/commands` 提供 19 个命令文件，`/init-docs` 内含两种模式，合计 20 个使用入口（不含 local 相关的上游同步命令，这些命令仅在源码项目中使用）
@@ -78,7 +66,7 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 强制技能评估流程由钩子注入，未匹配技能时需明确说明
 
 ### 分类总览（61 个技能）
-- 业务与架构：crud-development、api-development、architecture-design、workflow-engine
+- 业务与架构：crud-development、api-development、architecture-design、workflow-engine（workflow / 6.x / 6.x-single 分支）
 - 后端能力：backend-annotations、data-permission、error-handler、security-guard、multi-tenant、json-serialization、test-development、log-audit
 - 前端与移动：ui-pc、ui-mobile、ui-design-mobile、store-pc、store-mobile、uniapp-platform、i18n-development
 - APP原生：app-adapter
@@ -2947,9 +2935,6 @@ Claude Code 在 ruoyi-plus-uniapp 中不是单点工具，而是一套贯穿开�
 - 防重复提交
 - 敏感数据脱敏
 - 数据权限控制
-
-#### banana-image
-- 场景以技能描述为准
 
 #### brainstorm
 - 不知道怎么设计

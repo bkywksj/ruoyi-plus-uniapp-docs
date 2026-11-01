@@ -1677,7 +1677,7 @@
               "id": "mobile/composables/use-websocket"
             },
             {
-              "text": "相机插件",
+              "text": "useUpload 媒体选择与上传",
               "id": "mobile/plugins/camera"
             }
           ]
