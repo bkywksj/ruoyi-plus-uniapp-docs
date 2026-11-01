@@ -93,7 +93,18 @@
   - C 类 10 页（与代码不符，仍可被搜到）：backend/core/base-mapper、backend/core/exception-handler、backend/modules/generator/advanced-config、
     backend/architecture/overview、mobile/plugins/{analytics,map,permission,push}、mobile/utils/{device,file}——重写 / 加 noindex / 删除，待用户决定
   - B 类 29 页（已被侧栏页取代）：保持现状，网址可访问
-- [ ] T7 第 6 步：工具链迁移（.claude 13 技能 + 6 命令、docs-sync 检查点、PROJECT_PROGRESS、build-llms / build-icons / indexnow / emoji-to-icon 等脚本），旧 CLAUDE.md 写作规范并入
+- [x] T7 第 6 步：工具链迁移（.claude 13 技能 + 6 命令、docs-sync 检查点、PROJECT_PROGRESS、build-llms / build-icons / indexnow / emoji-to-icon 等脚本），旧 CLAUDE.md 写作规范并入
+  - 2026-11-01 完成（用户「按你建议继续」）：
+    · 脚本（2618e49）：build-icons（正文实际用到 61 个图标，图标库锁旧站同版、线条逐字相同）、build-llms（按 sidebar.json，旧 435 条一条不少 +31）、
+      indexnow、新增 check-anchors（构建产物锚点检查）；dev / build 前自动生成；package.json 加 icons / llms / indexnow / check:anchors / deploy
+    · 技能 13 + 命令 6：路径改项目内相对路径（切换后仓库换位置也能用）；sidebar-manager、preview-server、link-checker、edgeone-deploy 重写
+      （旧 deploy 用 add -A 与本地推送，改为逐个 add、Sigil 推送、上线前问用户；pnpm deploy 是 pnpm 内置命令，改 pnpm run deploy）；
+      旧 deploy 改名 edgeone-deploy（与框架 deployment-guide 的 Docker / Reeve 路线区分）；sync-products 的 AProductCard.vue 存进技能 templates，本站按 Astro 站跳过主题三步
+    · 钩子登记新增「文档内容（本站）」一组；check:skills 55 技能 / 26 命令通过；agents:sync 已同步 Codex 镜像
+    · 写作规范：旧 CLAUDE.md 四节（编写规范 / 编写流程 / 组件模板 / 注意事项）→ docs/文档写作规范.md，doc-writer 等改为读它；
+      保留作者规矩「正文不放文档间跳转链接」
+    · 数据：.claude/docs-sync-checkpoint.json、docs/PROJECT_PROGRESS.md 搬入；.claude/PROJECT.md 加「本站专属流程」
+    · 没迁的：旧钩子 3 个（新框架钩子已覆盖且更全）；emoji-to-icon / scan-unmapped / verify-icons（一次性批量转换工具，已完成使命；校验由 build-icons 失败即报代替）
 - [ ] T8 第 7 步：验收与切换（合并历史覆盖旧仓库 → Gitee + GitHub → `edgeone pages deploy`，上线前用户确认）→ 线上 511 网址逐条核对
 
 ## 试点页面（34）
