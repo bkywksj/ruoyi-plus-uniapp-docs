@@ -1,28 +1,31 @@
 ---
-// 页头：吸顶 + 毛玻璃；移动端菜单用 <details>，零 JS
+// 页头：吸顶深色条（方案 C「AI 原生」：深色页头 + 深色首屏，往下切浅色正文），浅 / 深两种主题下都是深色，不跟随主题翻转
+// 移动端菜单用 <details>，零 JS；导航项、搜索、GitHub 都取 site.config
 import { Menu } from '@lucide/astro';
 import { site } from '@/site.config';
-import Container from '@/components/ui/Container.astro';
 import ThemeToggle from './ThemeToggle.astro';
 import SearchButton from '@/components/docs/SearchButton.astro';
 import SearchDialog from '@/components/docs/SearchDialog.astro';
 
 const current = Astro.url.pathname;
-// file 网址形态下 href 带 .html，按 match 前缀（或去掉 .html 的 href）判断，才能让一组页面共用一个导航项
+// file / preserve 网址形态下 href 带 .html，按 match 前缀（或去掉 .html 的 href）判断，才能让一组页面共用一个导航项
 const isActive = (item: { href: string; match?: string }) => {
   if (item.href === '/') return current === '/' || current === '/index.html';
   return current.startsWith(item.match ?? item.href.replace(/\.html$/, ''));
 };
 // Tailwind 只认完整类名，断点要写成两组字面量，不能拼字符串
 const lg = site.navBreakpoint === 'lg';
+const github = site.social.find((s) => s.label === 'GitHub');
+// 「开始使用」与旧站首页第一个按钮同一个去处
+const start = site.headerCta;
 ---
 
-<header class="sticky top-0 z-40 border-b border-line/70 bg-canvas/80 backdrop-blur-md supports-[backdrop-filter]:bg-canvas/65">
-  <Container class="flex h-16 items-center justify-between gap-6">
-    <a href="/" class="flex items-center gap-2.5 font-semibold tracking-tight">
+<header class="sticky top-0 z-40 border-b border-white/[.07] bg-[#07080D]/95 text-white backdrop-blur-md" data-site-header>
+  <div class="mx-auto flex h-16 w-full max-w-[90rem] items-center gap-6 px-4 sm:px-6 lg:px-8">
+    <a href="/" class="flex shrink-0 items-center gap-2.5 text-[15px] font-semibold tracking-tight">
       {
         site.logo ? (
-          <img src={site.logo} alt="" width="32" height="32" class="size-8 rounded-full" />
+          <img src={site.logo} alt="" width="28" height="28" class="size-7 object-contain" />
         ) : (
           <span class="size-2.5 rounded-full bg-brand" aria-hidden="true" />
         )
@@ -30,16 +33,16 @@ const lg = site.navBreakpoint === 'lg';
       <span>{site.shortName}</span>
     </a>
 
-    <nav aria-label="主导航" class:list={['hidden', lg ? 'lg:block' : 'md:block']}>
-      <ul class="flex items-center gap-1">
+    <nav aria-label="主导航" class:list={['hidden', lg ? 'xl:block' : 'md:block']}>
+      <ul class="flex items-center gap-0.5 text-[13.5px]">
         {site.nav.map((item) => (
           <li>
             <a
               href={item.href}
               aria-current={isActive(item) ? 'page' : undefined}
               class:list={[
-                'rounded-lg px-3 py-2 text-sm transition-colors',
-                isActive(item) ? 'font-medium text-ink' : 'text-muted hover:text-ink',
+                'rounded-lg px-2.5 py-1.5 transition-colors',
+                isActive(item) ? 'bg-white/[.09] text-white' : 'text-white/60 hover:bg-white/[.06] hover:text-white',
               ]}
             >
               {item.label}
@@ -49,29 +52,56 @@ const lg = site.navBreakpoint === 'lg';
       </ul>
     </nav>
 
-    <div class="flex items-center gap-1">
-      <SearchButton class="mr-1 hidden w-44 lg:flex" />
-      <ThemeToggle />
-      <details class:list={['group relative', lg ? 'lg:hidden' : 'md:hidden']} data-mobile-menu>
+    <div class="ml-auto flex items-center gap-1">
+      <SearchButton tone="dark" class="mr-1 hidden w-44 shrink-0 sm:flex" />
+      {
+        github && (
+          <a
+            href={github.href}
+            target="_blank"
+            rel="noopener"
+            aria-label="GitHub"
+            class="hidden size-9 items-center justify-center rounded-lg text-white/60 transition-colors hover:bg-white/[.06] hover:text-white md:inline-flex"
+          >
+            <svg viewBox="0 0 16 16" class="size-4" fill="currentColor" aria-hidden="true">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8" />
+            </svg>
+          </a>
+        )
+      }
+      <!-- 主题切换按钮自带浅底配色，页头常驻深色，这里把它的文字 / 悬停色改成深底版 -->
+      <span class="[&_button]:text-white/60 [&_button:hover]:bg-white/[.06] [&_button:hover]:text-white">
+        <ThemeToggle />
+      </span>
+      {
+        start && (
+          <a
+            href={start.href}
+            class="ml-1 hidden h-8 shrink-0 items-center rounded-lg bg-white px-4 text-[13px] font-semibold whitespace-nowrap text-[#07080D] transition-colors hover:bg-white/90 sm:inline-flex"
+          >
+            {start.label}
+          </a>
+        )
+      }
+      <details class:list={['group relative', lg ? 'xl:hidden' : 'md:hidden']} data-mobile-menu>
         <summary
-          class="inline-flex size-10 cursor-pointer list-none items-center justify-center rounded-lg text-muted hover:bg-surface hover:text-ink [&::-webkit-details-marker]:hidden"
+          class="inline-flex size-10 cursor-pointer list-none items-center justify-center rounded-lg text-white/70 hover:bg-white/[.06] hover:text-white [&::-webkit-details-marker]:hidden"
           aria-label="打开菜单"
         >
           <Menu class="size-5" aria-hidden="true" />
         </summary>
         <nav
           aria-label="移动端导航"
-          class="absolute top-11 right-0 w-44 rounded-xl border border-line bg-elevated p-1.5 shadow-[var(--shadow-card-hover)]"
+          class="absolute top-12 right-0 w-56 rounded-2xl border border-white/10 bg-[#0B0D16] p-2 shadow-[0_30px_60px_-20px_rgba(0,0,0,.8)]"
         >
+          <SearchButton tone="dark" class="mb-2 w-full sm:hidden" />
           {site.nav.map((item) => (
             <a
               href={item.href}
               aria-current={isActive(item) ? 'page' : undefined}
               class:list={[
-                'block rounded-lg px-3 py-2 text-sm',
-                isActive(item)
-                  ? 'bg-surface font-medium text-ink'
-                  : 'text-muted hover:bg-surface hover:text-ink',
+                'block rounded-lg px-3 py-2 text-[14px]',
+                isActive(item) ? 'bg-white/10 font-medium text-white' : 'text-white/65 hover:bg-white/[.06] hover:text-white',
               ]}
             >
               {item.label}
@@ -80,7 +110,7 @@ const lg = site.navBreakpoint === 'lg';
         </nav>
       </details>
     </div>
-  </Container>
+  </div>
 </header>
 <SearchDialog />
 
@@ -98,6 +128,6 @@ const lg = site.navBreakpoint === 'lg';
     if (event.key === 'Escape') closeAll();
   });
   menus.forEach((menu) =>
-    menu.querySelectorAll('nav a').forEach((link) => link.addEventListener('click', closeAll)),
+    menu.querySelectorAll('nav a, [data-search-open]').forEach((link) => link.addEventListener('click', closeAll)),
   );
 </script>

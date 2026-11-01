@@ -1,64 +1,98 @@
 ---
-// 页脚：站点简介 + 站内导航 + 社交链接 + 备案号（site.icp 为空则不显示）
+// 页脚：常驻深色（与页头、深色首屏同一套底色），站点简介 + 链接分组 + 说明行 + 版权与备案号
+// 分组取 site.footerGroups；没配时退回一栏「站内」列出全部 nav。说明行、署名、备案号为空则不显示
 import { site } from '@/site.config';
-import Container from '@/components/ui/Container.astro';
 
 const year = new Date().getFullYear();
+const groups = site.footerGroups.length > 0 ? site.footerGroups : [{ title: '站内', items: site.nav }];
+const external = (href: string) => /^https?:/.test(href);
+// 简介之外的栏数（链接分组 + 「关注」），md 起按它等分
+const cols = groups.length + (site.social.length > 0 ? 1 : 0);
 ---
 
-<footer class="mt-16 border-t border-line">
-  <Container class="flex flex-col gap-8 py-12 md:flex-row md:justify-between">
-    <div class="max-w-md space-y-3">
+<footer class="border-t border-white/[.06] bg-[#07080D] text-white">
+  <div
+    class="mx-auto grid w-full max-w-[90rem] grid-cols-2 gap-10 px-4 py-14 sm:px-6 md:grid-cols-[minmax(0,1.6fr)_repeat(var(--cols),minmax(0,1fr))] lg:px-8"
+    style={`--cols: ${cols}`}
+  >
+    <div class="col-span-full max-w-sm md:col-span-1">
       <p class="flex items-center gap-2.5 font-semibold">
         {
-          // 与页头同一个标志：页头用了标志图而页脚还是圆点，品牌在同一页里出现两种样子
           site.logo ? (
-            <img src={site.logo} alt="" width="28" height="28" class="size-7 rounded-full" />
+            <img src={site.logo} alt="" width="28" height="28" class="size-7 object-contain" />
           ) : (
             <span class="size-2.5 rounded-full bg-brand" aria-hidden="true" />
           )
         }
         {site.name}
       </p>
-      <p class="text-sm leading-6 text-muted">{site.description}</p>
+      <p class="mt-3 text-sm leading-6 text-white/45">{site.description}</p>
     </div>
-    <div class="flex gap-16 text-sm">
-      <nav aria-label="页脚导航">
-        <p class="mb-3 font-medium">站内</p>
-        <ul class="space-y-2">
-          {site.nav.map((item) => (
-            <li>
-              <a href={item.href} class="text-muted hover:text-ink">
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      {site.social.length > 0 && (
+    {
+      groups.map((g) => (
+        <nav aria-label={`页脚 · ${g.title}`}>
+          <p class="text-sm font-semibold">{g.title}</p>
+          <ul class="mt-3 space-y-2 text-sm text-white/45">
+            {g.items.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class="transition-colors hover:text-white"
+                  target={external(item.href) ? '_blank' : undefined}
+                  rel={external(item.href) ? 'noopener' : undefined}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ))
+    }
+    {
+      site.social.length > 0 && (
         <div>
-          <p class="mb-3 font-medium">关注</p>
-          <ul class="space-y-2">
+          <p class="text-sm font-semibold">关注</p>
+          <ul class="mt-3 space-y-2 text-sm text-white/45">
             {site.social.map((item) => (
               <li>
-                <a href={item.href} class="text-muted hover:text-ink" rel="noopener me" target="_blank">
+                <a href={item.href} class="transition-colors hover:text-white" rel="noopener me" target="_blank">
                   {item.label}
                 </a>
               </li>
             ))}
           </ul>
         </div>
-      )}
-    </div>
-  </Container>
-  <Container class="flex flex-col gap-2 border-t border-line py-6 text-xs text-muted sm:flex-row sm:justify-between">
+      )
+    }
+  </div>
+  <div
+    class="mx-auto flex w-full max-w-[90rem] flex-col gap-2 border-t border-white/[.06] px-4 py-6 text-xs text-white/45 sm:px-6 lg:flex-row lg:justify-between lg:px-8"
+  >
+    {
+      site.footerNote && (
+        <p>
+          {site.footerNote.text}
+          {site.footerNote.link && (
+            <a href={site.footerNote.link.href} class="text-white/70 underline-offset-4 hover:text-white hover:underline">
+              {site.footerNote.link.label}
+            </a>
+          )}
+        </p>
+      )
+    }
     <p>
-      © {year} {site.author.name}
+      © {year} {site.copyrightName || site.author.name}
+      {
+        site.icp && (
+          <>
+            {' · '}
+            <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" class="transition-colors hover:text-white">
+              {site.icp}
+            </a>
+          </>
+        )
+      }
     </p>
-    {site.icp && (
-      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener" class="hover:text-ink">
-        {site.icp}
-      </a>
-    )}
-  </Container>
+  </div>
 </footer>
