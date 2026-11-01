@@ -147,10 +147,11 @@ const c = site.contact;
   }
 
   .ry-contact {
-    width: min(26rem, calc(100vw - 2rem));
+    /* 电脑端放大到约 1.5 倍（416 → 624px）：微信码图片里二维码只占六成，原尺寸下二维码约 107px，手机要凑很近才扫得上 */
+    width: min(39rem, calc(100vw - 2rem));
     max-height: calc(100vh - 2rem);
     margin: auto;
-    padding: 22px 22px 20px;
+    padding: 28px 28px 24px;
     border: 1px solid var(--line);
     border-radius: 24px;
     background: var(--elevated);
@@ -184,7 +185,7 @@ const c = site.contact;
   }
   .ry-contact h2 {
     margin-top: 2px;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 800;
   }
   .ry-contact-x {
@@ -212,7 +213,7 @@ const c = site.contact;
   .ry-contact-qrs {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    gap: 18px;
     margin-top: 16px;
   }
   .ry-contact-qrs figure {
