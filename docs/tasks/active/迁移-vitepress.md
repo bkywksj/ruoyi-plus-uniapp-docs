@@ -48,10 +48,34 @@
     最佳实践「工程化 › Claude Code」+1（practices/ai/claude-code 组首「总览」）。B / C / ? 类不进侧栏，网址照常可访问
   - 读数：侧栏 438 → 464 条；cache:clear 后全新构建 verify 全绿（512 页、128 单测）；逐页 511/511、全站比对全部通过
   - 提交: 7526af3 feat(docs)
-- [ ] T6 第 5 步：首页与营销页重做（index / comparison / demo / products / changelog / video / services），工作站出原型给用户选风格
+- [x] T6 第 5 步：首页与营销页重做（index / comparison / demo / products / changelog / video / services），工作站出原型给用户选风格
   - 2026-10-31 原型完成，待用户选方向：docs/prototypes/2026-10-31-首页三方向/（index.html 入口 + 决策对比表；plan-1 同家族 / plan-2 开发者工具风 / plan-3 企业级框架风）
   - 三方案内容一致，全部取自旧站首页（13 功能卡、5 组亮点、定价 3 档、103 家企业、产品矩阵 8 款、技术服务、4 张二维码），只比视觉；均无方格线
   - 提交: 2118761 docs(prototype)
+  - 2026-11-01 第二轮三方向（1d24fcd）→ 用户选方案 C「AI 原生」，并要求其余页同风格：全站原型 docs/prototypes/2026-11-01-方案C全站/（4a5db55、1f4593d）→ 用户「可以了，开始落地到新站」
+  - 落地原则（内容一个字不动、比对仍 511/511）：
+    · 营销页 md 不改：rehype 插件把开头 h1 + 导语包进首屏 header（仍在正文盒里，比对照旧）；首屏装饰（标签 / 数字 / 图）标 data-migrate-ignore + data-pagefind-ignore
+    · 版式靠布局 + 每页样式（LandingLayout + landing.css）与 vue-components.mjs 的标记改造，不改文字
+    · 不引中文 webfont（框架禁令）：原型的 Noto Sans SC / Unbounded / JetBrains Mono 改用系统字体栈
+- [x] T9 方案 C 公共壳：品牌色 #5B7CFF、深色页头（栏目高亮 + 手机菜单）、深色页脚（三栏 + 公司行 + 备案号）、搜索框外观
+  - 读写: 写入
+  - 验证: pnpm build + compare-baseline 511/511 + 截图对原型
+- [x] T10 文档页：深色面包屑带、侧栏选中黑底、h2 编号（CSS 计数器）、表格卡片、深色代码窗、提示框卡片化（不用左侧色条）、本页目录、上下篇卡片、手机预览深色卡
+  - 读写: 写入
+- [x] T11 栏目首页（backend / frontend / mobile / practices）：深色首屏 + 页数 + 分组卡片（取侧栏数据），正文照旧
+  - 读写: 写入
+- [x] T12 营销页 6 页（products / services / demo / video / changelog / comparison）：LandingLayout + 首屏抬升插件 + 每页样式
+  - 读写: 写入
+- [x] T13 首页：深色首屏 61/19/3 + 分镜、功能卡、亮点（frontmatter highlights，旧站未渲染，新增显示）、正文各段按原型排版
+  - 读写: 写入
+- [x] T14 404 页 + 全量验收（cache:clear 冷构建、verify、compare-baseline / compare-site、e2e、桌面与手机截图）
+  - 读写: 写入
+  - 读数（2026-11-01 12:35）：cache:clear 冷构建 0 错误、Pagefind 511 页；pnpm verify 全绿（check:seo 全部通过、vitest 128/128）；
+    逐页比对 **511/511 通过**（结构包了 header / section / .tbl 容器，正文、代码块、标题、锚点、图片、表格行、链接全等）；全站比对全部通过；e2e（E2E_PORT=4339）14 通过 2 跳过
+  - 横向溢出逐页扫描（$TEMP/aibid-wm/ry-mobile-scan.mjs，Playwright）：宽 393 / 768 / 1280 / 1556 各 512 页（含 404），溢出均为 0
+  - 修掉的问题：行内代码长词撑破手机版（pay.html 537px → 加 overflow-wrap:anywhere；反证：去掉该规则立刻回到 537px）、营销页分组网格被宽表格撑出版心、
+    深色搜索按钮 w-full 与 w-44 冲突把「开始使用」挤出页头（桌面 1619px）、页脚网格简介与「文档」栏重叠、二维码 3:4 比例误伤首页提交记录图、技术服务卡片空格
+  - 待用户过目的新增文案：首页分镜示例（社区团购 / 文件名）、首屏标签行（landing.json 的 kicker / 数字）、技术服务首屏按钮；页脚说明行照旧站 footer.message 原文
 - [ ] T6c 迁移后内容修正（与迁移分开提交，便于回溯；正文改动不计入「一字不改」的迁移比对）
   - A 类小修：backend/ruoyi-admin/startup 的 jar 名 ryplus_uni_workflow.jar 是 workflow 变体（主版本是 ruoyi-admin.jar）；
     mobile/vite-plugins/overview 缺新加的 sm-crypto-rng 插件（createSmCryptoRng）；practices/ai/claude-code 删「写作进度跟踪」草稿段与 2 个已不存在的技能（banana-image、workflow-engine）；
@@ -106,6 +130,9 @@
 - 16 组页面标题重复（如 5 页都叫「快速开始」），旧站同样如此：是否在标题里带上分区，待用户决定（会改变搜索结果里的标题）
 
 ## 当前进度 / 下一步
+2026-11-01 12:35 第 5 步（方案 C）落地完成：公共壳 / 文档页 / 栏目首页 / 营销 6 页 / 首页 / 404 全部换新版式，比对仍 511/511，verify / e2e / 四档宽度溢出扫描全绿。
+下一步：用户在本地预览过目（新增文案见 T14）→ T6c 内容修正（C 类处置待用户定）→ 第 6 步工具链迁移 → 第 7 步切换（上线前用户确认）。
+
 2026-10-31 22:55 孤立页 A 类 26 页已进侧栏（7526af3，比对仍 511/511）；首页三方向原型完成（2118761）。
 下一步：用户从三个方案里选方向 → 第 5 步落地首页与营销页 → T6c 内容修正（C 类处置待用户定）→ 第 6 步工具链迁移 → 第 7 步切换（上线前用户确认）。
 

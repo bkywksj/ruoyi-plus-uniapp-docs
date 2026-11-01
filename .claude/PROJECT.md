@@ -5,7 +5,8 @@
 - 当前状态：**VitePress → Astro 迁移试点**（2026-10-30 起）。线上仍是旧 VitePress 站，旧仓库 `../ruoyi-plus-uniapp-docs` 只读，本目录验收前不替换任何东西
 - 规模：511 页 / 约 71 万行 / 约 2 万个代码块；旧网址全部 .html 结尾（cleanUrls: false）
 - 生产域名：https://ruoyi.plus；部署方式 `edgeone pages deploy`（CLI 上传，不是 git 触发）
-- 品牌：主色 #0B6EF0（取自旧站 --vp-c-brand-1）；Logo `/logo.png`
+- 品牌：主色 #5B7CFF（2026-11-01 用户选定方案 C「AI 原生」后由旧站 #0B6EF0 改来；文字用 #3D5BEA，见 src/styles/ry-theme.css）；Logo `/logo.png`
+- 视觉：方案 C——页头 / 页脚 / 首屏常驻深色 #07080D，正文浅灰底 + 白卡片；原型 docs/prototypes/2026-11-01-方案C全站/
 - 孵化来源：next-ai-astro @ e13010c（详见 .framework-sync.json）
 
 ## 专属禁令（优先级高于 CLAUDE.md）

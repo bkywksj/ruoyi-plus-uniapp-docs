@@ -9,7 +9,7 @@
   "site": {
     "name": "RuoYi-Plus-UniApp 全栈开发文档",
     "url": "https://ruoyi.plus",
-    "brandColor": "#0B6EF0"
+    "brandColor": "#5B7CFF"
   },
   "strippedModules": [
     "examples",
