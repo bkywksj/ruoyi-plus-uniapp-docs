@@ -1,7 +1,9 @@
 /* 营销页（LandingLayout 与首页）的方案 C 版式。结构来自 ry-layout.mjs：
      .lp-hero（h1 + 导语）→ 浅色光晕首屏；.lp-chips → 章节条；.lp-sec[data-sec=h2 的 id] > h2 + .lp-items > .lp-item（h3 一节）
    正文文字一个不改，这里只排版。md 里的行内 style（旧站写的 grid / flex）需要覆盖时用 !important，并写明原因。
-   首屏与光晕段的底横向铺满靠 ::before 左右各伸 100vmax，外层 .lp 用 overflow-x: clip 兜住，不出横向滚动条 */
+   首屏与光晕段的底横向铺满靠 ::before 左右各伸到视口边（calc(50% - 50vw)，所在区块在版心里居中）；
+   电脑上 100vw 含滚动条宽，多出的几像素由外层 .lp 的 overflow-x: clip 兜住。
+   不用 -100vmax：竖屏手机上左右各多出约 850px，色块比屏幕宽 4 倍多，滚动时整块重绘，内核不支持 clip 时页面还能左右晃 */
 
 .lp {
   overflow-x: clip;
@@ -20,6 +22,11 @@
 .lp .vp-doc {
   max-width: none;
 }
+/* 营销页正文是卡片排版，卡片在手机上只有三百多像素宽：不带空格的长串（权限标识 system:user:view/query/…、长网址）
+   浏览器默认不断行，会把卡片撑破。允许在任意处断开（只在放不下时才断，中文与普通英文不受影响） */
+.lp .vp-doc :is(p, li, dd, td) {
+  overflow-wrap: anywhere;
+}
 
 /* ---------- 首屏（浅底 + 青蓝光晕，与 .ry-aurora 同款） ---------- */
 .lp-hero {
@@ -33,7 +40,7 @@
 .lp-hero::after {
   content: '';
   position: absolute;
-  inset: 0 -100vmax;
+  inset: 0 calc(50% - 50vw);
   z-index: -1;
   background: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
 }
@@ -292,7 +299,7 @@
 .lp .lp-night::before {
   content: '';
   position: absolute;
-  inset: 0 -100vmax;
+  inset: 0 calc(50% - 50vw);
   z-index: -1;
   background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
 }
@@ -546,7 +553,7 @@
 .lp-services [data-sec='联系方式']::before {
   content: '';
   position: absolute;
-  inset: 0 -100vmax;
+  inset: 0 calc(50% - 50vw);
   z-index: -1;
   background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
 }
@@ -1248,7 +1255,7 @@
 .lp-index [data-sec='技术服务-·-承接定制开发']::before {
   content: '';
   position: absolute;
-  inset: 0 -100vmax;
+  inset: 0 calc(50% - 50vw);
   z-index: -1;
   background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
 }

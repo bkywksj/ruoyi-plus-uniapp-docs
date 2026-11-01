@@ -125,7 +125,7 @@ const pipeline = [
         <li class="ry-step">
           <span class="ry-dot">3</span>
           <p class="font-mono text-[11px] tracking-[.14em] text-muted">生成前后端代码</p>
-          <div class="ry-pane mt-2 grid grid-cols-2 gap-x-4 gap-y-1.5 p-4 font-mono text-[12px] text-ink/75">
+          <div class="ry-pane mt-2 grid gap-x-4 gap-y-1.5 p-4 font-mono text-[12px] text-ink/75 [overflow-wrap:anywhere] sm:grid-cols-2">
             <p>MallGoodsController.java</p><p>MallGoodsServiceImpl.java</p><p>MallGoodsDao.java</p><p>MallGoodsMapper.java</p><p>goods/index.vue</p><p>api/mall/goods.ts</p>
           </div>
         </li>
@@ -288,6 +288,8 @@ const pipeline = [
   }
   /* 亮点页签：零 JS，单选框 + :has() 切换 */
   .ry-tab {
+    /* 定位容器：里面的 sr-only 单选框要留在页签内，否则点页签时浏览器把焦点滚进视野、页面跳走 */
+    position: relative;
     display: inline-flex;
     align-items: center;
     height: 38px;

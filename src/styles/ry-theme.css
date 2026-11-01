@@ -19,6 +19,9 @@
   /* 点缀青：首屏光晕、标题渐变的起点 */
   --ry-cyan: #04aef6;
   --ry-code-bg: #0b1220;
+  /* 等宽字体补上苹果 / 安卓自带的：安卓（含微信）没有 ui-monospace、Consolas、Courier New，原来会落到字宽很大的打字机体，
+     首页分镜里的文件名因此撑出卡片 */
+  --font-mono: ui-monospace, 'SF Mono', Menlo, 'JetBrains Mono', 'Cascadia Code', Consolas, 'Roboto Mono', 'Droid Sans Mono', 'Liberation Mono', 'Courier New', monospace;
 }
 
 /* 首屏 / 重点区块的底：浅底 + 青蓝径向光晕（不用方格线）。深色模式下底色跟着 canvas 走，光晕照旧 */
@@ -71,6 +74,26 @@
   border-radius: 18px;
   box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 1px 2px rgb(10 18 34 / 0.04), 0 18px 40px -22px rgb(10 18 34 / 0.22);
 }
+/* 手机与平板（窄屏或触屏）关掉毛玻璃：backdrop-filter 每一帧都要把背后的内容重新模糊，
+   吸顶的页头、章节条和首屏面板叠在大面积渐变上，手机滑动明显掉帧。底色改成不透明，看起来几乎一样 */
+@media (max-width: 1023px), (hover: none) {
+  .ry-pane,
+  .lp-chips,
+  [data-site-header] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .ry-pane {
+    background: var(--elevated);
+  }
+  .lp-chips {
+    background: var(--canvas) !important;
+  }
+  [data-site-header] {
+    background: var(--elevated) !important;
+  }
+}
+
 /* 主按钮：品牌蓝渐变胶囊（方案 B 的「开始使用」） */
 .ry-btn-primary {
   background-image: linear-gradient(180deg, color-mix(in oklab, var(--brand) 78%, white), var(--brand));
