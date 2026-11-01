@@ -21,6 +21,8 @@ const SKILL_GROUPS = [
   ['质量', ['bug-detective', 'test-development', 'e2e-test', 'performance-doctor', 'security-guard']],
   ['环境与发布', ['dev-startup', 'env-config', 'deployment-guide', 'git-workflow', 'framework-sync', 'delivery-sync', 'module-strip']],
   ['经验与协作', ['exp-sediment', 'add-skill', 'collaborating-with-codex', 'collaborating-with-gemini', 'collaborating-with-antigravity']],
+  // 本站（RuoYi-Plus-UniApp 文档）专属：从旧 VitePress 仓库 .claude 迁来并改写成 Astro 路径
+  ['文档内容（本站）', ['doc-writer', 'component-doc', 'doc-review', 'doc-search', 'doc-stats', 'update-docs', 'changelog-gen', 'version-migrate', 'sidebar-manager', 'link-checker', 'preview-server', 'sync-products', 'edgeone-deploy']],
 ];
 
 // 点名才激活的协同技能：触发词前加限定语，防止「代码审查」「多模型」「UI 设计」这类泛词把它们带出来
