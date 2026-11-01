@@ -4,7 +4,7 @@
 - 站点定位：RuoYi-Plus-UniApp 框架官网与全栈开发文档（https://ruoyi.plus）
 - 当前状态：**VitePress → Astro 迁移试点**（2026-10-30 起）。线上仍是旧 VitePress 站，旧仓库 `../ruoyi-plus-uniapp-docs` 只读，本目录验收前不替换任何东西
 - 规模：511 页 / 约 71 万行 / 约 2 万个代码块；旧网址全部 .html 结尾（cleanUrls: false）
-- 生产域名：https://ruoyi.plus；部署方式 `edgeone pages deploy`（CLI 上传，不是 git 触发）
+- 生产域名：https://ruoyi.plus；部署方式：推送到 Git 仓库即由 EdgeOne 云端按 `edgeone.json` 构建上线（备用：本机 `pnpm run deploy` CLI 上传）
 - 品牌：主色 #0B6EF0（旧站同色；2026-11-01 用户改浅色后由方案 C 的 #5B7CFF 改回），点缀青 #04AEF6，文字用 #0A5CD6（见 src/styles/ry-theme.css）；Logo `/logo.png`
 - 视觉：版式取方案 C（深色首屏结构、卡片网格），配色取第二轮原型方案 B（用户 2026-11-01「统一换浅色」）——白色毛玻璃页头、浅底青蓝光晕首屏（.ry-aurora）、渐变标题、蓝色渐变胶囊主按钮、白色页脚；代码窗保持深色；颜色全走语义令牌，深色模式自动翻转
 - 孵化来源：next-ai-astro @ e13010c（详见 .framework-sync.json）
@@ -23,7 +23,7 @@
 ## 本站专属流程（迁自旧 VitePress 仓库 .claude，已改写成 Astro 路径）
 - **写文档**：doc-writer / component-doc（/write、/wd），规范在 `docs/文档写作规范.md`；frontmatter 必须有 title、description；**正文不放文档间跳转链接**（作者定的规矩）
 - **侧栏**：`src/data/sidebar.json`（写页面 id），用 sidebar-manager（/sidebar）
-- **部署**：edgeone-deploy —— 本机构建后 `pnpm run deploy` 上传 dist 到 EdgeOne（🔴 不是 `pnpm deploy`，那是 pnpm 内置命令），**不走**框架 deployment-guide 与 /deploy 的 Docker / Reeve 路线；上传前必须问用户
+- **部署**：edgeone-deploy —— 本机全量验证 → Sigil 推送即触发 EdgeOne 云端构建上线（备用 `pnpm run deploy`；🔴 不是 `pnpm deploy`，那是 pnpm 内置命令），**不走**框架 deployment-guide 与 /deploy 的 Docker / Reeve 路线；推送前必须问用户
 - **构建前自动生成**：`pnpm icons`（离线图标，按正文实际用到的抽取）、`pnpm llms`（public/llms.txt，按侧栏）—— dev / build 命令里已串好
 - **内容过期页**：登记 `src/data/outdated.json` → 正文上方提示条 + noindex + 移出 sitemap；重写后删掉登记即恢复
 - **有意修订正文**：登记 `scripts/migrate/known-diffs.json` 的 `edited`，迁移逐页比对才会接受

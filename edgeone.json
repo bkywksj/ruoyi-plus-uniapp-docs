@@ -1,0 +1,5 @@
+{
+  "installCommand": "pnpm install --frozen-lockfile",
+  "buildCommand": "NODE_OPTIONS=--max-old-space-size=3584 pnpm run build:fast",
+  "outputDirectory": "dist"
+}
