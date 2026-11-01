@@ -2,7 +2,7 @@
 // 用法：node scripts/migrate/manifest.mjs <dist 目录> <输出 json> [--pages 页面清单.txt]
 // 新旧两站用同一套抽取与归一化规则，比对才公平：旧站正文在 .vp-doc，新站在 [data-pagefind-body]（找不到再退到 main）。
 import { createHash } from 'node:crypto';
-import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { parse } from 'node-html-parser';
 
