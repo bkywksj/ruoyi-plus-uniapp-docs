@@ -710,6 +710,10 @@
               "id": "frontend/components/display/table-toolbar"
             },
             {
+              "text": "ATreeFilter 过滤树",
+              "id": "frontend/components/display/tree-filter"
+            },
+            {
               "text": "Pagination 分页",
               "id": "frontend/components/display/pagination"
             }
@@ -752,6 +756,10 @@
             {
               "text": "UserSelect 用户选择",
               "id": "frontend/components/business/user-select"
+            },
+            {
+              "text": "ADeptTree 部门树",
+              "id": "frontend/components/business/dept-tree"
             }
           ]
         },

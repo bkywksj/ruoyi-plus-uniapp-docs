@@ -4,32 +4,32 @@
     "master": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp",
       "gitBranch": "master",
-      "lastSyncCommit": "7b44b0204d806a6ea816619948387c41826cadc5",
-      "lastSyncDate": "2026-10-21T15:14:57+08:00"
+      "lastSyncCommit": "b1837733659a6909c83ec84638859af128a812ca",
+      "lastSyncDate": "2026-10-30T14:33:23+08:00"
     },
     "single": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-single",
       "gitBranch": "single",
-      "lastSyncCommit": "50198fa4f32dec6ba1d5be3ba96a216b8c740055",
-      "lastSyncDate": "2026-09-15T22:26:24+08:00"
+      "lastSyncCommit": "d3d3f3ba58e23176442f4f095bd27b03ead4a3a0",
+      "lastSyncDate": "2026-10-30T16:43:12+08:00"
     },
     "workflow": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-workflow",
       "gitBranch": "workflow",
-      "lastSyncCommit": "a6c9ce301a26696e71ea7f33eb0c1d81cf1689a2",
-      "lastSyncDate": "2026-10-20T18:04:02+08:00"
+      "lastSyncCommit": "57c833a0e8435de12a92353da2f5fc8bca154b95",
+      "lastSyncDate": "2026-10-30T14:33:23+08:00"
     },
     "6.x": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x",
       "gitBranch": "6.x",
-      "lastSyncCommit": "4dc30fa81512a074a9b5f67d15a9ed2b7981fd21",
-      "lastSyncDate": "2026-10-20T23:30:42+08:00"
+      "lastSyncCommit": "301fd895dcc041c11d792b45af1cd6a4f04ab713",
+      "lastSyncDate": "2026-10-30T14:33:23+08:00"
     },
     "6.x-single": {
       "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x-single",
       "gitBranch": "single-6.x",
-      "lastSyncCommit": "123a2cb4edc91f1b72c649094201355a15040142",
-      "lastSyncDate": "2026-10-21T14:56:52+08:00"
+      "lastSyncCommit": "6175c92e5aaadcc06d5506503bcbb5a55cfea912",
+      "lastSyncDate": "2026-10-30T16:43:12+08:00"
     }
   },
   "syncHistory": [
@@ -245,6 +245,48 @@
         "docs/mobile/utils/crypto.md",
         "docs/practices/ai/claude-code.md"
       ]
+    },
+    {
+      "branch": "master",
+      "commit": "b1837733659a6909c83ec84638859af128a812ca",
+      "date": "2026-10-30T14:33:23+08:00",
+      "summary": "4 个提交均与 workflow 同名改动，已随 workflow 同步",
+      "updatedDocs": []
+    },
+    {
+      "branch": "single",
+      "commit": "d3d3f3ba58e23176442f4f095bd27b03ead4a3a0",
+      "date": "2026-10-30T16:43:12+08:00",
+      "summary": "31 个提交中 30 个 workflow 已有；独有的 plus-app 标识符补 _single 后缀为分支专属，正文不写",
+      "updatedDocs": []
+    },
+    {
+      "branch": "workflow",
+      "commit": "57c833a0e8435de12a92353da2f5fc8bca154b95",
+      "date": "2026-10-30T14:33:23+08:00",
+      "summary": "7 个提交：/dev-orchestrate 按批派活（claude-code-commands、claude-code 两篇）、登录回跳只编解码一次（config-guards）、列设置缓存改 sessionCache 并改正示例（components/overview）；sm-crypto-rng 文档早已覆盖，Oracle 脚本与两处技能微调无文档影响。同时补写遗漏组件文档 ADeptTree、ATreeFilter",
+      "updatedDocs": [
+        "src/content/docs/practices/engineering/claude-code-commands.md",
+        "src/content/docs/practices/ai/claude-code.md",
+        "src/content/docs/frontend/router/config-guards.md",
+        "src/content/docs/frontend/components/overview.md",
+        "src/content/docs/frontend/components/display/tree-filter.md",
+        "src/content/docs/frontend/components/business/dept-tree.md"
+      ]
+    },
+    {
+      "branch": "6.x",
+      "commit": "301fd895dcc041c11d792b45af1cd6a4f04ab713",
+      "date": "2026-10-30T14:33:23+08:00",
+      "summary": "7 个提交均为 workflow 已有改动，已随 workflow 同步",
+      "updatedDocs": []
+    },
+    {
+      "branch": "6.x-single",
+      "commit": "6175c92e5aaadcc06d5506503bcbb5a55cfea912",
+      "date": "2026-10-30T16:43:12+08:00",
+      "summary": "6 个提交均为 workflow 已有改动，已随 workflow 同步",
+      "updatedDocs": []
     }
   ]
 }

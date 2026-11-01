@@ -349,15 +349,30 @@ isReLogin.show = false
 登录后自动跳转到原访问页面：
 
 ```typescript
-// 编码原始路径，包含查询参数和 hash
+// 路由守卫：拼字符串地址，自己编码一次
 const redirect = encodeURIComponent(to.fullPath || '/')
 return next(`/login?redirect=${redirect}`)
 
-// 登录成功后在登录组件中处理
-const route = useRoute()
-const redirect = route.query.redirect as string
-router.push(redirect ? decodeURIComponent(redirect) : '/')
+// 退出登录、登录过期：用对象形式的 query，交给 vue-router 编码，不要再 encodeURIComponent
+router.replace({
+  path: '/login',
+  query: { redirect: router.currentRoute.value.fullPath || '/' }
+})
+
+// 登录页读取回跳地址：用 parseRedirectQuery，不要再 decodeURIComponent
+import { parseRedirectQuery } from '@/utils/loginRedirect'
+
+const redirectUrl = parseRedirectQuery(route.query.redirect)
+await router.push(redirectUrl || '/')
 ```
+
+**编码规则：回跳地址只编码一次、解码一次。**
+
+- `route.query.redirect`、`URLSearchParams.get('redirect')` 拿到的值已经解码过一次。再 `decodeURIComponent` 会把原地址查询值里的 `%26` 解成 `&`，跳回去时参数被拆开（`kw=a&b` 变成 `kw=a` 外加一个 `b`），值里有不成对的 `%` 时还会直接抛错
+- 对象形式的 `query` 由 vue-router 负责编码，自己再 `encodeURIComponent` 就编码了两次
+- `parseRedirectQuery` 兼容旧链接：以前退出登录时编码了两次，解码一次后仍以 `%2F` 开头，这种值它会再解一次；解不开时原样返回，不抛错。请求层从回跳地址里识别租户（`useHttp` 的 `getTenantId`）也用它解析
+
+参考: `plus-ui/src/utils/loginRedirect.ts:1-27`、`plus-ui/src/views/system/auth/login.vue:356-362`、`plus-ui/src/composables/useHttp.ts:291-296`、`plus-ui/src/composables/useHttp.ts:340-346`
 
 ## 后置守卫 (afterEach)
 

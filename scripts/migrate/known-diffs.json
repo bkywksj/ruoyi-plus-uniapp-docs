@@ -66,10 +66,19 @@
       "reason": "补上新加的 sm-crypto-rng 插件（createSmCryptoRng）"
     },
     "practices/ai/claude-code.html": {
-      "reason": "删掉「写作进度跟踪」草稿段与不存在的 banana-image 技能，workflow-engine 标注为工作流分支"
+      "reason": "删掉「写作进度跟踪」草稿段与不存在的 banana-image 技能，workflow-engine 标注为工作流分支；/dev-orchestrate 改为按批派活、需决策项攒起来一次问、补总控红线（workflow 57c833a）"
     },
     "mobile/plugins/camera.html": {
       "reason": "标题「相机插件」改为「useUpload 媒体选择与上传」（代码里没有相机插件这一分类）"
+    },
+    "practices/engineering/claude-code-commands.html": {
+      "reason": "/dev-orchestrate 改为按批派活、需决策项攒起来一次问、补总控红线，/dev-loop 支持 T12-T15 区间（workflow 57c833a）"
+    },
+    "frontend/router/config-guards.html": {
+      "reason": "登录回跳地址只编码、解码各一次，登录页改用 parseRedirectQuery（workflow d1a6d62）"
+    },
+    "frontend/components/overview.html": {
+      "reason": "ATableColumnSettings 示例改正为 v-model:columns + cache-key、去掉不存在的固定列、注明缓存在 sessionCache（workflow 8241b31）；目录树与分类表补 ADeptTree、ATreeFilter"
     }
   }
 }

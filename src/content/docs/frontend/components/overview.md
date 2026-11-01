@@ -28,6 +28,8 @@ src/components/
 │   └── ADataCard.vue
 ├── AChart/                 # 图表组件
 │   └── AChart.vue
+├── ADeptTree/              # 部门树组件（基于 ATreeFilter）
+│   └── ADeptTree.vue
 ├── ADetail/                # 详情展示组件
 │   └── ADetailDialog.vue
 ├── AForm/                  # 表单组件集合
@@ -65,6 +67,8 @@ src/components/
 │   └── ATableColumnSettings.vue
 ├── ATheme/                 # 主题切换组件
 │   └── ATheme.vue
+├── ATreeFilter/            # 过滤树组件（虚拟滚动 + 搜索防抖）
+│   └── ATreeFilter.vue
 ├── DictTag/                # 字典标签组件
 │   └── DictTag.vue
 ├── Icon/                   # 图标组件
@@ -89,9 +93,9 @@ src/components/
 |------|----------|------|
 | 表格组件 | 3 | ATable、ATableColumnSettings、TableToolbar |
 | 表单组件 | 14 | AFormInput、AFormSelect 等表单控件 |
-| 数据展示 | 5 | ADataCard、ADetailDialog、ImagePreview 等 |
+| 数据展示 | 6 | ADataCard、ADetailDialog、ImagePreview、ATreeFilter 等 |
 | 反馈组件 | 3 | ASearchForm、ASelectionTags、AModal |
-| 业务组件 | 5 | AOssMediaManager、ARecharge、AImportExcel 等 |
+| 业务组件 | 6 | AOssMediaManager、ARecharge、AImportExcel、ADeptTree 等 |
 | 布局组件 | 2 | IFrameContainer、AResizablePanels |
 | 基础组件 | 4 | Icon、DictTag、Pagination、ATheme |
 
@@ -274,17 +278,28 @@ const getList = () => {
 
 #### ATableColumnSettings 表格列设置
 
-表格列设置组件，提供列的显示/隐藏、排序、固定等配置功能。
+表格列设置组件，点击齿轮按钮弹出列清单：勾选控制列的显示 / 隐藏，拖拽调整列的顺序，「重置」恢复初始配置。
 
 ```vue
 <template>
-  <ATableColumnSettings
-    v-model="columnSettings"
-    :columns="columns"
-    storage-key="user-table"
-  />
+  <ATableColumnSettings v-model:columns="columns" cache-key="user-table" />
 </template>
+
+<script lang="ts" setup>
+const columns = ref([
+  { field: 'userName', label: '用户名称', visible: true },
+  { field: 'nickName', label: '用户昵称', visible: true },
+  { field: 'phone', label: '手机号码', visible: false }
+])
+</script>
 ```
+
+- 列配置用 `v-model:columns` 双向绑定，每列至少有 `field`、`label`、`visible`，还可带 `width`、`minWidth`、`align`
+- 调整后的顺序与显示状态存进 `sessionCache`（会话级缓存，关闭浏览器后失效；键名带应用前缀，`sessionCache.clearAll()` 会一并清掉）
+- `cache-key` 是缓存键，不传时按当前路由自动生成（`table-columns-<路由路径>`），同一页面有多个表格时要各传一个
+- 默认插槽可替换触发按钮（默认是圆形齿轮按钮）
+
+参考: `plus-ui/src/components/ATableColumnSettings/ATableColumnSettings.vue:53-77`、`plus-ui/src/components/ATableColumnSettings/ATableColumnSettings.vue:84-145`
 
 #### TableToolbar 表格工具栏
 

@@ -277,6 +277,7 @@
 | ADataCard 数据卡片 | `frontend/components/display/data-card.md` | ✅ |
 | ADetailDialog 详情对话框 | `frontend/components/display/detail-dialog.md` | ✅ |
 | TableToolbar 表格工具栏 | `frontend/components/display/table-toolbar.md` | ✅ |
+| ATreeFilter 过滤树 | `frontend/components/display/tree-filter.md` | ✅ |
 | Pagination 分页 | `frontend/components/display/pagination.md` | ✅ |
 | ASearchForm 搜索表单 | `frontend/components/feedback/search-form.md` | ✅ |
 | ASelectionTags 选择标签 | `frontend/components/feedback/selection-tags.md` | ✅ |
@@ -285,6 +286,7 @@
 | ARecharge 充值组件 | `frontend/components/business/recharge.md` | ✅ |
 | AImportExcel Excel导入 | `frontend/components/business/import-excel.md` | ✅ |
 | UserSelect 用户选择 | `frontend/components/business/user-select.md` | ✅ |
+| ADeptTree 部门树 | `frontend/components/business/dept-tree.md` | ✅ |
 | AGeometricBackground 几何装饰背景 | `frontend/components/layout/page-background.md` | ✅ |
 | IFrameContainer iframe容器 | `frontend/components/layout/i-frame-container.md` | ✅ |
 
