@@ -42,7 +42,7 @@ export const site = {
   /** <title> 后缀（buildTitle 用）：旧站 VitePress 的 title，每页都是「页名 | 这一串」，首页就是这一串；搜索结果里已收录的就是它 */
   titleSuffix: 'RuoYi-Plus-UniApp 全栈开发文档 — Spring Boot 3 + Vue 3 企业级框架',
   /** 短名：页头 Logo 文字、移动端空间不够时使用 */
-  shortName: 'RuoYi-Plus',
+  shortName: 'Ruoyi-Plus-Uniapp',
   /** 一句话定位（首页 H1 下方 + 默认 meta description），写成「X 是 Y」的定义句对 GEO 更友好 */
   tagline:
     'RuoYi-Plus-UniApp 是基于 Spring Boot 3 + Vue 3 + UniApp 的企业级全栈快速开发框架，文档涵盖后端架构、前端组件、移动端开发、AI 集成、多租户与支付。',
