@@ -1,0 +1,250 @@
+{
+  "defaultBranch": "workflow",
+  "branches": {
+    "master": {
+      "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp",
+      "gitBranch": "master",
+      "lastSyncCommit": "7b44b0204d806a6ea816619948387c41826cadc5",
+      "lastSyncDate": "2026-10-21T15:14:57+08:00"
+    },
+    "single": {
+      "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-single",
+      "gitBranch": "single",
+      "lastSyncCommit": "50198fa4f32dec6ba1d5be3ba96a216b8c740055",
+      "lastSyncDate": "2026-09-15T22:26:24+08:00"
+    },
+    "workflow": {
+      "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-workflow",
+      "gitBranch": "workflow",
+      "lastSyncCommit": "a6c9ce301a26696e71ea7f33eb0c1d81cf1689a2",
+      "lastSyncDate": "2026-10-20T18:04:02+08:00"
+    },
+    "6.x": {
+      "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x",
+      "gitBranch": "6.x",
+      "lastSyncCommit": "4dc30fa81512a074a9b5f67d15a9ed2b7981fd21",
+      "lastSyncDate": "2026-10-20T23:30:42+08:00"
+    },
+    "6.x-single": {
+      "path": "D:/desktop/my/framework/ruoyi-plus-uniapp/ruoyi-plus-uniapp-6x-single",
+      "gitBranch": "single-6.x",
+      "lastSyncCommit": "123a2cb4edc91f1b72c649094201355a15040142",
+      "lastSyncDate": "2026-10-21T14:56:52+08:00"
+    }
+  },
+  "syncHistory": [
+    {
+      "commit": "a2bff84f7a8c298b341b32b04feb7e55533267b4",
+      "date": "2026-03-16T01:50:00+08:00",
+      "summary": "初始化节点 - 从5.5.3版本号更新提交开始追踪",
+      "updatedDocs": []
+    },
+    {
+      "commit": "9cbe0727de93e43901fceda7874ae0aff2ee8dfa",
+      "date": "2026-04-19T00:00:00+08:00",
+      "summary": "全量处理 94 个上游提交。Batch 1 技能/命令：更新 3 篇 Claude Code 文档，新增 8 个技能章节 + 3 个命令条目，删除 banana-image，排除 local 上游同步命令；更新 wd-button getRealtimePhoneNumber 开放能力、ConfigProvider 重构说明。Batch 2 WD 组件增强：更新 11 个组件文档（cell/cell-group/calendar/curtain/drop-menu/input/swiper/tabs/textarea/rate/search/keyboard/loading/picker-view/status-tip）。Batch 3 WD 新组件：新建 avatar 与 slide-verify 组件文档，侧边栏加入导航。Batch 4 后端重大特性：平台配置集群同步（miniapp.md）、OSS URL 缓存（oss.md）、生产环境 API 文档默认关闭（doc.md）。Batch 5 后端修复：SNAIL_JOB 环境变量前缀统一为 SERVER_HOST/SERVER_PORT（startup/configuration/job 3 篇）。Batch 6 前端：AFormSelect option 插槽文档（select.md）、字典编码字段命名统一（dict.md）",
+      "updatedDocs": [
+        "docs/practices/engineering/claude-code-skills.md",
+        "docs/practices/engineering/claude-code-commands.md",
+        "docs/practices/ai/claude-code.md",
+        "docs/mobile/wd/basic/button.md",
+        "docs/mobile/wd/basic/config-provider.md",
+        "docs/mobile/wd/display/cell.md",
+        "docs/mobile/wd/display/curtain.md",
+        "docs/mobile/wd/display/swiper.md",
+        "docs/mobile/wd/form/calendar.md",
+        "docs/mobile/wd/form/input.md",
+        "docs/mobile/wd/form/textarea.md",
+        "docs/mobile/wd/form/rate.md",
+        "docs/mobile/wd/form/search.md",
+        "docs/mobile/wd/form/keyboard.md",
+        "docs/mobile/wd/form/picker-view.md",
+        "docs/mobile/wd/feedback/drop-menu.md",
+        "docs/mobile/wd/feedback/loading.md",
+        "docs/mobile/wd/feedback/status-tip.md",
+        "docs/mobile/wd/navigation/tabs.md",
+        "docs/mobile/wd/display/avatar.md",
+        "docs/mobile/wd/form/slide-verify.md",
+        "docs/.vitepress/config.ts",
+        "docs/backend/modules/system/oss.md",
+        "docs/backend/common/miniapp.md",
+        "docs/backend/common/doc.md",
+        "docs/backend/ruoyi-admin/startup.md",
+        "docs/backend/ruoyi-admin/configuration.md",
+        "docs/backend/modules/business/job.md",
+        "docs/backend/modules/system/dict.md",
+        "docs/frontend/components/form/select.md"
+      ]
+    },
+    {
+      "commit": "580046f4b1299167749d291ce1c477f2e4bc2b28",
+      "date": "2026-04-26T17:33:28+08:00",
+      "summary": "增量处理 5 个上游提交（2026-04-22 → 2026-04-26）。重点 1：Icon 组件重大特性 feat(382e63e) - 新增本地 SVG sprite 图标源（vite-plugin-svg-icons-ng + iconfont-types 协同），同步更新 icon.md 与 icon-system.md：三种图标源对比表、优先级匹配规则、添加 SVG 流程、SVG_ICONS / isSvgIcon 类型扩展、Vite 插件配置。重点 2：brainstorm 新增「联网借鉴法」（按需触发）- 同步 claude-code-skills.md 与 claude-code.md 中的发散方法。重点 3：/exp 经验沉淀机制升级 - 沉淀目录从 docs/experience 迁移到 .claude/docs/experience，新增首次运行初始化、消费经验触发场景（10 个新触发词）、读取深度三档策略、.claude/exp.ignore 永久跳过列表，同步 claude-code-skills.md / claude-code-commands.md / claude-code.md 三处。跳过：workflow toast i18n key 修复（580046f4，未影响文档）、登录页 icon 切换（3cbe1cc3，已包含在 icon 文档更新内）。",
+      "updatedDocs": [
+        "docs/frontend/components/basic/icon.md",
+        "docs/frontend/components/basic/icon-system.md",
+        "docs/practices/engineering/claude-code-skills.md",
+        "docs/practices/engineering/claude-code-commands.md",
+        "docs/practices/ai/claude-code.md"
+      ]
+    },
+    {
+      "commit": "bb0d0d82fb317d46c3ab08a1afb6e6c3ffd935b5",
+      "date": "2026-06-17T21:06:41+08:00",
+      "summary": "增量处理 67 个上游提交（2026-04-26 → 2026-06-17）。重点：1) LangChain4j 0.35.0→1.14.1 大版本升级+深度思考——thinking.md/model-factory.md 此前已手动更新（检查点未推进），本次补齐概览 langchain4j.md 的版本号与 dashscope 依赖坐标（langchain4j-dashscope→langchain4j-community-dashscope:1.14.0-beta24）及 CLAUDE.md 版本表；2) 微信支付 V3 公钥模式新增 publicKeyId 字段（pay.md），区别于证书序列号，留空回退兼容；3) 新增 useImageCompress 跨端图片压缩 Composable（新建 use-image-compress.md + overview + 侧边栏）；4) Undertow max-http-post-size -1→100MB 修复 2MB multipart 限制（configuration.md）；5) dict 残留字典名 sys_user_sex→sys_user_gender（dict.md）；6) OSS 富文本入库前清洗私有桶预签名参数 OssContentUtils（oss.md 新增富文本内容处理章节）。跳过：WD 纯视觉修复(datetime-picker/calendar)、字符集乱码、log oper_type CHAR→VARCHAR、snailjob 标识符、button 样式、tree/menu 虚拟滚动 perf、CVE 依赖升级、大量 .claude/.codex 技能/钩子提交（内部工具链）。后续补充（已全部完成，无遗留缺口）：A) chat-service.md 全量迁移到 1.14.1 API（ChatModel/StreamingChatModel、chat()、StreamingChatResponseHandler 的 onPartialThinking/onPartialResponse/onCompleteResponse、项目 DTO ChatResponse→AiChatResponse 并补 reasoningContent/phase 字段）。B) langchain4j.md 概览深层代码全量迁移到 1.14.1：ModelFactory 4 个 createXxxChatModel 返回 ChatModel；ChatService chat/streamChat/handleSingle/Continuous/Rag/Function 改用 ChatModel/StreamingChatModel + .chat() + 模型层 ChatResponse + response.aiMessage().text()/toolExecutionRequests()；StreamChatHandler 改实现 StreamingChatResponseHandler（onPartialThinking/onPartialResponse/onCompleteResponse）；项目 DTO 定义与全部用例/WebSocket 发送方法 ChatResponse→AiChatResponse 并补 reasoningContent/phase/Phase；TokenCounter 改用 TokenCountEstimator/OpenAiTokenCountEstimator(\"gpt-4o\")；顶部 note 收敛为已对齐 1.x（嵌入模型 response.content() 不在 chat 升级范围，保留）。C) Claude Code 实践文档补录（子代理完成）：claude-code-skills.md 新增 e2e-test-pc/e2e-test-mobile/delivery-sync/module-strip/writing-plans 5 技能 + 增强 git-workflow/project-init（54→59 技能）；claude-code-commands.md 新增 /kickoff /dev-loop /loop-gen /sync-delivery /strip-modules（13→18 命令）；claude-code.md 三处计数同步 + 新增多会话并发避让协议小节；autonomous-dev 无独立技能目录，按 /kickoff+/dev-loop+/loop-gen 命令编排形态补录。D) nvue：uni-pages.md 补 extensions:['vue','nvue'] 配置项（manifest 编译配置 manifest-config.md 已有完整章节）。E) AFormMap：form/overview.md 补 POI 搜索候选下拉特性 + searchCity/searchPageSize Props。",
+      "updatedDocs": [
+        "docs/backend/common/langchain4j.md",
+        "docs/backend/common/langchain4j/chat-service.md",
+        "docs/backend/common/pay.md",
+        "docs/backend/ruoyi-admin/configuration.md",
+        "docs/backend/modules/system/dict.md",
+        "docs/backend/common/oss.md",
+        "docs/mobile/composables/use-image-compress.md",
+        "docs/mobile/composables/overview.md",
+        "docs/mobile/vite-plugins/uni/uni-pages.md",
+        "docs/frontend/components/form/overview.md",
+        "docs/practices/engineering/claude-code-skills.md",
+        "docs/practices/engineering/claude-code-commands.md",
+        "docs/practices/ai/claude-code.md",
+        "docs/.vitepress/config.ts",
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "branch": "workflow",
+      "commit": "9e21e43400f425c15d36dfcc692a528018a63c5d",
+      "date": "2026-09-15T22:26:25+08:00",
+      "summary": "推进节点至 9e21e43（2026-06-17 → 2026-09-15，共 82 个提交）。本批内容已在本会话通过三轮 dry-run 分析后手工同步完毕，故用 --init 补推节点。 backend(38 提交)：1) 新增 ruoyi-job 轻量级内置定时任务模块文档（1039 行，此前零覆盖，与 SnailJob 为并存选型关系）；2) 新增等保二级合规文档（699 行，密码策略/审计日志归档/备份恢复，对应 8.1.4.1a、8.1.4.3b·c、8.1.4.7a）；3) 清理 14 处已废弃的 IBaseService/BaseServiceImpl 继承示例，统一为「Service 不继承基类 + 注入 DAO」现行四层架构；4) 支付补支付宝当面付(NATIVE/BARCODE)与条码撤销兜底，并修正已移除的微信 V3 publicKeyId 回退 certSerialNo 描述；5) 认证补发码三级限流与图形验证码前置，修正验证码位数 6→4、有效期 5→2 分钟；6) 依赖版本 17 文件 44 处对齐 pom（SpringBoot 3.5.16 / Sa-Token 1.45.0 / Hutool 5.8.43 / SnailJob 1.10.0 / Redisson 3.52.0 / Warm-Flow 1.8.9 / SBA 3.5.8）；7) Java 17→21 全站 20 文件 53 处，并修正「JDK17 不支持虚拟线程」等语义冲突表述；8) 删除无源码支撑的购物车章节并修正 mall 模块构成描述。 frontend(24 提交)：1) 新增认证页 AuthLayout 文档（502 行）；2) 补双列布局模式并修正 MenuLayoutMode 枚举缺失 DualColumn（文档贴的类型定义与源码不符）；3) 补页签溢出交互与视觉层次设计。 mobile(4 提交)：1) wd-paging 补 pageSize 优先级变更与请求竞态说明；2) 登录页补图形验证码前置。 另全站清理 1375 处「参考: src/xxx:行号」引用格式（47 文件），对齐 CLAUDE.md 第 7 条。 跳过：workflow 上游同步 bug 修复、生成器模板内部修复、compose 环境变量、异常日志级别调整、字段权限 UI 修复与性能优化（field-permission.md 已覆盖）。 遗留：fastjson 1.2.84（CVE-2026-16723）未在任何依赖表中出现，未擅自新增表行。",
+      "updatedDocs": [
+        "docs/practices/features/security-compliance.md",
+        "docs/backend/modules/job.md",
+        "docs/frontend/layout/auth-layout.md",
+        "docs/backend/common/pay.md",
+        "docs/backend/modules/system/auth.md",
+        "docs/backend/common/bom.md",
+        "docs/backend/modules/business.md",
+        "docs/backend/modules/business/base.md",
+        "docs/backend/modules/business/mall.md",
+        "docs/backend/modules/system.md",
+        "docs/backend/modules/system/config.md",
+        "docs/backend/modules/system/oss.md",
+        "docs/backend/ruoyi-admin/configuration.md",
+        "docs/backend/ruoyi-admin/overview.md",
+        "docs/frontend/layout/layout-overview.md",
+        "docs/frontend/layout/settings.md",
+        "docs/frontend/layout/tags-view.md",
+        "docs/mobile/pages/login.md",
+        "docs/mobile/wd/navigation/paging.md",
+        "docs/practices/engineering/code-generator.md",
+        "docs/index.md",
+        "docs/.vitepress/config.ts",
+        "PROJECT_PROGRESS.md"
+      ]
+    },
+    {
+      "branch": "6.x",
+      "commit": "c543902f059c5f1a3475e77a471829fbd7921654",
+      "date": "2026-09-15T22:26:25+08:00",
+      "summary": "初始化节点。6.x 为 Spring Boot 4.1.0 / JDK 21 / 多租户 / 工作流分支，业务代码与 workflow 主线一致，HEAD 与 workflow 的 9e21e43 为同一笔业务提交的镜像（同日期同标题，hash 不同）。文档正文以主线为准，本分支后续只需关注 SB4 相关的差异化提交（依赖升级、API 变更等），落到分支说明与特性对比处，不改写正文默认口径。",
+      "updatedDocs": []
+    },
+    {
+      "branch": "master",
+      "commit": "c3422092976a80713d038bf883e48e58a1c46a78",
+      "date": "2026-09-15T22:26:24+08:00",
+      "summary": "初始化节点。master 为 Spring Boot 3.5.16 / JDK 21 / 多租户 / 无工作流分支，已实测确认：ruoyi-modules 下无 ruoyi-workflow，含 ruoyi-job 内置定时任务模块。HEAD 与 workflow 的 9e21e43、6.x 的 c543902 是同一笔业务提交的镜像（同标题，时间戳相差 1 秒）。该仓库近 30 天有 56 个提交，处于活跃维护状态 —— 注意 CLAUDE.md「源码项目结构」一节仍把它描述为「旧源码项目(仅供参考)，只含 plus-uniapp」，与实际不符（实为完整框架：ruoyi-admin/common/modules/extend + 全部前端），待修正。文档正文以主线为准，本分支后续只需关注相对 workflow 的差异（主要是无工作流模块）。",
+      "updatedDocs": []
+    },
+    {
+      "branch": "single",
+      "commit": "50198fa4f32dec6ba1d5be3ba96a216b8c740055",
+      "date": "2026-09-15T22:26:24+08:00",
+      "summary": "初始化节点。single 为 Spring Boot 3.5.16 / JDK 21 / 单租户 / 无工作流分支。实测确认：ruoyi-common 下无 ruoyi-common-tenant 模块，ruoyi-modules 下无 ruoyi-workflow（含 ruoyi-job）。全仓库 TenantHelper 仅 1 处引用，且只在 JobPlatformContext.java 的 Javadoc 注释中作说明文字出现，非实际代码 —— 印证 ruoyi-job 模块在各分支间仅 JobConstants 一个文件存在差异（Redis 键前缀），其余逐字节一致。HEAD 与 workflow 的 9e21e43、6.x 的 c543902、master 的 c342209 为同一笔业务提交的镜像。文档正文以主线为准，本分支后续只需关注去多租户相关的差异化提交。",
+      "updatedDocs": []
+    },
+    {
+      "branch": "6.x-single",
+      "commit": "ab69e351b399dedd1056c80cb9ff8a568b322a3f",
+      "date": "2026-09-15T22:26:25+08:00",
+      "summary": "初始化节点。6.x-single 为 Spring Boot 4.1.0 / JDK 21 / 单租户 / 有工作流分支。实测确认四项特征全部相符：pom 为 SB 4.1.0 + JDK 21（与 6.x 一致）、ruoyi-common 下无 ruoyi-common-tenant、ruoyi-modules 下有 ruoyi-workflow。⚠️ 校验用的是登记的 gitBranch 字段 single-6.x，而非目录名推出的 6.x-single —— 按目录名校验会直接失败，这是本技能明确标注的坑。HEAD 与其余四分支为同一笔业务提交的镜像。至此 5 个分支全部完成初始化。文档正文以主线(3.5.x)为准，本分支后续只需关注 SB4 + 去多租户两类差异化提交，落到 changelog.md 顶部的分支说明表与特性对比处。",
+      "updatedDocs": []
+    },
+    {
+      "branch": "workflow",
+      "commit": "a6c9ce301a26696e71ea7f33eb0c1d81cf1689a2",
+      "date": "2026-10-20T18:04:02+08:00",
+      "summary": "处理 9e21e43..a6c9ce3 共 25 个提交。重大特性：接口传输加密支持切换国密 SM2+SM4（后端 IApiCryptor 策略化 + api-decrypt.algorithm/sm2 配置 + ApiEncryptKeyGeneratorTest 密钥生成器；三端 VITE_APP_API_ENCRYPT_ALGORITHM/VITE_APP_SM2_* + sm.ts/apiCrypto.ts + 移动端 cryptoPolyfill），响应加密缓冲区固定 UTF-8，记住密码本地密钥改为私钥 SHA-256 派生（v2: 前缀）。普通更新：流程级监听器配置、移动端用户不触发首次强制改密、错误日志参数脱敏、编辑无账号用户校验分组、头像上传请求头改为上传时取 token、/dev-orchestrate 编排命令及相关技能/钩子/AGENTS.md 说明。跳过：SQL 注释、docker compose 布尔引号、测试文件；AFormTableSelect/外链角标/设计器人员搜索/Codex hook 无对应文档段落（AFormTableSelect 仅记入 changelog）。",
+      "updatedDocs": [
+        "docs/backend/common/encrypt.md",
+        "docs/backend/common/encrypt/api-encryption.md",
+        "docs/backend/configuration.md",
+        "docs/backend/modules/system/core.md",
+        "docs/backend/modules/system/monitor.md",
+        "docs/backend/modules/workflow/definition.md",
+        "docs/backend/ruoyi-admin/module-resolution.md",
+        "docs/backend/ruoyi-admin/security.md",
+        "docs/changelog.md",
+        "docs/frontend/architecture/typescript-config.md",
+        "docs/frontend/composables/use-http.md",
+        "docs/frontend/configuration.md",
+        "docs/frontend/getting-started.md",
+        "docs/frontend/index.md",
+        "docs/frontend/project-structure.md",
+        "docs/frontend/types/type-extensions.md",
+        "docs/frontend/utils/crypto.md",
+        "docs/frontend/utils/rsa.md",
+        "docs/frontend/utils/utils-overview.md",
+        "docs/mobile/build/environment.md",
+        "docs/mobile/build/overview.md",
+        "docs/mobile/components/wd.md",
+        "docs/mobile/composables/use-http.md",
+        "docs/mobile/configuration.md",
+        "docs/mobile/pages/login.md",
+        "docs/mobile/plugins/camera.md",
+        "docs/mobile/plugins/request.md",
+        "docs/mobile/project-structure.md",
+        "docs/mobile/uniapp/app-config.md",
+        "docs/mobile/utils/crypto.md",
+        "docs/mobile/utils/rsa.md",
+        "docs/practices/ai/claude-code.md",
+        "docs/practices/engineering/claude-code-commands.md",
+        "docs/practices/engineering/claude-code-hooks.md",
+        "docs/practices/engineering/claude-code-skills.md",
+        "docs/practices/features/security-compliance.md"
+      ]
+    },
+    {
+      "branch": "6.x",
+      "commit": "4dc30fa81512a074a9b5f67d15a9ed2b7981fd21",
+      "date": "2026-10-20T23:30:42+08:00",
+      "summary": "处理 c543902..4dc30fa 共 36 个提交。其中 27 个与 workflow 9e21e43..a6c9ce3 为同一批业务提交的镜像（国密 SM2+SM4、流程级监听器、改密策略、/dev-orchestrate 等），文档已在 workflow 同步中覆盖，不重复处理。6.x 独有 9 个：集团库方言层 GroupDialect + PostgreSQL/SQL Server/Oracle 支持 + 独立 schema 存储形态 + 启动升级通道 GroupSchemaUpgrader + 平台表固定 master + 建表模板补主键索引 + SQL Server/Oracle 建库脚本修复 + 测试/设计文档。按分支隔离原则只落到 changelog 顶部分支说明（更正「仅框架版本不同」）与新增 7.12 节（标注仅 6.x），不改以主线为准的正文。备注：同一 Oracle sysdate() 缺陷已在 workflow(239fa9e)与 6.x-single(123a2cb)单独修复；SQL Server sys_user 缺陷仅 6.x 存在。",
+      "updatedDocs": [
+        "docs/changelog.md"
+      ]
+    },
+    {
+      "branch": "6.x-single",
+      "commit": "123a2cb4edc91f1b72c649094201355a15040142",
+      "date": "2026-10-21T14:56:52+08:00",
+      "summary": "处理 ab69e35..123a2cb 共 27 个提交，全部与 workflow 同一批业务提交镜像（国密 SM2+SM4、流程级监听器、改密策略、错误日志脱敏、/dev-orchestrate 等，文档已在 workflow 同步中覆盖），无 6.x-single 独有提交，正文无需更新。123a2cb 为 Oracle 工作流脚本 sysdate() 修复（与 workflow 239fa9e 同步），据此修正 changelog 7.12 节：该修复不再是 6.x 独有。",
+      "updatedDocs": [
+        "docs/changelog.md"
+      ]
+    },
+    {
+      "branch": "master",
+      "commit": "7b44b0204d806a6ea816619948387c41826cadc5",
+      "date": "2026-10-21T15:14:57+08:00",
+      "summary": "处理 c342209..7b44b02 共 26 个提交，24 个与 workflow 9e21e43..a6c9ce3 镜像（文档已覆盖）。新增 2 个（5c3059c / 7b44b02，workflow 对应 6ae694f / 48bafbc）推翻了此前文档对小程序 / APP 加载 sm-crypto 失败的归因：真实原因是 rng.js 调 module.require('crypto') 被 rollup commonjs 拦下抛错致 vendor.js 白屏，cryptoPolyfill 补不上；修复为构建插件 vite/plugins/sm-crypto-rng.ts。据此更正 api-encryption 警告框与 FAQ 7、移动端 crypto/configuration/project-structure/build overview、changelog 7.11、claude-code security-guard 描述。5 个分支均已含该插件。",
+      "updatedDocs": [
+        "docs/backend/common/encrypt/api-encryption.md",
+        "docs/changelog.md",
+        "docs/mobile/build/overview.md",
+        "docs/mobile/configuration.md",
+        "docs/mobile/project-structure.md",
+        "docs/mobile/utils/crypto.md",
+        "docs/practices/ai/claude-code.md"
+      ]
+    }
+  ]
+}

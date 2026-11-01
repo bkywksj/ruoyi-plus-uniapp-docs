@@ -199,7 +199,7 @@ git branch --show-current
 | **集合查询封装** | `src/lib/works.ts`、`src/lib/posts.ts`、`src/lib/guides.ts` |
 | **SEO / 结构化数据** | `src/components/seo/SEOHead.astro` + `src/lib/seo.ts` |
 | **数据同步源** | `scripts/sync/sources/example.mjs` |
-| **生成型端点** | `src/pages/llms.txt.ts`、`src/pages/robots.txt.ts` |
+| **生成型端点** | `src/pages/robots.txt.ts`、`src/pages/sitemap.xml.ts`（本站 llms.txt 由 `scripts/build-llms.mjs` 按侧栏生成到 public/） |
 
 ### 强制使用框架封装
 

@@ -114,6 +114,19 @@ Codex 没有 `/loop` 自动续期：自主连续开发用 `autonomous-dev` 技�
 | `collaborating-with-codex` | 仅当用户点名"Codex"时（未点名的代码审查、多模型不算）—— Codex/codex协同/委托给Codex/codex review/codex rescue/codex-plugin-cc/review-gate/codex_bridge |
 | `collaborating-with-gemini` | 仅当用户点名"Gemini"时（未点名的 UI 设计、前端原型不算）—— Gemini/gemini协同/委托给Gemini/gemini CLI/gemini_bridge |
 | `collaborating-with-antigravity` | 仅当用户点名"Antigravity / 反重力 / agy"时（未点名的多模型、交叉验证不算）—— Antigravity/反重力/agy/agy协同/委托给Antigravity/agy CLI |
+| `doc-writer` | 写文档/新建文档/添加文档/写一篇文档 |
+| `component-doc` | 写组件文档/WD组件/组件文档/wd 文档 |
+| `doc-review` | 审查文档/检查文档质量/文档review/文档审查 |
+| `doc-search` | 哪些文档提到/查找文档/文档里搜/引用分析 |
+| `doc-stats` | 文档统计/覆盖率/文档状态/文档健康 |
+| `update-docs` | 更新文档/同步文档/文档是否需要更新/源码更新了 |
+| `changelog-gen` | 生成更新日志/changelog/版本记录/更新记录 |
+| `version-migrate` | 版本升级/升级指南/版本变更/框架升级文档 |
+| `sidebar-manager` | 更新侧边栏/添加到侧栏/添加到导航/调整菜单/侧边栏/侧栏/孤立页 |
+| `link-checker` | 检查链接/死链/链接检查/锚点失效/broken link |
+| `preview-server` | 预览/启动预览/本地预览/看一下页面/截图页面/dev server/preview |
+| `sync-products` | 同步产品/添加产品/更新产品/产品引流/sync products |
+| `edgeone-deploy` | 开始部署/部署文档站/发布文档站/上线文档站/EdgeOne |
 | `autonomous-dev` | 自主开发/连续开发/一轮一提交（Codex 版自主循环方法论） |
 
 **命令型技能**（Claude Code 斜杠命令的 Codex 版，用户输入 `/命令名` 时读对应 SKILL.md）：
@@ -121,6 +134,7 @@ Codex 没有 `/loop` 自动续期：自主连续开发用 `autonomous-dev` 技�
 | 命令 | 用途 |
 |------|------|
 | `/add-todo` | 快速添加待办事项到 docs/待办清单.md（缺失时按模板创建），并联动项目状态 |
+| `/check-links` | 全站死链与失效锚点检查（构建后跑 check:seo 与 check-anchors），可加 --fix 修复 |
 | `/check` | 框架规范检查：对照 CLAUDE.md「绝对禁止的写法」「强制使用框架封装」「Astro 7 版本红线」逐项 grep 核对 |
 | `/collection` | 新增一种内容类型端到端：schema → 数据 → 同步源 → 查询封装 → 列表 / 详情 / 分类页 → llms.txt 与导航 → 验证门 |
 | `/deploy` | 部署向导：上线前检查 → 本地镜像验证 → Reeve 只读探测 → 配部署目标 → dry-run → 用户确认 → deploy_run → 线上核对 |
@@ -134,12 +148,17 @@ Codex 没有 `/loop` 自动续期：自主连续开发用 `autonomous-dev` 技�
 | `/loop-gen` | 按你的当次意图，现生成一条填好真相源 / 每轮动作 / 验证门 / 停止条件的 /loop 提示词 |
 | `/next` | 综合 git、任务台账、待办、需求与代码待办，推荐一个最优下一步和备选方向（只读） |
 | `/progress` | 项目进度报告：综合 git、任务台账、待办、需求、页面与内容规模、站点健康，输出结构化的只读快照 |
+| `/review` | 审查文档质量：对照源码查准确性、规范性、完整性 |
 | `/seo-check` | 上线前 SEO / GEO 验收：本地构建 + check:seo 逐页校验，再按需调工作站 ai-seo-studio 深度审计，输出问题清单与修复建议 |
+| `/sidebar` | 管理侧栏 src/data/sidebar.json：添加 / 移除 / 重排条目，或检查侧栏与文件是否一致 |
 | `/start` | 新会话快速了解项目：识别是框架仓库还是孵化出的子项目，给出现状概览与对应的工作流入口 |
+| `/stats` | 文档覆盖率统计与健康报告（页数、行数、过短页、孤立页、过期页） |
 | `/strip-modules` | 裁剪不需要的示例模块（作品目录 / 文章 / FAQ / 示例数据），作用于当前项目或交付目录，裁剪后验证 |
 | `/sync-data` | 运行数据同步：先 dry-run 核对条目数，再写入并检查 git diff 与构建，异常时不提交 |
 | `/sync-delivery` | 把当前项目镜像到同级「交付目录」：去掉 git 历史、AI 技能体系与内部协作文档，生成可交给客户的版本 |
 | `/update-status` | 从任务台账 + git 提交 + 代码扫描汇总，联动更新项目状态 / 待办清单 / 需求文档三文档（缺失时按模板创建） |
+| `/wd` | 写 WD UI 移动端组件文档（读组件源码，按组件模板生成） |
+| `/write` | 按项目规范新写一篇文档（含 frontmatter、挂侧栏、验证） |
 <!-- skills:end -->
 
 ## 🔴 多会话并发避让（L1/L2/L3）
