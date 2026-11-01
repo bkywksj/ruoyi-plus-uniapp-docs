@@ -6,6 +6,7 @@ import { getCollection } from 'astro:content';
 import { DOC_SECTIONS, SECTION_LABELS, docPath, sidebarOf, type DocSection } from '@/lib/docs';
 import type { SidebarItem } from '@/lib/sidebar';
 import { site } from '@/site.config';
+import { previewHref } from '@/lib/preview.mjs';
 
 interface Props {
   section: DocSection;
@@ -51,12 +52,10 @@ const labels: Record<DocSection, string> = { backend: 'Spring Boot', frontend: '
       {
         section === 'mobile' && (
           <a
-            href={`${site.mobilePreview.origin}/h5`}
-            target="_blank"
-            rel="noopener"
+            href={previewHref(`${site.mobilePreview.origin}/h5/`)}
             class="inline-flex h-11 items-center rounded-full border border-line bg-elevated px-5 text-[14px] font-semibold text-ink transition-colors hover:border-ink/20"
           >
-            在线体验 H5 ↗
+            在线体验 H5
           </a>
         )
       }

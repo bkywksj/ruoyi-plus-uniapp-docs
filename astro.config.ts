@@ -17,7 +17,7 @@ import {
 import vpMarks from './src/data/vp-marks.json';
 import vpIcons from './src/data/vp-icons.json';
 import { remarkVueComponents } from './src/lib/markdown/vue-components.mjs';
-import { rehypeLanding, rehypeTableWrap } from './src/lib/markdown/ry-layout.mjs';
+import { rehypeLanding, rehypePreviewLinks, rehypeTableWrap } from './src/lib/markdown/ry-layout.mjs';
 import outdated from './src/data/outdated.json';
 
 // 迁移正文里没被兼容插件处理的大写组件标签：构建时逐个打印（同一标签同一文件只报一次），迁移验收时人工过目
@@ -43,8 +43,8 @@ const markdownProcessor =
           // .md / 无扩展名链接补 .html 只对 .html 网址形态有意义；directory 形态下补了反而成死链
           ...(site.urlFormat === 'directory' ? [] : [remarkVpLinks]),
         ],
-        // 项目插件：表格外包横滑容器、营销页开头 h1 + 导语包进首屏 header（只动结构不动文字，要在锚点插件之后）
-        rehypePlugins: [rehypeVpHeadingIds, rehypeTableWrap, rehypeLanding],
+        // 项目插件：表格外包横滑容器、营销页开头 h1 + 导语包进首屏 header、演示站链接改指手机外框预览页（只动结构与链接去处，不动文字，要在锚点插件之后）
+        rehypePlugins: [rehypeVpHeadingIds, rehypeTableWrap, rehypeLanding, rehypePreviewLinks],
       })
     : satteri({ features: { smartPunctuation: false } });
 
@@ -67,8 +67,8 @@ export default defineConfig({
     // 使用指南（guides 集合）用 MDX：正文里嵌 Steps / Callout / Screenshot 等文档组件
     mdx(),
     sitemap({
-      // 404 与内容过期的旧页（outdated.json，页面带 noindex）不进站点地图；@astrojs/sitemap 此时给的是不带 .html 的地址
-      filter: (page) => !page.includes('/404') && !(decodeURI(new URL(page).pathname).replace(/\/$/, '').slice(1) in outdated.pages),
+      // 404、手机外框预览页（工具页，noindex）与内容过期的旧页（outdated.json，页面带 noindex）不进站点地图；@astrojs/sitemap 此时给的是不带 .html 的地址
+      filter: (page) => !page.includes('/404') && !/\/preview\/?$/.test(page) && !(decodeURI(new URL(page).pathname).replace(/\/$/, '').slice(1) in outdated.pages),
       // file / preserve 网址形态：@astrojs/sitemap 输出的是不带 .html 的 /a，与页面 canonical（/a.html）对不上，补齐。
       // preserve 下目录首页（产物 a/index.html）的网址是 /a/，不能补成 /a.html —— 按产物里有没有 a/index.html 判断
       // （serialize 在 astro:build:done 之后跑，dist 已写完）。首页与已带扩展名的地址不动；check:seo 核对 sitemap 每条都是某一页的 canonical

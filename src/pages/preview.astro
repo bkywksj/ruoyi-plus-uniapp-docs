@@ -1,0 +1,157 @@
+---
+// 手机外框预览页（/preview.html?url=…）：电脑上把移动端 H5 演示套进手机壳里看——直接打开 H5 会被拉满整屏，看不出真实效果。
+// 站内所有「在线体验」（演示页正文、移动端栏目首页按钮、手机预览卡的「新窗口打开」）都指到这里，换算规则在 src/lib/preview.mjs。
+// url 参数只认白名单里的演示站（防止被拿去套别人的网站），http 自动升 https（本站是 https，嵌 http 会被浏览器拦）；
+// 在真正的手机上（窄屏 + 触摸）直接跳到 H5，不套壳。工具页：noindex、不进 sitemap（astro.config）
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { siteJsonLd } from '@/lib/site-jsonld';
+import { site } from '@/site.config';
+import '@/styles/ry-theme.css';
+
+const origin = site.mobilePreview.origin;
+// 两个入口与演示页「在线演示」表格里的两行一致
+const presets = [
+  { key: 'h5', label: '基础框架', desc: '登录、首页、点餐、我的', url: `${origin}/h5/` },
+  { key: 'demo', label: '组件演示', desc: 'WD UI 组件逐个可点', url: `${origin}/demo/` },
+];
+const qr = site.mobilePreview.qr;
+---
+
+<BaseLayout
+  title="移动端在线体验"
+  description="在电脑上以手机画幅体验 RuoYi-Plus-UniApp 移动端 H5：基础框架与 WD UI 组件演示，账号 superadmin / admin123。"
+  noindex
+  jsonLd={siteJsonLd}
+>
+  <section class="ry-aurora min-h-[calc(100vh-4rem)]" data-preview-root>
+    <div class="mx-auto grid w-full max-w-[72rem] items-start gap-12 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,1fr)_26rem] lg:py-16">
+      <div class="lg:pt-10">
+        <p class="ry-kicker">移动端在线体验 · UniApp H5</p>
+        <h1 class="ry-grad-text mt-4 w-fit text-[40px] leading-[1.08] font-black tracking-tight sm:text-[52px]">在手机里看效果</h1>
+        <p class="mt-5 max-w-xl text-[15.5px] leading-8 text-muted">
+          右边是真实运行的 H5 演示，可以直接点、可以登录。电脑浏览器打开 H5 会被拉满整屏，这里按手机尺寸显示，和装在手机上看到的一样。
+        </p>
+
+        <div class="mt-8 grid max-w-xl gap-3 sm:grid-cols-2" role="tablist" aria-label="切换演示">
+          {
+            presets.map((p, i) => (
+              <a
+                href={`?url=${encodeURIComponent(p.url)}`}
+                role="tab"
+                data-preset={p.url}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                class="ry-card ry-lift block !rounded-2xl px-5 py-4"
+              >
+                <span class="block font-bold text-ink">{p.label}</span>
+                <span class="mt-1 block text-[13px] text-muted">{p.desc}</span>
+              </a>
+            ))
+          }
+        </div>
+
+        <dl class="mt-8 grid max-w-xl gap-3 text-[14px] sm:grid-cols-2">
+          <div class="ry-pane px-5 py-4">
+            <dt class="text-[12px] text-muted">演示账号</dt>
+            <dd class="mt-1 font-mono text-[15px] font-semibold text-ink">superadmin / admin123</dd>
+          </div>
+          <div class="ry-pane px-5 py-4">
+            <dt class="text-[12px] text-muted">当前地址</dt>
+            <dd class="mt-1 truncate font-mono text-[13px] text-ink/80" data-current-url>{presets[0].url}</dd>
+          </div>
+        </dl>
+
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a
+            href={presets[0].url}
+            target="_blank"
+            rel="noopener"
+            data-open-direct
+            class="inline-flex h-11 items-center rounded-full border border-line bg-elevated px-5 text-[14px] font-semibold text-ink transition-colors hover:border-ink/20"
+          >
+            新窗口打开 H5 ↗
+          </a>
+          <a href="/demo.html" class="inline-flex h-11 items-center rounded-full px-4 text-[14px] text-muted hover:text-ink">← 返回项目演示</a>
+        </div>
+
+        {
+          qr && (
+            <div class="mt-10 flex max-w-xl items-center gap-5">
+              <img src={qr} alt="手机扫码打开移动端演示" width="112" height="112" class="size-28 rounded-xl border border-line bg-white p-2" loading="lazy" />
+              <p class="text-[13.5px] leading-7 text-muted">
+                手机扫码直接打开，<br />微信里也能用。
+              </p>
+            </div>
+          )
+        }
+      </div>
+
+      <!-- 手机外框：393 × 852（iPhone 15 Pro 的 CSS 尺寸）；宽度同时受窗口高度约束（减去页头与上下留白），整台手机始终完整显示 -->
+      <div class="mx-auto w-full lg:sticky lg:top-20" style="max-width: min(26rem, calc((100vh - 10rem) * 393 / 852 + 22px))">
+        <div
+          class="rounded-[54px] bg-[#0d0f14] p-[11px] shadow-[inset_0_0_0_1.5px_rgba(255,255,255,.14),0_2px_4px_rgba(0,0,0,.18),0_40px_80px_-30px_rgba(10,18,34,.55)]"
+        >
+          <div class="relative overflow-hidden rounded-[44px] bg-white" style="aspect-ratio: 393 / 852">
+            <span
+              class="pointer-events-none absolute top-2.5 left-1/2 z-10 h-[26px] w-[32%] -translate-x-1/2 rounded-full bg-[#0d0f14]"
+              aria-hidden="true"></span>
+            <iframe
+              src={presets[0].url}
+              title="移动端在线体验"
+              data-phone-frame
+              class="absolute inset-x-0 top-[38px] bottom-0 h-[calc(100%-38px)] w-full border-0"
+              allow="clipboard-write; geolocation"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // 读 ?url=：白名单内才嵌、http 升 https；真手机上直接跳过去不套壳；切换演示只换 iframe，不整页刷新
+  import { isPreviewable } from '@/lib/preview.mjs';
+
+  const root = document.querySelector<HTMLElement>('[data-preview-root]');
+  const frame = document.querySelector<HTMLIFrameElement>('[data-phone-frame]');
+  const current = document.querySelector<HTMLElement>('[data-current-url]');
+  const direct = document.querySelector<HTMLAnchorElement>('[data-open-direct]');
+  const tabs = [...document.querySelectorAll<HTMLAnchorElement>('[data-preset]')];
+
+  const normalize = (raw: string | null) => {
+    if (!raw || !isPreviewable(raw)) return null;
+    const u = new URL(raw);
+    u.protocol = 'https:';
+    return u.toString();
+  };
+  const show = (url: string) => {
+    if (!frame || !current || !direct) return;
+    if (frame.src !== url) frame.src = url;
+    current.textContent = url;
+    direct.href = url;
+    // 预设地址（/h5/、/demo/）与组件页地址（/demo/pages-sub/…）都按前缀归到对应的页签
+    const bare = (u: string) => u.replace(/\/+$/, '');
+    for (const t of tabs) t.setAttribute('aria-selected', String(bare(url).startsWith(bare(t.dataset.preset ?? ''))));
+  };
+
+  const target = normalize(new URLSearchParams(location.search).get('url'));
+  const isPhone = matchMedia('(max-width: 767px) and (pointer: coarse)').matches;
+  if (isPhone) location.replace(target ?? tabs[0]?.dataset.preset ?? '/');
+  else if (root && target) show(target);
+
+  for (const t of tabs) {
+    t.addEventListener('click', (e) => {
+      e.preventDefault();
+      const url = t.dataset.preset ?? '';
+      history.replaceState(null, '', `?url=${encodeURIComponent(url)}`);
+      show(url);
+    });
+  }
+</script>
+
+<style>
+  /* 当前演示的页签：.ry-card 的边框是不分层的样式，压过 Tailwind 的 aria-selected: 工具类，所以选中态写在这里 */
+  [data-preset][aria-selected='true'] {
+    border-color: var(--brand);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--brand) 18%, transparent), 0 18px 40px -22px rgb(10 18 34 / 0.22);
+  }
+</style>

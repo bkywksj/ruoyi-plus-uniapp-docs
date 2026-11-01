@@ -1,10 +1,26 @@
-// 方案 C 版式用的两个 rehype 插件：只调整结构（包一层容器），正文文字、标题、链接、图片一个不改，迁移逐页比对照旧通过
+// 本站版式用的 rehype 插件：只调整结构（包一层容器）或改链接去处，正文文字、标题、图片一个不改，迁移逐页比对照旧通过
 // - rehypeTableWrap：表格外包 <div class="tbl">——表格本身保持 display:table 才能整宽排版，横向滚动交给外层（窄屏宽表不撑破版心）
 // - rehypeLanding：营销页开头的 h1 + 紧跟的导语段落包进 <header class="lp-hero">（LandingLayout 的样式铺成深色首屏），其余正文按 h2 / h3 包分组容器；
 //   首屏上的装饰（标签行 / 数字 / 产品图标带）取 src/data/landing.json，标 data-migrate-ignore（比对不看）+ data-pagefind-ignore（不进搜索）
+// - rehypePreviewLinks：正文里指向移动端演示站（uni.ruoyi.plus）的链接改指本站手机外框预览页（src/lib/preview.mjs）；
+//   迁移比对会把 /preview.html?url=原地址 还原成原地址再比（compare-baseline.mjs），链接一条不少的检查照样有效
 import { readFileSync } from 'node:fs';
+import { previewHref } from '../preview.mjs';
 
 const landing = JSON.parse(readFileSync(new URL('../../data/landing.json', import.meta.url), 'utf8'));
+
+/** 正文里的演示站链接改指手机外框预览页（电脑上直接打开 H5 会被拉满整屏） */
+export function rehypePreviewLinks() {
+  return (tree) => {
+    const walk = (node) => {
+      if (node.type === 'element' && node.tagName === 'a' && typeof node.properties?.href === 'string') {
+        node.properties.href = previewHref(node.properties.href);
+      }
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
 
 /** 表格包一层横向滚动容器 */
 export function rehypeTableWrap() {

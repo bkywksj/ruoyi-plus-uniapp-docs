@@ -85,7 +85,12 @@ for (const page of Object.keys(next).sort()) {
   const imgExtra = missing(src(n.images), src(o.images));
   // 链接解码后再比：新站把中文锚点 / 路径编码成 %E5…，浏览器视为同一地址
   const dec = (l) => { try { return decodeURI(l); } catch { return l; } };
-  const linkLost = missing((o.links ?? []).map(dec), (n.links ?? []).map(dec));
+  // 新站把演示站链接改指手机外框预览页（/preview.html?url=原地址，见 src/lib/preview.mjs）：还原成原地址再比，链接去处变了但一条不能少
+  const unwrap = (l) => {
+    const m = /^\/preview\.html\?url=([^&#]+)/.exec(l);
+    return m ? decodeURIComponent(m[1]) : l;
+  };
+  const linkLost = missing((o.links ?? []).map(dec), (n.links ?? []).map(unwrap).map(dec));
   const titleOk = (o.title ?? '') === (n.title ?? '') || (qualifiedTitle(page, o.title ?? '') === n.title && ++titleAccepted > 0);
   const metaDiff = [...(titleOk ? [] : ['title']), ...['description', 'canonical'].filter((k) => (o[k] ?? '') !== (n[k] ?? ''))];
   const jsonLdOk = (n.jsonLd ?? 0) >= (o.jsonLd ?? 0);
