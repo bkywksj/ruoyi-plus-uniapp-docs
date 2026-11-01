@@ -17,7 +17,7 @@ import {
 import vpMarks from './src/data/vp-marks.json';
 import vpIcons from './src/data/vp-icons.json';
 import { remarkVueComponents } from './src/lib/markdown/vue-components.mjs';
-import { rehypeLanding, rehypePreviewLinks, rehypeTableWrap } from './src/lib/markdown/ry-layout.mjs';
+import { rehypeImgSize, rehypeLanding, rehypePreviewLinks, rehypeTableWrap } from './src/lib/markdown/ry-layout.mjs';
 import outdated from './src/data/outdated.json';
 
 // 迁移正文里没被兼容插件处理的大写组件标签：构建时逐个打印（同一标签同一文件只报一次），迁移验收时人工过目
@@ -51,7 +51,7 @@ const markdownProcessor =
           ...(site.urlFormat === 'directory' ? [] : [remarkVpLinks]),
         ],
         // 项目插件：表格外包横滑容器、营销页开头 h1 + 导语包进首屏 header、演示站链接改指手机外框预览页（只动结构与链接去处，不动文字，要在锚点插件之后）
-        rehypePlugins: [rehypeVpHeadingIds, rehypeTableWrap, rehypeLanding, rehypePreviewLinks],
+        rehypePlugins: [rehypeVpHeadingIds, rehypeTableWrap, rehypeLanding, rehypePreviewLinks, rehypeImgSize],
       })
     : satteri({ features: { smartPunctuation: false } });
 

@@ -4,10 +4,71 @@
 //   首屏上的装饰（标签行 / 数字 / 产品图标带）取 src/data/landing.json，标 data-migrate-ignore（比对不看）+ data-pagefind-ignore（不进搜索）
 // - rehypePreviewLinks：正文里指向移动端演示站（uni.ruoyi.plus）的链接改指本站手机外框预览页（src/lib/preview.mjs）；
 //   迁移比对会把 /preview.html?url=原地址 还原成原地址再比（compare-baseline.mjs），链接一条不少的检查照样有效
+// - rehypeImgSize：正文里引用本站 public/ 下的图片补上原始 width / height 与 decoding="async"（见函数注释）
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { previewHref } from '../preview.mjs';
+import { imageSize } from './img-size.mjs';
 
 const landing = JSON.parse(readFileSync(new URL('../../data/landing.json', import.meta.url), 'utf8'));
+const PUBLIC_DIR = fileURLToPath(new URL('../../../public/', import.meta.url));
+/** 同一张图在多页出现（如二维码），读一次即可 */
+const sizeCache = new Map();
+
+/**
+ * 正文图片补 width / height 与 decoding="async"。
+ * 为什么：图片默认懒加载，下载前浏览器不知道它多高，按 0 排版；手机上快速下滑再回滑时，上方的图这才加载、突然撑开，
+ * 把下面的内容往下推，看起来像页面「回退」。iOS 与部分内置浏览器没有滚动锚定，不会替你把位置拉回来。
+ * 写上原始宽高后，浏览器按 width / height 的比例提前留位（全局样式里 img 已是 max-width:100%; height:auto，显示尺寸不变）。
+ * 只处理 / 开头、在 public/ 里找得到的图；已经写了 width 或 height 的不动（行内 style 指定了尺寸的同理，保持原样）
+ */
+export function rehypeImgSize() {
+  /** 本站图片（/ 开头、public/ 里有）的原始宽高；站外、找不到、认不出的返回 null */
+  const localSize = (src) => {
+    if (!src.startsWith('/') || src.startsWith('//')) return null;
+    let rel;
+    try {
+      rel = decodeURI(src.split(/[?#]/)[0]).slice(1);
+    } catch {
+      return null;
+    }
+    if (!sizeCache.has(rel)) sizeCache.set(rel, imageSize(PUBLIC_DIR + rel));
+    return sizeCache.get(rel);
+  };
+  const styledSize = (style) => /\b(width|height)\s*:/.test(String(style ?? ''));
+  return (tree) => {
+    const walk = (node) => {
+      if (node.type === 'element' && node.tagName === 'img') {
+        const p = node.properties ?? (node.properties = {});
+        if (p.decoding === undefined) p.decoding = 'async';
+        if (p.width === undefined && p.height === undefined && !styledSize(p.style)) {
+          const size = localSize(typeof p.src === 'string' ? p.src : '');
+          if (size) {
+            p.width = size.width;
+            p.height = size.height;
+          }
+        }
+      }
+      // 正文里直接写的 HTML（首页产品图标、二维码等）在这条管线里是原样字符串，不会变成元素节点，按标签文本补
+      if (node.type === 'raw' && typeof node.value === 'string' && node.value.includes('<img')) {
+        node.value = node.value.replace(/<img\b[^>]*>/gi, (tag) => {
+          let out = tag;
+          const attr = (name) => tag.match(new RegExp(`\\s${name}\\s*=\\s*"([^"]*)"`, 'i'))?.[1];
+          const add = [];
+          if (attr('decoding') === undefined) add.push('decoding="async"');
+          if (attr('width') === undefined && attr('height') === undefined && !styledSize(attr('style'))) {
+            const size = localSize(attr('src') ?? '');
+            if (size) add.push(`width="${size.width}"`, `height="${size.height}"`);
+          }
+          if (add.length) out = tag.replace(/\s*\/?>$/, (end) => ` ${add.join(' ')}${end.trim() === '/>' ? ' />' : '>'}`);
+          return out;
+        });
+      }
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
 
 /** 正文里的演示站链接改指手机外框预览页（电脑上直接打开 H5 会被拉满整屏） */
 export function rehypePreviewLinks() {
