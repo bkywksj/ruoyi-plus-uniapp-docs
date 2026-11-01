@@ -16,5 +16,5 @@ argument-hint: "<文档路径或目录>"
 ## 示例
 - `/review` — 审查最近修改的文档
 - `/review backend/common/redis/` — 审查指定目录
-- `/review src/content/docs/frontend/components/table.md` — 审查指定文件
+- `/review src/content/docs/frontend/components/display/table-toolbar.md` — 审查指定文件
 - `/review --strict` — 严格模式审查

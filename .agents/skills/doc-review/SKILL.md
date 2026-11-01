@@ -14,7 +14,7 @@ allowed-tools: Read, Grep, Glob, Bash, Edit, Write, Agent
 - `$ARGUMENTS` 支持以下参数：
   - 无参数：审查最近修改的文档
   - `backend/common/redis/`：审查指定目录
-  - `src/content/docs/frontend/components/table.md`：审查指定文件
+  - `src/content/docs/frontend/components/display/table-toolbar.md`：审查指定文件
   - `--strict`：严格模式，检查所有规则（包括建议性规则）
 
 ## 核心配置
