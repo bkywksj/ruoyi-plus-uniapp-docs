@@ -76,7 +76,17 @@
   - 修掉的问题：行内代码长词撑破手机版（pay.html 537px → 加 overflow-wrap:anywhere；反证：去掉该规则立刻回到 537px）、营销页分组网格被宽表格撑出版心、
     深色搜索按钮 w-full 与 w-44 冲突把「开始使用」挤出页头（桌面 1619px）、页脚网格简介与「文档」栏重叠、二维码 3:4 比例误伤首页提交记录图、技术服务卡片空格
   - 待用户过目的新增文案：首页分镜示例（社区团购 / 文件名）、首屏标签行（landing.json 的 kicker / 数字）、技术服务首屏按钮；页脚说明行照旧站 footer.message 原文
-- [ ] T6c 迁移后内容修正（与迁移分开提交，便于回溯；正文改动不计入「一字不改」的迁移比对）
+- [x] T6c 迁移后内容修正（与迁移分开提交，便于回溯；正文改动不计入「一字不改」的迁移比对）
+  - 2026-11-01 用户「按你建议继续」，按默认处理：
+    · A 类 4 处已改（逐处先到框架代码核实）：startup 的包名 / 库名 ryplus_uni_workflow → ryplus_uni（主版本 artifactId 与 application-*.yml 都是 ryplus_uni；
+      原报告写的「ruoyi-admin.jar」不对）、vite-plugins/overview 补 sm-crypto-rng（表格一行 + 入口示例照 index.ts 原文）、
+      claude-code 删「写作进度跟踪」草稿段与 banana-image（五个分支 .claude/skills 都没有）；workflow-engine 在 workflow / 6.x / 6.x-single 分支存在 → 保留并标注、
+      camera 标题改「useUpload 媒体选择与上传」（侧栏名同步）
+    · C 类 10 页：网址保留、正文不动；src/data/outdated.json 登记「查不到的类 / 以哪页为准」，DocsLayout 正文上方提示条 + noindex，sitemap 排除（501 条）。
+      重写后从 outdated.json 删掉即恢复收录；站内搜索仍能搜到（带提示条）
+    · 比对脚本：known-diffs.json 新增 edited（修订页只守代码块数 / 图片 / 链接 / canonical / JSON-LD 不少，原因逐条打印）；compare-site 单列「有意移出」的过期页
+  - 读数：verify 全绿（0 错误、check:seo 通过、vitest 128/128）；逐页 511/511（4 页按 edited 规则）；全站比对通过（sitemap 501 + 有意移出 10）
+  - 反证：修订页 camera 去掉一个代码块 → 判不通过（510/511）
   - A 类小修：backend/ruoyi-admin/startup 的 jar 名 ryplus_uni_workflow.jar 是 workflow 变体（主版本是 ruoyi-admin.jar）；
     mobile/vite-plugins/overview 缺新加的 sm-crypto-rng 插件（createSmCryptoRng）；practices/ai/claude-code 删「写作进度跟踪」草稿段与 2 个已不存在的技能（banana-image、workflow-engine）；
     mobile/plugins/camera 实为 useUpload（标题与归类待改）
