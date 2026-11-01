@@ -1,0 +1,121 @@
+---
+// 栏目首页（/backend/ /frontend/ /mobile/ /practices/）正文上方的深色首屏 + 分组卡片（方案 C）。
+// 数据全部来自侧栏（sidebar.json）与 docs 集合：分组名 / 每组篇数 / 每组第一篇的网址、各栏目页数，不写死任何文案以外的数字。
+// 不在正文盒里（data-pagefind-body 之外）：不进站内搜索、不参与迁移逐页比对，栏目首页自己的正文照旧显示在下方
+import { getCollection } from 'astro:content';
+import { DOC_SECTIONS, SECTION_LABELS, docPath, sidebarOf, type DocSection } from '@/lib/docs';
+import type { SidebarItem } from '@/lib/sidebar';
+import { site } from '@/site.config';
+
+interface Props {
+  section: DocSection;
+}
+
+const { section } = Astro.props;
+const docs = await getCollection('docs');
+const pageCount = (s: DocSection) => docs.filter((d) => d.id.startsWith(`${s}/`)).length;
+// 栏目一句话：取栏目首页 index.md 的 description（与旧站 meta description 同一句）
+const intro = docs.find((d) => d.id === `${section}/index`)?.data.description ?? '';
+
+/** 分组里的站内页面（递归，按侧栏顺序） */
+const pagesOf = (items: SidebarItem[]): SidebarItem[] =>
+  items.flatMap((item) => [...(item.href && !item.external ? [item] : []), ...(item.items ? pagesOf(item.items) : [])]);
+const groups = sidebarOf(section)
+  .filter((g) => g.items)
+  .map((g) => ({ text: g.text, pages: pagesOf(g.items!), sub: g.items!.filter((i) => i.items).length }))
+  .filter((g) => g.pages.length > 0);
+const [first, ...rest] = groups;
+// 首组里排在栏目首页之后的第一篇（一般是「快速启动」），作为首屏主按钮
+const startPage = first?.pages.find((p) => p.href !== docPath(`${section}/index`));
+const labels: Record<DocSection, string> = { backend: 'Spring Boot', frontend: 'Vue 3', mobile: 'UniApp', practices: 'Practices' };
+---
+
+<section class="ry-night overflow-hidden" data-pagefind-ignore>
+  <div class="mx-auto w-full max-w-[90rem] px-4 pt-14 pb-10 sm:px-6 lg:px-8 lg:pt-16">
+    <p class="ry-kicker">docs / {section} · {pageCount(section)} 页</p>
+    <p class="mt-4 text-[44px] leading-[1.05] font-black tracking-tight sm:text-[60px]">
+      {SECTION_LABELS[section]}<span class="ml-3 align-middle font-mono text-[16px] font-normal tracking-normal text-white/40">{labels[section]}</span>
+    </p>
+    {intro && <p class="mt-5 max-w-2xl text-[15.5px] leading-8 text-white/60">{intro}</p>}
+    <div class="mt-8 flex flex-wrap items-center gap-3">
+      {
+        startPage && (
+          <a
+            href={startPage.href}
+            class="inline-flex h-11 items-center gap-2 rounded-xl bg-brand-strong px-5 text-[14px] font-semibold text-white shadow-[0_12px_30px_-10px_rgba(91,124,255,.8)] transition-opacity hover:opacity-90"
+          >
+            {startPage.text} →
+          </a>
+        )
+      }
+      {
+        section === 'mobile' && (
+          <a
+            href={`${site.mobilePreview.origin}/h5`}
+            target="_blank"
+            rel="noopener"
+            class="inline-flex h-11 items-center rounded-xl border border-white/15 px-5 text-[14px] font-semibold text-white/85 transition-colors hover:bg-white/[.06]"
+          >
+            在线体验 H5 ↗
+          </a>
+        )
+      }
+      <span class="text-[13px] text-white/40">{groups.length} 个分组 · 侧栏 {groups.reduce((n, g) => n + g.pages.length, 0)} 篇</span>
+    </div>
+  </div>
+  <div class="border-t border-white/[.06]">
+    <nav aria-label="切换栏目" class="mx-auto flex w-full max-w-[90rem] gap-1 overflow-x-auto px-4 py-3 text-[13.5px] sm:px-6 lg:px-8">
+      {
+        DOC_SECTIONS.map((s) => (
+          <a
+            href={docPath(`${s}/index`)}
+            aria-current={s === section ? 'page' : undefined}
+            class:list={[
+              'flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2 transition-colors',
+              s === section ? 'bg-white font-semibold text-[#07080D]' : 'text-white/55 hover:bg-white/[.05] hover:text-white',
+            ]}
+          >
+            {SECTION_LABELS[s]}
+            <span class:list={['font-mono text-[11px]', s === section ? 'text-black/40' : 'text-white/30']}>{pageCount(s)}</span>
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</section>
+
+<section class="mx-auto w-full max-w-[90rem] px-4 pt-12 pb-4 sm:px-6 lg:px-8" data-pagefind-ignore>
+  <p class="ry-kicker-l">本栏目</p>
+  <p class="mt-2 text-[26px] font-black tracking-tight">从哪里开始</p>
+  <div class="mt-6 grid items-start gap-3 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)]">
+    {
+      first && (
+        <a href={first.pages[0].href} class="ry-card ry-lift flex flex-col p-6">
+          <span class="inline-grid size-10 place-items-center rounded-xl bg-brand-strong font-mono text-sm font-bold text-white">01</span>
+          <span class="mt-5 text-[20px] font-black">{first.text}</span>
+          <ul class="mt-4 grid gap-1.5 text-[14px]">
+            {first.pages.slice(0, 7).map((p, i) => (
+              <li class="flex items-center gap-2.5">
+                <span class="font-mono text-[11px] text-brand-ink">{String(i + 1).padStart(2, '0')}</span>
+                {p.text}
+              </li>
+            ))}
+          </ul>
+          <span class="mt-auto pt-6 text-[13px] font-semibold text-brand-ink">开始阅读 →</span>
+        </a>
+      )
+    }
+    <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+    {
+      rest.map((g) => (
+        <a href={g.pages[0].href} class="ry-card ry-lift block !rounded-2xl px-5 py-4">
+          <span class="block text-[14.5px] font-semibold">{g.text}</span>
+          <span class="mt-1 block text-[12.5px] text-muted">
+            {g.pages.length} 篇{g.sub > 0 ? ` · ${g.sub} 个小组` : ''}
+          </span>
+        </a>
+      ))
+    }
+    </div>
+  </div>
+</section>

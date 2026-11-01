@@ -17,6 +17,7 @@ import {
 import vpMarks from './src/data/vp-marks.json';
 import vpIcons from './src/data/vp-icons.json';
 import { remarkVueComponents } from './src/lib/markdown/vue-components.mjs';
+import { rehypeLanding, rehypeTableWrap } from './src/lib/markdown/ry-layout.mjs';
 
 // 迁移正文里没被兼容插件处理的大写组件标签：构建时逐个打印（同一标签同一文件只报一次），迁移验收时人工过目
 const reportedUnknown = new Set<string>();
@@ -41,7 +42,8 @@ const markdownProcessor =
           // .md / 无扩展名链接补 .html 只对 .html 网址形态有意义；directory 形态下补了反而成死链
           ...(site.urlFormat === 'directory' ? [] : [remarkVpLinks]),
         ],
-        rehypePlugins: [rehypeVpHeadingIds],
+        // 项目插件：表格外包横滑容器、营销页开头 h1 + 导语包进首屏 header（只动结构不动文字，要在锚点插件之后）
+        rehypePlugins: [rehypeVpHeadingIds, rehypeTableWrap, rehypeLanding],
       })
     : satteri({ features: { smartPunctuation: false } });
 

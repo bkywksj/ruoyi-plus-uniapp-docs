@@ -1,18 +1,21 @@
 ---
-// 迁移文档的页面布局：左多层侧栏 / 正文 / 右「页面导航」或手机实时预览，外壳是 BaseLayout。
+// 迁移文档的页面布局（方案 C）：深色面包屑带 / 左多层侧栏 / 正文 / 右「页面导航」或手机实时预览，外壳是 BaseLayout。
 // 版心比框架 Container 宽（文档代码块多，正文需要宽度），只在这个布局里放宽，不改框架核心组件。
+// 栏目首页（backend/index 等）在正文上方多一块深色首屏 + 分组卡片（SectionHero，不进正文盒、不参与迁移比对）。
 // 结构化数据照旧站：每页 TechArticle（字段与旧站 transformPageData 一致），不再加 BreadcrumbList 以外的东西
 import type { MarkdownHeading } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SidebarTree from '@/components/docs/SidebarTree.astro';
 import DocsToc from '@/components/docs/DocsToc.astro';
 import PhonePreview from '@/components/docs/PhonePreview.astro';
+import SectionHero from '@/components/docs/SectionHero.astro';
 import { absoluteUrl, type JsonLd } from '@/lib/seo';
-import { docPath, prevNextOf, sectionOf, sidebarOf } from '@/lib/docs';
+import { SECTION_LABELS, docPath, prevNextOf, sectionOf, sidebarOf, sidebarTrailOf } from '@/lib/docs';
 import { site } from '@/site.config';
 import { siteJsonLd } from '@/lib/site-jsonld';
 import titleQualifiers from '@/data/title-qualifiers.json';
 import '@/styles/vp-compat.css';
+import '@/styles/ry-theme.css';
 import '@/styles/docs-ruoyi.css';
 
 interface Props {
@@ -31,6 +34,10 @@ const sidebar = section ? sidebarOf(section) : [];
 const { prev, next } = prevNextOf(id);
 const showPreview = iframe && url;
 const current = docPath(id);
+const trail = sidebarTrailOf(id);
+const isSectionHome = !!section && id === `${section}/index`;
+// 正文自己已经给二级标题编了号（「一、」「1.」「第一章」）就不再叠 CSS 编号，免得出现「01 一、」
+const selfNumbered = headings.some((h) => h.depth === 2 && /^(\d+[.、．\s]|[一二三四五六七八九十]+[、.．]|第[一二三四五六七八九十\d]+)/.test(h.text));
 // 旧站 16 组页面 <title> 完全相同（如 4 页都叫「快速开始」）：只在 <title> 里加区分名，正文 h1 与结构化数据标题不变
 // （区分名由 scripts/migrate/title-qualifiers.mjs 生成，用户 2026-10-30 定）
 const qualifier = (titleQualifiers as Record<string, string>)[id];
@@ -53,17 +60,45 @@ const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/d
 ---
 
 <BaseLayout title={pageTitle} description={description} type="article" jsonLd={[...siteJsonLd, techArticle]}>
-  <div class:list={['mx-auto w-full max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8', site.codeLineNumbers && 'code-line-numbers']}>
+  {
+    isSectionHome ? (
+      <SectionHero section={section} />
+    ) : (
+      section && (
+        <nav aria-label="所在位置" class="ry-night border-b border-white/[.06]">
+          <ol class="mx-auto flex h-12 w-full max-w-[90rem] items-center gap-2 overflow-x-auto px-4 text-[13px] whitespace-nowrap sm:px-6 lg:px-8">
+            <li class="font-mono text-white/35">docs /</li>
+            <li>
+              <a href={docPath(`${section}/index`)} class="text-white/60 hover:text-white">
+                {SECTION_LABELS[section]}
+              </a>
+            </li>
+            {trail.map((t) => (
+              <li class="flex items-center gap-2 text-white/60">
+                <span class="text-white/25" aria-hidden="true">›</span>
+                {t}
+              </li>
+            ))}
+            <li class="flex items-center gap-2 text-white" aria-current="page">
+              <span class="text-white/25" aria-hidden="true">›</span>
+              {title}
+            </li>
+          </ol>
+        </nav>
+      )
+    )
+  }
+  <div class:list={['mx-auto w-full max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8 lg:py-10', site.codeLineNumbers && 'code-line-numbers']}>
     <div
       class:list={[
-        'grid gap-10 lg:grid-cols-[16rem_minmax(0,1fr)]',
-        showPreview ? 'xl:grid-cols-[16rem_minmax(0,1fr)_22.5rem]' : aside && 'xl:grid-cols-[16rem_minmax(0,1fr)_13rem]',
+        'grid gap-10 lg:grid-cols-[16.5rem_minmax(0,1fr)]',
+        showPreview ? 'xl:grid-cols-[16.5rem_minmax(0,1fr)_22.5rem]' : aside && '2xl:grid-cols-[16.5rem_minmax(0,1fr)_14rem]',
       ]}
     >
       {
         sidebar.length > 0 && (
           <aside class="hidden lg:block">
-            <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 pb-6 text-sm">
+            <div class="ry-sidebar sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 pb-6 text-[13.5px]">
               <SidebarTree items={sidebar} current={current} />
             </div>
           </aside>
@@ -73,40 +108,48 @@ const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/d
       <div class:list={['min-w-0', sidebar.length === 0 && 'lg:col-span-2']}>
         {
           sidebar.length > 0 && (
-            <details class="mb-6 rounded-lg border border-line text-sm lg:hidden">
-              <summary class="cursor-pointer px-4 py-2.5 font-medium">菜单</summary>
-              <div class="border-t border-line px-2 py-4">
+            <details class="ry-card mb-6 !rounded-2xl text-sm lg:hidden">
+              <summary class="cursor-pointer px-4 py-3 font-semibold">本栏目菜单</summary>
+              <div class="ry-sidebar border-t border-line px-2 py-4">
                 <SidebarTree items={sidebar} current={current} />
               </div>
             </details>
           )
         }
-        <article class="prose-content vp-doc" data-pagefind-body>
+        <article class:list={['prose-content vp-doc mx-auto max-w-[50rem]', !selfNumbered && 'h2-num']} data-pagefind-body>
           <slot />
         </article>
-        {
-          (prev || next) && (
-            <nav aria-label="上一篇与下一篇" class="not-prose mt-12 grid gap-4 border-t border-line pt-6 text-sm sm:grid-cols-2">
-              {prev?.href ? (
-                <a href={prev.href} rel="prev" class="rounded-lg border border-line p-4 transition-colors hover:border-brand">
-                  <span class="text-xs text-muted">上一页</span>
-                  <span class="mt-1 block font-medium text-brand-ink">{prev.text}</span>
-                </a>
-              ) : (
-                <span />
-              )}
-              {next?.href && (
-                <a href={next.href} rel="next" class="rounded-lg border border-line p-4 text-right transition-colors hover:border-brand">
-                  <span class="text-xs text-muted">下一页</span>
-                  <span class="mt-1 block font-medium text-brand-ink">{next.text}</span>
-                </a>
-              )}
-            </nav>
-          )
-        }
-        <p class="mt-6 text-sm">
-          <a href={editUrl} target="_blank" rel="noopener" class="text-brand-ink hover:underline">在 GitHub 上编辑此页面</a>
-        </p>
+        <div class="mx-auto max-w-[50rem]">
+          {
+            (prev || next) && (
+              <nav aria-label="上一篇与下一篇" class="not-prose mt-14 grid gap-3 text-sm sm:grid-cols-2">
+                {prev?.href ? (
+                  <a href={prev.href} rel="prev" class="ry-card ry-lift group block !rounded-2xl px-5 py-4">
+                    <span class="text-xs text-muted">上一页</span>
+                    <span class="mt-1 flex items-center gap-2 font-semibold text-ink">
+                      <span class="text-brand-ink transition-transform group-hover:-translate-x-0.5" aria-hidden="true">←</span>
+                      {prev.text}
+                    </span>
+                  </a>
+                ) : (
+                  <span />
+                )}
+                {next?.href && (
+                  <a href={next.href} rel="next" class="ry-card ry-lift group block !rounded-2xl px-5 py-4 text-right">
+                    <span class="text-xs text-muted">下一页</span>
+                    <span class="mt-1 flex items-center justify-end gap-2 font-semibold text-ink">
+                      {next.text}
+                      <span class="text-brand-ink transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+                    </span>
+                  </a>
+                )}
+              </nav>
+            )
+          }
+          <p class="mt-6 text-sm">
+            <a href={editUrl} target="_blank" rel="noopener" class="text-muted transition-colors hover:text-ink">在 GitHub 上编辑此页面 ↗</a>
+          </p>
+        </div>
       </div>
 
       {
@@ -118,7 +161,7 @@ const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/d
           </aside>
         ) : (
           aside && (
-            <aside class="hidden xl:block">
+            <aside class="hidden 2xl:block">
               <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
                 <DocsToc headings={headings} />
               </div>
@@ -129,3 +172,27 @@ const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/d
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  // 代码窗右上角的「复制」：只复制代码文字（行号是 CSS 画的，不在文字里）。没有 JS 时不出现按钮，代码照样能选中复制
+  for (const pre of document.querySelectorAll<HTMLPreElement>('.vp-doc pre.astro-code')) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'ry-copy';
+    button.textContent = '复制';
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? pre.innerText);
+        button.textContent = '已复制';
+        button.dataset.done = '';
+      } catch {
+        button.textContent = '复制失败';
+      }
+      setTimeout(() => {
+        button.textContent = '复制';
+        delete button.dataset.done;
+      }, 1600);
+    });
+    pre.append(button);
+  }
+</script>

@@ -71,7 +71,7 @@ export const site = {
   /** <html lang> 与 og:locale */
   locale: 'zh-CN',
   /** 品牌主色：注入为 CSS 变量 --brand，Tailwind 里用 bg-brand / text-brand */
-  brandColor: '#0B6EF0',
+  brandColor: '#5B7CFF',
   author: {
     name: '若依科技工作室',
     url: 'https://ruoyi.plus',
@@ -121,6 +121,44 @@ export const site = {
   ] as SocialLink[],
   /** 备案号（国内服务器必填，显示在页脚；为空则不显示） */
   icp: '粤ICP备2021091549号-5',
+  /** 页头右侧主按钮（旧站首页第一个按钮「开始使用」的去处）；null 不显示 */
+  headerCta: { label: '开始使用', href: '/backend/getting-started.html' } as NavItem | null,
+  /** 页脚链接分组（方案 C 三栏）；空数组时页脚退回「站内」一栏列出全部 nav */
+  footerGroups: [
+    {
+      title: '文档',
+      items: [
+        { label: '后端', href: '/backend/index.html' },
+        { label: '前端', href: '/frontend/index.html' },
+        { label: '移动端', href: '/mobile/index.html' },
+        { label: '最佳实践', href: '/practices/index.html' },
+      ],
+    },
+    {
+      title: '了解',
+      items: [
+        { label: '特性', href: '/changelog.html' },
+        { label: '框架对比', href: '/comparison.html' },
+        { label: '视频', href: '/video.html' },
+        { label: '演示', href: '/demo.html' },
+      ],
+    },
+    {
+      title: '更多',
+      items: [
+        { label: '授权定价', href: '/demo.html#授权定价' },
+        { label: '产品矩阵', href: '/products.html' },
+        { label: '技术服务', href: '/services.html' },
+      ],
+    },
+  ] as { title: string; items: NavItem[] }[],
+  /** 页脚说明行（旧站 themeConfig.footer.message 原文）：text 原样显示，link 接在末尾 */
+  footerNote: {
+    text: '湛江智脑科技有限公司 · 若依科技工作室 · 承接全栈 / 桌面软件 / 小程序定制开发 · ',
+    link: { label: '技术服务咨询', href: '/services.html' },
+  } as { text: string; link?: NavItem } | null,
+  /** 版权行署名（旧站 footer.copyright「© 年份 抓蛙师」）；为空时用 author.name */
+  copyrightName: '抓蛙师',
 };
 
 export type SiteConfig = typeof site;

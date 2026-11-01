@@ -58,3 +58,34 @@ export function prevNextOf(id: string): { prev?: SidebarItem; next?: SidebarItem
   const section = sectionOf(id);
   return section ? sidebarPrevNext(sidebarOf(section), docPath(id)) : {};
 }
+
+/** 分区中文名：面包屑带、栏目首页首屏用（与页头导航的叫法一致） */
+export const SECTION_LABELS: Record<DocSection, string> = {
+  backend: '后端',
+  frontend: '前端',
+  mobile: '移动端',
+  practices: '最佳实践',
+};
+
+/**
+ * 当前页在侧栏里的分组路径（不含页面本身），给面包屑带用：如 mobile/getting-started → ['快速开始']
+ * @param id 文档 id
+ * @returns 外层到内层的分组名；页面不在侧栏里（孤立页）返回空数组
+ */
+export function sidebarTrailOf(id: string): string[] {
+  const section = sectionOf(id);
+  if (!section) return [];
+  const target = docPath(id);
+  const find = (items: SidebarItem[], trail: string[]): string[] | null => {
+    for (const item of items) {
+      if (item.href === target) return trail;
+      if (item.items) {
+        const hit = find(item.items, [...trail, item.text]);
+        if (hit) return hit;
+      }
+    }
+    return null;
+  };
+  return find(sidebarOf(section), []) ?? [];
+}
+

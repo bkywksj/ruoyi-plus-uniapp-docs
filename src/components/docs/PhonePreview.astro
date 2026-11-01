@@ -1,43 +1,55 @@
 ---
 // 手机实时预览面板（VitePress 文档站常见的「组件文档右侧放 H5 演示」）：iframe 载入预览页 + 扫码预览 + 新窗口打开 + 收起
-// 零 JS：收起 / 展开用 <details>，二维码用嵌套 <details>；二维码是静态图（site.mobilePreview.qr，没配就不显示「扫码预览」）
+// 方案 C 外观：深色卡片 + 手机外框；零 JS——收起 / 展开用 <details>，二维码用嵌套 <details>；二维码是静态图（site.mobilePreview.qr，没配就不显示「扫码」）
 // data-pagefind-ignore：预览面板的按钮文字不进站内搜索；data-migrate-ignore：迁移逐页比对只看正文
 import { site } from '@/site.config';
 
 interface Props {
   /** 预览页地址：已经过 previewUrl() 解析的绝对地址或站内路径 */
   url: string;
+  /** 屏幕高度（px）：文档页右栏 680；营销页首屏里放矮一点 */
+  height?: number;
 }
 
-const { url } = Astro.props;
+const { url, height = 680 } = Astro.props;
 const qr = site.mobilePreview.qr;
 ---
 
-<details open class="group not-prose" data-phone-preview data-migrate-ignore data-pagefind-ignore>
-  <summary
-    class="flex h-12 cursor-pointer list-none items-center justify-between rounded-t-lg border border-line bg-elevated px-4 text-sm font-semibold group-[:not([open])]:rounded-b-lg [&::-webkit-details-marker]:hidden"
-  >
-    移动端预览
-    <span class="text-xs font-normal text-muted group-open:hidden">展开</span>
-    <span class="hidden text-xs font-normal text-muted group-open:inline">收起</span>
+<details open class="group not-prose ry-night rounded-[22px] p-4" data-phone-preview data-migrate-ignore data-pagefind-ignore>
+  <summary class="flex cursor-pointer list-none items-center gap-2 text-[13px] font-semibold [&::-webkit-details-marker]:hidden">
+    <span class="size-2 rounded-full bg-emerald-400 shadow-[0_0_0_4px_rgba(52,211,153,.18)]" aria-hidden="true"></span>
+    移动端预览 · H5
+    <span class="ml-auto text-xs font-normal text-white/45 group-open:hidden">展开</span>
+    <span class="ml-auto hidden text-xs font-normal text-white/45 group-open:inline">收起</span>
   </summary>
-  <div class="flex items-center justify-end gap-3 border-x border-line bg-elevated px-4 pb-2 text-xs">
+  <div
+    class="mx-auto mt-4 rounded-[38px] bg-[#0d0f14] p-[8px] shadow-[inset_0_0_0_1.5px_rgba(255,255,255,.14),0_30px_60px_-20px_rgba(0,0,0,.6)]"
+  >
+    <div class="overflow-hidden rounded-[30px] bg-white" style={`height:${height}px`}>
+      <iframe src={url} title="移动端实时预览" loading="lazy" class="size-full border-0"></iframe>
+    </div>
+  </div>
+  <div class="mt-3 grid grid-cols-2 gap-2 text-[12px]">
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener"
+      class="flex items-center justify-center rounded-lg bg-white/[.07] py-2 text-white/75 transition-colors hover:bg-white/[.12] hover:text-white"
+    >
+      新窗口打开 ↗
+    </a>
     {
       qr && (
         <details class="relative">
-          <summary class="cursor-pointer list-none text-muted hover:text-brand-ink [&::-webkit-details-marker]:hidden">
+          <summary class="flex cursor-pointer list-none items-center justify-center rounded-lg bg-white/[.07] py-2 text-white/75 transition-colors hover:bg-white/[.12] hover:text-white [&::-webkit-details-marker]:hidden">
             扫码预览
           </summary>
-          <div class="absolute right-0 z-20 mt-2 w-56 rounded-lg border border-line bg-elevated p-3 text-center shadow-[var(--shadow-card)]">
+          <div class="absolute right-0 bottom-11 z-20 w-56 rounded-xl bg-white p-3 text-center text-[#0b0d14] shadow-2xl">
             <img src={qr} alt="手机扫码打开预览" width="200" height="200" class="mx-auto size-[200px] object-contain" loading="lazy" />
-            <p class="mt-2 break-all text-muted">{url}</p>
+            <p class="mt-2 break-all text-[#5b6172]">{url}</p>
           </div>
         </details>
       )
     }
-    <a href={url} target="_blank" rel="noopener" class="text-muted hover:text-brand-ink">新窗口打开</a>
-  </div>
-  <div class="h-[720px] overflow-hidden rounded-b-lg border border-t-0 border-line">
-    <iframe src={url} title="移动端实时预览" loading="lazy" class="size-full border-0"></iframe>
   </div>
 </details>

@@ -1,0 +1,36 @@
+{
+  "说明": "营销页版式配置（src/lib/markdown/ry-layout.mjs 的 rehypeLanding 读，[...slug].astro 据此换 LandingLayout）。kicker = 首屏标题上方的小标签行；extra = 首屏导语下方的 HTML；lead=false = h1 后面不是导语段落（只抬升 h1）；hero=false = 不做首屏；chapters=true = 首屏后加一排按 h2 生成的章节跳转条；sections=false = 不按 h2 / h3 包分组容器。kicker / extra / 章节条都标了 data-migrate-ignore 与 data-pagefind-ignore：不进迁移比对、不进搜索，正文文字只在 md 里",
+  "pages": {
+    "index": {
+      "hero": false
+    },
+    "products": {
+      "kicker": "抓蛙师出品 · 8 款产品",
+      "extra": "<nav class=\"lp-belt\" aria-label=\"产品快速跳转\"><a href=\"#product-ai-workstation\"><img src=\"/products/ai-workstation.svg\" alt=\"\" width=\"48\" height=\"48\" /><span>AI 全能工作站</span></a><a href=\"#product-aicoder\"><img src=\"/products/aicoder.png\" alt=\"\" width=\"48\" height=\"48\" /><span>智码 AiCoder</span></a><a href=\"#product-tauri-desktop\"><img src=\"/products/tauri-desktop.svg\" alt=\"\" width=\"48\" height=\"48\" /><span>灵动桌面框架</span></a><a href=\"#product-sigil\"><img src=\"/products/sigil.svg\" alt=\"\" width=\"48\" height=\"48\" /><span>Sigil</span></a><a href=\"#product-reeve\"><img src=\"/products/reeve.png\" alt=\"\" width=\"48\" height=\"48\" /><span>Reeve</span></a><a href=\"#product-agileshot\"><img src=\"/products/agileshot.png\" alt=\"\" width=\"48\" height=\"48\" /><span>AgileShot</span></a><a href=\"#product-knowledge-base\"><img src=\"/products/knowledge-base.png\" alt=\"\" width=\"48\" height=\"48\" /><span>本地知识库</span></a><a href=\"#product-officia\"><img src=\"/products/officia.svg\" alt=\"\" width=\"48\" height=\"48\" /><span>Officia</span></a></nav>"
+    },
+    "services": {
+      "kicker": "技术服务 · 承接定制开发",
+      "extra": "<div class=\"lp-actions\"><a class=\"lp-btn lp-btn-primary\" href=\"tel:19866579313\">电话 198 6657 9313</a><a class=\"lp-btn\" href=\"#联系方式\">微信 / QQ 770492966</a></div>"
+    },
+    "demo": {
+      "kicker": "项目演示 · 账号 superadmin / admin123",
+      "extra": "<div class=\"lp-actions\"><a class=\"lp-btn lp-btn-primary\" href=\"#在线演示\">在线体验</a><a class=\"lp-btn\" href=\"#授权定价\">授权定价</a><a class=\"lp-btn\" href=\"#功能截图\">功能截图</a></div>"
+    },
+    "video": {
+      "kicker": "视频教程 · B 站 @抓蛙师",
+      "lead": false,
+      "extra": "<div class=\"lp-stats\"><p><b>33</b><span>个视频</span></p><p><b>3</b><span>套课程</span></p></div>"
+    },
+    "changelog": {
+      "kicker": "特性 · 2024.08 → 2026.10",
+      "chapters": true,
+      "lead": false,
+      "extra": "<div class=\"lp-stats\"><p><b>5</b><span>个分支</span></p><p><b>7</b><span>个版本章节</span></p><p><b>200万+</b><span>行代码</span></p></div>"
+    },
+    "comparison": {
+      "kicker": "框架对比 · 上游 5.x / 6.x",
+      "chapters": true,
+      "extra": "<div class=\"lp-stats\"><p><b>61</b><span>技能</span></p><p><b>19</b><span>命令</span></p><p><b>3</b><span>钩子</span></p><p><b>15</b><span>个对比维度</span></p></div>"
+    }
+  }
+}

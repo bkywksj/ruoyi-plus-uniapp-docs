@@ -11,16 +11,16 @@ const items = Astro.props.headings.filter((h) => h.depth === 2 || h.depth === 3)
 
 {
   items.length > 0 && (
-    <nav aria-label="页面导航" class="text-xs">
-      <p class="font-semibold tracking-wider text-muted">页面导航</p>
-      <ul class="mt-3 space-y-1.5 border-l border-line">
+    <nav aria-label="页面导航" class="text-[13px]">
+      <p class="ry-kicker-l">页面导航</p>
+      <ul class="mt-3 space-y-0.5 border-l border-line">
         {items.map((h) => (
           <li>
             <a
               href={`#${h.slug}`}
               class:list={[
-                '-ml-px block border-l border-transparent text-muted hover:border-brand hover:text-brand-ink',
-                h.depth === 2 ? 'pl-3' : 'pl-6',
+                '-ml-px block rounded-r-md border-l border-transparent py-1 leading-snug text-muted transition-colors hover:border-brand hover:text-ink',
+                h.depth === 2 ? 'pl-3' : 'pl-6 text-[12.5px]',
               ]}
             >
               {h.text}

@@ -1,0 +1,137 @@
+/* RuoYi 站方案 C「AI 原生」主题：由本站各布局（DocsLayout / LandingLayout / 首页 / 404）引入，覆盖框架令牌，不改框架 global.css。
+   视觉规则：页头、页脚、首屏常驻深色（#07080D），正文浅灰底 + 白卡片；品牌蓝 #5B7CFF（site.brandColor 注入 --brand）；
+   中文不引 webfont（框架禁令），大数字用系统字体加粗，代码用系统等宽字体 */
+
+:root:not(.dark) {
+  --canvas: #f6f7fb;
+  --surface: #eef0f6;
+  --elevated: #ffffff;
+  --ink: #0b0d14;
+  --muted: #5b6172;
+  --line: rgb(11 13 20 / 0.08);
+  /* 品牌色做文字：#5B7CFF 在白底上约 3.4:1，压到 #3D5BEA 一档（约 5.3:1）才过 AA */
+  --brand-ink: #3d5bea;
+}
+
+:root {
+  /* 深色区块（页头 / 首屏 / 页脚 / 代码窗）的底色与描边，两种主题下都不变 */
+  --ry-night: #07080d;
+  --ry-night-2: #0b0d16;
+  --ry-night-line: rgb(255 255 255 / 0.08);
+  --ry-code-bg: #0b0d14;
+}
+
+/* 深色区块的公共底：径向品牌光晕 + 极淡噪点（不用方格线） */
+.ry-night {
+  background-color: var(--ry-night);
+  background-image:
+    radial-gradient(50% 60% at 78% 0%, rgb(91 124 255 / 0.26), transparent 70%),
+    radial-gradient(40% 50% at 8% 100%, rgb(91 124 255 / 0.1), transparent 70%);
+  color: #fff;
+}
+
+/* 小标签行（等宽、加字距、品牌浅蓝）——深色区块用 */
+.ry-kicker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8ea2ff;
+}
+/* 浅色区块用的同款标签 */
+.ry-kicker-l {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-ink);
+}
+
+/* 白卡片：细描边 + 内高光 + 柔和投影；悬停上浮 */
+.ry-card {
+  background: var(--elevated);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 1px 2px rgb(11 13 20 / 0.04), 0 16px 36px -20px rgb(11 13 20 / 0.2);
+}
+.ry-lift {
+  transition: transform 0.35s var(--ease-out-soft), box-shadow 0.35s var(--ease-out-soft);
+}
+.ry-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px rgb(11 13 20 / 0.05), 0 26px 50px -24px rgb(11 13 20 / 0.3);
+}
+/* 深色区块里的玻璃面板 */
+.ry-pane {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.05), rgb(255 255 255 / 0.02));
+  border: 1px solid var(--ry-night-line);
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.06), 0 24px 60px -30px rgb(0 0 0 / 0.8);
+}
+
+/* 代码窗：两种主题下都是深色（取 shiki 的 github-dark 那一套变量），等宽字体关连字 */
+:where(.vp-doc) pre.astro-code {
+  position: relative;
+  overflow: visible !important;
+  margin: 1.25rem 0;
+  padding: 40px 0 0;
+  border: 1px solid rgb(255 255 255 / 0.06);
+  border-radius: 16px;
+  background-color: var(--ry-code-bg) !important;
+  box-shadow: 0 18px 40px -26px rgb(11 13 20 / 0.6);
+  font-size: 13px;
+  line-height: 1.75;
+}
+:where(.vp-doc) pre.astro-code,
+:where(.vp-doc) pre.astro-code span {
+  color: var(--shiki-dark) !important;
+}
+/* 横向滚动放在 code 上：窗口顶栏（语言名 + 复制）不跟着内容左右滚 */
+:where(.vp-doc) pre.astro-code > code {
+  display: block;
+  overflow-x: auto;
+  padding: 12px 18px 14px 0;
+}
+:where(.vp-doc) pre.astro-code::before {
+  content: attr(data-language);
+  position: absolute;
+  inset: 0 0 auto;
+  height: 40px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgb(255 255 255 / 0.07);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgb(255 255 255 / 0.45);
+}
+:where(.vp-doc) pre.astro-code:not([data-language])::before,
+:where(.vp-doc) pre.astro-code[data-language='plaintext']::before {
+  content: 'text';
+}
+/* 复制按钮（DocsLayout / LandingLayout 的脚本插入；没有 JS 时不出现） */
+.ry-copy {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: rgb(255 255 255 / 0.55);
+  transition: color 0.2s, background 0.2s;
+}
+.ry-copy:hover {
+  color: #fff;
+  background: rgb(255 255 255 / 0.08);
+}
+.ry-copy[data-done] {
+  color: #6ee7b7;
+}
+.code-line-numbers :where(.vp-doc) pre.astro-code > code > .line::before {
+  color: rgb(255 255 255 / 0.22);
+  opacity: 1;
+}
