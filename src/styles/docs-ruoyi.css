@@ -229,6 +229,14 @@
 }
 
 /* ---------- 侧栏与页面导航 ---------- */
+/* 细滚动条：平时透明，鼠标移到侧栏 / 目录上才显示（Windows 默认那条带箭头的粗滚动条在侧栏与正文之间像多了一根灰线，2026-11-02 改，五个文档站统一） */
+.ry-sidebar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+.ry-sidebar:hover {
+  scrollbar-color: var(--line-strong, rgb(0 0 0 / 0.18)) transparent;
+}
 .ry-sidebar a[aria-current='page'] {
   background: var(--ink);
   color: var(--canvas);

@@ -66,32 +66,8 @@ const stale = (outdated.pages as Record<string, { missing: string; see: { text: 
 
 <BaseLayout title={pageTitle} description={description} type="article" noindex={!!stale} jsonLd={[...siteJsonLd, techArticle]}>
   {
-    isSectionHome ? (
-      <SectionHero section={section} />
-    ) : (
-      section && (
-        <nav aria-label="所在位置" class="ry-aurora border-b border-line">
-          <ol class="mx-auto flex h-12 w-full max-w-[90rem] items-center gap-2 overflow-x-auto px-4 text-[13px] whitespace-nowrap sm:px-6 lg:px-8">
-            <li class="font-mono text-muted/70">docs /</li>
-            <li>
-              <a href={docPath(`${section}/index`)} class="text-muted hover:text-ink">
-                {SECTION_LABELS[section]}
-              </a>
-            </li>
-            {trail.map((t) => (
-              <li class="flex items-center gap-2 text-muted">
-                <span class="text-muted/50" aria-hidden="true">›</span>
-                {t}
-              </li>
-            ))}
-            <li class="flex items-center gap-2 font-medium text-ink" aria-current="page">
-              <span class="text-muted/50" aria-hidden="true">›</span>
-              {title}
-            </li>
-          </ol>
-        </nav>
-      )
-    )
+    // 面包屑不再是页头下方的整条横带，改在正文标题上方（见正文列）；这里只剩栏目首页的大图
+    isSectionHome && <SectionHero section={section} />
   }
   <div class:list={['mx-auto w-full max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8 lg:py-10', site.codeLineNumbers && 'code-line-numbers']}>
     <div
@@ -103,7 +79,8 @@ const stale = (outdated.pages as Record<string, { missing: string; see: { text: 
       {
         sidebar.length > 0 && (
           <aside class="hidden lg:block">
-            <div class="ry-sidebar sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto pr-2 pb-6 text-[13.5px]">
+            {/* 吸顶位置 = 起始位置（页头 4rem + 底边线 1px + 内容区上内边距 2.5rem）：滚动时侧栏从第一下起不动；overscroll-contain：侧栏里滚到底不带着整页滚 */}
+            <div class="ry-sidebar sticky top-[calc(4rem+1px+2.5rem)] max-h-[calc(100vh-4rem-1px-2.5rem-1rem)] overflow-y-auto overscroll-contain pr-2 pb-6 text-[13.5px]">
               <SidebarTree items={sidebar} current={current} />
             </div>
           </aside>
@@ -145,6 +122,30 @@ const stale = (outdated.pages as Record<string, { missing: string; see: { text: 
             </aside>
           )
         }
+        {
+          // 面包屑：正文标题上方一行小字，随正文滚动（原先是页头下方整条横带，一滚动就被卷走、还把侧栏往下推，2026-11-02 改，五个文档站统一）
+          !isSectionHome && section && (
+            <nav aria-label="所在位置" class="mx-auto mb-3 max-w-[50rem] text-[13px] text-muted" data-pagefind-ignore>
+              <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                <li>
+                  <a href={docPath(`${section}/index`)} class="hover:text-ink">
+                    {SECTION_LABELS[section]}
+                  </a>
+                </li>
+                {trail.map((t) => (
+                  <li class="flex items-center gap-2">
+                    <span class="text-muted/50" aria-hidden="true">›</span>
+                    {t}
+                  </li>
+                ))}
+                <li class="flex items-center gap-2 text-ink" aria-current="page">
+                  <span class="text-muted/50" aria-hidden="true">›</span>
+                  {title}
+                </li>
+              </ol>
+            </nav>
+          )
+        }
         <article class:list={['prose-content vp-doc mx-auto max-w-[50rem]', !selfNumbered && 'h2-num']} data-pagefind-body>
           <slot />
         </article>
@@ -184,14 +185,14 @@ const stale = (outdated.pages as Record<string, { missing: string; see: { text: 
       {
         showPreview ? (
           <aside class="hidden xl:block">
-            <div class="sticky top-20">
+            <div class="sticky top-[calc(4rem+1px+2.5rem)]">
               <PhonePreview url={url} />
             </div>
           </aside>
         ) : (
           aside && (
             <aside class="hidden 2xl:block">
-              <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+              <div class="ry-sidebar sticky top-[calc(4rem+1px+2.5rem)] max-h-[calc(100vh-4rem-1px-2.5rem-1rem)] overflow-y-auto overscroll-contain">
                 <DocsToc headings={headings} />
               </div>
             </aside>
