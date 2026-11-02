@@ -6,7 +6,9 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { siteJsonLd } from '@/lib/site-jsonld';
 import { site } from '@/site.config';
-import '@/styles/ry-theme.css';
+import '@/styles/docs-theme.css';
+// 品牌样式最后引入（本站配色、首屏底，见 src/styles/brand.css）
+import '@/styles/brand.css';
 
 const origin = site.mobilePreview.origin;
 // 两个入口与演示页「在线演示」表格里的两行一致

@@ -1,4 +1,4 @@
-// 把本次变更的页面主动推送给搜索引擎（IndexNow 协议），旧站 scripts/indexnow.mjs 的 Astro 版。
+// docs 模块：把本次变更的页面主动推送给搜索引擎（IndexNow 协议）。
 //
 // 搜索引擎默认靠爬虫自己「路过」发现更新，500 页的站点轮一遍要很久。IndexNow 反过来：发布完就通知，通常几分钟到几小时内被重新抓取。
 // 推一次即覆盖 Bing / Yandex / Seznam / Naver / Yep（它们之间互相转发）；Google 不参与该协议，那边靠 sitemap 与自然抓取。
@@ -10,18 +10,31 @@
 //   pnpm indexnow --dry     只打印将要推送的地址，不真正发请求
 //
 // 为什么默认只推变更页而非全量：协议方明确不鼓励反复提交未改动的地址，每次全推会被当成噪声，反而稀释了「这几页真的更新了」的信号。
-// 内容过期页（src/data/outdated.json，页面带 noindex）不推。
+// 内容过期页（src/data/outdated.json，页面带 noindex）不推。docs.json 的 indexnow.alwaysPush 里的站内路径每次都推（如首页、下载页）。
+// 域名取 src/site.config.ts 的 url、密钥取 docs.json 的 indexnow.key —— 不在本文件里写死：孵化时从别的站复制过来，
+// 写死的域名与密钥会原样带过来（知识库上线后才发现 IndexNow 推的还是 ruoyi.plus 的域名与密钥）
 
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { docUrl, pagePathFor, readDocsConfig, readSiteMeta } from './lib/site-meta.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DOCS_REL = 'src/content/docs';
-const SITE = 'https://ruoyi.plus';
-// 密钥文件 public/<KEY>.txt 随站点发布，对方会回读它校验归属
-const KEY = 'd9bf148b4143c578b73c88858968c800';
+const meta = readSiteMeta(ROOT);
+const SITE = meta.url;
+const { key: KEY, alwaysPush = [] } = readDocsConfig(ROOT).indexnow ?? {};
+// 密钥文件 public/<KEY>.txt 随站点发布，对方会回读它校验归属：没配密钥、或文件不在（推过去只会被拒）都先停下
+if (!KEY) {
+  console.error('× docs.json 的 indexnow.key 为空：生成一个 32 位十六进制密钥，写进配置并放一份 public/<密钥>.txt（内容就是密钥本身）');
+  process.exit(1);
+}
+const keyFile = resolve(ROOT, `public/${KEY}.txt`);
+if (!existsSync(keyFile) || readFileSync(keyFile, 'utf8').trim() !== KEY) {
+  console.error(`× 密钥文件 public/${KEY}.txt 不存在或内容不是密钥本身：搜索引擎回读它校验归属，对不上会拒收`);
+  process.exit(1);
+}
 const ENDPOINT = 'https://api.indexnow.org/IndexNow';
 const outdated = JSON.parse(readFileSync(resolve(ROOT, 'src/data/outdated.json'), 'utf8')).pages;
 
@@ -37,10 +50,7 @@ if (sinceIdx >= 0 && (!since || since.startsWith('--'))) {
 }
 
 /** 文档相对路径（backend/index.md）→ 站点地址，口径与 sitemap、canonical 一致（lib/docs.ts 的 docPath） */
-const toUrl = (rel) => {
-  if (rel === 'index.md') return `${SITE}/`;
-  return `${SITE}/${rel.replace(/\.md$/, '.html').replace(/\/index\.html$/, '/')}`;
-};
+const toUrl = (rel) => docUrl(meta, rel.replace(/\.md$/, ''));
 
 /** 从最近一次提交（或 --since 指定的区间）里取出变更的文档地址 */
 const changedFromGit = () => {
@@ -79,7 +89,7 @@ const allFromSitemap = () => {
   return [...readFileSync(file, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 };
 
-const urls = isAll ? allFromSitemap() : changedFromGit();
+const urls = isAll ? allFromSitemap() : [...new Set([...changedFromGit(), ...alwaysPush.map((p) => SITE + pagePathFor(p, meta.urlFormat))])];
 if (urls.length === 0) {
   console.log('本次没有文档变更，无需推送。');
   process.exit(0);

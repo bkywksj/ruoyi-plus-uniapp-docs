@@ -84,6 +84,9 @@ VideoObject 有专项校验：必填 `name` / `thumbnailUrl`（绝对地址）/ 
 
 - **每页不同**：列表 / 分类 / 分页页要带区分信息（分类名、数量、页码），否则 `check:seo` 报重复。
 - title：核心词在前，≤ 60 字；站名后缀由模板加，不要自己再写。
+- 后缀默认是站名；**迁移旧站时用 `site.titleSuffix` 保住旧站已收录的完整后缀**（如「页名 | Knowledge Base — 本地优先的知识库桌面应用」），
+  `site.homeTitle` 保住旧站首页那一整句；站名本身仍用于页头 / 页脚 / og:site_name。单测 `buildTitle` 三种配置都覆盖
+- keywords：主流搜索引擎已忽略，新站不必写；迁移旧站时为了逐页比对一致可沿用：`site.keywords` 全站，页面 `keywords` 参数整条替换（docs 集合的 frontmatter `keywords`）
 - description：70~160 字，写成完整句子，首句是「X 是 Y」的定义或概述；不要堆关键词，不要全站共用 `site.description`。
 - 详情页 description 可由数据拼：`${title}：${summary}`，再 `truncate(…, 160)`。
 
@@ -165,6 +168,10 @@ const workJsonLd = embedUrl
 - `@astrojs/sitemap` 在构建时基于 `site` 生成 `sitemap-index.xml`（+ `sitemap-0.xml`），`filter` 排除 404。
 - 页面存在即进 sitemap；不想被收录的页面既要 `noindex` 也要在 `sitemap({ filter })` 里排除。
 - `BaseLayout` 已输出 `<link rel="sitemap" href="/sitemap-index.xml">`，robots.txt 里有绝对地址的 `Sitemap:` 行。
+- docs 模块（docs-site 技能）在外面再包一层 `withDocsSitemap`：lastmod（frontmatter `lastUpdated` + `page-dates.json`，`strict` 时缺日期构建失败）
+  与 priority / changefreq 分档（`docs.json` 的 `sitemap.rules`）。🔴 分档拿补过 `.html` 的最终地址去匹配；在 serialize 里抛错会被 @astrojs/sitemap 吞掉
+  （只打 ERROR、构建成功、整份 sitemap 没生成），必须失败的检查放在加载配置时
+- 迁移旧站的 `/sitemap.xml`（已提交站长平台）：docs 模块的 `sitemap.xml.ts` 输出指向 `sitemap-0.xml` 的索引
 
 ### 6. 换域名
 

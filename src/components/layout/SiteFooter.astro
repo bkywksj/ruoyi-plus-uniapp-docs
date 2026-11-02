@@ -1,8 +1,9 @@
 ---
-// 页脚：白底细分隔线（方案 B 浅色，语义令牌，深色模式自动翻转），站点简介 + 链接分组 + 说明行 + 版权与备案号
+// 页脚：细分隔线 + 抬升底色（语义令牌，深色模式自动翻转），站点简介 + 链接分组 + 说明行 + 版权与备案号；版心宽度跟 site.frameWidth
 // 分组取 site.footerGroups；没配时退回一栏「站内」列出全部 nav。说明行、署名、备案号为空则不显示
 // site.contact 有值时多一栏「联系」：每一页都找得到作者（文档页不放悬浮按钮，页脚是它们唯一的联系入口）
 import { site } from '@/site.config';
+import Container from '@/components/ui/Container.astro';
 
 const year = new Date().getFullYear();
 const groups = site.footerGroups.length > 0 ? site.footerGroups : [{ title: '站内', items: site.nav }];
@@ -13,8 +14,9 @@ const cols = groups.length + (site.social.length > 0 ? 1 : 0) + (contact ? 1 : 0
 ---
 
 <footer data-site-footer class="border-t border-line bg-elevated text-ink">
-  <div
-    class="mx-auto grid w-full max-w-[90rem] grid-cols-2 gap-10 px-4 py-14 sm:px-6 md:grid-cols-[minmax(0,1.6fr)_repeat(var(--cols),minmax(0,1fr))] lg:px-8"
+  <Container
+    size={site.frameWidth}
+    class="grid grid-cols-2 gap-10 py-14 md:grid-cols-[minmax(0,1.6fr)_repeat(var(--cols),minmax(0,1fr))]"
     style={`--cols: ${cols}`}
   >
     <div class="col-span-full max-w-sm md:col-span-1">
@@ -102,10 +104,8 @@ const cols = groups.length + (site.social.length > 0 ? 1 : 0) + (contact ? 1 : 0
         </div>
       )
     }
-  </div>
-  <div
-    class="mx-auto flex w-full max-w-[90rem] flex-col gap-2 border-t border-line px-4 py-6 text-xs text-muted sm:px-6 lg:flex-row lg:justify-between lg:px-8"
-  >
+  </Container>
+  <Container size={site.frameWidth} class="flex flex-col gap-2 border-t border-line py-6 text-xs text-muted lg:flex-row lg:justify-between">
     {
       site.footerNote && (
         <p>
@@ -131,5 +131,5 @@ const cols = groups.length + (site.social.length > 0 ? 1 : 0) + (contact ? 1 : 0
         )
       }
     </p>
-  </div>
+  </Container>
 </footer>

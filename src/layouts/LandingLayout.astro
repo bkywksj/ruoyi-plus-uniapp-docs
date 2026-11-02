@@ -1,28 +1,36 @@
 ---
-// 营销页布局（方案 C）：products / services / demo / video / changelog / comparison 六页，正文仍是迁来的 .md（一个字不改）。
+// docs 模块的营销页布局：src/data/landing.json 登记的文档（产品矩阵、技术服务、演示、更新日志……）换这个布局，正文仍是迁来的 .md（一个字不改）。
 // 版式分工：开头 h1 + 导语由 rehypeLandingHero 包进 <header class="lp-hero">，这里的样式把它铺成整宽深色首屏；
 // 正文各段按页挂 lp-<id> 类，由 landing.css 排版（卡片、网格、时间线）。长页（changelog / comparison）的章节条也由插件按 h2 生成（landing.json 的 chapters）；
 // 首屏深色带用 box-shadow 横向铺满，所以不再放左侧栏（会被盖住）；演示页的手机实时预览放右栏、叠在首屏上（同为深色卡片）。
 // SEO 与结构化数据和文档页一致（TechArticle + 全站四种），title / description / canonical 与旧站逐字相同
 import type { MarkdownHeading } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import PhonePreview from '@/components/docs/PhonePreview.astro';
+import DocsPhonePreview from '@/components/docs/DocsPhonePreview.astro';
 import ImageViewer from '@/components/docs/ImageViewer.astro';
 import ContactDialog from '@/components/docs/ContactDialog.astro';
 import { absoluteUrl, type JsonLd } from '@/lib/seo';
 import { docPath } from '@/lib/docs';
+import { isoDate } from '@/lib/lastmod';
+import { docsConfig } from '@/lib/docs-config';
 import { site } from '@/site.config';
 import { siteJsonLd } from '@/lib/site-jsonld';
 import titleQualifiers from '@/data/title-qualifiers.json';
 import '@/styles/vp-compat.css';
-import '@/styles/ry-theme.css';
-import '@/styles/docs-ruoyi.css';
+import '@/styles/docs-theme.css';
+import '@/styles/docs-content.css';
 import '@/styles/landing.css';
+// 品牌样式最后引入（各站配色 / 首屏底 / 渐变的覆盖，项目文件）
+import '@/styles/brand.css';
 
 interface Props {
   id: string;
   title: string;
   description: string;
+  /** 最后更新日期（frontmatter lastUpdated）：营销页版式不显示，只进 TechArticle.dateModified */
+  lastUpdated?: Date;
+  /** 本页 meta keywords（frontmatter keywords），不传用全站的 */
+  keywords?: string;
   headings: MarkdownHeading[];
   iframe?: boolean;
   url?: string;
@@ -30,7 +38,8 @@ interface Props {
   aside?: boolean;
 }
 
-const { id, title, description, iframe = false, url } = Astro.props;
+const { id, title, description, lastUpdated, keywords, iframe = false, url } = Astro.props;
+const updated = docsConfig.lastUpdated !== 'off' && lastUpdated ? isoDate(lastUpdated) : undefined;
 const showPreview = iframe && url;
 const qualifier = (titleQualifiers as Record<string, string>)[id];
 const pageTitle = qualifier ? `${title} · ${qualifier}` : title;
@@ -40,16 +49,18 @@ const techArticle: JsonLd = {
   headline: title,
   ...(description ? { description } : {}),
   url: absoluteUrl(docPath(id)),
-  inLanguage: 'zh-CN',
+  ...(updated ? { dateModified: updated } : {}),
+  inLanguage: site.locale,
   isPartOf: { '@type': 'WebSite', name: site.name, url: site.url },
-  author: { '@type': 'Person', name: '抓蛙师' },
-  publisher: { '@type': 'Organization', name: site.author.name, url: site.url },
-  proficiencyLevel: 'Beginner',
-  about: ['RuoYi-Plus-UniApp', 'Spring Boot 3', 'Vue 3', 'UniApp'],
+  // about / author / publisher 与 DocsLayout 同一口径（docs.json 的 article）
+  about: docsConfig.article.about,
+  proficiencyLevel: docsConfig.article.proficiencyLevel,
+  author: docsConfig.article.author ?? { '@type': 'Organization', name: site.author.name, url: site.url },
+  ...(docsConfig.article.publisher ? { publisher: docsConfig.article.publisher } : {}),
 };
 ---
 
-<BaseLayout title={pageTitle} description={description} type="article" jsonLd={[...siteJsonLd, techArticle]}>
+<BaseLayout title={pageTitle} description={description} keywords={keywords} type="article" jsonLd={[...siteJsonLd, techArticle]}>
   <div class:list={['lp', `lp-${id}`, showPreview && 'lp-with-preview', site.codeLineNumbers && 'code-line-numbers']}>
     <div class="lp-grid">
       <article class="prose-content vp-doc" data-pagefind-body>
@@ -59,7 +70,7 @@ const techArticle: JsonLd = {
         showPreview && (
           <aside class="lp-preview">
             <div>
-              <PhonePreview url={url} height={560} />
+              <DocsPhonePreview url={url} height={560} />
             </div>
           </aside>
         )

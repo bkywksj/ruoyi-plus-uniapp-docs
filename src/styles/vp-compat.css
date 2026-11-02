@@ -1,6 +1,10 @@
 /* 文档正文的 VitePress 兼容外观：::: 容器、状态标记、代码行号、等宽连字。只作用于文档正文容器（.prose-content / .vp-doc），不影响站点其余页面。
    颜色走语义令牌；状态标记的绿 / 红 / 琥珀照 VitePress 默认主题，深色模式各自提亮 */
 
+@layer theme, base, components, utilities, docs;
+/* 与 docs 模块的样式同在 docs 层：同层之内照旧按选择器优先级与先后决定（分两层时 docs 整体压过它，行号颜色等几处胜负翻了——ruoyi.plus 同步时截图比对发现）；
+   项目样式与 brand.css 不进层，永远压过这里，不看拆包后的加载顺序 */
+@layer docs {
 /* ::: tip / info / warning / danger / details（remarkVpContainers 输出） */
 :where(.prose-content, .vp-doc) .vp-callout {
   border-left: 4px solid var(--brand);
@@ -82,4 +86,5 @@
   color: var(--muted);
   opacity: 0.6;
   user-select: none;
+}
 }

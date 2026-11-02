@@ -80,3 +80,6 @@ export const siteJsonLd: JsonLd[] = [
     ].map((name) => ({ '@type': 'Offer', itemOffered: { '@type': 'Service', name } })),
   },
 ];
+
+/** 常见问题页的 FAQPage：本站没有常见问题页（docs.json 的 faqPage 为空），为 null */
+export const faqJsonLd: JsonLd | null = null;

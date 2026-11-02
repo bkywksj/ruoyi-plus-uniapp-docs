@@ -1,4 +1,4 @@
-// 旧站营销页里的 Vue 组件（AProductCard / APricingCard / ImagePreview）→ 构建期静态 HTML，信息一项不丢
+// 旧站营销页里的 Vue 组件（AProductCard / APricingCard / ImagePreview / DownloadSection）→ 构建期静态 HTML，信息一项不丢
 // 为什么在 remark 里做：这几页正文仍是迁来的 .md（不转 MDX），组件标签被解析成 html 节点，在这里按旧组件的模板逐字段输出；
 // 视觉在第 5 步重做，这里只保证内容与旧站等价（产品名 / 标语 / 描述 / 亮点 / 按钮、价格 / 原价 / 节省 / 功能 / 按钮 / 页脚、全部图片）。
 // 绑定属性（:highlights="[...]"）是旧站作者写的字面量数组 / 对象，用 Function 求值；只在构建期跑、只处理本仓库自己的文档。
@@ -100,7 +100,13 @@ export function imagePreview(p, _icons, opts = {}) {
     : `<div class="vc-gallery">${urls.map((u) => `<a href="${esc(u)}" target="_blank" rel="noopener"><img src="${esc(u)}" alt="" loading="lazy" /></a>`).join('')}</div>`;
 }
 
-const RENDER = { AProductCard: productCard, APricingCard: pricingCard, ImagePreview: imagePreview };
+/**
+ * 旧站下载页的 DownloadSection（构建时注入 R2 版本快照、运行时渲染下载卡与历史版本）：
+ * 新站由 src/pages/download.astro 用 src/data/releases.json 渲染同样的内容，正文里这个标签输出空，避免留下一个不认识的自定义元素
+ */
+const downloadSection = () => '<!-- 下载卡与历史版本：见 src/pages/download.astro -->';
+
+const RENDER = { AProductCard: productCard, APricingCard: pricingCard, ImagePreview: imagePreview, DownloadSection: downloadSection };
 
 /**
  * Markdown 相对链接按 VitePress 规则补 .html（./changelog → ./changelog.html）。
@@ -125,7 +131,7 @@ export function fixRawLinks(html) {
     path.endsWith('/') || /\.[a-z0-9]+$/i.test(path) ? whole : `${pre}${path}.html${rest}"`,
   );
 }
-const TAG = /<(AProductCard|APricingCard|ImagePreview)\b([\s\S]*?)\/>/g;
+const TAG = /<(AProductCard|APricingCard|ImagePreview|DownloadSection)\b([\s\S]*?)\/>/g;
 
 /**
  * remark 插件：html 节点里的三种组件替换成静态 HTML。要放在 remarkVpMarks 之前（它会把剩下的大写组件当未处理报出来）
@@ -140,7 +146,7 @@ export function remarkVueComponents(opts = {}) {
       parent.children = parent.children?.map((c) => {
         if (
           c.type === 'paragraph' &&
-          c.children.some((x) => x.type === 'html' && /<(AProductCard|APricingCard|ImagePreview)\b/.test(x.value)) &&
+          c.children.some((x) => x.type === 'html' && /<(AProductCard|APricingCard|ImagePreview|DownloadSection)\b/.test(x.value)) &&
           c.children.every((x) => x.type === 'html' || (x.type === 'text' && x.value.trim() === ''))
         )
           return { type: 'html', value: c.children.map((x) => (x.type === 'html' ? x.value : '')).join('\n') };

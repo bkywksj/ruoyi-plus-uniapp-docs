@@ -103,6 +103,7 @@ $UP log --no-merges --reverse --name-only --format="=== %h %s" "$LAST..$REF"
 | 1 | `strippedModules` 里模块的路径（清单见 `.claude/skills/module-strip/presets/<模块>.json` 的 `delete_dirs` / `delete_files`） | 已裁剪 | **跳过** |
 | 1b | `transformedModules` 里模块的路径（同一份预设清单） | 已改造 | **逐条人工判断**：不合并文件本身（会把旧模块带回来）；修复 / 机制改动按改名对照移植到改造后的文件，列进报告「需评估」让用户逐条确认 |
 | 2 | `framework.core.paths`（SEO 组件、布局、UI 组件、lib 工具、令牌、校验与同步脚本、deploy、`.claude/` 技能 / 命令 / hooks、`.codex/`、`.agents/`） | 框架核心 | **建议合并** |
+| 2b | `framework.docsModule.paths`（docs 模块：DocsLayout、lib/docs*.ts、文档样式、build-llms / indexnow / 迁移脚本……） | docs 模块 | **建议合并**（与核心同等：各站逐字节相同，站点差异都在项目配置里）；项目没有 docs 模块（`strippedModules` 含 docs）时按第 1 行跳过 |
 | 3 | `framework.examples.paths`（示例数据、示例文章、示例封面、示例数据源） | 示例 | **跳过**（项目已有自己的内容） |
 | 4 | `framework.projectConfig.paths`（`site.config.ts`、`content.config.ts`、`llms.txt.ts`、`astro.config.ts`、`package.json`、favicon / og 图） | 项目配置 | **需评估**：只取框架的「机制改动」，保留项目自己的值 |
 | 5 | `pnpm-lock.yaml` | 依赖锁 | 不合并文件本身，随 `package.json` 的依赖升级重新生成 |

@@ -1,0 +1,110 @@
+/* RuoYi-Plus-UniApp 文档站品牌样式（项目文件，框架同步不覆盖）：覆盖 docs 模块 docs-theme.css / landing.css 的中性默认值。
+   取第二轮原型方案 B「三端同屏」的配色：品牌蓝 #0B6EF0（旧站同色，site.brandColor 注入 --brand），点缀青 #04AEF6；
+   首屏浅底 + 青蓝光晕、标题与主按钮用渐变（本站的视觉选择；框架默认是实色，见 docs-site 技能「品牌与视觉」）。
+   docs 模块的骨架就是从本站长出来的；2026-11-03 收进框架时，由原 ry-theme.css / landing.css 与模块版逐条比对生成，视觉与改动前逐像素核对过 */
+
+:root:not(.dark) {
+  --canvas: #f6f8fb;
+  --surface: #eef2f8;
+  --elevated: #ffffff;
+  --ink: #0a1222;
+  --muted: #5a6478;
+  --line: rgb(10 18 34 / 0.08);
+  /* 品牌色做文字：#0B6EF0 在白底上约 4.6:1，再压一档到 #0A5CD6（约 6:1），小字也稳过 AA */
+  --brand-ink: #0a5cd6;
+}
+
+:root {
+  /* 点缀青：首屏光晕、标题渐变的起点 */
+  --ry-cyan: #04aef6;
+  --ry-code-bg: #0b1220;
+  --shadow-tint: 10 18 34;
+  /* 等宽字体补上苹果 / 安卓自带的（安卓与微信没有 ui-monospace、Consolas） */
+  --font-mono: ui-monospace, 'SF Mono', Menlo, 'JetBrains Mono', 'Cascadia Code', Consolas, 'Roboto Mono', 'Droid Sans Mono', 'Liberation Mono', 'Courier New', monospace;
+}
+
+/* 首屏 / 重点区块的底：浅底 + 青蓝径向光晕（不用方格线、不加底边线） */
+.ry-aurora {
+  background-color: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
+  background-image:
+    radial-gradient(40% 55% at 18% 0%, rgb(4 174 246 / 0.18), transparent 70%),
+    radial-gradient(45% 60% at 86% 0%, rgb(11 110 240 / 0.2), transparent 70%),
+    radial-gradient(60% 45% at 50% 100%, rgb(11 110 240 / 0.08), transparent 70%);
+  border-bottom: 0;
+}
+
+/* 标题渐变：青 → 品牌蓝 → 墨色 */
+.ry-grad-text,
+.lp .lp-hero h1 {
+  background-image: linear-gradient(90deg, var(--ry-cyan), var(--brand) 55%, var(--ink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* 小标签行加字距 */
+.ry-kicker,
+.ry-kicker-l {
+  letter-spacing: 0.14em;
+}
+
+/* 主按钮：品牌蓝渐变胶囊（页头的 .btn-brand、页面里的 .ry-btn-primary、营销页 .lp-btn-primary、右下角咨询按钮同一个样子） */
+.btn-brand,
+.ry-btn-primary,
+:root .ry-fab {
+  background-image: linear-gradient(180deg, color-mix(in oklab, var(--brand) 78%, white), var(--brand));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 8px 20px -8px rgb(11 110 240 / 0.7);
+}
+:root .ry-fab {
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 12px 28px -10px rgb(11 110 240 / 0.75);
+}
+.lp .lp-btn-primary {
+  background: var(--color-brand-strong);
+  background-image: linear-gradient(180deg, color-mix(in oklab, var(--brand) 78%, white), var(--brand));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 8px 20px -8px rgb(11 110 240 / 0.7);
+}
+
+/* 营销页首屏光晕（只铺在版心范围内） */
+.lp-hero::after {
+  background:
+    radial-gradient(40% 60% at 12% 0%, rgb(4 174 246 / 0.16), transparent 70%),
+    radial-gradient(50% 70% at 88% 0%, rgb(11 110 240 / 0.18), transparent 70%);
+}
+
+/* 深色强调面板：浅底叠一块蓝色光斑 */
+.lp .lp-night::before,
+.lp .products-footer,
+.lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5),
+.lp-services [data-sec='联系方式']::before,
+.vc-pricing.is-recommended,
+.lp-video .vp-doc > h3:first-of-type + ol > li,
+.lp-video .vp-doc > h3:nth-of-type(2) + p,
+.lp-index [data-sec='技术服务-·-承接定制开发']::before {
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+}
+.vp-doc .vc-product-highlights {
+  background: linear-gradient(160deg, var(--vc-soft), var(--elevated) 70%);
+}
+.lp-changelog .lp-items::before {
+  background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 60%, transparent), transparent);
+}
+
+/* 在线演示页：三张演示截图（本站内容） */
+.lp-demo [data-sec='在线演示'] tr:nth-child(1)::before {
+  background-image: url('/demo/03-dashboard.webp');
+}
+.lp-demo [data-sec='在线演示'] tr:nth-child(2)::before {
+  background-image: url('/demo/40-ai-assistant.webp');
+}
+.lp-demo [data-sec='在线演示'] tr:nth-child(3)::before {
+  background-image: url('/demo/41-page-designer.webp');
+}
+
+/* 首页「Claude Code 深度集成」特色卡片同时带 ry-card 与 ry-aurora：改版前白卡片规则写在后面，线上一直是白底（光晕没显示出来）。
+   品牌样式不进 CSS 层后光晕会压过白底，这里保持白底，与改动前一致；想让这张卡显示光晕，删掉这条即可 */
+.ry-card.ry-aurora {
+  background-color: var(--elevated);
+  background-image: none;
+  /* 上面 .ry-aurora 的 border-bottom: 0 会连白卡片自己的底边框一起去掉（卡片矮 1px），补回来 */
+  border-bottom: 1px solid var(--line);
+}

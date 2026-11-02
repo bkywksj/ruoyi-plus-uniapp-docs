@@ -1,12 +1,14 @@
-// 侧栏迁移：从旧站构建产物里读出 VitePress 渲染好的侧栏（比解析 1287 行的 config.ts 可靠），写成 src/data/sidebar.json
+// docs 模块迁移脚本 · 侧栏：从旧站构建产物里读出 VitePress 渲染好的侧栏（比解析 1287 行的 config.ts 可靠），写成 src/data/sidebar.json
 // 用法：node scripts/migrate/extract-sidebar.mjs <旧站 dist 目录>
 // 每个分区取其首页（backend/index.html 等）上的侧栏；保留分组层级、默认折叠状态与顺序，链接换成页面 id（backend/common/pay）。
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse } from 'node-html-parser';
+import { readDocsConfig } from '../lib/site-meta.mjs';
 
 const dist = process.argv[2];
-const SECTIONS = ['backend', 'frontend', 'mobile', 'practices'];
+// 栏目表取 docs.json（先把 sections 配好再跑）。旧站整站只有一棵侧栏时，结果里各栏目的树是同一棵：手工合成 { "docs": [...] } 即可
+const SECTIONS = readDocsConfig(process.cwd()).sections.map((s) => s.id);
 
 /**
  * 旧站链接 → 页面 id：/backend/ → backend/index；/backend/x.html → backend/x；站外链接原样保留并标 external。

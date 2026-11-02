@@ -16,9 +16,8 @@ import {
 } from './src/lib/markdown/vp-compat.mjs';
 import vpMarks from './src/data/vp-marks.json';
 import vpIcons from './src/data/vp-icons.json';
-import { remarkVueComponents } from './src/lib/markdown/vue-components.mjs';
-import { rehypeImgSize, rehypeLanding, rehypePreviewLinks, rehypeTableWrap } from './src/lib/markdown/ry-layout.mjs';
-import outdated from './src/data/outdated.json';
+import { docsRehypePlugins, docsRemarkPlugins } from './src/lib/markdown/docs-plugins.mjs'; // docs 模块
+import { withDocsSitemap } from './src/lib/docs-sitemap'; // docs 模块
 
 // 迁移正文里没被兼容插件处理的大写组件标签：构建时逐个打印（同一标签同一文件只报一次），迁移验收时人工过目
 const reportedUnknown = new Set<string>();
@@ -37,29 +36,41 @@ const markdownProcessor =
         smartypants: false,
         remarkPlugins: [
           remarkVpContainers,
-          // 项目插件：营销页的 AProductCard / APricingCard / ImagePreview → 静态 HTML（要在 remarkVpMarks 之前，否则被当成未处理组件）
-          [
-            remarkVueComponents,
-            {
-              icons: vpIcons,
-              groupQr: site.contact?.groupQr,
-              groupNote: site.contact ? `二维码过期请加作者微信 ${site.contact.wechat} 拉你进群` : undefined,
-            },
-          ],
+          ...docsRemarkPlugins({ icons: vpIcons, contact: site.contact }), // docs 模块：营销页 Vue 组件 → 静态 HTML（要在 remarkVpMarks 之前）
           [remarkVpMarks, { marks: vpMarks, icons: vpIcons, onUnknown: onUnknownComponent }],
           // .md / 无扩展名链接补 .html 只对 .html 网址形态有意义；directory 形态下补了反而成死链
           ...(site.urlFormat === 'directory' ? [] : [remarkVpLinks]),
         ],
-        // 项目插件：表格外包横滑容器、营销页开头 h1 + 导语包进首屏 header、演示站链接改指手机外框预览页（只动结构与链接去处，不动文字，要在锚点插件之后）
-        rehypePlugins: [rehypeVpHeadingIds, rehypeTableWrap, rehypeLanding, rehypePreviewLinks, rehypeImgSize],
+        rehypePlugins: [
+          rehypeVpHeadingIds,
+          ...docsRehypePlugins, // docs 模块：表格横滑、营销页首屏、演示站链接、图片宽高（只动结构，要在锚点插件之后）
+        ],
       })
     : satteri({ features: { smartPunctuation: false } });
+
+// 站点地图：排除 404；file / preserve 网址形态下补齐 .html / 结尾斜杠（与页面 canonical 一致）
+const sitemapOptions = {
+  filter: (page: string) => !page.includes('/404'),
+  // file / preserve 网址形态：@astrojs/sitemap 输出的是不带 .html 的 /a，与页面 canonical（/a.html）对不上，补齐。
+  // preserve 下目录首页（产物 a/index.html）的网址是 /a/，不能补成 /a.html —— 按产物里有没有 a/index.html 判断
+  // （serialize 在 astro:build:done 之后跑，dist 已写完）。首页与已带扩展名的地址不动；check:seo 核对 sitemap 每条都是某一页的 canonical
+  serialize: <T extends { url: string }>(item: T): T => {
+    const path = new URL(item.url).pathname;
+    if (site.urlFormat === 'directory' || /(\/|\.[a-z0-9]+)$/i.test(path)) return item;
+    if (site.urlFormat === 'preserve' && existsSync(`dist${decodeURIComponent(path)}/index.html`))
+      return { ...item, url: `${item.url}/` };
+    return { ...item, url: `${item.url}.html` };
+  },
+};
 
 export default defineConfig({
   markdown: {
     processor: markdownProcessor,
-    // 与旧站同一对主题；深色由 src/styles/docs-ruoyi.css 按 :root.dark 切到 --shiki-dark
-    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' } },
+    // 代码高亮出成双主题：shiki 在行内样式里多写一份 --shiki-dark，docs 模块的深色代码窗与深色模式取它。
+    // vitepress 兼容模式照 VitePress 默认那一对；其余模式两档都用 github-dark —— 与原来的单主题外观一致，文章页代码块不变色
+    shikiConfig: {
+      themes: site.markdownCompat === 'vitepress' ? { light: 'github-light', dark: 'github-dark' } : { light: 'github-dark', dark: 'github-dark' },
+    },
   },
   site: site.url,
   // 网址形态由 site.urlFormat 决定：canonical、sitemap、站内链接三者必须一致，否则搜索引擎会当成两个 URL。
@@ -73,20 +84,7 @@ export default defineConfig({
     react(),
     // 使用指南（guides 集合）用 MDX：正文里嵌 Steps / Callout / Screenshot 等文档组件
     mdx(),
-    sitemap({
-      // 404、手机外框预览页（工具页，noindex）与内容过期的旧页（outdated.json，页面带 noindex）不进站点地图；@astrojs/sitemap 此时给的是不带 .html 的地址
-      filter: (page) => !page.includes('/404') && !/\/preview\/?$/.test(page) && !(decodeURI(new URL(page).pathname).replace(/\/$/, '').slice(1) in outdated.pages),
-      // file / preserve 网址形态：@astrojs/sitemap 输出的是不带 .html 的 /a，与页面 canonical（/a.html）对不上，补齐。
-      // preserve 下目录首页（产物 a/index.html）的网址是 /a/，不能补成 /a.html —— 按产物里有没有 a/index.html 判断
-      // （serialize 在 astro:build:done 之后跑，dist 已写完）。首页与已带扩展名的地址不动；check:seo 核对 sitemap 每条都是某一页的 canonical
-      serialize: (item) => {
-        const path = new URL(item.url).pathname;
-        if (site.urlFormat === 'directory' || /(\/|\.[a-z0-9]+)$/i.test(path)) return item;
-        if (site.urlFormat === 'preserve' && existsSync(`dist${decodeURIComponent(path)}/index.html`))
-          return { ...item, url: `${item.url}/` };
-        return { ...item, url: `${item.url}.html` };
-      },
-    }),
+    sitemap(withDocsSitemap(sitemapOptions)), // docs 模块：过期页 / 预览页不进站点地图，补 lastmod 与 priority 分档
   ],
   image: {
     domains: site.imageDomains,

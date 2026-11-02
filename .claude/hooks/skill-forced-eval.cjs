@@ -16,7 +16,7 @@ const COMMANDS_DIR = path.join(__dirname, '..', 'commands');
 // 按「流程 → Astro 开发 → SEO → 质量 → 发布 → 协作」分组，便于模型扫读
 const SKILL_GROUPS = [
   ['流程与规划', ['brainstorm', 'tech-decision', 'writing-plans', 'task-tracker', 'project-init', 'vitepress-migration', 'project-navigator', 'architecture-design', 'code-patterns']],
-  ['Astro 开发', ['astro-routing', 'content-collections', 'guides-docs', 'data-sync', 'islands-interaction', 'ui-components', 'design-system', 'motion-transitions', 'image-optimization', 'site-search', 'icon-management', 'i18n-development', 'html-to-code']],
+  ['Astro 开发', ['astro-routing', 'content-collections', 'guides-docs', 'docs-site', 'data-sync', 'islands-interaction', 'ui-components', 'design-system', 'motion-transitions', 'image-optimization', 'site-search', 'icon-management', 'i18n-development', 'html-to-code']],
   ['SEO / GEO / 统计', ['seo-meta', 'geo-optimization', 'analytics']],
   ['质量', ['bug-detective', 'test-development', 'e2e-test', 'performance-doctor', 'security-guard']],
   ['环境与发布', ['dev-startup', 'env-config', 'deployment-guide', 'git-workflow', 'framework-sync', 'delivery-sync', 'module-strip']],

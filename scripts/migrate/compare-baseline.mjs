@@ -1,4 +1,4 @@
-// 迁移逐页比对：新站清单 vs 旧站基线清单（两份都由 manifest.mjs 生成），列出每页丢了什么、多了什么
+// docs 模块迁移脚本 · 逐页比对：新站清单 vs 旧站基线清单（两份都由 manifest.mjs 生成），列出每页丢了什么、多了什么
 // 用法：node scripts/migrate/compare-baseline.mjs <基线清单> <新站清单> [--details]
 // 判定（任一不满足即该页不通过，退出码 1）：
 //   - 正文：把正文切成短句，旧站有、新站没有的句子数 = 0（多出来的只提示，如新站的「上一页」文案）
@@ -83,8 +83,15 @@ for (const page of Object.keys(next).sort()) {
   const src = (imgs) => imgs.map((i) => { try { return decodeURI(i.src); } catch { return i.src; } });
   const imgLost = missing(src(o.images), src(n.images));
   const imgExtra = missing(src(n.images), src(o.images));
-  // 链接解码后再比：新站把中文锚点 / 路径编码成 %E5…，浏览器视为同一地址
-  const dec = (l) => { try { return decodeURI(l); } catch { return l; } };
+  // 链接解码后再比：新站把中文锚点 / 路径编码成 %E5…，浏览器视为同一地址。
+  // 相对链接再按所在页解析成站内绝对路径：旧站写 ./../modules/words.html、新站输出 ../modules/words.html，指向同一页（officia 迁移实录）
+  const dec = (l) => {
+    let s = l;
+    if (/^\.\.?\//.test(s)) { try { const u = new URL(s, `https://site.invalid/${page}`); s = u.pathname + u.search + u.hash; } catch { /* 原样比 */ } }
+    // 站内无扩展名路径补 .html：旧站 cleanUrls 未开，组件里手写的 <a href="/features/mobile"> 实际就是 /features/mobile.html（knowledge-base 迁移实录）
+    s = s.replace(/^(\/[^?#.]*[^/?#.])(?=[?#]|$)/, '$1.html');
+    try { return decodeURI(s); } catch { return s; }
+  };
   // 新站把演示站链接改指手机外框预览页（/preview.html?url=原地址，见 src/lib/preview.mjs）：还原成原地址再比，链接去处变了但一条不能少
   const unwrap = (l) => {
     const m = /^\/preview\.html\?url=([^&#]+)/.exec(l);
@@ -92,7 +99,9 @@ for (const page of Object.keys(next).sort()) {
   };
   const linkLost = missing((o.links ?? []).map(dec), (n.links ?? []).map(unwrap).map(dec));
   const titleOk = (o.title ?? '') === (n.title ?? '') || (qualifiedTitle(page, o.title ?? '') === n.title && ++titleAccepted > 0);
-  const metaDiff = [...(titleOk ? [] : ['title']), ...['description', 'canonical'].filter((k) => (o[k] ?? '') !== (n[k] ?? ''))];
+  // 首尾空白不算差异：新站输出 meta 时会 trim（lib/seo.ts），搜索结果展示同样不带首尾空格；
+  // 旧站自动截取的描述偶尔停在空格上（tauri-docs database/design「{ version = 」），逐字比会误报
+  const metaDiff = [...(titleOk ? [] : ['title']), ...['description', 'canonical'].filter((k) => (o[k] ?? '').trim() !== (n[k] ?? '').trim())];
   const jsonLdOk = (n.jsonLd ?? 0) >= (o.jsonLd ?? 0);
   const r = {
     page,
@@ -111,7 +120,8 @@ for (const page of Object.keys(next).sort()) {
   const textOk = r.lost === 0 || acceptedDiff(page, o.text, n.text);
   if (r.lost > 0 && textOk) r.lost = `0（已核对：${known[page].reason.slice(0, 12)}…）`;
   if (edited[page]) {
-    const keep = codeCountOk && imgLost.length === 0 && linkLost.length === 0 && (o.canonical ?? '') === (n.canonical ?? '') && jsonLdOk;
+    // 修订页守的是「不少」（见上方 edited 的说明）：代码块可以多（officia 首页按原型重做后多了示例代码），不能少
+    const keep = n.codes.length >= o.codes.length && imgLost.length === 0 && linkLost.length === 0 && (o.canonical ?? '') === (n.canonical ?? '') && jsonLdOk;
     editedSeen.push(`${page}：${edited[page].reason}（句子 -${r.lost} / +${r.extra}，${keep ? '代码块数 / 图片 / 链接 / canonical / JSON-LD 守住' : '❌ 代码块数 / 图片 / 链接 / canonical / JSON-LD 有缺'}）`);
     if (!keep) failed++;
     rows.push({ ...r, pass: keep });

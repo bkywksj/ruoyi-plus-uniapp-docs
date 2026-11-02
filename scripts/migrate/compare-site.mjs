@@ -1,4 +1,4 @@
-// 迁移全站比对：旧站基线产物 vs 新站产物（页面以外的部分；逐页正文见 compare-baseline.mjs）
+// docs 模块迁移脚本 · 全站比对：旧站基线产物 vs 新站产物（页面以外的部分；逐页正文见 compare-baseline.mjs）
 // 用法：node scripts/migrate/compare-site.mjs <基线清单> <新站清单> <基线 dist> <新站 dist>
 // 判定（任一不满足退出码 1）：
 //   - 网址：旧站每一页在新站都有对应页面（页面清单键相同）
@@ -34,7 +34,7 @@ const oldLocs = locs(readFileSync(join(baseDist, 'sitemap.xml'), 'utf8'));
 const newLocs = new Set(
   ['sitemap-0.xml', 'sitemap-1.xml'].filter((f) => existsSync(join(newDist, f))).flatMap((f) => locs(readFileSync(join(newDist, f), 'utf8'))),
 );
-// 过期页：网址形如 https://ruoyi.plus/<id>.html
+// 过期页：网址形如 https://<本站>/<id>.html
 const outdated = JSON.parse(readFileSync(new URL('../../src/data/outdated.json', import.meta.url), 'utf8')).pages;
 const isOutdated = (l) => new URL(l).pathname.replace(/\.html$/, '').slice(1) in outdated;
 const removed = oldLocs.filter((l) => !newLocs.has(l) && isOutdated(l));

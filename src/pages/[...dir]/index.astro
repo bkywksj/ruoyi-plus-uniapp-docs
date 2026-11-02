@@ -1,7 +1,8 @@
 ---
-// 目录首页（任意层级的 index.md：backend/index、backend/modules/workflow/index、mobile/pages/index…）：
-// build.format = 'preserve' 下输出 <目录>/index.html，网址 /<目录>/，与旧站同址同 canonical；正文与普通文档页同一套布局。
-// 用 [...dir] 而不是 [section]：只认一层的话，嵌套目录的首页会整页丢失（全量比对抓出 2 页）
+// docs 模块：目录首页（任意层级的 index.md：backend/index、backend/modules/workflow/index……）。
+// 网址按 site.urlFormat：preserve 下输出 <目录>/index.html、网址 /<目录>/，与 VitePress 旧站同址同 canonical；正文与普通文档页同一套布局。
+// 统一路由 [...slug] 跳过这些 id（动态参数带 index 会被 Astro 归一成目录而匹配失败），由这里出。没有目录首页的站不生成任何页面。
+// 用 [...dir] 而不是 [section]：只认一层的话，嵌套目录的首页会整页丢失（ruoyi.plus 全量比对抓出 2 页）
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
 import { getCollection, render } from 'astro:content';
 import DocsLayout from '@/layouts/DocsLayout.astro';
@@ -21,6 +22,8 @@ const { Content, headings } = await render(doc);
   id={doc.id}
   title={doc.data.title}
   description={doc.data.description}
+  lastUpdated={doc.data.lastUpdated}
+  keywords={doc.data.keywords}
   headings={headings}
   iframe={doc.data.iframe}
   url={doc.data.url}

@@ -29,6 +29,36 @@ export interface NavItem {
    * 省略时按 href 本身判断
    */
   match?: string;
+  /** 下拉子项：有它时页头渲染成下拉菜单（窄屏抽屉里平铺成一组），自身 href 只在无 JS 时兜底；任一子项命中即高亮 */
+  children?: NavItem[];
+  /** 下拉子项的一行说明（只在下拉菜单里显示） */
+  desc?: string;
+}
+
+/** 页脚的一组链接 */
+export interface FooterGroup {
+  title: string;
+  items: NavItem[];
+}
+
+/**
+ * 联系方式：页脚「联系」一栏、窄屏抽屉的联系按钮、docs 模块的咨询悬浮按钮与弹窗都从这里取。为 null 时这些入口都不出现
+ */
+export interface ContactInfo {
+  /** 微信号（同时当 QQ 展示） */
+  wechat: string;
+  /** 展示用电话（可带空格） */
+  phone: string;
+  /** tel: 链接用的纯数字电话 */
+  tel: string;
+  /** 作者微信二维码（public/ 下路径） */
+  wechatQr: string;
+  /** 交流群二维码；留空 = 不放群码（群码 7 天过期、只对已购用户开放的站点留空） */
+  groupQr: string;
+  /** 咨询弹窗「购买」模式的须知（各站口径不同） */
+  buyNote?: string;
+  /** 窄屏抽屉里联系按钮的文字，默认「联系作者」；卖授权的站写「咨询购买」 */
+  label?: string;
 }
 
 export interface SocialLink {
@@ -80,6 +110,8 @@ export const site = {
   logo: '/logo.png',
   /** 导航横排的断点：导航项多（6 个以上）时改 'lg'，否则平板宽度下会挤出页头 */
   navBreakpoint: 'lg' as 'md' | 'lg',
+  /** 页头页脚的版心宽度：文档站三栏版心 90rem，与正文对齐 */
+  frameWidth: 'wide' as 'default' | 'wide',
   /**
    * 站点图标（放 public/ 下）：svg / png / ico 都行，BaseLayout 按扩展名输出 type。
    * 用旧站同一个 favicon.ico（若依立方体，16–256 六帧，由 logo.png 上方的立方体裁出）；
@@ -155,7 +187,7 @@ export const site = {
         { label: '技术服务', href: '/services.html' },
       ],
     },
-  ] as { title: string; items: NavItem[] }[],
+  ] as FooterGroup[],
   /** 页脚说明行（旧站 themeConfig.footer.message 原文）：text 原样显示，link 接在末尾 */
   footerNote: {
     text: '湛江智脑科技有限公司 · 若依科技工作室 · 承接全栈 / 桌面软件 / 小程序定制开发 · ',
@@ -173,7 +205,13 @@ export const site = {
     tel: '19866579313',
     wechatQr: '/wx.jpg',
     groupQr: '/wxq.jpg',
-  } as { wechat: string; phone: string; tel: string; wechatQr: string; groupQr: string } | null,
+    /** 购买弹窗的须知（原先写死在 ContactDialog 里） */
+    buyNote: '三个版本代码完全一样，企业版需提供营业执照。',
+    /** 窄屏抽屉里联系按钮的文字 */
+    label: '咨询购买',
+  } as ContactInfo | null,
+  /** 首页 <title>：留空用后缀（或站名） */
+  homeTitle: '',
 };
 
 export type SiteConfig = typeof site;

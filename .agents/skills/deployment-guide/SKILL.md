@@ -200,6 +200,19 @@ curl -sI http://<域名>/                     # 301 → https
 - 平台上**不跑数据同步**：数据必须已提交在仓库里
 - 静态资源缓存与安全头：在 `public/_headers` 里写（Pages 约定文件，新建），规则同 `deploy/nginx/`
 
+### 腾讯云 EdgeOne Pages（文档站在用）
+
+两种方式，按站点规模选：
+
+| 方式 | 适用 | 做法 |
+|---|---|---|
+| 连 Git，推送即构建 | 几十页以内（知识库、officia、tauri-docs、aibid-docs） | 控制台连仓库，构建预设 Astro、输出 `dist`；推送（Sigil）后约 1.5–2 分钟生效。从 VitePress 切过来的站，构建预设要用户在后台改成 Astro |
+| 本机构建 + CLI 上传 | 几百页（ruoyi.plus 511 页） | 云端构建机 4 核 6 GB，构建被杀（exit 137，限堆、降并发三次实测都不行：rolldown 原生内存约 2 GB 不受堆限制）→ 本机 `pnpm verify` 后 `pnpm run deploy`（= `edgeone pages deploy -n <项目> dist`；🔴 不能写 `pnpm deploy`，那是 pnpm 内置命令）；控制台的 Git 自动部署关掉，否则每次推送收一封失败通知 |
+
+- 上传的就是验证过的那份 `dist/`：验证之后别再单独 `astro build`（不跑 pagefind，站内搜索会坏）
+- 确认生效：`curl -sI https://<域名>/ | grep -i last-modified`，时间在推送 / 上传之后；改动面大时旧站清单 + sitemap 全部网址逐条请求，非 200 应为 0
+- 上线后通知搜索引擎：docs 模块的 `pnpm indexnow --since <上次上线的提交>`（docs-site 技能）
+
 ### 国内对象存储 + CDN
 
 - 对象存储开启静态网站托管：默认首页 `index.html`、错误页 `404.html`，并开启「子目录首页」（`/works/` → `/works/index.html`）

@@ -1,10 +1,14 @@
-// 构建产物清单：逐页抽取正文、代码块、标题、图片、链接、表格，供迁移前后逐页比对（compare-baseline.mjs）
+// docs 模块迁移脚本 · 构建产物清单：逐页抽取正文、代码块、标题、图片、链接、表格，供迁移前后逐页比对（compare-baseline.mjs）
 // 用法：node scripts/migrate/manifest.mjs <dist 目录> <输出 json> [--pages 页面清单.txt]
-// 新旧两站用同一套抽取与归一化规则，比对才公平：旧站正文在 .vp-doc，新站在 [data-pagefind-body]（找不到再退到 main）。
+// 新旧两站用同一套抽取与归一化规则，比对才公平：先找 [data-pagefind-body]（新站），没有再找 .vp-doc（旧站），都没有退到 main。
 import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { parse } from 'node-html-parser';
+import { readSiteMeta } from '../lib/site-meta.mjs';
+
+/** 本站域名（http / https 都算）：正文里写成绝对地址的站内链接按站内路径比 */
+const SITE_ORIGIN = new RegExp(`^https?://${new URL(readSiteMeta(process.cwd()).url).host.replace(/\./g, '\\.')}`);
 
 const [dist, out] = process.argv.slice(2);
 if (!dist || !out) {
@@ -37,7 +41,8 @@ for (const file of files.filter((f) => f.endsWith('.html'))) {
   // blockTextElements 不含 pre：node-html-parser 默认把 <pre> 内部当原始文本，取到的是带高亮 style 的 HTML 而不是代码，
   // 两站高亮配色写法不同（--shiki-light 与 color:），会让每个代码块都「不一致」
   const root = parse(html, { comment: false, blockTextElements: { script: true, noscript: true, style: true } });
-  const box = root.querySelector('.vp-doc') ?? root.querySelector('[data-pagefind-body]') ?? root.querySelector('main');
+  // 先认 [data-pagefind-body]：旧站没有这个属性，照样落到 .vp-doc；新站文档页两者是同一个元素；下载页把它放在整页内容上（下载卡、正文、版本列表都算）
+  const box = root.querySelector('[data-pagefind-body]') ?? root.querySelector('.vp-doc') ?? root.querySelector('main');
   if (!box) continue;
   // 去掉两站各自的装饰：标题锚点、复制按钮、语言标签、行号列、手机预览面板
   for (const sel of ['.header-anchor', 'button.copy', 'span.lang', '.line-numbers-wrapper', '[data-migrate-ignore]', 'script', 'style']) {
@@ -60,7 +65,8 @@ for (const file of files.filter((f) => f.endsWith('.html'))) {
   const anchors = box.querySelectorAll('h1,h2,h3,h4,h5,h6').map((h) => h.getAttribute('id') ?? '').filter(Boolean);
   const text = normText(decode(box.textContent));
   const images = box.querySelectorAll('img').map((i) => ({ alt: i.getAttribute('alt') ?? '', src: i.getAttribute('src') ?? '' }));
-  const links = box.querySelectorAll('a[href]').map((a) => (a.getAttribute('href') ?? '').replace(/^https?:\/\/ruoyi\.plus/, ''));
+  // 指向本站的绝对地址折成站内路径（新旧两站同一域名，写法不同不算差异）
+  const links = box.querySelectorAll('a[href]').map((a) => (a.getAttribute('href') ?? '').replace(SITE_ORIGIN, ''));
   const head = root.querySelector('head');
   pages[rel] = {
     title: normText(head?.querySelector('title')?.textContent ?? ''),

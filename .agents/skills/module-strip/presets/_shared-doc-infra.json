@@ -1,0 +1,39 @@
+{
+  "name": "文档基础设施",
+  "description": "侧栏树（SidebarTree + lib/sidebar.ts）、站内搜索（SearchButton / SearchDialog + Pagefind）、页头搜索入口；guides 与 docs 两个模块共用",
+  "modules": [
+    "guides",
+    "docs"
+  ],
+  "delete_dirs": [],
+  "delete_files": [
+    "src/components/docs/SidebarTree.astro",
+    "src/components/docs/SearchButton.astro",
+    "src/components/docs/SearchDialog.astro",
+    "src/lib/sidebar.ts",
+    "tests/unit/sidebar.test.ts"
+  ],
+  "edits": [
+    {
+      "file": "src/components/layout/SiteHeader.astro",
+      "op": "remove_lines",
+      "contains": [
+        "import SearchButton from '@/components/docs/SearchButton.astro';",
+        "import SearchDialog from '@/components/docs/SearchDialog.astro';",
+        "<SearchButton ",
+        "<SearchDialog />"
+      ]
+    },
+    {
+      "file": "package.json",
+      "op": "replace_regex",
+      "pattern": "(\"build(?::fast)?\": \"[^\"]*?) && pagefind --site dist\"",
+      "flags": "g",
+      "replace": "$1\"",
+      "why": "build / build:fast 末尾的 pagefind 去掉（不管前面串了什么：派生站常在前面加 build-icons / build-llms / 数据同步）"
+    }
+  ],
+  "manual_actions": [
+    "依赖没有自动卸载：确认没有别处再用 Pagefind 后执行 pnpm remove pagefind"
+  ]
+}

@@ -1,6 +1,11 @@
-/* RuoYi 文档站在框架 vp-compat.css 之上的项目样式：DocsLayout / LandingLayout / 首页引入（配色令牌在 ry-theme.css）。
-   框架那份管通用的 VitePress 写法；这里放本站专属的——方案 C 正文排版、提示框卡片、表格卡片、优先级圆点、行号宽度（千行级代码块） */
+/* docs 模块的正文样式，在框架 vp-compat.css 之上：DocsLayout / LandingLayout / 项目首页引入（配色令牌在 docs-theme.css，品牌覆盖在 brand.css）。
+   vp-compat.css 管通用的 VitePress 写法；这里放文档站版式——正文排版、提示框卡片、表格卡片、优先级圆点、行号宽度（千行级代码块）、
+   代码组选项卡、侧栏 / 目录的细滚动条 */
 
+@layer theme, base, components, utilities, docs;
+/* 放进 docs 层：项目的 brand.css 与页面样式不进层，永远压过这里，不看拆包后的加载顺序（品牌样式打进公共文件、营销页样式打进页面文件时，
+   不进层的话后加载的模块默认值会把品牌覆盖盖掉——officia 同步时实测）。层排在 Tailwind 工具类之后，与原来不分层时一样压得过工具类 */
+@layer docs {
 /* ---------- 正文排版 ---------- */
 .vp-doc {
   font-size: 15.5px;
@@ -100,7 +105,7 @@
   border-radius: 14px;
 }
 
-/* ---------- 表格：白卡片，外层 .tbl 负责横向滚动（ry-layout.mjs 包的） ---------- */
+/* ---------- 表格：白卡片，外层 .tbl 负责横向滚动（docs-layout.mjs 的 rehypeTableWrap 包的） ---------- */
 .vp-doc .tbl {
   overflow-x: auto;
   border: 1px solid var(--line);
@@ -229,7 +234,7 @@
 }
 
 /* ---------- 侧栏与页面导航 ---------- */
-/* 细滚动条：平时透明，鼠标移到侧栏 / 目录上才显示（Windows 默认那条带箭头的粗滚动条在侧栏与正文之间像多了一根灰线，2026-11-02 改，五个文档站统一） */
+/* 细滚动条：平时透明，鼠标移到侧栏 / 目录上才显示（Windows 默认那条带箭头的粗滚动条在侧栏与正文之间像多了一根灰线，2026-11-02 改） */
 .ry-sidebar {
   scrollbar-width: thin;
   scrollbar-color: transparent transparent;
@@ -242,4 +247,40 @@
   color: var(--canvas);
   font-weight: 600;
   box-shadow: 0 8px 18px -10px rgb(11 13 20 / 0.55);
+}
+
+/* 代码组（旧站 ::: code-group，scripts/migrate/convert.mjs 转成单选框 + 代码块）：纯 CSS 选项卡，零 JS。
+   页签条贴在代码窗顶上，选中第 n 个单选框就只显示组内第 n 个代码块；没选中的代码块 display:none（打印、无 CSS 时全部显示） */
+.vp-doc .vp-code-group { margin: 1.25rem 0; }
+.vp-doc .vp-cg-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 6px 6px 0;
+  border-radius: 16px 16px 0 0;
+  background: var(--ry-code-bg);
+  border: 1px solid rgb(255 255 255 / 0.06);
+  border-bottom: 0;
+}
+.vp-doc .vp-cg-tabs input { position: absolute; opacity: 0; pointer-events: none; }
+.vp-doc .vp-cg-tabs label {
+  padding: 7px 14px;
+  border-radius: 9px 9px 0 0;
+  font: 500 13px var(--font-mono);
+  color: #8b98ad;
+  cursor: pointer;
+}
+.vp-doc .vp-cg-tabs input:checked + label { color: #fff; background: rgb(255 255 255 / 0.08); }
+.vp-doc .vp-cg-tabs input:focus-visible + label { outline: 2px solid var(--brand); outline-offset: -2px; }
+/* 组内代码窗接在页签条下面：去掉上圆角与上外边距 */
+.vp-doc .vp-code-group pre.astro-code { margin-top: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
+.vp-doc .vp-code-group pre.astro-code { display: none; }
+.vp-doc .vp-code-group:has(.vp-cg-tabs input:nth-of-type(1):checked) pre.astro-code:nth-of-type(1),
+.vp-doc .vp-code-group:has(.vp-cg-tabs input:nth-of-type(2):checked) pre.astro-code:nth-of-type(2),
+.vp-doc .vp-code-group:has(.vp-cg-tabs input:nth-of-type(3):checked) pre.astro-code:nth-of-type(3),
+.vp-doc .vp-code-group:has(.vp-cg-tabs input:nth-of-type(4):checked) pre.astro-code:nth-of-type(4) { display: block; }
+
+/* 正文里不带空格的长串（「Words/Cells/Slides/Pdf/…」、长类名、长路径）在手机上不会自己断行，会撑出引用块 / 列表。
+   用 break-word 而不是 anywhere：只在一行放不下时才断，不改变表格列的最小宽度（anywhere 会把表格挤窄）。
+   officia 迁移时 360 宽扫描查出「Officia 是什么」的引用块撑出 166px */
+.vp-doc :is(p, li, blockquote, dd) { overflow-wrap: break-word; }
 }

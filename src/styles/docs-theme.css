@@ -1,0 +1,172 @@
+/* docs 模块主题（浅色为主，深色模式下同一套类自动翻转）：DocsLayout / LandingLayout / 项目的首页与 404 引入，覆盖框架令牌，不改框架 global.css。
+   骨架来自 ruoyi.plus 改版站（类名前缀 ry- 是那时留下的，各站页面都在用，不改名），经 officia / 知识库 / tauri-docs 迁移打磨。
+   视觉规则：页头白色、首屏浅底（.ry-aurora）、正文浅灰底 + 白卡片、页脚白色；代码窗两种主题下都是深色。
+   🔴 本文件只放结构与中性默认值：品牌色、中性色的色相、首屏底、点缀色、要不要渐变，一律在项目的 src/styles/brand.css 覆盖
+      （框架默认不用渐变：用户 2026-11-02 定「渐变太 AI 味」；要渐变的站在 brand.css 里自己加）。
+   颜色一律走语义令牌（ink / muted / line / elevated），不写死白字黑底。中文不引 webfont（框架禁令），代码用系统等宽字体 */
+
+@layer theme, base, components, utilities, docs;
+/* 放进 docs 层：项目的 brand.css 与页面样式不进层，永远压过这里，不看拆包后的加载顺序（品牌样式打进公共文件、营销页样式打进页面文件时，
+   不进层的话后加载的模块默认值会把品牌覆盖盖掉——officia 同步时实测）。层排在 Tailwind 工具类之后，与原来不分层时一样压得过工具类 */
+@layer docs {
+:root {
+  /* 点缀色（链接 / 关联的记号、首屏光晕）：默认跟品牌色，brand.css 可换成别的色相 */
+  --ry-cyan: var(--brand);
+  /* 代码窗底色：两种主题下都是深色 */
+  --ry-code-bg: #14161c;
+  /* 首屏 / 重点区块的底：默认品牌色淡淡一层 */
+  --ry-aurora-bg: color-mix(in oklab, var(--brand) 6%, var(--canvas));
+  /* 等宽字体补上苹果 / 安卓自带的：安卓（含微信）没有 ui-monospace、Consolas、Courier New，原来会落到字宽很大的打字机体。
+     末尾补中文字体：等宽栈里没有中文时，Windows 上眉标 / 代码里的中文会落到宋体 */
+  --font-mono: ui-monospace, 'SF Mono', Menlo, 'JetBrains Mono', 'Cascadia Code', Consolas, 'Roboto Mono', 'Droid Sans Mono', 'Liberation Mono', 'Microsoft YaHei UI', 'Microsoft YaHei', 'PingFang SC', 'Noto Sans SC', monospace;
+}
+
+/* 首屏 / 重点区块的底：实色浅底 + 底边细线（底色见 --ry-aurora-bg） */
+.ry-aurora {
+  background-color: var(--ry-aurora-bg);
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+}
+.dark .ry-aurora {
+  background-color: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
+}
+
+/* 标题强调：实色品牌色（要渐变字的站在 brand.css 覆盖） */
+.ry-grad-text {
+  color: var(--brand);
+}
+
+/* 小标签行（等宽、品牌色）。中文眉标字距 .06em：.14em 中文会散 */
+.ry-kicker,
+.ry-kicker-l {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--brand-ink);
+}
+
+/* 白卡片：细描边 + 内高光 + 柔和投影；悬停上浮 */
+.ry-card {
+  background: var(--elevated);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.6), 0 1px 2px rgb(var(--shadow-tint) / 0.04), 0 18px 40px -22px rgb(var(--shadow-tint) / 0.22);
+}
+.ry-lift {
+  transition: transform 0.35s var(--ease-out-soft), box-shadow 0.35s var(--ease-out-soft);
+}
+.ry-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 2px 4px rgb(var(--shadow-tint) / 0.05), 0 26px 50px -24px rgb(var(--shadow-tint) / 0.3);
+}
+/* 首屏里的毛玻璃面板（叠在光晕上） */
+.ry-pane {
+  background: color-mix(in oklab, var(--elevated) 78%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 1px 2px rgb(var(--shadow-tint) / 0.04), 0 18px 40px -22px rgb(var(--shadow-tint) / 0.22);
+}
+/* 手机与平板（窄屏或触屏）关掉毛玻璃：backdrop-filter 每一帧都要把背后的内容重新模糊，
+   吸顶的页头、章节条和首屏面板叠在大面积渐变上，手机滑动明显掉帧。底色改成不透明，看起来几乎一样 */
+@media (max-width: 1023px), (hover: none) {
+  .ry-pane,
+  .lp-chips,
+  [data-site-header] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .ry-pane {
+    background: var(--elevated);
+  }
+  .lp-chips {
+    background: var(--canvas) !important;
+  }
+  [data-site-header] {
+    background: var(--elevated) !important;
+  }
+}
+
+/* 主按钮：品牌实色胶囊，与框架 global.css 的 .btn-brand（页头主按钮）同一个样子；要渐变的站在 brand.css 里两个一起覆盖 */
+.ry-btn-primary {
+  background: var(--brand);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 8px 20px -8px color-mix(in srgb, var(--brand) 70%, transparent);
+}
+.ry-btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+/* 代码窗：两种主题下都是深色（取 shiki 的 github-dark 那一套变量），等宽字体关连字 */
+:where(.vp-doc) pre.astro-code {
+  position: relative;
+  overflow: visible !important;
+  margin: 1.25rem 0;
+  padding: 40px 0 0;
+  border: 1px solid rgb(255 255 255 / 0.06);
+  border-radius: 16px;
+  background-color: var(--ry-code-bg) !important;
+  box-shadow: 0 18px 40px -26px rgb(11 13 20 / 0.6);
+  font-size: 13px;
+  line-height: 1.75;
+}
+:where(.vp-doc) pre.astro-code,
+:where(.vp-doc) pre.astro-code span {
+  color: var(--shiki-dark) !important;
+}
+/* 横向滚动放在 code 上：窗口顶栏（语言名 + 复制）不跟着内容左右滚 */
+:where(.vp-doc) pre.astro-code > code {
+  display: block;
+  overflow-x: auto;
+  padding: 12px 18px 14px;
+}
+/* 开了行号时左边由行号（.line::before）占位，内边距归零；不开行号（site.codeLineNumbers: false）时保留 18px，
+   否则代码贴着代码窗左边框（officia 关着行号时实测贴边，2026-11-02 修） */
+.code-line-numbers :where(.vp-doc) pre.astro-code > code {
+  padding-left: 0;
+}
+:where(.vp-doc) pre.astro-code::before {
+  content: attr(data-language);
+  position: absolute;
+  inset: 0 0 auto;
+  height: 40px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgb(255 255 255 / 0.07);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgb(255 255 255 / 0.45);
+}
+:where(.vp-doc) pre.astro-code:not([data-language])::before,
+:where(.vp-doc) pre.astro-code[data-language='plaintext']::before {
+  content: 'text';
+}
+/* 复制按钮（DocsLayout / LandingLayout 的脚本插入；没有 JS 时不出现） */
+.ry-copy {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: rgb(255 255 255 / 0.55);
+  transition: color 0.2s, background 0.2s;
+}
+.ry-copy:hover {
+  color: #fff;
+  background: rgb(255 255 255 / 0.08);
+}
+.ry-copy[data-done] {
+  color: #6ee7b7;
+}
+.code-line-numbers :where(.vp-doc) pre.astro-code > code > .line::before {
+  color: rgb(255 255 255 / 0.22);
+  opacity: 1;
+}
+}

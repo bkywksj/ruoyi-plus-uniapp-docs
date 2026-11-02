@@ -1,6 +1,6 @@
 ---
 name: module-strip
-description: 按预设裁掉示例模块（文章 / 作品 / 首页 FAQ / 示例数据），同步改掉首页、导航、集合定义、llms.txt 里的引用；--audit 检查已裁模块是否被同步带回。触发词：裁剪、模块裁剪、删除示例、去掉示例页、清空示例、精简框架、strip、不要文章模块、不要作品模块
+description: 按预设裁掉示例模块（文章 / 作品 / 使用指南 / 迁移型文档 docs / 首页 FAQ / 示例数据），guides 与 docs 共用的侧栏树与搜索两者都裁才删，同步改掉首页、导航、集合定义、llms.txt 里的引用；--audit 检查已裁模块是否被同步带回。触发词：裁剪、模块裁剪、删除示例、去掉示例页、清空示例、精简框架、strip、不要文章模块、不要作品模块
 ---
 
 # 模块裁剪（module-strip）
@@ -37,11 +37,27 @@ module-strip.mjs <模块...>
 |------|------|---------|
 | `posts` 文章 | `src/content/posts/`、`src/pages/posts/`、`src/lib/posts.ts` | `content.config.ts` 去掉 posts 集合；首页去掉「最新文章」区块、文章统计、「阅读文章」按钮；`llms.txt.ts` 去掉文章段；导航去掉「文章」 |
 | `works` 作品目录 | `src/pages/works/`、`src/components/works/`、`WorksExplorer.tsx`、`src/lib/works.ts`、`works.json`、`categories.json`、`public/examples/`、`tests/e2e/works.spec.ts`、`tests/unit/works-schema.test.ts`（通用的 `smoke.spec.ts` / `content-schema.test.ts` 保留） | `content.config.ts` 去掉 works / categories 集合；首页去掉精选与分类区块、作品/分类统计、「浏览全部作品」按钮；`llms.txt.ts` 去掉分类与作品段；导航去掉「作品」；404 页去掉「浏览作品」 |
-| `guides` 使用指南 | `src/content/guides/`、`src/pages/guide/`、`src/components/docs/`、`src/layouts/GuideLayout.astro`、`src/lib/guides.ts`、`src/lib/guide-sections.ts`、`tests/unit/guides.test.ts`、`tests/e2e/guides.spec.ts` | `content.config.ts` 去掉 guides 集合（文件里再没有 `glob(` 时一并去掉 glob 导入）；`astro.config.ts` 去掉 MDX 集成与只为它设的 onwarn；页头去掉搜索入口与 SearchDialog；`package.json` 的 build / build:fast 去掉 pagefind；`llms.txt.ts` 去掉指南段；导航去掉「指南」。依赖 `@astrojs/mdx` / `pagefind` 不自动卸载，报告末尾提示 |
+| `guides` 使用指南 | `src/content/guides/`、`src/pages/guide/`、`src/components/docs/` 里指南专用的组件（GuideMeta / GuideSidebar / GuideToc / PrevNext / PhonePreview / Steps / Callout 等 13 个）、`src/layouts/GuideLayout.astro`、`src/lib/guides.ts`、`src/lib/guide-sections.ts`、`guide-sidebar.json`、`tests/unit/guides.test.ts`、`tests/e2e/guides.spec.ts` | `content.config.ts` 去掉 guides 集合（文件里再没有 `glob(` 时一并去掉 glob 导入）；`astro.config.ts` 去掉 MDX 集成与只为它设的 onwarn；`llms.txt.ts` 去掉指南段；导航去掉「指南」。侧栏树与站内搜索归共享部分（见下）。依赖 `@astrojs/mdx` 不自动卸载，报告末尾提示 |
+| `docs` 迁移型文档 | `src/content/docs/`、`[...slug].astro`、`sitemap.xml.ts`、`DocsLayout` / `LandingLayout`、docs 组件（ContactDialog / DocsPhonePreview / DocsToc / ImageViewer）、`lib/docs*.ts`、lastmod / sitemap-rank / preview、四个 Markdown 插件、`docs-theme` / `docs-content` / `landing` / `brand.css`、`docs.json` 等 7 份数据、build-llms / indexnow / check-anchors / build-icons / `scripts/lib/site-meta.mjs` / `scripts/migrate/`、对应测试 | `content.config.ts` 去掉 docs 集合；`astro.config.ts` 去掉三处「// docs 模块」接线（插件两处、`withDocsSitemap` 换回核心站点地图配置）；`package.json` 去掉 icons / llms / indexnow / check:anchors。`@iconify` 三个依赖不自动卸载；`frameWidth: 'wide'` 要手动改回，报告末尾提示 |
 | `faq` 首页常见问题 | `src/data/faq.json` | 首页去掉 FAQ 区块与 FAQPage 结构化数据（`lib/seo.ts` 的 `faqJsonLd` 保留） |
 | `examples` 示例数据与封面 | `public/examples/`、两篇示例文章 | `works.json`、`categories.json` 清空为 `[]`（**内容已不是框架示例时不覆盖**）；模块本身保留。`src/data/faq.json` 与 `scripts/sync/sources/example.mjs` **不处理**，报告末尾会提示人工替换 |
 
 - 预设可以组合、任意顺序：`posts faq works` 与 `works faq posts` 结果一致
+
+### 共享部分（几个模块共用的文件）
+
+guides 与 docs 都要用侧栏树（`SidebarTree.astro` + `lib/sidebar.ts` + 其测试）和站内搜索（`SearchButton` / `SearchDialog`、页头搜索入口、build 里的 pagefind）。
+这组写在 `presets/_shared-doc-infra.json`（`modules: ["guides", "docs"]`），**成员全部不在了才删**：
+
+| 情况 | 共享部分 |
+|---|---|
+| 只裁 guides（docs 还在） | 保留，报告里出「🔗 共享部分保留：docs 还在用」 |
+| 只裁 docs（guides 还在） | 保留 |
+| guides docs 一起裁，或其中一个早已裁过 / 项目里本来就没有 | 一起删，报告里单独一节「✂️ 共享：文档基础设施」 |
+
+「不在」= 记在 `strippedModules`、本次一起裁、或项目里本来就没有（预设的 `marker` 文件不存在）；`transformedModules` 里的模块算「在」。
+共享部分不写进 `strippedModules`（它不是模块）；`--audit` 在成员都已裁时也检查它的文件有没有被带回。
+新增几个模块共用的东西时，照 `_shared-doc-infra.json` 写一份 `_shared-<名字>.json`，并给成员预设都加上 `marker`。
 - 全部裁掉时，首页只剩 Hero；报告末尾的「需人工确认」会列出要按新站点重写的地方
 
 ```
@@ -49,7 +65,8 @@ module-strip.mjs <模块...>
 ├── SKILL.md
 ├── scripts/module-strip.mjs
 └── presets/
-    ├── posts.json  works.json  guides.json  faq.json  examples.json
+    ├── posts.json  works.json  guides.json  docs.json  faq.json  examples.json
+    ├── _shared-doc-infra.json  # guides 与 docs 共用的侧栏树、站内搜索（成员都裁掉才删）
     └── _template.json          # 新预设模板（_ 开头的不会出现在可用列表里）
 ```
 

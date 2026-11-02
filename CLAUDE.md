@@ -32,6 +32,7 @@
 | **分类** | 手工维护的分类体系，每个分类有独立落地页 | 集合 `categories`，`/works/category/<id>/` |
 | **文章** | Markdown 长文，GEO 的主要承载体 | 集合 `posts`，`src/content/posts/*.md` |
 | **指南** | 使用指南 / 帮助中心：MDX 正文 + 三栏布局 + 站内搜索，一层分组或多层侧栏，可带手机实时预览（guides-docs 技能） | 集合 `guides`，`src/content/guides/*.mdx`，分组 `src/lib/guide-sections.ts`，多层侧栏 `src/data/guide-sidebar.json` |
+| **docs 模块** | 迁移型文档站骨架：几十到几百篇 `.md` 原样迁入，[...slug] 统一路由 + DocsLayout 三栏 + 营销页；站点差异全在 `src/data/docs.json` 等项目配置，模块文件各站逐字节相同（docs-site 技能） | 集合 `docs`，`src/content/docs/**/*.md`，配置 `src/data/docs.json`、侧栏 `src/data/sidebar.json`，品牌覆盖 `src/styles/brand.css` |
 | **island** | 需要在浏览器里运行的 React 组件，用 `client:*` 指令水合 | `src/components/islands/` |
 | **数据源** | 构建前从外部接口拉数据写入集合 JSON 的模块 | `scripts/sync/sources/*.mjs` |
 | **站点配置** | 站名、域名、品牌色、导航等全站唯一真相源 | `src/site.config.ts` |
@@ -112,7 +113,7 @@ date '+%Y-%m-%d %H:%M'         # 可读时间(文档/任务卡)
 2. **激活**：对每个匹配的技能调用 `Skill(技能名)`
 3. **实现**：激活完成后开始实现
 
-**Skills 位置**：`.claude/skills/[skill-name]/SKILL.md`（共 42 个专业技能）
+**Skills 位置**：`.claude/skills/[skill-name]/SKILL.md`（共 43 个专业技能）
 
 ---
 
@@ -194,6 +195,7 @@ git branch --show-current
 | **分类落地页（纯静态）** | `src/pages/works/category/[id].astro` |
 | **Markdown 文章** | `src/pages/posts/[...id].astro` |
 | **文档页（MDX + 三栏 + 搜索）** | `src/pages/guide/[...id].astro` + `src/layouts/GuideLayout.astro` + `src/components/docs/` |
+| **迁移型文档页（.md + 三栏）** | `src/pages/[...slug].astro` + `src/layouts/DocsLayout.astro` + `src/lib/docs.ts`（配置 `src/data/docs.json`） |
 | **首页区块组合** | `src/pages/index.astro` |
 | **卡片（静态/island 两用）** | `src/components/works/WorkCard.tsx` |
 | **集合查询封装** | `src/lib/works.ts`、`src/lib/posts.ts`、`src/lib/guides.ts` |

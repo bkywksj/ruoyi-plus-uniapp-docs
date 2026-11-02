@@ -6,7 +6,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import SearchButton from '@/components/docs/SearchButton.astro';
 import { DOC_SECTIONS, SECTION_LABELS, docPath } from '@/lib/docs';
 import { siteJsonLd } from '@/lib/site-jsonld';
-import '@/styles/ry-theme.css';
+import '@/styles/docs-theme.css';
+// 品牌样式最后引入（本站配色、首屏底，见 src/styles/brand.css）
+import '@/styles/brand.css';
 
 const docs = await getCollection('docs');
 const sections = DOC_SECTIONS.map((s) => ({ label: SECTION_LABELS[s], href: docPath(`${s}/index`), count: docs.filter((d) => d.id.startsWith(`${s}/`)).length }));

@@ -1,10 +1,14 @@
-/* 营销页（LandingLayout 与首页）的方案 C 版式。结构来自 ry-layout.mjs：
+/* docs 模块的营销页版式（LandingLayout 与项目首页）。结构来自 docs-layout.mjs 的 rehypeLanding：
      .lp-hero（h1 + 导语）→ 浅色光晕首屏；.lp-chips → 章节条；.lp-sec[data-sec=h2 的 id] > h2 + .lp-items > .lp-item（h3 一节）
    正文文字一个不改，这里只排版。md 里的行内 style（旧站写的 grid / flex）需要覆盖时用 !important，并写明原因。
    首屏与光晕段的底横向铺满靠 ::before 左右各伸到视口边（calc(50% - 50vw)，所在区块在版心里居中）；
    电脑上 100vw 含滚动条宽，多出的几像素由外层 .lp 的 overflow-x: clip 兜住。
    不用 -100vmax：竖屏手机上左右各多出约 850px，色块比屏幕宽 4 倍多，滚动时整块重绘，内核不支持 clip 时页面还能左右晃 */
 
+@layer theme, base, components, utilities, docs;
+/* 放进 docs 层：项目的 brand.css 与页面样式不进层，永远压过这里，不看拆包后的加载顺序（品牌样式打进公共文件、营销页样式打进页面文件时，
+   不进层的话后加载的模块默认值会把品牌覆盖盖掉——officia 同步时实测）。层排在 Tailwind 工具类之后，与原来不分层时一样压得过工具类 */
+@layer docs {
 .lp {
   overflow-x: clip;
 }
@@ -47,9 +51,8 @@
 /* 光晕只铺在版心范围内，否则径向渐变的圆心会跑到屏幕外 */
 .lp-hero::after {
   inset: 0 -12rem;
-  background:
-    radial-gradient(40% 60% at 12% 0%, rgb(4 174 246 / 0.16), transparent 70%),
-    radial-gradient(50% 70% at 88% 0%, rgb(11 110 240 / 0.18), transparent 70%);
+  /* 框架默认不铺光晕（渐变太 AI 味，用户 2026-11-02），实色底由 .lp-hero 自身提供；要光晕的站在 brand.css 里给这条加径向渐变 */
+  background: none;
 }
 .lp-hero-in > * + * {
   margin-top: 1rem;
@@ -57,10 +60,7 @@
 .lp .lp-hero h1 {
   margin-top: 0.75rem;
   width: fit-content;
-  background-image: linear-gradient(90deg, var(--ry-cyan), var(--brand) 55%, var(--ink));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--brand);
   font-size: clamp(2.4rem, 1.4rem + 3.6vw, 4rem);
   line-height: 1.06;
   font-weight: 900;
@@ -113,10 +113,9 @@
 }
 .lp .lp-btn-primary {
   border-color: transparent;
-  background: var(--color-brand-strong);
-  background-image: linear-gradient(180deg, color-mix(in oklab, var(--brand) 78%, white), var(--brand));
+  background: var(--brand);
   color: #fff;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 8px 20px -8px rgb(11 110 240 / 0.7);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 8px 20px -8px color-mix(in srgb, var(--brand) 70%, transparent);
 }
 .lp .lp-btn-primary:hover {
   background: var(--brand);
@@ -301,7 +300,7 @@
   position: absolute;
   inset: 0 calc(50% - 50vw);
   z-index: -1;
-  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
 }
 
 /* ================= 产品矩阵 ================= */
@@ -432,7 +431,7 @@
   padding: 2rem 2.25rem;
   list-style: none;
   border-top: 1px solid var(--line);
-  background: linear-gradient(160deg, var(--vc-soft), var(--elevated) 70%);
+  background: var(--vc-soft);
   display: grid;
   align-content: start;
   gap: 12px;
@@ -466,7 +465,7 @@
   margin-top: 1rem;
   padding: 2.5rem 2rem !important;
   border-radius: 28px;
-  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
   color: color-mix(in oklab, var(--ink) 82%, transparent) !important;
   font-size: 15px !important;
 }
@@ -520,7 +519,7 @@
 }
 .lp-services [data-sec='可承接的服务'] .lp-item:nth-child(5) {
   border-color: transparent;
-  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
   color: var(--ink);
 }
 /* 放到最后一行通栏（1 宽 + 2 ｜ 3 + 4 + 6 ｜ 5 通栏），否则两张宽卡凑不满三列会空一格 */
@@ -555,7 +554,7 @@
   position: absolute;
   inset: 0 calc(50% - 50vw);
   z-index: -1;
-  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
 }
 .lp-services [data-sec='联系方式'] > h2 {
   color: var(--ink);
@@ -687,15 +686,6 @@
   aspect-ratio: 16 / 10;
   background: var(--surface) center top / cover no-repeat;
 }
-.lp-demo [data-sec='在线演示'] tr:nth-child(1)::before {
-  background-image: url('/demo/03-dashboard.webp');
-}
-.lp-demo [data-sec='在线演示'] tr:nth-child(2)::before {
-  background-image: url('/demo/40-ai-assistant.webp');
-}
-.lp-demo [data-sec='在线演示'] tr:nth-child(3)::before {
-  background-image: url('/demo/41-page-designer.webp');
-}
 .lp-demo [data-sec='在线演示'] tbody tr:hover td {
   background: none;
 }
@@ -754,7 +744,7 @@
 }
 .vc-pricing.is-recommended {
   border-color: transparent;
-  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
   color: var(--ink);
   box-shadow: 0 40px 80px -30px rgb(11 13 20 / 0.7);
 }
@@ -1038,7 +1028,7 @@
   min-height: 11rem;
   padding: 64px 22px 22px;
   border-color: transparent;
-  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
 }
 .lp-video .vp-doc > h3:first-of-type + ol > li::before {
   left: 22px;
@@ -1056,7 +1046,7 @@
 .lp-video .vp-doc > h3:nth-of-type(2) + p {
   padding: 1.75rem 2rem;
   border-radius: 24px;
-  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
   font-size: 18px;
   line-height: 1.6;
 }
@@ -1098,7 +1088,7 @@
   bottom: 10px;
   width: 2px;
   border-radius: 2px;
-  background: linear-gradient(180deg, color-mix(in oklab, var(--brand) 60%, transparent), transparent);
+  background: color-mix(in oklab, var(--brand) 30%, var(--line));
 }
 .lp-changelog .lp-item {
   position: relative;
@@ -1257,7 +1247,7 @@
   position: absolute;
   inset: 0 calc(50% - 50vw);
   z-index: -1;
-  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated)) radial-gradient(40% 70% at 85% 0%, rgb(11 110 240 / 0.14), transparent 70%);
+  background: color-mix(in oklab, var(--canvas) 45%, var(--elevated));
 }
 .lp-index [data-sec='技术服务-·-承接定制开发'] > h2,
 .lp-index [data-sec='技术服务-·-承接定制开发'] strong {
@@ -1312,4 +1302,5 @@
 }
 .lp .lp-hero a.lp-btn-primary {
   color: #fff;
+}
 }

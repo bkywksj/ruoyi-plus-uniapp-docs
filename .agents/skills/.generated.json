@@ -31,6 +31,7 @@
   "doc-search",
   "doc-stats",
   "doc-writer",
+  "docs-site",
   "e2e-test",
   "edgeone-deploy",
   "env-config",

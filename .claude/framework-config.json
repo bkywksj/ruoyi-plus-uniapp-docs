@@ -18,6 +18,7 @@
         "src/data/ai-crawlers.json",
         "src/env.d.ts",
         "scripts/check-seo.mjs",
+        "scripts/check-residue.mjs",
         "scripts/render-og.mjs",
         "scripts/sync/run.mjs",
         "scripts/sync/context.mjs",
@@ -31,7 +32,8 @@
         ".claude/templates/",
         ".claude/agents/",
         ".codex/",
-        ".agents/"
+        ".agents/",
+        "src/components/ui/Container.astro"
       ]
     },
     "examples": {
@@ -46,7 +48,8 @@
         "design/og/og-default.html",
         "scripts/sync/sources/example.mjs",
         "src/content/guides/quick-start.mdx",
-        "src/content/guides/troubleshooting.mdx"
+        "src/content/guides/troubleshooting.mdx",
+        "src/content/docs/manual/"
       ]
     },
     "projectConfig": {
@@ -58,7 +61,63 @@
         "astro.config.ts",
         "package.json",
         "public/favicon.svg",
-        "public/og-default.png"
+        "public/og-default.png",
+        "src/data/docs.json",
+        "src/data/sidebar.json",
+        "src/data/landing.json",
+        "src/data/outdated.json",
+        "src/data/page-dates.json",
+        "src/data/title-qualifiers.json",
+        "src/data/llms-facts.md",
+        "src/data/llms-tail.md",
+        "src/lib/site-jsonld.ts",
+        "src/styles/brand.css",
+        "scripts/migrate/known-diffs.json"
+      ]
+    },
+    "docsModule": {
+      "description": "docs 模块（迁移型文档站骨架）：模块代码在各站逐字节相同，框架同步时按核心对待（直接合并）；项目配置那几份各站自己维护、同步不覆盖。module-strip docs 可整体裁掉",
+      "paths": [
+        "src/layouts/DocsLayout.astro",
+        "src/layouts/LandingLayout.astro",
+        "src/pages/[...slug].astro",
+        "src/pages/sitemap.xml.ts",
+        "src/components/docs/ContactDialog.astro",
+        "src/components/docs/DocsPhonePreview.astro",
+        "src/components/docs/DocsToc.astro",
+        "src/components/docs/ImageViewer.astro",
+        "src/lib/docs.ts",
+        "src/lib/docs-config.ts",
+        "src/lib/docs-schema.ts",
+        "src/lib/docs-sitemap.ts",
+        "src/lib/lastmod.ts",
+        "src/lib/sitemap-rank.ts",
+        "src/lib/preview.mjs",
+        "src/lib/markdown/docs-layout.mjs",
+        "src/lib/markdown/docs-plugins.mjs",
+        "src/lib/markdown/img-size.mjs",
+        "src/lib/markdown/vue-components.mjs",
+        "src/styles/docs-theme.css",
+        "src/styles/docs-content.css",
+        "src/styles/landing.css",
+        "scripts/build-llms.mjs",
+        "scripts/indexnow.mjs",
+        "scripts/check-anchors.mjs",
+        "scripts/build-icons.mjs",
+        "scripts/lib/site-meta.mjs",
+        "scripts/migrate/add-lastupdated.mjs",
+        "scripts/migrate/compare-baseline.mjs",
+        "scripts/migrate/compare-site.mjs",
+        "scripts/migrate/convert.mjs",
+        "scripts/migrate/extract-sidebar.mjs",
+        "scripts/migrate/manifest.mjs",
+        "tests/e2e/docs.spec.ts",
+        "tests/unit/img-size.test.ts",
+        "tests/unit/lastmod.test.ts",
+        "tests/unit/site-meta.test.ts",
+        "tests/unit/sitemap-rank.test.ts",
+        "tests/unit/docs-sitemap.test.ts",
+        "src/pages/[...dir]/index.astro"
       ]
     }
   },
@@ -76,8 +135,16 @@
   },
   "progress": {
     "description": "进度统计口径（与 CLAUDE.md「协作约定」一致）：只数 countCommitTypes 里的类型，且 scope 不在 excludeScopes 里",
-    "countCommitTypes": ["feat", "fix"],
-    "excludeScopes": ["framework", "strip", "data", "deps"]
+    "countCommitTypes": [
+      "feat",
+      "fix"
+    ],
+    "excludeScopes": [
+      "framework",
+      "strip",
+      "data",
+      "deps"
+    ]
   },
   "modeDetection": {
     "description": "exp-sediment 等判断当前仓库身份的规则：先看 .framework-sync.json（有 = 孵化出的子项目），再看 package.json name（= next-ai-astro 且无同步配置 = 框架仓库本身）；.claude/exp.config.json 只作本机缓存，不入库",

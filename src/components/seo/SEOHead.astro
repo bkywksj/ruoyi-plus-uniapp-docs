@@ -19,6 +19,8 @@ export interface SEOProps {
   jsonLd?: JsonLd[];
   publishedTime?: Date;
   modifiedTime?: Date;
+  /** 本页关键词（逗号分隔）：写了就整条替换全站 site.keywords（迁移旧站时个别页在 frontmatter 里单独写过） */
+  keywords?: string;
 }
 
 const {
@@ -30,6 +32,7 @@ const {
   jsonLd = [],
   publishedTime,
   modifiedTime,
+  keywords = site.keywords.join(','),
 } = Astro.props as SEOProps;
 
 const fullTitle = buildTitle(title);
@@ -43,7 +46,7 @@ const ogLocale = site.locale.replace('-', '_');
 
 <title>{fullTitle}</title>
 <meta name="description" content={metaDescription} />
-{site.keywords && site.keywords.length > 0 && <meta name="keywords" content={site.keywords.join(',')} />}
+{keywords && <meta name="keywords" content={keywords} />}
 <link rel="canonical" href={canonical} />
 {noindex && <meta name="robots" content="noindex, follow" />}
 

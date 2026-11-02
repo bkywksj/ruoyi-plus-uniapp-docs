@@ -3,8 +3,11 @@
 import type { HTMLAttributes } from 'astro/types';
 
 interface Props extends HTMLAttributes<'div'> {
-  /** narrow = 文章阅读宽度；default = 列表/首页宽度 */
-  size?: 'narrow' | 'default';
+  /**
+   * narrow = 文章阅读宽度；default = 列表/首页宽度；
+   * wide = 文档站版心（90rem：左侧栏 + 正文 + 右侧目录三栏并排，docs 模块的布局与 site.frameWidth = 'wide' 的页头页脚用）
+   */
+  size?: 'narrow' | 'default' | 'wide';
 }
 
 const { size = 'default', class: className, ...rest } = Astro.props;
@@ -13,7 +16,7 @@ const { size = 'default', class: className, ...rest } = Astro.props;
 <div
   class:list={[
     'mx-auto w-full px-4 sm:px-6 lg:px-8',
-    size === 'narrow' ? 'max-w-3xl' : 'max-w-6xl',
+    { narrow: 'max-w-3xl', default: 'max-w-6xl', wide: 'max-w-[90rem]' }[size],
     className,
   ]}
   {...rest}

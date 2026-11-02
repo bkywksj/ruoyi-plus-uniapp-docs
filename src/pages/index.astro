@@ -12,9 +12,11 @@ import { fixLink } from '@/lib/markdown/vp-compat.mjs';
 import { siteJsonLd } from '@/lib/site-jsonld';
 import { site } from '@/site.config';
 import '@/styles/vp-compat.css';
-import '@/styles/ry-theme.css';
-import '@/styles/docs-ruoyi.css';
+import '@/styles/docs-theme.css';
+import '@/styles/docs-content.css';
 import '@/styles/landing.css';
+// 品牌样式最后引入（本站配色、首屏底，见 src/styles/brand.css）
+import '@/styles/brand.css';
 
 const entry = await getEntry('docs', 'index');
 if (!entry) throw new Error('缺少 src/content/docs/index.md（首页数据）：先跑 scripts/migrate/convert.mjs');

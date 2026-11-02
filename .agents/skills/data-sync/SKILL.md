@@ -412,6 +412,9 @@ const mac = findAsset(latestRelease, 'macos-aarch64');
 - 平台标识与发版脚本一致；要加平台改 `ASSET_PLATFORMS`
 - 对象存储的文件名用 ASCII（schema 会拦中文与空格）：中文进网址要百分号编码，下载后的文件名也会变
 - 不卖软件的站不用管：没有页面引用 `releases.ts` 时它不进产物
+- 🔴 托管平台推送即构建时，把同步串进 build：`node scripts/sync/run.mjs releases --allow-fail && …`——拉不到时保留仓库里已提交的那份、构建不失败；
+  发版后由发版流程改一下站点仓库里的触发文件（如 `public/.last-release.json`）推送，触发重建拿到新版本（知识库站的做法）
+- 安装包大小：清单不给的，HEAD 取 `content-length`；老版本复用上一版数据里已有的大小，不必每次全量 HEAD
 
 ## 检查清单
 

@@ -1,0 +1,39 @@
+{
+  "$comment": "docs 模块的本站配置（字段说明见 src/lib/docs-config.ts）。原先写死在 lib/docs.ts、DocsLayout、LandingLayout、preview.mjs、build-llms.mjs、indexnow.mjs 里的 ruoyi.plus 专属值，2026-11-03 收到这里",
+  "sections": [
+    { "id": "backend", "label": "后端" },
+    { "id": "frontend", "label": "前端" },
+    { "id": "mobile", "label": "移动端" },
+    { "id": "practices", "label": "最佳实践" }
+  ],
+  "standalonePages": [],
+  "lastUpdated": "off",
+  "sitemapLastmod": "off",
+  "article": {
+    "about": ["RuoYi-Plus-UniApp", "Spring Boot 3", "Vue 3", "UniApp"],
+    "author": { "@type": "Person", "name": "抓蛙师" },
+    "publisher": { "@type": "Organization", "name": "若依科技工作室", "url": "https://ruoyi.plus" },
+    "proficiencyLevel": "Beginner"
+  },
+  "editUrl": "https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/docs/{id}.md",
+  "faqPage": "",
+  "sectionHero": true,
+  "previewHosts": ["uni.ruoyi.plus"],
+  "sitemap": null,
+  "indexnow": { "key": "d9bf148b4143c578b73c88858968c800", "alwaysPush": [] },
+  "llms": {
+    "groups": "nested",
+    "sectionTitles": {
+      "backend": "后端（Spring Boot 3 + MyBatis-Plus）",
+      "frontend": "前端管理端（Vue 3 + Element Plus）",
+      "mobile": "移动端（UniApp + WD UI）",
+      "practices": "最佳实践"
+    },
+    "extraHeading": "## 商业信息",
+    "extraPages": [
+      { "text": "产品矩阵", "path": "/products", "brief": "抓蛙师出品的开发者工具集" },
+      { "text": "技术服务", "path": "/services", "brief": "承接后台管理系统 / 桌面软件 / 小程序 / 大模型应用定制开发，提供完整源码交付" },
+      { "line": "- 联系方式：邮箱 770492966@qq.com" }
+    ]
+  }
+}

@@ -6,7 +6,7 @@
   远端 origin = Gitee、github = GitHub（`bkywksj/ruoyi-plus-uniapp-docs`）；旧站 514 个提交经合并提交 a022a56 接在历史里，旧工程的 stash 存为本地引用 `refs/old-site/stash-pre-phase1-baseline`
 - 规模：511 页 / 约 71 万行 / 约 2 万个代码块；旧网址全部 .html 结尾（cleanUrls: false）
 - 生产域名：https://ruoyi.plus；部署方式：本机构建后 `pnpm run deploy`（EdgeOne CLI 上传 dist）。EdgeOne 云端构建机 6 GB 不够，三次实测都被杀，不用（见 edgeone-deploy）
-- 品牌：主色 #0B6EF0（旧站同色；2026-11-01 用户改浅色后由方案 C 的 #5B7CFF 改回），点缀青 #04AEF6，文字用 #0A5CD6（见 src/styles/ry-theme.css）；Logo `/logo.png`
+- 品牌：主色 #0B6EF0（旧站同色；2026-11-01 用户改浅色后由方案 C 的 #5B7CFF 改回），点缀青 #04AEF6，文字用 #0A5CD6（见 src/styles/brand.css）；Logo `/logo.png`
 - 视觉：版式取方案 C（深色首屏结构、卡片网格），配色取第二轮原型方案 B（用户 2026-11-01「统一换浅色」）——白色毛玻璃页头、浅底青蓝光晕首屏（.ry-aurora）、渐变标题、蓝色渐变胶囊主按钮、白色页脚；代码窗保持深色；颜色全走语义令牌，深色模式自动翻转
 - 孵化来源：next-ai-astro @ e13010c（详见 .framework-sync.json）
 
@@ -17,8 +17,14 @@
 - 本站部署不用框架的 `/deploy` 与 deployment-guide（那是 Docker / Reeve 服务器路线）；用户说「部署 / 上线」一律走 edgeone-deploy
 
 ## 与框架的差异
-- 裁剪掉的模块：examples / posts / works / faq
+- 裁剪掉的模块：examples / posts / works / faq / guides（guides 早先改造成 docs；2026-11-03 docs 成为框架正式模块后改记为已裁剪，遗留的 8 个指南组件已删）
 - 网址形态：urlFormat = 'preserve'（叶子页 /a/b.html、目录首页 /backend/，与旧站 VitePress cleanUrls: false 一模一样）
+- 🔴 2026-11-03 起文档骨架是框架的 **docs 模块**（docs-site 技能）——它就是从本站长出来的，经 officia / 知识库 / tauri-docs 打磨后收回框架。
+  模块文件与框架逐字节相同，发现问题修在框架（`E:/my/AI框架/next-ai-astro`）再同步，别在本站就地改。
+  本站差异只在：`src/data/docs.json`（四个栏目、TechArticle 作者与出版方、编辑链接、栏目首页大图、演示站域名、llms 按栏目分节、
+  不写 lastmod 与分档）、`src/data/sidebar.json`、`src/styles/brand.css`（蓝色令牌、光晕、渐变；首页特色卡保持白底）、
+  `src/data/llms-facts.md`、`src/lib/site-jsonld.ts`、`src/components/docs/SectionHero.astro`、独立页面（首页、预览页）
+- 页头：2026-11-03 起与其他文档站一致（窄屏右侧抽屉，抽屉里有「开始使用」、咨询购买、GitHub / Gitee、电话），原先是 `<details>` 下拉
 - 迁移期加的扩展（多层侧栏、手机预览、状态标记、mermaid、代码行号等）与验收读数见 docs/tasks/active/迁移-vitepress.md
 
 ## 本站专属流程（迁自旧 VitePress 仓库 .claude，已改写成 Astro 路径）
@@ -34,8 +40,8 @@
 ## 参考代码位置（覆盖 CLAUDE.md）
 | 开发类型 | 参考文件 |
 |---------|---------|
-| 文档页（docs 集合，511 页） | `src/layouts/DocsLayout.astro` + `src/pages/[...slug].astro` + `src/components/docs/` |
-| 营销页 / 首页版式 | `src/layouts/LandingLayout.astro` + `src/styles/landing.css` + `src/lib/markdown/ry-layout.mjs` + `src/data/landing.json` |
+| 文档页（docs 集合，511 页；框架 docs 模块） | `src/layouts/DocsLayout.astro` + `src/pages/[...slug].astro` + 目录首页 `src/pages/[...dir]/index.astro`；本站配置 `src/data/docs.json` |
+| 营销页 / 首页版式 | `src/layouts/LandingLayout.astro` + `src/styles/landing.css` + `src/lib/markdown/docs-layout.mjs` + `src/data/landing.json`；本站配色与渐变 `src/styles/brand.css` |
 | 文档集合查询 / 侧栏 / 网址 | `src/lib/docs.ts` + `src/data/sidebar.json` |
 | 独立页面 | `src/pages/index.astro` |
 | 页面 SEO 字段 | `src/components/seo/SEOHead.astro` |

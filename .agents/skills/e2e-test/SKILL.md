@@ -271,6 +271,11 @@ pnpm build:fast && pnpm test:e2e
 - 新页面上线时至少补一条冒烟：可访问、h1 唯一、canonical 正确
 - 现有用例：`tests/e2e/smoke.spec.ts` 放与模块无关的全站行为（h1 唯一、暗色模式）；`tests/e2e/works.spec.ts` 放作品模块（首页入口、搜索与分类筛选同步 URL、分享链接还原筛选、水合前输入保留（慢网络回归）、详情页结构）
 - 🔴 模块专属用例写进 `tests/e2e/<模块>.spec.ts`，不要加进 `smoke.spec.ts`：`module-strip` 裁模块时只删模块自己的 spec
+- 派生站自己的页面核对（旧网址、标题后缀、下载卡、FAQ 条数）写 `tests/e2e/site.spec.ts`，别改模块的 spec——框架同步会覆盖模块文件
+- 在 spec 里 import JSON 要带导入属性：`import data from '../../src/data/x.json' with { type: 'json' }`，否则 Playwright 报 `needs an import attribute`
+- 点「空白处」要按元素实际位置算：如抽屉顶栏取 Logo 右边线与关闭按钮左边线的中点，并先断言该点 `elementFromPoint` 不是链接 / 按钮——
+  写死坐标在站名长的站上会点到 Logo（知识库实录）
+- 「滚动时位置不变」这类断言：先断言页面够长（`scrollHeight - innerHeight > 400`），再在 0 / 10 / 60 / 400 几个滚动值下读位置，结果只能有一种
 
 ---
 

@@ -77,13 +77,14 @@ Codex 没有 `/loop` 自动续期：自主连续开发用 `autonomous-dev` 技�
 | `writing-plans` | 写计划/制定计划/实施计划/拆解任务/任务拆解/把方案落地/详细步骤/可执行计划/开发计划/计划文档 |
 | `task-tracker` | 任务跟踪/创建任务/记录进度/继续任务/恢复上下文/多步骤开发/进度管理/任务归档/记录问题/查看任务 |
 | `project-init` | 新项目/创建项目/初始化项目/开新项目/孵化/基于框架创建/new project/新建站点/新建项目 |
-| `vitepress-migration` | VitePress/迁移/迁站/vitepress 改 astro/文档站迁移/换框架/.vitepress/::: tip/cleanUrls |
+| `vitepress-migration` | VitePress/迁移/迁站/文档站迁移/.vitepress/::: tip/cleanUrls/逐页比对/compare-baseline/known-diffs/切换上线 |
 | `project-navigator` | 项目结构/文件在哪/定位/目录说明/这个功能在哪/找文件/参考代码/已有组件/代码位置/哪个文件 |
 | `architecture-design` | 架构/目录划分/分层/重构/信息架构/栏目结构/URL结构/页面层级/模块划分/代码组织 |
 | `code-patterns` | 规范/禁止/命名/写法/代码风格/首行注释/提交规范/Git提交/导入顺序/不允许 |
 | `astro-routing` | 路由/页面/动态路由/getStaticPaths/分页/paginate/重定向/trailingSlash/404/端点/生成txt或xml/URL结构 |
 | `content-collections` | 内容集合/content.config/schema/zod/字段/getCollection/getEntry/reference/新增内容类型/Markdown文章/frontmatter/metrics |
 | `guides-docs` | 使用指南/文档站/教程/帮助中心/guides/MDX/侧栏目录/多层侧栏/本页内容/上一篇下一篇/手机预览/步骤条/提示框/站内搜索/Ctrl K |
+| `docs-site` | docs 模块/文档站骨架/DocsLayout/docs.json/面包屑/侧栏吸顶/brand.css/站点地图分档/IndexNow/llms.txt/营销页/文档站上线 |
 | `data-sync` | 数据同步/下载页/版本数据/安装包/更新日志/versions.json/拉取接口/抓数据/外部API/B站/bilibili/GitHub API/RSS/定时更新数据/scripts/sync/数据源/防风控 |
 | `islands-interaction` | 交互/React组件/island/client:load/client:visible/筛选/状态/水合/hydration/nanostores/useState/URL同步 |
 | `ui-components` | 组件/按钮/卡片/布局/样式/Tailwind/响应式/移动端适配/断点/Container/Section/Badge |

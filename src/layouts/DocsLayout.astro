@@ -1,48 +1,62 @@
 ---
-// 迁移文档的页面布局（浅色主题）：浅色光晕面包屑带 / 左多层侧栏 / 正文 / 右「页面导航」或手机实时预览，外壳是 BaseLayout。
-// 版心比框架 Container 宽（文档代码块多，正文需要宽度），只在这个布局里放宽，不改框架核心组件。
-// 栏目首页（backend/index 等）在正文上方多一块浅色光晕首屏 + 分组卡片（SectionHero，不进正文盒、不参与迁移比对）。
-// 结构化数据照旧站：每页 TechArticle（字段与旧站 transformPageData 一致），不再加 BreadcrumbList 以外的东西
+// docs 模块的文档页布局：左侧栏 / 正文（上方一行面包屑）/ 右「页面导航」或手机实时预览，外壳是 BaseLayout。
+// 版心 90rem（文档代码块多，正文需要宽度）；侧栏与目录的吸顶位置 = 起始位置，滚动时一动不动（见下方 aside 注释）。
+// 站点相关的值（TechArticle 字段、编辑链接、FAQ 页、最后更新）都读 src/data/docs.json，本文件在各站逐字节相同。
+// 栏目首页（x/index）可在正文上方加首屏大图：docs.json 的 sectionHero 为 true 且项目提供 src/components/docs/SectionHero.astro
 import type { MarkdownHeading } from 'astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import SidebarTree from '@/components/docs/SidebarTree.astro';
 import DocsToc from '@/components/docs/DocsToc.astro';
-import PhonePreview from '@/components/docs/PhonePreview.astro';
-import SectionHero from '@/components/docs/SectionHero.astro';
+import DocsPhonePreview from '@/components/docs/DocsPhonePreview.astro';
 import ImageViewer from '@/components/docs/ImageViewer.astro';
 import ContactDialog from '@/components/docs/ContactDialog.astro';
 import { absoluteUrl, type JsonLd } from '@/lib/seo';
-import { SECTION_LABELS, docPath, prevNextOf, sectionOf, sidebarOf, sidebarTrailOf } from '@/lib/docs';
+import { isoDate } from '@/lib/lastmod';
+import { SECTION_LABELS, docPath, prevNextOf, sectionHref, sectionOf, sidebarOf, sidebarTrailOf } from '@/lib/docs';
+import { docsConfig } from '@/lib/docs-config';
 import { site } from '@/site.config';
-import { siteJsonLd } from '@/lib/site-jsonld';
+import { siteJsonLd, faqJsonLd } from '@/lib/site-jsonld';
 import titleQualifiers from '@/data/title-qualifiers.json';
 import outdated from '@/data/outdated.json';
 import '@/styles/vp-compat.css';
-import '@/styles/ry-theme.css';
-import '@/styles/docs-ruoyi.css';
+import '@/styles/docs-theme.css';
+import '@/styles/docs-content.css';
+// 品牌样式最后引入：各站的配色、首屏底、要不要渐变都在这里覆盖（项目文件，框架同步不覆盖）
+import '@/styles/brand.css';
+
+// 栏目首页大图是项目自己的组件（各站首屏内容不同），没有这个文件时 glob 为空、不渲染
+const heroModules = import.meta.glob<{ default: (props: { section: string }) => unknown }>('/src/components/docs/SectionHero.astro', { eager: true });
+const SectionHero = Object.values(heroModules)[0]?.default;
 
 interface Props {
   id: string;
   title: string;
   description: string;
+  /** 最后更新日期（frontmatter lastUpdated）：正文末尾「最后更新」与 TechArticle.dateModified，与 sitemap lastmod 同源；docs.json 的 lastUpdated 为 off 时不显示 */
+  lastUpdated?: Date;
+  /** 本页 meta keywords（frontmatter keywords），不传用全站的 */
+  keywords?: string;
   headings: MarkdownHeading[];
   iframe?: boolean;
   url?: string;
   aside?: boolean;
 }
 
-const { id, title, description, headings, iframe = false, url, aside = true } = Astro.props;
+const { id, title, description, lastUpdated, keywords, headings, iframe = false, url, aside = true } = Astro.props;
+const updated = docsConfig.lastUpdated !== 'off' && lastUpdated ? isoDate(lastUpdated) : undefined;
 const section = sectionOf(id);
 const sidebar = section ? sidebarOf(section) : [];
 const { prev, next } = prevNextOf(id);
+const isSectionHome = !!section && id === `${section}/index`;
+const showHero = isSectionHome && docsConfig.sectionHero && !!SectionHero;
+const editUrl = docsConfig.editUrl ? docsConfig.editUrl.replace('{id}', id) : '';
 const showPreview = iframe && url;
 const current = docPath(id);
-const trail = sidebarTrailOf(id);
-const isSectionHome = !!section && id === `${section}/index`;
+// 侧栏分组名与栏目名相同时（「入门」分组就在「入门」栏目里）不重复显示：面包屑是「入门 › 快速开始」而不是「入门 › 入门 › 快速开始」
+const trail = sidebarTrailOf(id).filter((t) => !section || t !== SECTION_LABELS[section]);
 // 正文自己已经给二级标题编了号（「一、」「1.」「第一章」）就不再叠 CSS 编号，免得出现「01 一、」
 const selfNumbered = headings.some((h) => h.depth === 2 && /^(\d+[.、．\s]|[一二三四五六七八九十]+[、.．]|第[一二三四五六七八九十\d]+)/.test(h.text));
-// 旧站 16 组页面 <title> 完全相同（如 4 页都叫「快速开始」）：只在 <title> 里加区分名，正文 h1 与结构化数据标题不变
-// （区分名由 scripts/migrate/title-qualifiers.mjs 生成，用户 2026-10-30 定）
+// 页面 <title> 重名时只在 <title> 里加区分名（src/data/title-qualifiers.json，页面 id → 区分名），正文 h1 与结构化数据标题不变
 const qualifier = (titleQualifiers as Record<string, string>)[id];
 const pageTitle = qualifier ? `${title} · ${qualifier}` : title;
 const techArticle: JsonLd = {
@@ -51,24 +65,28 @@ const techArticle: JsonLd = {
   headline: title,
   ...(description ? { description } : {}),
   url: absoluteUrl(docPath(id)),
-  inLanguage: 'zh-CN',
+  ...(updated ? { dateModified: updated } : {}),
+  inLanguage: site.locale,
   isPartOf: { '@type': 'WebSite', name: site.name, url: site.url },
-  author: { '@type': 'Person', name: '抓蛙师' },
-  publisher: { '@type': 'Organization', name: site.author.name, url: site.url },
-  proficiencyLevel: 'Beginner',
-  about: ['RuoYi-Plus-UniApp', 'Spring Boot 3', 'Vue 3', 'UniApp'],
+  // about / author / publisher 照旧站 transformPageData（docs.json 的 article）：帮 AI 把这些页面关联到产品上
+  about: docsConfig.article.about,
+  proficiencyLevel: docsConfig.article.proficiencyLevel,
+  author: docsConfig.article.author ?? { '@type': 'Organization', name: site.author.name, url: site.url },
+  ...(docsConfig.article.publisher ? { publisher: docsConfig.article.publisher } : {}),
 };
-// 旧站「在 GitHub 上编辑此页面」：pattern https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/docs/:path
-const editUrl = `https://github.com/bkywksj/ruoyi-plus-uniapp-docs/edit/master/docs/${id}.md`;
 // 内容与当前代码不符的旧页：网址保留，正文上方提示「以哪页为准」，并且不让搜索引擎收录（sitemap 同样排除，见 astro.config）
 const stale = (outdated.pages as Record<string, { missing: string; see: { text: string; href: string }[] }>)[id];
 ---
 
-<BaseLayout title={pageTitle} description={description} type="article" noindex={!!stale} jsonLd={[...siteJsonLd, techArticle]}>
-  {
-    // 面包屑不再是页头下方的整条横带，改在正文标题上方（见正文列）；这里只剩栏目首页的大图
-    isSectionHome && <SectionHero section={section} />
-  }
+<BaseLayout
+  title={pageTitle}
+  description={description}
+  keywords={keywords}
+  type="article"
+  noindex={!!stale}
+  jsonLd={[...siteJsonLd, techArticle, ...(faqJsonLd && id === docsConfig.faqPage ? [faqJsonLd] : [])]}
+>
+  {SectionHero && showHero && <SectionHero section={section} />}
   <div class:list={['mx-auto w-full max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8 lg:py-10', site.codeLineNumbers && 'code-line-numbers']}>
     <div
       class:list={[
@@ -123,12 +141,13 @@ const stale = (outdated.pages as Record<string, { missing: string; see: { text: 
           )
         }
         {
-          // 面包屑：正文标题上方一行小字，随正文滚动（原先是页头下方整条横带，一滚动就被卷走、还把侧栏往下推，2026-11-02 改，五个文档站统一）
-          !isSectionHome && section && (
+          // 面包屑：正文标题上方一行小字，随正文滚动（原先是页头下方整条横带，一滚动就被卷走、还把侧栏往下推，2026-11-02 改）；
+          // 栏目首页有首屏大图时大图里已经写了栏目名，不再重复
+          section && !showHero && (
             <nav aria-label="所在位置" class="mx-auto mb-3 max-w-[50rem] text-[13px] text-muted" data-pagefind-ignore>
               <ol class="flex flex-wrap items-center gap-x-2 gap-y-1">
                 <li>
-                  <a href={docPath(`${section}/index`)} class="hover:text-ink">
+                  <a href={sectionHref(section)} class="hover:text-ink">
                     {SECTION_LABELS[section]}
                   </a>
                 </li>
@@ -151,8 +170,16 @@ const stale = (outdated.pages as Record<string, { missing: string; see: { text: 
         </article>
         <div class="mx-auto max-w-[50rem]">
           {
+            // 旧站（VitePress lastUpdated）每篇文档末尾都有这一行；不进站内搜索索引
+            updated && (
+              <p class="mt-12 text-right text-[13px] text-muted" data-pagefind-ignore>
+                最后更新：<time datetime={updated} data-last-updated>{updated}</time>
+              </p>
+            )
+          }
+          {
             (prev || next) && (
-              <nav aria-label="上一篇与下一篇" class="not-prose mt-14 grid gap-3 text-sm sm:grid-cols-2">
+              <nav aria-label="上一篇与下一篇" class:list={['not-prose grid gap-3 text-sm sm:grid-cols-2', updated ? 'mt-4' : 'mt-14']}>
                 {prev?.href ? (
                   <a href={prev.href} rel="prev" class="ry-card ry-lift group block !rounded-2xl px-5 py-4">
                     <span class="text-xs text-muted">上一页</span>
@@ -176,9 +203,16 @@ const stale = (outdated.pages as Record<string, { missing: string; see: { text: 
               </nav>
             )
           }
-          <p class="mt-6 text-sm">
-            <a href={editUrl} target="_blank" rel="noopener" class="text-muted transition-colors hover:text-ink">在 GitHub 上编辑此页面 ↗</a>
-          </p>
+          {
+            // 旧站「在 GitHub 上编辑此页面」（docs.json 的 editUrl 模板）
+            editUrl && (
+              <p class="mt-6 text-sm">
+                <a href={editUrl} target="_blank" rel="noopener" class="text-muted transition-colors hover:text-ink">
+                  在 GitHub 上编辑此页面 ↗
+                </a>
+              </p>
+            )
+          }
         </div>
       </div>
 
@@ -186,7 +220,7 @@ const stale = (outdated.pages as Record<string, { missing: string; see: { text: 
         showPreview ? (
           <aside class="hidden xl:block">
             <div class="sticky top-[calc(4rem+1px+2.5rem)]">
-              <PhonePreview url={url} />
+              <DocsPhonePreview url={url} />
             </div>
           </aside>
         ) : (

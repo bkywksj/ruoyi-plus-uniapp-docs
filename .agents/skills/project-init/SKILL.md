@@ -356,6 +356,17 @@ cd "$NEW_DIR" && grep -nE "next-ai-astro|示例站|示例作者|AI 驱动的 Ast
   && echo "❌ 以上仍是框架占位值（回 Step 2.1–2.3）" || echo "✅ 没有框架占位值"
 ```
 
+🔴 **骨架不是从框架而是从兄弟站复制来的**（如文档站：从 officia-docs 复制给知识库），还要扫来源站残留——
+来源站的域名、站名、标题后缀、IndexNow 密钥、品牌色写死在某个文件里时，构建、测试全都照样通过（知识库上线后 IndexNow 推的还是 ruoyi.plus）：
+
+```bash
+cd "$NEW_DIR" && node scripts/check-residue.mjs <来源站目录>          # 有意保留的词（产品矩阵里列着来源站名）用 --allow 放行
+```
+
+从兄弟站复制时必改清单：`site.config.ts`（url、name、titleSuffix、homeTitle、keywords、brandColor、contact、footer*）、`src/data/docs.json`（栏目、
+article、editUrl、indexnow.key + `public/<key>.txt`、sitemap 分档、llms）、`src/lib/site-jsonld.ts`、`src/styles/brand.css`、`llms-facts.md`、
+站长验证文件、e2e 与单测里写死的域名；`.framework-sync.json` 的 `initCommit` 写真实的框架基线（来源站孵化时的那个），另记 `scaffoldFrom`。
+
 两项都是 ✅ 再跑验证门，必须全绿：
 
 ```bash

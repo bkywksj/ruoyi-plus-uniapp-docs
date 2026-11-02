@@ -1,5 +1,5 @@
 ---
-// 联系弹窗：作者微信码 + 一键复制微信号 + 可拨号的电话 + 交流群码（附过期兜底）。两个入口共用这一个弹窗：
+// docs 模块的联系弹窗：作者微信码 + 一键复制微信号 + 可拨号的电话 + 交流群码（附过期兜底）。两个入口共用这一个弹窗：
 // - fab：右下角「咨询」悬浮按钮，只在首页与营销页放（文档页读者在查资料，悬浮按钮会挡正文，页脚「联系」栏是它们的入口）
 // - 定价卡「立即购买」：拦截 .vc-contact 的展开，改成弹窗并写明购买须知（定价卡在营销页与两篇前端文档里都有，所以文档页也挂本组件、只是不带 fab）
 // 弹窗在第一次打开时才创建：静态 HTML 里只有一段 JSON 数据和悬浮按钮，不放图片，不影响迁移比对与 Pagefind 索引。
@@ -32,8 +32,7 @@ const c = site.contact;
 }
 
 <script>
-  type Contact = { wechat: string; phone: string; tel: string; wechatQr: string; groupQr: string };
-  const BUY_NOTE = '三个版本代码完全一样，企业版需提供营业执照。';
+  type Contact = { wechat: string; phone: string; tel: string; wechatQr: string; groupQr: string; buyNote?: string };
 
   const dataEl = document.getElementById('ry-contact-data');
   const contact: Contact | null = dataEl ? JSON.parse(dataEl.textContent ?? 'null') : null;
@@ -57,9 +56,9 @@ const c = site.contact;
       <p class="ry-contact-buy" data-buy hidden></p>
       <div class="ry-contact-qrs">
         <figure><img src="${esc(c.wechatQr)}" alt="作者微信二维码" width="132" height="132" /><figcaption>扫码加作者微信</figcaption></figure>
-        <figure><img src="${esc(c.groupQr)}" alt="交流群二维码" width="132" height="132" /><figcaption>扫码进交流群</figcaption></figure>
+        ${c.groupQr ? `<figure><img src="${esc(c.groupQr)}" alt="交流群二维码" width="132" height="132" /><figcaption>扫码进交流群</figcaption></figure>` : ''}
       </div>
-      <p class="ry-contact-note">群二维码过期请加作者微信 ${esc(c.wechat)} 拉你进群</p>
+      ${c.groupQr ? `<p class="ry-contact-note">群二维码过期请加作者微信 ${esc(c.wechat)} 拉你进群</p>` : ''}
       <ul class="ry-contact-rows">
         <li><span>微信 / QQ</span><strong>${esc(c.wechat)}</strong><button type="button" class="ry-contact-act" data-copy>复制</button></li>
         <li><span>电话</span><strong>${esc(c.phone)}</strong><a class="ry-contact-act" href="tel:${esc(c.tel)}">拨打</a></li>
@@ -96,12 +95,19 @@ const c = site.contact;
     q('[data-title]').textContent = mode === 'buy' ? (plan ? `购买${plan}` : '购买授权') : '有问题直接问';
     const buy = q('[data-buy]');
     buy.hidden = mode !== 'buy';
-    buy.textContent = `加作者微信说明要购买的版本即可。${BUY_NOTE}`;
+    // 购买须知取 site.contact.buyNote（各站口径不同：有的按版本、有的按授权主体）
+    buy.textContent = `加作者微信说明要购买的版本即可。${contact.buyNote ?? ''}`;
     if (!dialog.open) dialog.showModal();
   };
 
   if (contact) {
-    document.querySelectorAll('[data-contact-open]').forEach((b) => b.addEventListener('click', () => open('ask')));
+    // data-contact-open="buy" + data-plan="企业版"：价格卡上的「咨询购买」直接进购买模式；其余（悬浮按钮、页脚）是咨询模式
+    document.querySelectorAll<HTMLElement>('[data-contact-open]').forEach((b) =>
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        open(b.dataset.contactOpen === 'buy' ? 'buy' : 'ask', b.dataset.plan ?? '');
+      }),
+    );
     // 定价卡「立即购买」：拦截 <details> 展开，改成弹窗
     document.addEventListener('click', (e) => {
       const summary = (e.target as HTMLElement).closest('.vc-contact > summary');
@@ -128,8 +134,8 @@ const c = site.contact;
     font-size: 14.5px;
     font-weight: 700;
     color: #fff;
-    background-image: linear-gradient(180deg, color-mix(in oklab, var(--brand) 78%, white), var(--brand));
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 12px 28px -10px rgb(11 110 240 / 0.75);
+    background: var(--brand);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 12px 28px -10px color-mix(in srgb, var(--brand) 75%, transparent);
     transition: transform 0.2s, filter 0.2s;
   }
   .ry-fab:hover {
@@ -156,10 +162,10 @@ const c = site.contact;
     border-radius: 24px;
     background: var(--elevated);
     color: var(--ink);
-    box-shadow: 0 30px 80px -30px rgb(10 18 34 / 0.45);
+    box-shadow: 0 30px 80px -30px rgb(var(--shadow-tint) / 0.45);
   }
   .ry-contact::backdrop {
-    background: rgb(10 18 34 / 0.42);
+    background: rgb(var(--shadow-tint) / 0.42);
     backdrop-filter: blur(4px);
   }
   /* 手机：底部弹出 */

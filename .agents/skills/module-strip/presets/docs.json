@@ -1,0 +1,114 @@
+{
+  "name": "迁移型文档模块",
+  "description": "docs 集合（旧 VitePress 站 .md 原样迁入）与 [...slug] 统一路由、DocsLayout / LandingLayout、栏目与侧栏（docs.json / sidebar.json）、站点地图 lastmod 与分档、llms.txt 生成、IndexNow、迁移比对脚本、文档主题样式；侧栏树与站内搜索归共享部分「文档基础设施」",
+  "marker": "src/lib/docs.ts",
+  "delete_dirs": [
+    "src/content/docs",
+    "scripts/migrate",
+    "src/pages/[...dir]"
+  ],
+  "delete_files": [
+    "src/pages/[...slug].astro",
+    "src/pages/sitemap.xml.ts",
+    "src/layouts/DocsLayout.astro",
+    "src/layouts/LandingLayout.astro",
+    "src/components/docs/ContactDialog.astro",
+    "src/components/docs/DocsPhonePreview.astro",
+    "src/components/docs/DocsToc.astro",
+    "src/components/docs/ImageViewer.astro",
+    "src/lib/docs.ts",
+    "src/lib/docs-config.ts",
+    "src/lib/docs-schema.ts",
+    "src/lib/docs-sitemap.ts",
+    "src/lib/lastmod.ts",
+    "src/lib/sitemap-rank.ts",
+    "src/lib/preview.mjs",
+    "src/lib/site-jsonld.ts",
+    "src/lib/markdown/docs-layout.mjs",
+    "src/lib/markdown/docs-plugins.mjs",
+    "src/lib/markdown/img-size.mjs",
+    "src/lib/markdown/vue-components.mjs",
+    "src/styles/docs-theme.css",
+    "src/styles/docs-content.css",
+    "src/styles/landing.css",
+    "src/styles/brand.css",
+    "src/data/docs.json",
+    "src/data/sidebar.json",
+    "src/data/landing.json",
+    "src/data/outdated.json",
+    "src/data/page-dates.json",
+    "src/data/title-qualifiers.json",
+    "src/data/llms-facts.md",
+    "src/data/llms-tail.md",
+    "scripts/build-llms.mjs",
+    "scripts/indexnow.mjs",
+    "scripts/check-anchors.mjs",
+    "scripts/build-icons.mjs",
+    "scripts/lib/site-meta.mjs",
+    "tests/e2e/docs.spec.ts",
+    "tests/unit/img-size.test.ts",
+    "tests/unit/lastmod.test.ts",
+    "tests/unit/site-meta.test.ts",
+    "tests/unit/sitemap-rank.test.ts",
+    "tests/unit/docs-sitemap.test.ts"
+  ],
+  "edits": [
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_lines",
+      "contains": [
+        "//   docs：",
+        "import { docsCollection } from './lib/docs-schema';",
+        "const docs = docsCollection;"
+      ]
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "remove_list_item",
+      "anchor": "export const collections =",
+      "item": "docs"
+    },
+    {
+      "file": "src/content.config.ts",
+      "op": "replace_regex",
+      "pattern": "export const collections = \\{\\s+\\};",
+      "replace": "export const collections = {};",
+      "optional": true,
+      "why": "集合全部裁掉后收拢空对象"
+    },
+    {
+      "file": "astro.config.ts",
+      "op": "remove_lines",
+      "contains": [
+        "import { docsRehypePlugins, docsRemarkPlugins } from './src/lib/markdown/docs-plugins.mjs'; // docs 模块",
+        "import { withDocsSitemap } from './src/lib/docs-sitemap'; // docs 模块",
+        "...docsRemarkPlugins({ icons: vpIcons, contact: site.contact }), // docs 模块"
+      ]
+    },
+    {
+      "file": "astro.config.ts",
+      "op": "replace_regex",
+      "pattern": "rehypePlugins: \\[\\n\\s*rehypeVpHeadingIds,\\n\\s*\\.\\.\\.docsRehypePlugins, // docs 模块[^\\n]*\\n\\s*\\],",
+      "replace": "rehypePlugins: [rehypeVpHeadingIds],"
+    },
+    {
+      "file": "astro.config.ts",
+      "op": "replace",
+      "find": "    sitemap(withDocsSitemap(sitemapOptions)), // docs 模块：过期页 / 预览页不进站点地图，补 lastmod 与 priority 分档",
+      "replace": "    sitemap(sitemapOptions),"
+    },
+    {
+      "file": "package.json",
+      "op": "replace",
+      "find": ",\n    \"icons\": \"node scripts/build-icons.mjs\",\n    \"llms\": \"node scripts/build-llms.mjs\",\n    \"indexnow\": \"node scripts/indexnow.mjs\",\n    \"check:anchors\": \"node scripts/check-anchors.mjs\"",
+      "replace": "",
+      "why": "去掉 docs 模块的四个命令（框架默认写在 scripts 末尾；派生站把它们串进 build 了的，按报错手动改）"
+    }
+  ],
+  "manual_actions": [
+    "依赖没有自动卸载：确认没有别处再用后执行 pnpm remove @iconify-json/lucide @iconify-json/simple-icons @iconify/utils",
+    "site.config.ts 的 frameWidth 若为 'wide'（文档三栏版心），裁掉后改回 'default'",
+    "public/ 下 IndexNow 的密钥文件（<32 位十六进制>.txt）与手机外框预览页 src/pages/preview.astro（如有）是项目文件，按需手动删"
+  ],
+  "depends_on": []
+}

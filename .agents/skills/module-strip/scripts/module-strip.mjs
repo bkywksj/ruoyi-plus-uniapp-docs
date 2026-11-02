@@ -19,6 +19,8 @@
 //   6b. 改造过的模块（.framework-sync.json 的 transformedModules，如 works → videos）没被裁掉，而是改名 / 改写成了别的东西：
 //      预设的锚点与删除清单都不再适用，预览 / 裁剪按「已改造」跳过，--audit 也不检查（否则会把改写后的测试当成被带回的示例）
 //   7. 参数写错（如 --delivery、--preveiw）一律报错退出：静默忽略会让一次本想预览的调用真的去删文件
+//   8. 几个模块共用的文件（presets/_shared-*.json，如 guides 与 docs 共用的侧栏树、站内搜索）：成员模块全部不在了才裁，
+//      只裁其中一个时保留并在报告里说明；共享部分不记入 strippedModules（它不是模块）
 //
 // 退出码：0 成功 / 1 --audit 发现被带回的文件 / 2 安全拦截、参数错误或有模块预检失败 / 3 环境异常 / 4 --verify 未通过
 import { existsSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
@@ -92,10 +94,25 @@ function loadPresets() {
 
 const presets = loadPresets();
 
+/**
+ * 几个模块共用的文件与改动（presets/_shared-*.json，{ name, modules: [...], delete_dirs, delete_files, edits }）：
+ * 只裁其中一个模块时必须留着（如 guides 与 docs 都用侧栏树、站内搜索），成员全部不在了才删。
+ * 「不在」= 已裁（strippedModules）、本次一起裁、或项目里本来就没有（预设的 marker 文件不存在）；改造过的模块（transformedModules）算在
+ */
+function loadShared() {
+  return readdirSync(PRESETS_DIR)
+    .filter((name) => name.startsWith('_shared-') && name.endsWith('.json'))
+    .map((file) => ({ file, ...JSON.parse(readFileSync(join(PRESETS_DIR, file), 'utf8')) }));
+}
+const sharedGroups = loadShared();
+
 if (flag('--list') || (modules.length === 0 && !audit)) {
   console.log('可用的裁剪预设：\n');
   for (const [name, preset] of presets) {
     console.log(`  ${name.padEnd(10)} ${preset.name} —— ${preset.description}`);
+  }
+  for (const group of sharedGroups) {
+    console.log(`\n  共享部分「${group.name}」：${group.modules.join(' 与 ')} 都裁掉后才删 —— ${group.description}`);
   }
   console.log(`\n${USAGE}`);
   process.exit(EXIT.OK);
@@ -181,6 +198,14 @@ if (audit) {
       if (existsSync(full) && readFileSync(full, 'utf8').includes(edit.only_if_contains)) {
         found.push({ name, rel: edit.file, note: `又出现了示例标记 ${edit.only_if_contains}` });
       }
+    }
+  }
+  // 共享部分：成员全部在检查对象里（都已裁）时，它的文件也不该再出现
+  for (const group of sharedGroups) {
+    if (!group.modules.every((name) => list.includes(name) && !transformed.has(name))) continue;
+    for (const rel of [...(group.delete_dirs ?? []), ...(group.delete_files ?? [])]) {
+      const count = countFiles(join(target, rel));
+      if (count > 0) found.push({ name: `共享：${group.name}`, rel, note: `${count} 个文件` });
     }
   }
   if (found.length === 0) {
@@ -416,6 +441,57 @@ for (const name of ordered) {
   manual.push(...(preset.manual_actions ?? []).map((text) => `[${name}] ${text}`));
 }
 
+// ---------- 共享部分：成员模块全部不在了才裁 ----------
+const appliedNow = new Set(report.filter((item) => !item.skipped).map((item) => item.name));
+const isGone = (name) => {
+  if (transformed.has(name)) return false;
+  if (alreadyStripped.has(name) || appliedNow.has(name)) return true;
+  const marker = presets.get(name)?.marker;
+  return Boolean(marker) && !existsSync(join(target, marker));
+};
+const sharedKept = [];
+for (const group of sharedGroups) {
+  // 本次没裁它的任何一个成员：要么之前已经一起处理过，要么与本次无关
+  if (!group.modules.some((name) => appliedNow.has(name))) continue;
+  const keepers = group.modules.filter((name) => !isGone(name));
+  if (keepers.length) {
+    sharedKept.push({ group, keepers });
+    continue;
+  }
+  const label = `共享：${group.name}`;
+  const snapshot = new Map(files);
+  const problems = [];
+  const touched = new Set();
+  for (const edit of group.edits ?? []) {
+    const content = readText(edit.file);
+    if (content === null) {
+      if (!edit.optional) problems.push(`${edit.file}：文件不存在`);
+      continue;
+    }
+    const result = applyEdit(content, edit);
+    if (result.ok) {
+      files.set(edit.file, result.content);
+      touched.add(edit.file);
+    } else if (!edit.optional) {
+      problems.push(`${edit.file}：${result.note}${edit.why ? `（用途：${edit.why}）` : ''}`);
+    }
+  }
+  if (problems.length) {
+    failedModules += 1;
+    files.clear();
+    snapshot.forEach((value, key) => files.set(key, value));
+    report.push({ name: label, preset: group, skipped: true, shared: true, problems });
+    continue;
+  }
+  const deletions = [...(group.delete_dirs ?? []), ...(group.delete_files ?? [])].map((rel) => ({
+    rel,
+    count: isDeleted(rel) ? 0 : countFiles(join(target, rel)),
+  }));
+  deletions.forEach(({ rel }) => deleted.add(rel));
+  report.push({ name: label, preset: group, skipped: false, shared: true, touched: [...touched], deletions });
+  manual.push(...(group.manual_actions ?? []).map((text) => `[${label}] ${text}`));
+}
+
 // ---------- 输出 ----------
 console.log(`\n模块裁剪${preview ? '预览（未写盘）' : ''}：${target}`);
 for (const name of skippedAsStripped) {
@@ -435,6 +511,9 @@ for (const item of report) {
   removed.forEach((d) => console.log(`   删除 ${d.rel}（${d.count} 个文件）`));
   item.deletions.filter((d) => d.count === 0).forEach((d) => console.log(`   跳过 ${d.rel}（不存在）`));
   item.touched.forEach((rel) => console.log(`   修改 ${rel}`));
+}
+for (const { group, keepers } of sharedKept) {
+  console.log(`\n🔗 共享部分「${group.name}」保留：${keepers.join('、')} 还在用（${group.modules.join(' 与 ')} 都裁掉后才删）`);
 }
 
 if (preview) {
@@ -467,7 +546,7 @@ for (const item of applied) {
 if (existsSync(syncFile) && applied.length) {
   const sync = JSON.parse(readFileSync(syncFile, 'utf8'));
   const stripped = new Set(sync.strippedModules ?? []);
-  applied.forEach((item) => stripped.add(item.name));
+  applied.filter((item) => !item.shared).forEach((item) => stripped.add(item.name));
   sync.strippedModules = [...stripped];
   writeFileSync(syncFile, `${JSON.stringify(sync, null, 2)}\n`, 'utf8');
   console.log(`\n已记录到 .framework-sync.json → strippedModules: ${sync.strippedModules.join(', ')}`);
