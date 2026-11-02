@@ -80,8 +80,12 @@ export const site = {
   logo: '/logo.png',
   /** 导航横排的断点：导航项多（6 个以上）时改 'lg'，否则平板宽度下会挤出页头 */
   navBreakpoint: 'lg' as 'md' | 'lg',
-  /** 站点图标（放 public/ 下）：svg / png / ico 都行，BaseLayout 按扩展名输出 type */
-  favicon: '/favicon.svg',
+  /**
+   * 站点图标（放 public/ 下）：svg / png / ico 都行，BaseLayout 按扩展名输出 type。
+   * 用旧站同一个 favicon.ico（若依立方体，16–256 六帧，由 logo.png 上方的立方体裁出）；
+   * 孵化时这里是框架默认的 favicon.svg（橙色 N），线上标签页一直显示它，2026-11-02 改回
+   */
+  favicon: '/favicon.ico',
   /** 默认分享图（放 public/ 下），1200×630 */
   ogImage: '/og-default.png',
   /**
