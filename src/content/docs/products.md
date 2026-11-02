@@ -161,7 +161,7 @@ description: "抓蛙师出品 — 覆盖智能编程、凭据安全、服务器�
   :highlights="[
     '无损转 PDF：Word / Excel / PPT 一行代码出 PDF（OfficiaWords.toPdf(docx)），排版、字体、分页、图片、表格逐一还原，无需安装 Office / LibreOffice',
     '中文不踩坑：TrueType 度量 + keep-GID 子集 + CID/Identity-H 嵌入，PDF 里中文正确显示、可复制可搜索，字体子集体积小',
-    '八大能力一次引入：Words / Cells / Slides / Pdf / Email / Imaging / BarCode / OCR，一个 officia-all 坐标全都有，byte[] 进 byte[] 出',
+    '十大能力一次引入：Words / Cells / Slides / Pdf / Ofd / Email / Imaging / BarCode / OCR / Editor，一个 officia-all 坐标全都有，byte[] 进 byte[] 出',
     '运行时零第三方依赖：只用 JDK 标准库，mvn dependency:tree 机器可证，不与宿主项目产生任何版本冲突',
     '洁净室自研 + 离线授权：只依据 PDF 32000 / ECMA-376 等官方规范实现；授权文件放进 classpath 即生效，不联网、不锁机器'
   ]"
