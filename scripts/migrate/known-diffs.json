@@ -79,6 +79,9 @@
     },
     "frontend/components/overview.html": {
       "reason": "ATableColumnSettings 示例改正为 v-model:columns + cache-key、去掉不存在的固定列、注明缓存在 sessionCache（workflow 8241b31）；目录树与分类表补 ADeptTree、ATreeFilter"
+    },
+    "products.html": {
+      "reason": "Officia 卡片「八大能力」改为十大（补 1.1.6 新增的 Ofd 与在线编辑 Editor），与 officia.ruoyi.plus 一致"
     }
   }
 }
