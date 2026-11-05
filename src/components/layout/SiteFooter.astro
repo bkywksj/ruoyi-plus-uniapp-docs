@@ -111,7 +111,7 @@ const cols = groups.length + (site.social.length > 0 ? 1 : 0) + (contact ? 1 : 0
         <p>
           {site.footerNote.text}
           {site.footerNote.link && (
-            <a href={site.footerNote.link.href} class="text-ink/80 underline-offset-4 hover:text-ink hover:underline">
+            <a href={site.footerNote.link.href} target={external(site.footerNote.link.href) ? '_blank' : undefined} rel={external(site.footerNote.link.href) ? 'noopener' : undefined} class="text-ink/80 underline-offset-4 hover:text-ink hover:underline">
               {site.footerNote.link.label}
             </a>
           )}

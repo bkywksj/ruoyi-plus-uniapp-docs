@@ -27,6 +27,8 @@ const contact = site.contact;
 // 抽屉里联系按钮的文字：卖授权的站写「咨询购买」，其余默认「联系作者」
 const contactLabel = contact?.label || '联系作者';
 const isExternal = (href: string) => /^https?:\/\//.test(href);
+// 站外链接新标签页打开（产品官网、演示站等，读者点完还能回到本站）
+const ext = (href: string) => (isExternal(href) ? { target: '_blank', rel: 'noopener' } : {});
 ---
 
 <header class="sticky top-0 z-40 border-b border-line bg-elevated/75 text-ink backdrop-blur-xl supports-[backdrop-filter]:bg-elevated/65" data-site-header>
@@ -83,6 +85,7 @@ const isExternal = (href: string) => /^https?:\/\//.test(href);
             <li>
               <a
                 href={item.href}
+                {...ext(item.href)}
                 aria-current={isActive(item) ? 'page' : undefined}
                 class:list={[
                   'rounded-lg px-2.5 py-1.5 transition-colors',
@@ -172,6 +175,7 @@ const isExternal = (href: string) => /^https?:\/\//.test(href);
             <li>
               <a
                 href={item.href}
+                {...ext(item.href)}
                 aria-current={isActive(item) ? 'page' : undefined}
                 class:list={[
                   'flex items-center justify-between rounded-xl px-3 py-3 text-[15px]',
@@ -196,7 +200,7 @@ const isExternal = (href: string) => /^https?:\/\//.test(href);
       <div class="grid gap-2">
         {
           start && (
-            <a href={start.href} class="btn-brand inline-flex h-11 items-center justify-center rounded-full text-[15px] font-semibold">
+            <a href={start.href} {...ext(start.href)} class="btn-brand inline-flex h-11 items-center justify-center rounded-full text-[15px] font-semibold">
               {start.label}
             </a>
           )

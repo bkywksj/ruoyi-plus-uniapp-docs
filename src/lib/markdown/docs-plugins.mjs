@@ -1,7 +1,7 @@
 // docs 模块的 Markdown 插件汇总：astro.config.ts 在 vitepress 兼容模式下把它们接进 unified 管线（Sätteri 不跑 remark / rehype 插件）。
 // 收在一处是为了接线只有两行：裁掉 docs 模块时 module-strip 只需删这两处引用
 import { remarkVueComponents } from './vue-components.mjs';
-import { rehypeImgSize, rehypeLanding, rehypePreviewLinks, rehypeTableWrap } from './docs-layout.mjs';
+import { rehypeExternalLinks, rehypeImgSize, rehypeLanding, rehypePreviewLinks, rehypeTableWrap } from './docs-layout.mjs';
 
 /**
  * remark 插件：营销页里的 Vue 组件（AProductCard / APricingCard / ImagePreview / DownloadSection）→ 静态 HTML。
@@ -24,7 +24,8 @@ export function docsRemarkPlugins({ icons, contact }) {
 
 /**
  * rehype 插件（只动结构与链接去处，不动文字，要排在锚点插件 rehypeVpHeadingIds 之后）：
- * 表格外包横滑容器、营销页开头 h1 + 导语包进首屏 header、演示站链接改指手机外框预览页、本站图片补原始宽高
+ * 表格外包横滑容器、营销页开头 h1 + 导语包进首屏 header、演示站链接改指手机外框预览页、本站图片补原始宽高、站外链接新标签页打开
+ * （rehypeExternalLinks 要在 rehypePreviewLinks 之后：演示站链接已改成本站预览页，不该再新开标签）
  * @type {any[]}
  */
-export const docsRehypePlugins = [rehypeTableWrap, rehypeLanding, rehypePreviewLinks, rehypeImgSize];
+export const docsRehypePlugins = [rehypeTableWrap, rehypeLanding, rehypePreviewLinks, rehypeExternalLinks, rehypeImgSize];

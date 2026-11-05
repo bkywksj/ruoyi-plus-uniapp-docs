@@ -5,6 +5,7 @@
 // - rehypePreviewLinks：正文里指向移动端演示站（docs.json 的 previewHosts）的链接改指本站手机外框预览页（src/lib/preview.mjs）；
 //   迁移比对会把 /preview.html?url=原地址 还原成原地址再比（compare-baseline.mjs），链接一条不少的检查照样有效
 // - rehypeImgSize：正文里引用本站 public/ 下的图片补上原始 width / height 与 decoding="async"（见函数注释）
+// - rehypeExternalLinks：正文里的站外链接在新标签页打开（与 VitePress 默认一致）
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { previewHref } from '../preview.mjs';
@@ -76,6 +77,28 @@ export function rehypePreviewLinks() {
     const walk = (node) => {
       if (node.type === 'element' && node.tagName === 'a' && typeof node.properties?.href === 'string') {
         node.properties.href = previewHref(node.properties.href);
+      }
+      node.children?.forEach(walk);
+    };
+    walk(tree);
+  };
+}
+
+/**
+ * 正文里指向站外的链接（http / https 绝对地址）在新标签页打开，补 target="_blank" 与 rel="noopener"。
+ * 为什么：VitePress 默认这样处理外链，迁过来以后正文里的产品官网、授权站等链接变成在当前页打开，读者看完就回不到文档了。
+ * 站内链接都是相对地址（/x、./x.md），不受影响；排在 rehypePreviewLinks 之后，被改成本站预览页的演示站链接照旧在本页打开。
+ * 已经写了 target 的不动；rel 原有值保留，只补 noopener
+ */
+export function rehypeExternalLinks() {
+  return (tree) => {
+    const walk = (node) => {
+      const href = node.type === 'element' && node.tagName === 'a' ? node.properties?.href : undefined;
+      if (typeof href === 'string' && /^https?:\/\//i.test(href) && node.properties.target == null) {
+        node.properties.target = '_blank';
+        const rel = [node.properties.rel ?? []].flat().flatMap((r) => String(r).split(/\s+/)).filter(Boolean);
+        if (!rel.includes('noopener')) rel.push('noopener');
+        node.properties.rel = rel;
       }
       node.children?.forEach(walk);
     };
