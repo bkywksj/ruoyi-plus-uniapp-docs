@@ -176,6 +176,10 @@
               "id": "backend/common/langchain4j/thinking"
             },
             {
+              "text": "MCP 工具集成",
+              "id": "backend/common/langchain4j/mcp"
+            },
+            {
               "text": "RAG检索增强",
               "id": "backend/common/langchain4j/rag"
             },

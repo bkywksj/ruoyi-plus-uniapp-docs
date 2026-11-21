@@ -17,6 +17,7 @@ description: "企业级 LLM 应用开发框架 - 提供统一的大模型接入�
 - **WebSocket集成**: 通过 WebSocket 实现实时 AI 聊天，支持长连接通信
 - **对话记忆**: 基于 Redis 的会话记忆管理，支持上下文连贯对话
 - **多种对话模式**: 支持单轮对话、连续对话、RAG检索增强、函数调用四种模式
+- **MCP 工具集成**: 函数调用模式可调用外部 MCP Server 的工具；配套 `ruoyi-common-mcp` 把业务能力开放给外部 AI Agent，详见 [MCP 工具集成](./langchain4j/mcp.md)
 - **Token统计**: 实时统计 Token 使用情况，便于成本控制
 - **环境变量配置**: 支持通过环境变量配置 API 密钥，避免敏感信息硬编码
 - **功能开关**: 提供 `langchain4j.enabled` 开关，可动态启用/禁用
@@ -807,54 +808,30 @@ private String buildRagPrompt(String question, List<TextSegment> documents) {
 
 ### 函数调用模式
 
-函数调用模式支持调用外部工具：
+函数调用模式通过 MCP 调用外部工具。工具调用只能挂在 LangChain4j 的 `AiServices` 上，所以该模式单独走一条 `AiServices` 链路，其余三种模式不受影响；未开启 MCP（`langchain4j.mcp.enabled=false`，默认）或外部 Server 都不可用时，自动按连续对话处理：
 
 ```java
-private AiChatResponse handleFunctionChat(
-    ChatModel chatModel,
-    ChatRequest request,
-    String sessionId
-) {
-    long startTime = System.currentTimeMillis();
-
-    // 获取会话记忆
-    ChatMemory memory = chatMemoryManager.getOrCreateMemory(sessionId);
-
-    // 添加用户消息
-    memory.add(UserMessage.from(request.getMessage()));
-
-    // 定义可用工具
-    List<ToolSpecification> tools = getAvailableTools();
-
-    // 调用模型（带工具）
-    ChatResponse response = chatModel.chat(memory.messages(), tools);
-
-    // 处理工具调用
-    if (response.aiMessage().hasToolExecutionRequests()) {
-        for (ToolExecutionRequest toolRequest : response.aiMessage().toolExecutionRequests()) {
-            String result = executeToolCall(toolRequest);
-            memory.add(ToolExecutionResultMessage.from(toolRequest, result));
-        }
-
-        // 再次调用模型获取最终回复
-        response = chatModel.chat(memory.messages());
+private AiChatResponse handleFunctionChat(ChatModel chatModel, ChatRequest request, String sessionId) {
+    ToolProvider toolProvider = resolveToolProvider();
+    if (toolProvider == null) {
+        // MCP 未启用或没有可用 Server：回落为连续对话
+        return handleContinuousChat(chatModel, request, sessionId);
     }
 
-    // 添加AI回复到记忆
-    memory.add(response.aiMessage());
-
-    long responseTime = System.currentTimeMillis() - startTime;
-
-    return AiChatResponse.builder()
-        .sessionId(sessionId)
-        .messageId(generateMessageId())
-        .content(response.aiMessage().text())
-        .tokenUsage(convertTokenUsage(response.tokenUsage()))
-        .responseTime(responseTime)
-        .finished(true)
+    McpAssistant assistant = AiServices.builder(McpAssistant.class)
+        .chatModel(chatModel)
+        .chatMemory(memoryManager.getOrCreateMemory(sessionId))   // 与连续对话共用会话记忆
+        .toolProvider(toolProvider)
+        .maxSequentialToolsInvocations(properties.getMcp().getMaxSequentialToolCalls())
+        .systemMessageProvider(memoryId -> StrUtil.emptyToNull(request.getSystemPrompt()))
         .build();
+    Result<String> result = assistant.chat(request.getMessage());
+    // 组装 AiChatResponse（正文、思考内容、TokenUsage）
+    ...
 }
 ```
+
+外部 MCP Server 的配置方式、流式消息中的 `tool` 阶段，见 [MCP 工具集成](./langchain4j/mcp.md)。
 
 **使用场景**：
 - 调用外部API

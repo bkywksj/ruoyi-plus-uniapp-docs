@@ -59,6 +59,9 @@
     }
   },
   "edited": {
+    "backend/common/langchain4j.html": {
+      "reason": "函数调用模式已实现（MCP）：核心特性补一行并链到新页 MCP 工具集成；原「函数调用模式」示例代码是虚构实现（getAvailableTools / executeToolCall 并不存在），换成真实的 AiServices 分支"
+    },
     "comparison.html": {
       "reason": "查询构建「能力边界」改写为「联表查询的设计取舍」：联表走 XML 是有意取舍，并注明上游 6.x 联表仅两处业务使用、子查询无业务调用"
     },

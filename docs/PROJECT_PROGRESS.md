@@ -100,6 +100,7 @@
 | 快速开始 | `backend/common/langchain4j/quick-start.md` | ✅ |
 | 模型工厂 | `backend/common/langchain4j/model-factory.md` | ✅ |
 | 聊天服务 | `backend/common/langchain4j/chat-service.md` | ✅ |
+| MCP 工具集成 | `backend/common/langchain4j/mcp.md` | ✅ |
 | RAG检索增强 | `backend/common/langchain4j/rag.md` | ✅ |
 | 向量存储 | `backend/common/langchain4j/vector-store.md` | ✅ |
 | WebSocket流式对话 | `backend/common/langchain4j/websocket.md` | ✅ |
