@@ -600,36 +600,4 @@ spring:
     database: 0
 ```
 
-### 2. 微服务部署
-
-```yaml
-# Spring Cloud Gateway
-spring:
-  cloud:
-    gateway:
-      routes:
-        - id: ruoyi-system
-          uri: lb://ruoyi-system
-          predicates:
-            - Path=/system/**
-        - id: ruoyi-business
-          uri: lb://ruoyi-business
-          predicates:
-            - Path=/business/**
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-
-# Nacos 配置
-spring:
-  cloud:
-    nacos:
-      discovery:
-        server-addr: localhost:8848
-      config:
-        server-addr: localhost:8848
-        file-extension: yml
-```
-
 RuoYi-Plus 后端架构通过合理的分层设计、模块化组织和现代化技术栈，为企业级应用开发提供了稳定、高效、可扩展的基础框架。

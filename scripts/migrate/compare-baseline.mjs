@@ -17,6 +17,7 @@ const next = JSON.parse(readFileSync(newPath, 'utf8')).pages;
 const knownFile = JSON.parse(readFileSync(new URL('./known-diffs.json', import.meta.url), 'utf8'));
 const known = knownFile.pages;
 // 迁移完成后有意修订正文的页（内容修正 T6c）：正文 / 标题 / 代码内容本来就变了，只守住「代码块数量、图片、链接、canonical、JSON-LD 不少」
+// （代码块数量可用 codesRemoved 放行有意删除的块数）
 const edited = knownFile.edited ?? {};
 const editedSeen = [];
 // 已决定的标题变化：旧站重复的 <title> 在页名后加「 · 区分名」（src/data/title-qualifiers.json，页面 id → 区分名）。
@@ -120,8 +121,10 @@ for (const page of Object.keys(next).sort()) {
   const textOk = r.lost === 0 || acceptedDiff(page, o.text, n.text);
   if (r.lost > 0 && textOk) r.lost = `0（已核对：${known[page].reason.slice(0, 12)}…）`;
   if (edited[page]) {
-    // 修订页守的是「不少」（见上方 edited 的说明）：代码块可以多（officia 首页按原型重做后多了示例代码），不能少
-    const keep = n.codes.length >= o.codes.length && imgLost.length === 0 && linkLost.length === 0 && (o.canonical ?? '') === (n.canonical ?? '') && jsonLdOk;
+    // 修订页守的是「不少」（见上方 edited 的说明）：代码块可以多（officia 首页按原型重做后多了示例代码），不能少；
+    // 有意删掉整段过时内容（连同示例代码）时，在登记里写明 codesRemoved: N，只放行这 N 块，多删一块照样判不通过
+    const codesRemoved = edited[page].codesRemoved ?? 0;
+    const keep = n.codes.length >= o.codes.length - codesRemoved && imgLost.length === 0 && linkLost.length === 0 && (o.canonical ?? '') === (n.canonical ?? '') && jsonLdOk;
     editedSeen.push(`${page}：${edited[page].reason}（句子 -${r.lost} / +${r.extra}，${keep ? '代码块数 / 图片 / 链接 / canonical / JSON-LD 守住' : '❌ 代码块数 / 图片 / 链接 / canonical / JSON-LD 有缺'}）`);
     if (!keep) failed++;
     rows.push({ ...r, pass: keep });

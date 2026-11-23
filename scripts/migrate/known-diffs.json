@@ -1,5 +1,5 @@
 {
-  "说明": "已人工核对、接受的正文差异。只允许「新站比旧站多出 extra 这段文字」：去掉它后两边正文必须逐字相等，否则照样判不通过。旧站正文里的 {{ }} / {name} 被 Vue 当模板语法吃掉了，新站按 Markdown 源原样显示，属于修复。edited：迁移完成后有意修订正文的页（内容修正 T6c），按宽一档的规则判——代码块数量、图片、链接、canonical、JSON-LD 不许少，正文 / 标题 / 代码内容允许变",
+  "说明": "已人工核对、接受的正文差异。只允许「新站比旧站多出 extra 这段文字」：去掉它后两边正文必须逐字相等，否则照样判不通过。旧站正文里的 {{ }} / {name} 被 Vue 当模板语法吃掉了，新站按 Markdown 源原样显示，属于修复。edited：迁移完成后有意修订正文的页（内容修正 T6c），按宽一档的规则判——代码块数量、图片、链接、canonical、JSON-LD 不许少，正文 / 标题 / 代码内容允许变；有意删掉整段过时内容时写 codesRemoved: N 放行这 N 个代码块",
   "pages": {
     "frontend/i18n/i18n-practices.html": {
       "extra": [
@@ -88,6 +88,17 @@
     },
     "products.html": {
       "reason": "Officia 卡片「八大能力」改为十大（补 1.1.6 新增的 Ofd 与在线编辑 Editor），与 officia.ruoyi.plus 一致"
+    },
+    "backend/architecture/overview.html": {
+      "reason": "删除「微服务部署」（Gateway + Nacos 配置示例）：项目暂无微服务规划",
+      "codesRemoved": 1
+    },
+    "backend/modules/system.html": {
+      "reason": "删除「微服务部署 / 拆分建议」与演进方向里的「微服务架构拆分」：项目暂无微服务规划；容器化部署顺延为 16.2"
+    },
+    "practices/architecture/system.html": {
+      "reason": "删除「v4.0 微服务架构（规划中）」「未来架构规划」架构图与「未来可演进到微服务」：项目暂无微服务规划",
+      "codesRemoved": 1
     }
   }
 }
