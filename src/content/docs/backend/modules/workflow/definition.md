@@ -26,10 +26,13 @@ public class FlowDefinition {
     /** 流程名称 */
     private String flowName;
 
+    /** 设计器模型（CLASSICS-经典模型，MIMIC-仿钉钉模型） */
+    private String modelValue;
+
     /** 流程版本 */
     private String version;
 
-    /** 是否发布（0-未发布，1-已发布，2-已失效） */
+    /** 是否发布（0-未发布，1-已发布，9-已失效） */
     private Integer isPublish;
 
     /** 流程分类 */
@@ -50,8 +53,11 @@ public class FlowDefinition {
     /** 流程级监听器路径（类路径），多个以 @@ 分隔，与 listenerType 按下标一一对应 */
     private String listenerPath;
 
-    /** 扩展信息（JSON格式） */
+    /** 扩展信息（业务扩展属性，引擎不解析） */
     private String ext;
+
+    /** 流程定义配置（JSON格式，自动审批等引擎配置，由流程设计器写入） */
+    private String defConfig;
 
     /** 租户ID */
     private String tenantId;
@@ -72,18 +78,18 @@ public class FlowDefinition {
 
 ### 发布状态
 
-流程定义有三种发布状态：
+流程定义有三种发布状态（引擎枚举 `org.dromara.warm.flow.core.enums.PublishStatus`）：
 
 ```java
 public enum PublishStatus {
+    /** 已失效（新版本发布后旧版本自动失效） */
+    EXPIRED(9, "已失效"),
+
     /** 未发布 */
     UNPUBLISHED(0, "未发布"),
 
     /** 已发布 */
-    PUBLISHED(1, "已发布"),
-
-    /** 已失效（新版本发布后旧版本自动失效） */
-    EXPIRED(2, "已失效");
+    PUBLISHED(1, "已发布");
 }
 ```
 
@@ -91,27 +97,26 @@ public enum PublishStatus {
 |------|----|----|------------|
 | 未发布 | 0 | 草稿状态，可编辑修改 | 编辑、删除、发布、复制 |
 | 已发布 | 1 | 正式状态，可创建实例 | 停用、导出、复制、激活/挂起 |
-| 已失效 | 2 | 已有新版本发布 | 查看、删除 |
+| 已失效 | 9 | 已有新版本发布 | 查看、删除 |
 
-### 扩展属性
+### 扩展属性与流程配置
 
-流程定义的 `ext` 字段存储 JSON 格式的扩展配置：
+流程定义上有两个容易混淆的 JSON 字段：
+
+| 字段 | 列名 | 写入方 | 说明 |
+|------|------|--------|------|
+| `ext` | `ext` | 业务方 | 业务扩展属性，引擎不解析。管理端「流程定义」弹窗提交时原样回写，不会覆盖其中的内容 |
+| `defConfig` | `def_config` | 流程设计器 | 引擎读取的流程级配置，自动审批即存于此 |
+
+**自动审批**：引擎从 `def_config` 顶层键 `autoPass` 读取开关（`FlowCons.DEF_CONFIG_AUTO_PASS`），为 `true` 时下一节点办理人与当前办理人相同则自动通过，历史任务状态记为 `auto_pass`。
 
 ```json
 {
-    "autoPass": true,
-    "formType": "custom",
-    "formPath": "/business/leave/apply",
-    "listenerClass": "plus.ruoyi.workflow.listener.LeaveListener"
+    "autoPass": true
 }
 ```
 
-| 属性 | 类型 | 说明 |
-|------|------|------|
-| `autoPass` | Boolean | 申请人自动审批开关 |
-| `formType` | String | 表单类型：custom/dynamic |
-| `formPath` | String | 表单组件路径 |
-| `listenerClass` | String | 自定义监听器类名 |
+> **注意**：流程定义新增/修改弹窗里已没有「自动审批」勾选，`ext.autoPass` 也不再被读取。自动审批统一在流程设计器中配置（写入 `def_config`），避免两处配置互相覆盖。旧库里 `ext.autoPass = true` 的流程，由升级脚本迁到 `def_config.autoPass`，`ext` 原值保留不动。
 
 ### 流程级监听器
 
@@ -138,6 +143,8 @@ public enum PublishStatus {
 - 编辑时按 `,` 与 `@@` 拆分，再按下标配对还原成可编辑的行
 
 同一弹窗中「设计器模式」（经典模式：自由拖拽连线；仿钉钉模式：类钉钉审批流、上下结构布局）与「是否动态表单」（是：由流程设计器动态渲染表单；否：使用表单路径指定的页面）以卡片式单选展示并附带用途说明。设计器模式决定节点结构，保存后不支持修改，编辑态会禁用并给出提示。
+
+弹窗只维护流程的基本信息（编码、名称、分类、设计器模式、表单、监听器）。自动审批、节点抄送等引擎配置不在此弹窗中，统一到流程设计器里配置，详见 [流程设计器](#流程设计器)。
 
 ## API 接口
 
@@ -214,7 +221,7 @@ public enum PublishStatus {
         "category": "100",
         "formPath": "/business/leave/apply",
         "formCustom": "Y",
-        "ext": "{\"autoPass\":true}",
+        "defConfig": "{\"autoPass\":true}",
         "nodeList": [
             {
                 "nodeCode": "start",
@@ -270,7 +277,6 @@ public enum PublishStatus {
     "category": "100",
     "formPath": "/business/leave/apply",
     "formCustom": "Y",
-    "ext": "{\"autoPass\":true}",
     "nodeList": [
         {
             "nodeCode": "start",
@@ -330,7 +336,7 @@ public enum PublishStatus {
 | formCustom | String | 否 | 是否自定义表单（Y/N） |
 | listenerType | String | 否 | 流程级监听器类型，多个以 `,` 分隔 |
 | listenerPath | String | 否 | 流程级监听器类路径，多个以 `@@` 分隔，与 listenerType 按下标对应 |
-| ext | String | 否 | 扩展信息（JSON） |
+| ext | String | 否 | 业务扩展信息（引擎不解析；自动审批不写在这里，见 [扩展属性与流程配置](#扩展属性与流程配置)） |
 | nodeList | Array | 是 | 节点列表 |
 | skipList | Array | 是 | 流转规则列表 |
 
@@ -354,6 +360,8 @@ public enum PublishStatus {
 |------|------|------|------|
 | id | Long | 是 | 流程定义ID |
 
+**说明**: 流程设计器只负责保存流程图（引擎接口 `POST /warm-flow/save-json`），没有发布入口；流程定义的发布统一走本接口，由 `FlwDefinitionServiceImpl.publishDefinition` 先做校验，全部通过后再调用引擎 `defService.publish(id)`。
+
 **发布校验规则**:
 
 ```java
@@ -362,30 +370,84 @@ public enum PublishStatus {
 public boolean publishDefinition(Long id) {
     List<FlowNode> flowNodes = flowNodeMapper.selectList(
         new LambdaQueryWrapper<FlowNode>().eq(FlowNode::getDefinitionId, id));
-
     List<String> errorMsg = new ArrayList<>();
     if (CollUtil.isNotEmpty(flowNodes)) {
         String applyNodeCode = flwCommonService.applyNodeCode(id);
         for (FlowNode flowNode : flowNodes) {
-            // 检查中间节点是否配置了办理人（申请节点除外）
-            if (StringUtils.isBlank(flowNode.getPermissionFlag())
-                && !applyNodeCode.equals(flowNode.getNodeCode())
-                && NodeType.BETWEEN.getKey().equals(flowNode.getNodeType())) {
+            // 第一步：中间审批节点必须配置办理人
+            if (requiresAssignee(flowNode, applyNodeCode) && StringUtils.isBlank(flowNode.getPermissionFlag())) {
                 errorMsg.add(flowNode.getNodeName());
             }
         }
         if (CollUtil.isNotEmpty(errorMsg)) {
             throw new ServiceException("节点【{}】未配置办理人!", StringUtils.joinComma(errorMsg));
         }
+        // 第二步：拦截本系统尚未接入的事件节点与服务任务
+        checkUnsupportedNodes(flowNodes);
     }
     return defService.publish(id);
+}
+
+/**
+ * 只有中间审批节点需要办理人：申请人节点由发起人办理，
+ * 事件节点（event_type 非空）由引擎驱动，都不要求配置
+ */
+static boolean requiresAssignee(FlowNode node, String applyNodeCode) {
+    return NodeType.BETWEEN.getKey().equals(node.getNodeType())
+        && !applyNodeCode.equals(node.getNodeCode())
+        && StringUtils.isBlank(node.getEventType());
+}
+
+private void checkUnsupportedNodes(List<FlowNode> flowNodes) {
+    boolean timerEnabled = FlowEngine.getFlowConfig() != null && FlowEngine.getFlowConfig().isTimerEnabled();
+    List<String> errors = new ArrayList<>();
+    for (FlowNode node : flowNodes) {
+        String eventType = node.getEventType();
+        if (StringUtils.startsWith(eventType, "TIMER_") && !timerEnabled) {
+            errors.add(StringUtils.format("【{}】是定时事件，需先开启 warm-flow.timer-enabled", node.getNodeName()));
+        } else if (StringUtils.startsWith(eventType, "MESSAGE_") || StringUtils.startsWith(eventType, "ERROR_")) {
+            errors.add(StringUtils.format("【{}】是消息 / 错误事件，本系统尚未接入触发接口", node.getNodeName()));
+        } else if (NodeType.isService(node.getNodeType())) {
+            String reason = checkServiceTask(node);
+            if (reason != null) {
+                errors.add(StringUtils.format("【{}】是服务任务，{}", node.getNodeName(), reason));
+            }
+        }
+    }
+    if (CollUtil.isNotEmpty(errors)) {
+        throw new ServiceException("以下节点暂不支持，无法发布：{}", String.join("；", errors));
+    }
 }
 ```
 
 **校验规则**:
-1. 所有中间节点（申请节点除外）必须配置办理人
-2. 流程必须包含开始节点和结束节点
-3. 所有节点必须有完整的流转路径
+
+| 序号 | 规则 | 不通过时的提示 |
+|------|------|----------------|
+| 1 | 中间节点（`node_type = 1`）必须配置办理人 `permissionFlag`；申请人节点、事件节点（`event_type` 非空）除外 | `节点【xxx】未配置办理人!` |
+| 2 | 定时事件（`event_type` 以 `TIMER_` 开头）要求开启 `warm-flow.timer-enabled`（默认关闭） | `【xxx】是定时事件，需先开启 warm-flow.timer-enabled` |
+| 3 | 消息事件、错误事件（`event_type` 以 `MESSAGE_` / `ERROR_` 开头）一律拦截，本系统尚未提供触发接口 | `【xxx】是消息 / 错误事件，本系统尚未接入触发接口` |
+| 4 | 服务任务（`node_type = 6`）按类名方式配置时，处理器类必须存在且实现 `ServiceTaskHandler` | `【xxx】是服务任务，未配置处理器类` / `处理器类 xxx 不存在` / `处理器类 xxx 未实现 ServiceTaskHandler` / `配置无效：...` |
+| 5 | 终止结束（`TERMINATE_END`）只是结束节点的一种，不依赖触发器，直接放行 | - |
+
+规则 2～4 的同类问题会汇总成一条提示：`以下节点暂不支持，无法发布：【A】...；【B】...`。
+
+**服务任务校验细节**（`checkServiceTask`）：
+
+- 配置来自节点的 `node_config.serviceTask`，由引擎 `ServiceTaskConfig.parse()` 解析，字段为 `type` / `handler` / `expression` / `resultVariable`
+- 只校验「类名」方式：`type` 为空或为 `class` 时，`handler` 必须是可加载的类，且实现 `org.dromara.warm.flow.core.service.task.ServiceTaskHandler`
+- `type` 为 `expression` / `delegateExpression` 时要到运行时才能求值，发布时不做判断
+
+```json
+{
+    "serviceTask": {
+        "type": "class",
+        "handler": "plus.ruoyi.business.xxx.handler.XxxServiceTaskHandler"
+    }
+}
+```
+
+> **注意**：设计器能画出引擎 2.x 的全部事件节点与服务任务，但本系统只接入了基础审批能力。不在发布时拦截的话，流程能发布、能发起，却会永远停在等待节点，或办理到该步时才报错回滚。
 
 ### 取消发布流程定义
 
@@ -546,7 +608,7 @@ public class FlowNode {
     /** 节点名称 */
     private String nodeName;
 
-    /** 节点类型（0-开始，1-中间，2-结束，3-排他网关，4-并行网关） */
+    /** 节点类型（0-开始，1-中间，2-结束，3-排他网关，4-并行网关，5-包容网关，6-服务任务） */
     private Integer nodeType;
 
     /** 权限标识（办理人配置） */
@@ -561,16 +623,30 @@ public class FlowNode {
     /** 坐标位置 */
     private String coordinate;
 
-    /** 跳过第一个节点（是否跳过申请节点） */
-    private String skipFirstNode;
-
-    /** 扩展信息 */
+    /** 扩展信息（按钮权限、自定义参数，见下文「节点扩展配置」） */
     private String ext;
+
+    /** 节点配置（JSON，抄送、服务任务、事件等引擎配置） */
+    private String nodeConfig;
+
+    /** 事件类型（为空表示普通节点） */
+    private String eventType;
+
+    /** 事件名称（消息事件使用） */
+    private String eventName;
+
+    /** 边界事件附着的任务节点编码 */
+    private String attachedToNodeCode;
+
+    /** 边界事件是否中断型 */
+    private Boolean interrupting;
 
     /** 租户ID */
     private String tenantId;
 }
 ```
+
+> **说明**：节点表 `flow_node` 已不再有 `version` 列，节点通过 `definition_id` 归属到具体版本的流程定义。
 
 ### 节点类型
 
@@ -581,18 +657,52 @@ public class FlowNode {
 | 结束节点 | 2 | 流程出口 |
 | 排他网关 | 3 | 条件分支 |
 | 并行网关 | 4 | 并行分支 |
+| 包容网关 | 5 | 满足条件的分支都执行 |
+| 服务任务 | 6 | 由 `ServiceTaskHandler` 自动执行，发布时校验处理器类（见 [发布流程定义](#发布流程定义)） |
+
+### 事件节点
+
+事件节点通过 `flow_node.event_type` 标识（为空即普通节点），边界事件另用 `attached_to_node_code` / `interrupting` 记录附着的任务节点与是否中断：
+
+| 事件类型 | 说明 | 发布时 |
+|----------|------|--------|
+| `TIMER_START` / `TIMER_CATCH` / `TIMER_BOUNDARY` | 定时启动 / 定时捕获 / 定时边界 | 需开启 `warm-flow.timer-enabled` |
+| `MESSAGE_START` / `MESSAGE_CATCH` / `MESSAGE_THROW` / `MESSAGE_BOUNDARY` / `MESSAGE_END` | 消息类事件 | 拦截 |
+| `ERROR_CATCH` / `ERROR_BOUNDARY` | 错误类事件 | 拦截 |
+| `TERMINATE_END` | 终止结束 | 放行 |
+
+需要「等待」的事件（定时、消息等）运行时落在 `flow_event_wait` 表，等待状态为 `WAITING` / `RUNNING` / `CANCELLED` / `RETRY` / `DEAD`，独立于实例的流程状态。`warm-flow.timer-enabled` 未开启（默认）时引擎不扫描该表。
 
 ### 节点扩展配置
 
-节点的 `ext` 字段存储按钮权限等扩展配置：
+节点的 `ext` 字段由设计器「基础设置」「权限」两个页签写入，格式为 `code` / `value` 数组，由 `FlwNodeExtServiceImpl.parseNodeExt()` 解析成 `NodeExtVo`（`buttonPermissions` 按钮权限列表、`variables` 自定义参数）：
+
+```json
+[
+    {"code": "ButtonPermissionEnum", "value": "back,termination"},
+    {"code": "VariablesEnum", "value": "key1=value1,key2=value2"}
+]
+```
+
+| 页签 | code | 说明 |
+|------|------|------|
+| 基础设置 | `VariablesEnum` | 自定义参数，`key=value` 以逗号分隔 |
+| 权限 | `ButtonPermissionEnum` | 节点可用的操作按钮 |
+
+### 节点抄送
+
+节点扩展里的「抄送对象」已移除，`NodeExtVo` 也不再有 `copySettings`。节点抄送改由引擎内置能力承载，在设计器的抄送配置中设置，存于 `node_config.copy`：
 
 ```json
 {
-    "buttonPermissions": ["back", "file", "copy", "transfer"],
-    "copySettings": ["1", "2", "3"],
-    "variables": []
+    "copy": {
+        "handlers": ["1", "2"]
+    }
 }
 ```
+
+- `handlers` 必须是数组，元素按字符串处理，经 `PermissionHandler` 展开为实际抄送人；不带前缀的 ID 视为用户 ID
+- 旧数据 `ext` 里残留的 `CopySettingEnum` 项会被静默跳过；纯数字用户 ID 的抄送配置由升级脚本迁到 `node_config.copy`，带角色 / 部门前缀的需人工处理
 
 ## 流程跳转规则
 
@@ -908,18 +1018,39 @@ voteNode.setNodeRatio(new BigDecimal("0.5")); // 50%通过即可
 ### 1. 发布失败：节点未配置办理人
 
 **问题原因**:
-- 中间节点（非申请节点）未配置 `permissionFlag`
+- 中间节点（非申请节点、非事件节点）未配置 `permissionFlag`
 
 **解决方案**:
 ```java
-// 检查节点配置
+// 检查节点配置（事件节点 event_type 非空，不要求办理人）
 for (FlowNode node : nodeList) {
-    if (node.getNodeType() == 1 && StringUtils.isBlank(node.getPermissionFlag())) {
+    if (node.getNodeType() == 1 && StringUtils.isBlank(node.getEventType())
+        && StringUtils.isBlank(node.getPermissionFlag())) {
         // 配置办理人
         node.setPermissionFlag("role:xxx");
     }
 }
 ```
+
+### 1.1 发布失败：以下节点暂不支持
+
+**问题原因**:
+- 流程里用了定时事件，但未开启 `warm-flow.timer-enabled`
+- 流程里用了消息事件或错误事件（本系统尚未接入触发接口）
+- 服务任务未配置处理器类、类不存在或未实现 `ServiceTaskHandler`
+
+**解决方案**:
+- 定时事件：在 `application.yml` 的 `warm-flow` 下开启 `timer-enabled: true` 后再发布
+- 消息 / 错误事件：从流程图中移除，或改用普通审批节点
+- 服务任务：实现 `ServiceTaskHandler` 并在设计器中填写完整类名
+
+```yaml
+warm-flow:
+  # 开启定时事件扫描（默认 false）
+  timer-enabled: true
+```
+
+> **注意**：定时线程没有登录上下文，多租户模式下 `flow_event_wait` 的轮询会被租户拦截器限定在默认租户，非默认租户的定时事件不会触发。多租户项目开启前需自行处理租户上下文。
 
 ### 2. 流程定义无法删除
 
@@ -1085,6 +1216,30 @@ FlowDefinition latestPublished = flowDefinitionMapper.selectOne(
 ```
 
 ## 流程设计器
+
+### 打开与保存
+
+管理端「流程定义」列表中，未发布的流程显示「流程设计」按钮，其余显示「查看流程」，两者都跳转到 `/workflow/design/index`（`design.vue`），以 iframe 嵌入引擎自带的设计器页面：
+
+```text
+{baseUrl}/warm-flow-ui/index.html?id={definitionId}&Authorization=Bearer {token}
+```
+
+- 不再传 `onlyDesignShow` 参数，设计器完整显示引擎 2.x 的配置面板（自动审批、抄送等）
+- 设计器里的「保存」只调用引擎接口 `POST /warm-flow/save-json` 保存流程图，**没有发布入口**；画完后回到列表点击「发布流程」（调用 [发布流程定义](#发布流程定义) 接口），发布前会执行校验
+
+### 在设计器中配置的内容
+
+| 配置项 | 存储位置 | 说明 |
+|--------|----------|------|
+| 自动审批 | `flow_definition.def_config.autoPass` | 流程级开关，替代原流程定义表单里的勾选 |
+| 节点抄送 | `flow_node.node_config.copy` | 替代原节点扩展里的「抄送对象」 |
+| 服务任务处理器 | `flow_node.node_config.serviceTask` | 发布时校验 |
+| 事件节点 | `flow_node.event_type` 等列 | 发布时按事件类型校验 |
+| 自定义参数 | `flow_node.ext`（`VariablesEnum`） | 「基础设置」页签 |
+| 按钮权限 | `flow_node.ext`（`ButtonPermissionEnum`） | 「权限」页签 |
+
+流程级监听器在流程定义弹窗中配置（见 [流程级监听器](#流程级监听器)），节点级监听器在设计器的节点属性中配置。
 
 ### 设计器数据格式
 

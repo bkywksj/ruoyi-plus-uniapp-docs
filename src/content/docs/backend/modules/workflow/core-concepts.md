@@ -8,7 +8,7 @@ description: "工作流模块的核心概念是理解和使用工作流功能的
 
 工作流模块的核心概念是理解和使用工作流功能的基础。本文档详细介绍了工作流系统中的关键概念，包括流程定义、流程实例、任务、节点类型、办理人机制、任务状态等核心要素。掌握这些概念，将帮助开发者更好地设计和实现业务流程自动化。
 
-RuoYi-Plus 工作流模块基于 Warm-Flow 1.8.9 轻量级工作流引擎构建，在保持轻量化的同时，提供了丰富的企业级功能扩展，包括多租户支持、消息通知、权限控制等。
+RuoYi-Plus 工作流模块基于 Warm-Flow 2.1.1 轻量级工作流引擎构建，在保持轻量化的同时，提供了丰富的企业级功能扩展，包括多租户支持、消息通知、权限控制等。
 
 ## 流程定义
 
@@ -44,6 +44,9 @@ public class FlowDefinition {
 
     /** 扩展信息（JSON格式） */
     private String ext;
+
+    /** 引擎流程定义配置（JSON格式，2.x 新增，如自动审批 autoPass） */
+    private String defConfig;
 }
 ```
 
@@ -103,23 +106,27 @@ public interface IFlwDefinitionService {
 }
 ```
 
-### 流程定义扩展属性
+### 流程定义扩展属性与引擎配置
 
-流程定义的 `ext` 字段存储 JSON 格式的扩展属性：
+Warm-Flow 2.x 把流程定义的 JSON 配置分成两列：
+
+| 列 | 用途 | 维护方式 |
+|----|------|----------|
+| `ext` | 业务自定义扩展属性 | 后台「流程定义」表单提交时原样回写，不会被覆盖 |
+| `def_config` | 引擎读取的流程级配置，如自动审批 `autoPass` | 在流程设计器中配置 |
 
 ```json
+// def_config 示例
 {
-    "autoPass": true,
-    "formType": "custom",
-    "formPath": "/business/leave/apply"
+    "autoPass": true
 }
 ```
 
-| 扩展属性 | 类型 | 说明 |
-|----------|------|------|
-| `autoPass` | Boolean | 申请人自动审批，当流程流转到申请人节点时自动通过 |
-| `formType` | String | 表单类型：custom（自定义表单）、dynamic（动态表单） |
-| `formPath` | String | 表单路径，用于渲染业务表单 |
+| 配置项 | 类型 | 说明 |
+|--------|------|------|
+| `autoPass` | Boolean | 自动审批，由引擎在办理链内自动通过，任务状态记为 `auto_pass`（引擎常量 `FlowCons.DEF_CONFIG_AUTO_PASS`） |
+
+> 1.8.9 时代自动审批存放在 `ext.autoPass`，由后台「流程定义」表单勾选。2.x 引擎只认 `def_config.autoPass`，该勾选已移除；存量数据由升级脚本迁移，见「工作流模块」页的「从 Warm-Flow 1.8.9 升级」一节。
 
 ## 流程实例
 
@@ -189,10 +196,13 @@ public class FlowInstanceBizExt {
 
 ### 流程实例状态
 
-流程实例状态由 `BusinessStatusEnum` 枚举定义：
+流程实例状态由 `BusinessStatusEnum`（`plus.ruoyi.common.core.enums`）枚举定义，编码与 Warm-Flow 2.x 引擎的 `FlowStatus` 一致，对应字典 `wf_business_status`：
 
 ```java
 public enum BusinessStatusEnum {
+    /** 已撤销 */
+    CANCEL("cancel", "已撤销"),
+
     /** 草稿 */
     DRAFT("draft", "草稿"),
 
@@ -211,10 +221,12 @@ public enum BusinessStatusEnum {
     /** 已终止 */
     TERMINATION("termination", "已终止"),
 
-    /** 已撤销 */
-    CANCEL("cancel", "已撤销");
+    /** 已重启（2.x 新增编码，当前引擎版本不会主动写入，仅用于状态描述与字典翻译） */
+    RESTART("restart", "已重启");
 }
 ```
+
+> `RESTART` 不纳入 `runningStatus()` / `finishStatus()`，不影响现有「运行中 / 已结束」的查询口径。
 
 ### 流程实例状态流转图
 
@@ -247,6 +259,8 @@ public enum BusinessStatusEnum {
          - invalid（已作废）：管理员作废流程
          - termination（已终止）：办理人终止流程
 ```
+
+**完成判定：** 只有当实例当前节点是结束节点、且已无待办任务时，`WorkflowGlobalListener` 才把实例改为 `finish` 并发布完成事件。2.x 的流程可能停在定时 / 消息等待事件上（此时实例仍为 `waiting`、同样没有待办），不会被误判为已完成。
 
 ### 流程实例服务接口
 
@@ -341,45 +355,36 @@ public class FlowTask {
 
 ### 任务状态
 
-任务状态由 `TaskStatusEnum` 枚举定义，共12种状态：
+任务状态由 `TaskStatusEnum` 枚举定义，取值与 Warm-Flow 2.x 写入 `flow_task` / `flow_his_task.flow_status` 的编码一致（引擎 `org.dromara.warm.flow.core.enums.TaskStatus` 的 key），另加本项目会主动写入的「撤销」「终止」，共 9 种：
 
 ```java
 public enum TaskStatusEnum {
-    /** 撤销 */
-    CANCEL("cancel", "撤销"),
+    /** 待审批（运行中的待办任务） */
+    PENDING("pending", "待审批"),
 
     /** 通过 */
     PASS("pass", "通过"),
 
-    /** 待审核 */
-    WAITING("waiting", "待审核"),
-
-    /** 作废 */
-    INVALID("invalid", "作废"),
+    /** 自动审批（引擎按流程定义 def_config 自动通过） */
+    AUTO_PASS("auto_pass", "自动审批"),
 
     /** 退回 */
     BACK("back", "退回"),
 
-    /** 终止 */
-    TERMINATION("termination", "终止"),
+    /** 失效（任务被作废 / 会签票签中被其他人决定后失效） */
+    INVALID("invalid", "失效"),
 
-    /** 转办 */
-    TRANSFER("transfer", "转办"),
-
-    /** 委托 */
-    DEPUTE("depute", "委托"),
+    /** 拿回（办理人把已办任务拿回重新处理） */
+    TAKE_BACK("take_back", "拿回"),
 
     /** 抄送 */
     COPY("copy", "抄送"),
 
-    /** 加签 */
-    SIGN("sign", "加签"),
+    /** 撤销（撤销流程时本项目显式写入） */
+    CANCEL("cancel", "撤销"),
 
-    /** 减签 */
-    SIGN_OFF("sign_off", "减签"),
-
-    /** 超时 */
-    TIMEOUT("timeout", "超时");
+    /** 终止 */
+    TERMINATION("termination", "终止");
 }
 ```
 
@@ -387,18 +392,31 @@ public enum TaskStatusEnum {
 
 | 状态 | 标识 | 说明 | 触发场景 |
 |------|------|------|----------|
+| 待审批 | pending | 等待办理 | 任务创建后等待办理人处理 |
+| 通过 | pass | 任务审批通过 | 办理人点击"通过"按钮；发起流程时申请节点的历史也记为 pass |
+| 自动审批 | auto_pass | 引擎自动通过 | 流程定义 `def_config.autoPass` 开启时由引擎写入 |
+| 退回 | back | 任务被驳回 | 办理人将任务退回给前一节点；撤销后重建的申请节点待办也是 back |
+| 失效 | invalid | 任务失效 | 流程被作废，或会签 / 票签中被其他人决定后失效 |
+| 拿回 | take_back | 任务拿回 | 办理人把已办任务拿回重新处理 |
+| 抄送 | copy | 任务抄送 | 办理时抄送或节点配置抄送时生成的抄送记录 |
 | 撤销 | cancel | 发起人撤销流程 | 发起人在流程未结束前主动撤销 |
-| 通过 | pass | 任务审批通过 | 办理人点击"通过"按钮 |
-| 待审核 | waiting | 等待办理 | 任务创建后等待办理人处理 |
-| 作废 | invalid | 流程被作废 | 管理员或有权限的人作废流程 |
-| 退回 | back | 任务被驳回 | 办理人将任务退回给前一节点 |
-| 终止 | termination | 流程终止 | 办理人直接终止整个流程 |
-| 转办 | transfer | 任务转办 | 将任务转交给其他人办理 |
-| 委托 | depute | 任务委托 | 将任务委托给他人代为办理 |
-| 抄送 | copy | 任务抄送 | 办理时抄送给相关人员 |
-| 加签 | sign | 加签 | 在会签节点增加办理人 |
-| 减签 | sign_off | 减签 | 在会签节点减少办理人 |
-| 超时 | timeout | 任务超时 | 任务超过设定时间未处理 |
+| 终止 | termination | 流程终止 | 办理人直接终止整个流程（由引擎写入） |
+
+### 协作方式
+
+转办、委派、加签、减签在 2.x 不再是任务状态，而是记录在历史任务的 `cooperate_type` 列（`varchar(20)`，默认 `none`），取值为引擎 `org.dromara.warm.flow.core.enums.CooperateType` 的编码：
+
+| 协作方式 | 编码 | 说明 |
+|----------|------|------|
+| 无 | none | 普通审批，会签 / 票签 / 抄送也记为 none |
+| 转办 | transfer | 将任务转交给其他人办理 |
+| 委派 | delegate | 将任务委托给他人代为办理 |
+| 加签 | add_signer | 在会签节点增加办理人 |
+| 减签 | remove_signer | 在会签节点减少办理人 |
+
+协作操作产生的历史记录，`flow_status` 与 `cooperate_type` 取值相同（例如委派历史的 `flow_status = delegate`），因此字典 `wf_task_status` 在 9 种任务状态之外还包含 `transfer` / `delegate` / `add_signer` / `remove_signer` 四项，共 13 项。
+
+> 1.8.9 的 `waiting` / `depute` / `sign` / `sign_off` / `timeout` 等编码已不再使用，存量数据由升级脚本转换，见「工作流模块」页的「从 Warm-Flow 1.8.9 升级」一节。
 
 ### 历史任务
 
@@ -438,6 +456,9 @@ public class FlowHisTask {
 
     /** 流程状态 */
     private String flowStatus;
+
+    /** 协作方式（none / transfer / delegate / add_signer / remove_signer） */
+    private String cooperateType;
 
     /** 创建时间 */
     private Date createTime;
@@ -521,26 +542,36 @@ public interface IFlwTaskService {
 
 ### 节点类型枚举
 
-Warm-Flow 定义了5种节点类型：
+Warm-Flow 2.1.1 的 `org.dromara.warm.flow.core.enums.NodeType` 定义了 7 种节点类型：
 
 ```java
 public enum NodeType {
     /** 开始节点 */
-    START(0, "开始节点"),
+    START(0, "start"),
 
     /** 中间节点（审批节点） */
-    BETWEEN(1, "中间节点"),
+    BETWEEN(1, "between"),
 
     /** 结束节点 */
-    END(2, "结束节点"),
+    END(2, "end"),
 
     /** 排他网关 */
-    SERIAL(3, "排他网关"),
+    SERIAL(3, "serial"),
 
     /** 并行网关 */
-    PARALLEL(4, "并行网关");
+    PARALLEL(4, "parallel"),
+
+    /** 包容网关 */
+    INCLUSIVE(5, "inclusive"),
+
+    /** 服务任务 */
+    SERVICE(6, "service");
 }
 ```
+
+> 服务任务需要开发者实现 `ServiceTaskHandler`，本项目暂未接入；发布流程定义时会校验处理器配置。
+>
+> 事件节点（定时启动 / 定时捕获 / 定时边界 / 消息事件 / 错误事件 / 终止结束等）不是独立的节点类型，而是通过 `flow_node.event_type` 标识（取值如 `TIMER_START`、`TIMER_CATCH`、`MESSAGE_CATCH`、`ERROR_BOUNDARY`、`TERMINATE_END` 等）。本项目发布时终止结束事件直接放行；定时事件需开启 `warm-flow.timer-enabled`，消息 / 错误事件暂未接入，详见「工作流模块」页的「流程定义发布校验」一节。
 
 ### 节点类型详解
 
@@ -587,8 +618,14 @@ public class FlowNode {
     /** 任意跳转节点编码（驳回指定节点） */
     private String anyNodeSkip;
 
-    /** 扩展信息（JSON格式） */
+    /** 扩展信息（JSON格式，本项目存按钮权限、自定义参数） */
     private String ext;
+
+    /** 引擎节点配置（JSON格式，2.x 新增，如抄送 copy、服务任务配置） */
+    private String nodeConfig;
+
+    /** 事件类型（2.x 新增，非事件节点为空） */
+    private String eventType;
 }
 ```
 
@@ -719,37 +756,46 @@ public enum TaskAssigneeEnum {
 
 ### 权限处理器
 
-系统通过 `WorkflowPermissionHandler` 处理办理人权限转换：
+系统通过 `WorkflowPermissionHandler` 处理办理人权限转换，它实现的是 Warm-Flow 2.x 的 `org.dromara.warm.flow.core.spi.PermissionHandler`（1.8.9 时位于 `org.dromara.warm.flow.core.handler` 包）：
 
 ```java
+import org.dromara.warm.flow.core.spi.PermissionHandler;
+
+@ConditionalOnEnable
+@RequiredArgsConstructor
 @Component
 public class WorkflowPermissionHandler implements PermissionHandler {
 
-    private final UserService userService;
+    private final IFlwTaskAssigneeService flwTaskAssigneeService;
 
+    /**
+     * 当前用户的权限标识，引擎办理时放进 WorkflowContext 用于校验
+     */
     @Override
-    public List<String> permissions(List<String> permissionFlags) {
-        // 将角色、部门、岗位转换为用户ID列表
-        Set<String> userIds = new HashSet<>();
-        for (String permissionFlag : permissionFlags) {
-            if (permissionFlag.startsWith("role:")) {
-                // 查询角色下的用户
-                String roleIds = permissionFlag.substring(5);
-                userIds.addAll(userService.listUserIdsByRoleIds(roleIds));
-            } else if (permissionFlag.startsWith("dept:")) {
-                // 查询部门下的用户
-                String deptIds = permissionFlag.substring(5);
-                userIds.addAll(userService.listUserIdsByDeptIds(deptIds));
-            } else if (permissionFlag.startsWith("post:")) {
-                // 查询岗位下的用户
-                String postIds = permissionFlag.substring(5);
-                userIds.addAll(userService.listUserIdsByPostIds(postIds));
-            } else {
-                // 直接是用户ID
-                userIds.add(permissionFlag);
-            }
+    public List<String> permissions() {
+        return Collections.singletonList(LoginHelper.getUserIdStr());
+    }
+
+    /**
+     * 当前办理人
+     */
+    @Override
+    public String getHandler() {
+        return LoginHelper.getUserIdStr();
+    }
+
+    /**
+     * 将设计器中配置的角色、部门、岗位等标识转换为用户ID
+     * 引擎按 node_config.copy 自动抄送时也走这里，节点抄送配置里的角色、部门同样会展开成用户
+     */
+    @Override
+    public List<String> convertPermissions(List<String> permissions) {
+        if (CollUtil.isEmpty(permissions)) {
+            return permissions;
         }
-        return new ArrayList<>(userIds);
+        String storageIds = CollUtil.join(permissions, StringUtils.SEPARATOR);
+        List<UserDTO> users = flwTaskAssigneeService.fetchUsersByStorageIds(storageIds);
+        return StreamUtils.toList(users, userDTO -> Convert.toStr(userDTO.getUserId()));
     }
 }
 ```
@@ -773,6 +819,8 @@ public enum TaskAssigneeType {
     COPY(4, "抄送人");
 }
 ```
+
+> 抄送人（`type = '4'`）的 `flow_user.associated` 在 2.x 关联的是抄送历史记录的主键 `flow_his_task.id`（1.8.9 关联 `flow_his_task.task_id`），「我的抄送」查询按 `associated = flow_his_task.id` 关联。
 
 ### SpEL 表达式
 
@@ -873,30 +921,26 @@ public enum ButtonPermissionEnum implements NodeExtEnum {
 
 ### 节点扩展配置
 
-按钮权限存储在节点的扩展信息中：
+按钮权限存储在节点的扩展信息（`flow_node.ext`）中，由 `FlwNodeExtServiceImpl` 解析为 `NodeExtVo`：
 
 ```java
 public class NodeExtVo {
     /** 按钮权限列表 */
-    private List<String> buttonPermissions;
+    private List<ButtonPermissionVo> buttonPermissions;
 
-    /** 抄送设置 */
-    private List<String> copySettings;
-
-    /** 变量列表 */
-    private List<VariablesEnum> variables;
+    /** 自定义参数（key=value） */
+    private Map<String, String> variables;
 }
 ```
 
-**节点扩展配置示例：**
+### 节点抄送配置
 
-```json
-{
-    "buttonPermissions": ["back", "file", "copy", "transfer"],
-    "copySettings": ["1", "2", "3"],
-    "variables": []
-}
-```
+Warm-Flow 2.x 起，节点上的抄送对象不再放在 `ext` 中，而是由引擎节点配置 `flow_node.node_config.copy` 承载：在流程设计器中配置，流程流转到该节点时由引擎自动抄送，角色 / 部门会经 `WorkflowPermissionHandler#convertPermissions` 展开成用户。
+
+- 原 `CopySettingEnum` 与 `NodeExtVo.copySettings` 已删除
+- `FlwNodeExtServiceImpl` 遇到 `ext` 里残留的旧抄送配置会静默跳过（存量数据由升级脚本迁到 `node_config.copy`）
+- 办理页展示的节点抄送人（`FlowTaskVo.copyList`）读取的也是 `node_config.copy`
+- 按钮权限中的「抄送」(`copy`) 控制的是办理时能否手动选择抄送人，与节点抄送配置相互独立
 
 ## 消息通知
 
@@ -982,57 +1026,55 @@ variables.put("initiatorDeptId", LoginHelper.getDeptId());
 // 业务ID
 variables.put("businessId", businessId);
 
-// 自动审批标识
-variables.put("autoPass", autoPass);
-
 // 业务编号
 variables.put("businessCode", businessCode);
 ```
 
+> 2.x 起自动审批由引擎按流程定义 `def_config.autoPass` 在办理链内完成，启动流程时不再往实例变量里写入 `autoPass`。
+
 ### 常量定义
 
 ```java
-public class FlowConstant {
+public interface FlowConstant {
     /** 流程发起人 */
-    public static final String INITIATOR = "initiator";
-
-    /** 发起人部门 */
-    public static final String INITIATOR_DEPT_ID = "initiatorDeptId";
+    String INITIATOR = "initiator";
 
     /** 业务ID */
-    public static final String BUSINESS_ID = "businessId";
+    String BUSINESS_ID = "businessId";
 
-    /** 业务编号 */
-    public static final String BUSINESS_CODE = "businessCode";
+    /** 发起人部门 */
+    String INITIATOR_DEPT_ID = "initiatorDeptId";
 
-    /** 自动审批 */
-    public static final String AUTO_PASS = "autoPass";
+    /** 流程分类Id转名称 */
+    String CATEGORY_ID_TO_NAME = "category_id_to_name";
 
-    /** 提交标识 */
-    public static final String SUBMIT = "submit";
+    /** 流程分类名称 */
+    String FLOW_CATEGORY_NAME = "flow_category_name#30d";
+
+    /** 默认租户OA申请分类id */
+    Long FLOW_CATEGORY_ID = 100L;
+
+    /** 是否为申请人提交 */
+    String SUBMIT = "submit";
 
     /** 抄送列表 */
-    public static final String FLOW_COPY_LIST = "flowCopyList";
+    String FLOW_COPY_LIST = "flowCopyList";
 
     /** 消息类型 */
-    public static final String MESSAGE_TYPE = "messageType";
+    String MESSAGE_TYPE = "messageType";
 
     /** 消息通知内容 */
-    public static final String MESSAGE_NOTICE = "notice";
+    String MESSAGE_NOTICE = "messageNotice";
 
-    /** 委派任务 */
-    public static final String DELEGATE_TASK = "delegateTask";
+    /** 任务状态字典类型 */
+    String WF_TASK_STATUS = "wf_task_status";
 
-    /** 转办任务 */
-    public static final String TRANSFER_TASK = "transferTask";
-
-    /** 加签 */
-    public static final String ADD_SIGNATURE = "addSignature";
-
-    /** 减签 */
-    public static final String REDUCTION_SIGNATURE = "reductionSignature";
+    /** 业务编号 */
+    String BUSINESS_CODE = "businessCode";
 }
 ```
+
+> 委派 / 转办 / 加签 / 减签的操作编码（`delegateTask` / `transferTask` / `addSignature` / `reductionSignature`）定义在 `TaskOperationEnum` 中。
 
 ### 变量传递
 
@@ -1077,76 +1119,94 @@ public class CompleteTaskBo {
 
 ### 监听器接口
 
-系统实现了 `GlobalListener` 接口，监听流程执行的关键节点：
+系统实现了 Warm-Flow 2.x 的 `org.dromara.warm.flow.core.spi.GlobalListener` 接口（1.8.9 时位于 `org.dromara.warm.flow.core.listener` 包），四个回调统一接收 `org.dromara.warm.flow.core.spi.ListenerVariable`：
 
 ```java
+import org.dromara.warm.flow.core.spi.GlobalListener;
+import org.dromara.warm.flow.core.spi.ListenerVariable;
+
 @Component
 public class WorkflowGlobalListener implements GlobalListener {
 
     /**
-     * 任务创建监听
-     * 触发时机：新任务生成时
+     * 创建监听器，任务创建时执行
      */
     @Override
-    public void create(CreateListener createListener) {
-        // 处理任务创建事件
+    public void create(ListenerVariable listenerVariable) {
     }
 
     /**
-     * 流程启动监听
-     * 触发时机：流程实例创建时
+     * 开始监听器，任务开始办理时执行
+     * 把节点扩展属性中的自定义参数合并进流程变量
      */
     @Override
-    public void start(StartListener startListener) {
-        // 处理流程启动事件
+    public void start(ListenerVariable listenerVariable) {
+        // ...
     }
 
     /**
-     * 任务分配监听
-     * 触发时机：任务分配给办理人时
+     * 分派监听器，动态修改待办任务的办理人
+     * 处理办理 / 退回时指定的办理人，申请节点的办理人设为发起人
      */
     @Override
-    public void assignment(AssignmentListener assignmentListener) {
-        // 处理任务分配事件
+    public void assignment(ListenerVariable listenerVariable) {
+        // ...
     }
 
     /**
-     * 任务完成监听
-     * 触发时机：任务办理完成时
+     * 完成监听器，当前任务完成后执行
      */
     @Override
-    public void finish(FinishListener finishListener) {
-        // 处理任务完成事件
+    public void finish(ListenerVariable listenerVariable) {
+        // ...
     }
 }
 ```
+
+> 2.x 删除了 `FlowParams`，监听器中通过 `listenerVariable.getContext()` 获取 `WorkflowContext`（1.8.9 为 `getFlowParams()`），任务状态通过 `workflowContext.getTaskStatus()` 读取。
 
 ### 监听器处理逻辑
 
 ```java
 @Override
-public void finish(FinishListener finishListener) {
-    Instance instance = finishListener.getInstance();
-    HisTask hisTask = finishListener.getHisTask();
+public void finish(ListenerVariable listenerVariable) {
+    Instance instance = listenerVariable.getInstance();
+    Definition definition = listenerVariable.getDefinition();
+    Task task = listenerVariable.getTask();
+    WorkflowContext workflowContext = listenerVariable.getContext();
 
-    // 1. 处理抄送
-    List<FlowCopyBo> flowCopyList = (List<FlowCopyBo>)
-        finishListener.getVariable().get(FlowConstant.FLOW_COPY_LIST);
-    if (CollUtil.isNotEmpty(flowCopyList)) {
-        flwTaskService.setCopy(hisTask, flowCopyList);
+    // 1. 判断流程状态并发布流程事件（撤销、退回、作废、终止、已完成）
+    String status = determineFlowStatus(instance);
+
+    // 2. 发布下一节点的任务事件
+    // ...
+
+    // 3. 只有办理或退回时才处理手动抄送与消息通知
+    if (!isPassOrBack(workflowContext.getTaskStatus())) {
+        return;
     }
+    // 办理时手动选择的抄送人，交给引擎 taskService.copy() 留痕
+    flwTaskService.setCopy(task, flowCopyList);
+    // 发送消息通知
+    flwCommonService.sendMessage(definition.getFlowName(), instance.getId(), messageType, notice);
+}
 
-    // 2. 发送消息通知
-    List<String> messageType = (List<String>)
-        finishListener.getVariable().get(FlowConstant.MESSAGE_TYPE);
-    String notice = (String)
-        finishListener.getVariable().get(FlowConstant.MESSAGE_NOTICE);
-    sendNotification(messageType, notice, instance);
-
-    // 3. 更新流程状态
-    updateFlowStatus(instance, hisTask);
+private String determineFlowStatus(Instance instance) {
+    String flowStatus = instance.getFlowStatus();
+    if (StringUtils.isNotBlank(flowStatus) && BusinessStatusEnum.initialState(flowStatus)) {
+        return flowStatus;
+    }
+    // 只有到达结束节点才算完成：流程可能停在定时 / 消息等待事件上，此时同样没有待办任务
+    if (NodeType.isEnd(instance.getNodeType()) && flwTaskService.isTaskEnd(instance.getId())) {
+        String status = BusinessStatusEnum.FINISH.getStatus();
+        flwInstanceService.updateStatus(instance.getId(), status);
+        return status;
+    }
+    return null;
 }
 ```
+
+> 节点上配置的抄送对象（`node_config.copy`）由引擎在流转时自动抄送，监听器不再预填进 `flowCopyList`，避免同一批人被抄送两次。
 
 ### 事件发布机制
 
@@ -1458,8 +1518,11 @@ public class FlowHisTaskVo {
     /** 节点名称 */
     private String nodeName;
 
-    /** 协作方式 */
-    private Integer cooperateType;
+    /** 协作方式（none无 transfer转办 delegate委派 add_signer加签 remove_signer减签） */
+    private String cooperateType;
+
+    /** 协作方式展示名，由 cooperateType 经引擎 CooperateType 翻译而来 */
+    private String cooperateTypeName;
 
     /** 审批人 */
     private String approver;
@@ -1512,6 +1575,7 @@ public class FlowHisTaskVo {
 | `flow_task` | 流程任务表 |
 | `flow_his_task` | 历史任务表 |
 | `flow_user` | 任务办理人表 |
+| `flow_event_wait` | 事件等待表（2.x 新增，定时 / 消息等需要等待的事件） |
 | `flow_category` | 流程分类表 |
 | `flow_spel` | SpEL规则表 |
 | `flow_instance_biz_ext` | 流程实例业务扩展表 |
@@ -1531,7 +1595,11 @@ flow_definition (流程定义)
             │       │
             │       └── flow_user (办理人)
             │
-            └── flow_his_task (历史任务)
+            ├── flow_his_task (历史任务)
+            │       │
+            │       └── flow_user (抄送人，associated = flow_his_task.id)
+            │
+            └── flow_event_wait (事件等待)
 
 flow_category (流程分类)
     │
@@ -1712,29 +1780,24 @@ flwTaskService.taskOperation(reduceBo, "reductionSignature");
 **注意事项**：
 - 只有会签节点（nodeRatio > 0）才支持加签减签
 - 减签后剩余人数必须大于0
-- 加签减签操作会记录到历史任务中
+- 加签减签操作会记录到历史任务中，`cooperate_type` 与 `flow_status` 分别为 `add_signer` / `remove_signer`
 
 ### 4. 如何实现自动审批？
 
 **问题描述**：某些场景下需要系统自动完成审批。
 
-**解决方案**：配置 `autoPass` 参数。
+**解决方案**：在流程设计器中开启流程定义的自动审批，引擎会写入 `def_config`：
 
-```java
-// 在流程定义的 ext 中配置
+```json
+// flow_definition.def_config
 {
     "autoPass": true
 }
-
-// 启动流程时会自动判断
-Boolean autoPass = Convert.toBool(variables.getOrDefault(AUTO_PASS, false));
-
-// 如果下一节点办理人是当前用户，自动审批
-if (autoPass && nextAssignee.equals(currentUser)) {
-    flowParams.message("流程引擎自动审批！");
-    skipTask(nextTaskId, flowParams, instanceId, true);
-}
 ```
+
+- 自动审批由 Warm-Flow 2.x 引擎在办理链内完成，本项目不再自行递归办理，也不再往流程变量里写 `autoPass`
+- 自动通过的任务在历史中记为 `auto_pass`（字典标签「自动审批」）
+- 后台「流程定义」表单中的自动审批勾选已移除，统一在设计器中配置；1.8.9 存量的 `ext.autoPass` 需执行升级脚本迁移到 `def_config`，否则自动审批失效
 
 ### 5. 如何获取流程审批历史？
 

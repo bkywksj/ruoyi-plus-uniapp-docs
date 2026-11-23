@@ -99,6 +99,23 @@
     "practices/architecture/system.html": {
       "reason": "删除「v4.0 微服务架构（规划中）」「未来架构规划」架构图与「未来可演进到微服务」：项目暂无微服务规划",
       "codesRemoved": 1
+    },
+    "backend/modules/workflow/index.html": {
+      "reason": "工作流对齐 warm-flow 2.1.1（io.github.sgs98 坐标、Command API、字符串状态码与协作方式、def_config / node_config 配置抄送与自动审批、发布校验、完成判定）；新增「从 Warm-Flow 1.8.9 升级」一节"
+    },
+    "backend/modules/workflow/core-concepts.html": {
+      "reason": "工作流对齐 warm-flow 2.1.1（io.github.sgs98 坐标、Command API、字符串状态码与协作方式、def_config / node_config 配置抄送与自动审批、发布校验、完成判定）；删去已不存在的 FlowConstant.AUTO_PASS 等旧常量示例",
+      "codesRemoved": 1
+    },
+    "backend/modules/workflow/definition.html": {
+      "reason": "工作流对齐 warm-flow 2.1.1（io.github.sgs98 坐标、Command API、字符串状态码与协作方式、def_config / node_config 配置抄送与自动审批、发布校验、完成判定）"
+    },
+    "backend/modules/workflow/task.html": {
+      "reason": "工作流对齐 warm-flow 2.1.1（io.github.sgs98 坐标、Command API、字符串状态码与协作方式、def_config / node_config 配置抄送与自动审批、发布校验、完成判定）"
+    },
+    "backend/modules/workflow/instance.html": {
+      "reason": "工作流对齐 warm-flow 2.1.1（io.github.sgs98 坐标、Command API、字符串状态码与协作方式、def_config / node_config 配置抄送与自动审批、发布校验、完成判定）；删去代码里不存在的 setVariable 接口等示例",
+      "codesRemoved": 4
     }
   }
 }

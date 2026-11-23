@@ -12,7 +12,7 @@ RuoYi-Plus 工作流模块是一个功能完善、高度可扩展的企业级工
 
 **核心特性：**
 
-- **轻量级引擎** - 基于 Warm-Flow 1.8.9 版本，核心代码精简，启动快速，内存占用低
+- **轻量级引擎** - 基于 Warm-Flow 2.1.1 版本，核心代码精简，启动快速，内存占用低
 - **可视化设计** - 提供 Web 端流程设计器，支持拖拽式流程定义，所见即所得
 - **多种节点类型** - 支持开始节点、中间节点、结束节点、互斥网关、并行网关等
 - **灵活的任务分配** - 支持审批人、转办人、委托人、抄送人四种办理人类型
@@ -27,7 +27,7 @@ RuoYi-Plus 工作流模块是一个功能完善、高度可扩展的企业级工
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| Warm-Flow | 1.8.9 | 轻量级工作流引擎 |
+| Warm-Flow | 2.1.1 | 轻量级工作流引擎（Maven groupId `io.github.sgs98`） |
 | Spring Boot | 3.5.16 | 应用框架 |
 | MyBatis-Plus | 3.5.16 | ORM 框架 |
 | Sa-Token | 1.45.0 | 认证授权 |
@@ -80,16 +80,26 @@ RuoYi-Plus 工作流模块是一个功能完善、高度可扩展的企业级工
 ```xml
 <!-- Warm Flow 工作流引擎 - 提供工作流核心功能 -->
 <dependency>
-    <groupId>org.dromara.warm</groupId>
+    <groupId>io.github.sgs98</groupId>
     <artifactId>warm-flow-mybatis-plus-sb3-starter</artifactId>
 </dependency>
 
 <!-- Warm Flow UI 插件 - 提供流程设计器界面 -->
 <dependency>
-    <groupId>org.dromara.warm</groupId>
+    <groupId>io.github.sgs98</groupId>
     <artifactId>warm-flow-plugin-ui-sb-web</artifactId>
 </dependency>
 ```
+
+版本号由根 `pom.xml` 统一管理：
+
+```xml
+<properties>
+    <warm-flow.version>2.1.1</warm-flow.version>
+</properties>
+```
+
+> Warm-Flow 从 2.x 起 Maven 坐标由 `org.dromara.warm` 改为 `io.github.sgs98`（artifactId 不变），Java 包名仍是 `org.dromara.warm.flow.*`。本项目基于 Spring Boot 3，使用 `sb3` starter。
 
 ### 数据库初始化
 
@@ -106,6 +116,7 @@ RuoYi-Plus 工作流模块是一个功能完善、高度可扩展的企业级工
 | `flow_task` | 待办任务表 |
 | `flow_his_task` | 历史任务表 |
 | `flow_user` | 流程用户表 |
+| `flow_event_wait` | 事件等待表（2.x 新增，定时 / 消息等需要等待的事件落在此表） |
 
 **RuoYi-Plus 扩展表：**
 
@@ -116,39 +127,66 @@ RuoYi-Plus 工作流模块是一个功能完善、高度可扩展的企业级工
 | `flow_spel` | SPEL 规则表 |
 | `test_leave` | 请假测试表（示例） |
 
-执行 SQL 脚本初始化数据库：
+以上引擎表、扩展表以及工作流菜单、字典都在同一个脚本 `*_ry_plus_workflow.sql` 中，全新安装时在系统表脚本之后执行（以 MySQL 为例）：
 
 ```bash
-# 进入脚本目录
-cd ruoyi-plus-uniapp-workflow/script/sql
-
-# 执行 Warm-Flow 核心表脚本
-mysql -u root -p your_database < warm-flow.sql
-
-# 执行 RuoYi-Plus 扩展表脚本
-mysql -u root -p your_database < workflow-ext.sql
+# 在项目根目录执行，库名以配置文件中的 DB_NAME 为准
+mysql --default-character-set=utf8mb4 -uroot -p ryplus_uni_workflow < script/sql/mysql/ry_plus_sys.sql
+mysql --default-character-set=utf8mb4 -uroot -p ryplus_uni_workflow < script/sql/mysql/ry_plus_app.sql
+mysql --default-character-set=utf8mb4 -uroot -p ryplus_uni_workflow < script/sql/mysql/ry_plus_workflow.sql
 ```
+
+其他数据库对应 `script/sql/oracle/oracle_ry_plus_workflow.sql`、`script/sql/postgres/postgres_ry_plus_workflow.sql`、`script/sql/sqlserver/sqlserver_ry_plus_workflow.sql`，完整的执行顺序与注意事项见 `script/sql/README.md`。
+
+> 已经用 Warm-Flow 1.8.9 跑过业务的老库**不要**重跑全量脚本，改为执行迁移脚本，见本文「从 Warm-Flow 1.8.9 升级」。
 
 ### 配置文件
 
 在 `application.yml` 中配置工作流相关参数：
 
 ```yaml
-# Warm-Flow 工作流配置
 warm-flow:
-  # 是否启用工作流模块
+  # 是否开启工作流，默认true
   enabled: true
-  # 数据填充处理器
-  data-fill-handler-path: plus.ruoyi.workflow.handler.WorkflowDataFillHandler
-  # 租户处理器
-  tenant-handler-path: plus.ruoyi.workflow.handler.WorkflowTenantHandler
-  # 流程设计器配置
-  ui:
-    # 是否启用设计器
-    enabled: true
-    # 设计器访问路径
-    path: /workflow/designer
+  # 是否开启设计器ui
+  ui: true
+  # 默认Authorization，如果有多个token，用逗号分隔
+  token-name: ${sa-token.token-name},clientId
+  # 流程状态对应的三元色
+  chart-status-color:
+    ## 未办理
+    - 62,62,62
+    ## 待办理
+    - 255,205,23
+    ## 已办理
+    - 157,255,0
 ```
+
+**定时事件开关 `warm-flow.timer-enabled`**
+
+Warm-Flow 2.x 新增了定时事件线程，由 `warm-flow.timer-enabled` 控制，引擎默认值为 `false`。本项目 `application.yml` 未配置该项，即**默认关闭**。关闭时，流程定义里含定时事件节点会在发布时被拦截（见「流程定义发布校验」）。如需开启：
+
+```yaml
+warm-flow:
+  # 开启定时事件线程（多租户环境下的限制见「从 Warm-Flow 1.8.9 升级」中的「暂未接入的引擎能力」）
+  timer-enabled: true
+```
+
+### 流程定义发布校验
+
+调用 `publishDefinition` 发布流程定义时，`FlwDefinitionServiceImpl` 会依次校验：
+
+| 校验项 | 规则 |
+|--------|------|
+| 办理人 | 中间节点（`nodeType = 1`）必须配置办理人；申请人节点、事件节点（`event_type` 非空）不要求 |
+| 定时事件 | `event_type` 以 `TIMER_` 开头，且未开启 `warm-flow.timer-enabled` → 拦截 |
+| 消息 / 错误事件 | `event_type` 以 `MESSAGE_` 或 `ERROR_` 开头 → 一律拦截（本系统尚未接入触发接口） |
+| 服务任务 | `nodeType = 6`：`node_config` 必须能解析；按类名方式（`type` 为空或 `class`）配置时，处理器类必须存在且实现 `ServiceTaskHandler`，否则拦截；表达式方式运行时才求值，发布时放行 |
+| 终止结束 | `TERMINATE_END` 只是结束节点的一种，放行 |
+
+校验不通过时抛出 `ServiceException`，提示形如「以下节点暂不支持，无法发布：【xxx】是定时事件，需先开启 warm-flow.timer-enabled」。
+
+> 设计器（warm-flow-ui）只负责保存流程 JSON，没有发布入口，发布只能走后台「流程定义」页面的发布按钮（即 `publishDefinition` 接口）。
 
 ### 启动验证
 
@@ -156,18 +194,20 @@ warm-flow:
 
 1. **访问流程设计器**
 
-打开浏览器访问流程设计器界面：
+流程设计器由 `warm-flow-plugin-ui-sb-web` 提供，前端在「流程定义」页面以 iframe 方式嵌入（`plus-ui/src/views/workflow/processDefinition/design.vue`），地址形如：
 
 ```text
-http://localhost:8080/workflow/designer
+http://localhost:5503/warm-flow-ui/index.html?id={流程定义ID}
 ```
+
+> 2.x 起前端不再传 `onlyDesignShow=true`，设计器会完整显示自动审批、抄送等配置面板。
 
 2. **查看 API 文档**
 
 访问 Swagger 文档查看工作流相关接口：
 
 ```text
-http://localhost:8080/doc.html#/workflow
+http://localhost:5503/doc.html#/workflow
 ```
 
 3. **测试请假流程**
@@ -255,10 +295,11 @@ plus.ruoyi.workflow
 │   ├── constant/
 │   │   └── FlowConstant.java        # 流程常量
 │   └── enums/                       # 枚举定义
-│       ├── TaskStatusEnum.java      # 任务状态枚举
+│       ├── TaskStatusEnum.java      # 任务状态枚举（与引擎 2.x TaskStatus 编码对齐）
 │       ├── TaskAssigneeType.java    # 办理人类型枚举
+│       ├── TaskAssigneeEnum.java    # 办理人分配方式枚举（用户/角色/部门/岗位/SpEL）
+│       ├── TaskOperationEnum.java   # 任务操作枚举（委派/转办/加签/减签）
 │       ├── ButtonPermissionEnum.java # 按钮权限枚举
-│       ├── CopySettingEnum.java     # 抄送设置枚举
 │       ├── MessageTypeEnum.java     # 消息类型枚举
 │       ├── NodeExtEnum.java         # 节点扩展枚举
 │       └── VariablesEnum.java       # 流程变量枚举
@@ -305,12 +346,26 @@ plus.ruoyi.workflow
 │   └── ...
 ├── handler/                         # 处理器
 │   ├── FlowProcessEventHandler.java # 流程事件处理
-│   └── WorkflowPermissionHandler.java # 权限处理
+│   └── WorkflowPermissionHandler.java # 权限处理（实现 org.dromara.warm.flow.core.spi.PermissionHandler）
 ├── listener/                        # 监听器
-│   └── WorkflowGlobalListener.java  # 全局监听器
+│   └── WorkflowGlobalListener.java  # 全局监听器（实现 org.dromara.warm.flow.core.spi.GlobalListener）
 └── rule/                            # 规则引擎
     └── SpelRuleComponent.java       # SPEL 规则组件
 ```
+
+**与引擎的调用方式：** Warm-Flow 2.x 删除了 1.8.9 的 `FlowParams`，`FlwTaskServiceImpl` / `FlwInstanceServiceImpl` 统一通过 `FlowEngine.workflow()` 加命令对象驱动引擎（命令类位于 `org.dromara.warm.flow.core.workflow.command`，上下文位于 `org.dromara.warm.flow.core.workflow.context`）：
+
+| 业务操作 | 命令 | 调用 |
+|----------|------|------|
+| 启动流程 | `StartCommand` | `FlowEngine.workflow().start(command)` |
+| 办理任务 | `CompleteCommand` | `FlowEngine.workflow().complete(command)` |
+| 驳回任务 | `RejectCommand` | `FlowEngine.workflow().reject(command)` |
+| 终止 / 作废 | `TerminateCommand` | `FlowEngine.workflow().terminate(command)` |
+| 撤销流程 | `RevokeCommand` | `FlowEngine.workflow().revoke(command)` |
+| 委派 / 转办 | `DelegateCommand` / `TransferCommand` | `delegate(command)` / `transfer(command)` |
+| 加签 / 减签 | `AddSignerCommand` / `RemoveSignerCommand` | `addSigner(command)` / `removeSigner(command)` |
+
+办理人通过 `OperatorContext` 传入，监听器里通过 `ListenerVariable#getContext()` 拿到 `WorkflowContext`（1.8.9 为 `getFlowParams()`）。
 
 ### 流程执行流程
 
@@ -330,12 +385,14 @@ plus.ruoyi.workflow
 ┌──────────────────────────────────────────────────────────────────┐
 │ 2. 办理任务 (completeTask)                                        │
 │    ├─ 验证任务权限和办理人                                          │
-│    ├─ 处理抄送人 (flowCopyList)                                    │
+│    ├─ 处理办理时手动选择的抄送人 (flowCopyList)                     │
 │    ├─ 执行业务逻辑验证                                              │
 │    ├─ 计算下一节点 (listNextNodes)                                 │
 │    │   ├─ 互斥网关: 根据条件选择分支                                 │
 │    │   └─ 并行网关: 同时创建多个任务                                 │
 │    ├─ 生成新任务或结束流程                                          │
+│    │   ├─ 节点抄送: 引擎按 node_config.copy 自动抄送                │
+│    │   └─ 自动审批: 引擎按 def_config.autoPass 自动通过(auto_pass) │
 │    ├─ 当前任务移入历史 (flow_his_task)                              │
 │    ├─ 发送通知 (邮件/短信/SSE)                                      │
 │    ├─ 发布 ProcessCompleteEvent 事件                               │
@@ -354,13 +411,15 @@ plus.ruoyi.workflow
                               ↓
 ┌──────────────────────────────────────────────────────────────────┐
 │ 4. 流程结束                                                        │
-│    ├─ 到达结束节点                                                  │
-│    ├─ 更新 flow_instance 状态为已完成                               │
+│    ├─ 到达结束节点（实例当前节点为结束节点且无待办任务）            │
+│    ├─ 更新 flow_instance 状态为已完成 (finish)                      │
 │    ├─ 所有任务移入历史表                                            │
 │    ├─ 发布 ProcessEndEvent 事件                                    │
 │    └─ 触发业务回调                                                  │
 └──────────────────────────────────────────────────────────────────┘
 ```
+
+**流程完成判定：** `WorkflowGlobalListener` 只有在实例当前节点是结束节点（`NodeType.isEnd(instance.getNodeType())`）且该实例已无待办任务时，才把实例状态改为 `finish` 并发布完成事件。Warm-Flow 2.x 的流程可能停在定时 / 消息等待事件上，此时同样没有待办任务，仅以「无待办」判断会把仍在等待的实例误判为已完成。
 
 ### 数据库 ER 图
 
@@ -438,16 +497,22 @@ plus.ruoyi.workflow
 
 流程实例是流程定义的运行态，代表一次具体的业务流程执行。每次启动流程都会创建一个新的流程实例。
 
-**流程实例状态：**
+**流程实例状态（业务状态）：**
 
-| 状态 | 说明 |
-|------|------|
-| 运行中 | 流程正在执行，有待办任务 |
-| 已完成 | 流程已到达结束节点 |
-| 已撤销 | 申请人主动撤销 |
-| 已终止 | 管理员强制终止 |
-| 已作废 | 流程被作废 |
-| 已挂起 | 流程暂停执行 |
+实例状态记录在 `flow_instance.flow_status`，由 `BusinessStatusEnum`（`plus.ruoyi.common.core.enums`）定义，编码与引擎 2.x 的 `FlowStatus` 一致，字典为 `wf_business_status`：
+
+| 状态码 | 状态名 | 说明 |
+|--------|--------|------|
+| `draft` | 草稿 | 已发起、申请人尚未提交 |
+| `waiting` | 待审核 | 流程运行中，有待办任务（也包括停在事件等待上的实例） |
+| `back` | 已退回 | 退回到申请人节点 |
+| `cancel` | 已撤销 | 申请人主动撤销 |
+| `finish` | 已完成 | 流程已到达结束节点 |
+| `invalid` | 已作废 | 流程被作废 |
+| `termination` | 已终止 | 流程被终止 |
+| `restart` | 已重启 | 2.x 新增编码，当前引擎版本不会主动写入，仅用于状态描述与字典翻译 |
+
+> 「挂起 / 激活」是实例的激活状态（`activeInstance` 接口），与 `flow_status` 相互独立。
 
 **业务扩展信息：**
 
@@ -479,22 +544,19 @@ public class FlowInstanceBizExt {
 
 ### 任务状态 (TaskStatus)
 
-任务状态描述了任务在流程中的处理结果，RuoYi-Plus 定义了 12 种任务状态：
+任务状态记录在 `flow_task.flow_status`（待办）与 `flow_his_task.flow_status`（审批历史），取值与 Warm-Flow 2.x 引擎 `TaskStatus` 的编码一致，另加本项目会主动写入的「撤销」「终止」。`TaskStatusEnum` 共 9 个取值：
 
 | 状态码 | 状态名 | 说明 |
 |--------|--------|------|
-| `waiting` | 待审核 | 等待办理人处理 |
+| `pending` | 待审批 | 运行中的待办任务 |
 | `pass` | 通过 | 审批通过，流转到下一节点 |
+| `auto_pass` | 自动审批 | 引擎按流程定义 `def_config` 中的 `autoPass` 自动通过 |
 | `back` | 退回 | 驳回到上一节点或指定节点 |
-| `cancel` | 撤销 | 申请人撤回流程 |
-| `termination` | 终止 | 管理员强制终止流程 |
-| `invalid` | 作废 | 流程被作废 |
-| `transfer` | 转办 | 转交给其他人办理 |
-| `depute` | 委托 | 委托他人代为办理 |
-| `copy` | 抄送 | 抄送通知，不参与审批 |
-| `sign` | 加签 | 增加审批人 |
-| `sign_off` | 减签 | 移除审批人 |
-| `timeout` | 超时 | 任务超时未处理 |
+| `invalid` | 失效 | 任务被作废，或会签 / 票签中被其他人决定后失效 |
+| `take_back` | 拿回 | 办理人把已办任务拿回重新处理 |
+| `copy` | 抄送 | 抄送记录，不参与审批 |
+| `cancel` | 撤销 | 撤销流程时本项目显式写入 |
+| `termination` | 终止 | 流程被终止 |
 
 **状态枚举定义：**
 
@@ -503,18 +565,15 @@ public class FlowInstanceBizExt {
 @AllArgsConstructor
 public enum TaskStatusEnum {
 
-    CANCEL("cancel", "撤销"),
+    PENDING("pending", "待审批"),
     PASS("pass", "通过"),
-    WAITING("waiting", "待审核"),
-    INVALID("invalid", "作废"),
+    AUTO_PASS("auto_pass", "自动审批"),
     BACK("back", "退回"),
-    TERMINATION("termination", "终止"),
-    TRANSFER("transfer", "转办"),
-    DEPUTE("depute", "委托"),
+    INVALID("invalid", "失效"),
+    TAKE_BACK("take_back", "拿回"),
     COPY("copy", "抄送"),
-    SIGN("sign", "加签"),
-    SIGN_OFF("sign_off", "减签"),
-    TIMEOUT("timeout", "超时");
+    CANCEL("cancel", "撤销"),
+    TERMINATION("termination", "终止");
 
     private final String status;
     private final String desc;
@@ -527,6 +586,22 @@ public enum TaskStatusEnum {
     }
 }
 ```
+
+### 协作方式 (CooperateType)
+
+转办、委派、加签、减签在 2.x 不再是任务状态，而是记在 `flow_his_task.cooperate_type`（`varchar(20)`，默认 `none`），取值为引擎 `org.dromara.warm.flow.core.enums.CooperateType` 的编码：
+
+| 编码 | 名称 | 说明 |
+|------|------|------|
+| `none` | 无 | 普通审批（会签 / 票签 / 抄送也不落此列） |
+| `transfer` | 转办 | 任务转交给其他人办理 |
+| `delegate` | 委派 | 委托他人代为办理 |
+| `add_signer` | 加签 | 增加审批人 |
+| `remove_signer` | 减签 | 移除审批人 |
+
+协作操作产生的历史记录，其 `flow_status` 与 `cooperate_type` 相同（如转办历史的 `flow_status = transfer`）。`FlowHisTaskVo` 中 `cooperateType` 为 `String`，并附带由引擎枚举翻译的 `cooperateTypeName`。
+
+**任务状态字典 `wf_task_status`：** 除任务状态外还包含协作编码（对应协作历史的 `flow_status`），共 13 项：`pending` 待审批、`pass` 通过、`auto_pass` 自动审批、`copy` 抄送、`back` 退回、`take_back` 拿回、`invalid` 失效、`cancel` 撤销、`transfer` 转办、`delegate` 委派、`add_signer` 加签、`remove_signer` 减签、`termination` 已终止。
 
 ### 办理人类型 (AssigneeType)
 
@@ -573,7 +648,7 @@ public enum TaskAssigneeType {
 
 ### 节点类型 (NodeType)
 
-工作流支持以下节点类型：
+工作流支持以下节点类型（引擎 `org.dromara.warm.flow.core.enums.NodeType`）：
 
 | 类型值 | 节点类型 | 说明 |
 |--------|----------|------|
@@ -582,6 +657,10 @@ public enum TaskAssigneeType {
 | `2` | 结束节点 | 流程终点，可以有多个 |
 | `3` | 互斥网关 | 条件分支，根据条件选择一条路径 |
 | `4` | 并行网关 | 并行分支，同时执行多条路径 |
+| `5` | 包容网关 | 引擎 `INCLUSIVE` 类型 |
+| `6` | 服务任务 | 引擎 `SERVICE` 类型，需实现 `ServiceTaskHandler`，本项目暂未接入（见升级章节） |
+
+> 2.x 的事件节点（定时 / 消息 / 错误 / 终止结束等）不是独立的节点类型，而是通过 `flow_node.event_type` 标识，相关列还有 `event_name`、`attached_to_node_code`、`interrupting`。
 
 **节点示例：**
 
@@ -1000,6 +1079,17 @@ completeBo.setFlowCopyList(copyList);
 flwTaskService.completeTask(completeBo);
 ```
 
+办理时手动选择的抄送人由 `FlwTaskServiceImpl#setCopy` 交给引擎 `taskService.copy(...)` 留痕：引擎写一条 `flow_status = copy` 的历史记录，抄送人记在 `flow_user`（`type = '4'`），其 `associated` 关联的是**抄送历史的主键 `flow_his_task.id`**（1.8.9 时代关联的是 `flow_his_task.task_id`）。
+
+**节点抄送与自动审批改由引擎配置：**
+
+| 能力 | 1.8.9 | 2.1.1 |
+|------|-------|-------|
+| 节点抄送 | 节点扩展属性 `ext` 中的抄送设置（`CopySettingEnum`） | 引擎节点配置 `flow_node.node_config.copy`，在设计器中配置，流转时由引擎自动抄送；角色 / 部门会经 `WorkflowPermissionHandler#convertPermissions` 展开成用户 |
+| 自动审批 | 流程定义 `ext.autoPass` + 本项目递归办理 | 引擎流程定义配置 `flow_definition.def_config.autoPass`，在设计器中配置，由引擎在办理链内自动通过并记为 `auto_pass` |
+
+`CopySettingEnum` 与 `NodeExtVo.copySettings` 已删除，`FlwNodeExtServiceImpl` 解析节点扩展属性时会静默跳过旧的抄送配置；后台「流程定义」表单中的「自动审批」勾选也已移除，避免与设计器配置互相覆盖。
+
 ---
 
 ## 最佳实践
@@ -1098,32 +1188,9 @@ public class LeaveService {
 
 **租户隔离：**
 
-工作流模块默认支持多租户，通过 `tenant_id` 字段实现数据隔离：
+工作流模块默认支持多租户：`flow_*` 引擎表都带 `tenant_id` 字段，由系统的租户插件（`tenant.enable`）按当前登录租户自动拼接过滤条件，无需额外配置 `warm-flow` 的租户处理器。新增租户时，`SysTenantServiceImpl` 会在 `warm-flow.enabled` 为 `true` 时调用 `WorkflowService#syncDef(tenantId)` 为新租户同步流程定义。
 
-```yaml
-# 配置租户处理器
-warm-flow:
-  tenant-handler-path: plus.ruoyi.workflow.handler.WorkflowTenantHandler
-```
-
-```java
-/**
- * 工作流租户处理器
- */
-@Component
-public class WorkflowTenantHandler implements TenantHandler {
-
-    @Override
-    public String getTenantId() {
-        return TenantHelper.getTenantId();
-    }
-
-    @Override
-    public boolean isIgnore() {
-        return TenantHelper.isIgnore();
-    }
-}
-```
+> ⚠️ 开启 `warm-flow.timer-enabled` 后，定时线程没有登录上下文，租户插件会给 `flow_event_wait` 的轮询与处理 SQL 都加上默认租户 `000000` 的条件，**非默认租户的定时事件不会触发**。详见「从 Warm-Flow 1.8.9 升级」中的「暂未接入的引擎能力」。
 
 ---
 
@@ -1336,6 +1403,8 @@ public class CustomNodeHandler implements NodeHandler {
 }
 ```
 
+> 自动审批无需自己实现：Warm-Flow 2.x 已内置该能力，在设计器中开启流程定义的自动审批（写入 `def_config.autoPass`）即可，自动通过的任务状态记为 `auto_pass`。
+
 ### 自定义事件监听
 
 监听工作流事件：
@@ -1533,6 +1602,95 @@ export function listRejectableNodes(taskId: number, nodeCode: string) {
   })
 }
 ```
+
+---
+
+## 从 Warm-Flow 1.8.9 升级
+
+工作流引擎已从 Warm-Flow 1.8.9 升级到 2.1.1。2.x 引擎读取新的表结构与状态编码，**升级代码必须同时迁移数据库**，不能只换 jar。
+
+### 破坏性变更概要
+
+| 类别 | 1.8.9 | 2.1.1 |
+|------|-------|-------|
+| Maven 坐标 | `org.dromara.warm` | `io.github.sgs98`（artifactId 不变，本项目用 `warm-flow-mybatis-plus-sb3-starter`） |
+| 引擎调用 | `FlowParams` | `FlowEngine.workflow()` + `StartCommand` / `CompleteCommand` 等命令对象，`OperatorContext` / `WorkflowContext` |
+| 扩展接口包路径 | `org.dromara.warm.flow.core.listener.GlobalListener` / `ListenerVariable`、`org.dromara.warm.flow.core.handler.PermissionHandler` | 迁到 `org.dromara.warm.flow.core.spi`，监听器内 `getFlowParams()` 改为 `getContext()` |
+| 任务状态 | `waiting`、`depute`、`sign`、`sign_off`、`timeout` 等 | `pending` / `pass` / `auto_pass` / `back` / `invalid` / `take_back` / `copy`，本项目另写 `cancel` / `termination` |
+| 实例状态 | — | 编码不变，新增 `restart` |
+| 协作方式 | `flow_his_task.cooperate_type` 为 `tinyint`（数字码） | `varchar(20)`：`none` / `transfer` / `delegate` / `add_signer` / `remove_signer` |
+| 抄送 | 本项目自行生成抄送历史，抄送人 `flow_user.associated` 关联 `flow_his_task.task_id` | 引擎 `taskService.copy()`，`associated` 关联 `flow_his_task.id`；节点抄送读 `node_config.copy` |
+| 自动审批 | 流程定义 `ext.autoPass` | 流程定义 `def_config.autoPass`，由引擎处理 |
+| 表结构 | — | `flow_definition` 加 `def_config`；`flow_node` 删 `version`，加 `node_config` / `event_type` / `event_name` / `attached_to_node_code` / `interrupting`；`flow_his_task` 加 `node_config`；`flow_instance.node_code` 加长到 100；新表 `flow_event_wait` |
+| 配置 | — | 新增 `warm-flow.timer-enabled`（引擎默认 `false`，本项目未配置即关闭） |
+| 流程完成判定 | 无待办即完成 | 到达结束节点且无待办才完成 |
+
+本项目代码侧对应的调整：删除 `CopySettingEnum`、`NodeExtVo.copySettings`；`TaskStatusEnum` 改为新编码；`BusinessStatusEnum` 补 `RESTART`；`FlowHisTaskVo.cooperateType` 改为 `String`；`FlwTaskMapper.xml` 的抄送查询改为按 `flow_user.associated = flow_his_task.id` 关联；发布流程定义时增加事件节点与服务任务的校验（见「流程定义发布校验」）。前端「流程定义」页去掉自动审批勾选，设计器不再传 `onlyDesignShow`。
+
+**语义变化需要注意：** 委派 / 转办 / 加签 / 减签不再写任务状态，改由 `cooperate_type` 记录；撤销写 `cancel`；作废走终止命令（实例 `invalid`、任务 `invalid`）。旧的自动审批与节点抄送配置**不迁移就会失效**。
+
+### 数据库迁移脚本
+
+全新安装直接执行全量脚本 `*_ry_plus_workflow.sql`（已是 2.1.1 结构），无需迁移。已用 1.8.9 跑过业务的存量库，执行 `script/sql/update/` 下与数据库类型匹配的一个脚本：
+
+| 数据库 | 迁移脚本 | 最低版本 | 执行方式 |
+|--------|----------|----------|----------|
+| MySQL | `script/sql/update/mysql_workflow_warmflow2.sql` | 8.0.4（第 6 段用到 `JSON_TABLE`；5.7 跳过第 6 段并按 8.7 查询人工迁移抄送配置） | `mysql --default-character-set=utf8mb4 -uroot -p 库名 < script/sql/update/mysql_workflow_warmflow2.sql`，须在同一会话中从头执行 |
+| Oracle | `script/sql/update/oracle_workflow_warmflow2.sql` | 12.1.0.2 | 用流程表属主用户，以 SQL*Plus / SQLcl / DBeaver「执行脚本」整体执行（PL/SQL 块以单独一行 `/` 结束） |
+| PostgreSQL | `script/sql/update/postgres_workflow_warmflow2.sql` | 9.6 | 在流程表所在 schema 下 `psql -f` 执行，须同一会话；需要整体回滚可加 `-1` |
+| SQL Server | `script/sql/update/sqlserver_workflow_warmflow2.sql` | 2016（第 6 段还要求数据库兼容级别 >= 130，不满足时该段自动跳过，改按 8.7 人工迁移） | `sqlcmd -b -I -f 65001 -d 库名 -i script/sql/update/sqlserver_workflow_warmflow2.sql`，同一连接执行 |
+
+脚本按段执行：`1 DDL → 2 状态码迁移 → 3 协作方式 → 4 抄送人关联 → 5 自动审批配置 → 6 节点抄送配置 → 7 字典 → 8 校验查询`，第 1 ~ 7 段可重复执行，已迁移的数据不会被二次改写。
+
+**主要映射规则：**
+
+| 对象 | 旧值 → 新值 |
+|------|-------------|
+| 待办 `flow_task.flow_status` | `draft` / `waiting` → `pending`，`cancel` → `back` |
+| 历史 `flow_his_task.flow_status` | `draft` → `pass`，`depute` → `delegate`，`sign` → `add_signer`，`sign_off` → `remove_signer` |
+| 协作方式 `cooperate_type` | `0` / `1` / `4` / `5` → `none`，`2` → `transfer`，`3` → `delegate`，`6` → `add_signer`，`7` → `remove_signer` |
+| 抄送人 `flow_user.associated`（`type = '4'`） | 旧 `task_id` → 对应抄送历史的 `flow_his_task.id`（仅在恰好匹配 1 条时改写） |
+| 自动审批 | `flow_definition.ext.autoPass` → `def_config.autoPass` |
+| 节点抄送 | `flow_node.ext` 中的纯数字抄送对象 → `node_config.copy` |
+| 字典 `wf_task_status` | 按原主键改值（如 `waiting` → `pending`、`depute` → `delegate`、`timeout` → `take_back`），新增 `auto_pass`；`wf_business_status` 新增 `restart` |
+
+实例状态 `flow_instance.flow_status` 的字符串编码与 2.x 一致，保持不变，只转换引擎遗留的数字码。
+
+### 执行步骤与注意事项
+
+1. **完整备份数据库**（至少 `flow_definition` / `flow_node` / `flow_instance` / `flow_task` / `flow_his_task` / `flow_user` / `sys_dict_data`），脚本会改写审批历史，无法自动回滚。
+2. **停掉旧版（1.8.9）应用**：旧版会继续写入旧编码，混跑期间写入的数据不会被脚本覆盖。
+3. 执行迁移脚本。
+4. 部署 2.1.1 版本应用并启动。
+5. 在「系统管理 → 缓存管理」**刷新字典缓存**，否则前端仍显示旧的任务状态文案。
+6. 在「租户管理 → 同步租户字典」执行一次：脚本只给 `000000` 租户插入新增的两条字典，其他租户由该功能补齐。
+7. 逐条执行脚本第 8 段的校验查询，按注释核对结果。
+
+**需要人工处理的项**（第 8 段校验查询可查出）：
+
+- 节点抄送配置中带角色 / 部门前缀等非纯数字 ID、节点已有 `node_config.copy`，或 `node_config` 不是合法 JSON 的节点，不会自动迁移
+- 同一个抄送 `task_id` 对应多条抄送历史的抄送人记录
+- 历史中的 `waiting` / `timeout` 记录：2.x 没有「超时」状态，脚本 2.5 段提供了改为 `invalid` 的注释语句，确认后手动执行
+- 旧自动审批历史（`pass` + 固定意见「流程引擎自动审批！」）想统一显示为「自动审批」，可确认后执行脚本 2.4 段的注释语句
+- 实例状态中的引擎数字码 `2` / `3` / `10` / `11`（本项目旧代码不会写入，正常应为 0 行）
+- 旧抄送历史的 `task_id` 是旧代码临时生成的 ID，2.x 按「待办 + 抄送历史」做的抄送人查看权限校验对这些旧记录不生效；「我的抄送」列表按 `associated = flow_his_task.id` 查询，不受影响
+
+> Oracle / SQL Server 版本的第 5、6 段只在目标列为空时写入（不做 JSON 合并），节点抄送只迁移恰好含 1 个旧抄送设置的节点，具体以各脚本文件头说明为准。
+
+### 暂未接入的引擎能力
+
+Warm-Flow 2.x 引擎具备以下能力，本项目目前暂未接入，设计器虽然能画出对应节点，但发布时会被拦截或需要额外开发：
+
+| 能力 | 现状 |
+|------|------|
+| 定时事件（定时启动 / 定时捕获 / 定时边界） | 依赖 `warm-flow.timer-enabled`，项目默认关闭，含定时事件的流程无法发布。**多租户限制**：开启后定时线程没有登录上下文，`flow_event_wait` 的轮询与处理只会命中默认租户 `000000`，非默认租户的定时事件不会触发；接入前需让轮询忽略租户、处理时切换到记录所属租户 |
+| 消息事件（消息启动 / 捕获 / 边界 / 抛出 / 结束） | 引擎提供 `InsService#triggerMessage` / `startByMessage`，本项目尚未提供对外触发接口，发布时一律拦截 |
+| 错误事件 | 发布时一律拦截 |
+| 服务任务 | 需开发者实现 `org.dromara.warm.flow.core.service.task.ServiceTaskHandler`，并在节点 `node_config` 中配置处理器（`type` / `handler`）；发布时校验处理器类 |
+| 事件等待管理 | 引擎新增 `flow_event_wait` 表，本项目暂无对应管理页面 |
+| 自由跳转 | 引擎支持，本项目未提供对应操作入口 |
+
+> 终止结束事件（`TERMINATE_END`）不依赖触发器，可以正常发布使用，实例与业务单会记为 `termination`。
 
 ---
 
