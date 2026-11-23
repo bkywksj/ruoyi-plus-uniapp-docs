@@ -170,7 +170,8 @@ public class FlowInstance {
 /**
  * 流程实例业务扩展
  */
-public class FlowInstanceBizExt {
+@TableName("flow_instance_biz_ext")
+public class FlowInstanceBizExt extends TenantEntity {
     /** 主键ID */
     private Long id;
 
@@ -184,13 +185,11 @@ public class FlowInstanceBizExt {
     private String businessCode;
 
     /** 业务标题 */
-    private String title;
+    private String businessTitle;
 
-    /** 表名 */
-    private String tableName;
-
-    /** 扩展信息（JSON格式） */
-    private String ext;
+    /** 删除标志 */
+    @TableLogic
+    private String delFlag;
 }
 ```
 
@@ -612,8 +611,8 @@ public class FlowNode {
     /** 权限标识（办理人配置） */
     private String permissionFlag;
 
-    /** 节点比例（会签比例，0表示非会签） */
-    private BigDecimal nodeRatio;
+    /** 节点比例（字符串，"0" 或签，"100" 会签，1 ~ 99 票签通过百分比） */
+    private String nodeRatio;
 
     /** 任意跳转节点编码（驳回指定节点） */
     private String anyNodeSkip;
@@ -696,8 +695,8 @@ public class FlowNode {
 会签模式要求所有指定的办理人都必须审批通过，流程才能继续。
 
 ```java
-// 节点比例为 1.0 表示 100% 通过才能继续
-flowNode.setNodeRatio(new BigDecimal("1.0"));
+// nodeRatio 是字符串，"100" 表示会签（引擎 CooperateType.isCountersign 判定）
+flowNode.setNodeRatio("100");
 ```
 
 **会签特点：**
@@ -710,8 +709,9 @@ flowNode.setNodeRatio(new BigDecimal("1.0"));
 票签模式只要达到指定比例的办理人审批通过，流程即可继续。
 
 ```java
-// 节点比例为 0.5 表示 50% 通过即可继续
-flowNode.setNodeRatio(new BigDecimal("0.5"));
+// 0 ~ 100 之间的值为票签通过百分比，"50" 表示 50% 通过即可继续
+// （引擎 CooperateType.isVoteSignPassRatio 判定；"0" 为或签）
+flowNode.setNodeRatio("50");
 ```
 
 **票签特点：**
@@ -805,18 +805,26 @@ public class WorkflowPermissionHandler implements PermissionHandler {
 任务办理人记录在 `flow_user` 表中，通过 `TaskAssigneeType` 区分类型：
 
 ```java
+@Getter
+@AllArgsConstructor
 public enum TaskAssigneeType {
     /** 审批人 - 负责审批任务的人 */
-    APPROVER(1, "审批人"),
+    APPROVER("1", "待办任务的审批人权限"),
 
     /** 转办人 - 任务被转办后的新办理人 */
-    TRANSFER(2, "转办人"),
+    TRANSFER("2", "待办任务的转办人权限"),
 
-    /** 被委托人 - 任务被委托后的代办人 */
-    DELEGATE(3, "被委托人"),
+    /** 委托人 - 任务被委托后的代办人 */
+    DELEGATE("3", "待办任务的委托人权限"),
 
     /** 抄送人 - 任务抄送的接收人 */
-    COPY(4, "抄送人");
+    COPY("4", "待办任务的抄送人权限");
+
+    /** 类型（与 flow_user.type 一致，字符串） */
+    private final String code;
+
+    /** 描述 */
+    private final String description;
 }
 ```
 
@@ -841,8 +849,8 @@ ${initiator}
 // 返回发起人部门
 ${initiatorDeptId}
 
-// 自定义表达式（需在SpEL规则表中配置）
-#{leaderOfDept(initiatorDeptId)}
+// 调用 Spring Bean 方法（内置规则：发起人部门负责人）
+#{@spelRuleComponent.selectDeptLeaderById(#initiatorDeptId)}
 ```
 
 ### SpEL 规则配置
@@ -850,21 +858,33 @@ ${initiatorDeptId}
 系统支持自定义 SpEL 规则，存储在 `flow_spel` 表中：
 
 ```java
-public class FlowSpel {
-    /** 规则ID */
+@TableName("flow_spel")
+public class FlowSpel extends BaseEntity {
+    /** 主键id */
+    @TableId(value = "id")
     private Long id;
 
-    /** 规则名称 */
-    private String name;
+    /** 组件名称（Spring Bean 名，如 spelRuleComponent） */
+    private String componentName;
 
-    /** 规则内容（SpEL表达式） */
-    private String expression;
+    /** 方法名（如 selectDeptLeaderById） */
+    private String methodName;
 
-    /** 返回值类型 */
-    private String returnType;
+    /** 参数名（如 initiatorDeptId） */
+    private String methodParams;
 
-    /** 备注说明 */
+    /** 预览 SpEL 表达式（如 #{@spelRuleComponent.selectDeptLeaderById(#initiatorDeptId)}） */
+    private String viewSpel;
+
+    /** 状态 */
+    private String status;
+
+    /** 备注 */
     private String remark;
+
+    /** 删除标志 */
+    @TableLogic
+    private String delFlag;
 }
 ```
 
@@ -875,33 +895,39 @@ public class FlowSpel {
 节点可以配置不同的操作按钮权限：
 
 ```java
+@Getter
+@AllArgsConstructor
 public enum ButtonPermissionEnum implements NodeExtEnum {
     /** 弹窗选人 - 审批时可选择下一节点办理人 */
-    POP("弹窗选人", "pop", false),
+    POP("是否弹窗选人", "pop", false),
 
     /** 委托 - 将任务委托给他人代办 */
-    TRUST("委托", "trust", false),
+    TRUST("是否能委托", "trust", false),
 
     /** 转办 - 将任务转交给他人办理 */
-    TRANSFER("转办", "transfer", false),
+    TRANSFER("是否能转办", "transfer", false),
 
     /** 抄送 - 办理时抄送给相关人员 */
-    COPY("抄送", "copy", false),
+    COPY("是否能抄送", "copy", false),
 
     /** 退回 - 驳回任务到前置节点 */
-    BACK("退回", "back", true),
+    BACK("是否显示退回", "back", true),
 
     /** 加签 - 在会签节点增加办理人 */
-    ADD_SIGN("加签", "addSign", false),
+    ADD_SIGN("是否能加签", "addSign", false),
 
     /** 减签 - 在会签节点减少办理人 */
-    SUB_SIGN("减签", "subSign", false),
+    SUB_SIGN("是否能减签", "subSign", false),
 
     /** 终止 - 直接终止整个流程 */
-    TERMINATION("终止", "termination", false),
+    TERMINATION("是否能终止", "termination", true),
 
     /** 附件 - 支持上传附件 */
-    FILE("附件", "file", true);
+    FILE("是否能上传附件", "file", true);
+
+    private final String label;
+    private final String value;
+    private final boolean selected;
 }
 ```
 
@@ -916,7 +942,7 @@ public enum ButtonPermissionEnum implements NodeExtEnum {
 | 退回 | back | 是 | 将任务驳回到前置节点 |
 | 加签 | addSign | 否 | 在会签节点增加审批人 |
 | 减签 | subSign | 否 | 在会签节点减少审批人 |
-| 终止 | termination | 否 | 直接终止整个流程 |
+| 终止 | termination | 是 | 直接终止整个流程 |
 | 附件 | file | 是 | 支持上传审批附件 |
 
 ### 节点扩展配置
@@ -1213,31 +1239,70 @@ private String determineFlowStatus(Instance instance) {
 系统通过 Spring 事件机制发布流程事件：
 
 ```java
+@ConditionalOnEnable
+@Slf4j
 @Component
 public class FlowProcessEventHandler {
 
-    private final ApplicationEventPublisher eventPublisher;
-
     /**
-     * 发布流程事件
+     * 发布流程事件 ProcessEvent（草稿、撤销、退回、作废、终止、已完成等）
+     *
+     * @param flowCode 流程定义编码
+     * @param instance 实例数据
+     * @param status   流程状态
+     * @param params   办理参数
+     * @param submit   为 true 时表示申请人节点办理
      */
-    public void processHandler(String flowStatus, FlowInstance instance) {
-        ProcessEvent event = new ProcessEvent();
-        event.setFlowStatus(flowStatus);
-        event.setBusinessId(instance.getBusinessId());
-        event.setInstanceId(instance.getId());
-        eventPublisher.publishEvent(event);
+    public void processHandler(String flowCode, Instance instance, String status, Map<String, Object> params, boolean submit) {
+        ProcessEvent processEvent = new ProcessEvent();
+        processEvent.setTenantId(TenantHelper.getTenantId());
+        processEvent.setFlowCode(flowCode);
+        processEvent.setInstanceId(instance.getId());
+        processEvent.setBusinessId(instance.getBusinessId());
+        processEvent.setNodeType(instance.getNodeType());
+        processEvent.setNodeCode(instance.getNodeCode());
+        processEvent.setNodeName(instance.getNodeName());
+        processEvent.setStatus(status);
+        processEvent.setParams(params);
+        processEvent.setSubmit(submit);
+        SpringUtils.context().publishEvent(processEvent);
     }
 
     /**
-     * 发布任务事件
+     * 发布任务创建事件 ProcessTaskEvent
+     *
+     * @param flowCode 流程定义编码
+     * @param instance 实例数据
+     * @param taskId   新建任务id
+     * @param params   上一个任务的办理参数
      */
-    public void processTaskHandler(HisTask hisTask, Instance instance) {
-        ProcessTaskEvent event = new ProcessTaskEvent();
-        event.setTaskId(hisTask.getId());
-        event.setBusinessId(instance.getBusinessId());
-        event.setFlowStatus(hisTask.getFlowStatus());
-        eventPublisher.publishEvent(event);
+    public void processTaskHandler(String flowCode, Instance instance, Long taskId, Map<String, Object> params) {
+        ProcessTaskEvent processTaskEvent = new ProcessTaskEvent();
+        processTaskEvent.setTenantId(TenantHelper.getTenantId());
+        processTaskEvent.setFlowCode(flowCode);
+        processTaskEvent.setInstanceId(instance.getId());
+        processTaskEvent.setBusinessId(instance.getBusinessId());
+        processTaskEvent.setNodeType(instance.getNodeType());
+        processTaskEvent.setNodeCode(instance.getNodeCode());
+        processTaskEvent.setNodeName(instance.getNodeName());
+        processTaskEvent.setTaskId(taskId);
+        processTaskEvent.setStatus(instance.getFlowStatus());
+        processTaskEvent.setParams(params);
+        SpringUtils.context().publishEvent(processTaskEvent);
+    }
+
+    /**
+     * 发布流程删除事件 ProcessDeleteEvent
+     *
+     * @param flowCode   流程定义编码
+     * @param businessId 业务ID
+     */
+    public void processDeleteHandler(String flowCode, String businessId) {
+        ProcessDeleteEvent processDeleteEvent = new ProcessDeleteEvent();
+        processDeleteEvent.setTenantId(TenantHelper.getTenantId());
+        processDeleteEvent.setFlowCode(flowCode);
+        processDeleteEvent.setBusinessId(businessId);
+        SpringUtils.context().publishEvent(processDeleteEvent);
     }
 }
 ```
@@ -1415,7 +1480,7 @@ public class FlowInstanceVo {
     private String businessCode;
 
     /** 业务标题 */
-    private String title;
+    private String businessTitle;
 
     /** 节点类型 */
     private Integer nodeType;
@@ -1429,8 +1494,8 @@ public class FlowInstanceVo {
     /** 流程状态 */
     private String flowStatus;
 
-    /** 创建者id */
-    private Long createBy;
+    /** 创建者id（字符串） */
+    private String createBy;
 
     /** 创建者名称 */
     private String createByName;
@@ -1485,16 +1550,16 @@ public class FlowTaskVo {
     private String assigneeIds;
 
     /** 按钮权限列表 */
-    private List<String> buttonList;
+    private List<ButtonPermissionVo> buttonList;
 
     /** 抄送列表 */
     private List<FlowCopyVo> copyList;
 
-    /** 变量列表 */
-    private List<VariablesEnum> varList;
+    /** 自定义参数（由节点扩展中 VariablesEnum 类型的配置生成，key=value） */
+    private Map<String, String> varList;
 
-    /** 节点比例（会签比例） */
-    private BigDecimal nodeRatio;
+    /** 节点比例（字符串，"0" 或签，"100" 会签，其余为票签规则） */
+    private String nodeRatio;
 
     /** 是否为申请节点 */
     private Boolean applyNode;
@@ -1528,7 +1593,7 @@ public class FlowHisTaskVo {
     private String approver;
 
     /** 审批人名称 */
-    private String approverName;
+    private String approveName;
 
     /** 流程定义id */
     private Long definitionId;
@@ -1666,11 +1731,19 @@ boolean result = flwTaskService.completeTask(completeTaskBo);
 **监听流程事件**
 ```java
 @Component
+@RequiredArgsConstructor
 public class LeaveProcessEventListener {
 
-    @EventListener
+    // 业务自己的服务与状态枚举，此处仅作示意
+    private final LeaveService leaveService;
+
+    /**
+     * ProcessEvent 由 FlowProcessEventHandler.processHandler 发布，按 flowCode 过滤本业务的流程
+     */
+    @EventListener(condition = "#event.flowCode == 'leave1'")
     public void handleProcessEvent(ProcessEvent event) {
-        String flowStatus = event.getFlowStatus();
+        // 流程状态字段是 status（BusinessStatusEnum 编码）
+        String flowStatus = event.getStatus();
         String businessId = event.getBusinessId();
 
         // 根据流程状态更新业务数据
@@ -1693,11 +1766,11 @@ try {
     flwTaskService.completeTask(completeTaskBo);
 } catch (ServiceException e) {
     if (e.getMessage().contains("流程任务不存在")) {
-        // 任务已被他人处理
-        throw new BusinessException("该任务已被处理，请刷新页面");
-    } else if (e.getMessage().contains("权限不足")) {
-        // 无权操作
-        throw new BusinessException("您没有权限处理此任务");
+        // FlwTaskServiceImpl.completeTask 抛出「流程任务不存在或任务已审批！」：任务已被他人处理
+        throw new ServiceException("该任务已被处理，请刷新页面");
+    } else if (e.getMessage().contains("流程实例不存在")) {
+        // 实例已被删除或作废
+        throw new ServiceException("流程已不存在，请刷新页面");
     } else {
         throw e;
     }
@@ -1713,24 +1786,33 @@ try {
 **解决方案**：使用 SpEL 表达式配置自定义规则。
 
 ```java
-// 1. 在 flow_spel 表中添加自定义规则
-INSERT INTO flow_spel (name, expression, return_type, remark)
-VALUES ('部门主管', '#{getDeptLeader(initiatorDeptId)}', 'String', '获取发起人部门主管');
+// 1. 编写 Spring Bean 方法（参照内置的 SpelRuleComponent）
+@ConditionalOnEnable
+@Component
+@RequiredArgsConstructor
+public class SpelRuleComponent {
 
-// 2. 在服务中实现表达式方法
-@Component("spelFunctions")
-public class SpelFunctions {
+    private final DeptService deptService;
 
-    @Autowired
-    private UserService userService;
-
-    public String getDeptLeader(Long deptId) {
-        return userService.getDeptLeaderId(deptId);
+    /**
+     * 通过发起人部门id获取部门负责人
+     */
+    public Long selectDeptLeaderById(Long initiatorDeptId) {
+        Long leaderId = deptService.getDeptLeaderById(initiatorDeptId);
+        if (ObjectUtil.isNull(leaderId)) {
+            throw new ServiceException("当前部门未设置负责人，请联系管理员操作。");
+        }
+        return leaderId;
     }
 }
 
-// 3. 在节点配置中使用
-permissionFlag = "#{getDeptLeader(initiatorDeptId)}"
+// 2. 在 flow_spel 表登记规则，供设计器选择（下面这条内置规则已由 ry_plus_workflow.sql 预置，自定义规则照此格式新增）
+INSERT INTO flow_spel (id, component_name, method_name, method_params, view_spel, remark, status, del_flag)
+VALUES (1, 'spelRuleComponent', 'selectDeptLeaderById', 'initiatorDeptId',
+        '#{@spelRuleComponent.selectDeptLeaderById(#initiatorDeptId)}', '根据部门id获取部门负责人', '0', '0');
+
+// 3. 节点办理人配置中使用（initiatorDeptId 由启动流程时自动放入流程变量）
+permissionFlag = "#{@spelRuleComponent.selectDeptLeaderById(#initiatorDeptId)}"
 ```
 
 ### 2. 如何实现多租户流程隔离？
@@ -1740,17 +1822,26 @@ permissionFlag = "#{getDeptLeader(initiatorDeptId)}"
 **解决方案**：系统已内置多租户支持。
 
 ```java
-// 新增租户时自动同步流程定义
+// 新增租户时自动同步流程定义（FlwDefinitionServiceImpl.syncDef，节选）
 @Override
 public void syncDef(String tenantId) {
-    // 切换到租户上下文
-    TenantHelper.setDynamic(tenantId);
-
-    // 从主租户复制流程定义
-    List<FlowDefinition> definitions = defService.list();
-    for (FlowDefinition def : definitions) {
-        // 复制到当前租户
-        defService.save(def);
+    // 读取默认租户 000000 的流程定义
+    List<FlowDefinition> flowDefinitions = flowDefinitionMapper.selectList(new LambdaQueryWrapper<FlowDefinition>()
+        .eq(FlowDefinition::getTenantId, TenantConstants.DEFAULT_TENANT_ID));
+    if (CollUtil.isEmpty(flowDefinitions)) {
+        return;
+    }
+    // 复制默认流程分类到新租户（略）
+    // ...
+    for (FlowDefinition definition : flowDefinitions) {
+        // 复制为新租户的未发布定义，节点 flow_node 与跳转 flow_skip 随后按新定义id一并复制
+        FlowDefinition flowDefinition = BeanUtil.toBean(definition, FlowDefinition.class);
+        flowDefinition.setId(null);
+        flowDefinition.setTenantId(tenantId);
+        flowDefinition.setIsPublish(0);
+        flowDefinition.setCategory(Convert.toStr(flowCategory.getCategoryId()));
+        flowDefinitionMapper.insert(flowDefinition);
+        // ...
     }
 }
 ```
@@ -1778,7 +1869,7 @@ flwTaskService.taskOperation(reduceBo, "reductionSignature");
 ```
 
 **注意事项**：
-- 只有会签节点（nodeRatio > 0）才支持加签减签
+- 或签节点（`nodeRatio` 为 `"0"`，`CooperateType.isOrSign`）不支持加签减签，只有会签 / 票签节点可用
 - 减签后剩余人数必须大于0
 - 加签减签操作会记录到历史任务中，`cooperate_type` 与 `flow_status` 分别为 `add_signer` / `remove_signer`
 
@@ -1809,23 +1900,23 @@ flwTaskService.taskOperation(reduceBo, "reductionSignature");
 // 获取流程历史
 Map<String, Object> history = flwInstanceService.getFlowHistory(businessId);
 
-// 返回数据结构
+// 返回数据结构：list 为 FlowHisTaskVo 列表，待审批任务在前，已处理的历史任务按更新时间倒序在后
 {
-    "flowChart": "流程图SVG",
-    "hisTaskList": [
-        {
-            "nodeName": "申请人",
-            "approverName": "张三",
-            "message": "提交申请",
-            "flowStatus": "pass",
-            "updateTime": "2024-01-01 10:00:00"
-        },
+    "instanceId": 1890000000000000001,
+    "list": [
         {
             "nodeName": "部门主管",
-            "approverName": "李四",
+            "approveName": "李四",
             "message": "同意",
             "flowStatus": "pass",
             "updateTime": "2024-01-01 11:00:00"
+        },
+        {
+            "nodeName": "申请人",
+            "approveName": "张三",
+            "message": "提交申请",
+            "flowStatus": "pass",
+            "updateTime": "2024-01-01 10:00:00"
         }
     ]
 }

@@ -614,8 +614,8 @@ public class FlowNode {
     /** 权限标识（办理人配置） */
     private String permissionFlag;
 
-    /** 节点比例（会签比例，0表示非会签） */
-    private BigDecimal nodeRatio;
+    /** 节点签署比例（node_ratio varchar(200)："0" 或签，"100" 会签，1 ~ 99 票签通过百分比，另支持 passCount= / rejectCount= 等票签规则） */
+    private String nodeRatio;
 
     /** 任意跳转节点编码 */
     private String anyNodeSkip;
@@ -786,7 +786,7 @@ public enum SkipType {
 /**
  * 流程分类实体
  */
-public class FlowCategory {
+public class FlowCategory extends TenantEntity {
     /** 分类ID */
     private Long categoryId;
 
@@ -797,10 +797,9 @@ public class FlowCategory {
     private Long parentId;
 
     /** 排序 */
-    private Integer orderNum;
+    private Long orderNum;
 
-    /** 租户ID */
-    private String tenantId;
+    // 租户ID tenantId 继承自 TenantEntity
 }
 ```
 
@@ -952,7 +951,7 @@ signNode.setNodeCode("sign");
 signNode.setNodeName("会签审批");
 signNode.setNodeType(1);
 signNode.setPermissionFlag("1,2,3"); // 多个用户
-signNode.setNodeRatio(new BigDecimal("1.0")); // 100%通过才能继续
+signNode.setNodeRatio("100"); // 会签：字符串 "100"，全部通过才能继续
 
 // 票签节点配置（50%通过即可）
 FlowNode voteNode = new FlowNode();
@@ -960,7 +959,7 @@ voteNode.setNodeCode("vote");
 voteNode.setNodeName("投票表决");
 voteNode.setNodeType(1);
 voteNode.setPermissionFlag("role:5"); // 委员会角色
-voteNode.setNodeRatio(new BigDecimal("0.5")); // 50%通过即可
+voteNode.setNodeRatio("50"); // 票签：1 ~ 99 为通过百分比，"50" 即 50% 通过即可
 ```
 
 ## 最佳实践
@@ -1131,20 +1130,24 @@ flwTaskService.startWorkFlow(bo);
 ### 6. 会签比例配置无效
 
 **问题原因**:
-- `nodeRatio` 设置为 0 或未设置
+- `nodeRatio` 设置为 `"0"` 或未设置
+- 按小数写成了 `"0.6"` 之类的值（引擎按百分比解释，`"0.6"` 表示 0.6%）
 - 办理人只配置了一个用户
 
 **解决方案**:
 ```java
-// 正确配置会签节点
+// 正确配置票签节点：nodeRatio 是字符串，按百分比取值
 FlowNode signNode = new FlowNode();
 signNode.setNodeCode("sign");
 signNode.setNodeType(1);
 signNode.setPermissionFlag("1,2,3,4,5"); // 多个用户
-signNode.setNodeRatio(new BigDecimal("0.6")); // 60%通过
+signNode.setNodeRatio("60"); // 票签，60% 通过即可
 
-// 注意：nodeRatio > 0 时为会签模式
-// nodeRatio = 0 或 null 时为或签模式（任一人审批即可）
+// 取值语义（引擎 CooperateType 判定）：
+// "0"        → 或签（isOrSign，任一人审批即可）
+// "100"      → 会签（isCountersign，全部通过）
+// "1" ~ "99" → 票签通过百分比（isVoteSignPassRatio）
+// 以 "passCount=" / "rejectCount=" 开头 → 按通过 / 驳回人数判定；以 "@@sequence" 结尾为顺序签
 ```
 
 ## 版本管理
@@ -1316,15 +1319,19 @@ public void parseCoordinate(FlowNode node) {
 
 // 分页查询优化
 @Override
-public PageResult<FlowDefinitionVo> pageFlowDefinitions(FlowDefinitionBo bo, PageQuery pageQuery) {
-    LambdaQueryWrapper<FlowDefinition> wrapper = buildQueryWrapper(bo);
-    // 只查询必要字段
+public PageResult<FlowDefinitionVo> pageFlowDefinitions(FlowDefinition flowDefinition, PageQuery pageQuery) {
+    LambdaQueryWrapper<FlowDefinition> wrapper = buildQueryWrapper(flowDefinition);
+    wrapper.eq(FlowDefinition::getIsPublish, PublishStatus.PUBLISHED.getKey());
+    // 可选：只查询列表需要的字段（项目默认实现未做裁剪）
     wrapper.select(FlowDefinition::getId, FlowDefinition::getFlowCode,
         FlowDefinition::getFlowName, FlowDefinition::getVersion,
         FlowDefinition::getIsPublish, FlowDefinition::getCategory);
 
     Page<FlowDefinition> page = flowDefinitionMapper.selectPage(pageQuery.build(), wrapper);
-    return PageResult.build(page, FlowDefinitionVo.class);
+    PageResult<FlowDefinitionVo> pageResult = PageResult.of();
+    pageResult.setRecords(BeanUtil.copyToList(page.getRecords(), FlowDefinitionVo.class));
+    pageResult.setTotal(page.getTotal());
+    return pageResult;
 }
 ```
 
@@ -1388,56 +1395,55 @@ public boolean batchDelete(List<Long> ids) {
 
 ```java
 /**
- * 流程定义查询对象
+ * 本项目没有单独的流程定义 BO：分页查询、新增、修改都直接使用引擎实体
+ * org.dromara.warm.flow.orm.entity.FlowDefinition（见 FlwDefinitionController）
  */
-@Data
-public class FlowDefinitionBo {
-    /** 流程编码 */
-    private String flowCode;
-
-    /** 流程名称 */
-    private String flowName;
-
-    /** 流程分类 */
-    private String category;
-
-    /** 发布状态 */
-    private Integer isPublish;
-}
-
-/**
- * 流程定义新增/修改对象
- */
-@Data
-public class FlowDefinitionSaveBo {
+public class FlowDefinition implements Definition {
     /** 流程定义ID（修改时必填） */
     private Long id;
 
-    /** 流程编码 */
-    @NotBlank(message = "流程编码不能为空")
+    /** 流程编码（查询条件 / 新增必填） */
     private String flowCode;
 
-    /** 流程名称 */
-    @NotBlank(message = "流程名称不能为空")
+    /** 流程名称（查询条件 / 新增必填） */
     private String flowName;
 
-    /** 流程分类 */
+    /** 流程分类（查询条件） */
     private String category;
+
+    /** 流程版本 */
+    private String version;
+
+    /** 发布状态（0未发布 1已发布 9失效） */
+    private Integer isPublish;
+
+    /** 审批表单是否自定义（Y是 N否） */
+    private String formCustom;
 
     /** 表单路径 */
     private String formPath;
 
+    /** 流程激活状态（0挂起 1激活） */
+    private Integer activityStatus;
+
+    /** 流程定义级监听器类型 / 路径 */
+    private String listenerType;
+    private String listenerPath;
+
     /** 扩展信息 */
     private String ext;
 
-    /** 节点列表 */
-    @NotEmpty(message = "节点列表不能为空")
-    private List<FlowNodeBo> nodeList;
+    /** 流程定义配置（JSON，2.x 新增，如自动审批 autoPass） */
+    private String defConfig;
 
-    /** 跳转规则列表 */
-    @NotEmpty(message = "跳转规则不能为空")
-    private List<FlowSkipBo> skipList;
+    /** 节点列表（设计器保存时随定义一起提交） */
+    private List<Node> nodeList;
 }
+
+// 控制器入参（FlwDefinitionController）
+public R<PageResult<FlowDefinitionVo>> pageFlowDefinitions(FlowDefinition flowDefinition, PageQuery pageQuery);
+public R<Boolean> addFlowDefinition(@RequestBody FlowDefinition flowDefinition);
+public R<Boolean> updateFlowDefinition(@RequestBody FlowDefinition flowDefinition);
 ```
 
 ### 响应对象
@@ -1460,11 +1466,8 @@ public class FlowDefinitionVo {
     /** 版本号 */
     private String version;
 
-    /** 发布状态 */
+    /** 发布状态（0未发布 1已发布 9失效） */
     private Integer isPublish;
-
-    /** 发布状态名称 */
-    private String isPublishName;
 
     /** 流程分类ID */
     private String category;

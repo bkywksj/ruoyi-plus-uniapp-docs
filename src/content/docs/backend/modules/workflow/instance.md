@@ -1065,7 +1065,7 @@ for (FlowHisTaskVo task : taskList) {
 FlowVariableBo variableBo = new FlowVariableBo();
 variableBo.setInstanceId(1L);
 variableBo.setKey("days");
-variableBo.setValue(5);
+variableBo.setValue("5"); // FlowVariableBo.value 为 String
 
 boolean result = flwInstanceService.updateVariable(variableBo);
 ```

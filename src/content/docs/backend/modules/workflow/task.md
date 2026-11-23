@@ -1092,7 +1092,7 @@ public class FlowTaskVo {
     /** 节点自定义参数 key=value */
     private Map<String, String> varList;
 
-    /** 流程签署比例值，大于 0 为票签 / 会签 */
+    /** 流程签署比例值（字符串）："0" 或签，"100" 会签，1 ~ 99 票签通过百分比 */
     private String nodeRatio;
 
     /** 是否为申请节点 */

@@ -835,11 +835,20 @@ boolean success = flwTaskService.completeTask(completeBo);
  * 请假实体
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName("test_leave")
-public class TestLeave {
+public class TestLeave extends BaseEntity {
 
-    @TableId(type = IdType.AUTO)
+    /**
+     * 主键（雪花ID）
+     */
+    @TableId(value = "id")
     private Long id;
+
+    /**
+     * 申请编号
+     */
+    private String applyCode;
 
     /**
      * 请假类型
@@ -864,10 +873,10 @@ public class TestLeave {
     /**
      * 请假原因
      */
-    private String reason;
+    private String remark;
 
     /**
-     * 状态 (draft/submitted/approved/rejected)
+     * 状态（与流程状态 BusinessStatusEnum 同步：draft / waiting / finish / back ...）
      */
     private String status;
 }
@@ -876,69 +885,86 @@ public class TestLeave {
 **2. 启动请假流程**
 
 ```java
-@Service
+@ConditionalOnEnable
 @RequiredArgsConstructor
+@Service
 public class TestLeaveServiceImpl implements ITestLeaveService {
 
-    private final IFlwTaskService flwTaskService;
-    private final TestLeaveMapper leaveMapper;
+    private final ITestLeaveDao testLeaveDao;
+    private final WorkflowService workflowService;
 
-    @Override
+    /**
+     * 提交请假并发起流程（后端发起，启动后自动办理申请人节点）
+     */
     @Transactional(rollbackFor = Exception.class)
-    public void submitLeave(TestLeaveBo bo) {
+    @Override
+    public TestLeaveVo submitAndFlowStart(TestLeaveBo bo) {
+        long day = DateUtil.betweenDay(bo.getStartDate(), bo.getEndDate(), true);
+        // 截止日期也算一天
+        bo.setLeaveDays((int) day + 1);
+        if (ObjectUtil.isNull(bo.getId())) {
+            bo.setApplyCode(System.currentTimeMillis() + StrUtil.EMPTY);
+        }
         // 1. 保存请假数据
-        TestLeave leave = BeanUtil.toBean(bo, TestLeave.class);
-        leave.setStatus("submitted");
-        leaveMapper.insert(leave);
+        TestLeave leave = MapstructUtils.convert(bo, TestLeave.class);
+        boolean flag = testLeaveDao.save(leave) > 0;
+        if (flag) {
+            bo.setId(leave.getId());
+            // 后端发起需要忽略权限
+            bo.getParams().put("ignore", true);
 
-        // 2. 启动工作流
-        StartProcessBo startBo = new StartProcessBo();
-        startBo.setBusinessId(leave.getId().toString());
-        startBo.setFlowCode("leave_flow");
-        startBo.setBizExt(new FlowInstanceBizExt()
-            .setBusinessCode("LEAVE_" + leave.getId())
-            .setBusinessTitle(LoginHelper.getNickname() + "的请假申请"));
+            // 2. 启动工作流：variables 必须是可变 Map，启动时会写入 initiator 等内置变量
+            StartProcessDTO startProcess = new StartProcessDTO();
+            startProcess.setBusinessId(leave.getId().toString());
+            startProcess.setFlowCode(StringUtils.isEmpty(bo.getFlowCode()) ? "leave1" : bo.getFlowCode());
+            startProcess.setVariables(bo.getParams());
 
-        // 设置流程变量供条件判断
-        startBo.setVariables(Map.of(
-            "leaveDays", leave.getLeaveDays(),
-            "leaveType", leave.getLeaveType()
-        ));
-
-        flwTaskService.startWorkFlow(startBo);
+            boolean flag1 = workflowService.startCompleteTask(startProcess);
+            if (!flag1) {
+                throw new ServiceException("流程发起异常");
+            }
+        }
+        return MapstructUtils.convert(leave, TestLeaveVo.class);
     }
 }
 ```
 
 **3. 处理审批回调**
 
+项目里没有 `FlowListener` 这类业务回调接口。引擎全局监听器 `WorkflowGlobalListener`（实现 `org.dromara.warm.flow.core.spi.GlobalListener`）在任务完成时通过 `FlowProcessEventHandler` 发布 Spring 事件 `ProcessEvent` / `ProcessTaskEvent` / `ProcessDeleteEvent`，业务模块用 `@EventListener` 按 `flowCode` 过滤监听即可（请假示例就写在 `TestLeaveServiceImpl` 里）：
+
 ```java
-@Component
-@RequiredArgsConstructor
-public class LeaveFlowListener implements FlowListener {
-
-    private final TestLeaveMapper leaveMapper;
-
-    /**
-     * 流程结束回调
-     */
-    @Override
-    public void onProcessEnd(FlowEndEvent event) {
-        String businessId = event.getBusinessId();
-        String flowStatus = event.getFlowStatus();
-
-        // 更新请假状态
-        TestLeave leave = new TestLeave();
-        leave.setId(Long.valueOf(businessId));
-
-        if ("pass".equals(flowStatus)) {
-            leave.setStatus("approved");
-        } else if ("back".equals(flowStatus)) {
-            leave.setStatus("rejected");
+/**
+ * 总体流程监听（草稿、撤销、退回、作废、终止、已完成等）
+ * 正常使用只需 #processEvent.flowCode=='leave1'
+ */
+@EventListener(condition = "#processEvent.flowCode.startsWith('leave')")
+public void processHandler(ProcessEvent processEvent) {
+    TestLeave testLeave = testLeaveDao.getById(Convert.toLong(processEvent.getBusinessId()));
+    // 流程状态（BusinessStatusEnum 编码）直接同步到业务单
+    testLeave.setStatus(processEvent.getStatus());
+    // 办理参数：hisTaskExt 附件、handler 办理人、message 办理意见
+    Map<String, Object> params = processEvent.getParams();
+    if (processEvent.getSubmit()) {
+        // 申请人提交
+        if (StringUtils.isBlank(testLeave.getApplyCode())) {
+            testLeave.setApplyCode(MapUtil.getStr(params, "businessCode", StrUtil.EMPTY));
         }
-
-        leaveMapper.updateById(leave);
+        testLeave.setStatus(BusinessStatusEnum.WAITING.getStatus());
     }
+    testLeaveDao.updateById(testLeave);
+}
+
+/**
+ * 流程删除监听：删除流程实例时同步删除业务数据
+ */
+@EventListener(condition = "#processDeleteEvent.flowCode.startsWith('leave')")
+public void processDeleteHandler(ProcessDeleteEvent processDeleteEvent) {
+    TestLeave testLeave = testLeaveDao.getById(Convert.toLong(processDeleteEvent.getBusinessId()));
+    if (ObjectUtil.isNull(testLeave)) {
+        return;
+    }
+    testLeaveDao.deleteById(testLeave.getId());
 }
 ```
 
@@ -998,10 +1024,11 @@ public class OrderApprovalServiceImpl implements IOrderApprovalService {
         startBo.setBizExt(new FlowInstanceBizExt()
             .setBusinessCode(order.getOrderNo())
             .setBusinessTitle("订单审批-" + order.getOrderNo()));
-        startBo.setVariables(Map.of(
-            "amount", order.getAmount(),
-            "orderNo", order.getOrderNo()
-        ));
+        // 必须用可变 Map：startWorkFlow 会往里写入 initiator / initiatorDeptId / businessId
+        Map<String, Object> variables = new HashMap<>();
+        variables.put("amount", order.getAmount());
+        variables.put("orderNo", order.getOrderNo());
+        startBo.setVariables(variables);
 
         flwTaskService.startWorkFlow(startBo);
     }
@@ -1017,7 +1044,10 @@ public class OrderApprovalServiceImpl implements IOrderApprovalService {
                 .eq(OrderApproval::getApplicant, LoginHelper.getUserId())
                 .orderByDesc(OrderApproval::getCreateTime));
 
-        return PageResult.build(page, OrderApprovalVo.class);
+        PageResult<OrderApprovalVo> pageResult = PageResult.of();
+        pageResult.setRecords(MapstructUtils.convert(page.getRecords(), OrderApprovalVo.class));
+        pageResult.setTotal(page.getTotal());
+        return pageResult;
     }
 }
 ```
@@ -1030,11 +1060,11 @@ public class OrderApprovalServiceImpl implements IOrderApprovalService {
 
 工作流支持三种消息通知方式：
 
-| 类型 | 说明 | 配置模块 |
+| 编码（`MessageTypeEnum`） | 说明 | 配置模块 |
 |------|------|----------|
-| email | 邮件通知 | ruoyi-common-mail |
-| sms | 短信通知 | ruoyi-common-sms |
-| sse | SSE 实时推送 | ruoyi-common-sse |
+| `1` | 站内信（SSE 实时推送） | ruoyi-common-sse |
+| `2` | 邮件通知 | ruoyi-common-mail |
+| `3` | 短信通知（`FlwCommonServiceImpl` 中为注释示例，需自行接入短信模板） | ruoyi-common-sms |
 
 ### 配置通知
 
@@ -1045,8 +1075,8 @@ CompleteTaskBo completeBo = new CompleteTaskBo();
 completeBo.setTaskId(taskId);
 completeBo.setMessage("审批通过");
 
-// 指定通知方式
-completeBo.setMessageType(List.of("email", "sms", "sse"));
+// 指定通知方式（MessageTypeEnum 编码：1 站内信、2 邮件、3 短信）
+completeBo.setMessageType(List.of("1", "2"));
 
 // 自定义通知内容
 completeBo.setNotice("您的申请已通过审批，请及时查看。");
@@ -1065,13 +1095,14 @@ completeBo.setTaskId(taskId);
 // 配置抄送人
 List<FlowCopyBo> copyList = new ArrayList<>();
 
+// FlowCopyBo.userId 为 Long 类型的用户ID
 FlowCopyBo copy1 = new FlowCopyBo();
-copy1.setUserId("user_001");
+copy1.setUserId(1L);
 copy1.setUserName("张三");
 copyList.add(copy1);
 
 FlowCopyBo copy2 = new FlowCopyBo();
-copy2.setUserId("user_002");
+copy2.setUserId(2L);
 copy2.setUserName("李四");
 copyList.add(copy2);
 
@@ -1119,7 +1150,7 @@ flwTaskService.completeTask(completeBo);
 // 使用分页查询，避免一次性加载大量数据
 PageResult<FlowTaskVo> tasks = flwTaskService.pageWaitingTasks(
     flowTaskBo,
-    PageQuery.of(1, 20)  // 限制每页数量
+    new PageQuery(20, 1)  // 构造参数为 (pageSize, pageNum)，限制每页数量
 );
 
 // 使用索引字段进行查询
@@ -1131,10 +1162,11 @@ flowTaskBo.setFlowCode("leave_flow");  // 使用流程编码过滤
 ```java
 // 流程定义可以缓存
 @Cacheable(value = "workflow:definition", key = "#flowCode")
-public FlowDefinition getDefinitionByCode(String flowCode) {
-    return defService.getOne(Wrappers.<FlowDefinition>lambdaQuery()
-        .eq(FlowDefinition::getFlowCode, flowCode)
-        .eq(FlowDefinition::getIsPublish, 1));
+public Definition getDefinitionByCode(String flowCode) {
+    // 引擎 DefService.getOne(T) 按实体非空字段等值查询
+    return defService.getOne(new FlowDefinition()
+        .setFlowCode(flowCode)
+        .setIsPublish(PublishStatus.PUBLISHED.getKey()));
 }
 ```
 
@@ -1146,16 +1178,17 @@ public FlowDefinition getDefinitionByCode(String flowCode) {
 @RestControllerAdvice
 public class WorkflowExceptionHandler {
 
+    /**
+     * 引擎内部校验失败抛出 org.dromara.warm.flow.core.exception.FlowException
+     */
     @ExceptionHandler(FlowException.class)
     public R<Void> handleFlowException(FlowException e) {
         log.error("工作流异常: {}", e.getMessage(), e);
         return R.fail("工作流处理失败: " + e.getMessage());
     }
 
-    @ExceptionHandler(TaskNotFoundException.class)
-    public R<Void> handleTaskNotFound(TaskNotFoundException e) {
-        return R.fail("任务不存在或已被处理");
-    }
+    // 本项目业务层（如 FlwTaskServiceImpl）统一抛 ServiceException（如「流程任务不存在或任务已审批！」），
+    // 已由框架全局异常处理器转换为 R.fail，无需另行定义「任务不存在」异常
 }
 ```
 
@@ -1210,17 +1243,16 @@ public class LeaveService {
 **解决方案：**
 
 ```java
-// 1. 检查流程是否已发布
-FlowDefinition def = defService.getOne(Wrappers.<FlowDefinition>lambdaQuery()
-    .eq(FlowDefinition::getFlowCode, flowCode)
-    .eq(FlowDefinition::getIsPublish, 1));
+// 1. 检查流程是否已发布（startWorkFlow 内部同样会校验，未发布时抛「流程【xxx】未发布…」）
+Definition def = defService.getOne(new FlowDefinition()
+    .setFlowCode(flowCode)
+    .setIsPublish(PublishStatus.PUBLISHED.getKey()));
 if (def == null) {
     throw new ServiceException("流程未发布: " + flowCode);
 }
 
-// 2. 检查业务 ID 是否已存在
-FlowInstance existing = insService.getOne(Wrappers.<FlowInstance>lambdaQuery()
-    .eq(FlowInstance::getBusinessId, businessId));
+// 2. 检查业务 ID 是否已存在（已存在时 startWorkFlow 会按 BusinessStatusEnum.checkStartStatus 校验能否重新提交）
+Instance existing = insService.getOne(new FlowInstance().setBusinessId(businessId));
 if (existing != null) {
     throw new ServiceException("该业务已启动流程");
 }
@@ -1378,27 +1410,30 @@ log.info("发送审批通知: 用户={}, 类型={}", userId, messageType);
 
 ## 扩展开发
 
-### 自定义节点处理器
+### 自定义节点监听器
 
-实现自定义的节点处理逻辑：
+项目和引擎都没有 `NodeHandler` 接口。需要在某个节点上挂自定义逻辑时，用 Warm-Flow 的节点级监听器：实现 `org.dromara.warm.flow.core.spi.Listener`，注册为 Spring Bean，再在设计器节点的「监听器」中配置监听类型（`start` / `assignment` / `finish` / `create`，多个用逗号分隔）与监听器路径（类的全限定名，多个用 `@@` 分隔），引擎由 `ListenerUtil` 通过 `FrameInvoker.getBean` 取到该 Bean 执行。所有节点都要执行的逻辑则放在全局监听器 `WorkflowGlobalListener`（实现 `GlobalListener`）里。
 
 ```java
+import org.dromara.warm.flow.core.entity.Node;
+import org.dromara.warm.flow.core.spi.Listener;
+import org.dromara.warm.flow.core.spi.ListenerVariable;
+
+/**
+ * 节点完成监听器：在设计器节点上配置 监听类型=finish、监听器路径=本类全限定名
+ */
+@Slf4j
 @Component
-public class CustomNodeHandler implements NodeHandler {
+public class LeaveManagerFinishListener implements Listener {
 
     @Override
-    public void handle(FlowTask task, Map<String, Object> variables) {
-        // 自定义处理逻辑
-        String nodeCode = task.getNodeCode();
-
-        if ("node_auto_approve".equals(nodeCode)) {
-            // 自动审批逻辑
-            autoApprove(task);
-        }
-    }
-
-    private void autoApprove(FlowTask task) {
-        // 实现自动审批
+    public void notify(ListenerVariable listenerVariable) {
+        Node node = listenerVariable.getNode();
+        Map<String, Object> variable = listenerVariable.getVariable();
+        // 可读取实例 / 任务 / 下一批任务：getInstance()、getTask()、getNextTasks()
+        // 办理上下文（办理人、意见、任务状态）：getContext()
+        log.info("节点 {} 办理完成，业务ID: {}, 变量: {}",
+            node.getNodeCode(), listenerVariable.getInstance().getBusinessId(), variable);
     }
 }
 ```
@@ -1407,65 +1442,79 @@ public class CustomNodeHandler implements NodeHandler {
 
 ### 自定义事件监听
 
-监听工作流事件：
+项目只发布三类 Spring 事件（`plus.ruoyi.common.core.domain.event`，由 `FlowProcessEventHandler` 发布），没有单独的「流程启动 / 任务完成 / 流程结束」事件：流程启动（申请人提交）与结束都体现为 `ProcessEvent`，用 `submit` 与 `status` 区分。
 
 ```java
+@Slf4j
 @Component
-@RequiredArgsConstructor
 public class WorkflowEventListener {
 
-    @EventListener
-    public void onProcessStart(ProcessStartEvent event) {
-        log.info("流程启动: instanceId={}, businessId={}",
-            event.getInstanceId(), event.getBusinessId());
+    /**
+     * 流程状态变化：申请人提交时 submit=true；status 为 BusinessStatusEnum 编码（finish 完成、back 退回、cancel 撤销、termination 终止、invalid 作废等）
+     */
+    @EventListener(condition = "#event.flowCode == 'leave1'")
+    public void onProcessEvent(ProcessEvent event) {
+        if (Boolean.TRUE.equals(event.getSubmit())) {
+            log.info("流程提交: instanceId={}, businessId={}", event.getInstanceId(), event.getBusinessId());
+        }
+        if (BusinessStatusEnum.FINISH.getStatus().equals(event.getStatus())) {
+            log.info("流程结束: instanceId={}, status={}", event.getInstanceId(), event.getStatus());
+            // 触发业务回调
+        }
     }
 
-    @EventListener
-    public void onTaskComplete(TaskCompleteEvent event) {
-        log.info("任务完成: taskId={}, handler={}",
-            event.getTaskId(), event.getHandler());
+    /**
+     * 新任务创建（也代表上一个任务办理完成）；params 中可取 handler 办理人、message 办理意见
+     */
+    @EventListener(condition = "#event.flowCode == 'leave1'")
+    public void onTaskCreated(ProcessTaskEvent event) {
+        log.info("任务创建: taskId={}, nodeCode={}, handler={}",
+            event.getTaskId(), event.getNodeCode(), MapUtil.getStr(event.getParams(), "handler"));
     }
 
-    @EventListener
-    public void onProcessEnd(ProcessEndEvent event) {
-        log.info("流程结束: instanceId={}, status={}",
-            event.getInstanceId(), event.getFlowStatus());
-
-        // 触发业务回调
-        notifyBusinessSystem(event);
+    /**
+     * 流程实例删除
+     */
+    @EventListener(condition = "#event.flowCode == 'leave1'")
+    public void onProcessDeleted(ProcessDeleteEvent event) {
+        log.info("流程删除: businessId={}", event.getBusinessId());
     }
 }
 ```
 
 ### 自定义 SPEL 规则
 
-扩展 SPEL 规则引擎：
+SpEL 表达式里可以用 `@beanName` 调用任意 Spring Bean 的方法，用 `#变量名` 引用流程变量。内置示例有两处：条件分支用的 `TestLeaveServiceImpl#eval`，办理人用的 `SpelRuleComponent#selectDeptLeaderById`。自定义规则照此写一个 Bean 即可：
 
 ```java
 @Component
+@RequiredArgsConstructor
 public class CustomSpelRule {
 
+    // 业务自己的用户服务，此处仅作示意
+    private final UserService userService;
+
     /**
-     * 判断是否为 VIP 用户
+     * 条件分支：判断是否为 VIP 用户（返回 boolean）
      */
     public boolean isVipUser(String userId) {
-        // 查询用户等级
         return userService.isVip(userId);
     }
 
     /**
-     * 获取用户部门
+     * 办理人：返回用户ID（单个或逗号分隔的多个）
      */
-    public String getUserDept(String userId) {
-        return userService.getDeptId(userId);
+    public Long selectManager(Long initiatorDeptId) {
+        return userService.getDeptManagerId(initiatorDeptId);
     }
 }
 ```
 
-在流程设计器中使用：
+在流程设计器中使用（条件选择 SpEL 类型，引擎存为 `spel@@` 前缀；内置请假流程即 `spel@@#{@testLeaveServiceImpl.eval(#leaveDays)}`）：
 
 ```text
-条件表达式: #{@customSpelRule.isVipUser(applicant)}
+条件表达式: #{@customSpelRule.isVipUser(#initiator)}
+办理人表达式: #{@customSpelRule.selectManager(#initiatorDeptId)}
 ```
 
 ---
@@ -1526,8 +1575,10 @@ public class CustomSpelRule {
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { pageWaitingTasks } from '@/api/workflow/task/taskApi'
 
+const router = useRouter()
 const loading = ref(false)
 const taskList = ref([])
 const total = ref(0)
@@ -1539,9 +1590,12 @@ const queryParams = ref({
 
 const getList = async () => {
   loading.value = true
-  const { data } = await pageWaitingTasks(queryParams.value)
-  taskList.value = data.records
-  total.value = data.total
+  // 项目 http 封装返回 [err, data] 元组
+  const [err, data] = await pageWaitingTasks(queryParams.value)
+  if (!err) {
+    taskList.value = data.records
+    total.value = data.total
+  }
   loading.value = false
 }
 
@@ -1567,39 +1621,27 @@ onMounted(() => {
 ### 审批操作
 
 ```typescript
-// api/workflow/task/taskApi.ts
-import request from '@/utils/request'
+// api/workflow/task/taskApi.ts（http / Result 为全局自动导入，无需 import）
 
 /**
  * 办理任务
  */
-export function completeTask(data: CompleteTaskBo) {
-  return request({
-    url: '/workflow/task/completeTask',
-    method: 'post',
-    data
-  })
+export const completeTask = (data: object): Result<any> => {
+  return http.post('/workflow/task/completeTask', data)
 }
 
 /**
  * 驳回任务
  */
-export function rejectTask(data: BackProcessBo) {
-  return request({
-    url: '/workflow/task/rejectTask',
-    method: 'post',
-    data
-  })
+export const rejectTask = (data: any): Result<any> => {
+  return http.post('/workflow/task/rejectTask', data)
 }
 
 /**
  * 获取可驳回节点
  */
-export function listRejectableNodes(taskId: number, nodeCode: string) {
-  return request({
-    url: `/workflow/task/listRejectableNodes/${taskId}/${nodeCode}`,
-    method: 'get'
-  })
+export const listRejectableNodes = (taskId: string, nodeCode: string): Result<any> => {
+  return http.get(`/workflow/task/listRejectableNodes/${taskId}/${nodeCode}`)
 }
 ```
 
